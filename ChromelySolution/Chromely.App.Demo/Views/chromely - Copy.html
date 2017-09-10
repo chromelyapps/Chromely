@@ -1,0 +1,128 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chromely</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style type="text/css">
+        body, html {
+            height: 100%;
+            display: grid;
+        }
+
+        .chromely_content {
+            margin: auto;
+        }
+
+        .centerBlock {
+            display: table;
+            margin: auto;
+        }
+
+        .show {
+            display: block !important;
+        }
+
+        .hidden {
+            display: none !important;
+            visibility: hidden !important;
+        }
+
+        .invisible {
+            visibility: hidden;
+        }
+    </style>
+    <script type="text/javascript">
+        function demoRun() {
+            $("#infoPanel").removeClass('hidden');
+
+            var person = {
+                name: 'John',
+                address: 'Adams',
+                phone: '201 220 3333'
+            }
+
+            var formData = new FormData();
+            formData.append('user', 'person');
+            formData.append('pwd', 'password');
+            formData.append('organization', 'place');
+            formData.append('requiredkey', 'key');
+
+            var http = new XMLHttpRequest();
+            var url = "http://chromely.com/democontroller/saveperson?yes=johnson";
+            var params = "lorem=ipsum&name=binny";
+            http.open("POST", url, true);
+
+            //Send the proper header information along with the request
+            http.setRequestHeader("Content-type", "application/json; charset=utf-8");
+            http.setRequestHeader("pragma", "no-cache");
+
+            http.onreadystatechange = function () {//Call a function when the state changes.
+                if (http.readyState == 4 && http.status == 200) {
+                    alert(http.responseText);
+                }
+            }
+            http.send(formData);
+        }
+    </script>
+</head>
+<body>
+    <div class="chromely_content">
+
+        <div class="col-md-12">
+            <div class="centerBlock">
+                <img src="chromely_log_white.png" class="img-rounded" alt="Cinque Terre" width="320" height="320">
+                <span class="text-primary text-center"><h1>chromely</h1></span>
+                <p class="text-muted text-center">Build .NET/.NET CORE HTML5 Desktop Apps</p>
+            </div>
+        </div>
+
+        <div class="col-md-12" style='padding:20px;'>
+            <div class="centerBlock">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <label for="info">Ajax Demo (get chromely info):</label>
+                    </div>
+                    <button id="buttonDemoRun" type="button" class="btn btn-default" onclick="demoRun()">Run</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="infoPanel" class="col-md-12 centerBlock hidden">
+
+            <div class="col-md-3">
+            </div>
+
+            <div class="col-md-6">
+                <div class="panel-group">
+
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Main objective</div>
+                        <div class="panel-body">To build HTML5 desktop apps using embedded chromium without WinForm or WPF. Uses Windows and Linux native GUI API. Those who are interested can extend to WinForm or WPF. The primary focus of communication with Chromium is via Ajax HTTP/XHR requests using custom schemes and domains.</div>
+                    </div>
+
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Platforms</div>
+                        <div class="panel-body">Cross-platform - Windows, Linux. Built on CefGlue, NetStandard 2.0, .NET Core 2.0,                          .NET Framework 4.61 and above.</div>
+                    </div>
+
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Current CefGlue/Chromium Versions</div>
+                        <div class="panel-body">Panel Content</div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-md-3">
+            </div>
+
+        </div>
+
+    </div>
+</body>
+</html>                            

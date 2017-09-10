@@ -1,0 +1,270 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chromely</title>
+    <link rel="stylesheet" href="../Content/css/bootstrap.min.css">
+    <script src="../Content/js/jquery.min.js"></script>
+    <script src="../Content/js/bootstrap.min.js"></script>
+    <style type="text/css">
+        body, html {
+            height: 100%;
+            display: grid;
+        }
+
+        .chromely_content {
+            margin: auto;
+        }
+
+        .centerBlock {
+            display: table;
+            margin: auto;
+        }
+
+        .show {
+            display: block !important;
+        }
+
+        .hidden {
+            display: none !important;
+            visibility: hidden !important;
+        }
+
+        .invisible {
+            visibility: hidden;
+        }
+
+        .modal-dialog {
+            width: 80%;
+        }
+    </style>
+    <script type="text/javascript">
+        function demoRun() {
+            $("#infoPanel").removeClass('hidden');
+            $("#runButton").addClass('hidden');
+            $("#moreInfoButton").removeClass('hidden');
+            
+            var http = new XMLHttpRequest();
+            var url = "http://chromely.com/info";
+            http.open("GET", url, true);
+
+            http.onreadystatechange = function () {
+                if (http.readyState == 4 && http.status == 200) {
+                    var jsonData = JSON.parse(http.responseText);
+                    $('#divObjective').html(jsonData.divObjective);
+                    $('#divPlatform').html(jsonData.divPlatform);
+                    $('#divVersion').html(jsonData.divVersion);
+                }
+            }
+            http.send();
+        }
+
+        function launchModal() {
+            $("#ajaxModal").modal('show');
+        }
+
+        function ajaxRun1() {
+
+            $('#ajaxResult1 tbody').html('');
+
+            var http = new XMLHttpRequest();
+            var url = "http://chromely.com/democontroller/movies";
+            http.open("GET", url, true);
+
+            http.onreadystatechange = function () {
+                if (http.readyState == 4 && http.status == 200) {
+                    var jsonData = JSON.parse(http.responseText);
+                    for (var i = 0; i < jsonData.length; i++) {
+                        var row = '<tr>';
+
+                        row += '<td>' + jsonData[i].Id + '</td>';
+                        row += '<td>' + jsonData[i].Title + '</td>';
+                        row += '<td>' + jsonData[i].Year + '</td>';
+                        row += '<td>' + jsonData[i].Votes + '</td>';
+                        row += '<td>' + jsonData[i].Rating + '</td>';
+                        row += '<td>' + jsonData[i].Date + '</td>';
+                        row += '<td>' + jsonData[i].RestfulAssembly + '</td>';
+
+                        row += '</tr>';
+                        $('#ajaxResult1 tbody').append(row);
+                    }
+                }
+            }
+            http.send();
+        }
+
+        function ajaxRun2() {
+
+            $('#ajaxResult2 tbody').html('');
+
+            var http = new XMLHttpRequest();
+            var url = "http://chromely.com/externalcontroller/movies";
+            http.open("GET", url, true);
+
+            http.onreadystatechange = function () {
+                if (http.readyState == 4 && http.status == 200) {
+                    var jsonData = JSON.parse(http.responseText);
+                    for (var i = 0; i < jsonData.length; i++) {
+                        var row = '<tr>';
+
+                        row += '<td>' + jsonData[i].Id + '</td>';
+                        row += '<td>' + jsonData[i].Title + '</td>';
+                        row += '<td>' + jsonData[i].Year + '</td>';
+                        row += '<td>' + jsonData[i].Votes + '</td>';
+                        row += '<td>' + jsonData[i].Rating + '</td>';
+                        row += '<td>' + jsonData[i].Date + '</td>';
+                        row += '<td>' + jsonData[i].RestfulAssembly + '</td>';
+
+                        row += '</tr>';
+                        $('#ajaxResult2 tbody').append(row);
+                    }
+                }
+            }
+            http.send();
+        }
+    </script>
+</head>
+<body>
+    <div class="chromely_content">
+
+        <div class="col-md-12">
+            <div class="centerBlock">
+                <img src="../Content/img/chromely_log_white.png" class="img-rounded" alt="Cinque Terre" width="240" height="240">
+                <span class="text-primary text-center"><h1>chromely</h1></span>
+                <p class="text-muted text-center">Build .NET/.NET CORE HTML5 Desktop Apps</p>
+            </div>
+        </div>
+
+        <div class="col-md-12" style='padding:20px;'>
+            <div id="runButton" class="centerBlock">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <label for="info">Ajax Demo (get chromely info):</label>
+                    </div>
+                    <button id="buttonDemoRun" type="button" class="btn btn-default" onclick="demoRun()">Run</button>
+                </form>
+            </div>
+            <div id="moreInfoButton" class="centerBlock hidden">
+                <form class="form-inline">
+                    <button type="button" class="btn btn-default" onclick="launchModal()">ajax GET test</button>
+                    <a href="https://github.com/mattkol/SugarRestSharp" class="btn btn-default" role="button">more info</a>
+                </form>
+            </div>
+        </div>
+
+        <div id="infoPanel" class="col-md-12 centerBlock hidden">
+
+            <div class="col-md-2">
+            </div>
+
+            <div class="col-md-8">
+                <div class="panel-group">
+
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Main objective</div>
+                        <div id="divObjective" class="panel-body"></div>
+                    </div>
+
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Platforms</div>
+                        <div id="divPlatform" class="panel-body"></div>
+                    </div>
+
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Current CefGlue/Chromium Version</div>
+                        <div id="divVersion" class="panel-body"></div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-md-2">
+            </div>
+
+        </div>
+
+        <!-- Modal -->
+        <div id="ajaxModal" class="modal fade">
+            <div class="modal-dialog">
+
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Ajax Get Request</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a data-toggle="tab" href="#sectionA">Restful Service in Local Assembly</a></li>
+                                <li><a data-toggle="tab" href="#sectionB">Restful Service in External Assembly</a></li>
+                            </ul>
+
+                            <div class="tab-content">
+
+                                <div id="sectionA" class="tab-pane fade in active" style='padding:10px;'>
+                                    <form class="form">
+                                        <div class="form-group">
+                                            <button id="buttonAjaxRun1" type="button" class="btn btn-primary" onclick="ajaxRun1()">Run</button>&ensp;&ensp;http://chromely.com//democontroller/movies
+                                        </div>
+                                        <div class="form-group">
+                                            <table id="ajaxResult1" class="table table-striped table-hover ">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Id</th>
+                                                        <th>Title</th>
+                                                        <th>Year</th>
+                                                        <th>Votes</th>
+                                                        <th>Rating</th>
+                                                        <th>Date</th>
+                                                        <th>RestfulAssembly</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table> 
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <div id="sectionB" class="tab-pane fade"  style='padding:10px;'>
+                                    <form class="form">
+                                        <div class="form-group">
+                                            <button id="buttonAjaxRun2" type="button" class="btn btn-primary" onclick="ajaxRun2()">Run</button>&ensp;&ensp;http://chromely.com//externalcontroller/movies
+                                        </div>
+                                        <div class="form-group">
+                                            <table id="ajaxResult2" class="table table-striped table-hover ">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Id</th>
+                                                        <th>Title</th>
+                                                        <th>Year</th>
+                                                        <th>Votes</th>
+                                                        <th>Rating</th>
+                                                        <th>Date</th>
+                                                        <th>RestfulAssembly</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table> 
+                                        </div>
+                                    </form>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- End Modal -->
+
+    </div>
+</body>
+</html>                            
