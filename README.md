@@ -2,7 +2,7 @@
 Chromely is a .NET/.NET Core HTML5 Chromium desktop framework. It is focused on building apps using embedded Chromium without WinForm or WPF. Uses Windows and Linux native GUI API. Those who are interested can extend to WinForm or WPF. The main method of communication with the embedded Chromium is via Ajax HTTP/XHR requests using custom schemes and domains.
 
 ### Platforms
-Cross-platform - Windows, Linux. Built on CefGlue, NET Standard 2.0, .NET Core 2.0, .NET Framework 4.61 and above.
+Cross-platform - Windows, Linux. Built on CefGlue, CefSharp, NET Standard 2.0, .NET Core 2.0, .NET Framework 4.61 and above.
 
 ### Current CefGlue/Chromium Version
 CefGlue: 59.0.3071.109
