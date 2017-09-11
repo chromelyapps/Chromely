@@ -24,9 +24,9 @@
 
  namespace Chromely.App.Demo
 {
-    using Chromely.ChromeHosts;
-    using Chromely.ChromeHosts.Winapi;
-    using Chromely.Infrastructure;
+    using Chromely.Core.ChromeHosts;
+    using Chromely.Core.ChromeHosts.Winapi;
+    using Chromely.Core.Infrastructure;
     using System;
     using System.Reflection;
     using WinApi.Windows;
@@ -51,7 +51,7 @@
                 config.StartUrl = string.Format("file:///{0}Views/chromely.html", appDirectory);
 
                 var factory = ChromeHostFactory.CreateWinapi("chromely.ico");
-                using (var window = factory.CreateWindow(() => new ChromeBrowserWinapi(config),
+                using (var window = factory.CreateWindow(() => new CefGlueBrowserWinapiHost(config),
                     "chromely", constructionParams: new FrameWindowConstructionParams()))
                 {
                     // Register external url schems
@@ -61,8 +61,9 @@
                     window.RegisterServiceAssembly(Assembly.GetExecutingAssembly());
 
                     // Note ensure external is valid folder.
-                    string serviceAssemblyFile = @"C:\ChromelyDlls\Chromely.Service.Demo.dll";
-                    window.RegisterServiceAssembly(serviceAssemblyFile);
+                    // Uncomment to refgister external restful service dlls
+                    //string serviceAssemblyFile = @"C:\ChromelyDlls\Chromely.Service.Demo.dll";
+                    //window.RegisterServiceAssembly(serviceAssemblyFile);
 
                     // Scan assembly
                     window.ScanAssemblies();

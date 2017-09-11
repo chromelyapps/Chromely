@@ -13,11 +13,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chromely.App.Demo", "Chrome
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chromely.CoreApp.Demo", "Chromely.CoreApp.Demo\Chromely.CoreApp.Demo.csproj", "{B597B399-BA3A-4CA7-8F29-54A9F638EBE1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chromely", "Chromely\Chromely.csproj", "{462F15B8-E924-40AF-A15F-5AF80ED4868A}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chromely.Service.Demo", "Chromely.Service.Demo\Chromely.Service.Demo.csproj", "{710A9D98-0DE3-4F13-9E68-45E76341D1E7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget", "Nuget", "{8F5962B8-18FC-4FE4-B1E6-4E3F19B139AB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chromely.Core", "Chromely.Core\Chromely.Core.csproj", "{6D596152-10C4-4254-8B0D-6141E8F167AE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chromely", "Chromely\Chromely.csproj", "{39B1A312-ED2D-4868-8BBF-B8B4CD574922}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,14 +53,6 @@ Global
 		{B597B399-BA3A-4CA7-8F29-54A9F638EBE1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B597B399-BA3A-4CA7-8F29-54A9F638EBE1}.Release|x64.ActiveCfg = Release|x64
 		{B597B399-BA3A-4CA7-8F29-54A9F638EBE1}.Release|x64.Build.0 = Release|x64
-		{462F15B8-E924-40AF-A15F-5AF80ED4868A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{462F15B8-E924-40AF-A15F-5AF80ED4868A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{462F15B8-E924-40AF-A15F-5AF80ED4868A}.Debug|x64.ActiveCfg = Debug|x64
-		{462F15B8-E924-40AF-A15F-5AF80ED4868A}.Debug|x64.Build.0 = Debug|x64
-		{462F15B8-E924-40AF-A15F-5AF80ED4868A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{462F15B8-E924-40AF-A15F-5AF80ED4868A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{462F15B8-E924-40AF-A15F-5AF80ED4868A}.Release|x64.ActiveCfg = Release|x64
-		{462F15B8-E924-40AF-A15F-5AF80ED4868A}.Release|x64.Build.0 = Release|x64
 		{710A9D98-0DE3-4F13-9E68-45E76341D1E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{710A9D98-0DE3-4F13-9E68-45E76341D1E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{710A9D98-0DE3-4F13-9E68-45E76341D1E7}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -67,6 +61,22 @@ Global
 		{710A9D98-0DE3-4F13-9E68-45E76341D1E7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{710A9D98-0DE3-4F13-9E68-45E76341D1E7}.Release|x64.ActiveCfg = Release|Any CPU
 		{710A9D98-0DE3-4F13-9E68-45E76341D1E7}.Release|x64.Build.0 = Release|Any CPU
+		{6D596152-10C4-4254-8B0D-6141E8F167AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D596152-10C4-4254-8B0D-6141E8F167AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D596152-10C4-4254-8B0D-6141E8F167AE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6D596152-10C4-4254-8B0D-6141E8F167AE}.Debug|x64.Build.0 = Debug|Any CPU
+		{6D596152-10C4-4254-8B0D-6141E8F167AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D596152-10C4-4254-8B0D-6141E8F167AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D596152-10C4-4254-8B0D-6141E8F167AE}.Release|x64.ActiveCfg = Release|Any CPU
+		{6D596152-10C4-4254-8B0D-6141E8F167AE}.Release|x64.Build.0 = Release|Any CPU
+		{39B1A312-ED2D-4868-8BBF-B8B4CD574922}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39B1A312-ED2D-4868-8BBF-B8B4CD574922}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39B1A312-ED2D-4868-8BBF-B8B4CD574922}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{39B1A312-ED2D-4868-8BBF-B8B4CD574922}.Debug|x64.Build.0 = Debug|Any CPU
+		{39B1A312-ED2D-4868-8BBF-B8B4CD574922}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39B1A312-ED2D-4868-8BBF-B8B4CD574922}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39B1A312-ED2D-4868-8BBF-B8B4CD574922}.Release|x64.ActiveCfg = Release|Any CPU
+		{39B1A312-ED2D-4868-8BBF-B8B4CD574922}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

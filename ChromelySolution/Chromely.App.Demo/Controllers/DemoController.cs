@@ -26,7 +26,7 @@
 {
     using System;
     using System.Collections.Generic;
-    using Chromely.RestfulService;
+    using Chromely.Core.RestfulService;
 
     [ControllerProperty(Name = "DemoController", Route = "democontroller")]
     public class DemoController : ChromelyController

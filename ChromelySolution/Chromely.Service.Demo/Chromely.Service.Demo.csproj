@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Chromely\Chromely.csproj" />
+    <ProjectReference Include="..\Chromely.Core\Chromely.Core.csproj" />
   </ItemGroup>
 
 </Project>
