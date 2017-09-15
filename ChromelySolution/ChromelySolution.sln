@@ -9,8 +9,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demos", "Demos", "{D5F7EED0
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chromely.CefGlue", "Chromely.CefGlue\Chromely.CefGlue.csproj", "{0E6305D4-C750-4C83-BD1E-1D76DC2863AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chromely.App.Demo", "Chromely.App.Demo\Chromely.App.Demo.csproj", "{B8478A72-C9B3-4567-B118-A6044BC0797A}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chromely.CoreApp.Demo", "Chromely.CoreApp.Demo\Chromely.CoreApp.Demo.csproj", "{B597B399-BA3A-4CA7-8F29-54A9F638EBE1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chromely.Service.Demo", "Chromely.Service.Demo\Chromely.Service.Demo.csproj", "{710A9D98-0DE3-4F13-9E68-45E76341D1E7}"
@@ -20,6 +18,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chromely.Core", "Chromely.Core\Chromely.Core.csproj", "{6D596152-10C4-4254-8B0D-6141E8F167AE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chromely", "Chromely\Chromely.csproj", "{39B1A312-ED2D-4868-8BBF-B8B4CD574922}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chromely.CefGlueApp.Demo", "Chromely.CefGlueApp.Demo\Chromely.CefGlueApp.Demo.csproj", "{B8478A72-C9B3-4567-B118-A6044BC0797A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,14 +37,6 @@ Global
 		{0E6305D4-C750-4C83-BD1E-1D76DC2863AD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0E6305D4-C750-4C83-BD1E-1D76DC2863AD}.Release|x64.ActiveCfg = Release|Any CPU
 		{0E6305D4-C750-4C83-BD1E-1D76DC2863AD}.Release|x64.Build.0 = Release|Any CPU
-		{B8478A72-C9B3-4567-B118-A6044BC0797A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B8478A72-C9B3-4567-B118-A6044BC0797A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B8478A72-C9B3-4567-B118-A6044BC0797A}.Debug|x64.ActiveCfg = Debug|x64
-		{B8478A72-C9B3-4567-B118-A6044BC0797A}.Debug|x64.Build.0 = Debug|x64
-		{B8478A72-C9B3-4567-B118-A6044BC0797A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B8478A72-C9B3-4567-B118-A6044BC0797A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B8478A72-C9B3-4567-B118-A6044BC0797A}.Release|x64.ActiveCfg = Release|x64
-		{B8478A72-C9B3-4567-B118-A6044BC0797A}.Release|x64.Build.0 = Release|x64
 		{B597B399-BA3A-4CA7-8F29-54A9F638EBE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B597B399-BA3A-4CA7-8F29-54A9F638EBE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B597B399-BA3A-4CA7-8F29-54A9F638EBE1}.Debug|x64.ActiveCfg = Debug|x64
@@ -77,15 +69,23 @@ Global
 		{39B1A312-ED2D-4868-8BBF-B8B4CD574922}.Release|Any CPU.Build.0 = Release|Any CPU
 		{39B1A312-ED2D-4868-8BBF-B8B4CD574922}.Release|x64.ActiveCfg = Release|Any CPU
 		{39B1A312-ED2D-4868-8BBF-B8B4CD574922}.Release|x64.Build.0 = Release|Any CPU
+		{B8478A72-C9B3-4567-B118-A6044BC0797A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8478A72-C9B3-4567-B118-A6044BC0797A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8478A72-C9B3-4567-B118-A6044BC0797A}.Debug|x64.ActiveCfg = Debug|x64
+		{B8478A72-C9B3-4567-B118-A6044BC0797A}.Debug|x64.Build.0 = Debug|x64
+		{B8478A72-C9B3-4567-B118-A6044BC0797A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8478A72-C9B3-4567-B118-A6044BC0797A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8478A72-C9B3-4567-B118-A6044BC0797A}.Release|x64.ActiveCfg = Release|x64
+		{B8478A72-C9B3-4567-B118-A6044BC0797A}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0E6305D4-C750-4C83-BD1E-1D76DC2863AD} = {CD726B8B-F619-43B1-9CE1-D407BEE17DF6}
-		{B8478A72-C9B3-4567-B118-A6044BC0797A} = {D5F7EED0-1EBA-4ADE-867B-9D86382F4D98}
 		{B597B399-BA3A-4CA7-8F29-54A9F638EBE1} = {D5F7EED0-1EBA-4ADE-867B-9D86382F4D98}
 		{710A9D98-0DE3-4F13-9E68-45E76341D1E7} = {D5F7EED0-1EBA-4ADE-867B-9D86382F4D98}
+		{B8478A72-C9B3-4567-B118-A6044BC0797A} = {D5F7EED0-1EBA-4ADE-867B-9D86382F4D98}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B19D90DD-B917-49C9-B69C-0EF9DCCC458B}

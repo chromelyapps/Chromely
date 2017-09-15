@@ -22,18 +22,19 @@
  SOFTWARE.
  */
 
-namespace Chromely.Core.RestfulService
+namespace Chromely.Core
 {
-    using Chromely.Core.Infrastructure;
-    using System.Collections.Generic;
-    using System.Reflection;
+    using System;
 
-    public interface IChromelyServiceProvider
+    public interface IChromelyLogger
     {
-        List<Assembly> ServiceAssemblies { get; }
-        void RegisterExternalUrlScheme(UrlScheme scheme);
-        void RegisterServiceAssembly(string filename);
-        void RegisterServiceAssembly(Assembly assembly);
-        void ScanAssemblies();
+        void Info(string message);
+        void Verbose(string message);
+        void Debug(string message);
+        void Warn(string message);
+        void Critial(string message);
+        void Fatal(string message);
+        void Error(string message);
+        void Error(Exception exception, string message = null);
     }
 }

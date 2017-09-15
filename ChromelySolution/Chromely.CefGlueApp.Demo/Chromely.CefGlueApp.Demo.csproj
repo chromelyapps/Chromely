@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{B8478A72-C9B3-4567-B118-A6044BC0797A}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Chromely.App.Demo</RootNamespace>
-    <AssemblyName>Chromely.App.Demo</AssemblyName>
+    <RootNamespace>Chromely.CefGlueApp.Demo</RootNamespace>
+    <AssemblyName>cefglue_app_demo</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

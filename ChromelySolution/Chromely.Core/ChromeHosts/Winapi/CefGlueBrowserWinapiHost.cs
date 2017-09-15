@@ -33,11 +33,10 @@ namespace Chromely.Core.ChromeHosts.Winapi
     using WinApi.Windows;
     using Chromely.Core.RestfulService;
     using Chromely.Core.Infrastructure;
+    using System.Linq;
 
     public sealed class CefGlueBrowserWinapiHost : EventedWindowCore, IChromelyServiceProvider
     {
-        private static ILogger Logger = LoggerFactory.GetLogger();
-
         public CefGlueBrowserWinapiHost(HostConfig hostConfig)
         {
             HostConfig = hostConfig;
@@ -63,7 +62,7 @@ namespace Chromely.Core.ChromeHosts.Winapi
             }
 
             var mainArgs = new CefMainArgs(HostConfig.AppArgs);
-            var app = new CefWebApp(HostConfig.Scheme);
+            var app = new CefWebApp();
 
             var exitCode = CefRuntime.ExecuteProcess(mainArgs, app, IntPtr.Zero);
             if (exitCode != -1)
@@ -77,12 +76,13 @@ namespace Chromely.Core.ChromeHosts.Winapi
                 // BrowserSubprocessPath = browserProcessPath,
                 SingleProcess = false,
                 MultiThreadedMessageLoop = true,
-                LogSeverity = HostConfig.CefLogSeverity,
+                LogSeverity = (CefLogSeverity)HostConfig.LogSeverity,
                 LogFile = HostConfig.LogFile
             };
 
+            
             CefRuntime.Initialize(mainArgs, settings, app, IntPtr.Zero);
-            CefRuntime.RegisterSchemeHandlerFactory(HostConfig.Scheme, HostConfig.Domain, new ChromelySchemeHandlerFactory());
+            RegisterSchemeHandlers();
 
             CefBrowserConfig browserConfig = new CefBrowserConfig();
             browserConfig.StartUrl = HostConfig.StartUrl;
@@ -94,7 +94,7 @@ namespace Chromely.Core.ChromeHosts.Winapi
 
             base.OnCreate(ref packet);
 
-            Logger.LogInfo("Cef browser successfully created.");
+            Log.Info("Cef browser successfully created.");
         }
 
         protected override void OnSize(ref SizePacket packet)
@@ -115,7 +115,7 @@ namespace Chromely.Core.ChromeHosts.Winapi
 
         public void RegisterExternalUrlScheme(UrlScheme scheme)
         {
-            ExternalUrlSchemeFactory.RegisterScheme(scheme);
+            ExternalUrlSchemes.RegisterScheme(scheme);
         }
 
         public void RegisterServiceAssembly(string filename)
@@ -139,11 +139,6 @@ namespace Chromely.Core.ChromeHosts.Winapi
             }
         }
 
-        public void RegisterLogger(string loggerName, ILogger logger)
-        {
-            LoggerFactory.RegisterLogger(loggerName, logger);
-        }
-
         public void ScanAssemblies()
         {
             if ((ServiceAssemblies == null) || (ServiceAssemblies.Count == 0))
@@ -155,7 +150,29 @@ namespace Chromely.Core.ChromeHosts.Winapi
             {
                 RouteScanner scanner = new RouteScanner(assembly);
                 Dictionary<string, Route> currentRouteDictionary = scanner.Scan();
-                ServiceRouteFactory.MergeRoutes(currentRouteDictionary);
+                ServiceRouteProvider.MergeRoutes(currentRouteDictionary);
+            }
+        }
+
+        private void RegisterSchemeHandlers()
+        {
+            // Register scheme handlers
+            IEnumerable<object> schemeHandlerObjs = IoC.GetAllInstances(typeof(ChromelySchemeHandler));
+            if (schemeHandlerObjs != null)
+            {
+                var schemeHandlers = schemeHandlerObjs.ToList();
+
+                foreach (var item in schemeHandlers)
+                {
+                    if (item is ChromelySchemeHandler)
+                    {
+                        ChromelySchemeHandler handler = (ChromelySchemeHandler)item;
+                        if (handler.HandlerFactory is CefSchemeHandlerFactory)
+                        {
+                            CefRuntime.RegisterSchemeHandlerFactory(handler.SchemeName, handler.DomainName, (CefSchemeHandlerFactory)handler.HandlerFactory);
+                        }
+                    }
+                }
             }
         }
     }

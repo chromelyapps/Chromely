@@ -22,18 +22,27 @@
  SOFTWARE.
  */
 
-namespace Chromely.Core.RestfulService
+namespace Chromely.Core.Infrastructure
 {
-    using Chromely.Core.Infrastructure;
     using System.Collections.Generic;
-    using System.Reflection;
+    using System.Linq;
 
-    public interface IChromelyServiceProvider
+    public static class ExternalUrlSchemes
     {
-        List<Assembly> ServiceAssemblies { get; }
-        void RegisterExternalUrlScheme(UrlScheme scheme);
-        void RegisterServiceAssembly(string filename);
-        void RegisterServiceAssembly(Assembly assembly);
-        void ScanAssemblies();
+        private static List<UrlScheme> m_externalUrlSchemes = new List<UrlScheme>();
+        private static object m_lockThis = new object();
+
+        public static void RegisterScheme(UrlScheme scheme)
+        {
+            lock (m_lockThis)
+            {
+                m_externalUrlSchemes.Add(scheme);
+            }
+        }
+
+        public static bool IsUrlRegisteredExternal(string url)
+        {
+            return m_externalUrlSchemes.Any(x => x.IsUrlOfSameScheme(url));
+        }
     }
 }

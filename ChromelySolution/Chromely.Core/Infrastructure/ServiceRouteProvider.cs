@@ -28,41 +28,33 @@ namespace Chromely.Core.Infrastructure
     using System;
     using System.Collections.Generic;
 
-    public static class ServiceRouteFactory
+    public static class ServiceRouteProvider
     {
-        private static Dictionary<string, Route> RouteDictionary = new Dictionary<string, Route>();
-        private static object m_lockThis = new object();
-
         public static void AddRoute(string key, Route route)
         {
-            RouteDictionary.Add(key, route);
-        }
-
-        public static Route GetRoute(string routePath)
-        {
-            if (!RouteDictionary.ContainsKey(routePath))
-            {
-                throw new Exception(string.Format("No route found for route path = {0}.", routePath));
-            }
-
-            return RouteDictionary[routePath];
+            IoC.RegisterInstance(typeof(Route), key, route);
         }
 
         public static void MergeRoutes(Dictionary<string, Route> newRouteDictionary)
         {
-            lock (m_lockThis)
+            if ((newRouteDictionary != null) && (newRouteDictionary.Count > 0))
             {
-                if ((newRouteDictionary != null) && (newRouteDictionary.Count > 0))
+                foreach (var item in newRouteDictionary)
                 {
-                    foreach (var item in newRouteDictionary)
-                    {
-                        if (!RouteDictionary.ContainsKey(item.Key))
-                        {
-                            RouteDictionary.Add(item.Key, item.Value);
-                        }
-                    }
+                    IoC.RegisterInstance(typeof(Route), item.Key, item.Value);
                 }
             }
+        }
+
+        public static Route GetRoute(string routePath)
+        {
+            object routeObj = IoC.GetInstance(typeof(Route), routePath);
+            if ((routeObj == null) || !(routeObj is Route))
+            {
+                throw new Exception(string.Format("No route found for route path = {0}.", routePath));
+            }
+
+            return (Route)routeObj;
         }
     }
 }

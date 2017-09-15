@@ -22,7 +22,7 @@
  SOFTWARE.
  */
 
- namespace Chromely.App.Demo
+ namespace Chromely.CefGlueApp.Demo
 {
     using Chromely.Core.ChromeHosts;
     using Chromely.Core.ChromeHosts.Winapi;
@@ -40,11 +40,9 @@
                 HostHelpers.SetupDefaultExceptionHandlers();
 
                 HostConfig config = new HostConfig();
-
                 config.Width = 1200;
                 config.Height = 900;
-                config.Scheme = "http";
-                config.Domain = "chromely.com";
+                config.RgisterDefaultSchemeHandler("http", "chromely.com");
 
                 string appDirectory = AppDomain.CurrentDomain.BaseDirectory;
                 config.AppArgs = args;
@@ -62,8 +60,8 @@
 
                     // Note ensure external is valid folder.
                     // Uncomment to refgister external restful service dlls
-                    //string serviceAssemblyFile = @"C:\ChromelyDlls\Chromely.Service.Demo.dll";
-                    //window.RegisterServiceAssembly(serviceAssemblyFile);
+                    string serviceAssemblyFile = @"C:\ChromelyDlls\Chromely.Service.Demo.dll";
+                    window.RegisterServiceAssembly(serviceAssemblyFile);
 
                     // Scan assembly
                     window.ScanAssemblies();

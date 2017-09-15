@@ -21,7 +21,7 @@ namespace Chromely.Core.CefGlueBrowser
 
         protected override bool OnBeforeBrowse(CefBrowser browser, CefFrame frame, CefRequest request, bool isRedirect)
         {
-            bool isUrlExternal = ExternalUrlSchemeFactory.IsUrlRegisteredExternal(request.Url);
+            bool isUrlExternal = ExternalUrlSchemes.IsUrlRegisteredExternal(request.Url);
             if (isUrlExternal)
             {
                 System.Diagnostics.Process.Start(request.Url);

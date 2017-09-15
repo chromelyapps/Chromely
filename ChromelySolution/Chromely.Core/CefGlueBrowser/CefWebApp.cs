@@ -7,19 +7,32 @@
 
 namespace Chromely.Core.CefGlueBrowser
 {
+    using Chromely.Core.Infrastructure;
+    using System.Collections.Generic;
+    using System.Linq;
     using Xilium.CefGlue;
 
     public sealed class CefWebApp : CefApp
     {
-        private string m_scheme;
-        public CefWebApp(string scheme)
-        {
-            m_scheme = scheme;
-        }
-
         protected override void OnRegisterCustomSchemes(CefSchemeRegistrar registrar)
         {
-            registrar.AddCustomScheme(m_scheme, false, false, false, false, true, true);
+            IEnumerable<object> schemeHandlerObjs = IoC.GetAllInstances(typeof(ChromelySchemeHandler));
+            if (schemeHandlerObjs != null)
+            {
+                var schemeHandlers = schemeHandlerObjs.ToList();
+
+                foreach (var item in schemeHandlers)
+                {
+                    if (item is ChromelySchemeHandler)
+                    {
+                        ChromelySchemeHandler handler = (ChromelySchemeHandler)item;
+                        if (handler.HandlerFactory is CefSchemeHandlerFactory)
+                        {
+                            registrar.AddCustomScheme(handler.SchemeName, false, false, false, false, true, true);
+                         }
+                    }
+                }
+            }
         }
 
         protected override void OnBeforeCommandLineProcessing(string processType, CefCommandLine commandLine)

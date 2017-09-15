@@ -22,18 +22,15 @@
  SOFTWARE.
  */
 
-namespace Chromely.Core.RestfulService
+namespace Chromely.Core.CefGlueBrowser
 {
-    using Chromely.Core.Infrastructure;
-    using System.Collections.Generic;
-    using System.Reflection;
-
-    public interface IChromelyServiceProvider
+    using Xilium.CefGlue;
+    
+    class DefaultSchemeHandlerFactory : CefSchemeHandlerFactory
     {
-        List<Assembly> ServiceAssemblies { get; }
-        void RegisterExternalUrlScheme(UrlScheme scheme);
-        void RegisterServiceAssembly(string filename);
-        void RegisterServiceAssembly(Assembly assembly);
-        void ScanAssemblies();
+        protected override CefResourceHandler Create(CefBrowser browser, CefFrame frame, string schemeName, CefRequest request)
+        {
+            return new DefaultSchemeHandler();
+        }
     }
 }

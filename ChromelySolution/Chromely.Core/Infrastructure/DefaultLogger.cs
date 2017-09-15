@@ -27,12 +27,12 @@ namespace Chromely.Core.Infrastructure
     using Serilog;
     using System;
 
-    public class ChromelyDefaultLogger : ILogger
+    public class DefaultLogger : IChromelyLogger
     {
         private Serilog.Core.Logger m_logger;
         public string LoggerName { get; set; }
 
-        public ChromelyDefaultLogger(string rollingFile = null)
+        public DefaultLogger(string rollingFile = null)
         {
             if (string.IsNullOrEmpty(rollingFile))
             {
@@ -46,32 +46,32 @@ namespace Chromely.Core.Infrastructure
              .CreateLogger();
         }
 
-        public void LogInfo(string message)
+        public void Info(string message)
         {
             m_logger.Information(message);
         }
 
-        public void LogDebug(string message)
+        public void Debug(string message)
         {
             m_logger.Debug(message);
         }
 
-        public void LogVerbose(string message)
+        public void Verbose(string message)
         {
             m_logger.Verbose(message);
         }
 
-        public void LogWarn(string message)
+        public void Warn(string message)
         {
             m_logger.Warning(message);
         }
 
-        public void LogError(string message)
+        public void Error(string message)
         {
             m_logger.Error(message);
         }
 
-        public void LogError(Exception exception, string message = null)
+        public void Error(Exception exception, string message = null)
         {
             if (string.IsNullOrEmpty(message))
             {
@@ -81,12 +81,12 @@ namespace Chromely.Core.Infrastructure
             m_logger.Error(message, exception);
         }
 
-        public void LogFatal(string message)
+        public void Fatal(string message)
         {
             m_logger.Fatal(message);
         }
 
-        public void LogCritial(string message)
+        public void Critial(string message)
         {
             m_logger.Fatal(message);
         }

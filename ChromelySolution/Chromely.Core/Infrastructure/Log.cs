@@ -24,25 +24,59 @@
 
 namespace Chromely.Core.Infrastructure
 {
-    using System.Collections.Generic;
-    using System.Linq;
+    using System;
 
-    public static class ExternalUrlSchemeFactory
+    public static class Log
     {
-        private static List<UrlScheme> ExternalUrlSchemes = new List<UrlScheme>();
-        private static object m_lockThis = new object();
+        static IChromelyLogger m_logger = new DefaultLogger();
 
-        public static void RegisterScheme(UrlScheme scheme)
+        public static IChromelyLogger Logger
         {
-            lock (m_lockThis)
+            get { return m_logger; }
+            set
             {
-                ExternalUrlSchemes.Add(scheme);
+                m_logger = value ?? throw new ArgumentNullException(nameof(value));
             }
         }
 
-        public static bool IsUrlRegisteredExternal(string url)
+        public static void Info(string message)
         {
-            return ExternalUrlSchemes.Any(x => x.IsUrlOfSameScheme(url));
+            m_logger.Info(message);
+        }
+
+        public static void Debug(string message)
+        {
+            m_logger.Debug(message);
+        }
+
+        public static void Verbose(string message)
+        {
+            m_logger.Verbose(message);
+        }
+
+        public static void Warn(string message)
+        {
+            m_logger.Warn(message);
+        }
+
+        public static void Error(string message)
+        {
+            m_logger.Error(message);
+        }
+
+        public static void Error(Exception exception, string message = null)
+        {
+            m_logger.Error(exception, message);
+        }
+
+        public static void Fatal(string message)
+        {
+            m_logger.Fatal(message);
+        }
+
+        public static void Critial(string message)
+        {
+            m_logger.Fatal(message);
         }
     }
 }

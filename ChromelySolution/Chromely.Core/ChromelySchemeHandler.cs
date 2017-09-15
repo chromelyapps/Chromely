@@ -22,18 +22,23 @@
  SOFTWARE.
  */
 
-namespace Chromely.Core.RestfulService
+namespace Chromely.Core.Infrastructure
 {
-    using Chromely.Core.Infrastructure;
-    using System.Collections.Generic;
-    using System.Reflection;
+    using System;
 
-    public interface IChromelyServiceProvider
+    public class ChromelySchemeHandler
     {
-        List<Assembly> ServiceAssemblies { get; }
-        void RegisterExternalUrlScheme(UrlScheme scheme);
-        void RegisterServiceAssembly(string filename);
-        void RegisterServiceAssembly(Assembly assembly);
-        void ScanAssemblies();
+        public ChromelySchemeHandler(string schemeName, string domainName, object handlerFactory)
+        {
+            Key = Guid.NewGuid().ToString();
+            SchemeName = schemeName;
+            DomainName = domainName;
+            HandlerFactory = handlerFactory;
+        }
+
+        public string Key { get; private set; }
+        public string SchemeName { get; set; }
+        public string DomainName { get; set; }
+        public object HandlerFactory { get; set; }
     }
 }

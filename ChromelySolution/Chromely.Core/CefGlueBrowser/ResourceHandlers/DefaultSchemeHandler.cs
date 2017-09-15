@@ -32,11 +32,10 @@ namespace Chromely.Core.CefGlueBrowser
     using System.Text;
     using Xilium.CefGlue;
 
-    internal sealed class ChromelySchemeHandler : CefResourceHandler
+    internal sealed class DefaultSchemeHandler : CefResourceHandler
     {
         private bool m_completed;
         private TaskData m_chromelyResponse;
-        private static ILogger Logger = LoggerFactory.GetLogger();
 
         protected override bool ProcessRequest(CefRequest request, CefCallback callback)
         {
@@ -47,7 +46,7 @@ namespace Chromely.Core.CefGlueBrowser
             }
             catch (Exception exception)
             {
-                Logger.LogError(exception);
+                Log.Error(exception);
 
                 m_chromelyResponse = new TaskData();
                 m_chromelyResponse.StatusCode = HttpStatusCode.BadRequest;

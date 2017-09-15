@@ -22,20 +22,22 @@
  SOFTWARE.
  */
 
-namespace Chromely.Core.Infrastructure
+namespace Chromely.Core
 {
     using System;
+    using System.Collections.Generic;
 
-    public interface ILogger
+    public interface IChromelyContainer
     {
-        string LoggerName { get; }
-        void LogInfo(string message);
-        void LogVerbose(string message);
-        void LogDebug(string message);
-        void LogWarn(string message);
-        void LogCritial(string message);
-        void LogFatal(string message);
-        void LogError(string message);
-        void LogError(Exception exception, string message = null);
+        void RegisterInstance(Type service, string key, object implementation);
+        void RegisterPerRequest(Type service, string key, Type implementation);
+        void RegisterSingleton(Type service, string key, Type implementation);
+        void RegisterHandler(Type service, string key, Func<IChromelyContainer, object> handler);
+        void UnregisterHandler(Type service, string key);
+        object GetInstance(Type service, string key);
+        bool HasHandler(Type service, string key);
+        IEnumerable<object> GetAllInstances(Type service);
+        void BuildUp(object instance);
+        object BuildInstance(Type type);
     }
 }

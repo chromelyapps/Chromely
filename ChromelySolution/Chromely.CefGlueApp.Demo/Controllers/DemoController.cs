@@ -22,7 +22,7 @@
  SOFTWARE.
  */
 
- namespace Chromely.App.Demo.Controllers
+ namespace Chromely.CefGlueApp.Demo.Controllers
 {
     using System;
     using System.Collections.Generic;

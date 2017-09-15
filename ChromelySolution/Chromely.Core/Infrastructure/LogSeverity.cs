@@ -22,15 +22,16 @@
  SOFTWARE.
  */
 
-namespace Chromely.Core.CefGlueBrowser
+namespace Chromely.Core.Infrastructure
 {
-    using Xilium.CefGlue;
-    
-    class ChromelySchemeHandlerFactory : CefSchemeHandlerFactory
+    public enum LogSeverity
     {
-        protected override CefResourceHandler Create(CefBrowser browser, CefFrame frame, string schemeName, CefRequest request)
-        {
-            return new ChromelySchemeHandler();
-        }
+        Default = 0,
+        Verbose = 1,
+        Info = 2,
+        Warning = 3,
+        Error = 4,
+        ErrorReport = 5,
+        Disable = 99
     }
 }

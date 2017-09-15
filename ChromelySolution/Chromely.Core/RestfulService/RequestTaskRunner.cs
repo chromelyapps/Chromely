@@ -35,7 +35,6 @@ namespace Chromely.Core.RestfulService
     using System.Web;
     using Xilium.CefGlue;
 
-
     public static class RequestTaskRunner
     {
         public static void Run(CefRequest request, CefCallback callback, TaskData response)
@@ -56,7 +55,7 @@ namespace Chromely.Core.RestfulService
 
             Task.Run(() =>
             {
-                Route route = ServiceRouteFactory.GetRoute(routePath);
+                Route route = ServiceRouteProvider.GetRoute(routePath);
 
                 if (route == null)
                 {

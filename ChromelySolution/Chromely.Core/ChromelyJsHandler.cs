@@ -21,19 +21,24 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
-
-namespace Chromely.Core.RestfulService
+ 
+namespace Chromely.Core.Infrastructure
 {
-    using Chromely.Core.Infrastructure;
-    using System.Collections.Generic;
-    using System.Reflection;
+    using System;
 
-    public interface IChromelyServiceProvider
+    public class ChromelyJsHandler
     {
-        List<Assembly> ServiceAssemblies { get; }
-        void RegisterExternalUrlScheme(UrlScheme scheme);
-        void RegisterServiceAssembly(string filename);
-        void RegisterServiceAssembly(Assembly assembly);
-        void ScanAssemblies();
+        public ChromelyJsHandler(string jsMethod, object boundObject, bool registerAsync)
+        {
+            Key = Guid.NewGuid().ToString();
+            JsMethod = jsMethod;
+            BoundObject = boundObject;
+            RegisterAsAsync = registerAsync;
+        }
+
+        public string Key { get; private set; }
+        public string JsMethod { get; set; }
+        public object BoundObject { get; set; }
+        public bool RegisterAsAsync { get; set; }
     }
 }
