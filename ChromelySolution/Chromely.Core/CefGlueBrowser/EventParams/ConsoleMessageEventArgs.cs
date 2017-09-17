@@ -9,7 +9,7 @@ namespace Chromely.Core.CefGlueBrowser
 {
     using System;
 
-    public class ConsoleMessageEventArgs : EventArgs
+    internal sealed class ConsoleMessageEventArgs : EventArgs
 	{
 		public ConsoleMessageEventArgs(string message, string source, int line)
 		{

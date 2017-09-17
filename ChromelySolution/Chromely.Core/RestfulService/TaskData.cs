@@ -36,6 +36,8 @@ namespace Chromely.Core.RestfulService
 
         public HttpStatusCode StatusCode { get; set; }
         public string Identifier { get; private set; }
-        public string JsonData { get; set; }
+        public object Data { get; set; }
+        public string MimeTypeKey { get; set; }
+        public string MimeType { get; set; }
     }
 }

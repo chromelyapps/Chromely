@@ -9,7 +9,7 @@ namespace Chromely.Core.CefGlueBrowser
 {
     using Xilium.CefGlue;
 
-    sealed class CefWebLoadHandler : CefLoadHandler
+    internal sealed class CefWebLoadHandler : CefLoadHandler
 	{
 		private readonly CefWebBrowser m_core;
 

@@ -9,7 +9,7 @@ namespace Chromely.Core.CefGlueBrowser
 {
     using System;
 
-    public class LoadingStateChangeEventArgs : EventArgs
+    internal sealed class LoadingStateChangeEventArgs : EventArgs
 	{
 		public LoadingStateChangeEventArgs(bool isLoading, bool canGoBack, bool canGoForward)
 		{

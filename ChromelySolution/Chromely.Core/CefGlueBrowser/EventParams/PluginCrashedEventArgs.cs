@@ -9,7 +9,7 @@ namespace Chromely.Core.CefGlueBrowser
 {
     using System;
 
-    public class PluginCrashedEventArgs : EventArgs
+    internal sealed class PluginCrashedEventArgs : EventArgs
 	{
 		public PluginCrashedEventArgs(string pluginPath)
 		{

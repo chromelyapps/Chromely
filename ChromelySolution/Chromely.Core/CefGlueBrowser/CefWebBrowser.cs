@@ -11,7 +11,7 @@ namespace Chromely.Core.CefGlueBrowser
     using System.ComponentModel;
     using Xilium.CefGlue;
 
-    public class CefWebBrowser : WebBrowserBase
+    internal class CefWebBrowser : WebBrowserBase
     {
         private CefBrowserConfig m_browserConfig;
         private CefBrowser m_browser;
@@ -48,7 +48,7 @@ namespace Chromely.Core.CefGlueBrowser
 
             settings.DefaultEncoding = "UTF-8";
             settings.FileAccessFromFileUrls = CefState.Enabled;
-            settings.UniversalAccessFromFileUrls = CefState.Enabled; 
+            settings.UniversalAccessFromFileUrls = CefState.Enabled;
             settings.WebSecurity = CefState.Enabled; 
 
             CefBrowserHost.CreateBrowser(windowInfo, client, settings, StartUrl);

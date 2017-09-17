@@ -10,7 +10,7 @@ namespace Chromely.Core.CefGlueBrowser
     using Chromely.Core.Infrastructure;
     using Xilium.CefGlue;
 
-    sealed class CefWebRequestHandler : CefRequestHandler
+    internal sealed class CefWebRequestHandler : CefRequestHandler
     {
         private readonly CefWebBrowser m_core;
 
@@ -21,7 +21,7 @@ namespace Chromely.Core.CefGlueBrowser
 
         protected override bool OnBeforeBrowse(CefBrowser browser, CefFrame frame, CefRequest request, bool isRedirect)
         {
-            bool isUrlExternal = ExternalUrlSchemes.IsUrlRegisteredExternal(request.Url);
+            bool isUrlExternal = UrlSchemeProvider.IsUrlRegisteredExternal(request.Url);
             if (isUrlExternal)
             {
                 System.Diagnostics.Process.Start(request.Url);

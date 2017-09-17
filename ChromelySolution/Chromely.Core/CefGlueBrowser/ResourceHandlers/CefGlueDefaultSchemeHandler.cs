@@ -26,15 +26,17 @@ namespace Chromely.Core.CefGlueBrowser
 {
     using Chromely.Core.Infrastructure;
     using Chromely.Core.RestfulService;
+    using LitJson;
     using System;
     using System.IO;
     using System.Net;
     using System.Text;
     using Xilium.CefGlue;
 
-    internal sealed class DefaultSchemeHandler : CefResourceHandler
+    public sealed class CefGlueDefaultSchemeHandler : CefResourceHandler
     {
         private bool m_completed;
+        private int m_bytesRead;
         private TaskData m_chromelyResponse;
 
         protected override bool ProcessRequest(CefRequest request, CefCallback callback)
@@ -42,7 +44,7 @@ namespace Chromely.Core.CefGlueBrowser
             try
             {
                 m_chromelyResponse = new TaskData();
-                RequestTaskRunner.Run(request, callback, m_chromelyResponse);
+                CefGlueRequestTaskRunner.Run(request, callback, m_chromelyResponse);
             }
             catch (Exception exception)
             {
@@ -50,7 +52,7 @@ namespace Chromely.Core.CefGlueBrowser
 
                 m_chromelyResponse = new TaskData();
                 m_chromelyResponse.StatusCode = HttpStatusCode.BadRequest;
-                m_chromelyResponse.JsonData = "An error occured.";
+                m_chromelyResponse.Data = "An error occured.";
             }
 
             return true;
@@ -66,7 +68,7 @@ namespace Chromely.Core.CefGlueBrowser
             try
             {
                 HttpStatusCode status = (m_chromelyResponse != null) ? m_chromelyResponse.StatusCode : HttpStatusCode.BadRequest;
-                string errorStatus = (m_chromelyResponse != null) ? m_chromelyResponse.JsonData : "Not Found";
+                string errorStatus = (m_chromelyResponse != null) ? m_chromelyResponse.Data.ToString() : "Not Found";
 
                 var headers = response.GetHeaderMap();
                 headers.Add("Cache-Control", "private");
@@ -81,28 +83,31 @@ namespace Chromely.Core.CefGlueBrowser
             }
             catch (Exception exception)
             {
-                Console.Write(exception.Message);
+                Log.Error(exception);
             }
         }
 
         protected override bool ReadResponse(Stream response, int bytesToRead, out int bytesRead, CefCallback callback)
         {
-            bytesRead = 0;
-
             try
             {
                 if (m_completed)
                 {
+                    bytesRead = m_bytesRead;
                     return false;
                 }
                 else
                 {
-                    string jsonData = m_chromelyResponse.JsonData;
+                    m_bytesRead = 0;
+                    bytesRead = m_bytesRead;
+
+                    string jsonData = JsonMapper.ToJson(m_chromelyResponse.Data);
 
                     var content = Encoding.UTF8.GetBytes(jsonData);
                     if (bytesToRead < content.Length) throw new NotImplementedException();
                     response.Write(content, 0, content.Length);
-                    bytesRead = content.Length;
+                    m_bytesRead = content.Length;
+                    bytesRead = m_bytesRead;
 
                     m_completed = true;
                 }
@@ -110,9 +115,10 @@ namespace Chromely.Core.CefGlueBrowser
             }
             catch (Exception exception)
             {
-                Console.Write(exception.Message);
+                Log.Error(exception);
             }
 
+            bytesRead = m_bytesRead;
             return true;
         }
 

@@ -27,7 +27,7 @@ namespace Chromely.Core.CefGlueBrowser
     using System;
     using System.Threading.Tasks;
 
-    public abstract class WebBrowserBase : IDisposable
+    internal abstract class WebBrowserBase : IDisposable
     {
         bool m_disposed;
 

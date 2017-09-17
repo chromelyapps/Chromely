@@ -35,10 +35,17 @@ namespace Chromely.Core.RestfulService
     using System.Web;
     using Xilium.CefGlue;
 
-    public static class RequestTaskRunner
+    public static class CefGlueRequestTaskRunner
     {
         public static void Run(CefRequest request, CefCallback callback, TaskData response)
         {
+            bool isCustomScheme = UrlSchemeProvider.IsUrlOfRegisteredCustomScheme(request.Url);
+
+            if (!isCustomScheme)
+            {
+                throw new Exception(string.Format("Url {0} is not of a registered custom scheme.", request.Url));
+            }
+
             var uri = new Uri(request.Url);
             string routePath = uri.LocalPath;
 
@@ -71,7 +78,7 @@ namespace Chromely.Core.RestfulService
 
                 ChromelyResponse chromelyResponse = route.Invoke(chromelyRequest);
                 response.StatusCode = System.Net.HttpStatusCode.OK;
-                response.JsonData = chromelyResponse.JsonData;
+                response.Data = chromelyResponse.Data;
 
                 callback.Continue();
             });
@@ -87,11 +94,10 @@ namespace Chromely.Core.RestfulService
                 infoItemDic.Add("divObjective", "To build HTML5 desktop apps using embedded Chromium without WinForm or WPF. Uses Windows and Linux native GUI API. Those who are interested can extend to WinForm or WPF. The primary focus of communication with Chromium is via Ajax HTTP/XHR requests using custom schemes and domains.");
                 infoItemDic.Add("divPlatform", "Cross-platform - Windows, Linux. Built on CefGlue, CefSharp, NET Standard 2.0, .NET Core 2.0, .NET Framework 4.61 and above.");
                 infoItemDic.Add("divVersion", chromeVersion);
-                string jsonInfoData = JsonMapper.ToJson(infoItemDic);
 
                 ChromelyResponse chromelyResponse = new ChromelyResponse();
                 response.StatusCode = System.Net.HttpStatusCode.OK;
-                response.JsonData = jsonInfoData;
+                response.Data = infoItemDic;
 
                 callback.Continue();
             });

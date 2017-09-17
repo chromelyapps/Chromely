@@ -14,10 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Infrastructure\ExternalUrlSchemes.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Serilog" Version="2.5.1-dev-00873" />
     <PackageReference Include="Serilog.Sinks.Console" Version="3.0.2-dev-00753" />
     <PackageReference Include="Serilog.Sinks.RollingFile" Version="3.3.1-dev-00771" />

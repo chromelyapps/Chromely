@@ -37,16 +37,15 @@ namespace Chromely.Core.ChromeHosts.Winapi
 
     public sealed class CefGlueBrowserWinapiHost : EventedWindowCore, IChromelyServiceProvider
     {
-        public CefGlueBrowserWinapiHost(HostConfig hostConfig)
+        CefWebBrowser m_browser;
+        public CefGlueBrowserWinapiHost(ChromelyConfiguration hostConfig)
         {
             HostConfig = hostConfig;
-            Browser = null;
+            m_browser = null;
             ServiceAssemblies = new List<Assembly>();
         }
 
-        public HostConfig HostConfig { get; private set; }
-
-        public CefWebBrowser Browser { get; private set; }
+        public ChromelyConfiguration HostConfig { get; private set; }
 
         public List<Assembly> ServiceAssemblies { get; private set; }
 
@@ -73,11 +72,11 @@ namespace Chromely.Core.ChromeHosts.Winapi
 
             var settings = new CefSettings
             {
-                // BrowserSubprocessPath = browserProcessPath,
+                LocalesDirPath = localFolder,
                 SingleProcess = false,
                 MultiThreadedMessageLoop = true,
                 LogSeverity = (CefLogSeverity)HostConfig.LogSeverity,
-                LogFile = HostConfig.LogFile
+                LogFile = HostConfig.CefLogFile
             };
 
             
@@ -88,9 +87,9 @@ namespace Chromely.Core.ChromeHosts.Winapi
             browserConfig.StartUrl = HostConfig.StartUrl;
             browserConfig.ParentHandle = Handle;
             browserConfig.AppArgs = HostConfig.AppArgs;
-            browserConfig.CefRectangle = new CefRectangle { X = 0, Y = 0, Width = HostConfig.Width, Height = HostConfig.Height };
+            browserConfig.CefRectangle = new CefRectangle { X = 0, Y = 0, Width = HostConfig.HostWidth, Height = HostConfig.HostHeight };
 
-            Browser = new CefWebBrowser(browserConfig);
+            m_browser = new CefWebBrowser(browserConfig);
 
             base.OnCreate(ref packet);
 
@@ -102,12 +101,12 @@ namespace Chromely.Core.ChromeHosts.Winapi
             base.OnSize(ref packet);
 
             var size = packet.Size;
-            Browser.ResizeWindow(size.Width, size.Height);
+            m_browser.ResizeWindow(size.Width, size.Height);
         }
 
         protected override void OnDestroy(ref Packet packet)
         {
-            Browser.Dispose();
+            m_browser.Dispose();
             CefRuntime.Shutdown();
 
             base.OnDestroy(ref packet);
@@ -115,7 +114,8 @@ namespace Chromely.Core.ChromeHosts.Winapi
 
         public void RegisterExternalUrlScheme(UrlScheme scheme)
         {
-            ExternalUrlSchemes.RegisterScheme(scheme);
+            scheme.IsExternal = true;
+            UrlSchemeProvider.RegisterScheme(scheme);
         }
 
         public void RegisterServiceAssembly(string filename)

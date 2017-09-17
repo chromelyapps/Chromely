@@ -10,7 +10,7 @@ namespace Chromely.Core.CefGlueBrowser
     using System;
     using Xilium.CefGlue;
 
-    public sealed class StatusMessageEventArgs : EventArgs
+    internal sealed class StatusMessageEventArgs : EventArgs
     {
         private readonly string m_value;
 

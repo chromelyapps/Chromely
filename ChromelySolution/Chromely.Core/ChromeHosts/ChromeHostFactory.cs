@@ -38,17 +38,7 @@ namespace Chromely.Core.ChromeHosts
 
         public static WindowFactory CreateWinapi(string iconFullPath)
         {
-            IntPtr iconPtr = WinapiNativeMethods.LoadImage(       // returns a HANDLE so we have to cast to HICON
-              IntPtr.Zero,                                        // hInstance must be NULL when loading from a file
-              iconFullPath,                                       // the icon file name
-              (uint)ResourceImageType.IMAGE_ICON,                 // specifies that the file is an icon
-              0,                                                  // width of the image (we'll specify default later on)
-              0,                                                  // height of the image
-              (uint)LoadResourceFlags.LR_LOADFROMFILE |           // we want to load a file (as opposed to a resource)
-              (uint)LoadResourceFlags.LR_DEFAULTSIZE |            // default metrics based on the type (IMAGE_ICON, 32x32)
-              (uint)LoadResourceFlags.LR_SHARED                   // let the system release the handle when it's no longer used
-            );
-
+            IntPtr iconPtr = WinapiNativeMethods.LoadIconFromFile(iconFullPath);
             return  Create(null, WindowClassStyles.CS_VREDRAW | WindowClassStyles.CS_HREDRAW, null, iconPtr, null, null, null);
         }
 

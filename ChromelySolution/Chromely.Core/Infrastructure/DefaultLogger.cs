@@ -30,17 +30,15 @@ namespace Chromely.Core.Infrastructure
     public class DefaultLogger : IChromelyLogger
     {
         private Serilog.Core.Logger m_logger;
-        public string LoggerName { get; set; }
 
         public DefaultLogger(string rollingFile = null)
         {
             if (string.IsNullOrEmpty(rollingFile))
             {
-                rollingFile = "logs\\chromely.txt";
+                rollingFile = "logs\\chromely.log";
             }
 
             m_logger = new LoggerConfiguration()
-             .MinimumLevel.Debug()
              .WriteTo.Console()
              .WriteTo.RollingFile(rollingFile)
              .CreateLogger();
@@ -73,12 +71,8 @@ namespace Chromely.Core.Infrastructure
 
         public void Error(Exception exception, string message = null)
         {
-            if (string.IsNullOrEmpty(message))
-            {
-                message = exception.Message;
-            }
-
-            m_logger.Error(message, exception);
+            message = FromFormattedException(exception, message);
+            m_logger.Error(message);
         }
 
         public void Fatal(string message)
@@ -89,6 +83,30 @@ namespace Chromely.Core.Infrastructure
         public void Critial(string message)
         {
             m_logger.Fatal(message);
+        }
+
+        public static string FromFormattedException(Exception exception, string message = null)
+        {
+            const string defaultMessage = "Oops! Something went wrong.";
+            if (message == null)
+            {
+                message = defaultMessage;
+            }
+
+            string formattedMessage;
+            if (exception != null)
+            {
+                formattedMessage = $"{message}{Environment.NewLine}" +
+                      $"{exception.Message}{Environment.NewLine}" +
+                      $"{exception.StackTrace}";
+            }
+            else
+            {
+                formattedMessage = $"{message}{Environment.NewLine}" +
+                      $"{exception}";
+            }
+
+            return formattedMessage;
         }
     }
 }

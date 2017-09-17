@@ -28,24 +28,27 @@ namespace Chromely.Core.Infrastructure
 
     public class UrlScheme
     {
-        public UrlScheme(string scheme, string host)
+        public UrlScheme(string scheme, string host, bool isExternal)
         {
             Scheme = scheme;
             Host = host;
+            IsExternal = isExternal;
         }
 
-        public UrlScheme(string url)
+        public UrlScheme(string url, bool isExternal)
         {
             if (!string.IsNullOrEmpty(url))
             {
                 var uri = new Uri(url);
                 Scheme = uri.Scheme;
                 Host = uri.Host;
+                IsExternal = isExternal;
             }
         }
 
         public string Scheme { get; set; }
         public string Host { get; set; }
+        public bool IsExternal { get; set; }
 
         public bool IsUrlOfSameScheme(string url)
         {

@@ -24,6 +24,8 @@
 
  namespace Chromely.CefGlueApp.Demo
 {
+    using Chromely.Core;
+    using Chromely.Core.CefGlueBrowser;
     using Chromely.Core.ChromeHosts;
     using Chromely.Core.ChromeHosts.Winapi;
     using Chromely.Core.Infrastructure;
@@ -39,21 +41,25 @@
             {
                 HostHelpers.SetupDefaultExceptionHandlers();
 
-                HostConfig config = new HostConfig();
-                config.Width = 1200;
-                config.Height = 900;
-                config.RgisterDefaultSchemeHandler("http", "chromely.com");
-
                 string appDirectory = AppDomain.CurrentDomain.BaseDirectory;
-                config.AppArgs = args;
-                config.StartUrl = string.Format("file:///{0}Views/chromely.html", appDirectory);
+                string startUrl = string.Format("file:///{0}Views/chromely.html", appDirectory);
+
+                ChromelyConfiguration config = ChromelyConfiguration
+                                              .Create()
+                                              .WithAppArgs(args)
+                                              .WithHostSize(1200, 900)
+                                              .WithCefLogFile("logs\\chromely.cef_new.log")
+                                              .WithLogFile("logs\\chromely_new.log")
+                                              .WithStartUrl(startUrl)
+                                              .WithLogSeverity(LogSeverity.Info)
+                                              .RgisterSchemeHandler("http", "chromely.com", new CefGlueDefaultSchemeHandlerFactory());
 
                 var factory = ChromeHostFactory.CreateWinapi("chromely.ico");
                 using (var window = factory.CreateWindow(() => new CefGlueBrowserWinapiHost(config),
                     "chromely", constructionParams: new FrameWindowConstructionParams()))
                 {
                     // Register external url schems
-                    window.RegisterExternalUrlScheme(new UrlScheme("https://github.com"));
+                    window.RegisterExternalUrlScheme(new UrlScheme("https://github.com/mattkol/Chromely", true));
 
                     // Register service assemblies
                     window.RegisterServiceAssembly(Assembly.GetExecutingAssembly());
@@ -66,14 +72,14 @@
                     // Scan assembly
                     window.ScanAssemblies();
 
-                    window.SetSize(config.Width, config.Height);
+                    window.SetSize(config.HostWidth, config.HostHeight);
                     window.Show();
                     return new EventLoop().Run(window);
                 }
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                Console.Write(ex.Message);
+                Log.Error(exception);
             }
 
             return 0;

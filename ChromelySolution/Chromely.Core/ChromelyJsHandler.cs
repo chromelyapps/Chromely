@@ -28,17 +28,19 @@ namespace Chromely.Core.Infrastructure
 
     public class ChromelyJsHandler
     {
-        public ChromelyJsHandler(string jsMethod, object boundObject, bool registerAsync)
+        public ChromelyJsHandler(string jsMethod, object boundObject, object boundingOptions, bool registerAsync)
         {
             Key = Guid.NewGuid().ToString();
             JsMethod = jsMethod;
             BoundObject = boundObject;
             RegisterAsAsync = registerAsync;
+            BoundingOptions = boundingOptions;
         }
 
         public string Key { get; private set; }
         public string JsMethod { get; set; }
         public object BoundObject { get; set; }
+        public object BoundingOptions { get; set; }
         public bool RegisterAsAsync { get; set; }
     }
 }

@@ -28,55 +28,73 @@ namespace Chromely.Core.Infrastructure
 
     public static class Log
     {
-        static IChromelyLogger m_logger = new DefaultLogger();
+        static string m_loggerFile = null;
+        static IChromelyLogger m_logger = null;
 
         public static IChromelyLogger Logger
         {
-            get { return m_logger; }
+            get
+            {
+                if (m_logger == null)
+                {
+                    m_logger = new DefaultLogger(m_loggerFile);
+                }
+
+                return m_logger;
+            }
             set
             {
                 m_logger = value ?? throw new ArgumentNullException(nameof(value));
             }
         }
 
+        public static string LoggerFile
+        {
+            get { return m_loggerFile; }
+            set
+            {
+                m_loggerFile = value;
+            }
+        }
+
         public static void Info(string message)
         {
-            m_logger.Info(message);
+            Logger.Info(message);
         }
 
         public static void Debug(string message)
         {
-            m_logger.Debug(message);
+            Logger.Debug(message);
         }
 
         public static void Verbose(string message)
         {
-            m_logger.Verbose(message);
+            Logger.Verbose(message);
         }
 
         public static void Warn(string message)
         {
-            m_logger.Warn(message);
+            Logger.Warn(message);
         }
 
         public static void Error(string message)
         {
-            m_logger.Error(message);
+            Logger.Error(message);
         }
 
         public static void Error(Exception exception, string message = null)
         {
-            m_logger.Error(exception, message);
+            Logger.Error(exception, message);
         }
 
         public static void Fatal(string message)
         {
-            m_logger.Fatal(message);
+            Logger.Fatal(message);
         }
 
         public static void Critial(string message)
         {
-            m_logger.Fatal(message);
+            Logger.Fatal(message);
         }
     }
 }

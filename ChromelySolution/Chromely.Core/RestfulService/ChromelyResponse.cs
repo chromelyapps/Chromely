@@ -24,65 +24,11 @@
 
 namespace Chromely.Core.RestfulService
 {
-    using LitJson;
-
     public class ChromelyResponse
     {
-        private string m_jsonData;
-        private object m_data;
-
-        public ChromelyResponse()
-        {
-            m_jsonData = null;
-            m_data = null;
-        }
-
-        public bool UseJsonData
-        {
-            get
-            {
-                if ((m_data == null) && !string.IsNullOrEmpty(m_jsonData))
-                {
-                    return true;
-                }
-
-                return false;
-            }
-        }
-
-        public object Data
-        {
-            get
-            {
-                return m_data;
-            }
-            set
-            {
-                m_jsonData = null;
-                m_data = value;
-            }
-        }
-
-        public string JsonData
-        {
-            get
-            {
-                if (!string.IsNullOrEmpty(m_jsonData))
-                {
-                    return m_jsonData;
-                }
-
-                if (m_data != null)
-                {
-                    return JsonMapper.ToJson(m_data);
-                }
-
-                return null;
-            }
-            set
-            {
-                m_jsonData = value;
-            }
-        }
+        public int ReadyState { get; set; }
+        public int Status { get; set; }
+        public string StatusText { get; set; }
+        public object Data { get; set; }
     }
 }

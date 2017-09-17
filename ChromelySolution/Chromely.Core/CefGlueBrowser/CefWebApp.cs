@@ -12,7 +12,7 @@ namespace Chromely.Core.CefGlueBrowser
     using System.Linq;
     using Xilium.CefGlue;
 
-    public sealed class CefWebApp : CefApp
+    internal sealed class CefWebApp : CefApp
     {
         protected override void OnRegisterCustomSchemes(CefSchemeRegistrar registrar)
         {

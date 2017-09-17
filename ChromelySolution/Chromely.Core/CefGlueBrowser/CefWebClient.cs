@@ -9,7 +9,7 @@ namespace Chromely.Core.CefGlueBrowser
 {
     using Xilium.CefGlue;
 
-    public class CefWebClient : CefClient
+    internal class CefWebClient : CefClient
     {
         private readonly CefWebBrowser m_core;
         private readonly CefWebLifeSpanHandler m_lifeSpanHandler;

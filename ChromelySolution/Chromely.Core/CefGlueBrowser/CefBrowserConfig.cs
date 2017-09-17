@@ -27,7 +27,7 @@ namespace Chromely.Core.CefGlueBrowser
     using System;
     using Xilium.CefGlue;
 
-    public class CefBrowserConfig
+    internal sealed class CefBrowserConfig
     {
         public IntPtr ParentHandle { get; set; }
         public CefRectangle CefRectangle { get; set; }

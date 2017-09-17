@@ -22,15 +22,32 @@
  SOFTWARE.
  */
 
-namespace Chromely.Core.CefGlueBrowser
+namespace Chromely.Core.Infrastructure
 {
-    using Xilium.CefGlue;
-    
-    class DefaultSchemeHandlerFactory : CefSchemeHandlerFactory
+    using System.Collections.Generic;
+    using System.Linq;
+
+    public static class UrlSchemeProvider
     {
-        protected override CefResourceHandler Create(CefBrowser browser, CefFrame frame, string schemeName, CefRequest request)
+        private static List<UrlScheme> m_urlSchemes = new List<UrlScheme>();
+        private static object m_lockThis = new object();
+
+        public static void RegisterScheme(UrlScheme scheme)
         {
-            return new DefaultSchemeHandler();
+            lock (m_lockThis)
+            {
+                m_urlSchemes.Add(scheme);
+            }
+        }
+
+        public static bool IsUrlRegisteredExternal(string url)
+        {
+            return m_urlSchemes.Any(x => (x.IsUrlOfSameScheme(url) && x.IsExternal));
+        }
+
+        public static bool IsUrlOfRegisteredCustomScheme(string url)
+        {
+            return m_urlSchemes.Any(x => (x.IsUrlOfSameScheme(url) && !x.IsExternal));
         }
     }
 }

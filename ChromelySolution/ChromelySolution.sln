@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chromely", "Chromely\Chrome
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chromely.CefGlueApp.Demo", "Chromely.CefGlueApp.Demo\Chromely.CefGlueApp.Demo.csproj", "{B8478A72-C9B3-4567-B118-A6044BC0797A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chromely.CefSharpApp.Demo", "Chromely.CefSharpApp.Demo\Chromely.CefSharpApp.Demo.csproj", "{7AAFB01A-F4C7-4F99-B536-A643ABEE14E4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +79,12 @@ Global
 		{B8478A72-C9B3-4567-B118-A6044BC0797A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B8478A72-C9B3-4567-B118-A6044BC0797A}.Release|x64.ActiveCfg = Release|x64
 		{B8478A72-C9B3-4567-B118-A6044BC0797A}.Release|x64.Build.0 = Release|x64
+		{7AAFB01A-F4C7-4F99-B536-A643ABEE14E4}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{7AAFB01A-F4C7-4F99-B536-A643ABEE14E4}.Debug|x64.ActiveCfg = Debug|x64
+		{7AAFB01A-F4C7-4F99-B536-A643ABEE14E4}.Debug|x64.Build.0 = Debug|x64
+		{7AAFB01A-F4C7-4F99-B536-A643ABEE14E4}.Release|Any CPU.ActiveCfg = Release|x64
+		{7AAFB01A-F4C7-4F99-B536-A643ABEE14E4}.Release|x64.ActiveCfg = Release|x64
+		{7AAFB01A-F4C7-4F99-B536-A643ABEE14E4}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -86,6 +94,7 @@ Global
 		{B597B399-BA3A-4CA7-8F29-54A9F638EBE1} = {D5F7EED0-1EBA-4ADE-867B-9D86382F4D98}
 		{710A9D98-0DE3-4F13-9E68-45E76341D1E7} = {D5F7EED0-1EBA-4ADE-867B-9D86382F4D98}
 		{B8478A72-C9B3-4567-B118-A6044BC0797A} = {D5F7EED0-1EBA-4ADE-867B-9D86382F4D98}
+		{7AAFB01A-F4C7-4F99-B536-A643ABEE14E4} = {D5F7EED0-1EBA-4ADE-867B-9D86382F4D98}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B19D90DD-B917-49C9-B69C-0EF9DCCC458B}
