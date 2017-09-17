@@ -1,38 +1,77 @@
-﻿namespace Chromely.CefSharpBrowser.RequestHandlers
+﻿/**
+ MIT License
+
+ Copyright (c) 2017 Kola Oyewumi
+
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+
+ The above copyright notice and this permission notice shall be included in all
+ copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE.
+ */
+
+namespace Chromely.CefSharpBrowser.RequestHandlers
 {
+    using CefSharp;
     using Chromely.Core.RestfulService;
     using Chromely.RestfulService;
     using LitJson;
-    using System.Diagnostics;
+    using System.Threading.Tasks;
 
     public class CefSharpBoundObject
     {
-        public class AsynCefSharpBoundObject
+        public void GetJson(string routePath, string parameters, IJavascriptCallback javascriptCallback)
         {
-            [DebuggerHidden]
-            public string GetJson(string routePath, string parameters)
+            Task.Run(async () =>
             {
-                ChromelyResponse response = CefSharpRequestTaskRunner.Run(routePath, parameters, null);
-                return JsonMapper.ToJson(response);
-            }
+                using (javascriptCallback)
+                {
+                    ChromelyResponse chromelyResponse = await CefSharpRequestTaskRunner.RunAsync(routePath, parameters, null);
+                    string jsonResponse = JsonMapper.ToJson(chromelyResponse);
+                    var response = new CallbackResponseStruct(jsonResponse);
+                    await javascriptCallback.ExecuteAsync(response);
+                }
+            });
+        }
 
-            [DebuggerHidden]
-            public string PostJson(string routePath, string parameters, object postData)
-            {
-                return postData.ToString();
-            }
+        public string GetJson(string routePath, string parameters)
+        {
+            ChromelyResponse chromelyResponse = CefSharpRequestTaskRunner.Run(routePath, parameters, null);
+            string jsonResponse = JsonMapper.ToJson(chromelyResponse);
+            return jsonResponse;
+        }
 
-            [DebuggerHidden]
-            public object Get(string routePath, string parameters)
+        public void PostJson(string routePath, string parameters, object postData, IJavascriptCallback javascriptCallback)
+        {
+            Task.Run(async () =>
             {
-                return routePath + " " + parameters;
-            }
+                using (javascriptCallback)
+                {
+                    ChromelyResponse chromelyResponse = await CefSharpRequestTaskRunner.RunAsync(routePath, parameters, postData);
+                    string jsonResponse = JsonMapper.ToJson(chromelyResponse);
+                    var response = new CallbackResponseStruct(jsonResponse);
+                    await javascriptCallback.ExecuteAsync(response);
+                }
+            });
+        }
 
-            [DebuggerHidden]
-            public object Post(string routePath, object parameters, object postData)
-            {
-                return postData.ToString();
-            }
+        public string PostJson(string routePath, string parameters, object postData)
+        {
+            ChromelyResponse chromelyResponse = CefSharpRequestTaskRunner.Run(routePath, parameters, postData);
+            string jsonResponse = JsonMapper.ToJson(chromelyResponse);
+            return jsonResponse;
         }
     }
 }

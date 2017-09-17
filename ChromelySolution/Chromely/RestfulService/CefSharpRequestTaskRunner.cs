@@ -29,9 +29,32 @@ namespace Chromely.RestfulService
     using Chromely.Core.RestfulService;
     using System;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
 
     public static class CefSharpRequestTaskRunner
     {
+        public static Task<ChromelyResponse> RunAsync(string routePath, object parameters, object postData)
+        {
+            ChromelyResponse response = new ChromelyResponse();
+            if (string.IsNullOrEmpty(routePath))
+            {
+                response.ReadyState = (int)ReadyState.ResponseIsReady;
+                response.Status = (int)System.Net.HttpStatusCode.BadRequest;
+                response.StatusText = "Bad Request";
+
+                return Task.FromResult(response); 
+            }
+
+            if (routePath.ToLower().Equals("/info"))
+            {
+                response = GetInfo();
+                return Task.FromResult(response);
+            }
+
+            response = ExcuteRoute(routePath, parameters, postData);
+            return Task.FromResult(response); 
+        }
+
         public static ChromelyResponse Run(string routePath, object parameters, object postData)
         {
             ChromelyResponse response = new ChromelyResponse();
@@ -46,8 +69,15 @@ namespace Chromely.RestfulService
 
             if (routePath.ToLower().Equals("/info"))
             {
-                return RunInfo();
+                return GetInfo();
             }
+
+            return ExcuteRoute(routePath, parameters, postData);
+        }
+
+        private static ChromelyResponse ExcuteRoute(string routePath, object parameters, object postData)
+        {
+            ChromelyResponse response = new ChromelyResponse();
 
             Route route = ServiceRouteProvider.GetRoute(routePath);
 
@@ -56,7 +86,7 @@ namespace Chromely.RestfulService
                 throw new Exception(string.Format("Route for path = {0} is null or invalid.", routePath));
             }
 
-             ChromelyRequest chromelyRequest = new ChromelyRequest();
+            ChromelyRequest chromelyRequest = new ChromelyRequest();
             chromelyRequest.Parameters = null;
             chromelyRequest.Data = null;
 
@@ -68,7 +98,7 @@ namespace Chromely.RestfulService
             return response;
         }
 
-        private static ChromelyResponse RunInfo()
+        private static ChromelyResponse GetInfo()
         {
             ChromelyResponse response = new ChromelyResponse();
 
@@ -76,7 +106,7 @@ namespace Chromely.RestfulService
             string chromeVersion = String.Format("Chromium: {0}, CEF: {1}, CefSharp: {2}, Environment: {3}", Cef.ChromiumVersion, Cef.CefVersion, Cef.CefSharpVersion, bitness);
 
             Dictionary<string, string> infoItemDic = new Dictionary<string, string>();
-            infoItemDic.Add("divObjective", "To build HTML5 desktop apps using embedded Chromium without WinForm or WPF. Uses Windows and Linux native GUI API. Those who are interested can extend to WinForm or WPF. The primary focus of communication with Chromium is via Ajax HTTP/XHR requests using custom schemes and domains.");
+            infoItemDic.Add("divObjective", "To build HTML5 desktop apps using embedded Chromium without WinForm or WPF. Uses Windows and Linux native GUI API. Those who are interested can extend to WinForm or WPF. The primary focus of communication with Chromium rendering process is via Ajax HTTP/XHR requests using custom schemes and domains (CefGlue) and .NET/Javascript intregation (CefSharp).");
             infoItemDic.Add("divPlatform", "Cross-platform - Windows, Linux. Built on CefGlue, CefSharp, NET Standard 2.0, .NET Core 2.0, .NET Framework 4.61 and above.");
             infoItemDic.Add("divVersion", chromeVersion);
 
@@ -85,7 +115,7 @@ namespace Chromely.RestfulService
             response.StatusText = "OK";
             response.Data = infoItemDic;
   
-            return response;
+            return response; 
         }
     }
 }

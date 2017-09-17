@@ -80,6 +80,7 @@
     <Compile Include="CefSharpBrowser\Internals\NativeMethods.cs" />
     <Compile Include="CefSharpBrowser\Internals\WebBrowserBase.cs" />
     <Compile Include="CefSharpBrowser\IWinapiWebBrowser.cs" />
+    <Compile Include="CefSharpBrowser\RequestHandlers\CallbackResponseStruct.cs" />
     <Compile Include="CefSharpBrowser\RequestHandlers\CefSharpBoundObject.cs" />
     <Compile Include="CefSharpBrowser\RequestHandlers\CefSharpDefaultRequestHandler.cs" />
     <Compile Include="ChromeHosts\Winapi\CefSharpBrowserWinapiHost.cs" />

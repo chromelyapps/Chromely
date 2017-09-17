@@ -59,10 +59,12 @@ namespace Chromely.ChromeHosts.Winapi
 
             var codeBase = Assembly.GetExecutingAssembly().CodeBase;
             var localFolder = Path.GetDirectoryName(new Uri(codeBase).LocalPath);
+            var locale = Path.Combine(localFolder, "locales\\en-US");
 
             var settings = new CefSettings
             {
                 LocalesDirPath = localFolder,
+                Locale = locale,
                 MultiThreadedMessageLoop = true,
                 CachePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "CefSharp\\Cache"),
                 LogSeverity = (CefSharp.LogSeverity)HostConfig.LogSeverity,
@@ -73,6 +75,7 @@ namespace Chromely.ChromeHosts.Winapi
             Cef.Initialize(settings, performDependencyCheck: true, browserProcessHandler: null);
 
             m_browser = new ChromiumWebBrowser(this.Handle, HostConfig.StartUrl);
+            m_browser.IsBrowserInitializedChanged += IsBrowserInitializedChanged;
 
             m_browser.RequestHandler = new CefSharpDefaultRequestHandler();
             RegisterJsHandlers();
@@ -80,6 +83,16 @@ namespace Chromely.ChromeHosts.Winapi
             base.OnCreate(ref packet);
 
             Log.Info("Cef browser successfully created.");
+        }
+
+        private void IsBrowserInitializedChanged(object sender, IsBrowserInitializedChangedEventArgs eventArgs)
+        {
+            if (eventArgs.IsBrowserInitialized)
+            {
+                var size = GetClientSize();
+                m_browser.SetSize(size.Width, size.Height);
+                m_browser.IsBrowserInitializedChanged -= IsBrowserInitializedChanged;
+            }
         }
 
         protected override void OnSize(ref SizePacket packet)

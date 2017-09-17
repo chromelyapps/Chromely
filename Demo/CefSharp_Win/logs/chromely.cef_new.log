@@ -1,0 +1,2 @@
+[0917/130436.472:WARNING:resource_bundle.cc(327)] locale_file_path.empty() for locale 
+[0917/130436.473:ERROR:main_delegate.cc(684)] Could not load locale pak for C:\Projects\ProjectDurbar\ChromelySolution\Chromely.CefSharpApp.Demo\bin\x64\Debug\locales\en-US

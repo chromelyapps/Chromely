@@ -24,15 +24,14 @@
 
 namespace Chromely.CefSharpApp.Demo
 {
+    using Chromely.CefSharpBrowser.RequestHandlers;
     using Chromely.ChromeHosts.Winapi;
     using Chromely.Core;
-    using Chromely.Core.CefGlueBrowser;
     using Chromely.Core.ChromeHosts;
     using Chromely.Core.Infrastructure;
     using System;
     using System.Reflection;
     using WinApi.Windows;
-    using static Chromely.CefSharpBrowser.RequestHandlers.CefSharpBoundObject;
 
     class Program
     {
@@ -53,7 +52,7 @@ namespace Chromely.CefSharpApp.Demo
                                               .WithLogFile("logs\\chromely_new.log")
                                               .WithStartUrl(startUrl)
                                               .WithLogSeverity(LogSeverity.Info)
-                                              .RgisterJsHandler("boundControllerAsync", new AsynCefSharpBoundObject(), null, true);
+                                              .RgisterJsHandler("boundControllerAsync", new CefSharpBoundObject(), null, true);
 
                 var factory = ChromeHostFactory.CreateWinapi("chromely.ico");
                 using (var window = factory.CreateWindow(() => new CefSharpBrowserWinapiHost(config),
