@@ -20,6 +20,6 @@ To run the Demo:
 4. Run cefglue_app_demo.exe
 
 #### Chromely Demo Screenshots
-![](https://github.com/mattkol/Chromely/blob/master/Screenshots/chromely_index.png)
-![](https://github.com/mattkol/Chromely/blob/master/Screenshots/chromely_index_info.png)
-![](https://github.com/mattkol/Chromely/blob/master/Screenshots/chromely_index_restful.png)
+![](https://github.com/mattkol/Chromely/blob/master/Screenshots/CefGlue/chromely_cefglue_index.png)
+![](https://github.com/mattkol/Chromely/blob/master/Screenshots/CefGlue/chromely_cefglue_info.png)
+![](https://github.com/mattkol/Chromely/blob/master/Screenshots/CefGlue/chromely_cefglue_restful.png)
