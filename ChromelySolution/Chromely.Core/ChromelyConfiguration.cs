@@ -36,13 +36,13 @@ namespace Chromely.Core
             LogFile = "logs\\chromely.log";
         }
 
-        public string[] AppArgs { get; private set; }
-        public string StartUrl { get; private set; }
-        public int HostWidth { get; private set; }
-        public int HostHeight { get; private set; }
-        public LogSeverity LogSeverity { get; private set; }
-        public string CefLogFile { get; private set; }
-        public string LogFile { get; private set; }
+        public string[] AppArgs { get; set; }
+        public string StartUrl { get; set; }
+        public int HostWidth { get; set; }
+        public int HostHeight { get; set; }
+        public LogSeverity LogSeverity { get; set; }
+        public string CefLogFile { get; set; }
+        public string LogFile { get; set; }
 
         public static ChromelyConfiguration Create()
         {

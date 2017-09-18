@@ -106,7 +106,7 @@ namespace Chromely.RestfulService
             string chromeVersion = String.Format("Chromium: {0}, CEF: {1}, CefSharp: {2}, Environment: {3}", Cef.ChromiumVersion, Cef.CefVersion, Cef.CefSharpVersion, bitness);
 
             Dictionary<string, string> infoItemDic = new Dictionary<string, string>();
-            infoItemDic.Add("divObjective", "To build HTML5 desktop apps using embedded Chromium without WinForm or WPF. Uses Windows and Linux native GUI API. Those who are interested can extend to WinForm or WPF. The primary focus of communication with Chromium rendering process is via Ajax HTTP/XHR requests using custom schemes and domains (CefGlue) and .NET/Javascript intregation (CefSharp).");
+            infoItemDic.Add("divObjective", "To build HTML5 desktop apps using embedded Chromium without WinForm or WPF. Uses Windows and Linux native GUI API. Those who are interested can extend to WinForm or WPF. Main form of communication with Chromium rendering process is via Ajax HTTP/XHR requests using custom schemes and domains (CefGlue) and .NET/Javascript intregration (CefSharp).");
             infoItemDic.Add("divPlatform", "Cross-platform - Windows, Linux. Built on CefGlue, CefSharp, NET Standard 2.0, .NET Core 2.0, .NET Framework 4.61 and above.");
             infoItemDic.Add("divVersion", chromeVersion);
 
