@@ -35,7 +35,7 @@ namespace Chromely.ChromeHosts.Winapi
     using CefSharp;
     using Chromely.CefSharpBrowser;
     using Chromely.Core;
-    using Chromely.CefSharpBrowser.RequestHandlers;
+    using Chromely.CefSharpBrowser.Handlers;
 
     public sealed class CefSharpBrowserWinapiHost : EventedWindowCore, IChromelyServiceProvider
     {
@@ -76,6 +76,7 @@ namespace Chromely.ChromeHosts.Winapi
 
             m_browser = new ChromiumWebBrowser(this.Handle, HostConfig.StartUrl);
             m_browser.IsBrowserInitializedChanged += IsBrowserInitializedChanged;
+            m_browser.MenuHandler = new CefSharpContextMenuHandler();
 
             m_browser.RequestHandler = new CefSharpDefaultRequestHandler();
             RegisterJsHandlers();

@@ -34,6 +34,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Chromely.CefGlue, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SharedDlls\CefGlue\Chromely.CefGlue.dll</HintPath>
+    </Reference>
     <Reference Include="NetCoreEx.BinaryExtensions, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\NetCoreEx.BinaryExtensions.3.0.0\lib\netstandard1.4\NetCoreEx.BinaryExtensions.dll</HintPath>
     </Reference>
@@ -75,14 +79,15 @@
   <ItemGroup>
     <Compile Include="CefSharpBrowser\ChromiumWebBrowser.cs" />
     <Compile Include="CefSharpBrowser\Extensions\BrowserExtensions.cs" />
+    <Compile Include="CefSharpBrowser\Handlers\CefSharpContextMenuHandler.cs" />
     <Compile Include="CefSharpBrowser\Internals\InternalWebBrowserExtensions.cs" />
     <Compile Include="CefSharpBrowser\Internals\IntPtrExtensions.cs" />
     <Compile Include="CefSharpBrowser\Internals\NativeMethods.cs" />
     <Compile Include="CefSharpBrowser\Internals\WebBrowserBase.cs" />
     <Compile Include="CefSharpBrowser\IWinapiWebBrowser.cs" />
-    <Compile Include="CefSharpBrowser\RequestHandlers\CallbackResponseStruct.cs" />
-    <Compile Include="CefSharpBrowser\RequestHandlers\CefSharpBoundObject.cs" />
-    <Compile Include="CefSharpBrowser\RequestHandlers\CefSharpDefaultRequestHandler.cs" />
+    <Compile Include="CefSharpBrowser\Handlers\CallbackResponseStruct.cs" />
+    <Compile Include="CefSharpBrowser\Handlers\CefSharpBoundObject.cs" />
+    <Compile Include="CefSharpBrowser\Handlers\CefSharpDefaultRequestHandler.cs" />
     <Compile Include="ChromeHosts\Winapi\CefSharpBrowserWinapiHost.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RestfulService\CefSharpRequestTaskRunner.cs" />

@@ -1,2 +1,804 @@
 [0917/130436.472:WARNING:resource_bundle.cc(327)] locale_file_path.empty() for locale 
 [0917/130436.473:ERROR:main_delegate.cc(684)] Could not load locale pak for C:\Projects\ProjectDurbar\ChromelySolution\Chromely.CefSharpApp.Demo\bin\x64\Debug\locales\en-US
+[0917/213839.506:WARNING:resource_bundle.cc(327)] locale_file_path.empty() for locale 
+[0917/213839.506:ERROR:main_delegate.cc(684)] Could not load locale pak for C:\Projects\ProjectDurbar\ChromelySolution\Chromely.CefSharpApp.Demo\bin\x64\Debug\locales\en-US
+[0917/213840.407:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213840.407:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213840.407:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213840.408:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213840.408:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213840.408:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213840.408:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213840.408:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213840.408:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213840.408:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213840.408:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213840.408:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213840.408:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213840.408:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213840.408:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213840.408:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213840.408:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213840.408:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213840.408:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213840.408:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213840.408:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213840.409:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213840.409:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213840.409:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213840.409:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213840.409:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213840.409:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213840.409:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213840.409:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213840.409:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213840.409:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213840.409:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213840.409:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213840.409:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213840.409:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213840.409:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213840.409:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213840.409:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213840.409:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213840.410:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213840.411:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213840.411:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213840.411:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213840.411:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213840.614:WARNING:resource_bundle.cc(327)] locale_file_path.empty() for locale 
+[0917/213840.614:ERROR:main_delegate.cc(684)] Could not load locale pak for C:\Projects\ProjectDurbar\ChromelySolution\Chromely.CefSharpApp.Demo\bin\x64\Debug\locales\en-US
+[0917/213840.893:ERROR:child_thread_impl.cc(762)] Request for unknown Channel-associated interface: ui::mojom::GpuMain
+[0917/213840.920:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213840.920:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213841.020:WARNING:resource_bundle.cc(327)] locale_file_path.empty() for locale 
+[0917/213841.020:ERROR:main_delegate.cc(684)] Could not load locale pak for C:\Projects\ProjectDurbar\ChromelySolution\Chromely.CefSharpApp.Demo\bin\x64\Debug\locales\en-US
+[0917/213851.204:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213851.204:ERROR:content_client.cc(257)] No localized string available for id 4122
+[0917/213851.204:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213851.204:ERROR:content_client.cc(257)] No localized string available for id 4123
+[0917/213851.204:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213851.205:ERROR:content_client.cc(257)] No localized string available for id 4125
+[0917/213851.205:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213851.205:ERROR:content_client.cc(257)] No localized string available for id 4126
+[0917/213851.223:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0917/213851.224:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194727.686:WARNING:resource_bundle.cc(327)] locale_file_path.empty() for locale 
+[0918/194727.694:ERROR:main_delegate.cc(684)] Could not load locale pak for C:\Projects\ProjectDurbar\ChromelySolution\Chromely.CefSharpApp.Demo\bin\x64\Debug\locales\en-US
+[0918/194728.593:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194728.593:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194728.593:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194728.593:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194728.593:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194728.593:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194728.593:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194728.593:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194728.593:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194728.594:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194728.594:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194728.594:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194728.594:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194728.594:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194728.594:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194728.594:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194728.595:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194728.595:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194728.595:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194728.595:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194728.595:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194728.595:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194728.597:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194728.598:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194728.599:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194728.599:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194728.599:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194728.600:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194728.600:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194728.600:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194728.601:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194728.601:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194728.601:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194728.602:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194728.602:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194728.602:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194728.602:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194728.604:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194728.604:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194728.606:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194728.607:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194728.607:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194728.607:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194728.607:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194728.840:WARNING:resource_bundle.cc(327)] locale_file_path.empty() for locale 
+[0918/194728.840:ERROR:main_delegate.cc(684)] Could not load locale pak for C:\Projects\ProjectDurbar\ChromelySolution\Chromely.CefSharpApp.Demo\bin\x64\Debug\locales\en-US
+[0918/194729.003:ERROR:child_thread_impl.cc(762)] Request for unknown Channel-associated interface: ui::mojom::GpuMain
+[0918/194729.227:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194729.227:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194729.273:WARNING:resource_bundle.cc(327)] locale_file_path.empty() for locale 
+[0918/194729.273:ERROR:main_delegate.cc(684)] Could not load locale pak for C:\Projects\ProjectDurbar\ChromelySolution\Chromely.CefSharpApp.Demo\bin\x64\Debug\locales\en-US
+[0918/194830.050:WARNING:resource_bundle.cc(327)] locale_file_path.empty() for locale 
+[0918/194830.050:ERROR:main_delegate.cc(684)] Could not load locale pak for C:\Projects\ProjectDurbar\ChromelySolution\Chromely.CefSharpApp.Demo\bin\x64\Debug\locales\en-US
+[0918/194830.074:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194830.074:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194830.074:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194830.074:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194830.074:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194830.074:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194830.074:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194830.074:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194830.074:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194830.075:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194830.075:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194830.075:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194830.076:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194830.076:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194830.076:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194830.076:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194830.077:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194830.077:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194830.077:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194830.077:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194830.077:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194830.078:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194830.078:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194830.078:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194830.079:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194830.079:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194830.079:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194830.079:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194830.079:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194830.079:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194830.079:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194830.079:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194830.080:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194830.080:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194830.080:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194830.080:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194830.080:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194830.080:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194830.080:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194830.081:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194830.082:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194830.083:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194830.083:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194830.083:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194830.220:WARNING:resource_bundle.cc(327)] locale_file_path.empty() for locale 
+[0918/194830.220:ERROR:main_delegate.cc(684)] Could not load locale pak for C:\Projects\ProjectDurbar\ChromelySolution\Chromely.CefSharpApp.Demo\bin\x64\Debug\locales\en-US
+[0918/194830.250:ERROR:child_thread_impl.cc(762)] Request for unknown Channel-associated interface: ui::mojom::GpuMain
+[0918/194830.727:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194830.740:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194830.806:WARNING:resource_bundle.cc(327)] locale_file_path.empty() for locale 
+[0918/194830.806:ERROR:main_delegate.cc(684)] Could not load locale pak for C:\Projects\ProjectDurbar\ChromelySolution\Chromely.CefSharpApp.Demo\bin\x64\Debug\locales\en-US
+[0918/194932.917:WARNING:resource_bundle.cc(327)] locale_file_path.empty() for locale 
+[0918/194932.917:ERROR:main_delegate.cc(684)] Could not load locale pak for C:\Projects\ProjectDurbar\ChromelySolution\Chromely.CefSharpApp.Demo\bin\x64\Debug\locales\en-US
+[0918/194932.940:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194932.940:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194932.940:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194932.940:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194932.940:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194932.940:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194932.941:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194932.941:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194932.941:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194932.941:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194932.941:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194932.941:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194932.941:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194932.942:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194932.942:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194932.942:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194932.942:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194932.942:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194932.942:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194932.943:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194932.943:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194932.943:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194932.943:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194932.943:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194932.943:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194932.943:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194932.943:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194932.943:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194932.943:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194932.943:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194932.943:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194932.944:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194932.944:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194932.944:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194932.944:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194932.944:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194932.944:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194932.944:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194932.944:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194932.945:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194932.945:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194932.945:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194932.945:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194932.945:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194933.048:WARNING:resource_bundle.cc(327)] locale_file_path.empty() for locale 
+[0918/194933.049:ERROR:main_delegate.cc(684)] Could not load locale pak for C:\Projects\ProjectDurbar\ChromelySolution\Chromely.CefSharpApp.Demo\bin\x64\Debug\locales\en-US
+[0918/194933.088:ERROR:child_thread_impl.cc(762)] Request for unknown Channel-associated interface: ui::mojom::GpuMain
+[0918/194933.574:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194933.575:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/194933.687:WARNING:resource_bundle.cc(327)] locale_file_path.empty() for locale 
+[0918/194933.687:ERROR:main_delegate.cc(684)] Could not load locale pak for C:\Projects\ProjectDurbar\ChromelySolution\Chromely.CefSharpApp.Demo\bin\x64\Debug\locales\en-US
+[0918/195104.418:WARNING:resource_bundle.cc(327)] locale_file_path.empty() for locale 
+[0918/195104.426:ERROR:main_delegate.cc(684)] Could not load locale pak for C:\Projects\ProjectDurbar\ChromelySolution\Chromely.CefSharpApp.Demo\bin\x64\Debug\locales\en-US
+[0918/195104.482:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195104.482:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195104.483:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195104.483:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195104.483:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195104.483:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195104.483:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195104.483:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195104.483:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195104.483:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195104.483:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195104.483:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195104.483:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195104.483:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195104.483:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195104.483:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195104.483:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195104.483:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195104.483:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195104.483:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195104.483:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195104.483:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195104.483:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195104.483:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195104.483:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195104.483:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195104.483:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195104.483:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195104.484:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195104.484:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195104.484:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195104.484:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195104.484:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195104.484:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195104.484:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195104.484:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195104.484:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195104.484:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195104.484:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195104.485:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195104.485:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195104.485:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195104.485:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195104.485:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195104.653:WARNING:resource_bundle.cc(327)] locale_file_path.empty() for locale 
+[0918/195104.653:ERROR:main_delegate.cc(684)] Could not load locale pak for C:\Projects\ProjectDurbar\ChromelySolution\Chromely.CefSharpApp.Demo\bin\x64\Debug\locales\en-US
+[0918/195104.681:ERROR:child_thread_impl.cc(762)] Request for unknown Channel-associated interface: ui::mojom::GpuMain
+[0918/195105.139:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195105.146:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195105.231:WARNING:resource_bundle.cc(327)] locale_file_path.empty() for locale 
+[0918/195105.232:ERROR:main_delegate.cc(684)] Could not load locale pak for C:\Projects\ProjectDurbar\ChromelySolution\Chromely.CefSharpApp.Demo\bin\x64\Debug\locales\en-US
+[0918/195237.082:WARNING:resource_bundle.cc(327)] locale_file_path.empty() for locale 
+[0918/195237.083:ERROR:main_delegate.cc(684)] Could not load locale pak for C:\Projects\ProjectDurbar\ChromelySolution\Chromely.CefSharpApp.Demo\bin\x64\Debug\locales\en-US
+[0918/195237.116:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195237.116:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195237.117:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195237.117:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195237.118:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195237.118:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195237.118:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195237.118:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195237.121:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195237.121:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195237.121:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195237.122:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195237.122:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195237.123:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195237.123:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195237.123:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195237.124:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195237.124:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195237.124:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195237.124:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195237.124:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195237.124:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195237.124:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195237.124:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195237.124:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195237.124:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195237.124:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195237.124:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195237.124:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195237.124:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195237.124:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195237.125:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195237.125:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195237.125:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195237.125:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195237.125:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195237.125:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195237.125:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195237.125:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195237.126:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195237.128:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195237.128:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195237.128:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195237.129:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195237.252:WARNING:resource_bundle.cc(327)] locale_file_path.empty() for locale 
+[0918/195237.252:ERROR:main_delegate.cc(684)] Could not load locale pak for C:\Projects\ProjectDurbar\ChromelySolution\Chromely.CefSharpApp.Demo\bin\x64\Debug\locales\en-US
+[0918/195237.285:ERROR:child_thread_impl.cc(762)] Request for unknown Channel-associated interface: ui::mojom::GpuMain
+[0918/195237.745:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195237.748:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195237.854:WARNING:resource_bundle.cc(327)] locale_file_path.empty() for locale 
+[0918/195237.855:ERROR:main_delegate.cc(684)] Could not load locale pak for C:\Projects\ProjectDurbar\ChromelySolution\Chromely.CefSharpApp.Demo\bin\x64\Debug\locales\en-US
+[0918/195322.017:WARNING:resource_bundle.cc(327)] locale_file_path.empty() for locale 
+[0918/195322.017:ERROR:main_delegate.cc(684)] Could not load locale pak for C:\Projects\ProjectDurbar\ChromelySolution\Chromely.CefSharpApp.Demo\bin\x64\Debug\locales\en-US
+[0918/195322.046:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195322.046:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195322.046:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195322.047:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195322.047:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195322.048:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195322.048:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195322.048:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195322.048:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195322.049:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195322.049:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195322.049:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195322.049:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195322.049:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195322.050:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195322.050:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195322.050:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195322.050:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195322.050:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195322.051:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195322.051:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195322.051:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195322.052:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195322.053:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195322.056:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195322.056:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195322.057:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195322.057:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195322.058:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195322.058:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195322.061:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195322.062:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195322.064:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195322.064:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195322.065:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195322.066:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195322.067:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195322.067:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195322.068:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195322.069:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195322.070:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195322.071:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195322.074:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195322.075:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195322.157:WARNING:resource_bundle.cc(327)] locale_file_path.empty() for locale 
+[0918/195322.157:ERROR:main_delegate.cc(684)] Could not load locale pak for C:\Projects\ProjectDurbar\ChromelySolution\Chromely.CefSharpApp.Demo\bin\x64\Debug\locales\en-US
+[0918/195322.324:ERROR:child_thread_impl.cc(762)] Request for unknown Channel-associated interface: ui::mojom::GpuMain
+[0918/195322.789:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195322.790:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195322.895:WARNING:resource_bundle.cc(327)] locale_file_path.empty() for locale 
+[0918/195322.896:ERROR:main_delegate.cc(684)] Could not load locale pak for C:\Projects\ProjectDurbar\ChromelySolution\Chromely.CefSharpApp.Demo\bin\x64\Debug\locales\en-US
+[0918/195412.978:WARNING:resource_bundle.cc(327)] locale_file_path.empty() for locale 
+[0918/195412.979:ERROR:main_delegate.cc(684)] Could not load locale pak for C:\Projects\ProjectDurbar\ChromelySolution\Chromely.CefSharpApp.Demo\bin\x64\Debug\locales\en-US
+[0918/195413.048:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195413.049:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195413.049:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195413.049:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195413.049:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195413.049:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195413.049:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195413.049:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195413.050:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195413.050:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195413.050:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195413.050:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195413.050:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195413.050:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195413.050:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195413.050:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195413.050:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195413.050:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195413.050:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195413.050:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195413.050:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195413.050:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195413.050:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195413.050:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195413.050:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195413.050:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195413.050:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195413.050:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195413.050:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195413.050:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195413.050:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195413.050:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195413.050:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195413.050:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195413.050:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195413.050:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195413.050:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195413.050:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195413.050:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195413.052:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195413.052:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195413.052:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195413.052:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195413.052:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195413.184:WARNING:resource_bundle.cc(327)] locale_file_path.empty() for locale 
+[0918/195413.184:ERROR:main_delegate.cc(684)] Could not load locale pak for C:\Projects\ProjectDurbar\ChromelySolution\Chromely.CefSharpApp.Demo\bin\x64\Debug\locales\en-US
+[0918/195413.234:ERROR:child_thread_impl.cc(762)] Request for unknown Channel-associated interface: ui::mojom::GpuMain
+[0918/195413.684:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195413.685:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195413.764:WARNING:resource_bundle.cc(327)] locale_file_path.empty() for locale 
+[0918/195413.764:ERROR:main_delegate.cc(684)] Could not load locale pak for C:\Projects\ProjectDurbar\ChromelySolution\Chromely.CefSharpApp.Demo\bin\x64\Debug\locales\en-US
+[0918/195418.426:INFO:CONSOLE(1)] "Uncaught SyntaxError: Unexpected token u in JSON at position 0", source: file:///C:/Projects/ProjectDurbar/ChromelySolution/Chromely.CefSharpApp.Demo/bin/x64/Debug/Views/chromely.html (1)
+[0918/195439.945:WARNING:resource_bundle.cc(327)] locale_file_path.empty() for locale 
+[0918/195439.945:ERROR:main_delegate.cc(684)] Could not load locale pak for C:\Projects\ProjectDurbar\ChromelySolution\Chromely.CefSharpApp.Demo\bin\x64\Debug\locales\en-US
+[0918/195439.973:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195439.973:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195439.974:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195439.974:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195439.974:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195439.974:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195439.974:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195439.974:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195439.975:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195439.975:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195439.975:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195439.975:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195439.975:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195439.975:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195439.977:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195439.977:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195439.977:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195439.977:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195439.978:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195439.978:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195439.978:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195439.978:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195439.978:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195439.978:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195439.979:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195439.979:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195439.979:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195439.979:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195439.979:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195439.979:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195439.979:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195439.979:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195439.979:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195439.979:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195439.979:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195439.979:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195439.980:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195439.980:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195439.980:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195439.981:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195439.981:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195439.981:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195439.981:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195439.981:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195440.102:WARNING:resource_bundle.cc(327)] locale_file_path.empty() for locale 
+[0918/195440.102:ERROR:main_delegate.cc(684)] Could not load locale pak for C:\Projects\ProjectDurbar\ChromelySolution\Chromely.CefSharpApp.Demo\bin\x64\Debug\locales\en-US
+[0918/195440.151:ERROR:child_thread_impl.cc(762)] Request for unknown Channel-associated interface: ui::mojom::GpuMain
+[0918/195440.685:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195440.707:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/195440.790:WARNING:resource_bundle.cc(327)] locale_file_path.empty() for locale 
+[0918/195440.791:ERROR:main_delegate.cc(684)] Could not load locale pak for C:\Projects\ProjectDurbar\ChromelySolution\Chromely.CefSharpApp.Demo\bin\x64\Debug\locales\en-US
+[0918/212937.210:WARNING:resource_bundle.cc(327)] locale_file_path.empty() for locale 
+[0918/212937.213:ERROR:main_delegate.cc(684)] Could not load locale pak for C:\Projects\ProjectDurbar\ChromelySolution\Chromely.CefSharpApp.Demo\bin\x64\Debug\locales\en-US
+[0918/212937.246:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212937.247:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212937.248:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212937.248:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212937.249:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212937.249:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212937.250:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212937.250:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212937.250:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212937.251:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212937.251:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212937.251:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212937.252:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212937.252:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212937.253:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212937.253:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212937.253:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212937.254:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212937.254:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212937.254:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212937.254:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212937.255:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212937.255:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212937.255:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212937.255:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212937.256:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212937.256:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212937.256:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212937.258:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212937.258:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212937.258:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212937.258:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212937.259:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212937.259:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212937.259:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212937.259:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212937.260:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212937.260:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212937.260:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212937.261:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212937.262:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212937.264:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212937.264:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212937.265:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212937.420:WARNING:resource_bundle.cc(327)] locale_file_path.empty() for locale 
+[0918/212937.421:ERROR:main_delegate.cc(684)] Could not load locale pak for C:\Projects\ProjectDurbar\ChromelySolution\Chromely.CefSharpApp.Demo\bin\x64\Debug\locales\en-US
+[0918/212937.451:ERROR:child_thread_impl.cc(762)] Request for unknown Channel-associated interface: ui::mojom::GpuMain
+[0918/212937.794:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212937.798:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212937.922:WARNING:resource_bundle.cc(327)] locale_file_path.empty() for locale 
+[0918/212937.922:ERROR:main_delegate.cc(684)] Could not load locale pak for C:\Projects\ProjectDurbar\ChromelySolution\Chromely.CefSharpApp.Demo\bin\x64\Debug\locales\en-US
+[0918/212939.061:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212939.061:ERROR:content_client.cc(257)] No localized string available for id 4122
+[0918/212939.062:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212939.062:ERROR:content_client.cc(257)] No localized string available for id 4123
+[0918/212939.062:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212939.062:ERROR:content_client.cc(257)] No localized string available for id 4125
+[0918/212939.062:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212939.062:ERROR:content_client.cc(257)] No localized string available for id 4126
+[0918/212939.077:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/212939.077:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213054.917:WARNING:resource_bundle.cc(327)] locale_file_path.empty() for locale 
+[0918/213054.917:ERROR:main_delegate.cc(684)] Could not load locale pak for C:\Projects\ProjectDurbar\ChromelySolution\Chromely.CefSharpApp.Demo\bin\x64\Debug\locales\en-US
+[0918/213054.950:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213054.951:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213054.951:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213054.951:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213054.951:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213054.951:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213054.951:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213054.951:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213054.951:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213054.952:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213054.952:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213054.952:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213054.952:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213054.953:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213054.953:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213054.953:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213054.953:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213054.953:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213054.953:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213054.953:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213054.954:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213054.954:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213054.954:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213054.954:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213054.955:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213054.955:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213054.955:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213054.955:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213054.956:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213054.956:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213054.956:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213054.956:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213054.956:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213054.956:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213054.957:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213054.957:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213054.957:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213054.957:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213054.957:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213054.959:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213054.959:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213054.959:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213054.959:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213054.959:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213055.102:WARNING:resource_bundle.cc(327)] locale_file_path.empty() for locale 
+[0918/213055.102:ERROR:main_delegate.cc(684)] Could not load locale pak for C:\Projects\ProjectDurbar\ChromelySolution\Chromely.CefSharpApp.Demo\bin\x64\Debug\locales\en-US
+[0918/213055.134:ERROR:child_thread_impl.cc(762)] Request for unknown Channel-associated interface: ui::mojom::GpuMain
+[0918/213055.615:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213055.617:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213055.721:WARNING:resource_bundle.cc(327)] locale_file_path.empty() for locale 
+[0918/213055.721:ERROR:main_delegate.cc(684)] Could not load locale pak for C:\Projects\ProjectDurbar\ChromelySolution\Chromely.CefSharpApp.Demo\bin\x64\Debug\locales\en-US
+[0918/213056.657:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213056.657:ERROR:content_client.cc(257)] No localized string available for id 4122
+[0918/213056.657:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213056.657:ERROR:content_client.cc(257)] No localized string available for id 4123
+[0918/213056.657:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213056.657:ERROR:content_client.cc(257)] No localized string available for id 4125
+[0918/213056.657:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213056.657:ERROR:content_client.cc(257)] No localized string available for id 4126
+[0918/213056.668:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213056.669:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213100.553:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213100.553:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213100.651:WARNING:resource_bundle.cc(327)] locale_file_path.empty() for locale 
+[0918/213100.651:ERROR:main_delegate.cc(684)] Could not load locale pak for C:\Projects\ProjectDurbar\ChromelySolution\Chromely.CefSharpApp.Demo\bin\x64\Debug\locales\en-US
+[0918/213113.504:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213113.504:ERROR:content_client.cc(257)] No localized string available for id 4122
+[0918/213113.504:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213113.504:ERROR:content_client.cc(257)] No localized string available for id 4123
+[0918/213113.504:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213113.504:ERROR:content_client.cc(257)] No localized string available for id 4125
+[0918/213113.504:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213113.504:ERROR:content_client.cc(257)] No localized string available for id 4126
+[0918/213113.504:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213113.504:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213118.856:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213118.856:ERROR:content_client.cc(257)] No localized string available for id 4122
+[0918/213118.856:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213118.856:ERROR:content_client.cc(257)] No localized string available for id 4123
+[0918/213118.856:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213118.856:ERROR:content_client.cc(257)] No localized string available for id 4125
+[0918/213118.856:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213118.856:ERROR:content_client.cc(257)] No localized string available for id 4126
+[0918/213118.856:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213118.856:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213120.060:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213120.061:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213120.165:WARNING:resource_bundle.cc(327)] locale_file_path.empty() for locale 
+[0918/213120.165:ERROR:main_delegate.cc(684)] Could not load locale pak for C:\Projects\ProjectDurbar\ChromelySolution\Chromely.CefSharpApp.Demo\bin\x64\Debug\locales\en-US
+[0918/213122.064:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213122.064:ERROR:content_client.cc(257)] No localized string available for id 4122
+[0918/213122.064:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213122.064:ERROR:content_client.cc(257)] No localized string available for id 4123
+[0918/213122.064:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213122.064:ERROR:content_client.cc(257)] No localized string available for id 4125
+[0918/213122.065:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213122.065:ERROR:content_client.cc(257)] No localized string available for id 4126
+[0918/213122.065:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213122.065:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213124.664:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213124.664:ERROR:content_client.cc(257)] No localized string available for id 4122
+[0918/213124.664:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213124.664:ERROR:content_client.cc(257)] No localized string available for id 4123
+[0918/213124.664:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213124.664:ERROR:content_client.cc(257)] No localized string available for id 4125
+[0918/213124.664:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213124.664:ERROR:content_client.cc(257)] No localized string available for id 4126
+[0918/213124.664:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213124.664:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213227.620:WARNING:resource_bundle.cc(327)] locale_file_path.empty() for locale 
+[0918/213227.621:ERROR:main_delegate.cc(684)] Could not load locale pak for C:\Projects\ProjectDurbar\ChromelySolution\Chromely.CefSharpApp.Demo\bin\x64\Debug\locales\en-US
+[0918/213227.650:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213227.651:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213227.651:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213227.651:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213227.651:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213227.651:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213227.651:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213227.651:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213227.651:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213227.651:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213227.651:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213227.651:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213227.651:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213227.651:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213227.651:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213227.651:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213227.651:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213227.651:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213227.651:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213227.651:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213227.651:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213227.651:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213227.651:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213227.652:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213227.652:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213227.652:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213227.652:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213227.652:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213227.652:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213227.652:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213227.652:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213227.652:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213227.652:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213227.652:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213227.652:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213227.652:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213227.652:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213227.652:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213227.652:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213227.654:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213227.654:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213227.654:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213227.654:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213227.654:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213227.765:WARNING:resource_bundle.cc(327)] locale_file_path.empty() for locale 
+[0918/213227.765:ERROR:main_delegate.cc(684)] Could not load locale pak for C:\Projects\ProjectDurbar\ChromelySolution\Chromely.CefSharpApp.Demo\bin\x64\Debug\locales\en-US
+[0918/213227.804:ERROR:child_thread_impl.cc(762)] Request for unknown Channel-associated interface: ui::mojom::GpuMain
+[0918/213228.306:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213228.307:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213228.409:WARNING:resource_bundle.cc(327)] locale_file_path.empty() for locale 
+[0918/213228.409:ERROR:main_delegate.cc(684)] Could not load locale pak for C:\Projects\ProjectDurbar\ChromelySolution\Chromely.CefSharpApp.Demo\bin\x64\Debug\locales\en-US
+[0918/213229.832:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213229.832:ERROR:content_client.cc(257)] No localized string available for id 4122
+[0918/213229.832:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213229.832:ERROR:content_client.cc(257)] No localized string available for id 4123
+[0918/213229.832:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213229.832:ERROR:content_client.cc(257)] No localized string available for id 4125
+[0918/213229.832:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213229.832:ERROR:content_client.cc(257)] No localized string available for id 4126
+[0918/213229.843:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213229.843:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213252.458:WARNING:resource_bundle.cc(327)] locale_file_path.empty() for locale 
+[0918/213252.459:ERROR:main_delegate.cc(684)] Could not load locale pak for C:\Projects\ProjectDurbar\ChromelySolution\Chromely.CefSharpApp.Demo\bin\x64\Debug\locales\en-US
+[0918/213252.486:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213252.486:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213252.486:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213252.486:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213252.486:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213252.486:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213252.486:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213252.486:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213252.486:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213252.487:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213252.487:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213252.487:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213252.487:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213252.487:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213252.487:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213252.487:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213252.487:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213252.487:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213252.487:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213252.488:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213252.488:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213252.489:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213252.489:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213252.489:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213252.489:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213252.490:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213252.490:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213252.490:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213252.490:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213252.490:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213252.491:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213252.491:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213252.491:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213252.491:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213252.491:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213252.491:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213252.491:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213252.491:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213252.491:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213252.493:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213252.493:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213252.494:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213252.494:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213252.494:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213252.583:WARNING:resource_bundle.cc(327)] locale_file_path.empty() for locale 
+[0918/213252.583:ERROR:main_delegate.cc(684)] Could not load locale pak for C:\Projects\ProjectDurbar\ChromelySolution\Chromely.CefSharpApp.Demo\bin\x64\Debug\locales\en-US
+[0918/213252.609:ERROR:child_thread_impl.cc(762)] Request for unknown Channel-associated interface: ui::mojom::GpuMain
+[0918/213252.877:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213252.886:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213252.972:WARNING:resource_bundle.cc(327)] locale_file_path.empty() for locale 
+[0918/213252.972:ERROR:main_delegate.cc(684)] Could not load locale pak for C:\Projects\ProjectDurbar\ChromelySolution\Chromely.CefSharpApp.Demo\bin\x64\Debug\locales\en-US
+[0918/213254.951:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213254.951:ERROR:content_client.cc(257)] No localized string available for id 4122
+[0918/213254.951:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213254.951:ERROR:content_client.cc(257)] No localized string available for id 4123
+[0918/213254.951:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213254.951:ERROR:content_client.cc(257)] No localized string available for id 4125
+[0918/213254.951:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213254.951:ERROR:content_client.cc(257)] No localized string available for id 4126
+[0918/213254.963:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213254.963:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213300.797:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213300.798:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213300.893:WARNING:resource_bundle.cc(327)] locale_file_path.empty() for locale 
+[0918/213300.893:ERROR:main_delegate.cc(684)] Could not load locale pak for C:\Projects\ProjectDurbar\ChromelySolution\Chromely.CefSharpApp.Demo\bin\x64\Debug\locales\en-US
+[0918/213303.295:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213303.295:ERROR:content_client.cc(257)] No localized string available for id 4122
+[0918/213303.295:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213303.295:ERROR:content_client.cc(257)] No localized string available for id 4123
+[0918/213303.295:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213303.295:ERROR:content_client.cc(257)] No localized string available for id 4125
+[0918/213303.295:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213303.295:ERROR:content_client.cc(257)] No localized string available for id 4126
+[0918/213303.296:WARNING:resource_bundle.cc(525)] locale resources are not loaded
+[0918/213303.296:WARNING:resource_bundle.cc(525)] locale resources are not loaded

@@ -24,7 +24,6 @@
 
 namespace Chromely.Core
 {
-    using Chromely.Core.CefGlueBrowser;
     using Chromely.Core.Infrastructure;
 
     public class ChromelyConfiguration
@@ -84,6 +83,12 @@ namespace Chromely.Core
         {
             LogFile = logFile;
             Log.LoggerFile = logFile;
+            return this;
+        }
+
+        public ChromelyConfiguration WithLogger(IChromelyLogger logger)
+        {
+            Log.Logger = logger;
             return this;
         }
 

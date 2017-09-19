@@ -7,6 +7,7 @@
 
 namespace Chromely.Core.CefGlueBrowser
 {
+    using Chromely.Core.CefGlueBrowser.Handlers;
     using Xilium.CefGlue;
 
     internal class CefWebClient : CefClient
@@ -16,6 +17,7 @@ namespace Chromely.Core.CefGlueBrowser
         private readonly CefWebDisplayHandler m_displayHandler;
         private readonly CefWebLoadHandler m_loadHandler;
         private readonly CefWebRequestHandler m_requestHandler;
+        private readonly CefContextMenuHandler m_menuHandler;
 
         public CefWebClient(CefWebBrowser core)
         {
@@ -24,6 +26,7 @@ namespace Chromely.Core.CefGlueBrowser
             m_displayHandler = new CefWebDisplayHandler(m_core);
             m_loadHandler = new CefWebLoadHandler(m_core);
             m_requestHandler = new CefWebRequestHandler(m_core);
+            m_menuHandler = new CefGlueContextMenuHandler();
         }
 
         protected CefWebBrowser Core { get { return m_core; } }
@@ -47,5 +50,11 @@ namespace Chromely.Core.CefGlueBrowser
         {
             return m_requestHandler;
         }
+
+        protected override CefContextMenuHandler GetContextMenuHandler()
+        {
+            return m_menuHandler;
+        }
+
     }
 }

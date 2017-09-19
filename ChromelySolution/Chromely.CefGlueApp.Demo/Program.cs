@@ -25,7 +25,7 @@
  namespace Chromely.CefGlueApp.Demo
 {
     using Chromely.Core;
-    using Chromely.Core.CefGlueBrowser;
+    using Chromely.Core.CefGlueBrowser.Handlers;
     using Chromely.Core.ChromeHosts;
     using Chromely.Core.ChromeHosts.Winapi;
     using Chromely.Core.Infrastructure;

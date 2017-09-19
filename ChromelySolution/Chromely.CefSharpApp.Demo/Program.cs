@@ -24,7 +24,7 @@
 
 namespace Chromely.CefSharpApp.Demo
 {
-    using Chromely.CefSharpBrowser.RequestHandlers;
+    using Chromely.CefSharpBrowser.Handlers;
     using Chromely.ChromeHosts.Winapi;
     using Chromely.Core;
     using Chromely.Core.ChromeHosts;
