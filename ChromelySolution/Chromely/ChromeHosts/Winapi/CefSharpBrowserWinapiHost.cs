@@ -59,11 +59,12 @@ namespace Chromely.ChromeHosts.Winapi
 
             var codeBase = Assembly.GetExecutingAssembly().CodeBase;
             var localFolder = Path.GetDirectoryName(new Uri(codeBase).LocalPath);
-            var locale = Path.Combine(localFolder, "locales\\en-US");
+            var localesDirPath = Path.Combine(localFolder, "locales");
+            var locale = "en-US";
 
             var settings = new CefSettings
             {
-                LocalesDirPath = localFolder,
+                LocalesDirPath = localesDirPath,
                 Locale = locale,
                 MultiThreadedMessageLoop = true,
                 CachePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "CefSharp\\Cache"),

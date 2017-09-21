@@ -30,6 +30,7 @@ namespace Chromely.Core.Infrastructure
     {
         static string m_loggerFile = null;
         static IChromelyLogger m_logger = null;
+        static bool m_logToConsole = true;
 
         public static IChromelyLogger Logger
         {
@@ -37,7 +38,7 @@ namespace Chromely.Core.Infrastructure
             {
                 if (m_logger == null)
                 {
-                    m_logger = new DefaultLogger(m_loggerFile);
+                    m_logger = new SimpleLogger(m_loggerFile, m_logToConsole);
                 }
 
                 return m_logger;
@@ -54,6 +55,15 @@ namespace Chromely.Core.Infrastructure
             set
             {
                 m_loggerFile = value;
+            }
+        }
+
+        public static bool LogToConsole
+        {
+            get { return m_logToConsole; }
+            set
+            {
+                m_logToConsole = value;
             }
         }
 

@@ -9,11 +9,12 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>Chromely.CefSharpApp.Demo</RootNamespace>
     <AssemblyName>cefsharp_app_demo</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <PlatformTarget>x64</PlatformTarget>
@@ -44,18 +45,6 @@
     </Reference>
     <Reference Include="NetCoreEx.Geometry, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\NetCoreEx.Geometry.3.0.0\lib\netstandard1.4\NetCoreEx.Geometry.dll</HintPath>
-    </Reference>
-    <Reference Include="Serilog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
-      <HintPath>..\packages\Serilog.2.5.1-dev-00873\lib\net46\Serilog.dll</HintPath>
-    </Reference>
-    <Reference Include="Serilog.Sinks.Console, Version=3.1.1.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
-      <HintPath>..\packages\Serilog.Sinks.Console.3.1.1-dev-00757\lib\net45\Serilog.Sinks.Console.dll</HintPath>
-    </Reference>
-    <Reference Include="Serilog.Sinks.File, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
-      <HintPath>..\packages\Serilog.Sinks.File.3.2.0\lib\net45\Serilog.Sinks.File.dll</HintPath>
-    </Reference>
-    <Reference Include="Serilog.Sinks.RollingFile, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
-      <HintPath>..\packages\Serilog.Sinks.RollingFile.3.3.1-dev-00771\lib\net45\Serilog.Sinks.RollingFile.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.AppContext, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -129,7 +118,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="chromely.ico">

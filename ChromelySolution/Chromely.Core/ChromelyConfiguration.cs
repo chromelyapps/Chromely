@@ -79,10 +79,11 @@ namespace Chromely.Core
             return this;
         }
 
-        public ChromelyConfiguration WithLogFile(string logFile)
+        public ChromelyConfiguration WithDefaultLogger(string logFile, bool logToConsole)
         {
             LogFile = logFile;
             Log.LoggerFile = logFile;
+            Log.LogToConsole = logToConsole;
             return this;
         }
 

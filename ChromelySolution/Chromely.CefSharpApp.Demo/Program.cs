@@ -49,7 +49,7 @@ namespace Chromely.CefSharpApp.Demo
                                               .WithAppArgs(args)
                                               .WithHostSize(1200, 900)
                                               .WithCefLogFile("logs\\chromely.cef_new.log")
-                                              .WithLogFile("logs\\chromely_new.log")
+                                              .WithDefaultLogger("logs\\chromely_new.log", true)
                                               .WithStartUrl(startUrl)
                                               .WithLogSeverity(LogSeverity.Info)
                                               .RgisterJsHandler("boundControllerAsync", new CefSharpBoundObject(), null, true);
