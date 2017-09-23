@@ -119,7 +119,7 @@ namespace Chromely.Core.CefGlueBrowser.Handlers
                     m_bytesRead = 0;
                     bytesRead = m_bytesRead;
 
-                    string jsonData = JsonMapper.ToJson(m_chromelyResponse.Data);
+                    string jsonData = m_chromelyResponse.Data.EnsureResponseIsJsonFormat();
 
                     var content = Encoding.UTF8.GetBytes(jsonData);
                     if (bytesToRead < content.Length) throw new NotImplementedException();

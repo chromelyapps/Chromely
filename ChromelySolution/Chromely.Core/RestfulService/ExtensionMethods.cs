@@ -31,7 +31,75 @@ namespace Chromely.Core.RestfulService
 
     public static class ExtensionMethods
     {
-        public static IDictionary<string, object> ToDictionary(this object obj)
+        public static string EnsureJson(this object obj)
+        {
+            try
+            {
+               return JsonMapper.ToJson(obj);
+            }
+            catch (Exception)
+            {
+                // Swallow
+            }
+
+            return obj.ToString();
+        }
+
+        public static string EnsureResponseIsJsonFormat(this object obj)
+        {
+            JsonData newJsonData = new JsonData();
+
+            try
+            {
+                JsonData jsonData = JsonMapper.ToObject(obj.EnsureJson());
+                if (jsonData.IsArray)
+                {
+                    return jsonData.ToJson();
+                }
+
+                ICollection<string> keys = null;
+                try { keys = jsonData.Keys; } catch (Exception) {}
+
+                if ((keys == null) || (keys.Count == 0))
+                {
+                    newJsonData = new JsonData();
+                    newJsonData["Data"] = jsonData.ToJson();
+                    return newJsonData.ToJson();
+                }
+
+                return jsonData.ToJson();
+            }
+            catch (Exception)
+            {
+                // Swallow
+            }
+
+            newJsonData = new JsonData();
+            newJsonData["Data"] = obj.ToString();
+
+            return newJsonData.ToJson();
+        }
+
+
+        public static int ArrayCount(this object obj)
+        {
+            try
+            {
+                JsonData jsonData = JsonMapper.ToObject(obj.EnsureJson());
+                if (jsonData.IsArray)
+                {
+                    return jsonData.Count;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Swallow
+            }
+
+            return 0;
+        }
+
+        public static IDictionary<string, object> ToObjectDictionary(this object obj)
         {
             try
             {
@@ -40,16 +108,45 @@ namespace Chromely.Core.RestfulService
                     return (IDictionary<string, object>)obj;
                 }
 
+                if (obj is IDictionary<string, string>)
+                {
+                    IDictionary<string, string> dict = (IDictionary<string, string>)obj;
+                    IDictionary<string, object> responseDic = new Dictionary<string, object>();
+                    foreach (var item in dict)
+                    {
+                        responseDic.Add(item.Key, item.Value);
+                    }
+
+                    return responseDic;
+                }
+
                 // If json
                 if (obj is string)
                 {
                     try
                     {
                         JsonData jsonData = JsonMapper.ToObject(obj.ToString());
-                        return jsonData.ToDictionary();
+                        if (!jsonData.IsArray && jsonData.IsObject)
+                        {
+                            int count = jsonData.Count;
+                            string[] arrayKeys = new string[count];
+
+                            // Copy the list to the array.
+                            IDictionary<string, object> responseDic = new Dictionary<string, object>();
+                            jsonData.Keys.CopyTo(arrayKeys, 0);
+                            for (int i = 0; i < count; i++)
+                            {
+                               responseDic.Add(arrayKeys[i], jsonData[arrayKeys[i]]);
+                            }
+
+                            return responseDic;
+                        }
+
                     }
-                    catch (Exception)
-                    { }
+                    catch (Exception exception)
+                    {
+                        int kols = 0;
+                    }
                 }
 
                 return obj.ObjectToDictionary();

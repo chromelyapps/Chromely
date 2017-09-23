@@ -36,7 +36,7 @@ namespace Chromely.Core.Infrastructure
         private bool m_logToConsole;
         private object lockObj = new object();
 
-        public SimpleLogger(string fullFilePath = null, bool logToConsole = true)
+        public SimpleLogger(string fullFilePath = null, bool logToConsole = true, int rollingMaxMBFileSize = 10)
         {
             if (string.IsNullOrEmpty(fullFilePath))
             {
@@ -49,8 +49,9 @@ namespace Chromely.Core.Infrastructure
             m_filename = fullFilePath;
             m_logToConsole = logToConsole;
 
-            // 10 MB Max size before creating backup
-            m_maxSizeInKiloBytes = 1000 * 10; 
+            // 10 MB Max size before creating backup - not set
+            rollingMaxMBFileSize = (rollingMaxMBFileSize < -0) ? 10 : rollingMaxMBFileSize;
+            m_maxSizeInKiloBytes = 1000 * rollingMaxMBFileSize; 
         }
 
         public void Info(string message)

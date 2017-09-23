@@ -79,10 +79,10 @@ namespace Chromely.Core
             return this;
         }
 
-        public ChromelyConfiguration UseDefaultLogger(string logFile, bool logToConsole)
+        public ChromelyConfiguration UseDefaultLogger(string logFile = null, bool logToConsole = true, int rollingMaxMBFileSize = 10)
         {
-            Log.LoggerFile = logFile;
-            Log.LogToConsole = logToConsole;
+            var simpleLogger = new SimpleLogger(logFile, logToConsole, rollingMaxMBFileSize);
+            IoC.RegisterInstance(typeof(IChromelyLogger), typeof(Log).FullName, simpleLogger);
             return this;
         }
 

@@ -32,45 +32,45 @@ namespace Chromely.CefSharpBrowser.Handlers
 
     public class CefSharpBoundObject
     {
-        public void GetJson(string routePath, string parameters, IJavascriptCallback javascriptCallback)
+        public void GetJson(string routePath, object parameters, IJavascriptCallback javascriptCallback)
         {
             Task.Run(async () =>
             {
                 using (javascriptCallback)
                 {
                     ChromelyResponse chromelyResponse = await CefSharpRequestTaskRunner.RunAsync(routePath, parameters, null);
-                    string jsonResponse = JsonMapper.ToJson(chromelyResponse);
+                    string jsonResponse = chromelyResponse.EnsureJson();
                     var response = new CallbackResponseStruct(jsonResponse);
                     await javascriptCallback.ExecuteAsync(response);
                 }
             });
         }
 
-        public string GetJson(string routePath, string parameters)
+        public string GetJson(string routePath, object parameters)
         {
             ChromelyResponse chromelyResponse = CefSharpRequestTaskRunner.Run(routePath, parameters, null);
-            string jsonResponse = JsonMapper.ToJson(chromelyResponse);
+            string jsonResponse = chromelyResponse.EnsureJson();
             return jsonResponse;
         }
 
-        public void PostJson(string routePath, string parameters, object postData, IJavascriptCallback javascriptCallback)
+        public void PostJson(string routePath, object parameters, object postData, IJavascriptCallback javascriptCallback)
         {
             Task.Run(async () =>
             {
                 using (javascriptCallback)
                 {
                     ChromelyResponse chromelyResponse = await CefSharpRequestTaskRunner.RunAsync(routePath, parameters, postData);
-                    string jsonResponse = JsonMapper.ToJson(chromelyResponse);
+                    string jsonResponse = chromelyResponse.EnsureJson();
                     var response = new CallbackResponseStruct(jsonResponse);
                     await javascriptCallback.ExecuteAsync(response);
                 }
             });
         }
 
-        public string PostJson(string routePath, string parameters, object postData)
+        public string PostJson(string routePath, object parameters, object postData)
         {
             ChromelyResponse chromelyResponse = CefSharpRequestTaskRunner.Run(routePath, parameters, postData);
-            string jsonResponse = JsonMapper.ToJson(chromelyResponse);
+            string jsonResponse = chromelyResponse.EnsureJson();
             return jsonResponse;
         }
     }

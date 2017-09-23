@@ -30,7 +30,7 @@
                         {
                             m_chromelyResponse = CefSharpRequestTaskRunner.Run(request);
 
-                            string jsonData = JsonMapper.ToJson(m_chromelyResponse.Data);
+                            string jsonData = m_chromelyResponse.Data.EnsureResponseIsJsonFormat();
                             var content = Encoding.UTF8.GetBytes(jsonData);
                             m_stream.Write(content, 0, content.Length);
                             m_mimeType = "application/json";

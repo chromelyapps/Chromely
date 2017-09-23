@@ -124,6 +124,35 @@
             }
             http.send();
         }
+
+        function ajaxRun3() {
+
+            $('#ajaxResult3').html('');
+
+            var moviesJson = [
+                { Id: 1, Title: "The Shawshank Redemption", Year: 1994, Votes: 678790, Rating: 9.2 },
+                { Id: 2, Title: "The Godfather", Year: 1972, votes: 511495, Rating: 9.2 },
+                { Id: 3, Title: "The Godfather: Part II", Year: 1974, Votes: 319352, Rating: 9.0 },
+                { Id: 4, Title: "The Good, the Bad and the Ugly", Year: 1966, Votes: 213030, Rating: 8.9 },
+                { Id: 5, Title: "My Fair Lady", Year: 1964, Votes: 533848, Rating: 8.9 },
+                { Id: 6, Title: "12 Angry Men", Year: 1957, Votes: 164558, Rating: 8.9 }
+            ];
+
+            var http = new XMLHttpRequest();
+            var url = "http://chromely.com/democontroller/savemovies?a=1&b=2&c=string%20param";
+            http.open("POST", url, true);
+            http.setRequestHeader("Content-type", "application/json");
+
+            http.onreadystatechange = function () {
+                if (http.readyState == 4 && http.status == 200) {
+                    var jsonData = JSON.parse(http.responseText);
+                    $('#ajaxResult3').html(jsonData.Data);
+                }
+            }
+
+            http.send(JSON.stringify(moviesJson));
+        }
+
     </script>
 </head>
 <body>
@@ -148,7 +177,7 @@
             </div>
             <div id="moreInfoButton" class="centerBlock hidden">
                 <form class="form-inline">
-                    <button type="button" class="btn btn-default" onclick="launchModal()">ajax GET test</button>
+                    <button type="button" class="btn btn-default" onclick="launchModal()">Ajax Tests</button>
                     <a href="https://github.com/mattkol/Chromely" class="btn btn-default" role="button">more info</a>
                 </form>
             </div>
@@ -192,13 +221,14 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title">Ajax Get Request</h4>
+                        <h4 class="modal-title">Ajax Requests</h4>
                     </div>
                     <div class="modal-body">
                         <div>
                             <ul class="nav nav-tabs">
-                                <li class="active"><a data-toggle="tab" href="#sectionA">Restful Service in Local Assembly</a></li>
-                                <li><a data-toggle="tab" href="#sectionB">Restful Service in External Assembly</a></li>
+                                <li class="active"><a data-toggle="tab" href="#sectionA">(Get) Restful Service in Local Assembly</a></li>
+                                <li><a data-toggle="tab" href="#sectionB">(Get) Restful Service in External Assembly</a></li>
+                                <li><a data-toggle="tab" href="#sectionC">(Post) Restful Service in Local Assembly</a></li>
                             </ul>
 
                             <div class="tab-content">
@@ -252,6 +282,16 @@
                                     </form>
                                 </div>
 
+                                <div id="sectionC" class="tab-pane fade" style='padding:10px;'>
+                                    <form class="form">
+                                        <div class="form-group">
+                                            <button id="buttonAjaxRun3" type="button" class="btn btn-primary" onclick="ajaxRun3()">Run</button>&ensp;&ensp;http://chromely.com//democontroller/savemovies
+                                        </div>
+                                        <div class="form-group">
+                                            <div id="ajaxResult3"></div>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
 
                         </div>

@@ -22,21 +22,23 @@
  SOFTWARE.
  */
 
- namespace Chromely.CefGlueApp.Demo.Controllers
+namespace Chromely.CefGlueApp.Demo.Controllers
 {
     using System;
     using System.Collections.Generic;
     using Chromely.Core.RestfulService;
+    using LitJson;
 
     [ControllerProperty(Name = "DemoController", Route = "democontroller")]
     public class DemoController : ChromelyController
     {
         public DemoController()
         {
-            RegisterGetRequest("/democontroller/movies", GetMoviesInfo);
+            RegisterGetRequest("/democontroller/movies", GetMovies);
+            RegisterPostRequest("/democontroller/savemovies", SaveMovies);
         }
 
-        private ChromelyResponse GetMoviesInfo(ChromelyRequest request)
+        private ChromelyResponse GetMovies(ChromelyRequest request)
         {
 
             List<MovieInfo> movieInfos = new List<MovieInfo>();
@@ -51,6 +53,29 @@
 
             ChromelyResponse response = new ChromelyResponse();
             response.Data = movieInfos;
+            return response;
+        }
+
+        private ChromelyResponse SaveMovies(ChromelyRequest request)
+        {
+            if (request == null)
+            {
+                throw new ArgumentNullException("Request null argument!");
+            }
+
+            if (request.PostData == null)
+            {
+                throw new Exception("Post data is null or invalid.");
+            }
+
+            ChromelyResponse response = new ChromelyResponse();
+            var postDataJson = request.PostData.EnsureJson();
+            int rowsReceived = postDataJson.ArrayCount();
+
+            JsonData data = new JsonData();
+            data["Data"] = string.Format("{0} rows of data successfully saved.", rowsReceived);
+            response.Data = data;
+
             return response;
         }
     }

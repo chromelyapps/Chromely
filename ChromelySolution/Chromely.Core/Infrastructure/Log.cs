@@ -28,9 +28,7 @@ namespace Chromely.Core.Infrastructure
 
     public static class Log
     {
-        static string m_loggerFile = null;
         static IChromelyLogger m_logger = null;
-        static bool m_logToConsole = true;
 
         public static IChromelyLogger Logger
         {
@@ -38,7 +36,7 @@ namespace Chromely.Core.Infrastructure
             {
                 if (m_logger == null)
                 {
-                    m_logger = new SimpleLogger(m_loggerFile, m_logToConsole);
+                    m_logger = GetCurrentLogger;
                 }
 
                 return m_logger;
@@ -46,24 +44,6 @@ namespace Chromely.Core.Infrastructure
             set
             {
                 m_logger = value ?? throw new ArgumentNullException(nameof(value));
-            }
-        }
-
-        public static string LoggerFile
-        {
-            get { return m_loggerFile; }
-            set
-            {
-                m_loggerFile = value;
-            }
-        }
-
-        public static bool LogToConsole
-        {
-            get { return m_logToConsole; }
-            set
-            {
-                m_logToConsole = value;
             }
         }
 
@@ -105,6 +85,21 @@ namespace Chromely.Core.Infrastructure
         public static void Critial(string message)
         {
             Logger.Fatal(message);
+        }
+
+        private static IChromelyLogger GetCurrentLogger
+        {
+            get
+            {
+                var logger = IoC.GetInstance(typeof(IChromelyLogger), typeof(Log).FullName);
+                
+                if ((logger != null) && (logger is IChromelyLogger))
+                {
+                    return (IChromelyLogger)logger;
+                }
+
+                return new SimpleLogger();
+            }
         }
     }
 }

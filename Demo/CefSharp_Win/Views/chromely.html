@@ -56,14 +56,27 @@
             $("#runButton").addClass('hidden');
             $("#moreInfoButton").removeClass('hidden');
 
-            boundControllerAsync.getJson("/info", null, infoResult);
+            var http = new XMLHttpRequest();
+            var url = "http://chromely.com/info";
+            http.open("GET", url, true);
+
+            http.onreadystatechange = function () {
+         
+                if (http.readyState == 4 && http.status == 200) {
+                    var jsonData = JSON.parse(http.responseText);
+                    $('#divObjective').html(jsonData.divObjective);
+                    $('#divPlatform').html(jsonData.divPlatform);
+                    $('#divVersion').html(jsonData.divVersion);
+                }
+            }
+            http.send();
         }
 
-        function launchModal() {
-            $("#ajaxModal").modal('show');
+        function launchModal1() {
+            $("#boundObjectModal").modal('show');
         }
 
-        function ajaxResult1(res) {
+        function boundObjectResult1(res) {
             var jsonData = JSON.parse(res.ResponseText);
             if (jsonData.ReadyState == 4 && jsonData.Status == 200) {
                 for (var i = 0; i < jsonData.Data.length; i++) {
@@ -78,20 +91,20 @@
                     row += '<td>' + jsonData.Data[i].RestfulAssembly + '</td>';
 
                     row += '</tr>';
-                    $('#ajaxResult1 tbody').append(row);
+                    $('#boundObjectResult1 tbody').append(row);
                 }
             }
         }
 
-        function ajaxRun1() {
+        function boundObjectRun1() {
 
-            $('#ajaxResult1 tbody').html('');
+            $('#boundObjectResult1 tbody').html('');
 
-            boundControllerAsync.getJson("/democontroller/movies", null, ajaxResult1);
+            boundControllerAsync.getJson("/democontroller/movies", null, boundObjectResult1);
         }
 
 
-        function ajaxResult2(res) {
+        function boundObjectResult2(res) {
             var jsonData = JSON.parse(res.ResponseText);
             if (jsonData.ReadyState == 4 && jsonData.Status == 200) {
                 for (var i = 0; i < jsonData.Data.length; i++) {
@@ -106,17 +119,134 @@
                     row += '<td>' + jsonData.Data[i].RestfulAssembly + '</td>';
 
                     row += '</tr>';
-                    $('#ajaxResult2 tbody').append(row);
+                    $('#boundObjectResult2 tbody').append(row);
                 }
             }
         }
 
-        function ajaxRun2() {
+        function boundObjectRun2() {
 
-            $('#ajaxResult2 tbody').html('');
+            $('#boundObjectResult2 tbody').html('');
 
-            boundControllerAsync.getJson("/externalcontroller/movies", null, ajaxResult2);
+            boundControllerAsync.getJson("/externalcontroller/movies", null, boundObjectResult2);
         }
+
+        function boundObjectResult3(res) {
+            var jsonData = JSON.parse(res.ResponseText);
+            if (jsonData.ReadyState == 4 && jsonData.Status == 200) {
+                $('#boundObjectResult3').html(jsonData.Data);
+            }
+        }
+
+        function boundObjectRun3() {
+
+            $('#boundObjectResult3').html('');
+
+            var moviesJson = [
+                { Id: 1, Title: "The Shawshank Redemption", Year: 1994, Votes: 678790, Rating: 9.2 },
+                { Id: 2, Title: "The Godfather", Year: 1972, votes: 511495, Rating: 9.2 },
+                { Id: 3, Title: "The Godfather: Part II", Year: 1974, Votes: 319352, Rating: 9.0 },
+                { Id: 4, Title: "The Good, the Bad and the Ugly", Year: 1966, Votes: 213030, Rating: 8.9 },
+                { Id: 5, Title: "My Fair Lady", Year: 1964, Votes: 533848, Rating: 8.9 },
+                { Id: 6, Title: "12 Angry Men", Year: 1957, Votes: 164558, Rating: 8.9 }
+            ];
+
+            boundControllerAsync.postJson("/democontroller/savemovies", null, moviesJson, boundObjectResult3);
+        }
+
+    </script>
+    <script type="text/javascript">
+            function launchModal2() {
+                $("#ajaxModal").modal('show');
+            }
+
+            function ajaxRun1() {
+
+                $('#ajaxResult1 tbody').html('');
+
+                var http = new XMLHttpRequest();
+                var url = "http://chromely.com/democontroller/movies";
+                http.open("GET", url, true);
+
+                http.onreadystatechange = function () {
+                    if (http.readyState == 4 && http.status == 200) {
+                        var jsonData = JSON.parse(http.responseText);
+                        for (var i = 0; i < jsonData.length; i++) {
+                            var row = '<tr>';
+
+                            row += '<td>' + jsonData[i].Id + '</td>';
+                            row += '<td>' + jsonData[i].Title + '</td>';
+                            row += '<td>' + jsonData[i].Year + '</td>';
+                            row += '<td>' + jsonData[i].Votes + '</td>';
+                            row += '<td>' + jsonData[i].Rating + '</td>';
+                            row += '<td>' + jsonData[i].Date + '</td>';
+                            row += '<td>' + jsonData[i].RestfulAssembly + '</td>';
+
+                            row += '</tr>';
+                            $('#ajaxResult1 tbody').append(row);
+                        }
+                    }
+                }
+                http.send();
+            }
+
+            function ajaxRun2() {
+
+                $('#ajaxResult2 tbody').html('');
+
+                var http = new XMLHttpRequest();
+                var url = "http://chromely.com/externalcontroller/movies";
+                http.open("GET", url, true);
+
+                http.onreadystatechange = function () {
+                    if (http.readyState == 4 && http.status == 200) {
+                        var jsonData = JSON.parse(http.responseText);
+                        for (var i = 0; i < jsonData.length; i++) {
+                            var row = '<tr>';
+
+                            row += '<td>' + jsonData[i].Id + '</td>';
+                            row += '<td>' + jsonData[i].Title + '</td>';
+                            row += '<td>' + jsonData[i].Year + '</td>';
+                            row += '<td>' + jsonData[i].Votes + '</td>';
+                            row += '<td>' + jsonData[i].Rating + '</td>';
+                            row += '<td>' + jsonData[i].Date + '</td>';
+                            row += '<td>' + jsonData[i].RestfulAssembly + '</td>';
+
+                            row += '</tr>';
+                            $('#ajaxResult2 tbody').append(row);
+                        }
+                    }
+                }
+                http.send();
+            }
+
+            function ajaxRun3() {
+
+                $('#ajaxResult3').html('');
+
+                var moviesJson = [
+                    { Id: 1, Title: "The Shawshank Redemption", Year: 1994, Votes: 678790, Rating: 9.2 },
+                    { Id: 2, Title: "The Godfather", Year: 1972, votes: 511495, Rating: 9.2 },
+                    { Id: 3, Title: "The Godfather: Part II", Year: 1974, Votes: 319352, Rating: 9.0 },
+                    { Id: 4, Title: "The Good, the Bad and the Ugly", Year: 1966, Votes: 213030, Rating: 8.9 },
+                    { Id: 5, Title: "My Fair Lady", Year: 1964, Votes: 533848, Rating: 8.9 },
+                    { Id: 6, Title: "12 Angry Men", Year: 1957, Votes: 164558, Rating: 8.9 }
+                ];
+
+                var http = new XMLHttpRequest();
+                var url = "http://chromely.com/democontroller/savemovies";
+                http.open("POST", url, true);
+                http.setRequestHeader("Content-type", "application/json");
+
+                http.onreadystatechange = function () {
+                    if (http.readyState == 4 && http.status == 200) {
+                        var jsonData = JSON.parse(http.responseText);
+                        $('#ajaxResult3').html(jsonData.Data);
+                    }
+                }
+
+                http.send(JSON.stringify(moviesJson));
+            }
     </script>
 </head>
 <body>
@@ -134,14 +264,15 @@
             <div id="runButton" class="centerBlock">
                 <form class="form-inline">
                     <div class="form-group">
-                        <label for="info">RegisterAsyncJsObject Demo (get chromely info):</label>
+                        <label for="info">RegisterAsyncJsObject/Ajax Demo (get chromely info):</label>
                     </div>
                     <button id="buttonDemoRun" type="button" class="btn btn-default" onclick="demoRun()">Run</button>
                 </form>
             </div>
             <div id="moreInfoButton" class="centerBlock hidden">
                 <form class="form-inline">
-                    <button type="button" class="btn btn-default" onclick="launchModal()">RegisterAsyncJsObject GET test</button>
+                    <button type="button" class="btn btn-default" onclick="launchModal1()">RegisterAsyncJsObject Tests</button>
+                    <button type="button" class="btn btn-default" onclick="launchModal2()">Ajax Tests</button>
                     <a href="https://github.com/mattkol/Chromely" class="btn btn-default" role="button">more info</a>
                 </form>
             </div>
@@ -178,8 +309,8 @@
 
         </div>
 
-        <!-- Modal -->
-        <div id="ajaxModal" class="modal fade">
+        <!-- Modal Bound Object-->
+        <div id="boundObjectModal" class="modal fade">
             <div class="modal-dialog">
 
                 <div class="modal-content">
@@ -192,6 +323,7 @@
                             <ul class="nav nav-tabs">
                                 <li class="active"><a data-toggle="tab" href="#sectionA">Restful Service in Local Assembly</a></li>
                                 <li><a data-toggle="tab" href="#sectionB">Restful Service in External Assembly</a></li>
+                                <li><a data-toggle="tab" href="#sectionC">(Post) Restful Service in Local Assembly</a></li>
                             </ul>
 
                             <div class="tab-content">
@@ -199,10 +331,10 @@
                                 <div id="sectionA" class="tab-pane fade in active" style='padding:10px;'>
                                     <form class="form">
                                         <div class="form-group">
-                                            <button id="buttonAjaxRun1" type="button" class="btn btn-primary" onclick="ajaxRun1()">Run</button>&ensp;&ensp;/democontroller/movies
+                                            <button id="buttonBoundObjectRun1" type="button" class="btn btn-primary" onclick="boundObjectRun1()">Run</button>&ensp;&ensp;/democontroller/movies
                                         </div>
                                         <div class="form-group">
-                                            <table id="ajaxResult1" class="table table-striped table-hover ">
+                                            <table id="boundObjectResult1" class="table table-striped table-hover ">
                                                 <thead>
                                                     <tr>
                                                         <th>Id</th>
@@ -223,10 +355,10 @@
                                 <div id="sectionB" class="tab-pane fade"  style='padding:10px;'>
                                     <form class="form">
                                         <div class="form-group">
-                                            <button id="buttonAjaxRun2" type="button" class="btn btn-primary" onclick="ajaxRun2()">Run</button>&ensp;&ensp;/externalcontroller/movies
+                                            <button id="buttonBoundObjectRun2" type="button" class="btn btn-primary" onclick="boundObjectRun2()">Run</button>&ensp;&ensp;/externalcontroller/movies
                                         </div>
                                         <div class="form-group">
-                                            <table id="ajaxResult2" class="table table-striped table-hover ">
+                                            <table id="boundObjectResult2" class="table table-striped table-hover ">
                                                 <thead>
                                                     <tr>
                                                         <th>Id</th>
@@ -245,6 +377,107 @@
                                     </form>
                                 </div>
 
+                                <div id="sectionC" class="tab-pane fade" style='padding:10px;'>
+                                    <form class="form">
+                                        <div class="form-group">
+                                            <button id="buttonBoundObjectRun3" type="button" class="btn btn-primary" onclick="boundObjectRun3()">Run</button>&ensp;&ensp;/democontroller/savemovies
+                                        </div>
+                                        <div class="form-group">
+                                            <div id="boundObjectResult3"></div>
+                                        </div>
+                                    </form>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- End Modal -->
+
+        <!-- Modal Custom Scheme-->
+        <div id="ajaxModal" class="modal fade">
+            <div class="modal-dialog">
+
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Ajax Requests</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a data-toggle="tab" href="#sectionI">(Get) Restful Service in Local Assembly</a></li>
+                                <li><a data-toggle="tab" href="#sectionJ">(Get) Restful Service in External Assembly</a></li>
+                                <li><a data-toggle="tab" href="#sectionK">(Post) Restful Service in Local Assembly</a></li>
+                            </ul>
+
+                            <div class="tab-content">
+
+                                <div id="sectionI" class="tab-pane fade in active" style='padding:10px;'>
+                                    <form class="form">
+                                        <div class="form-group">
+                                            <button id="buttonAjaxRun1" type="button" class="btn btn-primary" onclick="ajaxRun1()">Run</button>&ensp;&ensp;http://chromely.com//democontroller/movies
+                                        </div>
+                                        <div class="form-group">
+                                            <table id="ajaxResult1" class="table table-striped table-hover ">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Id</th>
+                                                        <th>Title</th>
+                                                        <th>Year</th>
+                                                        <th>Votes</th>
+                                                        <th>Rating</th>
+                                                        <th>Date</th>
+                                                        <th>RestfulAssembly</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <div id="sectionJ" class="tab-pane fade" style='padding:10px;'>
+                                    <form class="form">
+                                        <div class="form-group">
+                                            <button id="buttonAjaxRun2" type="button" class="btn btn-primary" onclick="ajaxRun2()">Run</button>&ensp;&ensp;http://chromely.com//externalcontroller/movies
+                                        </div>
+                                        <div class="form-group">
+                                            <table id="ajaxResult2" class="table table-striped table-hover ">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Id</th>
+                                                        <th>Title</th>
+                                                        <th>Year</th>
+                                                        <th>Votes</th>
+                                                        <th>Rating</th>
+                                                        <th>Date</th>
+                                                        <th>RestfulAssembly</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <div id="sectionK" class="tab-pane fade" style='padding:10px;'>
+                                    <form class="form">
+                                        <div class="form-group">
+                                            <button id="buttonAjaxRun3" type="button" class="btn btn-primary" onclick="ajaxRun3()">Run</button>&ensp;&ensp;http://chromely.com//democontroller/savemovies
+                                        </div>
+                                        <div class="form-group">
+                                            <div id="ajaxResult3"></div>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
 
                         </div>

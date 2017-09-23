@@ -70,7 +70,7 @@ namespace Chromely.RestfulService
 
             var uri = new Uri(request.Url);
             string routePath = uri.LocalPath;
-            IDictionary<string, string> parameters = null; // GetParameters(request.Url);
+            var parameters = GetParameters(request.Url);
             object postData = GetPostData(request);
 
             return Run(routePath, parameters, postData);
@@ -107,7 +107,7 @@ namespace Chromely.RestfulService
                 throw new Exception(string.Format("Route for path = {0} is null or invalid.", routePath));
             }
 
-            response = route.Invoke(routePath, parameters: parameters?.ToDictionary(), postData: postData);
+            response = route.Invoke(routePath, parameters: parameters?.ToObjectDictionary(), postData: postData);
             response.ReadyState = (int)ReadyState.ResponseIsReady;
             response.Status = (int)System.Net.HttpStatusCode.OK;
             response.StatusText = "OK";
