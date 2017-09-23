@@ -25,6 +25,7 @@
 namespace Chromely.Core.RestfulService
 {
     using System;
+    using System.Collections.Generic;
 
     public class Route
     {
@@ -38,6 +39,12 @@ namespace Chromely.Core.RestfulService
         public Method Method { get; set; }
         public string Path { get; set; }
         public Func<ChromelyRequest, ChromelyResponse> Action { get; set; }
+
+        public ChromelyResponse Invoke(string routePath, IDictionary<string, object> parameters, object postData)
+        {
+            ChromelyRequest request = new ChromelyRequest(routePath, parameters, postData);
+            return Action.Invoke(request);
+        }
 
         public ChromelyResponse Invoke(ChromelyRequest request)
         {

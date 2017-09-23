@@ -68,18 +68,20 @@ namespace Chromely.ChromeHosts.Winapi
                 Locale = locale,
                 MultiThreadedMessageLoop = true,
                 CachePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "CefSharp\\Cache"),
-                LogSeverity = (CefSharp.LogSeverity)HostConfig.LogSeverity,
+                LogSeverity = (CefSharp.LogSeverity)HostConfig.CefLogSeverity,
                 LogFile = HostConfig.CefLogFile
             };
+
+            RegisterSchemeHandlers(settings);
 
             //Perform dependency check to make sure all relevant resources are in our output directory.
             Cef.Initialize(settings, performDependencyCheck: true, browserProcessHandler: null);
 
-            m_browser = new ChromiumWebBrowser(this.Handle, HostConfig.StartUrl);
+            m_browser = new ChromiumWebBrowser(Handle, HostConfig.CefStartUrl);
             m_browser.IsBrowserInitializedChanged += IsBrowserInitializedChanged;
             m_browser.MenuHandler = new CefSharpContextMenuHandler();
 
-            m_browser.RequestHandler = new CefSharpDefaultRequestHandler();
+            m_browser.RequestHandler = new CefSharpRequestHandler();
             RegisterJsHandlers();
 
             base.OnCreate(ref packet);
@@ -154,6 +156,30 @@ namespace Chromely.ChromeHosts.Winapi
             }
         }
 
+        private void RegisterSchemeHandlers(CefSettings settings)
+        {
+            // Register scheme handlers
+            IEnumerable<object> schemeHandlerObjs = IoC.GetAllInstances(typeof(ChromelySchemeHandler));
+            if (schemeHandlerObjs != null)
+            {
+                var schemeHandlers = schemeHandlerObjs.ToList();
+
+                foreach (var item in schemeHandlers)
+                {
+                    if (item is ChromelySchemeHandler)
+                    {
+                        ChromelySchemeHandler handler = (ChromelySchemeHandler)item;
+                        settings.RegisterScheme(new CefCustomScheme
+                        {
+                            SchemeName = handler.SchemeName,
+                            DomainName = handler.DomainName,
+                            SchemeHandlerFactory = (ISchemeHandlerFactory)handler.HandlerFactory
+                        });
+                    }
+                }
+            }
+        }
+
         private void RegisterJsHandlers()
         {
             // Register javascript handlers
@@ -167,13 +193,19 @@ namespace Chromely.ChromeHosts.Winapi
                     if (item is ChromelyJsHandler)
                     {
                         ChromelyJsHandler handler = (ChromelyJsHandler)item;
+                        BindingOptions options = null;
+                        if ((handler.BindingOptions != null) && (handler.BindingOptions is BindingOptions))
+                        {
+                            options = (BindingOptions)handler.BindingOptions;
+                        }
+
                         if (handler.RegisterAsAsync)
                         {
-                            m_browser.RegisterAsyncJsObject(handler.JsMethod, handler.BoundObject);
+                            m_browser.RegisterAsyncJsObject(handler.JsMethod, handler.BoundObject, options);
                         }
                         else
                         {
-                            m_browser.RegisterJsObject(handler.JsMethod, handler.BoundObject);
+                            m_browser.RegisterJsObject(handler.JsMethod, handler.BoundObject, options);
                         }
                     }
                 }

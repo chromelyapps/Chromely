@@ -22,22 +22,15 @@
  SOFTWARE.
  */
 
-namespace Chromely.Core.RestfulService
+namespace Chromely.Core.CefGlueBrowser.Handlers
 {
-    using System;
-    using System.Net;
-
-    public class TaskData
+    using Xilium.CefGlue;
+    
+    public sealed class CefGlueSchemeHandlerFactory : CefSchemeHandlerFactory
     {
-        public TaskData()
+        protected override CefResourceHandler Create(CefBrowser browser, CefFrame frame, string schemeName, CefRequest request)
         {
-            Identifier = Guid.NewGuid().ToString();
+            return new CefGlueDefaultSchemeHandler();
         }
-
-        public HttpStatusCode StatusCode { get; set; }
-        public string Identifier { get; private set; }
-        public object Data { get; set; }
-        public string MimeTypeKey { get; set; }
-        public string MimeType { get; set; }
     }
 }

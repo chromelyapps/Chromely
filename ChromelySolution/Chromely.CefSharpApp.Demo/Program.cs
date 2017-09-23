@@ -46,13 +46,14 @@ namespace Chromely.CefSharpApp.Demo
 
                 ChromelyConfiguration config = ChromelyConfiguration
                                               .Create()
-                                              .WithAppArgs(args)
-                                              .WithHostSize(1200, 900)
+                                              .WithCefAppArgs(args)
+                                              .WithCefHostSize(1200, 900)
                                               .WithCefLogFile("logs\\chromely.cef_new.log")
-                                              .WithDefaultLogger("logs\\chromely_new.log", true)
-                                              .WithStartUrl(startUrl)
-                                              .WithLogSeverity(LogSeverity.Info)
-                                              .RgisterJsHandler("boundControllerAsync", new CefSharpBoundObject(), null, true);
+                                              .WithCefStartUrl(startUrl)
+                                              .WithCefLogSeverity(LogSeverity.Info)
+                                              .UseDefaultLogger("logs\\chromely_new.log", true)
+                                              .RegisterSchemeHandler("http", "chromely.com", new CefSharpSchemeHandlerFactory())
+                                              .RegisterJsHandler("boundControllerAsync", new CefSharpBoundObject(), null, true);
 
                 var factory = ChromeHostFactory.CreateWinapi("chromely.ico");
                 using (var window = factory.CreateWindow(() => new CefSharpBrowserWinapiHost(config),
@@ -72,7 +73,8 @@ namespace Chromely.CefSharpApp.Demo
                     // Scan assembly
                     window.ScanAssemblies();
 
-                    window.SetSize(config.HostWidth, config.HostHeight);
+                    window.SetSize(config.CefHostWidth, config.CefHostHeight);
+                    window.CenterToScreen();
                     window.Show();
                     return new EventLoop().Run(window);
                 }

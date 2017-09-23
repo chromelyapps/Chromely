@@ -26,7 +26,7 @@ namespace Chromely.CefSharpBrowser.Handlers
 {
     using CefSharp;
 
-    internal class CefSharpContextMenuHandler : IContextMenuHandler
+    public class CefSharpContextMenuHandler : IContextMenuHandler
     {
         private const int ShowDevTools = 26501;
         private const int CloseDevTools = 26502;

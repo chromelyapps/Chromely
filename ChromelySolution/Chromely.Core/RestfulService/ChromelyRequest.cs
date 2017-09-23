@@ -28,7 +28,15 @@ namespace Chromely.Core.RestfulService
 
     public class ChromelyRequest
     {
-        public IDictionary<string, string> Parameters { get; set; }
-        public string Data { get; set; }
+        public ChromelyRequest(string routePath, IDictionary<string, object> parameters, object postData)
+        {
+            RoutePath = routePath;
+            Parameters = parameters;
+            PostData = postData;
+        }
+
+        public string RoutePath { get; set; }
+        public IDictionary<string, object> Parameters { get; set; }
+        public object PostData { get; set; }
     }
 }

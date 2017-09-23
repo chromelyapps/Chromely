@@ -24,7 +24,7 @@
 
 namespace Chromely.CefSharpBrowser.Handlers
 {
-    public struct CallbackResponseStruct
+    internal struct CallbackResponseStruct
     {
         public string ResponseText;
 

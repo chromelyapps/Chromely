@@ -60,7 +60,7 @@ namespace Chromely.Core.ChromeHosts.Winapi
                 throw ex;
             }
 
-            var mainArgs = new CefMainArgs(HostConfig.AppArgs);
+            var mainArgs = new CefMainArgs(HostConfig.CefAppArgs);
             var app = new CefWebApp();
 
             var exitCode = CefRuntime.ExecuteProcess(mainArgs, app, IntPtr.Zero);
@@ -75,7 +75,7 @@ namespace Chromely.Core.ChromeHosts.Winapi
                 LocalesDirPath = localFolder,
                 SingleProcess = false,
                 MultiThreadedMessageLoop = true,
-                LogSeverity = (CefLogSeverity)HostConfig.LogSeverity,
+                LogSeverity = (CefLogSeverity)HostConfig.CefLogSeverity,
                 LogFile = HostConfig.CefLogFile
             };
 
@@ -84,10 +84,10 @@ namespace Chromely.Core.ChromeHosts.Winapi
             RegisterSchemeHandlers();
 
             CefBrowserConfig browserConfig = new CefBrowserConfig();
-            browserConfig.StartUrl = HostConfig.StartUrl;
+            browserConfig.StartUrl = HostConfig.CefStartUrl;
             browserConfig.ParentHandle = Handle;
-            browserConfig.AppArgs = HostConfig.AppArgs;
-            browserConfig.CefRectangle = new CefRectangle { X = 0, Y = 0, Width = HostConfig.HostWidth, Height = HostConfig.HostHeight };
+            browserConfig.AppArgs = HostConfig.CefAppArgs;
+            browserConfig.CefRectangle = new CefRectangle { X = 0, Y = 0, Width = HostConfig.CefHostWidth, Height = HostConfig.CefHostHeight };
 
             m_browser = new CefWebBrowser(browserConfig);
 

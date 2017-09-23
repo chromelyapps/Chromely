@@ -28,6 +28,11 @@ namespace Chromely.Core.Infrastructure
 
     public class ChromelySchemeHandler
     {
+        public ChromelySchemeHandler()
+        {
+            Key = Guid.NewGuid().ToString();
+        }
+
         public ChromelySchemeHandler(string schemeName, string domainName, object handlerFactory)
         {
             Key = Guid.NewGuid().ToString();

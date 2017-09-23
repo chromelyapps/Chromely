@@ -31,31 +31,49 @@ namespace Chromely.Core.CefGlueBrowser.Handlers
     using System.IO;
     using System.Net;
     using System.Text;
+    using System.Threading.Tasks;
     using Xilium.CefGlue;
 
     public sealed class CefGlueDefaultSchemeHandler : CefResourceHandler
     {
         private bool m_completed;
         private int m_bytesRead;
-        private TaskData m_chromelyResponse;
+        private ChromelyResponse m_chromelyResponse;
 
         protected override bool ProcessRequest(CefRequest request, CefCallback callback)
         {
-            try
+            bool isCustomScheme = UrlSchemeProvider.IsUrlOfRegisteredCustomScheme(request.Url);
+            if (isCustomScheme)
             {
-                m_chromelyResponse = new TaskData();
-                CefGlueRequestTaskRunner.Run(request, callback, m_chromelyResponse);
-            }
-            catch (Exception exception)
-            {
-                Log.Error(exception);
+                Task.Factory.StartNew(() =>
+                {
+                    using (callback)
+                    {
+                        try
+                        {
+                            m_chromelyResponse = CefGlueRequestTaskRunner.Run(request);
+                        }
+                        catch (Exception exception)
+                        {
+                            Log.Error(exception);
 
-                m_chromelyResponse = new TaskData();
-                m_chromelyResponse.StatusCode = HttpStatusCode.BadRequest;
-                m_chromelyResponse.Data = "An error occured.";
+                            m_chromelyResponse = new ChromelyResponse();
+                            m_chromelyResponse.Status = (int)HttpStatusCode.BadRequest;
+                            m_chromelyResponse.Data = "An error occured.";
+                        }
+                        finally
+                        {
+                            callback.Continue();
+                        }
+                    }
+                });
+
+                return true;
             }
 
-            return true;
+            Log.Error(string.Format("Url {0} is not of a registered custom scheme.", request.Url));
+            callback.Dispose();
+            return false;
         }
 
         protected override void GetResponseHeaders(CefResponse response, out long responseLength, out string redirectUrl)
@@ -67,7 +85,7 @@ namespace Chromely.Core.CefGlueBrowser.Handlers
 
             try
             {
-                HttpStatusCode status = (m_chromelyResponse != null) ? m_chromelyResponse.StatusCode : HttpStatusCode.BadRequest;
+                HttpStatusCode status = (m_chromelyResponse != null) ? (HttpStatusCode)m_chromelyResponse.Status : HttpStatusCode.BadRequest;
                 string errorStatus = (m_chromelyResponse != null) ? m_chromelyResponse.Data.ToString() : "Not Found";
 
                 var headers = response.GetHeaderMap();

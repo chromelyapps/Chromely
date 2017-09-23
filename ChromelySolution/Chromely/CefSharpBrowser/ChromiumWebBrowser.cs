@@ -370,6 +370,12 @@ namespace Chromely.CefSharpBrowser
                     BrowserSettings = new BrowserSettings();
                 }
 
+                // To allow cross-origin request.
+                // This prevents the error: no 'access-control-allow-origin' header is present on the requested resource for XHR requests.
+                BrowserSettings.FileAccessFromFileUrls = CefState.Enabled;
+                BrowserSettings.UniversalAccessFromFileUrls = CefState.Enabled;
+                BrowserSettings.WebSecurity = CefState.Enabled;
+
                 managedCefBrowserAdapter = new ManagedCefBrowserAdapter(this, false);
 
                 initialized = true;

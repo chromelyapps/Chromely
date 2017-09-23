@@ -29,7 +29,7 @@ namespace Chromely.CefSharpBrowser.Handlers
     using CefSharp;
     using Chromely.Core.Infrastructure;
 
-    public class CefSharpDefaultRequestHandler : IRequestHandler
+    public class CefSharpRequestHandler : IRequestHandler
     {
         bool IRequestHandler.OnBeforeBrowse(IWebBrowser browserControl, IBrowser browser, IFrame frame, IRequest request, bool isRedirect)
         {

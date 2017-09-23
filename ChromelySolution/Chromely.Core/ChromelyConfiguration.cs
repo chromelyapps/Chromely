@@ -30,46 +30,46 @@ namespace Chromely.Core
     {
         public ChromelyConfiguration()
         {
-            LogSeverity = LogSeverity.Warning;
+            CefLogSeverity = LogSeverity.Warning;
             CefLogFile = "logs\\chromely.cef.log";
-            LogFile = "logs\\chromely.log";
+            CefHostWidth = 1200;
+            CefHostHeight = 900;
         }
 
-        public string[] AppArgs { get; set; }
-        public string StartUrl { get; set; }
-        public int HostWidth { get; set; }
-        public int HostHeight { get; set; }
-        public LogSeverity LogSeverity { get; set; }
+        public string[] CefAppArgs { get; set; }
+        public string CefStartUrl { get; set; }
+        public int CefHostWidth { get; set; }
+        public int CefHostHeight { get; set; }
+        public LogSeverity CefLogSeverity { get; set; }
         public string CefLogFile { get; set; }
-        public string LogFile { get; set; }
 
         public static ChromelyConfiguration Create()
         {
             return new ChromelyConfiguration();
         }
 
-        public ChromelyConfiguration WithAppArgs(string[] args)
+        public ChromelyConfiguration WithCefAppArgs(string[] args)
         {
-            AppArgs = args;
+            CefAppArgs = args;
             return this;
         }
 
-        public ChromelyConfiguration WithStartUrl(string startUrl)
+        public ChromelyConfiguration WithCefStartUrl(string startUrl)
         {
-            StartUrl = startUrl;
+            CefStartUrl = startUrl;
             return this;
         }
 
-        public ChromelyConfiguration WithHostSize(int width, int height)
+        public ChromelyConfiguration WithCefHostSize(int width, int height)
         {
-            HostWidth = width;
-            HostHeight = height;
+            CefHostWidth = width;
+            CefHostHeight = height;
             return this;
         }
 
-        public ChromelyConfiguration WithLogSeverity(LogSeverity logSeverity)
+        public ChromelyConfiguration WithCefLogSeverity(LogSeverity logSeverity)
         {
-            LogSeverity = logSeverity;
+            CefLogSeverity = logSeverity;
             return this;
         }
 
@@ -79,9 +79,8 @@ namespace Chromely.Core
             return this;
         }
 
-        public ChromelyConfiguration WithDefaultLogger(string logFile, bool logToConsole)
+        public ChromelyConfiguration UseDefaultLogger(string logFile, bool logToConsole)
         {
-            LogFile = logFile;
             Log.LoggerFile = logFile;
             Log.LogToConsole = logToConsole;
             return this;
@@ -93,27 +92,27 @@ namespace Chromely.Core
             return this;
         }
 
-        public virtual ChromelyConfiguration RgisterCustomrUrlScheme(string schemeName, string domainName)
+        public virtual ChromelyConfiguration RegisterCustomrUrlScheme(string schemeName, string domainName)
         {
             UrlScheme scheme = new UrlScheme(schemeName, domainName, false);
             UrlSchemeProvider.RegisterScheme(scheme);
             return this;
         }
 
-        public virtual ChromelyConfiguration RgisterExternaleUrlScheme(string schemeName, string domainName)
+        public virtual ChromelyConfiguration RegisterExternaleUrlScheme(string schemeName, string domainName)
         {
             UrlScheme scheme = new UrlScheme(schemeName, domainName, true);
             UrlSchemeProvider.RegisterScheme(scheme);
             return this;
         }
 
-        public virtual ChromelyConfiguration RgisterSchemeHandler(string schemeName, string domainName, object handlerFactory)
+        public virtual ChromelyConfiguration RegisterSchemeHandler(string schemeName, string domainName, object handlerFactory)
         {
-            RgisterSchemeHandler(new ChromelySchemeHandler(schemeName, domainName, handlerFactory));
+            RegisterSchemeHandler(new ChromelySchemeHandler(schemeName, domainName, handlerFactory));
             return this;
         }
 
-        public virtual ChromelyConfiguration RgisterSchemeHandler(ChromelySchemeHandler chromelySchemeHandler)
+        public virtual ChromelyConfiguration RegisterSchemeHandler(ChromelySchemeHandler chromelySchemeHandler)
         {
             if (chromelySchemeHandler != null)
             {
@@ -125,13 +124,13 @@ namespace Chromely.Core
             return this;
         }
 
-        public virtual ChromelyConfiguration RgisterJsHandler(string jsMethod, object boundObject, object boundingOptions, bool registerAsync)
+        public virtual ChromelyConfiguration RegisterJsHandler(string jsMethod, object boundObject, object boundingOptions, bool registerAsync)
         {
-            RgisterJsHandler(new ChromelyJsHandler(jsMethod, boundObject, boundingOptions, registerAsync));
+            RegisterJsHandler(new ChromelyJsHandler(jsMethod, boundObject, boundingOptions, registerAsync));
             return this;
         }
 
-        public virtual ChromelyConfiguration RgisterJsHandler(ChromelyJsHandler chromelyJsHandler)
+        public virtual ChromelyConfiguration RegisterJsHandler(ChromelyJsHandler chromelyJsHandler)
         {
             if (chromelyJsHandler != null)
             {

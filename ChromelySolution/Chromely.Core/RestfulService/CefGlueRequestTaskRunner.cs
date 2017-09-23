@@ -37,70 +37,76 @@ namespace Chromely.Core.RestfulService
 
     public static class CefGlueRequestTaskRunner
     {
-        public static void Run(CefRequest request, CefCallback callback, TaskData response)
+        public static ChromelyResponse Run(CefRequest request)
         {
-            bool isCustomScheme = UrlSchemeProvider.IsUrlOfRegisteredCustomScheme(request.Url);
-
-            if (!isCustomScheme)
-            {
-                throw new Exception(string.Format("Url {0} is not of a registered custom scheme.", request.Url));
-            }
-
             var uri = new Uri(request.Url);
             string routePath = uri.LocalPath;
 
+            ChromelyResponse response = new ChromelyResponse();
             if (string.IsNullOrEmpty(routePath))
             {
-                return;
+                response.ReadyState = (int)ReadyState.ResponseIsReady;
+                response.Status = (int)System.Net.HttpStatusCode.BadRequest;
+                response.StatusText = "Bad Request";
+
+                return response;
             }
 
             if (routePath.ToLower().Equals("/info"))
             {
-                RunInfo(request, callback, response);
-                return;
+                response = GetInfo();
+                return response;
             }
 
-            Task.Run(() =>
+            Route route = ServiceRouteProvider.GetRoute(routePath);
+
+            if (route == null)
             {
-                Route route = ServiceRouteProvider.GetRoute(routePath);
+                throw new Exception(string.Format("Route for path = {0} is null or invalid.", routePath));
+            }
 
-                if (route == null)
-                {
-                    throw new Exception(string.Format("Route for path = {0} is null or invalid.", routePath));
-                }
+            var parameters = GetParameters(request.Url);
+            string postData = GetPostData(request);
 
-                var parameters = GetParameters(request.Url);
-                string postData = GetPostData(request);
-
-                ChromelyRequest chromelyRequest = new ChromelyRequest();
-                chromelyRequest.Parameters = parameters;
-                chromelyRequest.Data = postData;
-
-                ChromelyResponse chromelyResponse = route.Invoke(chromelyRequest);
-                response.StatusCode = System.Net.HttpStatusCode.OK;
-                response.Data = chromelyResponse.Data;
-
-                callback.Continue();
-            });
+            return ExcuteRoute(routePath, parameters, postData);
         }
 
-        private static void RunInfo(CefRequest request, CefCallback callback, TaskData response)
+        private static ChromelyResponse ExcuteRoute(string routePath, object parameters, object postData)
         {
-            Task.Run(() =>
+            ChromelyResponse response = new ChromelyResponse();
+
+            Route route = ServiceRouteProvider.GetRoute(routePath);
+
+            if (route == null)
             {
-                string chromeVersion = CefRuntime.ChromeVersion;
+                throw new Exception(string.Format("Route for path = {0} is null or invalid.", routePath));
+            }
 
-                Dictionary<string, string> infoItemDic = new Dictionary<string, string>();
-                infoItemDic.Add("divObjective", "To build HTML5 desktop apps using embedded Chromium without WinForm or WPF. Uses Windows and Linux native GUI API. Those who are interested can extend to WinForm or WPF. Main form of communication with Chromium rendering process is via Ajax HTTP/XHR requests using custom schemes and domains (CefGlue) and .NET/Javascript intregration (CefSharp).");
-                infoItemDic.Add("divPlatform", "Cross-platform - Windows, Linux. Built on CefGlue, CefSharp, NET Standard 2.0, .NET Core 2.0, .NET Framework 4.61 and above.");
-                infoItemDic.Add("divVersion", chromeVersion);
+            response = route.Invoke(routePath, parameters: parameters?.ToDictionary(), postData: postData);
+            response.ReadyState = (int)ReadyState.ResponseIsReady;
+            response.Status = (int)System.Net.HttpStatusCode.OK;
+            response.StatusText = "OK";
 
-                ChromelyResponse chromelyResponse = new ChromelyResponse();
-                response.StatusCode = System.Net.HttpStatusCode.OK;
-                response.Data = infoItemDic;
+            return response;
+        }
 
-                callback.Continue();
-            });
+        private static ChromelyResponse GetInfo()
+        {
+            ChromelyResponse response = new ChromelyResponse();
+
+            string chromeVersion = CefRuntime.ChromeVersion;
+
+            Dictionary<string, string> infoItemDic = new Dictionary<string, string>();
+            infoItemDic.Add("divObjective", "To build HTML5 desktop apps using embedded Chromium without WinForm or WPF. Uses Windows and Linux native GUI API. It can be extended to use WinForm or WPF. Main form of communication with Chromium rendering process is via Ajax HTTP/XHR requests using custom schemes and domains (CefGlue, CefSharp) and .NET/Javascript integration (CefSharp).");
+            infoItemDic.Add("divPlatform", "Cross-platform - Windows, Linux. Built on CefGlue, CefSharp, NET Standard 2.0, .NET Core 2.0, .NET Framework 4.61 and above.");
+            infoItemDic.Add("divVersion", chromeVersion);
+
+            response.ReadyState = (int)ReadyState.ResponseIsReady;
+            response.Status = (int)System.Net.HttpStatusCode.OK;
+            response.StatusText = "OK";
+            response.Data = infoItemDic;
+
+            return response;
         }
 
         private static IDictionary<string, string> GetParameters(string url)
