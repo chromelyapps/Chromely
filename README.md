@@ -16,7 +16,7 @@ To run the Demo:
 2. Get Cef binaries from [download page](http://opensource.spotify.com/cefbuilds/index.html). Base Chromium version 59 is supported for CefGlue, for CefSharp it will be dependent on what package is installed. The test is targeted for x64.  
     * Copy all files from /Release to the demo folder.
     * Copy all files fron /Resources to demo folder.
-3. Chromely uses a restful like service. To test an external dll implementing a restful service. Please see how to register the an external restful service dll in :  [Register Service](https://github.com/mattkol/Chromely/blob/master/src/Demos/Chromely.CefGlue.Winapi.Demo/Program.cs). To run the demo implementation - create a folder "C:\ChromelyDlls" and copy [Chromely.Service.Demo.dll](https://github.com/mattkol/Chromely/tree/master/src/SharedDlls) to the folder.
+3. Chromely uses a restful like service. To test an external dll implementing a restful service. Please see how to register an external restful service dll in :  [Register Service](https://github.com/mattkol/Chromely/blob/master/src/Demos/Chromely.CefGlue.Winapi.Demo/Program.cs). To run the demo implementation - create a folder "C:\ChromelyDlls" and copy [Chromely.Service.Demo.dll](https://github.com/mattkol/Chromely/tree/master/src/SharedDlls) to the folder.
 4. Run cefglue_winapi_demo.exe or cefsharp_winapi_demo.exe
 
 #### Chromely Demo Screenshots
