@@ -4,20 +4,20 @@ Chromely is a .NET/.NET Core HTML5 Chromium desktop framework. It is focused on 
 ### Platforms
 Cross-platform - Windows, Linux. Built on CefGlue, CefSharp, NET Standard 2.0, .NET Core 2.0, .NET Framework 4.61 and above.
 
-### Current CefGlue/Chromium Version
+### Base CefGlue/Chromium Version
 CefGlue: 59.0.3071.109
 CEF:3.3071.1644.g408afd1
 Chromium: 59.0.3071.109
 
-### CfeGlue .NET Demo
-.NET Demo is located at: [Chromely.CefGlueApp.Demo](https://github.com/mattkol/Chromely/tree/master/ChromelySolution/Chromely.CefGlueApp.Demo).
+### Demos
+Demos are located at: [Chromely.Demos](https://github.com/mattkol/Chromely/tree/master/Demos).
 To run the Demo:
-1. Downlaod all files at [Chromely.CefGlueApp.Demo](https://github.com/mattkol/Chromely/tree/master/ChromelySolution/Chromely.CefGlueApp.Demo).
-2. Get Cef binaries from [download page](http://opensource.spotify.com/cefbuilds/index.html). Current Chromium version 59 is supported. The test is targeted for x64.  
+1. Downlaod all files at [CefGlue Demo](https://github.com/mattkol/Chromely/tree/master/Demos/CefGlueWin64) or  [CefSharp Demo](https://github.com/mattkol/Chromely/tree/master/Demos/CefSharpWin64).
+2. Get Cef binaries from [download page](http://opensource.spotify.com/cefbuilds/index.html). Base Chromium version 59 is supported for CefGlue, for CefSharp it will be dependent on what package is installed. The test is targeted for x64.  
     * Copy all files from /Release to the demo folder.
     * Copy all files fron /Resources to demo folder.
-3. Chromely uses a restful like service. To test an external dll implementing a restful service. Please see how to register the an external restful service dll in :  [Register Service](https://github.com/mattkol/Chromely/blob/master/ChromelySolution/Chromely.CefGlueApp.Demo/Program.cs). To run the demo implementation - create a folder "C:\ChromelyDlls" and copy Chromely.Service.Demo.dll to the folder.
-4. Run cefglue_app_demo.exe
+3. Chromely uses a restful like service. To test an external dll implementing a restful service. Please see how to register the an external restful service dll in :  [Register Service](https://github.com/mattkol/Chromely/blob/master/src/Demos/Chromely.CefGlue.Winapi.Demo/Program.cs). To run the demo implementation - create a folder "C:\ChromelyDlls" and copy [Chromely.Service.Demo.dll](https://github.com/mattkol/Chromely/tree/master/src/SharedDlls) to the folder.
+4. Run cefglue_winapi_demo.exe or cefsharp_winapi_demo.exe
 
 #### Chromely Demo Screenshots
 ![](https://github.com/mattkol/Chromely/blob/master/Screenshots/CefGlue/chromely_cefglue_index.png)
