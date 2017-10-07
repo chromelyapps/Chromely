@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Platforms>AnyCPU</Platforms>
+    <RootNamespace>Xilium.CefGlue</RootNamespace>
+    <Copyright>Copyright 2017 Kola Oyewumi</Copyright>
+    <PackageProjectUrl>https://github.com/mattkol/Chromely</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/mattkol/Chromely/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageReleaseNotes>The base version for this release is 59.0.3071.109. This is also reflected in how this version is named. For example this version will be 59.0.3071.109</PackageReleaseNotes>
+    <Description>This is an unofficial port of Xilium.CefGlue to NetStandard 2.0. For more recent versions and updates please also check the main Xilium.CefGlue  site  @ https://bitbucket.org/xilium/xilium.cefglue/wiki/Home.</Description>
+    <ProductVersion>59.0.3071.109</ProductVersion>
+    <AssemblyVersion>59.0.3071.109</AssemblyVersion>
+    <FileVersion>59.0.3071.3071</FileVersion>
+    <PackageTags>Cef Chromium HTML5 Desktop Chromely CefGlue CefSharp Restful  Ajax HTTP XHR JavascriptIntegration NetStandard .NET Core</PackageTags>
+    <Authors>Kola Oyewumi</Authors>
+    <Company />
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <OutputPath>bin\Debug\</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <OutputPath>bin\Release\</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Interop\Base\cef_string_t.disabled.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Collections.Specialized" Version="4.3.0" />
+    <PackageReference Include="System.IO.UnmanagedMemoryStream" Version="4.3.0" />
+  </ItemGroup>
+
+</Project>
