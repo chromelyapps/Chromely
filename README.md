@@ -16,7 +16,7 @@ For more on demos - [Demos](https://github.com/mattkol/Chromely/wiki/Demos)
 ### VS Projects Description 
 | Project | Framework| Comment |
 | :---         |     :---      | :--- |
-| Chromely.Unofficial.CefGlue.NetStd   | .NET Standard    | *** Unofficial port of Xilium.CefGlue.    |
+| Chromely.Unofficial.CefGlue.NetStd   | .NET Standard    | *** Unofficial port of Xilium.CefGlue. Available on [Nuget](https://www.nuget.org/packages/Chromely.Unofficial.CefGlue.NetStd/).    |
 | Chromely.Core    | .NET Standard       |   The core library required to build either a Chromely CefSharp or Chromely CefGlue apps.    |
 | Chromely.CefGlue.Winapi    | .NET Standard        | Chromely CefGlue implementation library - this is in .NET Standard as it can be used in both .NET (Win) and .NET Core (Win, Linux)     |
 | Chromely.CefSharp.Winapi     | .NET       | Chromely CefSharp implementation is only for .NET     |
