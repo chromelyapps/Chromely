@@ -8,8 +8,8 @@ Xilium.CefGlue .NET Standard port is available on [Nuget](https://www.nuget.org/
 
 For more info/documentation, please check [Chromely wiki](https://github.com/mattkol/Chromely/wiki).
 
-#### Chromely Demo 
-For more on demos - [Demos](https://github.com/mattkol/Chromely/wiki/Demos)
+### Chromely Demos 
+For more info on demos - [Demos](https://github.com/mattkol/Chromely/wiki/Demos)
 ![](https://github.com/mattkol/Chromely/blob/master/Screenshots/Cefsharp/chromely_cefsharp_index_info.png)
 
 
@@ -20,3 +20,12 @@ For more on demos - [Demos](https://github.com/mattkol/Chromely/wiki/Demos)
 | Chromely.Core    | .NET Standard       |   The core library required to build either a Chromely CefSharp or Chromely CefGlue apps.    |
 | Chromely.CefGlue.Winapi    | .NET Standard        | Chromely CefGlue implementation library - this is in .NET Standard as it can be used in both .NET (Win) and .NET Core (Win, Linux)     |
 | Chromely.CefSharp.Winapi     | .NET       | Chromely CefSharp implementation is only for .NET     |
+
+### References
+* WinApi - https://github.com/prasannavl/WinApi
+* Cef - https://bitbucket.org/chromiumembedded/cef
+* Xilium.CefGlue - https://bitbucket.org/xilium/xilium.cefglue/wiki/Home
+* CefSharp - https://github.com/cefsharp/CefSharp
+* Json Serializer - https://github.com/lbv/litjson
+* Caliburn.Micro Container - https://github.com/Caliburn-Micro/Caliburn.Micro/blob/master/src/Caliburn.Micro/SimpleContainer.cs
+
