@@ -13,7 +13,7 @@ For more info on demos - [Demos](https://github.com/mattkol/Chromely/wiki/Demos)
 ![](https://github.com/mattkol/Chromely/blob/master/Screenshots/Cefsharp/chromely_cefsharp_index_info.png)
 
 
-### VS Projects Description 
+### Packages
 | Project | Framework| Comment |
 | :---         |     :---      | :--- |
 | Chromely.Unofficial.CefGlue.NetStd   | .NET Standard    | *** Unofficial port of Xilium.CefGlue. Available on [Nuget](https://www.nuget.org/packages/Chromely.Unofficial.CefGlue.NetStd/).    |
