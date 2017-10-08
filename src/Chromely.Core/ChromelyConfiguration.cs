@@ -43,8 +43,13 @@ namespace Chromely.Core
         public LogSeverity CefLogSeverity { get; set; }
         public string CefLogFile { get; set; }
 
-        public static ChromelyConfiguration Create()
+        public static ChromelyConfiguration Create(IChromelyContainer container = null)
         {
+            if (container != null)
+            {
+                IoC.Container = container;
+            }
+
             return new ChromelyConfiguration();
         }
 

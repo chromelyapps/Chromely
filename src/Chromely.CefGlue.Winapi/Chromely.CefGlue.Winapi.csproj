@@ -10,17 +10,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Chromely.Unofficial.CefGlue.NetStd" Version="59.0.3071.109" />
     <PackageReference Include="WinApi" Version="4.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Chromely.Core\Chromely.Core.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Chromely.Unofficial.CefGlue.NetStd">
-      <HintPath>..\SharedDlls\CefGlue\Chromely.Unofficial.CefGlue.NetStd.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>
