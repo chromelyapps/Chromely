@@ -8,10 +8,6 @@ Xilium.CefGlue .NET Standard port is available on [Nuget](https://www.nuget.org/
 
 For more info/documentation, please check [Chromely wiki](https://github.com/mattkol/Chromely/wiki).
 
-### Chromely Demos 
-For more info on demos - [Demos](https://github.com/mattkol/Chromely/wiki/Demos)
-![](https://github.com/mattkol/Chromely/blob/master/Screenshots/Cefsharp/chromely_cefsharp_index_info.png)
-
 ### Creating a Simple App (Using CefGlue with Winapi host)
 For more info see - [Getting Started](https://github.com/mattkol/Chromely/wiki/Getting-Started)
 ````csharp
@@ -39,6 +35,10 @@ class Program
   }
 }
 ````
+### Chromely Demos 
+For more info on demos - [Demos](https://github.com/mattkol/Chromely/wiki/Demos)
+![](https://github.com/mattkol/Chromely/blob/master/Screenshots/Cefsharp/chromely_cefsharp_index_info.png)
+
 ### References
 * WinApi - https://github.com/prasannavl/WinApi
 * Cef - https://bitbucket.org/chromiumembedded/cef
