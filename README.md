@@ -8,18 +8,36 @@ Xilium.CefGlue .NET Standard port is available on [Nuget](https://www.nuget.org/
 
 For more info/documentation, please check [Chromely wiki](https://github.com/mattkol/Chromely/wiki).
 
+### Creating a Simple App (Using CefGlue with Winapi host)
+For more info see - [Getting Started](https://github.com/mattkol/Chromely/wiki/Getting-Started)
+````csharp
+class Program
+{
+   static int Main(string[] args)
+   {
+      string startUrl = "www.google.com";
+
+      ChromelyConfiguration config = ChromelyConfiguration
+                                    .Create()
+                                    .WithCefAppArgs(args)
+                                    .WithCefHostSize(1000, 600)
+                                    .WithCefStartUrl(startUrl);
+
+     var factory = WinapiHostFactory.Init();
+     using (var window = factory.CreateWindow(() => new CefGlueBrowserHost(config),
+           "chromely", constructionParams: new FrameWindowConstructionParams()))
+      {
+         window.SetSize(config.CefHostWidth, config.CefHostHeight);
+         window.CenterToScreen();
+         window.Show();
+         return new EventLoop().Run(window);
+     }
+  }
+}
+````
 ### Chromely Demos 
 For more info on demos - [Demos](https://github.com/mattkol/Chromely/wiki/Demos)
 ![](https://github.com/mattkol/Chromely/blob/master/Screenshots/Cefsharp/chromely_cefsharp_index_info.png)
-
-
-### Packages
-| Project | Framework| Comment |
-| :---         |     :---      | :--- |
-| Chromely.Unofficial.CefGlue.NetStd   | .NET Standard    | *** Unofficial port of Xilium.CefGlue. Available on [Nuget](https://www.nuget.org/packages/Chromely.Unofficial.CefGlue.NetStd/).    |
-| Chromely.Core    | .NET Standard       |   The core library required to build either a Chromely CefSharp or Chromely CefGlue apps.    |
-| Chromely.CefGlue.Winapi    | .NET Standard        | Chromely CefGlue implementation library - this is in .NET Standard as it can be used in both .NET (Win) and .NET Core (Win, Linux)     |
-| Chromely.CefSharp.Winapi     | .NET       | Chromely CefSharp implementation is only for .NET     |
 
 ### References
 * WinApi - https://github.com/prasannavl/WinApi
