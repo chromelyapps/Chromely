@@ -35,10 +35,10 @@ namespace Chromely.Core.Winapi
         {
         }
 
-        public static WindowFactory Init(string iconFullPath)
+        public static WindowFactory Init(string iconFullPath = null)
         {
-            IntPtr iconPtr = NativeMethods.LoadIconFromFile(iconFullPath);
-            return Create(null, WindowClassStyles.CS_VREDRAW | WindowClassStyles.CS_HREDRAW, null, iconPtr, null, null, null);
+            IntPtr? hIcon = NativeMethods.LoadIconFromFile(iconFullPath);
+            return Create(null, WindowClassStyles.CS_VREDRAW | WindowClassStyles.CS_HREDRAW, null, hIcon, null, null, null);
         }
 
     }

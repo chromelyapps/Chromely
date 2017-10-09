@@ -25,6 +25,7 @@
 namespace Chromely.Core.Winapi
 {
     using System;
+    using System.IO;
     using System.Runtime.InteropServices;
     using WinApi.User32;
 
@@ -55,8 +56,18 @@ namespace Chromely.Core.Winapi
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool GetWindowRect(IntPtr hwnd, out RECT lpRect);
 
-        public static IntPtr LoadIconFromFile(string iconFullPath)
+        public static IntPtr? LoadIconFromFile(string iconFullPath)
         {
+            if (string.IsNullOrEmpty(iconFullPath))
+            {
+                return null;
+            }
+
+            if (!File.Exists(iconFullPath))
+            {
+                return null;
+            }
+
             IntPtr iconPtr = LoadImage(                              // returns a HANDLE so we have to cast to HICON
                   IntPtr.Zero,                                        // hInstance must be NULL when loading from a file
                   iconFullPath,                                       // the icon file name
