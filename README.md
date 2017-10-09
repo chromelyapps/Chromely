@@ -12,7 +12,7 @@ For more info/documentation, please check [Chromely wiki](https://github.com/mat
 For more info on demos - [Demos](https://github.com/mattkol/Chromely/wiki/Demos)
 ![](https://github.com/mattkol/Chromely/blob/master/Screenshots/Cefsharp/chromely_cefsharp_index_info.png)
 
-### Creating a Simpla App (Using CefGlue with Winapi host)
+### Creating a Simple App (Using CefGlue with Winapi host)
 ````csharp
 class Program
 {
