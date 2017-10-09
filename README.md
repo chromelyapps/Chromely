@@ -12,7 +12,32 @@ For more info/documentation, please check [Chromely wiki](https://github.com/mat
 For more info on demos - [Demos](https://github.com/mattkol/Chromely/wiki/Demos)
 ![](https://github.com/mattkol/Chromely/blob/master/Screenshots/Cefsharp/chromely_cefsharp_index_info.png)
 
+### Creating a Simpla App (Using CefGlue with Winapi host)
+````csharp
+class Program
+{
+   static int Main(string[] args)
+   {
+      string startUrl = "www.google.com";
 
+      ChromelyConfiguration config = ChromelyConfiguration
+                                    .Create()
+                                    .WithCefAppArgs(args)
+                                    .WithCefHostSize(1000, 600)
+                                    .WithCefStartUrl(startUrl);
+
+     var factory = WinapiHostFactory.Init();
+     using (var window = factory.CreateWindow(() => new CefGlueBrowserHost(config),
+           "chromely", constructionParams: new FrameWindowConstructionParams()))
+      {
+       window.SetSize(config.CefHostWidth, config.CefHostHeight);
+       window.CenterToScreen();
+       window.Show();
+       return new EventLoop().Run(window);
+     }
+  }
+}
+````
 ### Packages
 | Project | Framework| Comment |
 | :---         |     :---      | :--- |
