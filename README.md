@@ -30,10 +30,10 @@ class Program
      using (var window = factory.CreateWindow(() => new CefGlueBrowserHost(config),
            "chromely", constructionParams: new FrameWindowConstructionParams()))
       {
-       window.SetSize(config.CefHostWidth, config.CefHostHeight);
-       window.CenterToScreen();
-       window.Show();
-       return new EventLoop().Run(window);
+         window.SetSize(config.CefHostWidth, config.CefHostHeight);
+         window.CenterToScreen();
+         window.Show();
+         return new EventLoop().Run(window);
      }
   }
 }
