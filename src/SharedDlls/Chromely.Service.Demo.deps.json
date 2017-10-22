@@ -9,7 +9,7 @@
     ".NETStandard,Version=v2.0/": {
       "Chromely.Service.Demo/1.0.0": {
         "dependencies": {
-          "Chromely.Core": "1.0.0",
+          "Chromely.Core": "0.9.0-beta01",
           "NETStandard.Library": "2.0.0"
         },
         "runtime": {
@@ -48,7 +48,7 @@
           "lib/netstandard1.4/WinApi.dll": {}
         }
       },
-      "Chromely.Core/1.0.0": {
+      "Chromely.Core/0.9.0-beta01": {
         "dependencies": {
           "WinApi": "4.0.0"
         },
@@ -99,7 +99,7 @@
       "path": "winapi/4.0.0",
       "hashPath": "winapi.4.0.0.nupkg.sha512"
     },
-    "Chromely.Core/1.0.0": {
+    "Chromely.Core/0.9.0-beta01": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

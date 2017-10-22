@@ -34,6 +34,7 @@ namespace Chromely.Service.Demo
         public DemoController()
         {
             RegisterGetRequest("/externalcontroller/movies", GetMoviesInfo);
+            RegisterPostRequest("/externalcontroller/savemovies", SaveMovies);
         }
 
         private ChromelyResponse GetMoviesInfo(ChromelyRequest request)
@@ -51,6 +52,27 @@ namespace Chromely.Service.Demo
 
             ChromelyResponse response = new ChromelyResponse();
             response.Data = movieInfos;
+            return response;
+        }
+
+        private ChromelyResponse SaveMovies(ChromelyRequest request)
+        {
+            if (request == null)
+            {
+                throw new ArgumentNullException("Request null argument!");
+            }
+
+            if (request.PostData == null)
+            {
+                throw new Exception("Post data is null or invalid.");
+            }
+
+            ChromelyResponse response = new ChromelyResponse();
+            var postDataJson = request.PostData.EnsureJson();
+            int rowsReceived = postDataJson.ArrayCount();
+
+            response.Data = string.Format("{0} rows of data successfully saved.", rowsReceived);
+
             return response;
         }
     }

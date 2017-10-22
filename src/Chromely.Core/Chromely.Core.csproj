@@ -3,6 +3,19 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Platforms>AnyCPU</Platforms>
+    <AssemblyVersion>0.9.0.0</AssemblyVersion>
+    <FileVersion>0.9.0.0</FileVersion>
+    <Version>0.9.0.0-beta01</Version>
+    <Authors>Kola Oyewumi</Authors>
+    <Company>Kola Oyewumi</Company>
+    <PackageTags>Cef Chromium HTML5 Desktop Chromely CefGlue CefSharp Restful  Ajax HTTP XHR MessageRouter JavascriptIntegration NetStandard .NET Core</PackageTags>
+    <Description>This is a .NET Standard library. It is the base/core library required to build either Chromely CefSharp or Chromely CefGlue apps. It has all the common features and functionalities for both both types of apps on either Windows or Linux.</Description>
+    <Copyright>Copyright 2017 Kola Oyewumi</Copyright>
+    <PackageLicenseUrl>https://github.com/mattkol/Chromely/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/mattkol/Chromely</PackageProjectUrl>
+    <PackageIconUrl>https://github.com/mattkol/Chromely/tree/master/nugets/chromely.ico</PackageIconUrl>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

@@ -41,16 +41,27 @@
         }
     </style>
     <script type="text/javascript">
+
+        function infoResult(res) {
+            var jsonData = JSON.parse(res.ResponseText);
+            if (jsonData.ReadyState == 4 && jsonData.Status == 200) {
+                $('#divObjective').html(jsonData.Data.divObjective);
+                $('#divPlatform').html(jsonData.Data.divPlatform);
+                $('#divVersion').html(jsonData.Data.divVersion);
+            }
+        }
+
         function demoRun() {
             $("#infoPanel").removeClass('hidden');
             $("#runButton").addClass('hidden');
             $("#moreInfoButton").removeClass('hidden');
-            
+
             var http = new XMLHttpRequest();
             var url = "http://chromely.com/info";
             http.open("GET", url, true);
 
             http.onreadystatechange = function () {
+
                 if (http.readyState == 4 && http.status == 200) {
                     var jsonData = JSON.parse(http.responseText);
                     $('#divObjective').html(jsonData.divObjective);
@@ -61,7 +72,133 @@
             http.send();
         }
 
-        function launchModal() {
+        function launchModal1() {
+            $("#messageRouterModal").modal('show');
+        }
+
+        function messageRouterResult1(res) {
+            var jsonData = JSON.parse(res);
+            if (jsonData.ReadyState == 4 && jsonData.Status == 200) {
+                for (var i = 0; i < jsonData.Data.length; i++) {
+                    var row = '<tr>';
+
+                    row += '<td>' + jsonData.Data[i].Id + '</td>';
+                    row += '<td>' + jsonData.Data[i].Title + '</td>';
+                    row += '<td>' + jsonData.Data[i].Year + '</td>';
+                    row += '<td>' + jsonData.Data[i].Votes + '</td>';
+                    row += '<td>' + jsonData.Data[i].Rating + '</td>';
+                    row += '<td>' + jsonData.Data[i].Date + '</td>';
+                    row += '<td>' + jsonData.Data[i].RestfulAssembly + '</td>';
+
+                    row += '</tr>';
+                    $('#messageRouterResult1 tbody').append(row);
+                }
+            }
+        }
+
+        function messageRouterRun1() {
+
+            $('#messageRouterResult1 tbody').html('');
+
+            var request = {
+                "method": "GET",
+                "url": "/democontroller/movies",
+                "parameters": null,
+                "postData": null,
+            };
+
+            window.cefQuery({
+                request: JSON.stringify(request),
+                onSuccess: function (response) {
+                    messageRouterResult1(response);
+                }, onFailure: function (err, msg) {
+                    console.log(err, msg);
+                }
+            });
+        }
+
+
+        function messageRouterResult2(res) {
+            var jsonData = JSON.parse(res);
+            if (jsonData.ReadyState == 4 && jsonData.Status == 200) {
+                for (var i = 0; i < jsonData.Data.length; i++) {
+                    var row = '<tr>';
+
+                    row += '<td>' + jsonData.Data[i].Id + '</td>';
+                    row += '<td>' + jsonData.Data[i].Title + '</td>';
+                    row += '<td>' + jsonData.Data[i].Year + '</td>';
+                    row += '<td>' + jsonData.Data[i].Votes + '</td>';
+                    row += '<td>' + jsonData.Data[i].Rating + '</td>';
+                    row += '<td>' + jsonData.Data[i].Date + '</td>';
+                    row += '<td>' + jsonData.Data[i].RestfulAssembly + '</td>';
+
+                    row += '</tr>';
+                    $('#messageRouterResult2 tbody').append(row);
+                }
+            }
+        }
+
+        function messageRouterRun2() {
+
+            $('#messageRouterResult2 tbody').html('');
+
+            var request = {
+                "method": "GET",
+                "url": "/externalcontroller/movies",
+                "parameters": null,
+                "postData": null,
+            };
+
+            window.cefQuery({
+                request: JSON.stringify(request),
+                onSuccess: function (response) {
+                    messageRouterResult2(response);
+                }, onFailure: function (err, msg) {
+                    console.log(err, msg);
+                }
+            });
+        }
+
+        function messageRouterResult3(res) {
+            var jsonData = JSON.parse(res);
+            if (jsonData.ReadyState == 4 && jsonData.Status == 200) {
+                $('#messageRouterResult3').html(jsonData.Data);
+            }
+        }
+
+        function messageRouterRun3() {
+
+            $('#messageRouterResult3').html('');
+
+            var moviesJson = [
+                { Id: 1, Title: "The Shawshank Redemption", Year: 1994, Votes: 678790, Rating: 9.2 },
+                { Id: 2, Title: "The Godfather", Year: 1972, votes: 511495, Rating: 9.2 },
+                { Id: 3, Title: "The Godfather: Part II", Year: 1974, Votes: 319352, Rating: 9.0 },
+                { Id: 4, Title: "The Good, the Bad and the Ugly", Year: 1966, Votes: 213030, Rating: 8.9 },
+                { Id: 5, Title: "My Fair Lady", Year: 1964, Votes: 533848, Rating: 8.9 },
+                { Id: 6, Title: "12 Angry Men", Year: 1957, Votes: 164558, Rating: 8.9 }
+            ];
+
+            var request = {
+                "method": "POST",
+                "url": "/democontroller/savemovies",
+                "parameters": null,
+                "postData": moviesJson,
+            };
+
+            window.cefQuery({
+                request: JSON.stringify(request),
+                onSuccess: function (response) {
+                    messageRouterResult3(response);
+                }, onFailure: function (err, msg) {
+                    console.log(err, msg);
+                }
+            });
+        }
+
+    </script>
+    <script type="text/javascript">
+        function launchModal2() {
             $("#ajaxModal").modal('show');
         }
 
@@ -139,7 +276,7 @@
             ];
 
             var http = new XMLHttpRequest();
-            var url = "http://chromely.com/democontroller/savemovies?a=1&b=2&c=string%20param";
+            var url = "http://chromely.com/democontroller/savemovies";
             http.open("POST", url, true);
             http.setRequestHeader("Content-type", "application/json");
 
@@ -152,7 +289,6 @@
 
             http.send(JSON.stringify(moviesJson));
         }
-
     </script>
 </head>
 <body>
@@ -170,14 +306,15 @@
             <div id="runButton" class="centerBlock">
                 <form class="form-inline">
                     <div class="form-group">
-                        <label for="info">Ajax Demo (get chromely info):</label>
+                        <label for="info">Message Router/Ajax Demo (get chromely info):</label>
                     </div>
                     <button id="buttonDemoRun" type="button" class="btn btn-default" onclick="demoRun()">Run</button>
                 </form>
             </div>
             <div id="moreInfoButton" class="centerBlock hidden">
                 <form class="form-inline">
-                    <button type="button" class="btn btn-default" onclick="launchModal()">Ajax Tests</button>
+                    <button type="button" class="btn btn-default" onclick="launchModal1()">Message Router Tests</button>
+                    <button type="button" class="btn btn-default" onclick="launchModal2()">Ajax Tests</button>
                     <a href="https://github.com/mattkol/Chromely" class="btn btn-default" role="button">more info</a>
                 </form>
             </div>
@@ -202,7 +339,7 @@
                     </div>
 
                     <div class="panel panel-primary">
-                        <div class="panel-heading">CefGlue/Chromium Base Version</div>
+                        <div class="panel-heading">Current CefSharp/Chromium Version</div>
                         <div id="divVersion" class="panel-body"></div>
                     </div>
 
@@ -214,7 +351,97 @@
 
         </div>
 
-        <!-- Modal -->
+        <!-- Message Router-->
+        <div id="messageRouterModal" class="modal fade">
+            <div class="modal-dialog">
+
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Message Router</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a data-toggle="tab" href="#sectionA">Restful Service in Local Assembly</a></li>
+                                <li><a data-toggle="tab" href="#sectionB">Restful Service in External Assembly</a></li>
+                                <li><a data-toggle="tab" href="#sectionC">(Post) Restful Service in Local Assembly</a></li>
+                            </ul>
+
+                            <div class="tab-content">
+
+                                <div id="sectionA" class="tab-pane fade in active" style='padding:10px;'>
+                                    <form class="form">
+                                        <div class="form-group">
+                                            <button id="buttonMessageRouterRun1" type="button" class="btn btn-primary" onclick="messageRouterRun1()">Run</button>&ensp;&ensp;/democontroller/movies
+                                        </div>
+                                        <div class="form-group">
+                                            <table id="messageRouterResult1" class="table table-striped table-hover ">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Id</th>
+                                                        <th>Title</th>
+                                                        <th>Year</th>
+                                                        <th>Votes</th>
+                                                        <th>Rating</th>
+                                                        <th>Date</th>
+                                                        <th>RestfulAssembly</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <div id="sectionB" class="tab-pane fade" style='padding:10px;'>
+                                    <form class="form">
+                                        <div class="form-group">
+                                            <button id="buttonMessageRouterRun2" type="button" class="btn btn-primary" onclick="messageRouterRun2()">Run</button>&ensp;&ensp;/externalcontroller/movies
+                                        </div>
+                                        <div class="form-group">
+                                            <table id="messageRouterResult2" class="table table-striped table-hover ">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Id</th>
+                                                        <th>Title</th>
+                                                        <th>Year</th>
+                                                        <th>Votes</th>
+                                                        <th>Rating</th>
+                                                        <th>Date</th>
+                                                        <th>RestfulAssembly</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <div id="sectionC" class="tab-pane fade" style='padding:10px;'>
+                                    <form class="form">
+                                        <div class="form-group">
+                                            <button id="buttonMessageRouterRun3" type="button" class="btn btn-primary" onclick="messageRouterRun3()">Run</button>&ensp;&ensp;/democontroller/savemovies
+                                        </div>
+                                        <div class="form-group">
+                                            <div id="messageRouterResult3"></div>
+                                        </div>
+                                    </form>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- End Modal -->
+        <!-- Modal Custom Scheme-->
         <div id="ajaxModal" class="modal fade">
             <div class="modal-dialog">
 
@@ -226,14 +453,14 @@
                     <div class="modal-body">
                         <div>
                             <ul class="nav nav-tabs">
-                                <li class="active"><a data-toggle="tab" href="#sectionA">(Get) Restful Service in Local Assembly</a></li>
-                                <li><a data-toggle="tab" href="#sectionB">(Get) Restful Service in External Assembly</a></li>
-                                <li><a data-toggle="tab" href="#sectionC">(Post) Restful Service in Local Assembly</a></li>
+                                <li class="active"><a data-toggle="tab" href="#sectionI">(Get) Restful Service in Local Assembly</a></li>
+                                <li><a data-toggle="tab" href="#sectionJ">(Get) Restful Service in External Assembly</a></li>
+                                <li><a data-toggle="tab" href="#sectionK">(Post) Restful Service in Local Assembly</a></li>
                             </ul>
 
                             <div class="tab-content">
 
-                                <div id="sectionA" class="tab-pane fade in active" style='padding:10px;'>
+                                <div id="sectionI" class="tab-pane fade in active" style='padding:10px;'>
                                     <form class="form">
                                         <div class="form-group">
                                             <button id="buttonAjaxRun1" type="button" class="btn btn-primary" onclick="ajaxRun1()">Run</button>&ensp;&ensp;http://chromely.com//democontroller/movies
@@ -252,12 +479,12 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody></tbody>
-                                            </table> 
+                                            </table>
                                         </div>
                                     </form>
                                 </div>
 
-                                <div id="sectionB" class="tab-pane fade"  style='padding:10px;'>
+                                <div id="sectionJ" class="tab-pane fade" style='padding:10px;'>
                                     <form class="form">
                                         <div class="form-group">
                                             <button id="buttonAjaxRun2" type="button" class="btn btn-primary" onclick="ajaxRun2()">Run</button>&ensp;&ensp;http://chromely.com//externalcontroller/movies
@@ -275,14 +502,13 @@
                                                         <th>RestfulAssembly</th>
                                                     </tr>
                                                 </thead>
-                                                <tbody>
-                                                </tbody>
-                                            </table> 
+                                                <tbody></tbody>
+                                            </table>
                                         </div>
                                     </form>
                                 </div>
 
-                                <div id="sectionC" class="tab-pane fade" style='padding:10px;'>
+                                <div id="sectionK" class="tab-pane fade" style='padding:10px;'>
                                     <form class="form">
                                         <div class="form-group">
                                             <button id="buttonAjaxRun3" type="button" class="btn btn-primary" onclick="ajaxRun3()">Run</button>&ensp;&ensp;http://chromely.com//democontroller/savemovies

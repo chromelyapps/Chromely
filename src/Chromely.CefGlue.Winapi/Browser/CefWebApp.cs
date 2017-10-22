@@ -7,6 +7,7 @@
 
 namespace Chromely.CefGlue.Winapi.Browser
 {
+    using Chromely.CefGlue.Winapi.Browser.Handlers;
     using Chromely.Core.Infrastructure;
     using System.Collections.Generic;
     using System.Linq;
@@ -14,6 +15,8 @@ namespace Chromely.CefGlue.Winapi.Browser
 
     internal sealed class CefWebApp : CefApp
     {
+        private CefRenderProcessHandler m_renderProcessHandler = new CefGlueRenderProcessHandler();
+
         protected override void OnRegisterCustomSchemes(CefSchemeRegistrar registrar)
         {
             IEnumerable<object> schemeHandlerObjs = IoC.GetAllInstances(typeof(ChromelySchemeHandler));
@@ -38,6 +41,11 @@ namespace Chromely.CefGlue.Winapi.Browser
         protected override void OnBeforeCommandLineProcessing(string processType, CefCommandLine commandLine)
         {
             ;
+        }
+
+        protected override CefRenderProcessHandler GetRenderProcessHandler()
+        {
+            return m_renderProcessHandler;
         }
     }
 }

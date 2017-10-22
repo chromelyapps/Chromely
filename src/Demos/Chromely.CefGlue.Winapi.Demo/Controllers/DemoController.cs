@@ -27,7 +27,6 @@ namespace Chromely.CefGlueApp.Demo.Controllers
     using System;
     using System.Collections.Generic;
     using Chromely.Core.RestfulService;
-    using LitJson;
 
     [ControllerProperty(Name = "DemoController", Route = "democontroller")]
     public class DemoController : ChromelyController
@@ -72,9 +71,7 @@ namespace Chromely.CefGlueApp.Demo.Controllers
             var postDataJson = request.PostData.EnsureJson();
             int rowsReceived = postDataJson.ArrayCount();
 
-            JsonData data = new JsonData();
-            data["Data"] = string.Format("{0} rows of data successfully saved.", rowsReceived);
-            response.Data = data;
+            response.Data = string.Format("{0} rows of data successfully saved.", rowsReceived);
 
             return response;
         }

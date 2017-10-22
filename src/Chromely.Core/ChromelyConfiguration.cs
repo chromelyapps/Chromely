@@ -113,8 +113,7 @@ namespace Chromely.Core
 
         public virtual ChromelyConfiguration RegisterSchemeHandler(string schemeName, string domainName, object handlerFactory)
         {
-            RegisterSchemeHandler(new ChromelySchemeHandler(schemeName, domainName, handlerFactory));
-            return this;
+            return RegisterSchemeHandler(new ChromelySchemeHandler(schemeName, domainName, handlerFactory));
         }
 
         public virtual ChromelyConfiguration RegisterSchemeHandler(ChromelySchemeHandler chromelySchemeHandler)
@@ -131,8 +130,7 @@ namespace Chromely.Core
 
         public virtual ChromelyConfiguration RegisterJsHandler(string jsMethod, object boundObject, object boundingOptions, bool registerAsync)
         {
-            RegisterJsHandler(new ChromelyJsHandler(jsMethod, boundObject, boundingOptions, registerAsync));
-            return this;
+            return RegisterJsHandler(new ChromelyJsHandler(jsMethod, boundObject, boundingOptions, registerAsync));
         }
 
         public virtual ChromelyConfiguration RegisterJsHandler(ChromelyJsHandler chromelyJsHandler)
@@ -140,6 +138,21 @@ namespace Chromely.Core
             if (chromelyJsHandler != null)
             {
                 IoC.RegisterInstance(typeof(ChromelyJsHandler), chromelyJsHandler.Key, chromelyJsHandler);
+            }
+
+            return this;
+        }
+
+        public virtual ChromelyConfiguration RegisterMessageRouterHandler(object chromelyMesssageRouterHandler)
+        {
+            return RegisterMessageRouterHandler(new ChromelyMesssageRouter(chromelyMesssageRouterHandler));
+        }
+
+        public virtual ChromelyConfiguration RegisterMessageRouterHandler(ChromelyMesssageRouter chromelyMesssageRouter)
+        {
+            if (chromelyMesssageRouter != null)
+            {
+                IoC.RegisterInstance(typeof(ChromelyMesssageRouter), chromelyMesssageRouter.Key, chromelyMesssageRouter);
             }
 
             return this;

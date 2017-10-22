@@ -70,6 +70,34 @@ namespace Chromely.CefGlue.Winapi.RestfulService
             return ExcuteRoute(routePath, parameters, postData);
         }
 
+        public static ChromelyResponse Run(string routePath, object parameters, object postData)
+        {
+            ChromelyResponse response = new ChromelyResponse();
+            if (string.IsNullOrEmpty(routePath))
+            {
+                response.ReadyState = (int)ReadyState.ResponseIsReady;
+                response.Status = (int)System.Net.HttpStatusCode.BadRequest;
+                response.StatusText = "Bad Request";
+
+                return response;
+            }
+
+            if (routePath.ToLower().Equals("/info"))
+            {
+                response = GetInfo();
+                return response;
+            }
+
+            Route route = ServiceRouteProvider.GetRoute(routePath);
+
+            if (route == null)
+            {
+                throw new Exception(string.Format("Route for path = {0} is null or invalid.", routePath));
+            }
+
+            return ExcuteRoute(routePath, parameters, postData);
+        }
+
         private static ChromelyResponse ExcuteRoute(string routePath, object parameters, object postData)
         {
             ChromelyResponse response = new ChromelyResponse();

@@ -35,16 +35,21 @@ namespace Chromely.CefGlue.Winapi.ChromeHost
     using Chromely.Core.RestfulService;
     using WinApi.Windows;
     using Xilium.CefGlue;
+    using Xilium.CefGlue.Wrapper;
+    using Chromely.CefGlue.Winapi.Browser.Handlers;
 
     public class CefGlueBrowserHost : EventedWindowCore, IChromelyServiceProvider
     {
         CefWebBrowser m_browser;
+
         public CefGlueBrowserHost(ChromelyConfiguration hostConfig)
         {
             HostConfig = hostConfig;
             m_browser = null;
             ServiceAssemblies = new List<Assembly>();
         }
+
+        public static CefMessageRouterBrowserSide BrowserMessageRouter { get; private set; }
 
         public ChromelyConfiguration HostConfig { get; private set; }
 
@@ -80,9 +85,10 @@ namespace Chromely.CefGlue.Winapi.ChromeHost
                 LogFile = HostConfig.CefLogFile
             };
 
-            
             CefRuntime.Initialize(mainArgs, settings, app, IntPtr.Zero);
+
             RegisterSchemeHandlers();
+            RegisterMessageRouters();
 
             CefBrowserConfig browserConfig = new CefBrowserConfig();
             browserConfig.StartUrl = HostConfig.CefStartUrl;
@@ -176,5 +182,59 @@ namespace Chromely.CefGlue.Winapi.ChromeHost
                 }
             }
         }
+
+        private void RegisterMessageRouters()
+        {
+            if (!CefRuntime.CurrentlyOn(CefThreadId.UI))
+            {
+                PostTask(CefThreadId.UI, this.RegisterMessageRouters);
+                return;
+            }
+
+            BrowserMessageRouter = new CefMessageRouterBrowserSide(new CefMessageRouterConfig());
+
+            // Register message router handlers
+            List<object> messageRouterHandlers = IoC.GetAllInstances(typeof(ChromelyMesssageRouter)).ToList();
+            if ((messageRouterHandlers != null) && (messageRouterHandlers.Count > 0))
+            {
+                var routerHandlers = messageRouterHandlers.ToList();
+
+                foreach (var item in routerHandlers)
+                {
+                    ChromelyMesssageRouter routerHandler = (ChromelyMesssageRouter)item;
+                    if (routerHandler.Handler is CefMessageRouterBrowserSide.Handler)
+                    {
+                        BrowserMessageRouter.AddHandler((CefMessageRouterBrowserSide.Handler)routerHandler.Handler);
+                    }
+                }
+            }
+            else
+            {
+                BrowserMessageRouter.AddHandler(new CefGlueMessageRouterHandler());
+            }
+        }
+
+        private void PostTask(CefThreadId threadId, Action action)
+        {
+            CefRuntime.PostTask(threadId, new ActionTask(action));
+        }
+
+        internal sealed class ActionTask : CefTask
+        {
+            public Action _action;
+
+            public ActionTask(Action action)
+            {
+                _action = action;
+            }
+
+            protected override void Execute()
+            {
+                _action();
+                _action = null;
+            }
+        }
+
+        public delegate void Action();
     }
 }

@@ -24,6 +24,7 @@
 
 namespace Chromely.CefGlue.Winapi.Demo
 {
+    using Caliburn.Micro;
     using Chromely.CefGlue.Winapi.Browser.Handlers;
     using Chromely.CefGlue.Winapi.ChromeHost;
     using Chromely.Core;

@@ -8,6 +8,7 @@
 namespace Chromely.CefGlue.Winapi.Browser
 {
     using Chromely.CefGlue.Winapi.Browser.Handlers;
+    using Chromely.CefGlue.Winapi.ChromeHost;
     using Xilium.CefGlue;
 
     internal class CefWebClient : CefClient
@@ -56,5 +57,9 @@ namespace Chromely.CefGlue.Winapi.Browser
             return m_menuHandler;
         }
 
+        protected override bool OnProcessMessageReceived(CefBrowser browser, CefProcessId sourceProcess, CefProcessMessage message)
+        {
+            return CefGlueBrowserHost.BrowserMessageRouter.OnProcessMessageReceived(browser, sourceProcess, message);
+        }
     }
 }
