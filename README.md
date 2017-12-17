@@ -1,10 +1,13 @@
 # Chromely
-Chromely is a .NET/.NET Core HTML5 Chromium desktop framework. It is focused on building apps using embedded Chromium ([Cef](https://bitbucket.org/chromiumembedded/cef)) without WinForm or WPF. Chromely uses Windows and Linux native GUI API as chromium hosts. It can be extended to use WinForm or WPF. Main form of communication with Chromium rendering process is via Ajax HTTP/XHR requests using custom schemes and domains ([Xilium.CefGlue](https://bitbucket.org/xilium/xilium.cefglue/wiki/Home), [CefSharp](https://github.com/cefsharp/CefSharp)) and .NET/Javascript integration ([CefSharp](https://github.com/cefsharp/CefSharp)).
+Chromely is a .NET/.NET Core HTML5 Chromium desktop framework. It is focused on building apps using embedded Chromium ([Cef](https://bitbucket.org/chromiumembedded/cef)) without WinForm or WPF. Chromely uses Windows and Linux native GUI API as chromium hosts. It can be extended to use WinForm or WPF. Main form of communication with Chromium rendering process is via Ajax HTTP/XHR requests using custom schemes and domains ([Xilium.CefGlue](https://bitbucket.org/xilium/xilium.cefglue/wiki/Home), [CefSharp](https://github.com/cefsharp/CefSharp)), .NET/Javascript integration ([CefSharp](https://github.com/cefsharp/CefSharp)), Generic Message Routing ([Xilium.CefGlue](https://bitbucket.org/xilium/xilium.cefglue/wiki/Home)).
 
 ### Platforms
 Cross-platform - Windows, Linux. Built on CefGlue, CefSharp, NET Standard 2.0, .NET Core 2.0, .NET Framework 4.61 and above.
 
-Xilium.CefGlue .NET Standard port is available on [Nuget](https://www.nuget.org/packages/Chromely.Unofficial.CefGlue.NetStd/).
+- Xilium.CefGlue .NET Standard port is available on [Nuget](https://www.nuget.org/packages/Chromely.Unofficial.CefGlue.NetStd/).
+- Chromely.Core beta is available on  [Nuget](https://www.nuget.org/packages/Chromely.Core/0.9.0-beta01).
+- Chromely.CefGlue.Winapi beta is available on  [Nuget](https://www.nuget.org/packages/Chromely.CefGlue.Winapi/0.9.0-beta01).
+- Chromely.CefSharp.Winapi beta is available on [Nuget](https://www.nuget.org/packages/Chromely.CefSharp.Winapi/0.9.0-beta01).
 
 For more info/documentation, please check [Chromely wiki](https://github.com/mattkol/Chromely/wiki).
 
