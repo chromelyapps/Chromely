@@ -76,7 +76,7 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
             RegisterSchemeHandlers(settings);
 
             //Perform dependency check to make sure all relevant resources are in our output directory.
-            CefSharpGlobal.Cef.Initialize(settings, performDependencyCheck: true, browserProcessHandler: null);
+            CefSharpGlobal.Cef.Initialize(settings, performDependencyCheck: false, browserProcessHandler: null);
 
             m_browser = new ChromiumWebBrowser(Handle, HostConfig.CefStartUrl);
             m_browser.IsBrowserInitializedChanged += IsBrowserInitializedChanged;

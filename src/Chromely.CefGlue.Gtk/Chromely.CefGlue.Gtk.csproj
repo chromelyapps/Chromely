@@ -4,4 +4,12 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Chromely.Unofficial.CefGlue.NetStd" Version="59.0.3071.109" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Chromely.Core\Chromely.Core.csproj" />
+  </ItemGroup>
+
 </Project>

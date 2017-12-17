@@ -13,7 +13,7 @@
     <Copyright>Copyright 2017 Kola Oyewumi</Copyright>
     <PackageLicenseUrl>https://github.com/mattkol/Chromely/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/mattkol/Chromely</PackageProjectUrl>
-    <PackageIconUrl>https://github.com/mattkol/Chromely/tree/master/nugets/chromely.ico</PackageIconUrl>
+    <PackageIconUrl></PackageIconUrl>
     <PackageTags>Cef Chromium HTML5 Desktop Chromely CefGlue  Restful  Ajax HTTP XHR MessageRouter JavascriptIntegration  .NET Core</PackageTags>
     <Description>Chromely CefGlue Winapi implementation library - this is in .NET Standard 2.0 as it can be used in both .NET (Windows) and .NET Core (Windows, Linux).</Description>
   </PropertyGroup>
