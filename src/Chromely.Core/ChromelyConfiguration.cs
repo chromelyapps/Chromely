@@ -36,12 +36,14 @@ namespace Chromely.Core
             CefHostHeight = 900;
         }
 
+        public string CefTitle { get; set; }
         public string[] CefAppArgs { get; set; }
         public string CefStartUrl { get; set; }
         public int CefHostWidth { get; set; }
         public int CefHostHeight { get; set; }
         public LogSeverity CefLogSeverity { get; set; }
         public string CefLogFile { get; set; }
+        public string CefIconFile { get; set; }
 
         public static ChromelyConfiguration Create(IChromelyContainer container = null)
         {
@@ -62,6 +64,18 @@ namespace Chromely.Core
         public ChromelyConfiguration WithCefStartUrl(string startUrl)
         {
             CefStartUrl = startUrl;
+            return this;
+        }
+
+        public ChromelyConfiguration WithCefTitle(string title)
+        {
+            CefTitle = title;
+            return this;
+        }
+
+        public ChromelyConfiguration WithCefIconFile(string iconFile)
+        {
+            CefIconFile = iconFile;
             return this;
         }
 

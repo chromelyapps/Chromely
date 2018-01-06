@@ -70,7 +70,7 @@ namespace Chromely.CefGlue.Winapi.Demo
                     string serviceAssemblyFile = @"C:\ChromelyDlls\Chromely.Service.Demo.dll";
                     window.RegisterServiceAssembly(serviceAssemblyFile);
 
-                    // Scan assembly
+                    // Scan assemblies for Controller routes 
                     window.ScanAssemblies();
 
                     window.SetSize(config.CefHostWidth, config.CefHostHeight);

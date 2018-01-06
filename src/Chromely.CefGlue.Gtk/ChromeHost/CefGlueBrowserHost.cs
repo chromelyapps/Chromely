@@ -7,8 +7,13 @@
     using Xilium.CefGlue;
     using Chromely.Core;
 
-    public sealed class CefGlueBrowserHost : HostBase
+    public class CefGlueBrowserHost : HostBase
     {
+        public CefGlueBrowserHost(ChromelyConfiguration hostConfig) 
+            : base(hostConfig)
+        {
+        }
+
         protected override void PlatformInitialize()
         {
             Application.Init();
@@ -32,7 +37,7 @@
 
         protected override Window CreateMainView()
         {
-            return new Window(this, "chromely", 1200, 800, "chromely.ico");
+            return new Window(this, HostConfig);
         }
     }
 }

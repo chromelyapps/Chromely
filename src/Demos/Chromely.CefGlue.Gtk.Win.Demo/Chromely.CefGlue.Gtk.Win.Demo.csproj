@@ -1,9 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <TargetFramework>net461</TargetFramework>
     <Platforms>x86</Platforms>
     <ApplicationIcon>chromely.ico</ApplicationIcon>
+    <StartupObject />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -14,8 +15,8 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Chromely.CefGlue.Gtk\Chromely.CefGlue.Gtk.csproj" />
-    <ProjectReference Include="..\Chromely.Core\Chromely.Core.csproj" />
+    <ProjectReference Include="..\..\Chromely.CefGlue.Gtk\Chromely.CefGlue.Gtk.csproj" />
+    <ProjectReference Include="..\..\Chromely.Core\Chromely.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Content\css\bootstrap.min.css">

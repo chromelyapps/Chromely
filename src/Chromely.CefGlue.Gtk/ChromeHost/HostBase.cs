@@ -4,42 +4,32 @@
     using Xilium.CefGlue.Wrapper;
     using Xilium.CefGlue;
     using Chromely.CefGlue.Gtk.Browser;
+    using System.Reflection;
+    using System.Collections.Generic;
+    using Chromely.Core;
+    using Chromely.Core.Infrastructure;
+    using System.IO;
+    using Chromely.Core.RestfulService;
+    using System.Linq;
+    using Chromely.CefGlue.Gtk.Browser.Handlers;
 
     public abstract class HostBase : IDisposable
     {
+        private Window m_mainView;
+
+        public HostBase(ChromelyConfiguration hostConfig)
+        {
+            HostConfig = hostConfig;
+            ServiceAssemblies = new List<Assembly>();
+        }
+
         public static CefMessageRouterBrowserSide BrowserMessageRouter { get; private set; }
 
-        private Window _mainView;
+        public ChromelyConfiguration HostConfig { get; private set; }
 
-        protected HostBase()
-        {
-        }
+        public List<Assembly> ServiceAssemblies { get; private set; }
 
-        #region IDisposable
-
-        ~HostBase()
-        {
-            Dispose(false);
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-        }
-
-        #endregion
-
-        public string Name { get { return "Xilium CefGlue Demo"; } }
-        public int DefaultWidth { get { return 800; } }
-        public int DefaultHeight { get { return 600; } }
-        public string HomeUrl { get { return "http://google.com"; } }
-
-        protected Window MainView { get { return _mainView; } }
+        protected Window MainView { get { return m_mainView; } }
 
         public int Run(string[] args)
         {
@@ -47,25 +37,23 @@
             {
                 return RunInternal(args);
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                // Log(ex.ToString());
+                Log.Error(exception);
                 return 1;
             }
         }
-
-        protected bool MultiThreadedMessageLoop { get; private set; }
 
         private int RunInternal(string[] args)
         {
             CefRuntime.Load();
 
             var settings = new CefSettings();
-            settings.MultiThreadedMessageLoop = MultiThreadedMessageLoop = CefRuntime.Platform == CefRuntimePlatform.Windows;
+            settings.MultiThreadedMessageLoop = CefRuntime.Platform == CefRuntimePlatform.Windows;
             settings.SingleProcess = false;
             settings.LogSeverity = CefLogSeverity.Verbose;
-            settings.LogFile = "cef.log";
-            settings.ResourcesDirPath = System.IO.Path.GetDirectoryName(new Uri(System.Reflection.Assembly.GetEntryAssembly().CodeBase).LocalPath);
+            settings.LogFile = HostConfig.CefLogFile;
+            settings.ResourcesDirPath = Path.GetDirectoryName(new Uri(System.Reflection.Assembly.GetEntryAssembly().CodeBase).LocalPath);
             settings.RemoteDebuggingPort = 20480;
             settings.NoSandbox = true;
 
@@ -81,26 +69,30 @@
             var app = new CefWebApp();
 
             var exitCode = CefRuntime.ExecuteProcess(mainArgs, app, IntPtr.Zero);
-            Console.WriteLine("CefRuntime.ExecuteProcess() returns {0}", exitCode);
+            Log.Info((string.Format("CefRuntime.ExecuteProcess() returns {0}", exitCode)));
+
             if (exitCode != -1)
+            {
+                // An error has occured.
                 return exitCode;
+            }
 
             // guard if something wrong
             foreach (var arg in args) { if (arg.StartsWith("--type=")) { return -2; } }
 
             CefRuntime.Initialize(mainArgs, settings, app, IntPtr.Zero);
 
-            //RegisterSchemes();
-            //RegisterMessageRouter();
+            RegisterSchemeHandlers();
+            RegisterMessageRouters();
 
             PlatformInitialize();
 
-            _mainView = CreateMainView();
+            m_mainView = CreateMainView();
 
             PlatformRunMessageLoop();
 
-            _mainView.Dispose();
-            _mainView = null;
+            m_mainView.Dispose();
+            m_mainView = null;
 
             CefRuntime.Shutdown();
 
@@ -123,24 +115,100 @@
 
         protected abstract Window CreateMainView();
 
-        private void RegisterSchemes()
+
+        public void RegisterExternalUrlScheme(UrlScheme scheme)
         {
-            // register custom scheme handler
-          //  CefRuntime.RegisterSchemeHandlerFactory("http", DumpRequestDomain, new DemoAppSchemeHandlerFactory());
-            // CefRuntime.AddCrossOriginWhitelistEntry("http://localhost", "http", "", true);
+            scheme.IsExternal = true;
+            UrlSchemeProvider.RegisterScheme(scheme);
         }
 
-        private void RegisterMessageRouter()
+        public void RegisterServiceAssembly(string filename)
         {
-            if (!CefRuntime.CurrentlyOn(CefThreadId.UI))
+            if (File.Exists(filename))
             {
-                PostTask(CefThreadId.UI, this.RegisterMessageRouter);
+                RegisterServiceAssembly(Assembly.LoadFile(filename));
+            }
+        }
+
+        public void RegisterServiceAssembly(Assembly assembly)
+        {
+            if (ServiceAssemblies == null)
+            {
+                ServiceAssemblies = new List<Assembly>();
+            }
+
+            if (assembly != null)
+            {
+                ServiceAssemblies.Add(assembly);
+            }
+        }
+
+        public void ScanAssemblies()
+        {
+            if ((ServiceAssemblies == null) || (ServiceAssemblies.Count == 0))
+            {
                 return;
             }
 
-            // window.cefQuery({ request: 'my_request', onSuccess: function(response) { console.log(response); }, onFailure: function(err,msg) { console.log(err, msg); } });
-            //  DemoApp.BrowserMessageRouter = new CefMessageRouterBrowserSide(new CefMessageRouterConfig());
-            //   DemoApp.BrowserMessageRouter.AddHandler(new DemoMessageRouterHandler());
+            foreach (var assembly in ServiceAssemblies)
+            {
+                RouteScanner scanner = new RouteScanner(assembly);
+                Dictionary<string, Route> currentRouteDictionary = scanner.Scan();
+                ServiceRouteProvider.MergeRoutes(currentRouteDictionary);
+            }
+        }
+
+        private void RegisterSchemeHandlers()
+        {
+            // Register scheme handlers
+            IEnumerable<object> schemeHandlerObjs = IoC.GetAllInstances(typeof(ChromelySchemeHandler));
+            if (schemeHandlerObjs != null)
+            {
+                var schemeHandlers = schemeHandlerObjs.ToList();
+
+                foreach (var item in schemeHandlers)
+                {
+                    if (item is ChromelySchemeHandler)
+                    {
+                        ChromelySchemeHandler handler = (ChromelySchemeHandler)item;
+                        if (handler.HandlerFactory is CefSchemeHandlerFactory)
+                        {
+                            CefRuntime.RegisterSchemeHandlerFactory(handler.SchemeName, handler.DomainName, (CefSchemeHandlerFactory)handler.HandlerFactory);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void RegisterMessageRouters()
+        {
+            if (!CefRuntime.CurrentlyOn(CefThreadId.UI))
+            {
+                PostTask(CefThreadId.UI, this.RegisterMessageRouters);
+                return;
+            }
+
+            BrowserMessageRouter = new CefMessageRouterBrowserSide(new CefMessageRouterConfig());
+
+            // Register message router handlers
+            List<object> messageRouterHandlers = IoC.GetAllInstances(typeof(ChromelyMesssageRouter)).ToList();
+            if ((messageRouterHandlers != null) && (messageRouterHandlers.Count > 0))
+            {
+                var routerHandlers = messageRouterHandlers.ToList();
+
+                foreach (var item in routerHandlers)
+                {
+                    ChromelyMesssageRouter routerHandler = (ChromelyMesssageRouter)item;
+                    if (routerHandler.Handler is CefMessageRouterBrowserSide.Handler)
+                    {
+                        BrowserMessageRouter.AddHandler((CefMessageRouterBrowserSide.Handler)routerHandler.Handler);
+                    }
+                }
+            }
+            else
+            {
+                BrowserMessageRouter.AddHandler(new CefGlueMessageRouterHandler());
+            }
         }
 
         public static void PostTask(CefThreadId threadId, Action action)
@@ -150,20 +218,39 @@
 
         internal sealed class ActionTask : CefTask
         {
-            public Action _action;
+            public Action m_action;
 
             public ActionTask(Action action)
             {
-                _action = action;
+                m_action = action;
             }
 
             protected override void Execute()
             {
-                _action();
-                _action = null;
+                m_action();
+                m_action = null;
             }
         }
 
         public delegate void Action();
+
+        #region IDisposable
+
+        ~HostBase()
+        {
+            Dispose(false);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+        }
+
+        #endregion
     }
 }

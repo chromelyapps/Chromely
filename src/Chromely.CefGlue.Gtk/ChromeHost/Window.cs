@@ -1,49 +1,34 @@
 ﻿namespace Chromely.CefGlue.Gtk.ChromeHost
 {
     using Chromely.CefGlue.Gtk.Browser;
+    using Chromely.Core;
     using System;
     using Xilium.CefGlue;
 
     public sealed class Window : NativeWindow
     {
-        private CefWebBrowser _core;
-        private IntPtr _browserWindowHandle;
+        private CefWebBrowser m_core;
+        private IntPtr m_browserWindowHandle;
+        private ChromelyConfiguration m_hostConfig;
+        private readonly HostBase m_application;
 
-        private readonly HostBase _application;
-        private readonly string _applicationTitle;
-
-        private int _x;
-        private int _y;
-        private int _width;
-        private int _height;
-
-        private bool _created;
-
-        public Window(HostBase application, string title, int width, int height, string iconFile = null)
-            : base(title, width, height, iconFile)
+        public Window(HostBase application, ChromelyConfiguration hostConfig)
+            : base(hostConfig.CefTitle, hostConfig.CefHostWidth, hostConfig.CefHostHeight, hostConfig.CefIconFile)
         {
-            _core = new CefWebBrowser(this, new CefBrowserSettings(), "www.google.com");
-            _core.Created += new EventHandler(BrowserCreated);
-
-            _application = application;
-            _applicationTitle = title;
+            m_hostConfig = hostConfig;
+            m_core = new CefWebBrowser(this, new CefBrowserSettings(), hostConfig.CefStartUrl);
+            m_core.Created += new EventHandler(BrowserCreated);
+            m_application = application;
 
             ShowWindow();
         }
 
         public void Close()
         {
-            Console.WriteLine("Close()");
             Dispose();
         }
 
-        public string StartUrl
-        {
-            get { return _core.StartUrl; }
-            set { _core.StartUrl = value; }
-        }
-
-        public CefWebBrowser WebBrowser { get { return _core; } }
+        public CefWebBrowser WebBrowser { get { return m_core; } }
 
         public CefBrowser CurrentBrowser => throw new NotImplementedException();
 
@@ -54,11 +39,11 @@
             {
                 case CefRuntimePlatform.Windows:
                     var parentHandle = HostXid;
-                    windowInfo.SetAsChild(parentHandle, new CefRectangle(0, 0, 1200, 800)); // TODO: set correct  x, y, width, height  to do not waiting OnSizeAllocated event
+                    windowInfo.SetAsChild(parentHandle, new CefRectangle(0, 0, m_hostConfig.CefHostWidth, m_hostConfig.CefHostHeight)); 
                     break;
 
                 case CefRuntimePlatform.Linux:
-                    windowInfo.SetAsChild(HostXid, new CefRectangle(0, 0, 0, 0));
+                    windowInfo.SetAsChild(HostXid, new CefRectangle(0, 0, m_hostConfig.CefHostWidth, m_hostConfig.CefHostHeight));
                     break;
 
                 case CefRuntimePlatform.MacOSX:
@@ -66,31 +51,30 @@
                     throw new NotSupportedException();
             }
 
-            _core.Create(windowInfo);
+            m_core.Create(windowInfo);
         }
 
         protected override void OnExit(object sender, EventArgs e)
         {
-            _application.Quit();
+            m_application.Quit();
         }
 
         private void BrowserCreated(object sender, EventArgs e)
         {
-            _browserWindowHandle = _core.CefBrowser.GetHost().GetWindowHandle();
-            _created = true;
+            m_browserWindowHandle = m_core.CefBrowser.GetHost().GetWindowHandle();
         }
 
         public void Dispose()
         {
-            if (_core != null)
+            if (m_core != null)
             {
-                var browser = _core.CefBrowser;
+                var browser = m_core.CefBrowser;
                 var host = browser.GetHost();
                 host.CloseBrowser();
                 host.Dispose();
                 browser.Dispose();
                 browser = null;
-                _browserWindowHandle = IntPtr.Zero;
+                m_browserWindowHandle = IntPtr.Zero;
             }
         }
     }
