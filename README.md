@@ -10,7 +10,7 @@ Cross-platform - Windows, Linux. Built on CefGlue, CefSharp, NET Standard 2.0, .
 [![Chromely.Unofficial.CefGlue.NetStd](http://img.shields.io/nuget/v/Chromely.Unofficial.CefGlue.NetStd.svg?style=flat&label=Chromely.Unofficial.CefGlue.NetStd)](https://www.nuget.org/packages/Chromely.Unofficial.CefGlue.NetStd/)
 
 For more info/documentation, please check [Chromely wiki](https://github.com/mattkol/Chromely/wiki). 
-<br>[![Chromely + Angular](https://img.shields.io/badge/Chromely%20Apps-Built%20with%20Angular%202%2B-green.svg)](https://github.com/mattkol/Chromely/wiki/Chromely-Angular)
+<br>[![Chromely + Angular](https://img.shields.io/badge/Chromely%20Apps-Built%20with%20Angular%202%2B-green.svg)](https://github.com/mattkol/Chromely/wiki/Chromely-Apps)
 
 ### Creating a Simple App (Using CefGlue with Winapi host)
 For more info see - [Getting Started](https://github.com/mattkol/Chromely/wiki/Getting-Started)
