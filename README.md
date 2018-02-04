@@ -4,12 +4,13 @@ Chromely is a .NET/.NET Core HTML5 Chromium desktop framework. It is focused on 
 ### Platforms
 Cross-platform - Windows, Linux. Built on CefGlue, CefSharp, NET Standard 2.0, .NET Core 2.0, .NET Framework 4.61 and above.
 
-- Xilium.CefGlue .NET Standard port is available on [Nuget](https://www.nuget.org/packages/Chromely.Unofficial.CefGlue.NetStd/).
-- Chromely.Core beta is available on  [Nuget](https://www.nuget.org/packages/Chromely.Core/0.9.0-beta01).
-- Chromely.CefGlue.Winapi beta is available on  [Nuget](https://www.nuget.org/packages/Chromely.CefGlue.Winapi/0.9.0-beta01).
-- Chromely.CefSharp.Winapi beta is available on [Nuget](https://www.nuget.org/packages/Chromely.CefSharp.Winapi/0.9.0-beta01).
+[![Chromely.Core](http://img.shields.io/nuget/vpre/Chromely.Core.svg?style=flat&label=Chromely.Core)](https://www.nuget.org/packages/Chromely.Core/0.9.0-beta01)
+[![Chromely.CefGlue.Winapi](http://img.shields.io/nuget/vpre/Chromely.CefGlue.Winapi.svg?style=flat&label=Chromely.CefGlue.Winapi)](https://www.nuget.org/packages/Chromely.CefGlue.Winapi/0.9.0-beta01)
+[![Chromely.CefSharp.Winapi](http://img.shields.io/nuget/vpre/Chromely.CefSharp.Winapi.svg?style=flat&label=Chromely.CefSharp.Winapi)](https://www.nuget.org/packages/Chromely.CefSharp.Winapi/0.9.0-beta01)
+[![Chromely.Unofficial.CefGlue.NetStd](http://img.shields.io/nuget/v/Chromely.Unofficial.CefGlue.NetStd.svg?style=flat&label=Chromely.Unofficial.CefGlue.NetStd)](https://www.nuget.org/packages/Chromely.Unofficial.CefGlue.NetStd/)
 
-For more info/documentation, please check [Chromely wiki](https://github.com/mattkol/Chromely/wiki).
+For more info/documentation, please check [Chromely wiki](https://github.com/mattkol/Chromely/wiki). 
+<br>[![Chromely + Angular](https://img.shields.io/badge/Chromely%20Apps-Built%20with%20Angular%202%2B-green.svg)](https://github.com/mattkol/Chromely/wiki/Chromely-Apps)
 
 ### Creating a Simple App (Using CefGlue with Winapi host)
 For more info see - [Getting Started](https://github.com/mattkol/Chromely/wiki/Getting-Started)
@@ -40,7 +41,7 @@ class Program
 ````
 ### Chromely Demos 
 For more info on demos - [Demos](https://github.com/mattkol/Chromely/wiki/Demos)
-![](https://github.com/mattkol/Chromely/blob/master/Screenshots/Cefsharp/chromely_cefsharp_index_info.png)
+![](https://github.com/mattkol/Chromely/blob/master/Screenshots/chromely_screens.gif)
 
 ### References
 * WinApi - https://github.com/prasannavl/WinApi
