@@ -4,18 +4,21 @@
     <TargetFramework>net461</TargetFramework>
     <CefSharpAnyCpuSupport>true</CefSharpAnyCpuSupport>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Version>0.9.0.0-beta01</Version>
+    <Version>0.9.0.0-beta02</Version>
     <Authors>Kola Oyewumi</Authors>
     <Company>Kola Oyewumi</Company>
     <Description>Chromely CefSharp Winapi implementation.</Description>
     <Copyright>Copyright 2017 Kola Oyewumi</Copyright>
     <PackageLicenseUrl>https://github.com/mattkol/Chromely/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/mattkol/Chromely</PackageProjectUrl>
-    <PackageIconUrl></PackageIconUrl>
+    <PackageIconUrl>https://github.com/mattkol/Chromely/blob/master/nugets/chromely.ico</PackageIconUrl>
     <AssemblyVersion>0.9.0.0</AssemblyVersion>
     <FileVersion>0.9.0.0</FileVersion>
     <PackageTags>Cef Chromium HTML5 Desktop Chromely CefSharp Restful  Ajax HTTP XHR JavascriptIntegration</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageReleaseNotes>- Removed dependency checks on CefSharp - was failing in debugging
+- Minor fixes
+- Improved documentation</PackageReleaseNotes>
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

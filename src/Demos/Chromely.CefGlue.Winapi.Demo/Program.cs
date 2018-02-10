@@ -61,12 +61,13 @@ namespace Chromely.CefGlue.Winapi.Demo
                 {
                     // Register external url schems
                     window.RegisterExternalUrlScheme(new UrlScheme("https://github.com/mattkol/Chromely", true));
+                    //window.RegisterExternalUrlScheme(new UrlScheme("https://google.com", true));
 
                     // Register service assemblies
                     window.RegisterServiceAssembly(Assembly.GetExecutingAssembly());
 
                     // Note ensure external is valid folder.
-                    // Uncomment to refgister external restful service dlls
+                    // Uncomment to register external restful service dlls
                     string serviceAssemblyFile = @"C:\ChromelyDlls\Chromely.Service.Demo.dll";
                     window.RegisterServiceAssembly(serviceAssemblyFile);
 

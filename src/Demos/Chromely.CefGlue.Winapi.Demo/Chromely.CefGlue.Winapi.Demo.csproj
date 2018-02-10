@@ -20,7 +20,6 @@
     <None Remove="Content\img\chromely_log_white.png" />
     <None Remove="Content\js\bootstrap.min.js" />
     <None Remove="Content\js\jquery.min.js" />
-    <None Remove="Views\chromely.html" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="chromely.ico">
@@ -41,12 +40,14 @@
     <Content Include="Content\js\jquery.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\chromely.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Chromely.CefGlue.Winapi\Chromely.CefGlue.Winapi.csproj" />
     <ProjectReference Include="..\..\Chromely.Core\Chromely.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Views\chromely.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

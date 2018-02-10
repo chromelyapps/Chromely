@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2006
+VisualStudioVersion = 15.0.27130.2020
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CefGlue", "CefGlue", "{A6B2DE5A-07ED-40D2-9D99-215B48C8D1AF}"
 EndProject
@@ -27,13 +27,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chromely.CefGlue.Gtk.Win.De
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{25C4FBF4-EF53-4E55-97E1-55587A5228CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chromely.Core.Tests", "Tests\Chromely.Core.Tests\Chromely.Core.Tests.csproj", "{482ED0C7-EB04-4A6A-A130-959717C22556}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chromely.Core.Tests", "Tests\Chromely.Core.Tests\Chromely.Core.Tests.csproj", "{482ED0C7-EB04-4A6A-A130-959717C22556}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chromely.CefGlue.Gtk.Tests", "Tests\Chromely.CefGlue.Gtk.Tests\Chromely.CefGlue.Gtk.Tests.csproj", "{D118ECDF-9E3C-446B-825F-392F1FBFE0F1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chromely.CefGlue.Gtk.Tests", "Tests\Chromely.CefGlue.Gtk.Tests\Chromely.CefGlue.Gtk.Tests.csproj", "{D118ECDF-9E3C-446B-825F-392F1FBFE0F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chromely.CefSharp.Winapi.Tests", "Tests\Chromely.CefSharp.Winapi.Tests\Chromely.CefSharp.Winapi.Tests.csproj", "{03952732-BC74-45E4-9DE0-C59BC437C49B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chromely.CefSharp.Winapi.Tests", "Tests\Chromely.CefSharp.Winapi.Tests\Chromely.CefSharp.Winapi.Tests.csproj", "{03952732-BC74-45E4-9DE0-C59BC437C49B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chromely.CefGlue.Winapi.Tests", "Tests\Chromely.CefGlue.Winapi.Tests\Chromely.CefGlue.Winapi.Tests.csproj", "{A94A1FB5-DBCE-4A39-8C90-CAE93B5CB675}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chromely.CefGlue.Winapi.Tests", "Tests\Chromely.CefGlue.Winapi.Tests\Chromely.CefGlue.Winapi.Tests.csproj", "{A94A1FB5-DBCE-4A39-8C90-CAE93B5CB675}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

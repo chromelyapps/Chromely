@@ -66,7 +66,7 @@ namespace Chromely.CefSharp.Winapi.Demo
                     window.RegisterServiceAssembly(Assembly.GetExecutingAssembly());
 
                     // Note ensure external is valid folder.
-                    // Uncomment to refgister external restful service dlls
+                    // Uncomment to register external restful service dlls
                     string serviceAssemblyFile = @"C:\ChromelyDlls\Chromely.Service.Demo.dll";
                     window.RegisterServiceAssembly(serviceAssemblyFile);
 
