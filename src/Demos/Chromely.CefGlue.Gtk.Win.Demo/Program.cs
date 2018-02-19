@@ -64,8 +64,8 @@ namespace Chromely.CefGlue.Gtk.Win.Demo
 
                     // Note ensure external is valid folder.
                     // Uncomment to register external restful service dlls
-                    string serviceAssemblyFile = @"C:\ChromelyDlls\Chromely.Service.Demo.dll";
-                    app.RegisterServiceAssembly(serviceAssemblyFile);
+                    // string serviceAssemblyFile = @"C:\ChromelyDlls\Chromely.Service.Demo.dll";
+                    // app.RegisterServiceAssembly(serviceAssemblyFile);
 
                     // Scan assemblies for Controller routes 
                     app.ScanAssemblies();
