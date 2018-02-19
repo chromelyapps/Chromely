@@ -20,9 +20,9 @@
         }
 
         /// <summary>
-        /// Called after the ResolveHost request has completed. |result| will be the
-        /// result code. |resolved_ips| will be the list of resolved IP addresses or
-        /// empty if the resolution failed.
+        /// Called on the UI thread after the ResolveHost request has completed.
+        /// |result| will be the result code. |resolved_ips| will be the list of
+        /// resolved IP addresses or empty if the resolution failed.
         /// </summary>
         protected abstract void OnResolveCompleted(CefErrorCode result, string[] resolvedIps);
     }

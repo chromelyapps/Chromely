@@ -28,7 +28,6 @@ namespace Chromely.CefGlue.Gtk.Win.Demo
     using Chromely.CefGlue.Gtk.ChromeHost;
     using Chromely.Core;
     using Chromely.Core.Infrastructure;
-    using Chromely.Core.Winapi;
     using System;
     using System.Reflection;
 

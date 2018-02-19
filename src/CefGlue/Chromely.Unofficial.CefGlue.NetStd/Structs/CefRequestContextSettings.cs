@@ -78,7 +78,7 @@
             ptr->persist_user_preferences = PersistUserPreferences ? 1 : 0;
             ptr->ignore_certificate_errors = IgnoreCertificateErrors ? 1 : 0;
             ptr->enable_net_security_expiration = EnableNetSecurityExpiration ? 1 : 0;
-            cef_string_t.Copy(CachePath, &ptr->accept_language_list);
+            cef_string_t.Copy(AcceptLanguageList, &ptr->accept_language_list);
             return ptr;
         }
 

@@ -82,48 +82,12 @@
             }
         }
 
-        public bool LocationBarVisible
-        {
-            get
-            {
-                ThrowIfObjectDisposed();
-                return _self->locationBarVisible != 0;
-            }
-        }
-
         public bool ScrollbarsVisible
         {
             get
             {
                 ThrowIfObjectDisposed();
                 return _self->scrollbarsVisible != 0;
-            }
-        }
-
-        public bool Resizable
-        {
-            get
-            {
-                ThrowIfObjectDisposed();
-                return _self->resizable != 0;
-            }
-        }
-
-        public bool Fullscreen
-        {
-            get
-            {
-                ThrowIfObjectDisposed();
-                return _self->fullscreen != 0;
-            }
-        }
-
-        public bool Dialog
-        {
-            get
-            {
-                ThrowIfObjectDisposed();
-                return _self->dialog != 0;
             }
         }
 

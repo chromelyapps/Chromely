@@ -811,5 +811,40 @@
         {
             cef_browser_host_t.set_accessibility_state(_self, accessibilityState);
         }
+
+        /// <summary>
+        /// Enable notifications of auto resize via CefDisplayHandler::OnAutoResize.
+        /// Notifications are disabled by default. |min_size| and |max_size| define the
+        /// range of allowed sizes.
+        /// </summary>
+        public void SetAutoResizeEnabled(bool enabled, CefSize minSize, CefSize maxSize)
+        {
+            var nMinSize = new cef_size_t(minSize.Width, minSize.Height);
+            var nMaxSize = new cef_size_t(maxSize.Width, maxSize.Height);
+            cef_browser_host_t.set_auto_resize_enabled(_self, enabled ? 1 : 0, &nMinSize, &nMaxSize);
+        }
+
+        /// <summary>
+        /// Returns the extension hosted in this browser or NULL if no extension is
+        /// hosted. See CefRequestContext::LoadExtension for details.
+        /// </summary>
+        public CefExtension GetExtension()
+        {
+            var nExtension = cef_browser_host_t.get_extension(_self);
+            return CefExtension.FromNativeOrNull(nExtension);
+        }
+
+        /// <summary>
+        /// Returns true if this browser is hosting an extension background script.
+        /// Background hosts do not have a window and are not displayable. See
+        /// CefRequestContext::LoadExtension for details.
+        /// </summary>
+        public bool IsBackgroundHost
+        {
+            get
+            {
+                return cef_browser_host_t.is_background_host(_self) != 0;
+            }
+        }
     }
 }

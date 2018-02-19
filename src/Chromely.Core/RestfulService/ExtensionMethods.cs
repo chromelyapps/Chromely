@@ -145,7 +145,6 @@ namespace Chromely.Core.RestfulService
                     }
                     catch (Exception exception)
                     {
-                        int kols = 0;
                     }
                 }
 

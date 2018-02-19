@@ -7,15 +7,17 @@
     <Copyright>Copyright 2017 Kola Oyewumi</Copyright>
     <PackageProjectUrl>https://github.com/mattkol/Chromely</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/mattkol/Chromely/blob/master/LICENSE</PackageLicenseUrl>
-    <PackageReleaseNotes>The base version for this release is 59.0.3071.109. This is also reflected in how this version is named. For example this version will be 59.0.3071.109</PackageReleaseNotes>
-    <Description>This is an unofficial port of Xilium.CefGlue to NetStandard 2.0. For more recent versions and updates please also check the main Xilium.CefGlue  site  @ https://bitbucket.org/xilium/xilium.cefglue/wiki/Home.</Description>
-    <ProductVersion>59.0.3071.109</ProductVersion>
-    <AssemblyVersion>59.0.3071.109</AssemblyVersion>
-    <FileVersion>59.0.3071.3071</FileVersion>
+    <PackageIconUrl>https://github.com/mattkol/Chromely/blob/master/nugets/chromely.ico?raw=true</PackageIconUrl>
+    <PackageReleaseNotes>The base version for this release is 63.0.3239.132. This is also reflected in how this version is named. For example this version will be 63.0.3239.132</PackageReleaseNotes>
+    <Description>This is an unofficial port of Xilium.CefGlue to .NETStandard 2.0. For more recent versions and updates please also check the main Xilium.CefGlue  site  @ https://bitbucket.org/xilium/xilium.cefglue/wiki/Home.</Description>
+    <ProductVersion>63.0.3239.132</ProductVersion>
+    <AssemblyVersion>63.0.3239.132</AssemblyVersion>
+    <FileVersion>63.0.3239.132</FileVersion>
     <PackageTags>Cef Chromium HTML5 Desktop Chromely CefGlue CefSharp Restful  Ajax HTTP XHR JavascriptIntegration NetStandard .NET Core</PackageTags>
     <Authors>Kola Oyewumi</Authors>
     <Company />
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>63.0.3239.132</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

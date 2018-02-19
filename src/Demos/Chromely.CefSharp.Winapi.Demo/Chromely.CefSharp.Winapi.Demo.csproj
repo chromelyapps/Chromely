@@ -18,8 +18,6 @@
   <ItemGroup>
     <None Remove="chromely.ico" />
     <None Remove="Content\css\bootstrap.min.css" />
-    <None Remove="Content\img\chromely_log_black.png" />
-    <None Remove="Content\img\chromely_log_white.png" />
     <None Remove="Content\js\bootstrap.min.js" />
     <None Remove="Content\js\jquery.min.js" />
     <None Remove="Views\chromely.html" />
@@ -29,12 +27,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\css\bootstrap.min.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\img\chromely_log_black.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\img\chromely_log_white.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\js\bootstrap.min.js">
@@ -48,10 +40,12 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="CefSharp.Common" Version="57.0.0" />
+    <PackageReference Include="CefSharp.Common" Version="63.0.1" />
+    <PackageReference Include="Chromely.CefSharp.Winapi" Version="0.9.0-beta03" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Chromely.CefSharp.Winapi\Chromely.CefSharp.Winapi.csproj" />
-    <ProjectReference Include="..\..\Chromely.Core\Chromely.Core.csproj" />
+    <None Update="Content\img\chromely.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

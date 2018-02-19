@@ -30,6 +30,7 @@ namespace Chromely.Core
     {
         public ChromelyConfiguration()
         {
+            CefPerformDependencyCheck = false;
             CefLogSeverity = LogSeverity.Warning;
             CefLogFile = "logs\\chromely.cef.log";
             CefHostWidth = 1200;
@@ -37,6 +38,7 @@ namespace Chromely.Core
         }
 
         public string CefTitle { get; set; }
+        public bool CefPerformDependencyCheck { get; set; }
         public string[] CefAppArgs { get; set; }
         public string CefStartUrl { get; set; }
         public int CefHostWidth { get; set; }
@@ -60,6 +62,13 @@ namespace Chromely.Core
             CefAppArgs = args;
             return this;
         }
+
+        public ChromelyConfiguration WithCefDependencyCheck(bool checkDependencies)
+        {
+            CefPerformDependencyCheck = checkDependencies;
+            return this;
+        }
+
 
         public ChromelyConfiguration WithCefStartUrl(string startUrl)
         {

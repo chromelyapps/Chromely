@@ -333,5 +333,123 @@
                 return result;
             }
         }
+
+        /// <summary>
+        /// Load an extension.
+        /// If extension resources will be read from disk using the default load
+        /// implementation then |root_directory| should be the absolute path to the
+        /// extension resources directory and |manifest| should be NULL. If extension
+        /// resources will be provided by the client (e.g. via CefRequestHandler and/or
+        /// CefExtensionHandler) then |root_directory| should be a path component
+        /// unique to the extension (if not absolute this will be internally prefixed
+        /// with the PK_DIR_RESOURCES path) and |manifest| should contain the contents
+        /// that would otherwise be read from the "manifest.json" file on disk.
+        /// The loaded extension will be accessible in all contexts sharing the same
+        /// storage (HasExtension returns true). However, only the context on which
+        /// this method was called is considered the loader (DidLoadExtension returns
+        /// true) and only the loader will receive CefRequestContextHandler callbacks
+        /// for the extension.
+        /// CefExtensionHandler::OnExtensionLoaded will be called on load success or
+        /// CefExtensionHandler::OnExtensionLoadFailed will be called on load failure.
+        /// If the extension specifies a background script via the "background"
+        /// manifest key then CefExtensionHandler::OnBeforeBackgroundBrowser will be
+        /// called to create the background browser. See that method for additional
+        /// information about background scripts.
+        /// For visible extension views the client application should evaluate the
+        /// manifest to determine the correct extension URL to load and then pass that
+        /// URL to the CefBrowserHost::CreateBrowser* function after the extension has
+        /// loaded. For example, the client can look for the "browser_action" manifest
+        /// key as documented at https://developer.chrome.com/extensions/browserAction.
+        /// Extension URLs take the form "chrome-extension://&lt;extension_id&gt;/&lt;path&gt;".
+        /// Browsers that host extensions differ from normal browsers as follows:
+        /// - Can access chrome.* JavaScript APIs if allowed by the manifest. Visit
+        /// chrome://extensions-support for the list of extension APIs currently
+        /// supported by CEF.
+        /// - Main frame navigation to non-extension content is blocked.
+        /// - Pinch-zooming is disabled.
+        /// - CefBrowserHost::GetExtension returns the hosted extension.
+        /// - CefBrowserHost::IsBackgroundHost returns true for background hosts.
+        /// See https://developer.chrome.com/extensions for extension implementation
+        /// and usage documentation.
+        /// </summary>
+        public void LoadExtension(string rootDirectory, CefDictionaryValue manifest, CefExtensionHandler handler)
+        {
+            fixed(char* rootDirectory_str = rootDirectory)
+            {
+                var n_rootDirectory = new cef_string_t(rootDirectory_str, rootDirectory != null ? rootDirectory.Length : 0);
+                var n_manifest = manifest != null ? manifest.ToNative() : null;
+                var n_handler = handler != null ? handler.ToNative() : null;
+                cef_request_context_t.load_extension(_self, &n_rootDirectory, n_manifest, n_handler);
+            }
+        }
+
+        /// <summary>
+        /// Returns true if this context was used to load the extension identified by
+        /// |extension_id|. Other contexts sharing the same storage will also have
+        /// access to the extension (see HasExtension). This method must be called on
+        /// the browser process UI thread.
+        /// </summary>
+        public bool DidLoadExtension(string extensionId)
+        {
+            fixed(char* extensionId_str = extensionId)
+            {
+                var n_extensionId = new cef_string_t(extensionId_str, extensionId != null ? extensionId.Length : 0);
+                return cef_request_context_t.did_load_extension(_self, &n_extensionId) != 0;
+            }
+        }
+
+        /// <summary>
+        /// Returns true if this context has access to the extension identified by
+        /// |extension_id|. This may not be the context that was used to load the
+        /// extension (see DidLoadExtension). This method must be called on the browser
+        /// process UI thread.
+        /// </summary>
+        public bool HasExtension(string extensionId)
+        {
+            fixed (char* extensionId_str = extensionId)
+            {
+                var n_extensionId = new cef_string_t(extensionId_str, extensionId != null ? extensionId.Length : 0);
+                return cef_request_context_t.has_extension(_self, &n_extensionId) != 0;
+            }
+        }
+
+        /// <summary>
+        /// Retrieve the list of all extensions that this context has access to (see
+        /// HasExtension). |extension_ids| will be populated with the list of extension
+        /// ID values. Returns true on success. This method must be called on the
+        /// browser process UI thread.
+        /// </summary>
+        public bool GetExtensions(out string[] extensionIds)
+        {
+            var n_extensionIds = libcef.string_list_alloc();
+
+            var result = cef_request_context_t.get_extensions(_self, n_extensionIds) != 0;
+            if (result)
+            {
+                extensionIds = cef_string_list.ToArray(n_extensionIds);
+            }
+            else
+            {
+                extensionIds = null;
+            }
+
+            libcef.string_list_free(n_extensionIds);
+            return result;
+        }
+
+        /// <summary>
+        /// Returns the extension matching |extension_id| or NULL if no matching
+        /// extension is accessible in this context (see HasExtension). This method
+        /// must be called on the browser process UI thread.
+        /// </summary>
+        public CefExtension GetExtension(string extensionId)
+        {
+            fixed (char* extensionId_str = extensionId)
+            {
+                var n_extensionId = new cef_string_t(extensionId_str, extensionId != null ? extensionId.Length : 0);
+                var n_result = cef_request_context_t.get_extension(_self, &n_extensionId);
+                return CefExtension.FromNativeOrNull(n_result);
+            }
+        }
     }
 }

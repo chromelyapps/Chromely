@@ -1,7 +1,9 @@
 ﻿namespace Xilium.CefGlue
 {
+    using System;
     using Xilium.CefGlue.Interop;
 
+    [Serializable]
     public sealed class CefPdfPrintSettings
     {
         /// <summary>

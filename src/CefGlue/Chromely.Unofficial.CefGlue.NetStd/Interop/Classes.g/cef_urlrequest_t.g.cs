@@ -18,6 +18,7 @@ namespace Xilium.CefGlue.Interop
         internal IntPtr _get_request_status;
         internal IntPtr _get_request_error;
         internal IntPtr _get_response;
+        internal IntPtr _response_was_cached;
         internal IntPtr _cancel;
         
         // Create
@@ -71,6 +72,12 @@ namespace Xilium.CefGlue.Interop
         [SuppressUnmanagedCodeSecurity]
         #endif
         private delegate cef_response_t* get_response_delegate(cef_urlrequest_t* self);
+        
+        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
+        #if !DEBUG
+        [SuppressUnmanagedCodeSecurity]
+        #endif
+        private delegate int response_was_cached_delegate(cef_urlrequest_t* self);
         
         [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
         #if !DEBUG
@@ -214,19 +221,36 @@ namespace Xilium.CefGlue.Interop
             return d(self);
         }
         
-        // Cancel
+        // ResponseWasCached
         private static IntPtr _p8;
-        private static cancel_delegate _d8;
+        private static response_was_cached_delegate _d8;
+        
+        public static int response_was_cached(cef_urlrequest_t* self)
+        {
+            response_was_cached_delegate d;
+            var p = self->_response_was_cached;
+            if (p == _p8) { d = _d8; }
+            else
+            {
+                d = (response_was_cached_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(response_was_cached_delegate));
+                if (_p8 == IntPtr.Zero) { _d8 = d; _p8 = p; }
+            }
+            return d(self);
+        }
+        
+        // Cancel
+        private static IntPtr _p9;
+        private static cancel_delegate _d9;
         
         public static void cancel(cef_urlrequest_t* self)
         {
             cancel_delegate d;
             var p = self->_cancel;
-            if (p == _p8) { d = _d8; }
+            if (p == _p9) { d = _d9; }
             else
             {
                 d = (cancel_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(cancel_delegate));
-                if (_p8 == IntPtr.Zero) { _d8 = d; _p8 = p; }
+                if (_p9 == IntPtr.Zero) { _d9 = d; _p9 = p; }
             }
             d(self);
         }

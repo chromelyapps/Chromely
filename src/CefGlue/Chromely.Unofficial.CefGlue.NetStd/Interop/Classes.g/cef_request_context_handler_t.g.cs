@@ -13,6 +13,7 @@ namespace Xilium.CefGlue.Interop
     internal unsafe struct cef_request_context_handler_t
     {
         internal cef_base_ref_counted_t _base;
+        internal IntPtr _on_request_context_initialized;
         internal IntPtr _get_cookie_manager;
         internal IntPtr _on_before_plugin_load;
         
@@ -33,6 +34,12 @@ namespace Xilium.CefGlue.Interop
         [SuppressUnmanagedCodeSecurity]
         #endif
         internal delegate int has_one_ref_delegate(cef_request_context_handler_t* self);
+        
+        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
+        #if !DEBUG
+        [SuppressUnmanagedCodeSecurity]
+        #endif
+        internal delegate void on_request_context_initialized_delegate(cef_request_context_handler_t* self, cef_request_context_t* request_context);
         
         [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
         #if !DEBUG

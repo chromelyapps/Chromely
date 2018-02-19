@@ -94,6 +94,18 @@
         }
 
         /// <summary>
+        /// Returns true if the response body was served from the cache. This includes
+        /// responses for which revalidation was required.
+        /// </summary>
+        public bool ResponseWasCached
+        {
+            get
+            {
+                return cef_urlrequest_t.response_was_cached(_self) != 0;
+            }
+        }
+
+        /// <summary>
         /// Cancel the request.
         /// </summary>
         public void Cancel()

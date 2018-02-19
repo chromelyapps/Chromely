@@ -65,6 +65,9 @@ namespace Xilium.CefGlue.Interop
         internal IntPtr _drag_source_system_drag_ended;
         internal IntPtr _get_visible_navigation_entry;
         internal IntPtr _set_accessibility_state;
+        internal IntPtr _set_auto_resize_enabled;
+        internal IntPtr _get_extension;
+        internal IntPtr _is_background_host;
         
         // CreateBrowser
         [DllImport(libcef.DllName, EntryPoint = "cef_browser_host_create_browser", CallingConvention = libcef.CEF_CALL)]
@@ -403,6 +406,24 @@ namespace Xilium.CefGlue.Interop
         [SuppressUnmanagedCodeSecurity]
         #endif
         private delegate void set_accessibility_state_delegate(cef_browser_host_t* self, CefState accessibility_state);
+        
+        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
+        #if !DEBUG
+        [SuppressUnmanagedCodeSecurity]
+        #endif
+        private delegate void set_auto_resize_enabled_delegate(cef_browser_host_t* self, int enabled, cef_size_t* min_size, cef_size_t* max_size);
+        
+        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
+        #if !DEBUG
+        [SuppressUnmanagedCodeSecurity]
+        #endif
+        private delegate cef_extension_t* get_extension_delegate(cef_browser_host_t* self);
+        
+        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
+        #if !DEBUG
+        [SuppressUnmanagedCodeSecurity]
+        #endif
+        private delegate int is_background_host_delegate(cef_browser_host_t* self);
         
         // AddRef
         private static IntPtr _p0;
@@ -1337,6 +1358,57 @@ namespace Xilium.CefGlue.Interop
                 if (_p36 == IntPtr.Zero) { _d36 = d; _p36 = p; }
             }
             d(self, accessibility_state);
+        }
+        
+        // SetAutoResizeEnabled
+        private static IntPtr _p37;
+        private static set_auto_resize_enabled_delegate _d37;
+        
+        public static void set_auto_resize_enabled(cef_browser_host_t* self, int enabled, cef_size_t* min_size, cef_size_t* max_size)
+        {
+            set_auto_resize_enabled_delegate d;
+            var p = self->_set_auto_resize_enabled;
+            if (p == _p37) { d = _d37; }
+            else
+            {
+                d = (set_auto_resize_enabled_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(set_auto_resize_enabled_delegate));
+                if (_p37 == IntPtr.Zero) { _d37 = d; _p37 = p; }
+            }
+            d(self, enabled, min_size, max_size);
+        }
+        
+        // GetExtension
+        private static IntPtr _p38;
+        private static get_extension_delegate _d38;
+        
+        public static cef_extension_t* get_extension(cef_browser_host_t* self)
+        {
+            get_extension_delegate d;
+            var p = self->_get_extension;
+            if (p == _p38) { d = _d38; }
+            else
+            {
+                d = (get_extension_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_extension_delegate));
+                if (_p38 == IntPtr.Zero) { _d38 = d; _p38 = p; }
+            }
+            return d(self);
+        }
+        
+        // IsBackgroundHost
+        private static IntPtr _p39;
+        private static is_background_host_delegate _d39;
+        
+        public static int is_background_host(cef_browser_host_t* self)
+        {
+            is_background_host_delegate d;
+            var p = self->_is_background_host;
+            if (p == _p39) { d = _d39; }
+            else
+            {
+                d = (is_background_host_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(is_background_host_delegate));
+                if (_p39 == IntPtr.Zero) { _d39 = d; _p39 = p; }
+            }
+            return d(self);
         }
         
     }

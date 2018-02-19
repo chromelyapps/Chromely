@@ -8,41 +8,65 @@ namespace Xilium.CefGlue
     /// Policy for how the Referrer HTTP header value will be sent during navigation.
     /// If the `--no-referrers` command-line flag is specified then the policy value
     /// will be ignored and the Referrer value will never be sent.
+    /// Must be kept synchronized with net::URLRequest::ReferrerPolicy from Chromium.
     /// </summary>
     public enum CefReferrerPolicy
     {
         /// <summary>
-        /// Always send the complete Referrer value.
+        /// Clear the referrer header if the header value is HTTPS but the request
+        /// destination is HTTP. This is the default behavior.
         /// </summary>
-        Always,
+        ClearReferrerOnTransitionFromSecureToInsecure,
 
         /// <summary>
-        /// Use the default policy. This is REFERRER_POLICY_ORIGIN_WHEN_CROSS_ORIGIN
-        /// when the `--reduced-referrer-granularity` command-line flag is specified
-        /// and REFERRER_POLICY_NO_REFERRER_WHEN_DOWNGRADE otherwise.
+        /// Default policy (same as CLEAR_REFERRER_ON_TRANSITION_FROM_SECURE_TO_INSECURE).
         /// </summary>
-        Default,
+        Default =
+            ClearReferrerOnTransitionFromSecureToInsecure,
 
         /// <summary>
-        /// When navigating from HTTPS to HTTP do not send the Referrer value.
-        /// Otherwise, send the complete Referrer value.
+        /// A slight variant on CLEAR_REFERRER_ON_TRANSITION_FROM_SECURE_TO_INSECURE:
+        /// If the request destination is HTTP, an HTTPS referrer will be cleared. If
+        /// the request's destination is cross-origin with the referrer (but does not
+        /// downgrade), the referrer's granularity will be stripped down to an origin
+        /// rather than a full URL. Same-origin requests will send the full referrer.
         /// </summary>
-        NoReferrerWhenDowngrade,
+        ReduceReferrerGranularityOnTransitionCrossOrigin,
 
         /// <summary>
-        /// Never send the Referrer value.
+        /// Strip the referrer down to an origin when the origin of the referrer is
+        /// different from the destination's origin.
         /// </summary>
-        Never,
+        OriginOnlyOnTransitionCrossOrigin,
 
         /// <summary>
-        /// Only send the origin component of the Referrer value.
+        /// Never change the referrer.
+        /// </summary>
+        NeverClearReferrer,
+
+        /// <summary>
+        /// Strip the referrer down to the origin regardless of the redirect location.
         /// </summary>
         Origin,
 
         /// <summary>
-        /// When navigating cross-origin only send the origin component of the Referrer
-        /// value. Otherwise, send the complete Referrer value.
+        /// Clear the referrer when the request's referrer is cross-origin with the
+        /// request's destination.
         /// </summary>
-        OriginWhenCrossOrigin,
+        ClearReferrerOnTransitionCrossOrigin,
+
+        /// <summary>
+        /// Strip the referrer down to the origin, but clear it entirely if the
+        /// referrer value is HTTPS and the destination is HTTP.
+        /// </summary>
+        OriginClearOnTransitionFromSecureToInsecure,
+
+        /// <summary>
+        /// Always clear the referrer regardless of the request destination.
+        /// </summary>
+        NoReferrer,
+
+        // Always the last value in this enumeration.
+        //LastValue,
     }
 }

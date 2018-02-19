@@ -5,7 +5,7 @@
     <Platforms>AnyCPU</Platforms>
     <AssemblyVersion>0.9.0.0</AssemblyVersion>
     <FileVersion>0.9.0.0</FileVersion>
-    <Version>0.9.0.0-beta02</Version>
+    <Version>0.9.0.0-beta03</Version>
     <Authors>Kola Oyewumi</Authors>
     <Company>Kola Oyewumi</Company>
     <PackageTags>Cef Chromium HTML5 Desktop Chromely CefGlue CefSharp Restful  Ajax HTTP XHR MessageRouter JavascriptIntegration NetStandard .NET Core</PackageTags>
@@ -13,20 +13,17 @@
     <Copyright>Copyright 2017 Kola Oyewumi</Copyright>
     <PackageLicenseUrl>https://github.com/mattkol/Chromely/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/mattkol/Chromely</PackageProjectUrl>
-    <PackageIconUrl>https://github.com/mattkol/Chromely/blob/master/nugets/chromely.ico</PackageIconUrl>
+    <PackageIconUrl>https://github.com/mattkol/Chromely/blob/master/nugets/chromely.ico?raw=true</PackageIconUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>- Removed dependency checks on CefSharp - was failing in debugging
-- Minor fixes
-- Improved documentation</PackageReleaseNotes>
+    <PackageReleaseNotes>- Removed dependency on WinApi
+- Added DependecyCheck flag to ChromelyConfiguration (CefPerformDependencyCheck)
+- Added properties - IsSecure and IsCorsEnabled to ChromelySchemeHandler class
+</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="WinApi" Version="4.0.0" />
-  </ItemGroup>
-  
+ 
 </Project>

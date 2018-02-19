@@ -21,11 +21,6 @@ namespace Xilium.CefGlue.Interop
         public int menuBarVisible;
         public int statusBarVisible;
         public int toolBarVisible;
-        public int locationBarVisible;
         public int scrollbarsVisible;
-        public int resizable;
-
-        public int fullscreen;
-        public int dialog;
     }
 }

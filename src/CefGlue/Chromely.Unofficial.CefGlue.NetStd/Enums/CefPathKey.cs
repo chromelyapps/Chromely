@@ -51,5 +51,11 @@ namespace Xilium.CefGlue
         /// and "~/Library/Application Support" directory on Mac OS X.
         /// </summary>
         UserData,
+
+        /// <summary>
+        /// Directory containing application resources. Can be configured via
+        /// CefSettings.resources_dir_path.
+        /// </summary>
+        Resources,
     }
 }

@@ -4,15 +4,21 @@
         <name>CefSharp</name>
     </assembly>
     <members>
+        <member name="T:CefSharp.AsyncExtensions">
+            <summary>
+            Async extensions for different interfaces
+            </summary>
+        </member>
         <member name="M:CefSharp.AsyncExtensions.DeleteCookiesAsync(CefSharp.ICookieManager,System.String,System.String)">
             <summary>
             Deletes all cookies that matches all the provided parameters asynchronously.
             If both <paramref name="url"/> and <paramref name="name"/> are empty, all cookies will be deleted.
             </summary>
+            <param name="cookieManager">cookie manager</param>
             <param name="url">The cookie URL. If an empty string is provided, any URL will be matched.</param>
             <param name="name">The name of the cookie. If an empty string is provided, any URL will be matched.</param>
-            <return>Returns null if a non-empty invalid URL is specified, or if cookies cannot be accessed;
-            otherwise, a task that represents the delete operation. The value of the TResult will be the number of cookies that were deleted or -1 if unknown.</return>
+            <returns>Returns -1 if a non-empty invalid URL is specified, or if cookies cannot be accessed;
+            otherwise, a task that represents the delete operation. The value of the TResult will be the number of cookies that were deleted or -1 if unknown.</returns>
         </member>
         <member name="M:CefSharp.AsyncExtensions.SetCookieAsync(CefSharp.ICookieManager,System.String,CefSharp.Cookie)">
             <summary>
@@ -23,14 +29,16 @@
             <param name="cookieManager">cookie manager</param>
             <param name="url">The cookie URL. If an empty string is provided, any URL will be matched.</param>
             <param name="cookie">the cookie to be set</param>
-            <return>returns null if the cookie cannot be set (e.g. if illegal charecters such as ';' are used);
-            otherwise task that represents the set operation. The value of the TResult parameter contains a bool to indicate success.</return>
+            <returns>returns false if the cookie cannot be set (e.g. if illegal charecters such as ';' are used);
+            otherwise task that represents the set operation. The value of the TResult parameter contains a bool to indicate success.</returns>
         </member>
         <member name="M:CefSharp.AsyncExtensions.VisitAllCookiesAsync(CefSharp.ICookieManager)">
             <summary>
             Visits all cookies. The returned cookies are sorted by longest path, then by earliest creation date.
             </summary>
-            <return>A task that represents the VisitAllCookies operation. The value of the TResult parameter contains a List of cookies.</return>
+            <param name="cookieManager">cookie manager</param>
+            <returns>A task that represents the VisitAllCookies operation. The value of the TResult parameter contains a List of cookies
+            or null if cookies cannot be accessed.</returns>
         </member>
         <member name="M:CefSharp.AsyncExtensions.VisitUrlCookiesAsync(CefSharp.ICookieManager,System.String,System.Boolean)">
             <summary>
@@ -38,9 +46,11 @@
             If <paramref name="includeHttpOnly"/> is true, HTTP-only cookies will also be included in the results. The returned cookies 
             are sorted by longest path, then by earliest creation date.
             </summary>
+            <param name="cookieManager">cookie manager</param>
             <param name="url">The URL to use for filtering a subset of the cookies available.</param>
             <param name="includeHttpOnly">A flag that determines whether HTTP-only cookies will be shown in results.</param>
-            <return>A task that represents the VisitUrlCookies operation. The value of the TResult parameter contains a List of cookies.</return>
+            <returns>A task that represents the VisitUrlCookies operation. The value of the TResult parameter contains a List of cookies.
+            or null if cookies cannot be accessed.</returns>
         </member>
         <member name="M:CefSharp.AsyncExtensions.FlushStoreAsync(CefSharp.ICookieManager)">
             <summary>
@@ -48,7 +58,7 @@
             </summary>
             <param name="cookieManager">cookieManager instance</param>
             <returns>A task that represents the FlushStore operation. Result indicates if the flush completed successfully.
-            Will return null if the cookikes cannot be accessed.</returns>
+            Will return false if the cookikes cannot be accessed.</returns>
         </member>
         <member name="T:CefSharp.BindingOptions">
             <summary>
@@ -62,12 +72,18 @@
         </member>
         <member name="P:CefSharp.BindingOptions.CamelCaseJavascriptNames">
             <summary>
-            camel case the javascript names of properties/methods, defaults to true
+            Camel case the javascript names of properties/methods, defaults to true
             </summary>
         </member>
         <member name="P:CefSharp.BindingOptions.Binder">
             <summary>
-            model binder used for passing complex classes as params to methods
+            Model binder used for passing complex classes as params to methods
+            </summary>
+        </member>
+        <member name="P:CefSharp.BindingOptions.MethodInterceptor">
+            <summary>
+            Interceptor used for intercepting calls to the target object methods. For instance, can be used 
+            for logging calls (from js) to .net methods.
             </summary>
         </member>
         <member name="T:CefSharp.IAuthCallback">
@@ -407,24 +423,662 @@
             Contains an error message containing additional information if <see cref="P:CefSharp.CdmRegistration.ErrorCode"/> is not <see cref="F:CefSharp.CdmRegistrationErrorCode.None"/>.
             </summary>
         </member>
-        <member name="P:CefSharp.CefDirtyRect.X">
+        <member name="T:CefSharp.Event.JavascriptBindingEventArgs">
             <summary>
-            X coordinate
+            Event arguments for the <see cref="E:CefSharp.IJavascriptObjectRepository.ResolveObject"/> and
+            <see cref="E:CefSharp.IJavascriptObjectRepository.ObjectBoundInJavascript"/> events
             </summary>
         </member>
-        <member name="P:CefSharp.CefDirtyRect.Y">
+        <member name="P:CefSharp.Event.JavascriptBindingEventArgs.ObjectRepository">
             <summary>
-            Y coordinate
+            The javascript object repository, used to register objects
             </summary>
         </member>
-        <member name="P:CefSharp.CefDirtyRect.Width">
+        <member name="P:CefSharp.Event.JavascriptBindingEventArgs.ObjectName">
             <summary>
-            Width
+            Name of the object
             </summary>
         </member>
-        <member name="P:CefSharp.CefDirtyRect.Height">
+        <member name="T:CefSharp.Handler.DefaultRequestHandler">
             <summary>
-            Height
+            Default implementation of <see cref="T:CefSharp.IRequestHandler"/>.
+            This class provides default implementations of the methods from <see cref="T:CefSharp.IRequestHandler"/>,
+            therefore providing a convenience base class for any custom request handler.
+            </summary>
+        </member>
+        <member name="T:CefSharp.IRequestHandler">
+            <summary>
+            Implement this interface to handle events related to browser requests.
+            The methods of this class will be called on the thread indicated. 
+            </summary>
+        </member>
+        <member name="M:CefSharp.IRequestHandler.OnBeforeBrowse(CefSharp.IWebBrowser,CefSharp.IBrowser,CefSharp.IFrame,CefSharp.IRequest,System.Boolean)">
+            <summary>
+            Called before browser navigation.
+            If the navigation is allowed <see cref="E:CefSharp.IWebBrowser.FrameLoadStart"/> and <see cref="E:CefSharp.IWebBrowser.FrameLoadEnd"/>
+            will be called. If the navigation is canceled <see cref="E:CefSharp.IWebBrowser.LoadError"/> will be called with an ErrorCode
+            value of <see cref="F:CefSharp.CefErrorCode.Aborted"/>. 
+            </summary>
+            <param name="browserControl">the ChromiumWebBrowser control</param>
+            <param name="browser">the browser object</param>
+            <param name="frame">The frame the request is coming from</param>
+            <param name="request">the request object - cannot be modified in this callback</param>
+            <param name="isRedirect">has the request been redirected</param>
+            <returns>Return true to cancel the navigation or false to allow the navigation to proceed.</returns>
+        </member>
+        <member name="M:CefSharp.IRequestHandler.OnOpenUrlFromTab(CefSharp.IWebBrowser,CefSharp.IBrowser,CefSharp.IFrame,System.String,CefSharp.WindowOpenDisposition,System.Boolean)">
+            <summary>
+            Called on the UI thread before OnBeforeBrowse in certain limited cases
+            where navigating a new or different browser might be desirable. This
+            includes user-initiated navigation that might open in a special way (e.g.
+            links clicked via middle-click or ctrl + left-click) and certain types of
+            cross-origin navigation initiated from the renderer process (e.g.
+            navigating the top-level frame to/from a file URL).
+            </summary>
+            <param name="browserControl">the ChromiumWebBrowser control</param>
+            <param name="browser">the browser object</param>
+            <param name="frame">The frame object</param>
+            <param name="targetUrl">target url</param>
+            <param name="targetDisposition">The value indicates where the user intended to navigate the browser based
+            on standard Chromium behaviors (e.g. current tab, new tab, etc). </param>
+            <param name="userGesture">The value will be true if the browser navigated via explicit user gesture
+            (e.g. clicking a link) or false if it navigated automatically (e.g. via the DomContentLoaded event).</param>
+            <returns>Return true to cancel the navigation or false to allow the navigation
+            to proceed in the source browser's top-level frame.</returns>
+        </member>
+        <member name="M:CefSharp.IRequestHandler.OnCertificateError(CefSharp.IWebBrowser,CefSharp.IBrowser,CefSharp.CefErrorCode,System.String,CefSharp.ISslInfo,CefSharp.IRequestCallback)">
+            <summary>
+            Called to handle requests for URLs with an invalid SSL certificate.
+            Return true and call <see cref="M:CefSharp.IRequestCallback.Continue(System.Boolean)"/> either
+            in this method or at a later time to continue or cancel the request.  
+            If <see cref="!:CefSettings.IgnoreCertificateErrors"/> is set all invalid certificates
+            will be accepted without calling this method.
+            </summary>
+            <param name="browserControl">the ChromiumWebBrowser control</param>
+            <param name="browser">the browser object</param>
+            <param name="errorCode">the error code for this invalid certificate</param>
+            <param name="requestUrl">the url of the request for the invalid certificate</param>
+            <param name="sslInfo">ssl certificate information</param>
+            <param name="callback">Callback interface used for asynchronous continuation of url requests.
+            If empty the error cannot be recovered from and the request will be canceled automatically.</param>
+            <returns>Return false to cancel the request immediately. Return true and use <see cref="T:CefSharp.IRequestCallback"/> to
+            execute in an async fashion.</returns>
+        </member>
+        <member name="M:CefSharp.IRequestHandler.OnPluginCrashed(CefSharp.IWebBrowser,CefSharp.IBrowser,System.String)">
+            <summary>
+            Called when a plugin has crashed
+            </summary>
+            <param name="browserControl">the ChromiumWebBrowser control</param>
+            <param name="browser">the browser object</param>
+            <param name="pluginPath">path of the plugin that crashed</param>
+        </member>
+        <member name="M:CefSharp.IRequestHandler.OnBeforeResourceLoad(CefSharp.IWebBrowser,CefSharp.IBrowser,CefSharp.IFrame,CefSharp.IRequest,CefSharp.IRequestCallback)">
+            <summary>
+            Called before a resource request is loaded. For async processing return <see cref="F:CefSharp.CefReturnValue.ContinueAsync"/> 
+            and execute <see cref="M:CefSharp.IRequestCallback.Continue(System.Boolean)"/> or <see cref="M:CefSharp.IRequestCallback.Cancel"/>
+            </summary>
+            <param name="browserControl">The ChromiumWebBrowser control</param>
+            <param name="browser">the browser object</param>
+            <param name="frame">The frame object</param>
+            <param name="request">the request object - can be modified in this callback.</param>
+            <param name="callback">Callback interface used for asynchronous continuation of url requests.</param>
+            <returns>To cancel loading of the resource return <see cref="F:CefSharp.CefReturnValue.Cancel"/>
+            or <see cref="F:CefSharp.CefReturnValue.Continue"/> to allow the resource to load normally. For async
+            return <see cref="F:CefSharp.CefReturnValue.ContinueAsync"/></returns>
+        </member>
+        <member name="M:CefSharp.IRequestHandler.GetAuthCredentials(CefSharp.IWebBrowser,CefSharp.IBrowser,CefSharp.IFrame,System.Boolean,System.String,System.Int32,System.String,System.String,CefSharp.IAuthCallback)">
+            <summary>
+            Called when the browser needs credentials from the user.
+            </summary>
+            <param name="browserControl">The ChromiumWebBrowser control</param>
+            <param name="browser">the browser object</param>
+            <param name="frame">The frame object that needs credentials (This will contain the URL that is being requested.)</param>
+            <param name="isProxy">indicates whether the host is a proxy server</param>
+            <param name="host">hostname</param>
+            <param name="port">port number</param>
+            <param name="realm">realm</param>
+            <param name="scheme">scheme</param>
+            <param name="callback">Callback interface used for asynchronous continuation of authentication requests.</param>
+            <returns>Return true to continue the request and call CefAuthCallback::Continue() when the authentication information is available. Return false to cancel the request. </returns>
+        </member>
+        <member name="M:CefSharp.IRequestHandler.OnSelectClientCertificate(CefSharp.IWebBrowser,CefSharp.IBrowser,System.Boolean,System.String,System.Int32,System.Security.Cryptography.X509Certificates.X509Certificate2Collection,CefSharp.ISelectClientCertificateCallback)">
+            <summary>
+            Called when the browser needs user to select Client Certificate for authentication requests (eg. PKI authentication).
+            </summary>
+            <param name="browserControl">The ChromiumWebBrowser control</param>
+            <param name="browser">the browser object</param>
+            <param name="isProxy">indicates whether the host is a proxy server</param>
+            <param name="host">hostname</param>
+            <param name="port">port number</param>
+            <param name="certificates">List of Client certificates for selection</param>
+            <param name="callback">Callback interface used for asynchronous continuation of client certificate selection for authentication requests.</param>
+            <returns>Return true to continue the request and call ISelectClientCertificateCallback.Select() with the selected certificate for authentication. 
+            Return false to use the default behavior where the browser selects the first certificate from the list. </returns>
+        </member>
+        <member name="M:CefSharp.IRequestHandler.OnRenderProcessTerminated(CefSharp.IWebBrowser,CefSharp.IBrowser,CefSharp.CefTerminationStatus)">
+            <summary>
+            Called when the render process terminates unexpectedly.
+            </summary>
+            <param name="browserControl">The ChromiumWebBrowser control</param>
+            <param name="browser">the browser object</param>
+            <param name="status">indicates how the process terminated.</param>
+        </member>
+        <member name="M:CefSharp.IRequestHandler.OnQuotaRequest(CefSharp.IWebBrowser,CefSharp.IBrowser,System.String,System.Int64,CefSharp.IRequestCallback)">
+            <summary>
+            Called when JavaScript requests a specific storage quota size via the webkitStorageInfo.requestQuota function.
+            For async processing return true and execute <see cref="M:CefSharp.IRequestCallback.Continue(System.Boolean)"/> at a later time to 
+            grant or deny the request or <see cref="M:CefSharp.IRequestCallback.Cancel"/> to cancel.
+            </summary>
+            <param name="browserControl">The ChromiumWebBrowser control</param>
+            <param name="browser">the browser object</param>
+            <param name="originUrl">the origin of the page making the request</param>
+            <param name="newSize">is the requested quota size in bytes</param>
+            <param name="callback">Callback interface used for asynchronous continuation of url requests.</param>
+            <returns>Return false to cancel the request immediately. Return true to continue the request
+            and call <see cref="M:CefSharp.IRequestCallback.Continue(System.Boolean)"/> either in this method or at a later time to
+            grant or deny the request.</returns>
+        </member>
+        <member name="M:CefSharp.IRequestHandler.OnResourceRedirect(CefSharp.IWebBrowser,CefSharp.IBrowser,CefSharp.IFrame,CefSharp.IRequest,CefSharp.IResponse,System.String@)">
+            <summary>
+            Called on the IO thread when a resource load is redirected. The <see cref="P:CefSharp.IRequest.Url"/>
+            parameter will contain the old URL and other request-related information.
+            </summary>
+            <param name="browserControl">The ChromiumWebBrowser control</param>
+            <param name="browser">the browser object</param>
+            <param name="frame">The frame that is being redirected.</param>
+            <param name="request">the request object - cannot be modified in this callback</param>
+            <param name="response">the response object</param>
+            <param name="newUrl">the new URL and can be changed if desired</param>
+        </member>
+        <member name="M:CefSharp.IRequestHandler.OnProtocolExecution(CefSharp.IWebBrowser,CefSharp.IBrowser,System.String)">
+            <summary>
+            Called on the UI thread to handle requests for URLs with an unknown protocol component. 
+            SECURITY WARNING: YOU SHOULD USE THIS METHOD TO ENFORCE RESTRICTIONS BASED ON SCHEME, HOST OR OTHER URL ANALYSIS BEFORE ALLOWING OS EXECUTION.
+            </summary>
+            <param name="browserControl">The ChromiumWebBrowser control</param>
+            <param name="browser">the browser object</param>
+            <param name="url">the request url</param>
+            <returns>return to true to attempt execution via the registered OS protocol handler, if any. Otherwise return false.</returns>
+        </member>
+        <member name="M:CefSharp.IRequestHandler.OnRenderViewReady(CefSharp.IWebBrowser,CefSharp.IBrowser)">
+            <summary>
+            Called on the CEF UI thread when the render view associated
+            with browser is ready to receive/handle IPC messages in the render
+            process.
+            </summary>
+            <param name="browserControl">The ChromiumWebBrowser control</param>
+            <param name="browser">the browser object</param>
+        </member>
+        <member name="M:CefSharp.IRequestHandler.OnResourceResponse(CefSharp.IWebBrowser,CefSharp.IBrowser,CefSharp.IFrame,CefSharp.IRequest,CefSharp.IResponse)">
+            <summary>
+            Called on the CEF IO thread when a resource response is received.
+            To allow the resource to load normally return false.
+            To redirect or retry the resource modify request (url, headers or post body) and return true.
+            The response object cannot be modified in this callback. 
+            </summary>
+            <param name="browserControl">The ChromiumWebBrowser control</param>
+            <param name="browser">the browser object</param>
+            <param name="frame">The frame that is being redirected.</param>
+            <param name="request">the request object</param>
+            <param name="response">the response object - cannot be modified in this callback</param>
+            <returns>
+            To allow the resource to load normally return false.
+            To redirect or retry the resource modify request (url, headers or post body) and return true.
+            </returns>
+        </member>
+        <member name="M:CefSharp.IRequestHandler.GetResourceResponseFilter(CefSharp.IWebBrowser,CefSharp.IBrowser,CefSharp.IFrame,CefSharp.IRequest,CefSharp.IResponse)">
+            <summary>
+            Called on the CEF IO thread to optionally filter resource response content.
+            </summary>
+            <param name="browserControl">The ChromiumWebBrowser control</param>
+            <param name="browser">the browser object</param>
+            <param name="frame">The frame that is being redirected.</param>
+            <param name="request">the request object - cannot be modified in this callback</param>
+            <param name="response">the response object - cannot be modified in this callback</param>
+            <returns>Return an IResponseFilter to intercept this response, otherwise return null</returns>
+        </member>
+        <member name="M:CefSharp.IRequestHandler.OnResourceLoadComplete(CefSharp.IWebBrowser,CefSharp.IBrowser,CefSharp.IFrame,CefSharp.IRequest,CefSharp.IResponse,CefSharp.UrlRequestStatus,System.Int64)">
+            <summary>
+            Called on the CEF IO thread when a resource load has completed.
+            </summary>
+            <param name="browserControl">The ChromiumWebBrowser control</param>
+            <param name="browser">the browser object</param>
+            <param name="frame">The frame that is being redirected.</param>
+            <param name="request">the request object - cannot be modified in this callback</param>
+            <param name="response">the response object - cannot be modified in this callback</param>
+            <param name="status">indicates the load completion status</param>
+            <param name="receivedContentLength">is the number of response bytes actually read.</param>
+        </member>
+        <member name="M:CefSharp.Handler.DefaultRequestHandler.GetAuthCredentials(CefSharp.IWebBrowser,CefSharp.IBrowser,CefSharp.IFrame,System.Boolean,System.String,System.Int32,System.String,System.String,CefSharp.IAuthCallback)">
+            <summary>
+            Called when the browser needs credentials from the user.
+            </summary>
+            <param name="browserControl">The ChromiumWebBrowser control</param>
+            <param name="browser">the browser object</param>
+            <param name="frame">The frame object that needs credentials (This will contain the URL that is being requested.)</param>
+            <param name="isProxy">indicates whether the host is a proxy server</param>
+            <param name="host">hostname</param>
+            <param name="port">port number</param>
+            <param name="realm">realm</param>
+            <param name="scheme">scheme</param>
+            <param name="callback">Callback interface used for asynchronous continuation of authentication requests.</param>
+            <returns>Return true to continue the request and call CefAuthCallback::Continue() when the authentication information is available. Return false to cancel the request. </returns>
+        </member>
+        <member name="M:CefSharp.Handler.DefaultRequestHandler.GetResourceResponseFilter(CefSharp.IWebBrowser,CefSharp.IBrowser,CefSharp.IFrame,CefSharp.IRequest,CefSharp.IResponse)">
+            <summary>
+            Called on the CEF IO thread to optionally filter resource response content.
+            </summary>
+            <param name="browserControl">The ChromiumWebBrowser control</param>
+            <param name="browser">the browser object</param>
+            <param name="frame">The frame that is being redirected.</param>
+            <param name="request">the request object - cannot be modified in this callback</param>
+            <param name="response">the response object - cannot be modified in this callback</param>
+            <returns>Return an IResponseFilter to intercept this response, otherwise return null</returns>
+        </member>
+        <member name="M:CefSharp.Handler.DefaultRequestHandler.OnBeforeBrowse(CefSharp.IWebBrowser,CefSharp.IBrowser,CefSharp.IFrame,CefSharp.IRequest,System.Boolean)">
+            <summary>
+            Called before browser navigation.
+            If the navigation is allowed <see cref="E:CefSharp.IWebBrowser.FrameLoadStart"/> and <see cref="E:CefSharp.IWebBrowser.FrameLoadEnd"/>
+            will be called. If the navigation is canceled <see cref="E:CefSharp.IWebBrowser.LoadError"/> will be called with an ErrorCode
+            value of <see cref="F:CefSharp.CefErrorCode.Aborted"/>. 
+            </summary>
+            <param name="browserControl">the ChromiumWebBrowser control</param>
+            <param name="browser">the browser object</param>
+            <param name="frame">The frame the request is coming from</param>
+            <param name="request">the request object - cannot be modified in this callback</param>
+            <param name="isRedirect">has the request been redirected</param>
+            <returns>Return true to cancel the navigation or false to allow the navigation to proceed.</returns>
+        </member>
+        <member name="M:CefSharp.Handler.DefaultRequestHandler.OnBeforeResourceLoad(CefSharp.IWebBrowser,CefSharp.IBrowser,CefSharp.IFrame,CefSharp.IRequest,CefSharp.IRequestCallback)">
+            <summary>
+            Called before a resource request is loaded. For async processing return <see cref="F:CefSharp.CefReturnValue.ContinueAsync"/> 
+            and execute <see cref="M:CefSharp.IRequestCallback.Continue(System.Boolean)"/> or <see cref="M:CefSharp.IRequestCallback.Cancel"/>
+            </summary>
+            <param name="browserControl">The ChromiumWebBrowser control</param>
+            <param name="browser">the browser object</param>
+            <param name="frame">The frame object</param>
+            <param name="request">the request object - can be modified in this callback.</param>
+            <param name="callback">Callback interface used for asynchronous continuation of url requests.</param>
+            <returns>To cancel loading of the resource return <see cref="F:CefSharp.CefReturnValue.Cancel"/>
+            or <see cref="F:CefSharp.CefReturnValue.Continue"/> to allow the resource to load normally. For async
+            return <see cref="F:CefSharp.CefReturnValue.ContinueAsync"/></returns>
+        </member>
+        <member name="M:CefSharp.Handler.DefaultRequestHandler.OnCertificateError(CefSharp.IWebBrowser,CefSharp.IBrowser,CefSharp.CefErrorCode,System.String,CefSharp.ISslInfo,CefSharp.IRequestCallback)">
+            <summary>
+            Called to handle requests for URLs with an invalid SSL certificate.
+            Return true and call <see cref="M:CefSharp.IRequestCallback.Continue(System.Boolean)"/> either
+            in this method or at a later time to continue or cancel the request.  
+            If <see cref="!:CefSettings.IgnoreCertificateErrors"/> is set all invalid certificates
+            will be accepted without calling this method.
+            </summary>
+            <param name="browserControl">the ChromiumWebBrowser control</param>
+            <param name="browser">the browser object</param>
+            <param name="errorCode">the error code for this invalid certificate</param>
+            <param name="requestUrl">the url of the request for the invalid certificate</param>
+            <param name="sslInfo">ssl certificate information</param>
+            <param name="callback">Callback interface used for asynchronous continuation of url requests.
+            If empty the error cannot be recovered from and the request will be canceled automatically.</param>
+            <returns>Return false to cancel the request immediately. Return true and use <see cref="T:CefSharp.IRequestCallback"/> to
+            execute in an async fashion.</returns>
+        </member>
+        <member name="M:CefSharp.Handler.DefaultRequestHandler.OnOpenUrlFromTab(CefSharp.IWebBrowser,CefSharp.IBrowser,CefSharp.IFrame,System.String,CefSharp.WindowOpenDisposition,System.Boolean)">
+            <summary>
+            Called on the UI thread before OnBeforeBrowse in certain limited cases
+            where navigating a new or different browser might be desirable. This
+            includes user-initiated navigation that might open in a special way (e.g.
+            links clicked via middle-click or ctrl + left-click) and certain types of
+            cross-origin navigation initiated from the renderer process (e.g.
+            navigating the top-level frame to/from a file URL).
+            </summary>
+            <param name="browserControl">the ChromiumWebBrowser control</param>
+            <param name="browser">the browser object</param>
+            <param name="frame">The frame object</param>
+            <param name="targetUrl">target url</param>
+            <param name="targetDisposition">The value indicates where the user intended to navigate the browser based
+            on standard Chromium behaviors (e.g. current tab, new tab, etc). </param>
+            <param name="userGesture">The value will be true if the browser navigated via explicit user gesture
+            (e.g. clicking a link) or false if it navigated automatically (e.g. via the DomContentLoaded event).</param>
+            <returns>Return true to cancel the navigation or false to allow the navigation
+            to proceed in the source browser's top-level frame.</returns>
+        </member>
+        <member name="M:CefSharp.Handler.DefaultRequestHandler.OnPluginCrashed(CefSharp.IWebBrowser,CefSharp.IBrowser,System.String)">
+            <summary>
+            Called when a plugin has crashed
+            </summary>
+            <param name="browserControl">the ChromiumWebBrowser control</param>
+            <param name="browser">the browser object</param>
+            <param name="pluginPath">path of the plugin that crashed</param>
+        </member>
+        <member name="M:CefSharp.Handler.DefaultRequestHandler.OnProtocolExecution(CefSharp.IWebBrowser,CefSharp.IBrowser,System.String)">
+            <summary>
+            Called on the UI thread to handle requests for URLs with an unknown protocol component. 
+            SECURITY WARNING: YOU SHOULD USE THIS METHOD TO ENFORCE RESTRICTIONS BASED ON SCHEME, HOST OR OTHER URL ANALYSIS BEFORE ALLOWING OS EXECUTION.
+            </summary>
+            <param name="browserControl">The ChromiumWebBrowser control</param>
+            <param name="browser">the browser object</param>
+            <param name="url">the request url</param>
+            <returns>return to true to attempt execution via the registered OS protocol handler, if any. Otherwise return false.</returns>
+        </member>
+        <member name="M:CefSharp.Handler.DefaultRequestHandler.OnQuotaRequest(CefSharp.IWebBrowser,CefSharp.IBrowser,System.String,System.Int64,CefSharp.IRequestCallback)">
+            <summary>
+            Called when JavaScript requests a specific storage quota size via the webkitStorageInfo.requestQuota function.
+            For async processing return true and execute <see cref="M:CefSharp.IRequestCallback.Continue(System.Boolean)"/> at a later time to 
+            grant or deny the request or <see cref="M:CefSharp.IRequestCallback.Cancel"/> to cancel.
+            </summary>
+            <param name="browserControl">The ChromiumWebBrowser control</param>
+            <param name="browser">the browser object</param>
+            <param name="originUrl">the origin of the page making the request</param>
+            <param name="newSize">is the requested quota size in bytes</param>
+            <param name="callback">Callback interface used for asynchronous continuation of url requests.</param>
+            <returns>Return false to cancel the request immediately. Return true to continue the request
+            and call <see cref="M:CefSharp.IRequestCallback.Continue(System.Boolean)"/> either in this method or at a later time to
+            grant or deny the request.</returns>
+        </member>
+        <member name="M:CefSharp.Handler.DefaultRequestHandler.OnRenderProcessTerminated(CefSharp.IWebBrowser,CefSharp.IBrowser,CefSharp.CefTerminationStatus)">
+            <summary>
+            Called when the render process terminates unexpectedly.
+            </summary>
+            <param name="browserControl">The ChromiumWebBrowser control</param>
+            <param name="browser">the browser object</param>
+            <param name="status">indicates how the process terminated.</param>
+        </member>
+        <member name="M:CefSharp.Handler.DefaultRequestHandler.OnRenderViewReady(CefSharp.IWebBrowser,CefSharp.IBrowser)">
+            <summary>
+            Called on the CEF UI thread when the render view associated
+            with browser is ready to receive/handle IPC messages in the render
+            process.
+            </summary>
+            <param name="browserControl">The ChromiumWebBrowser control</param>
+            <param name="browser">the browser object</param>
+        </member>
+        <member name="M:CefSharp.Handler.DefaultRequestHandler.OnResourceLoadComplete(CefSharp.IWebBrowser,CefSharp.IBrowser,CefSharp.IFrame,CefSharp.IRequest,CefSharp.IResponse,CefSharp.UrlRequestStatus,System.Int64)">
+            <summary>
+            Called on the CEF IO thread when a resource load has completed.
+            </summary>
+            <param name="browserControl">The ChromiumWebBrowser control</param>
+            <param name="browser">the browser object</param>
+            <param name="frame">The frame that is being redirected.</param>
+            <param name="request">the request object - cannot be modified in this callback</param>
+            <param name="response">the response object - cannot be modified in this callback</param>
+            <param name="status">indicates the load completion status</param>
+            <param name="receivedContentLength">is the number of response bytes actually read.</param>
+        </member>
+        <member name="M:CefSharp.Handler.DefaultRequestHandler.OnResourceRedirect(CefSharp.IWebBrowser,CefSharp.IBrowser,CefSharp.IFrame,CefSharp.IRequest,CefSharp.IResponse,System.String@)">
+            <summary>
+            Called on the IO thread when a resource load is redirected. The <see cref="P:CefSharp.IRequest.Url"/>
+            parameter will contain the old URL and other request-related information.
+            </summary>
+            <param name="browserControl">The ChromiumWebBrowser control</param>
+            <param name="browser">the browser object</param>
+            <param name="frame">The frame that is being redirected.</param>
+            <param name="request">the request object - cannot be modified in this callback</param>
+            <param name="response">the response object</param>
+            <param name="newUrl">the new URL and can be changed if desired</param>
+        </member>
+        <member name="M:CefSharp.Handler.DefaultRequestHandler.OnResourceResponse(CefSharp.IWebBrowser,CefSharp.IBrowser,CefSharp.IFrame,CefSharp.IRequest,CefSharp.IResponse)">
+            <summary>
+            Called on the CEF IO thread when a resource response is received.
+            To allow the resource to load normally return false.
+            To redirect or retry the resource modify request (url, headers or post body) and return true.
+            The response object cannot be modified in this callback. 
+            </summary>
+            <param name="browserControl">The ChromiumWebBrowser control</param>
+            <param name="browser">the browser object</param>
+            <param name="frame">The frame that is being redirected.</param>
+            <param name="request">the request object</param>
+            <param name="response">the response object - cannot be modified in this callback</param>
+            <returns>
+            To allow the resource to load normally return false.
+            To redirect or retry the resource modify request (url, headers or post body) and return true.
+            </returns>
+        </member>
+        <member name="M:CefSharp.Handler.DefaultRequestHandler.OnSelectClientCertificate(CefSharp.IWebBrowser,CefSharp.IBrowser,System.Boolean,System.String,System.Int32,System.Security.Cryptography.X509Certificates.X509Certificate2Collection,CefSharp.ISelectClientCertificateCallback)">
+            <summary>
+            Called when the browser needs user to select Client Certificate for authentication requests (eg. PKI authentication).
+            </summary>
+            <param name="browserControl">The ChromiumWebBrowser control</param>
+            <param name="browser">the browser object</param>
+            <param name="isProxy">indicates whether the host is a proxy server</param>
+            <param name="host">hostname</param>
+            <param name="port">port number</param>
+            <param name="certificates">List of Client certificates for selection</param>
+            <param name="callback">Callback interface used for asynchronous continuation of client certificate selection for authentication requests.</param>
+            <returns>Return true to continue the request and call ISelectClientCertificateCallback.Select() with the selected certificate for authentication. 
+            Return false to use the default behavior where the browser selects the first certificate from the list. </returns>
+        </member>
+        <member name="T:CefSharp.UrlRequestFlags">
+            <summary>
+            Flags used to customize the behavior of CefURLRequest.
+            </summary>
+        </member>
+        <member name="F:CefSharp.UrlRequestFlags.None">
+            <summary>
+            Default behavior.
+            </summary>
+        </member>
+        <member name="F:CefSharp.UrlRequestFlags.SkipCache">
+            <summary>
+            If set the cache will be skipped when handling the request.
+            </summary>
+        </member>
+        <member name="F:CefSharp.UrlRequestFlags.AllowCachedCredentials">
+            <summary>
+            If set user name, password, and cookies may be sent with the request, and
+            cookies may be saved from the response.
+            </summary>
+        </member>
+        <member name="F:CefSharp.UrlRequestFlags.ReportUploadProgress">
+            <summary>
+             If set upload progress events will be generated when a request has a body.
+            </summary>
+        </member>
+        <member name="F:CefSharp.UrlRequestFlags.NoDownloadData">
+            <summary>
+            If set the CefURLRequestClient::OnDownloadData method will not be called.
+            </summary>
+        </member>
+        <member name="F:CefSharp.UrlRequestFlags.NoRetryOn5XX">
+            <summary>
+            If set 5XX redirect errors will be propagated to the observer instead of
+            automatically re-tried. This currently only applies for requests
+            originated in the browser process.
+            </summary>
+        </member>
+        <member name="T:CefSharp.IJavascriptObjectRepository">
+            <summary>
+            Javascript object repository, object are registered for binding
+            One repository per ChromiumWebBrowser instance
+            </summary>
+        </member>
+        <member name="M:CefSharp.IJavascriptObjectRepository.Register(System.String,System.Object,System.Boolean,CefSharp.BindingOptions)">
+            <summary>
+            Register an object for binding in Javascript. You can either
+            register an object in advance or as part of the <see cref="E:CefSharp.IJavascriptObjectRepository.ResolveObject"/>
+            event that will be called if no object matching object is found in the registry.
+            Objects binding is now initiated in Javascript through the CefSharp.BindObjectAsync
+            function (returns a Promose).
+            For more detailed examples see https://github.com/cefsharp/CefSharp/issues/2246
+            The equivilient to RegisterJsObject is isAsync = false
+            The equivilient RegisterAsyncJsObject is isAsync = true
+            </summary>
+            <param name="name">object name</param>
+            <param name="objectToBind">the object that will be bound in javascript</param>
+            <param name="isAsync">
+            if true the object will be registered for async communication,
+            only methods will be exposed and when called from javascript will return a Promise to be awaited. 
+            This method is newer and recommended for everyone starting out as it is faster and more reliable.
+            If false then methods and properties will be registered, this method relies on a WCF service to communicate.
+            </param>
+            <param name="options">binding options, by default method/property names are camelCased, you can control this
+            and other advanced options though this class.</param>
+        </member>
+        <member name="M:CefSharp.IJavascriptObjectRepository.IsBound(System.String)">
+            <summary>
+            Is object bound
+            </summary>
+            <param name="name">name</param>
+            <returns>true if object with matching name bound</returns>
+        </member>
+        <member name="P:CefSharp.IJavascriptObjectRepository.HasBoundObjects">
+            <summary>
+            Has bound objects
+            </summary>
+        </member>
+        <member name="E:CefSharp.IJavascriptObjectRepository.ResolveObject">
+            <summary>
+            Event handler is called when an object with a given name is requested for binding and is not yet
+            registered with the repository. Use <see cref="P:CefSharp.Event.JavascriptBindingEventArgs.ObjectRepository"/>
+            to register objects (using 
+            </summary>
+        </member>
+        <member name="E:CefSharp.IJavascriptObjectRepository.ObjectBoundInJavascript">
+            <summary>
+            Event handler is triggered when a object has been successfully bound on javascript
+            </summary>
+        </member>
+        <member name="T:CefSharp.ByteArrayResourceHandler">
+            <summary>
+            ByteArrayResourceHandler is used as a placeholder class which uses native CEF implementations.
+            CefStreamReader::CreateForData(); reads the byte array that is passed to a new instance
+            of CefStreamResourceHandler 
+            TODO: Move this class into Handler namespace 
+            </summary>
+        </member>
+        <member name="T:CefSharp.IResourceHandler">
+            <summary>
+            Class used to implement a custom resource handler. The methods of this class will always be called on the CEF IO thread.
+            Blocking the CEF IO thread will adversely affect browser performance. We suggest you execute your code in a Task (or similar).
+            To implement async handling, spawn a new Task (or similar), keep a reference to the callback. When you have a 
+            fully populated stream, execute the callback. Once the callback Executes, GetResponseHeaders will be called where you
+            can modify the response including headers, or even redirect to a new Url. Set your responseLength and headers
+            Populate the dataOut stream in ReadResponse. For those looking for a sample implementation or upgrading from 
+            a previous version <see cref="T:CefSharp.ResourceHandler"/>. For those upgrading, inherit from ResourceHandler instead of IResourceHandler
+            add the override keywoard to existing methods e.g. ProcessRequestAsync.
+            </summary>
+        </member>
+        <member name="M:CefSharp.IResourceHandler.ProcessRequest(CefSharp.IRequest,CefSharp.ICallback)">
+            <summary>
+            Begin processing the request.  
+            </summary>
+            <param name="request">The request object.</param>
+            <param name="callback">The callback used to Continue or Cancel the request (async).</param>
+            <returns>To handle the request return true and call
+            <see cref="M:CefSharp.ICallback.Continue"/> once the response header information is available
+            <see cref="M:CefSharp.ICallback.Continue"/> can also be called from inside this method if
+            header information is available immediately).
+            To cancel the request return false.</returns>
+        </member>
+        <member name="M:CefSharp.IResourceHandler.GetResponseHeaders(CefSharp.IResponse,System.Int64@,System.String@)">
+            <summary>
+            Retrieve response header information. If the response length is not known
+            set responseLength to -1 and ReadResponse() will be called until it
+            returns false. If the response length is known set responseLength
+            to a positive value and ReadResponse() will be called until it returns
+            false or the specified number of bytes have been read. 
+            If an error occured while setting up the request you can set <see cref="P:CefSharp.IResponse.ErrorCode"/>
+            to indicate the error condition.
+            </summary>
+            <param name="response">Use the response object to set the mime type, http status code and other optional header values.</param>
+            <param name="responseLength">If the response length is not known set responseLength to -1</param>
+            <param name="redirectUrl">To redirect the request to a new URL set redirectUrl to the new Url.</param>
+        </member>
+        <member name="M:CefSharp.IResourceHandler.ReadResponse(System.IO.Stream,System.Int32@,CefSharp.ICallback)">
+            <summary>
+            Read response data. If data is available immediately copy to
+            dataOut, set bytesRead to the number of bytes copied, and return true.
+            To read the data at a later time set bytesRead to 0, return true and call ICallback.Continue() when the
+            data is available. To indicate response completion return false.
+            </summary>
+            <param name="dataOut">Stream to write to</param>
+            <param name="bytesRead">Number of bytes copied to the stream</param>
+            <param name="callback">The callback used to Continue or Cancel the request (async).</param>
+            <returns>If data is available immediately copy to dataOut, set bytesRead to the number of bytes copied,
+            and return true.To indicate response completion return false.</returns>
+            <remarks>Depending on this size of your response this method may be called multiple times</remarks>
+        </member>
+        <member name="M:CefSharp.IResourceHandler.CanGetCookie(CefSharp.Cookie)">
+            <summary>
+            Return true if the specified cookie can be sent with the request or false
+            otherwise. If false is returned for any cookie then no cookies will be sent
+            with the request.
+            </summary>
+            <param name="cookie">cookie</param>
+            <returns>Return true if the specified cookie can be sent with the request or false
+            otherwise. If false is returned for any cookie then no cookies will be sent
+            with the request.</returns>
+        </member>
+        <member name="M:CefSharp.IResourceHandler.CanSetCookie(CefSharp.Cookie)">
+            <summary>
+            Return true if the specified cookie returned with the response can be set or false otherwise.
+            </summary>
+            <param name="cookie">cookie</param>
+            <returns>Return true if the specified cookie returned with the response can be set or false otherwise.</returns>
+        </member>
+        <member name="M:CefSharp.IResourceHandler.Cancel">
+            <summary>
+            Request processing has been canceled.
+            </summary>
+        </member>
+        <member name="M:CefSharp.ByteArrayResourceHandler.#ctor(System.String,System.Byte[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:CefSharp.ByteArrayResourceHandler"/> class.
+            </summary>
+            <param name="mimeType">mimeType</param>
+            <param name="filePath">filePath</param>
+        </member>
+        <member name="P:CefSharp.ByteArrayResourceHandler.Data">
+            <summary>
+            Underlying byte array that represents the data
+            </summary>
+        </member>
+        <member name="P:CefSharp.ByteArrayResourceHandler.MimeType">
+            <summary>
+            Gets or sets the Mime Type.
+            </summary>
+        </member>
+        <member name="T:CefSharp.Internals.DateTimeUtils">
+            <summary>
+            Mapping to/from CefTime
+            </summary>
+        </member>
+        <member name="M:CefSharp.Internals.DateTimeUtils.FromCefTime(System.Double)">
+            <summary>
+            Takes the epoch and creates a <see cref="T:System.DateTime"/>
+            </summary>
+            <param name="epoch">cef datetime represented as difference between 01/01/1970</param>
+            <returns></returns>
+        </member>
+        <member name="M:CefSharp.Internals.DateTimeUtils.ToCefTime(System.DateTime)">
+            <summary>
+            Returns epoch (different from 01/01/1970)
+            </summary>
+            <param name="dateTime">datetime</param>
+            <returns>epoch</returns>
+        </member>
+        <member name="T:CefSharp.FileResourceHandler">
+            <summary>
+            FileResourceHandler  is used as a placeholder class which uses native CEF implementations.
+            CefStreamReader::CreateForFile is used to create a CefStreamReader instance which is passed to
+            a new instance of CefStreamResourceHandler
+            (Was previously ResourceHandlerType::File to differentiate, going for a more flexible approach now)
+            TODO: Move this class into Handler namespace 
+            </summary>
+        </member>
+        <member name="M:CefSharp.FileResourceHandler.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CefSharp.FileResourceHandler"/> class.
+            </summary>
+            <param name="mimeType">mimeType</param>
+            <param name="filePath">filePath</param>
+        </member>
+        <member name="P:CefSharp.FileResourceHandler.FilePath">
+            <summary>
+            Path of the underlying file
+            </summary>
+        </member>
+        <member name="P:CefSharp.FileResourceHandler.MimeType">
+            <summary>
+            Gets or sets the Mime Type.
             </summary>
         </member>
         <member name="T:CefSharp.CefExtension">
@@ -1975,6 +2629,11 @@
             A plugin node is selected.
             </summary>
         </member>
+        <member name="T:CefSharp.ContextMenuType">
+            <summary>
+            ContextMenuType
+            </summary>
+        </member>
         <member name="F:CefSharp.ContextMenuType.None">
             <summary>
             No node is selected.
@@ -2156,16 +2815,6 @@
         <member name="F:CefSharp.ReferrerPolicy.OriginWhenCrossOrigin">
             <summary>
             When navigating cross-origin only send the origin component of the Referrer value. Otherwise, send the complete Referrer value.
-            </summary>
-        </member>
-        <member name="F:CefSharp.ResourceHandlerType.Stream">
-            <summary>
-            Resource is read from a Stream (Default)
-            </summary>
-        </member>
-        <member name="F:CefSharp.ResourceHandlerType.File">
-            <summary>
-            Resource is read from a file on disk
             </summary>
         </member>
         <member name="T:CefSharp.ResourceType">
@@ -2429,7 +3078,7 @@
         </member>
         <member name="T:CefSharp.ConsoleMessageEventArgs">
             <summary>
-            Event arguments to the ConsoleMessage event handler set up in IWebBrowser.
+            Event arguments for the ConsoleMessage event handler set up in IWebBrowser.
             </summary>
         </member>
         <member name="M:CefSharp.ConsoleMessageEventArgs.#ctor(System.String,System.String,System.Int32)">
@@ -2522,7 +3171,7 @@
         </member>
         <member name="T:CefSharp.IsBrowserInitializedChangedEventArgs">
             <summary>
-            Event arguments to the IsBrowserInitializedChanged event handler.
+            Event arguments for the IsBrowserInitializedChanged event handler.
             </summary>
         </member>
         <member name="T:CefSharp.LoadErrorEventArgs">
@@ -2558,6 +3207,31 @@
         <member name="T:CefSharp.LoadingStateChangedEventArgs">
             <summary>
             Event arguments to the LoadingStateChanged event handler set up in IWebBrowser.
+            </summary>
+        </member>
+        <member name="P:CefSharp.LoadingStateChangedEventArgs.CanGoForward">
+            <summary>
+            Returns true if the browser can navigate forwards. 
+            </summary>
+        </member>
+        <member name="P:CefSharp.LoadingStateChangedEventArgs.CanGoBack">
+            <summary>
+            Returns true if the browser can navigate backwards. 
+            </summary>
+        </member>
+        <member name="P:CefSharp.LoadingStateChangedEventArgs.CanReload">
+            <summary>
+            Returns true if the browser can reload. 
+            </summary>
+        </member>
+        <member name="P:CefSharp.LoadingStateChangedEventArgs.IsLoading">
+            <summary>
+            Returns true if the browser is loading. 
+            </summary>
+        </member>
+        <member name="P:CefSharp.LoadingStateChangedEventArgs.Browser">
+            <summary>
+            Access to the underlying <see cref="T:CefSharp.IBrowser"/> object
             </summary>
         </member>
         <member name="T:CefSharp.StatusMessageEventArgs">
@@ -2771,6 +3445,15 @@
             <param name="browserControl">The <see cref="T:CefSharp.IWebBrowser"/> control this popup is related to.</param>
             <param name="addressChangedArgs">args</param>
         </member>
+        <member name="M:CefSharp.IDisplayHandler.OnAutoResize(CefSharp.IWebBrowser,CefSharp.IBrowser,CefSharp.Structs.Size)">
+            <summary>
+            Called when auto-resize is enabled via IBrowserHost.SetAutoResizeEnabled and the contents have auto-resized.
+            </summary>
+            <param name="browserControl">The ChromiumWebBrowser control</param>
+            <param name="browser">the browser object</param>
+            <param name="newSize">will be the desired size in view coordinates</param>
+            <returns>Return true if the resize was handled or false for default handling. </returns>
+        </member>
         <member name="M:CefSharp.IDisplayHandler.OnTitleChanged(CefSharp.IWebBrowser,CefSharp.TitleChangedEventArgs)">
             <summary>
             Called when the page title changes.
@@ -2796,7 +3479,7 @@
             <param name="fullscreen">If true the content will automatically be sized to fill the browser content area.
             If false the content will automatically return to its original size and position.</param>
         </member>
-        <member name="M:CefSharp.IDisplayHandler.OnTooltipChanged(CefSharp.IWebBrowser,System.String)">
+        <member name="M:CefSharp.IDisplayHandler.OnTooltipChanged(CefSharp.IWebBrowser,System.String@)">
             <summary>
             Called when the browser is about to display a tooltip. text contains the
             text that will be displayed in the tooltip. You can optionally modify text
@@ -2808,7 +3491,7 @@
             <param name="text">the text that will be displayed in the tooltip</param>
             <returns>To handle the display of the tooltip yourself return true otherwise return false
             to allow the browser to display the tooltip.</returns>
-            <remarks>Option to modify tooltip is not currently implemented.</remarks>
+            <remarks>Only called when using Off-screen rendering (WPF and OffScreen)</remarks>
         </member>
         <member name="M:CefSharp.IDisplayHandler.OnStatusMessage(CefSharp.IWebBrowser,CefSharp.StatusMessageEventArgs)">
             <summary>
@@ -3233,7 +3916,7 @@
             <summary>
             OnContextCreated is called in the Render process immediately after a CefV8Context is created.
             An IPC message is immediately sent to notify the context has been created
-            (should be safe to execute javascript). If the page has no javascript then on context will be created
+            (should be safe to execute javascript). If the page has no javascript then no V8Context will be created
             and as a result this method will not be called. Currently only called for the Main frame <see cref="P:CefSharp.IFrame.IsMain"/>
             </summary>
             <param name="browserControl">The ChromiumWebBrowser control</param>
@@ -3290,284 +3973,6 @@
             <param name="pluginInfo">includes additional information about the plugin that will be loaded</param>
             <param name="pluginPolicy">Modify and return true to change the policy.</param>
             <returns>Return false to use the recommended policy. Modify and return true to change the policy.</returns>
-        </member>
-        <member name="T:CefSharp.IRequestHandler">
-            <summary>
-            Implement this interface to handle events related to browser requests.
-            The methods of this class will be called on the thread indicated. 
-            </summary>
-        </member>
-        <member name="M:CefSharp.IRequestHandler.OnBeforeBrowse(CefSharp.IWebBrowser,CefSharp.IBrowser,CefSharp.IFrame,CefSharp.IRequest,System.Boolean)">
-            <summary>
-            Called before browser navigation.
-            If the navigation is allowed <see cref="E:CefSharp.IWebBrowser.FrameLoadStart"/> and <see cref="E:CefSharp.IWebBrowser.FrameLoadEnd"/>
-            will be called. If the navigation is canceled <see cref="E:CefSharp.IWebBrowser.LoadError"/> will be called with an ErrorCode
-            value of <see cref="F:CefSharp.CefErrorCode.Aborted"/>. 
-            </summary>
-            <param name="browserControl">the ChromiumWebBrowser control</param>
-            <param name="browser">the browser object</param>
-            <param name="frame">The frame the request is coming from</param>
-            <param name="request">the request object - cannot be modified in this callback</param>
-            <param name="isRedirect">has the request been redirected</param>
-            <returns>Return true to cancel the navigation or false to allow the navigation to proceed.</returns>
-        </member>
-        <member name="M:CefSharp.IRequestHandler.OnOpenUrlFromTab(CefSharp.IWebBrowser,CefSharp.IBrowser,CefSharp.IFrame,System.String,CefSharp.WindowOpenDisposition,System.Boolean)">
-            <summary>
-            Called on the UI thread before OnBeforeBrowse in certain limited cases
-            where navigating a new or different browser might be desirable. This
-            includes user-initiated navigation that might open in a special way (e.g.
-            links clicked via middle-click or ctrl + left-click) and certain types of
-            cross-origin navigation initiated from the renderer process (e.g.
-            navigating the top-level frame to/from a file URL).
-            </summary>
-            <param name="browserControl">the ChromiumWebBrowser control</param>
-            <param name="browser">the browser object</param>
-            <param name="frame">The frame object</param>
-            <param name="targetUrl">target url</param>
-            <param name="targetDisposition">The value indicates where the user intended to navigate the browser based
-            on standard Chromium behaviors (e.g. current tab, new tab, etc). </param>
-            <param name="userGesture">The value will be true if the browser navigated via explicit user gesture
-            (e.g. clicking a link) or false if it navigated automatically (e.g. via the DomContentLoaded event).</param>
-            <returns>Return true to cancel the navigation or false to allow the navigation
-            to proceed in the source browser's top-level frame.</returns>
-        </member>
-        <member name="M:CefSharp.IRequestHandler.OnCertificateError(CefSharp.IWebBrowser,CefSharp.IBrowser,CefSharp.CefErrorCode,System.String,CefSharp.ISslInfo,CefSharp.IRequestCallback)">
-            <summary>
-            Called to handle requests for URLs with an invalid SSL certificate.
-            Return true and call <see cref="M:CefSharp.IRequestCallback.Continue(System.Boolean)"/> either
-            in this method or at a later time to continue or cancel the request.  
-            If <see cref="!:CefSettings.IgnoreCertificateErrors"/> is set all invalid certificates
-            will be accepted without calling this method.
-            </summary>
-            <param name="browserControl">the ChromiumWebBrowser control</param>
-            <param name="browser">the browser object</param>
-            <param name="errorCode">the error code for this invalid certificate</param>
-            <param name="requestUrl">the url of the request for the invalid certificate</param>
-            <param name="sslInfo">ssl certificate information</param>
-            <param name="callback">Callback interface used for asynchronous continuation of url requests.
-            If empty the error cannot be recovered from and the request will be canceled automatically.</param>
-            <returns>Return false to cancel the request immediately. Return true and use <see cref="T:CefSharp.IRequestCallback"/> to
-            execute in an async fashion.</returns>
-        </member>
-        <member name="M:CefSharp.IRequestHandler.OnPluginCrashed(CefSharp.IWebBrowser,CefSharp.IBrowser,System.String)">
-            <summary>
-            Called when a plugin has crashed
-            </summary>
-            <param name="browserControl">the ChromiumWebBrowser control</param>
-            <param name="browser">the browser object</param>
-            <param name="pluginPath">path of the plugin that crashed</param>
-        </member>
-        <member name="M:CefSharp.IRequestHandler.OnBeforeResourceLoad(CefSharp.IWebBrowser,CefSharp.IBrowser,CefSharp.IFrame,CefSharp.IRequest,CefSharp.IRequestCallback)">
-            <summary>
-            Called before a resource request is loaded. For async processing return <see cref="F:CefSharp.CefReturnValue.ContinueAsync"/> 
-            and execute <see cref="M:CefSharp.IRequestCallback.Continue(System.Boolean)"/> or <see cref="M:CefSharp.IRequestCallback.Cancel"/>
-            </summary>
-            <param name="browserControl">The ChromiumWebBrowser control</param>
-            <param name="browser">the browser object</param>
-            <param name="frame">The frame object</param>
-            <param name="request">the request object - can be modified in this callback.</param>
-            <param name="callback">Callback interface used for asynchronous continuation of url requests.</param>
-            <returns>To cancel loading of the resource return <see cref="F:CefSharp.CefReturnValue.Cancel"/>
-            or <see cref="F:CefSharp.CefReturnValue.Continue"/> to allow the resource to load normally. For async
-            return <see cref="F:CefSharp.CefReturnValue.ContinueAsync"/></returns>
-        </member>
-        <member name="M:CefSharp.IRequestHandler.GetAuthCredentials(CefSharp.IWebBrowser,CefSharp.IBrowser,CefSharp.IFrame,System.Boolean,System.String,System.Int32,System.String,System.String,CefSharp.IAuthCallback)">
-            <summary>
-            Called when the browser needs credentials from the user.
-            </summary>
-            <param name="browserControl">The ChromiumWebBrowser control</param>
-            <param name="browser">the browser object</param>
-            <param name="frame">The frame object that needs credentials (This will contain the URL that is being requested.)</param>
-            <param name="isProxy">indicates whether the host is a proxy server</param>
-            <param name="host">hostname</param>
-            <param name="port">port number</param>
-            <param name="realm">realm</param>
-            <param name="scheme">scheme</param>
-            <param name="callback">Callback interface used for asynchronous continuation of authentication requests.</param>
-            <returns>Return true to continue the request and call CefAuthCallback::Continue() when the authentication information is available. Return false to cancel the request. </returns>
-        </member>
-        <member name="M:CefSharp.IRequestHandler.OnSelectClientCertificate(CefSharp.IWebBrowser,CefSharp.IBrowser,System.Boolean,System.String,System.Int32,System.Security.Cryptography.X509Certificates.X509Certificate2Collection,CefSharp.ISelectClientCertificateCallback)">
-            <summary>
-            Called when the browser needs user to select Client Certificate for authentication requests (eg. PKI authentication).
-            </summary>
-            <param name="browserControl">The ChromiumWebBrowser control</param>
-            <param name="browser">the browser object</param>
-            <param name="isProxy">indicates whether the host is a proxy server</param>
-            <param name="host">hostname</param>
-            <param name="port">port number</param>
-            <param name="certificates">List of Client certificates for selection</param>
-            <param name="callback">Callback interface used for asynchronous continuation of client certificate selection for authentication requests.</param>
-            <returns>Return true to continue the request and call ISelectClientCertificateCallback.Select() with the selected certificate for authentication. 
-            Return false to use the default behavior where the browser selects the first certificate from the list. </returns>
-        </member>
-        <member name="M:CefSharp.IRequestHandler.OnRenderProcessTerminated(CefSharp.IWebBrowser,CefSharp.IBrowser,CefSharp.CefTerminationStatus)">
-            <summary>
-            Called when the render process terminates unexpectedly.
-            </summary>
-            <param name="browserControl">The ChromiumWebBrowser control</param>
-            <param name="browser">the browser object</param>
-            <param name="status">indicates how the process terminated.</param>
-        </member>
-        <member name="M:CefSharp.IRequestHandler.OnQuotaRequest(CefSharp.IWebBrowser,CefSharp.IBrowser,System.String,System.Int64,CefSharp.IRequestCallback)">
-            <summary>
-            Called when JavaScript requests a specific storage quota size via the webkitStorageInfo.requestQuota function.
-            For async processing return true and execute <see cref="M:CefSharp.IRequestCallback.Continue(System.Boolean)"/> at a later time to 
-            grant or deny the request or <see cref="M:CefSharp.IRequestCallback.Cancel"/> to cancel.
-            </summary>
-            <param name="browserControl">The ChromiumWebBrowser control</param>
-            <param name="browser">the browser object</param>
-            <param name="originUrl">the origin of the page making the request</param>
-            <param name="newSize">is the requested quota size in bytes</param>
-            <param name="callback">Callback interface used for asynchronous continuation of url requests.</param>
-            <returns>Return false to cancel the request immediately. Return true to continue the request
-            and call <see cref="M:CefSharp.IRequestCallback.Continue(System.Boolean)"/> either in this method or at a later time to
-            grant or deny the request.</returns>
-        </member>
-        <member name="M:CefSharp.IRequestHandler.OnResourceRedirect(CefSharp.IWebBrowser,CefSharp.IBrowser,CefSharp.IFrame,CefSharp.IRequest,CefSharp.IResponse,System.String@)">
-            <summary>
-            Called on the IO thread when a resource load is redirected. The <see cref="P:CefSharp.IRequest.Url"/>
-            parameter will contain the old URL and other request-related information.
-            </summary>
-            <param name="browserControl">The ChromiumWebBrowser control</param>
-            <param name="browser">the browser object</param>
-            <param name="frame">The frame that is being redirected.</param>
-            <param name="request">the request object - cannot be modified in this callback</param>
-            <param name="response">the response object</param>
-            <param name="newUrl">the new URL and can be changed if desired</param>
-        </member>
-        <member name="M:CefSharp.IRequestHandler.OnProtocolExecution(CefSharp.IWebBrowser,CefSharp.IBrowser,System.String)">
-            <summary>
-            Called on the UI thread to handle requests for URLs with an unknown protocol component. 
-            SECURITY WARNING: YOU SHOULD USE THIS METHOD TO ENFORCE RESTRICTIONS BASED ON SCHEME, HOST OR OTHER URL ANALYSIS BEFORE ALLOWING OS EXECUTION.
-            </summary>
-            <param name="browserControl">The ChromiumWebBrowser control</param>
-            <param name="browser">the browser object</param>
-            <param name="url">the request url</param>
-            <returns>return to true to attempt execution via the registered OS protocol handler, if any. Otherwise return false.</returns>
-        </member>
-        <member name="M:CefSharp.IRequestHandler.OnRenderViewReady(CefSharp.IWebBrowser,CefSharp.IBrowser)">
-            <summary>
-            Called on the CEF UI thread when the render view associated
-            with browser is ready to receive/handle IPC messages in the render
-            process.
-            </summary>
-            <param name="browserControl">The ChromiumWebBrowser control</param>
-            <param name="browser">the browser object</param>
-        </member>
-        <member name="M:CefSharp.IRequestHandler.OnResourceResponse(CefSharp.IWebBrowser,CefSharp.IBrowser,CefSharp.IFrame,CefSharp.IRequest,CefSharp.IResponse)">
-            <summary>
-            Called on the CEF IO thread when a resource response is received.
-            To allow the resource to load normally return false.
-            To redirect or retry the resource modify request (url, headers or post body) and return true.
-            The response object cannot be modified in this callback. 
-            </summary>
-            <param name="browserControl">The ChromiumWebBrowser control</param>
-            <param name="browser">the browser object</param>
-            <param name="frame">The frame that is being redirected.</param>
-            <param name="request">the request object</param>
-            <param name="response">the response object - cannot be modified in this callback</param>
-            <returns>
-            To allow the resource to load normally return false.
-            To redirect or retry the resource modify request (url, headers or post body) and return true.
-            </returns>
-        </member>
-        <member name="M:CefSharp.IRequestHandler.GetResourceResponseFilter(CefSharp.IWebBrowser,CefSharp.IBrowser,CefSharp.IFrame,CefSharp.IRequest,CefSharp.IResponse)">
-            <summary>
-            Called on the CEF IO thread to optionally filter resource response content.
-            </summary>
-            <param name="browserControl">The ChromiumWebBrowser control</param>
-            <param name="browser">the browser object</param>
-            <param name="frame">The frame that is being redirected.</param>
-            <param name="request">the request object - cannot be modified in this callback</param>
-            <param name="response">the response object - cannot be modified in this callback</param>
-            <returns>Return an IResponseFilter to intercept this response, otherwise return null</returns>
-        </member>
-        <member name="M:CefSharp.IRequestHandler.OnResourceLoadComplete(CefSharp.IWebBrowser,CefSharp.IBrowser,CefSharp.IFrame,CefSharp.IRequest,CefSharp.IResponse,CefSharp.UrlRequestStatus,System.Int64)">
-            <summary>
-            Called on the CEF IO thread when a resource load has completed.
-            </summary>
-            <param name="browserControl">The ChromiumWebBrowser control</param>
-            <param name="browser">the browser object</param>
-            <param name="frame">The frame that is being redirected.</param>
-            <param name="request">the request object - cannot be modified in this callback</param>
-            <param name="response">the response object - cannot be modified in this callback</param>
-            <param name="status">indicates the load completion status</param>
-            <param name="receivedContentLength">is the number of response bytes actually read.</param>
-        </member>
-        <member name="T:CefSharp.IResourceHandler">
-            <summary>
-            Class used to implement a custom resource handler. The methods of this class will always be called on the CEF IO thread.
-            Blocking the CEF IO thread will adversely affect browser performance. We suggest you execute your code in a Task (or similar).
-            To implement async handling, spawn a new Task (or similar), keep a reference to the callback. When you have a 
-            fully populated stream, execute the callback. Once the callback Executes, GetResponseHeaders will be called where you
-            can modify the response including headers, or even redirect to a new Url. Set your responseLength and headers
-            Populate the dataOut stream in ReadResponse. For those looking for a sample implementation or upgrading from 
-            a previous version <see cref="T:CefSharp.ResourceHandler"/>. For those upgrading, inherit from ResourceHandler instead of IResourceHandler
-            add the override keywoard to existing methods e.g. ProcessRequestAsync.
-            </summary>
-        </member>
-        <member name="M:CefSharp.IResourceHandler.ProcessRequest(CefSharp.IRequest,CefSharp.ICallback)">
-            <summary>
-            Begin processing the request.  
-            </summary>
-            <param name="request">The request object.</param>
-            <param name="callback">The callback used to Continue or Cancel the request (async).</param>
-            <returns>To handle the request return true and call
-            <see cref="M:CefSharp.ICallback.Continue"/> once the response header information is available
-            <see cref="M:CefSharp.ICallback.Continue"/> can also be called from inside this method if
-            header information is available immediately).
-            To cancel the request return false.</returns>
-        </member>
-        <member name="M:CefSharp.IResourceHandler.GetResponseHeaders(CefSharp.IResponse,System.Int64@,System.String@)">
-            <summary>
-            Retrieve response header information. If the response length is not known
-            set responseLength to -1 and ReadResponse() will be called until it
-            returns false. If the response length is known set responseLength
-            to a positive value and ReadResponse() will be called until it returns
-            false or the specified number of bytes have been read. 
-            If an error occured while setting up the request you can set <see cref="P:CefSharp.IResponse.ErrorCode"/>
-            to indicate the error condition.
-            </summary>
-            <param name="response">Use the response object to set the mime type, http status code and other optional header values.</param>
-            <param name="responseLength">If the response length is not known set responseLength to -1</param>
-            <param name="redirectUrl">To redirect the request to a new URL set redirectUrl to the new Url.</param>
-        </member>
-        <member name="M:CefSharp.IResourceHandler.ReadResponse(System.IO.Stream,System.Int32@,CefSharp.ICallback)">
-            <summary>
-            Read response data. If data is available immediately copy to
-            dataOut, set bytesRead to the number of bytes copied, and return true.
-            To read the data at a later time set bytesRead to 0, return true and call ICallback.Continue() when the
-            data is available. To indicate response completion return false.
-            </summary>
-            <param name="dataOut">Stream to write to</param>
-            <param name="bytesRead">Number of bytes copied to the stream</param>
-            <param name="callback">The callback used to Continue or Cancel the request (async).</param>
-            <returns>If data is available immediately copy to dataOut, set bytesRead to the number of bytes copied,
-            and return true.To indicate response completion return false.</returns>
-            <remarks>Depending on this size of your response this method may be called multiple times</remarks>
-        </member>
-        <member name="M:CefSharp.IResourceHandler.CanGetCookie(CefSharp.Cookie)">
-            <summary>
-            Return true if the specified cookie can be sent with the request or false
-            otherwise. If false is returned for any cookie then no cookies will be sent
-            with the request.
-            </summary>
-            <param name="cookie">cookie</param>
-            <returns>Return true if the specified cookie can be sent with the request or false
-            otherwise. If false is returned for any cookie then no cookies will be sent
-            with the request.</returns>
-        </member>
-        <member name="M:CefSharp.IResourceHandler.CanSetCookie(CefSharp.Cookie)">
-            <summary>
-            Return true if the specified cookie returned with the response can be set or false otherwise.
-            </summary>
-            <param name="cookie">cookie</param>
-            <returns>Return true if the specified cookie returned with the response can be set or false otherwise.</returns>
-        </member>
-        <member name="M:CefSharp.IResourceHandler.Cancel">
-            <summary>
-            Request processing has been canceled.
-            </summary>
         </member>
         <member name="T:CefSharp.IBrowserSettings">
             <summary>
@@ -3640,13 +4045,6 @@
             <summary>
             Controls whether JavaScript can be executed.
             (Disable javascript)
-            </summary>
-        </member>
-        <member name="P:CefSharp.IBrowserSettings.JavascriptOpenWindows">
-            <summary>
-            Controls whether JavaScript can be used for opening windows. Also
-            configurable using the "disable-javascript-open-windows" command-line
-            switch.
             </summary>
         </member>
         <member name="P:CefSharp.IBrowserSettings.JavascriptCloseWindows">
@@ -3781,11 +4179,16 @@
             Simple helper class used for checking/parsing command line arguments
             </summary>
         </member>
+        <member name="T:CefSharp.IPopupFeatures">
+            <summary>
+            Class representing popup window features. 
+            </summary>
+        </member>
         <member name="T:CefSharp.IRequestContext">
             <summary>
             A request context provides request handling for a set of related browser or URL request objects.
             A request context can be specified when creating a new browser by setting the 
-            <see cref="!:IWebBrowser.RequestContext"/> property (Passing in via the constructor for the OffScreen
+            <see cref="P:CefSharp.IWebBrowser.RequestContext"/> property (Passing in via the constructor for the OffScreen
             control is preferred).
             Browser objects with different request contexts will never be hosted in the same render process.
             Browser objects with the same request context may or may not be hosted in the same render process
@@ -3948,7 +4351,7 @@
             Attempts to resolve origin to a list of associated IP addresses.
             </summary>
             <param name="origin">host name to resolve</param>
-            <return>A task that represents the Resoolve Host operation. The value of the TResult parameter contains ResolveCallbackResult.</return>
+            <returns>A task that represents the Resoolve Host operation. The value of the TResult parameter contains ResolveCallbackResult.</returns>
         </member>
         <member name="M:CefSharp.IRequestContext.ResolveHostCached(System.Uri,System.Collections.Generic.IList{System.String}@)">
             <summary>
@@ -3972,6 +4375,12 @@
             <summary>
             Returns the cache path for this object. If empty an "incognito mode"
             in-memory cache is being used.
+            </summary>
+        </member>
+        <member name="T:CefSharp.IResponseFilter">
+            <summary>
+            Implement this interface to filter resource response content.
+            The methods of this class will be called on the CEF IO thread. 
             </summary>
         </member>
         <member name="M:CefSharp.IResponseFilter.InitFilter">
@@ -4164,31 +4573,28 @@
             <param name="fieldName">Field name</param>
             <returns>Property name</returns>
         </member>
+        <!-- Badly formed XML comment ignored for member "T:CefSharp.ModelBinding.IMethodInterceptor" -->
+        <member name="M:CefSharp.ModelBinding.IMethodInterceptor.Intercept(System.Func{System.Object},System.String)">
+            <summary>
+            Called before the method is invokved. You are now responsible for evaluating
+            the function and returning the result.
+            </summary>
+            <param name="method">A Func that represents the method to be called</param>
+            <param name="methodName">Name of the method to be called</param>
+            <returns>The method result</returns>
+            <example>
+            object IMethodInterceptor.Intercept(Func&lt;object&gt; method, string methodName)
+            {
+              object result = method();
+              Debug.WriteLine("Called " + methodName);
+              return result;
+             }
+            </example>
+        </member>
         <member name="T:CefSharp.ModelBinding.ModelBindingExtensions">
             <summary>
             Containing extensions for the <see cref="T:System.Type"/> object.
             </summary>
-        </member>
-        <member name="M:CefSharp.ModelBinding.ModelBindingExtensions.CreateInstance``1(System.Type,System.Boolean)">
-            <summary>
-            Creates an instance of <paramref name="type"/> and cast it to <typeparamref name="T"/>.
-            </summary>
-            <param name="type">The type to create an instance of.</param>
-            <param name="nonPublic"><see langword="true"/> if a non-public constructor can be used, otherwise <see langword="false"/>.</param>
-        </member>
-        <member name="M:CefSharp.ModelBinding.ModelBindingExtensions.CreateInstance(System.Type,System.Boolean)">
-            <summary>
-            Creates an instance of <paramref name="type"/>.
-            </summary>
-            <param name="type">The type to create an instance of.</param>
-            <param name="nonPublic"><see langword="true"/> if a non-public constructor can be used, otherwise <see langword="false"/>.</param>
-        </member>
-        <member name="M:CefSharp.ModelBinding.ModelBindingExtensions.GetAssembly(System.Type)">
-            <summary>
-            returns the assembly that the type belongs to
-            </summary>
-            <param name="source"></param>
-            <returns> The assembly that contains the type </returns>
         </member>
         <member name="M:CefSharp.ModelBinding.ModelBindingExtensions.IsArray(System.Type)">
             <summary>
@@ -4197,28 +4603,12 @@
             <param name="source">The type to check.</param>
             <returns><see langword="true" /> if the type is an array, otherwise <see langword="false" />.</returns>
         </member>
-        <member name="M:CefSharp.ModelBinding.ModelBindingExtensions.IsCollectionOrArray(System.Type)">
-            <summary>
-            Is the type a collection, array or enumerable
-            </summary>
-            <param name="source">source type</param>
-            <returns>return if collection, array or enumerable</returns>
-        </member>
-        <member name="M:CefSharp.ModelBinding.ModelBindingExtensions.IsAssignableToGenericType(System.Type,System.Type)">
-            <summary>
-            Determines whether the <paramref name="genericType"/> is assignable from
-            <paramref name="givenType"/> taking into account generic definitions
-            </summary>
-            <remarks>
-            Borrowed from: http://tmont.com/blargh/2011/3/determining-if-an-open-generic-type-isassignablefrom-a-type
-            </remarks>
-        </member>
         <member name="M:CefSharp.ModelBinding.ModelBindingExtensions.IsCollection(System.Type)">
             <summary>
             Checks if a type is an collection or not
             </summary>
             <param name="source">The type to check.</param>
-            <returns><see langword="true" /> if the type is an collection, otherwise <see langword="false" />.</returns>
+            <returns><see langword="true" /> if the type is a collection, otherwise <see langword="false" />.</returns>
         </member>
         <member name="M:CefSharp.ModelBinding.ModelBindingExtensions.IsEnumerable(System.Type)">
             <summary>
@@ -4226,22 +4616,6 @@
             </summary>
             <param name="source">The type to check.</param>
             <returns><see langword="true" /> if the type is an enumerable, otherwise <see langword="false" />.</returns>
-        </member>
-        <member name="M:CefSharp.ModelBinding.ModelBindingExtensions.IsNumeric(System.Type)">
-            <summary>
-            Determines if a type is numeric.  Nullable numeric types are considered numeric.
-            </summary>
-            <remarks>
-            Boolean is not considered numeric.
-            </remarks>
-        </member>
-        <member name="M:CefSharp.ModelBinding.ModelBindingExtensions.NotOfType``1(System.Collections.Generic.IEnumerable{System.Type})">
-            <summary>
-            Filters our all types not assignable to <typeparamref name="TType"/>.
-            </summary>
-            <typeparam name="TType">The type that all resulting <see cref="T:System.Type"/> should be assignable to.</typeparam>
-            <param name="types">An <see cref="T:System.Collections.Generic.IEnumerable`1"/> of <see cref="T:System.Type"/> instances that should be filtered.</param>
-            <returns>An <see cref="T:System.Collections.Generic.IEnumerable`1"/> of <see cref="T:System.Type"/> instances.</returns>
         </member>
         <member name="T:CefSharp.NavigationEntry">
             <summary>
@@ -4373,6 +4747,11 @@
             Margin type.
             </summary>
         </member>
+        <member name="P:CefSharp.PdfPrintSettings.ScaleFactor">
+            <summary>
+            Scale the PDF by the specified amount, defaults to 100%.
+            </summary>
+        </member>
         <member name="P:CefSharp.PdfPrintSettings.HeaderFooterEnabled">
             <summary>
             Set to true to print headers and footers or false to not print
@@ -4403,23 +4782,27 @@
         <member name="M:CefSharp.ICookieManager.DeleteCookies(System.String,System.String,CefSharp.IDeleteCookiesCallback)">
             <summary>
             Deletes all cookies that matches all the provided parameters. If both <paramref name="url"/> and <paramref name="name"/> are empty, all cookies will be deleted.
-            Must be run on the CEF IO Thread
+            Cookies can alternately be deleted using the Visit*Cookies() methods. 
+            This method will be executed on the CEF IO thread in an async fashion, to be notified upon completion implement <see cref="T:CefSharp.IDeleteCookiesCallback"/>
+            and pass in as <paramref name="callback"/>
             </summary>
             <param name="url">The cookie URL. If an empty string is provided, any URL will be matched.</param>
             <param name="name">The name of the cookie. If an empty string is provided, any URL will be matched.</param>
             <param name="callback">If non-NULL it will be executed asnychronously on the CEF IO thread after the cookies have been deleted.</param>
-            <return>Returns false if a non-empty invalid URL is specified, or if cookies cannot be accessed; otherwise, true.</return>
+            <returns>Returns false if a non-empty invalid URL is specified, or if cookies cannot be accessed; otherwise, true.</returns>
         </member>
         <member name="M:CefSharp.ICookieManager.SetCookie(System.String,CefSharp.Cookie,CefSharp.ISetCookieCallback)">
             <summary>
             Sets a cookie given a valid URL and explicit user-provided cookie attributes. This function expects each attribute to be well-formed. It will check for disallowed
             characters (e.g. the ';' character is disallowed within the cookie value attribute) and will return false without setting
             the cookie if such characters are found.
+            This method will be executed on the CEF IO thread in an async fashion, to be notified upon completion implement <see cref="T:CefSharp.ISetCookieCallback"/>
+            and pass in as <paramref name="callback"/>
             </summary>
             <param name="url">The cookie URL</param>
             <param name="cookie">The cookie</param>
             <param name="callback">If non-NULL it will be executed asnychronously on the CEF IO thread after the cookie has been set.</param>
-            <return>returns false if the cookie cannot be set (e.g. if illegal charecters such as ';' are used); otherwise true.</return>
+            <returns>returns false if the cookie cannot be set (e.g. if illegal charecters such as ';' are used); otherwise true.</returns>
         </member>
         <member name="M:CefSharp.ICookieManager.SetStoragePath(System.String,System.Boolean,CefSharp.ICompletionCallback)">
             <summary>
@@ -4432,7 +4815,7 @@
             <param name="persistSessionCookies">A flag that determines whether session cookies will be persisted or not.</param>
             <param name="callback">If non-NULL it will be executed asnychronously on the CEF IO thread after the
             manager's storage has been initialized</param>
-            <return>Returns false if cookies cannot be accessed</return>
+            <returns>Returns false if cookies cannot be accessed</returns>
         </member>
         <member name="M:CefSharp.ICookieManager.SetSupportedSchemes(System.String[],CefSharp.ICompletionCallback)">
             <summary>
@@ -4446,7 +4829,7 @@
             Visits all cookies using the provided Cookie Visitor. The returned cookies are sorted by longest path, then by earliest creation date.
             </summary>
             <param name="visitor">A user-provided Cookie Visitor implementation.</param>
-            <return>Returns false if cookies cannot be accessed; otherwise, true.</return>
+            <returns>Returns false if cookies cannot be accessed; otherwise, true.</returns>
         </member>
         <member name="M:CefSharp.ICookieManager.VisitUrlCookies(System.String,System.Boolean,CefSharp.ICookieVisitor)">
             <summary>
@@ -4457,14 +4840,16 @@
             <param name="url">The URL to use for filtering a subset of the cookies available.</param>
             <param name="includeHttpOnly">A flag that determines whether HTTP-only cookies will be shown in results.</param>
             <param name="visitor">A user-provided Cookie Visitor implementation.</param>
-            <return>Returns false if cookies cannot be accessed; otherwise, true.</return>
+            <returns>Returns false if cookies cannot be accessed; otherwise, true.</returns>
         </member>
         <member name="M:CefSharp.ICookieManager.FlushStore(CefSharp.ICompletionCallback)">
             <summary>
             Flush the backing store (if any) to disk
+            This method will be executed on the CEF IO thread in an async fashion, to be notified upon completion implement <see cref="T:CefSharp.ICompletionCallback"/>
+            and pass in as <paramref name="callback"/>
             </summary>
-            <param name="callback">If non-NULL it willbe executed asnychronously on the CEF IO thread after the flush is complete.</param>
-            <return>Returns false if cookies cannot be accessed.</return>
+            <param name="callback">If non-NULL it will be executed asnychronously on the CEF IO thread after the flush is complete.</param>
+            <returns>Returns false if cookies cannot be accessed.</returns>
         </member>
         <member name="P:CefSharp.ICookieManager.IsDisposed">
             <summary>
@@ -4853,6 +5238,78 @@
             Returns the number of items in this menu.
             </summary>
         </member>
+        <member name="M:CefSharp.ProxyOptions.HasUsernameAndPassword">
+            <summary>
+            Checks if username and password is set
+            </summary>
+            <returns>Returns true if both username and password is set, otherwise false</returns>
+        </member>
+        <member name="M:CefSharp.ProxyOptions.#ctor(System.String,System.String,System.String,System.String,System.String)">
+            <param name="ip">The IP address for the proxy</param>
+            <param name="port">The port for the proxy</param>
+            <param name="username">The username required for authentication</param>
+            <param name="password">The password required for authentication</param>
+            <param name="bypassList">The list of domains that shouldn't be affected by the proxy, Format: example.com;example2.com</param>
+        </member>
+        <member name="P:CefSharp.ProxyOptions.IP">
+            <summary>
+            The IP address for the proxy
+            </summary>
+        </member>
+        <member name="P:CefSharp.ProxyOptions.Port">
+            <summary>
+            The port for the proxy
+            </summary>
+        </member>
+        <member name="P:CefSharp.ProxyOptions.Username">
+            <summary>
+            The username for authentication
+            </summary>
+        </member>
+        <member name="P:CefSharp.ProxyOptions.Password">
+            <summary>
+            The password for authentication
+            </summary>
+        </member>
+        <member name="P:CefSharp.ProxyOptions.BypassList">
+            <summary>
+            The list of domains that shouldn't be affected by the proxy, Format: example.com;example2.com
+            </summary>
+        </member>
+        <member name="M:CefSharp.DefaultResourceHandlerFactoryItem.#ctor(CefSharp.IResourceHandler,System.Boolean)">
+            <param name="handler">The handler for a specific Url</param>
+            <param name="oneTimeUse">Whether or not the handler should be used once (true) or until manually unregistered (false)</param>
+        </member>
+        <member name="P:CefSharp.DefaultResourceHandlerFactoryItem.Handler">
+            <summary>
+            The handler for a specific Url
+            </summary>
+        </member>
+        <member name="P:CefSharp.DefaultResourceHandlerFactoryItem.OneTimeUse">
+            <summary>
+            Whether or not the handler should be used once (true) or until manually unregistered (false)
+            </summary>
+        </member>
+        <member name="T:CefSharp.Structs.Size">
+            <summary>
+            Structure representing a size. 
+            </summary>
+        </member>
+        <member name="P:CefSharp.Structs.Size.Width">
+            <summary>
+            Width
+            </summary>
+        </member>
+        <member name="P:CefSharp.Structs.Size.Height">
+            <summary>
+            Height
+            </summary>
+        </member>
+        <member name="T:CefSharp.ISslInfo">
+            <summary>
+            Class representing SSL information. 
+            </summary>
+        </member>
         <member name="P:CefSharp.ISslInfo.CertStatus">
             <summary>
             Returns a bitmask containing any and all problems verifying the server
@@ -4905,6 +5362,11 @@
             True if the focus is currently on an editable field on the page. This is useful for determining if standard key events should be intercepted.
             </summary>
         </member>
+        <member name="T:CefSharp.IPostData">
+            <summary>
+            Class used to represent post data for a web request. The methods of this class may be called on any thread. 
+            </summary>
+        </member>
         <member name="M:CefSharp.IPostData.AddElement(CefSharp.IPostDataElement)">
             <summary>
             Add the specified <see cref="T:CefSharp.IPostDataElement"/>.
@@ -4953,6 +5415,12 @@
             the request failing.
             </summary>
         </member>
+        <member name="T:CefSharp.IPostDataElement">
+            <summary>
+            Class used to represent a single element in the request post data.
+            The methods of this class may be called on any thread. 
+            </summary>
+        </member>
         <member name="M:CefSharp.IPostDataElement.SetToEmpty">
             <summary>
             Remove all contents from the post data element.
@@ -4988,17 +5456,44 @@
             Set default values for CefSharpSettings
             </summary>
         </member>
+        <member name="P:CefSharp.CefSharpSettings.LegacyJavascriptBindingEnabled">
+            <summary>
+            Objects registered using RegisterJsObject and RegisterAsyncJsObject
+            will be automatically bound in the first render process that's created
+            for a ChromiumWebBrowser instance. If you perform a cross-site
+            navigation a process switch will occur and bound objects will no longer
+            be automatically avaliable. For those upgrading from version 57 or below
+            that do no perform cross-site navigation (e.g. Single Page applications or
+            applications that only refer to a single domain) can set this property to 
+            true and use the old behaviour.Defaults to false
+            NOTE: Set this before your first call to RegisterJsObject or RegisterAsyncJsObject
+            </summary>
+            <remarks>
+            Javascript binding in CefSharp version 57 and below used the
+            --process-per-tab Process Model to limit the number of render
+            processes to 1 per ChromiumWebBrowser instance, this allowed
+            us to communicate bound javascript objects when the process was
+            initially created (OnRenderViewReady is only called for the first
+            process creation or after a crash), subsiquently all bound objects
+            were registered in ever V8Context in OnContextCreated (executed in the render process).
+            Chromium has made changes and --process-per-tab is not currently working.
+            Performing a cross-site navigation (from one domain to a different domain)
+            will cause a new render process to be created, subsiquent render processes 
+            won't have access to the bound object information by default.
+            </remarks>
+        </member>
         <member name="P:CefSharp.CefSharpSettings.WcfEnabled">
             <summary>
-            WCF is used by JavascriptBinding
-            Disabling effectively disables both of these features.
-            Defaults to true
+            WCF is used by RegisterJsObject feature for Javascript Binding
+            It's reccomended that anyone developing a new application use 
+            the RegisterAsyncJsObject version which communicates using native
+            Chromium IPC.
             </summary>
         </member>
         <member name="P:CefSharp.CefSharpSettings.WcfTimeout">
             <summary>
             Change the Close timeout for the WCF channel used by the sync JSB binding.
-            The default value is currently 2 seconds. Chaning this to <see cref="F:System.TimeSpan.Zero"/>
+            The default value is currently 2 seconds. Changing this to <see cref="F:System.TimeSpan.Zero"/>
             will result on Abort() being called on the WCF Channel Host
             </summary>
         </member>
@@ -5010,11 +5505,75 @@
             the event handlers are hooked in the static constructor for the ChromiumWebBrowser class
             </summary>
         </member>
+        <member name="P:CefSharp.CefSharpSettings.Proxy">
+            <summary>
+            The proxy options that will be used for all connections
+            
+            If set before the call to Cef.Initialize, command line arguments will be set for you
+            If a username and password is provided and the IPs match authentication is done automatically
+            
+            NOTE: GetAuthCredentials won't be called for a proxy server that matches the IP
+            NOTE: It isn't possble to change the proxy after the call to Cef.Initialize
+            </summary>
+        </member>
+        <member name="P:CefSharp.CefSharpSettings.ConcurrentTaskExecution">
+            <summary>
+            This influences the behavior of RegisterAsyncJsObject and how method calls are made.
+            By default the <see cref="!:MethodRunnerQueue"/> executes Tasks in a sync fashion.
+            Setting this property to true will allocate new Tasks on TaskScheduler.Default for execution.
+            </summary>
+        </member>
         <member name="T:CefSharp.Cookie">
             <summary>
             Class used to Represent a cookie the built in .Net Cookie
             class isn't used as some of it's properties have internal setters
             </summary>
+        </member>
+        <member name="P:CefSharp.Cookie.Name">
+            <summary>
+            The cookie name
+            </summary>
+        </member>
+        <member name="P:CefSharp.Cookie.Value">
+            <summary>
+            The cookie value. 
+            </summary>
+        </member>
+        <member name="P:CefSharp.Cookie.Domain">
+            <summary>
+            If domain is empty a host cookie will be created instead of a domain cookie. Domain cookies are stored with a leading "."
+            and are visible to sub-domains whereas host cookies are not. 
+            </summary>
+        </member>
+        <member name="P:CefSharp.Cookie.Path">
+            <summary>
+            Ss non-empty only URLs at or below the path will get the cookie value. 
+            </summary>
+        </member>
+        <member name="P:CefSharp.Cookie.Secure">
+            <summary>
+            If true the cookie will only be sent for HTTPS requests. 
+            </summary>
+        </member>
+        <member name="P:CefSharp.Cookie.HttpOnly">
+            <summary>
+            Ss true the cookie will only be sent for HTTP requests. 
+            </summary>
+        </member>
+        <member name="P:CefSharp.Cookie.Expires">
+            <summary>
+            Expires or null of no expiry
+            </summary>
+        </member>
+        <member name="P:CefSharp.Cookie.Creation">
+            <summary>
+            The cookie creation date. This is automatically populated by the system on cookie creation. 
+            </summary>
+        </member>
+        <member name="P:CefSharp.Cookie.LastAccess">
+            <summary>
+            The cookie last access date. This is automatically populated by the system on access. 
+            </summary>		
         </member>
         <member name="T:CefSharp.DefaultResourceHandlerFactory">
             <summary>
@@ -5053,12 +5612,13 @@
             </summary>
             <param name="comparer">string equality comparer</param>
         </member>
-        <member name="M:CefSharp.DefaultResourceHandlerFactory.RegisterHandler(System.String,CefSharp.IResourceHandler)">
+        <member name="M:CefSharp.DefaultResourceHandlerFactory.RegisterHandler(System.String,CefSharp.IResourceHandler,System.Boolean)">
             <summary>
-            Register handler with the specified Url
+            Register a handler for the specified Url
             </summary>
             <param name="url">url</param>
             <param name="handler">handler</param>
+            <param name="oneTimeUse">Whether or not the handler should be used once (true) or until manually unregistered (false)</param>
             <returns>returns true if the Url was successfully parsed into a Uri otherwise false</returns>
         </member>
         <member name="M:CefSharp.DefaultResourceHandlerFactory.UnregisterHandler(System.String)">
@@ -5332,7 +5892,7 @@
         </member>
         <member name="M:CefSharp.IBrowserHost.DragSourceEndedAt(System.Int32,System.Int32,CefSharp.DragOperationsMask)">
             <summary>
-            Call this method when the drag operation started by a <see cref="!:IRenderWebBrowser.StartDragging"/> call has ended either in a drop or by being cancelled.
+            Call this method when the drag operation started by a <see cref="M:CefSharp.Internals.IRenderWebBrowser.StartDragging(CefSharp.IDragData,CefSharp.DragOperationsMask,System.Int32,System.Int32)"/> call has ended either in a drop or by being cancelled.
             If the web view is both the drag source and the drag target then all DragTarget* methods should be called before DragSource* methods.
             This method is only used when window rendering is disabled. 
             </summary>
@@ -5348,7 +5908,7 @@
         </member>
         <member name="M:CefSharp.IBrowserHost.DragSourceSystemDragEnded">
             <summary>
-            Call this method when the drag operation started by a <see cref="!:IRenderWebBrowser.StartDragging"/> call has completed.
+            Call this method when the drag operation started by a <see cref="M:CefSharp.Internals.IRenderWebBrowser.StartDragging(CefSharp.IDragData,CefSharp.DragOperationsMask,System.Int32,System.Int32)"/> call has completed.
             This method may be called immediately without first calling DragSourceEndedAt to cancel a drag operation.
             If the web view is both the drag source and the drag target then all DragTarget* methods should be called before DragSource* mthods.
             This method is only used when window rendering is disabled. 
@@ -5494,8 +6054,48 @@
             <param name="wParam">wParam</param>
             <param name="lParam">lParam</param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:CefSharp.IBrowserHost.SendMouseClickEvent(CefSharp.MouseEvent,CefSharp.MouseButtonType,System.Boolean,System.Int32)" -->
-        <!-- Badly formed XML comment ignored for member "M:CefSharp.IBrowserHost.SendMouseWheelEvent(CefSharp.MouseEvent,System.Int32,System.Int32)" -->
+        <member name="M:CefSharp.IBrowserHost.SendMouseClickEvent(CefSharp.MouseEvent,CefSharp.MouseButtonType,System.Boolean,System.Int32)">
+            <summary>
+            Send a mouse click event to the browser.
+            </summary>
+            <param name="mouseEvent">mouse event - x, y and modifiers</param>
+            <param name="mouseButtonType">Mouse ButtonType</param>
+            <param name="mouseUp">mouse up</param>
+            <param name="clickCount">click count</param>
+        </member>
+        <member name="M:CefSharp.IBrowserHost.SendMouseWheelEvent(CefSharp.MouseEvent,System.Int32,System.Int32)">
+            <summary>
+            Send a mouse wheel event to the browser.
+            </summary>
+            <param name="mouseEvent">mouse event - x, y and modifiers</param>
+            <param name="deltaX">Movement delta for X direction.</param>
+            <param name="deltaY">movement delta for Y direction.</param>
+        </member>
+        <member name="M:CefSharp.IBrowserHost.SetAccessibilityState(CefSharp.CefState)">
+            <summary>
+            Set accessibility state for all frames.  If accessibilityState is Default then accessibility will be disabled by default
+            and the state may be further controlled with the "force-renderer-accessibility" and "disable-renderer-accessibility"
+            command-line switches. If accessibilityState is STATE_ENABLED then accessibility will be enabled.
+            If accessibilityState is STATE_DISABLED then accessibility will be completely disabled. For windowed browsers
+            accessibility will be enabled in Complete mode (which corresponds to kAccessibilityModeComplete in Chromium).
+            In this mode all platform accessibility objects will be created and managed by Chromium's internal implementation.
+            The client needs only to detect the screen reader and call this method appropriately. For example, on Windows the
+            client can handle WM_GETOBJECT with OBJID_CLIENT to detect accessibility readers. For windowless browsers accessibility
+            will be enabled in TreeOnly mode (which corresponds to kAccessibilityModeWebContentsOnly in Chromium). In this mode
+            renderer accessibility is enabled, the full tree is computed, and events are passed to IAccessibiltyHandler,
+            but platform accessibility objects are not created. The client may implement platform accessibility objects using
+            IAccessibiltyHandler callbacks if desired. 
+            </summary>
+            <param name="accessibilityState">may be default, enabled or disabled.</param>
+        </member>
+        <member name="M:CefSharp.IBrowserHost.SetAutoResizeEnabled(System.Boolean,CefSharp.Structs.Size,CefSharp.Structs.Size)">
+            <summary>
+            Enable notifications of auto resize via IDisplayHandler.OnAutoResize. Notifications are disabled by default.
+            </summary>
+            <param name="enabled">enable auto resize</param>
+            <param name="minSize">minimum size</param>
+            <param name="maxSize">maximum size</param>
+        </member>
         <member name="M:CefSharp.IBrowserHost.SetFocus(System.Boolean)">
             <summary>
             Set whether the browser is focused. (Used for Normal Rendering e.g. WinForms)
@@ -5821,6 +6421,11 @@
             The <see cref="T:System.Threading.Tasks.TaskCompletionSource`1"/> associated with the given id.
             </returns>
         </member>
+        <member name="T:CefSharp.IResponse">
+            <summary>
+            Class used to represent a web response. The methods of this class may be called on any thread. 
+            </summary>
+        </member>
         <member name="P:CefSharp.IResponse.MimeType">
             <summary>
             MimeType
@@ -5852,17 +6457,7 @@
             Status Text
             </summary>
         </member>
-        <member name="M:CefSharp.IWindowInfo.SetAsWindowless(System.IntPtr,System.Boolean)">
-            <summary>
-            Create the browser using windowless (off-screen) rendering.
-            No window will be created for the browser and all rendering will occur via the CefRenderHandler interface.
-            </summary>
-            <param name="parentHandle">Value will be used to identify monitor info and to act as the parent window for dialogs, context menus, etc.
-            If not provided then the main screen monitor will be used and some functionality that requires a parent window may not function correctly.</param>
-            <param name="transparent">If is true a transparent background color will be used (RGBA=0x00000000). 
-            If is false the background will be white and opaque. 
-            In order to create windowless browsers the CefSettings.windowless_rendering_enabled value must be set to true.</param>
-        </member>
+        <!-- Badly formed XML comment ignored for member "M:CefSharp.IWindowInfo.SetAsWindowless(System.IntPtr)" -->
         <member name="T:CefSharp.MouseEvent">
             <summary>
             Struct representing a mouse event.
@@ -6280,6 +6875,13 @@
             <param name="data">Data to be encoded for the post data element</param>
             <param name="encoding">Specified Encoding. If null then <see cref="P:System.Text.Encoding.Default"/> will be used</param>
         </member>
+        <member name="M:CefSharp.PostDataExtensions.AddData(CefSharp.IPostData,System.Byte[])">
+            <summary>
+            Add a new <see cref="T:CefSharp.IPostDataElement"/> that represents the key and value
+            </summary>
+            <param name="postData">Post Data</param>
+            <param name="bytes">byte array that represents the post data</param>
+        </member>
         <member name="T:CefSharp.Range">
             <summary>
             Represents a range
@@ -6343,15 +6945,12 @@
             MimeType to be used if none provided
             </summary>
         </member>
-        <member name="M:CefSharp.ResourceHandler.#ctor">
-            <summary>
-            Default Constructor
-            </summary>
-        </member>
-        <member name="M:CefSharp.ResourceHandler.#ctor(System.String,CefSharp.ResourceHandlerType)">
+        <member name="M:CefSharp.ResourceHandler.#ctor(System.String,System.IO.Stream)">
             <summary>
             Initializes a new instance of the <see cref="T:CefSharp.ResourceHandler"/> class.
             </summary>
+            <param name="mimeType">Optional mimeType defaults to <see cref="F:CefSharp.ResourceHandler.DefaultMimeType"/></param>
+            <param name="stream">Optional Stream - must be set at some point to provide a valid response</param>
         </member>
         <member name="M:CefSharp.ResourceHandler.ProcessRequestAsync(CefSharp.IRequest,CefSharp.ICallback)">
             <summary>
@@ -6386,22 +6985,22 @@
             Called if the request is cancelled
             </summary>
         </member>
-        <member name="M:CefSharp.ResourceHandler.FromFileName(System.String,System.String)">
-            <summary>
-            Gets the resource from the file.
-            </summary>
-            <param name="filePath">Location of the file.</param>
-            <param name="fileExtension">The file extension.</param>
-            <returns>ResourceHandler.</returns>
-        </member>
         <member name="M:CefSharp.ResourceHandler.FromFilePath(System.String,System.String)">
             <summary>
             Gets the resource from the file path specified. Use the <see cref="M:CefSharp.ResourceHandler.GetMimeType(System.String)"/>
-            helper method to lookup the mimeType if required.
+            helper method to lookup the mimeType if required. Uses CefStreamResourceHandler for reading the data
             </summary>
-            <param name="fileName">Location of the file.</param>
+            <param name="filePath">Location of the file.</param>
             <param name="mimeType">The mimeType if null then text/html is used.</param>
-            <returns>ResourceHandler.</returns>
+            <returns>IResourceHandler.</returns>
+        </member>
+        <member name="M:CefSharp.ResourceHandler.FromByteArray(System.Byte[],System.String)">
+            <summary>
+            Creates a IResourceHandler that represents a Byte[], uses CefStreamResourceHandler for reading the data
+            </summary>
+            <param name="data">data</param>
+            <param name="mimeType">mimeType</param>
+            <returns>IResourceHandler</returns>
         </member>
         <member name="M:CefSharp.ResourceHandler.FromString(System.String,System.String)">
             <summary>
@@ -6422,6 +7021,14 @@
             <param name="mimeType">Mime Type</param>
             <returns>ResourceHandler</returns>
         </member>
+        <member name="M:CefSharp.ResourceHandler.ForErrorMessage(System.String,System.Net.HttpStatusCode)">
+            <summary>
+            Generates a ResourceHandler that has it's StatusCode set
+            </summary>
+            <param name="errorMessage">Body the response to be displayed</param>
+            <param name="statusCode">StatusCode</param>
+            <returns>ResourceHandler</returns>
+        </member>
         <member name="M:CefSharp.ResourceHandler.FromStream(System.IO.Stream,System.String)">
             <summary>
             Gets the resource from a stream.
@@ -6439,6 +7046,15 @@
             <param name="includePreamble">if true a BOM will be written to the beginning of the stream</param>
             <returns>A memory stream from the given string</returns>
         </member>
+        <member name="M:CefSharp.ResourceHandler.GetByteArray(System.String,System.Text.Encoding,System.Boolean)">
+            <summary>
+            Gets a byteArray from the given string using the provided encoding
+            </summary>
+            <param name="text">string to be converted to a stream</param>
+            <param name="encoding">encoding</param>
+            <param name="includePreamble">if true a BOM will be written to the beginning of the stream</param>
+            <returns>A memory stream from the given string</returns>
+        </member>
         <member name="M:CefSharp.ResourceHandler.GetMimeType(System.String)">
             <summary>
             Gets the MIME type of the content.
@@ -6450,11 +7066,6 @@
         <member name="M:CefSharp.ResourceHandler.Dispose">
             <summary>
             Dispose of resources here
-            </summary>
-        </member>
-        <member name="P:CefSharp.ResourceHandler.FilePath">
-            <summary>
-            Path of the underlying file
             </summary>
         </member>
         <member name="P:CefSharp.ResourceHandler.MimeType">
@@ -6490,11 +7101,6 @@
             Gets or sets the headers.
             </summary>
             <value>The headers.</value>
-        </member>
-        <member name="P:CefSharp.ResourceHandler.Type">
-            <summary>
-            Specify which type of resource handle represnets
-            </summary>
         </member>
         <member name="P:CefSharp.ResourceHandler.AutoDisposeStream">
             <summary>
@@ -6600,6 +7206,11 @@
             Returns the X.509 certificate.
             </summary>
         </member>
+        <member name="T:CefSharp.Internals.BitmapInfo">
+            <summary>
+            Information about the bitmap that should be rendered
+            </summary>
+        </member>
         <member name="P:CefSharp.Internals.JavascriptMethod.Function">
             <summary>
             Gets or sets a delegate which is used to invoke the method if the member is a method. 
@@ -6641,6 +7252,11 @@
         <member name="P:CefSharp.Internals.JavascriptObject.Id">
             <summary>
             Identifies the <see cref="T:CefSharp.Internals.JavascriptObject"/> for BrowserProcess to RenderProcess communication
+            </summary>
+        </member>
+        <member name="P:CefSharp.Internals.JavascriptObject.IsAsync">
+            <summary>
+            Indicate if this object bound as async
             </summary>
         </member>
         <member name="P:CefSharp.Internals.JavascriptObject.CamelCaseJavascriptNames">
@@ -6697,19 +7313,13 @@
             </summary>
             <param name="obj">Javascript object</param>
             <param name="analyseMethods">Analyse methods for inclusion in metadata model</param>
+            <param name="analyseProperties">Analyse properties for inclusion in metadata model</param>
             <param name="readPropertyValue">When analysis is done on a property, if true then get it's value for transmission over WCF</param>
             <param name="camelCaseJavascriptNames">camel case the javascript names of properties/methods</param>
-            <param name="analyseProperties">Analyse properties for binding</param>
         </member>
-        <member name="P:CefSharp.Internals.JavascriptObjectRepository.RootObject">
+        <member name="P:CefSharp.Internals.JavascriptObjectRepository.IsBrowserInitialized">
             <summary>
-            This is the root of the objects that get serialized to the child process.
-            </summary>
-        </member>
-        <member name="P:CefSharp.Internals.JavascriptObjectRepository.AsyncRootObject">
-            <summary>
-            This is the root of the objects that get serialized to the child
-            process with cef ipc serialization (wcf not required).
+            Has the browser this repository is associated with been initilized (set in OnAfterCreated)
             </summary>
         </member>
         <member name="P:CefSharp.Internals.JavascriptProperty.SetValue">
@@ -6844,6 +7454,12 @@
             This value should be true in most cases where IsStandard is true.
             </summary>
         </member>
+        <member name="P:CefSharp.CefCustomScheme.IsCSPBypassing">
+            <summary>
+            If true the scheme can bypass Content-Security-Policy(CSP) checks. 
+            This value should be false in most cases where IsStandard is true.
+            </summary>
+        </member>
         <member name="P:CefSharp.CefCustomScheme.SchemeHandlerFactory">
             <summary>
             Factory Class that creates <see cref="T:CefSharp.IResourceHandler"/> instances
@@ -6959,6 +7575,11 @@
             It's important to note this event is fired on a CEF UI thread, which by default is not the same as your application UI
             thread. It is unwise to block on this thread for any length of time as your browser will become unresponsive and/or hang..
             To access UI elements you'll need to Invoke/Dispatch onto the UI Thread. 
+            </summary>
+        </member>
+        <member name="P:CefSharp.IWebBrowser.JavascriptObjectRepository">
+            <summary>
+            The javascript object repository, one repository per ChromiumWebBrowser instance.
             </summary>
         </member>
         <member name="P:CefSharp.IWebBrowser.DialogHandler">
@@ -7105,6 +7726,14 @@
             and false in IRenderProcessMessageHandler.OnContextReleased
             </summary>
         </member>
+        <member name="P:CefSharp.IWebBrowser.RequestContext">
+            <summary>
+            Gets the custom request context assigned to this browser instance
+            If no instance was assigned this will be null and the global
+            request context will have been used for this browser. 
+            You can access the global request context through Cef.GetGlobalRequestContext()
+            </summary>
+        </member>
         <member name="M:CefSharp.Internals.IRenderWebBrowser.GetScreenPoint(System.Int32,System.Int32,System.Int32@,System.Int32@)">
             <summary>
             Called to retrieve the translation from view coordinates to actual screen coordinates. 
@@ -7114,6 +7743,17 @@
             <param name="screenX">screen x</param>
             <param name="screenY">screen y</param>
             <returns>Return true if the screen coordinates were provided.</returns>
+        </member>
+        <member name="M:CefSharp.Internals.IRenderWebBrowser.OnPaint(CefSharp.Internals.BitmapInfo)">
+            <summary>
+            Called when an element should be painted.
+            Pixel values passed to this method are scaled relative to view coordinates based on the value of
+            ScreenInfo.DeviceScaleFactor returned from GetScreenInfo. bitmapInfo.IsPopup indicates whether the element is the view
+            or the popup widget. BitmapInfo.DirtyRect contains the set of rectangles in pixel coordinates that need to be
+            repainted. The bitmap will be will be  width * height *4 bytes in size and represents a BGRA image with an upper-left origin.
+            The underlying buffer is copied into the back buffer and is accessible via BackBufferHandle
+            </summary>
+            <param name="bitmapInfo">information about the bitmap to be rendered</param>
         </member>
         <member name="M:CefSharp.Internals.IRenderWebBrowser.OnImeCompositionRangeChanged(CefSharp.Range,CefSharp.Rect[])">
             <summary>
@@ -7166,6 +7806,13 @@
              Method that will be executed.
             </summary>
             <param name="str">string (result of async execution)</param>
+        </member>
+        <member name="T:CefSharp.IWebPluginInfoVisitor">
+            <summary>
+            Interface to implement for visiting web plugin information.
+            The methods of this class will be called on the CEF UI thread,
+            which by default is not the same as your application UI 
+            </summary>
         </member>
         <member name="M:CefSharp.IWebPluginInfoVisitor.Visit(CefSharp.WebPluginInfo,System.Int32,System.Int32)">
             <summary>
@@ -7329,6 +7976,17 @@
             <param name="browser">The ChromiumWebBrowser instance this method extends</param>
             <param name="script">The Javascript code that should be executed.</param>
         </member>
+        <member name="M:CefSharp.WebBrowserExtensions.LoadUrlWithPostData(CefSharp.IWebBrowser,System.String,System.Byte[],System.String)">
+            <summary>
+            Loads 
+            Creates a new instance of IRequest with the specified Url and Method = POST
+            </summary>
+            <param name="browser"></param>
+            <param name="url"></param>
+            <param name="postDataBytes"></param>
+            <param name="contentType"></param>
+            <remarks>This is an extension method</remarks>
+        </member>
         <member name="M:CefSharp.WebBrowserExtensions.LoadString(CefSharp.IWebBrowser,System.String,System.String)">
             <summary>
             Load the string contents with the specified dummy url. Web security restrictions may not behave as expected. 
@@ -7364,7 +8022,7 @@
             <param name="html">Html to load as data uri.</param>
             <param name="base64Encode">if true the html string will be base64 encoded using UTF8 encoding.</param>
         </member>
-        <member name="M:CefSharp.WebBrowserExtensions.LoadHtml(CefSharp.IWebBrowser,System.String,System.String,System.Text.Encoding)">
+        <member name="M:CefSharp.WebBrowserExtensions.LoadHtml(CefSharp.IWebBrowser,System.String,System.String,System.Text.Encoding,System.Boolean)">
             <summary>
             Registers and loads a <see cref="T:CefSharp.ResourceHandler"/> that represents the HTML content.
             </summary>
@@ -7377,6 +8035,7 @@
             <param name="html">The HTML content.</param>
             <param name="url">The URL that will be treated as the address of the content.</param>
             <param name="encoding">Character Encoding</param>
+            <param name="oneTimeUse">Whether or not the handler should be used once (true) or until manually unregistered (false)</param>
             <returns>returns false if the Url was not successfully parsed into a Uri</returns>
         </member>
         <member name="M:CefSharp.WebBrowserExtensions.RegisterResourceHandler(CefSharp.IWebBrowser,System.String,System.IO.Stream,System.String)">
@@ -7577,6 +8236,13 @@
             <param name="cefBrowser">The ChromiumWebBrowser instance this method extends</param>
             <param name="word">The new word that will be added to the dictionary.</param>
         </member>
+        <member name="M:CefSharp.WebBrowserExtensions.GetBrowserHost(CefSharp.IWebBrowser)">
+            <summary>
+            Shortcut method to get the browser IBrowserHost
+            </summary>
+            <param name="browser">The ChromiumWebBrowser instance this method extends</param>
+            <returns>browserHost or null</returns>
+        </member>
         <member name="M:CefSharp.WebBrowserExtensions.AddWordToDictionary(CefSharp.IWebBrowser,System.String)">
             <summary>
             Add the specified word to the spelling dictionary.
@@ -7640,6 +8306,11 @@
             Gets or sets the version of the plugin (may be OS-specific).
             </summary>
         </member>
+        <member name="T:CefSharp.IRequest">
+            <summary>
+            Class used to represent a web request. The methods of this class may be called on any thread. 
+            </summary>
+        </member>
         <member name="M:CefSharp.IRequest.SetReferrer(System.String,CefSharp.ReferrerPolicy)">
             <summary>
             Set the referrer URL and policy. If non-empty the referrer URL must be
@@ -7654,6 +8325,11 @@
             Initialize a new instance of <see cref="T:CefSharp.IPostData"/>.
             Make sure to check if the <see cref="P:CefSharp.IRequest.PostData"/> is null
             before calling otherwise the existing data will be overridden. 
+            </summary>
+        </member>
+        <member name="P:CefSharp.IRequest.Flags">
+            <summary>
+            Get/Set request flags, can be used to control caching policy
             </summary>
         </member>
         <member name="P:CefSharp.IRequest.Url">

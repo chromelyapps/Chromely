@@ -31,6 +31,11 @@ namespace Xilium.CefGlue.Interop
         internal IntPtr _close_all_connections;
         internal IntPtr _resolve_host;
         internal IntPtr _resolve_host_cached;
+        internal IntPtr _load_extension;
+        internal IntPtr _did_load_extension;
+        internal IntPtr _has_extension;
+        internal IntPtr _get_extensions;
+        internal IntPtr _get_extension;
         
         // GetGlobalContext
         [DllImport(libcef.DllName, EntryPoint = "cef_request_context_get_global_context", CallingConvention = libcef.CEF_CALL)]
@@ -169,6 +174,36 @@ namespace Xilium.CefGlue.Interop
         [SuppressUnmanagedCodeSecurity]
         #endif
         private delegate CefErrorCode resolve_host_cached_delegate(cef_request_context_t* self, cef_string_t* origin, cef_string_list* resolved_ips);
+        
+        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
+        #if !DEBUG
+        [SuppressUnmanagedCodeSecurity]
+        #endif
+        private delegate void load_extension_delegate(cef_request_context_t* self, cef_string_t* root_directory, cef_dictionary_value_t* manifest, cef_extension_handler_t* handler);
+        
+        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
+        #if !DEBUG
+        [SuppressUnmanagedCodeSecurity]
+        #endif
+        private delegate int did_load_extension_delegate(cef_request_context_t* self, cef_string_t* extension_id);
+        
+        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
+        #if !DEBUG
+        [SuppressUnmanagedCodeSecurity]
+        #endif
+        private delegate int has_extension_delegate(cef_request_context_t* self, cef_string_t* extension_id);
+        
+        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
+        #if !DEBUG
+        [SuppressUnmanagedCodeSecurity]
+        #endif
+        private delegate int get_extensions_delegate(cef_request_context_t* self, cef_string_list* extension_ids);
+        
+        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
+        #if !DEBUG
+        [SuppressUnmanagedCodeSecurity]
+        #endif
+        private delegate cef_extension_t* get_extension_delegate(cef_request_context_t* self, cef_string_t* extension_id);
         
         // AddRef
         private static IntPtr _p0;
@@ -525,6 +560,91 @@ namespace Xilium.CefGlue.Interop
                 if (_p14 == IntPtr.Zero) { _d14 = d; _p14 = p; }
             }
             return d(self, origin, resolved_ips);
+        }
+        
+        // LoadExtension
+        private static IntPtr _p15;
+        private static load_extension_delegate _d15;
+        
+        public static void load_extension(cef_request_context_t* self, cef_string_t* root_directory, cef_dictionary_value_t* manifest, cef_extension_handler_t* handler)
+        {
+            load_extension_delegate d;
+            var p = self->_load_extension;
+            if (p == _p15) { d = _d15; }
+            else
+            {
+                d = (load_extension_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(load_extension_delegate));
+                if (_p15 == IntPtr.Zero) { _d15 = d; _p15 = p; }
+            }
+            d(self, root_directory, manifest, handler);
+        }
+        
+        // DidLoadExtension
+        private static IntPtr _p16;
+        private static did_load_extension_delegate _d16;
+        
+        public static int did_load_extension(cef_request_context_t* self, cef_string_t* extension_id)
+        {
+            did_load_extension_delegate d;
+            var p = self->_did_load_extension;
+            if (p == _p16) { d = _d16; }
+            else
+            {
+                d = (did_load_extension_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(did_load_extension_delegate));
+                if (_p16 == IntPtr.Zero) { _d16 = d; _p16 = p; }
+            }
+            return d(self, extension_id);
+        }
+        
+        // HasExtension
+        private static IntPtr _p17;
+        private static has_extension_delegate _d17;
+        
+        public static int has_extension(cef_request_context_t* self, cef_string_t* extension_id)
+        {
+            has_extension_delegate d;
+            var p = self->_has_extension;
+            if (p == _p17) { d = _d17; }
+            else
+            {
+                d = (has_extension_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(has_extension_delegate));
+                if (_p17 == IntPtr.Zero) { _d17 = d; _p17 = p; }
+            }
+            return d(self, extension_id);
+        }
+        
+        // GetExtensions
+        private static IntPtr _p18;
+        private static get_extensions_delegate _d18;
+        
+        public static int get_extensions(cef_request_context_t* self, cef_string_list* extension_ids)
+        {
+            get_extensions_delegate d;
+            var p = self->_get_extensions;
+            if (p == _p18) { d = _d18; }
+            else
+            {
+                d = (get_extensions_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_extensions_delegate));
+                if (_p18 == IntPtr.Zero) { _d18 = d; _p18 = p; }
+            }
+            return d(self, extension_ids);
+        }
+        
+        // GetExtension
+        private static IntPtr _p19;
+        private static get_extension_delegate _d19;
+        
+        public static cef_extension_t* get_extension(cef_request_context_t* self, cef_string_t* extension_id)
+        {
+            get_extension_delegate d;
+            var p = self->_get_extension;
+            if (p == _p19) { d = _d19; }
+            else
+            {
+                d = (get_extension_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_extension_delegate));
+                if (_p19 == IntPtr.Zero) { _d19 = d; _p19 = p; }
+            }
+            return d(self, extension_id);
         }
         
     }

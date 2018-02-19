@@ -147,17 +147,6 @@
         }
 
         /// <summary>
-        /// Controls whether JavaScript can be used for opening windows. Also
-        /// configurable using the "disable-javascript-open-windows" command-line
-        /// switch.
-        /// </summary>
-        public CefState JavaScriptOpenWindows
-        {
-            get { return _self->javascript_open_windows; }
-            set { _self->javascript_open_windows = value; }
-        }
-
-        /// <summary>
         /// Controls whether JavaScript can be used to close windows that were not
         /// opened via JavaScript. JavaScript can still be used to close windows that
         /// were opened via JavaScript or that have no back/forward history. Also

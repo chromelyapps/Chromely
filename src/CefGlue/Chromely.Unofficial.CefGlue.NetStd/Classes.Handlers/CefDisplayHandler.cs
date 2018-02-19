@@ -148,5 +148,33 @@
             return false;
         }
 
+
+        private int on_auto_resize(cef_display_handler_t* self, cef_browser_t* browser, cef_size_t* new_size)
+        {
+            CheckSelf(self);
+
+            var mBrowser = CefBrowser.FromNative(browser);
+            var mNewSize = new CefSize(new_size->width, new_size->height);
+
+            if(OnAutoResize(mBrowser, ref mNewSize))
+            {
+                new_size->width = mNewSize.Width;
+                new_size->height = mNewSize.Height;
+                return 1;
+            }
+
+            return 0;
+        }
+
+        /// <summary>
+        /// Called when auto-resize is enabled via CefBrowserHost::SetAutoResizeEnabled
+        /// and the contents have auto-resized. |new_size| will be the desired size in
+        /// view coordinates. Return true if the resize was handled or false for
+        /// default handling.
+        /// </summary>
+        protected virtual bool OnAutoResize(CefBrowser browser, ref CefSize newSize)
+        {
+            return false;
+        }
     }
 }

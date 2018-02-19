@@ -91,6 +91,8 @@ namespace Chromely.CefGlue.Gtk.Browser.Handlers
                 var headers = response.GetHeaderMap();
                 headers.Add("Cache-Control", "private");
                 headers.Add("Access-Control-Allow-Origin", "*");
+                headers.Add("Access-Control-Allow-Methods", "GET,POST");
+                headers.Add("Access-Control-Allow-Headers", "Content-Type");
                 headers.Add("Content-Type", "application/json; charset=utf-8");
                 response.SetHeaderMap(headers);
 

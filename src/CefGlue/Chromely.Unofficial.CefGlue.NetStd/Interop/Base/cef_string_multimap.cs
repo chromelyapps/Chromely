@@ -12,7 +12,7 @@
     {
         public static NameValueCollection ToNameValueCollection(cef_string_multimap* multimap)
         {
-            var result = new NameValueCollection(StringComparer.CurrentCultureIgnoreCase);
+            var result = new NameValueCollection(StringComparer.InvariantCultureIgnoreCase);
             if (multimap == null) return result;
 
             var size = libcef.string_multimap_size(multimap);

@@ -28,7 +28,6 @@ namespace Xilium.CefGlue.Interop
 
         public CefState remote_fonts;
         public CefState javascript;
-        public CefState javascript_open_windows;
         public CefState javascript_close_windows;
         public CefState javascript_access_clipboard;
         public CefState javascript_dom_paste;

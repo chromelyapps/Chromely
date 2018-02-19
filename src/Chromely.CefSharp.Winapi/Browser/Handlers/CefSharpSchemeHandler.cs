@@ -90,7 +90,10 @@ namespace Chromely.CefSharp.Winapi.Browser.Handlers
             var headers = response.ResponseHeaders;
             headers.Add("Cache-Control", "private");
             headers.Add("Access-Control-Allow-Origin", "*");
+            headers.Add("Access-Control-Allow-Methods", "GET,POST");
+            headers.Add("Access-Control-Allow-Headers", "Content-Type");
             headers.Add("Content-Type", "application/json; charset=utf-8");
+            response.ResponseHeaders = headers;
 
             response.StatusCode = m_chromelyResponse.Status;
             response.StatusText = m_chromelyResponse.StatusText;

@@ -180,7 +180,7 @@
 
         /// <summary>
         /// Gets or sets the URL to the first party for cookies used in combination with
-        /// CefWebURLRequest.
+        /// CefURLRequest.
         /// </summary>
         public string FirstPartyForCookies
         {

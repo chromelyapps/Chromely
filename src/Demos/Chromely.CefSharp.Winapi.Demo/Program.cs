@@ -28,7 +28,6 @@ namespace Chromely.CefSharp.Winapi.Demo
     using Chromely.CefSharp.Winapi.ChromeHost;
     using Chromely.Core;
     using Chromely.Core.Infrastructure;
-    using Chromely.Core.Winapi;
     using System;
     using System.Reflection;
     using WinApi.Windows;

@@ -22,15 +22,14 @@
         #region Platform Detection
         private static CefRuntimePlatform DetectPlatform()
         {
-            bool isOSX = RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
+            var platformId = Environment.OSVersion.Platform;
 
-            if (isOSX)
+            if (platformId == PlatformID.MacOSX)
                 return CefRuntimePlatform.MacOSX;
 
-            bool isLinux = RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
-
-            if (isLinux)
-                return CefRuntimePlatform.Linux;
+            int p = (int)platformId;
+            if ((p == 4) || (p == 128))
+                return IsRunningOnMac() ? CefRuntimePlatform.MacOSX : CefRuntimePlatform.Linux;
 
             return CefRuntimePlatform.Windows;
         }
@@ -130,20 +129,13 @@
         private static void CheckVersionByApiHash()
         {
             // get CEF_API_HASH_PLATFORM
-            string actual = string.Empty;
+            string actual;
             try
             {
                 var n_actual = libcef.api_hash(0);
-                unsafe
-                {
-                    while (*n_actual != '\0')
-                    {
-                        actual += (char)(*n_actual);
-                        ++n_actual;
-                    }
-                }
+                actual = n_actual != null ? new string(n_actual) : null;
             }
-            catch (Exception ex)
+            catch (EntryPointNotFoundException ex)
             {
                 throw new NotSupportedException("cef_api_hash call is not supported.", ex);
             }
@@ -1175,6 +1167,29 @@
                 var n_key = new cef_string_t(key_ptr, key.Length);
                 var n_value = new cef_string_t(value_ptr, value != null ? value.Length : 0);
                 libcef.set_crash_key_value(&n_key, &n_value);
+            }
+        }
+
+        #endregion
+
+        #region file_util
+
+        /// <summary>
+        /// Loads the existing "Certificate Revocation Lists" file that is managed by
+        /// Google Chrome. This file can generally be found in Chrome's User Data
+        /// directory (e.g. "C:\Users\[User]\AppData\Local\Google\Chrome\User Data\" on
+        /// Windows) and is updated periodically by Chrome's component updater service.
+        /// Must be called in the browser process after the context has been initialized.
+        /// See https://dev.chromium.org/Home/chromium-security/crlsets for background.
+        /// </summary>
+        public static void LoadCrlSetsFile(string path)
+        {
+            if (path == null) throw new ArgumentNullException(nameof(path));
+
+            fixed (char* path_ptr = path)
+            {
+                var n_path = new cef_string_t(path_ptr, path.Length);
+                libcef.load_crlsets_file(&n_path);
             }
         }
 

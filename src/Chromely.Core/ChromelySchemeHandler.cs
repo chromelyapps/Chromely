@@ -33,17 +33,31 @@ namespace Chromely.Core.Infrastructure
             Key = Guid.NewGuid().ToString();
         }
 
-        public ChromelySchemeHandler(string schemeName, string domainName, object handlerFactory)
+        public ChromelySchemeHandler(string schemeName, string domainName, object handlerFactory, bool isSecured = false, bool isCorsEnabled = true)
         {
             Key = Guid.NewGuid().ToString();
             SchemeName = schemeName;
             DomainName = domainName;
             HandlerFactory = handlerFactory;
+            IsSecure = isSecured;
+            IsCorsEnabled = isCorsEnabled;
         }
 
         public string Key { get; private set; }
         public string SchemeName { get; set; }
         public string DomainName { get; set; }
+        /// <summary>
+        //     If true the scheme will be treated with the same security rules as those applied
+        //     to "https" URLs. For example, loading this scheme from other secure schemes will
+        //     not trigger mixed content warnings.
+        /// </summary>
+        public bool IsSecure { get; set; }
+
+        /// <summary>
+        //     If true the scheme can be sent CORS requests. This value should be true in most
+        //     cases where IsStandard is true.
+        /// </summary>
+        public bool IsCorsEnabled { get; set; }
         public object HandlerFactory { get; set; }
     }
 }

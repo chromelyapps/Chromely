@@ -4,29 +4,31 @@
     <TargetFramework>net461</TargetFramework>
     <CefSharpAnyCpuSupport>true</CefSharpAnyCpuSupport>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Version>0.9.0.0-beta02</Version>
+    <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
+    <Version>0.9.0.0-beta03</Version>
     <Authors>Kola Oyewumi</Authors>
     <Company>Kola Oyewumi</Company>
     <Description>Chromely CefSharp Winapi implementation.</Description>
     <Copyright>Copyright 2017 Kola Oyewumi</Copyright>
     <PackageLicenseUrl>https://github.com/mattkol/Chromely/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/mattkol/Chromely</PackageProjectUrl>
-    <PackageIconUrl>https://github.com/mattkol/Chromely/blob/master/nugets/chromely.ico</PackageIconUrl>
+    <PackageIconUrl>https://github.com/mattkol/Chromely/blob/master/nugets/chromely.ico?raw=true</PackageIconUrl>
     <AssemblyVersion>0.9.0.0</AssemblyVersion>
     <FileVersion>0.9.0.0</FileVersion>
     <PackageTags>Cef Chromium HTML5 Desktop Chromely CefSharp Restful  Ajax HTTP XHR JavascriptIntegration</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageReleaseNotes>- Removed dependency checks on CefSharp - was failing in debugging
-- Minor fixes
-- Improved documentation</PackageReleaseNotes>
+    <PackageReleaseNotes>- Added support for CefSharp &gt;= 63.0.0 version.
+- Added DependecyCheck flag to ChromelyConfiguration in Chromely.Core (CefPerformDependencyCheck)
+- Added properties - IsSecure and IsCorsEnabled to ChromelySchemeHandler class
+- This version still uses legacy .NET Javascript binding (LegacyJavascriptBindingEnabled = true)</PackageReleaseNotes>
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
-  
+
   <ItemGroup>
-    <PackageReference Include="CefSharp.Common" Version="57.0.0" />
+    <PackageReference Include="CefSharp.Common" Version="63.0.0" />
     <PackageReference Include="WinApi" Version="4.0.0" />
   </ItemGroup>
   
