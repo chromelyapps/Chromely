@@ -31,13 +31,15 @@ namespace Xilium.CefGlue
         private cef_request_handler_t.get_resource_response_filter_delegate _ds9;
         private cef_request_handler_t.on_resource_load_complete_delegate _dsa;
         private cef_request_handler_t.get_auth_credentials_delegate _dsb;
-        private cef_request_handler_t.on_quota_request_delegate _dsc;
-        private cef_request_handler_t.on_protocol_execution_delegate _dsd;
-        private cef_request_handler_t.on_certificate_error_delegate _dse;
-        private cef_request_handler_t.on_select_client_certificate_delegate _dsf;
-        private cef_request_handler_t.on_plugin_crashed_delegate _ds10;
-        private cef_request_handler_t.on_render_view_ready_delegate _ds11;
-        private cef_request_handler_t.on_render_process_terminated_delegate _ds12;
+        private cef_request_handler_t.can_get_cookies_delegate _dsc;
+        private cef_request_handler_t.can_set_cookie_delegate _dsd;
+        private cef_request_handler_t.on_quota_request_delegate _dse;
+        private cef_request_handler_t.on_protocol_execution_delegate _dsf;
+        private cef_request_handler_t.on_certificate_error_delegate _ds10;
+        private cef_request_handler_t.on_select_client_certificate_delegate _ds11;
+        private cef_request_handler_t.on_plugin_crashed_delegate _ds12;
+        private cef_request_handler_t.on_render_view_ready_delegate _ds13;
+        private cef_request_handler_t.on_render_process_terminated_delegate _ds14;
         
         protected CefRequestHandler()
         {
@@ -67,20 +69,24 @@ namespace Xilium.CefGlue
             _self->_on_resource_load_complete = Marshal.GetFunctionPointerForDelegate(_dsa);
             _dsb = new cef_request_handler_t.get_auth_credentials_delegate(get_auth_credentials);
             _self->_get_auth_credentials = Marshal.GetFunctionPointerForDelegate(_dsb);
-            _dsc = new cef_request_handler_t.on_quota_request_delegate(on_quota_request);
-            _self->_on_quota_request = Marshal.GetFunctionPointerForDelegate(_dsc);
-            _dsd = new cef_request_handler_t.on_protocol_execution_delegate(on_protocol_execution);
-            _self->_on_protocol_execution = Marshal.GetFunctionPointerForDelegate(_dsd);
-            _dse = new cef_request_handler_t.on_certificate_error_delegate(on_certificate_error);
-            _self->_on_certificate_error = Marshal.GetFunctionPointerForDelegate(_dse);
-            _dsf = new cef_request_handler_t.on_select_client_certificate_delegate(on_select_client_certificate);
-            _self->_on_select_client_certificate = Marshal.GetFunctionPointerForDelegate(_dsf);
-            _ds10 = new cef_request_handler_t.on_plugin_crashed_delegate(on_plugin_crashed);
-            _self->_on_plugin_crashed = Marshal.GetFunctionPointerForDelegate(_ds10);
-            _ds11 = new cef_request_handler_t.on_render_view_ready_delegate(on_render_view_ready);
-            _self->_on_render_view_ready = Marshal.GetFunctionPointerForDelegate(_ds11);
-            _ds12 = new cef_request_handler_t.on_render_process_terminated_delegate(on_render_process_terminated);
-            _self->_on_render_process_terminated = Marshal.GetFunctionPointerForDelegate(_ds12);
+            _dsc = new cef_request_handler_t.can_get_cookies_delegate(can_get_cookies);
+            _self->_can_get_cookies = Marshal.GetFunctionPointerForDelegate(_dsc);
+            _dsd = new cef_request_handler_t.can_set_cookie_delegate(can_set_cookie);
+            _self->_can_set_cookie = Marshal.GetFunctionPointerForDelegate(_dsd);
+            _dse = new cef_request_handler_t.on_quota_request_delegate(on_quota_request);
+            _self->_on_quota_request = Marshal.GetFunctionPointerForDelegate(_dse);
+            _dsf = new cef_request_handler_t.on_protocol_execution_delegate(on_protocol_execution);
+            _self->_on_protocol_execution = Marshal.GetFunctionPointerForDelegate(_dsf);
+            _ds10 = new cef_request_handler_t.on_certificate_error_delegate(on_certificate_error);
+            _self->_on_certificate_error = Marshal.GetFunctionPointerForDelegate(_ds10);
+            _ds11 = new cef_request_handler_t.on_select_client_certificate_delegate(on_select_client_certificate);
+            _self->_on_select_client_certificate = Marshal.GetFunctionPointerForDelegate(_ds11);
+            _ds12 = new cef_request_handler_t.on_plugin_crashed_delegate(on_plugin_crashed);
+            _self->_on_plugin_crashed = Marshal.GetFunctionPointerForDelegate(_ds12);
+            _ds13 = new cef_request_handler_t.on_render_view_ready_delegate(on_render_view_ready);
+            _self->_on_render_view_ready = Marshal.GetFunctionPointerForDelegate(_ds13);
+            _ds14 = new cef_request_handler_t.on_render_process_terminated_delegate(on_render_process_terminated);
+            _self->_on_render_process_terminated = Marshal.GetFunctionPointerForDelegate(_ds14);
         }
         
         ~CefRequestHandler()

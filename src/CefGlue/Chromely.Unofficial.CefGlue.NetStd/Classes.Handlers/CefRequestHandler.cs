@@ -284,6 +284,57 @@
         }
 
 
+        private int can_get_cookies(cef_request_handler_t* self, cef_browser_t* browser, cef_frame_t* frame, cef_request_t* request)
+        {
+            CheckSelf(self);
+
+            var mBrowser = CefBrowser.FromNative(browser);
+            var mFrame = CefFrame.FromNative(frame);
+            var mRequest = CefRequest.FromNative(request);
+
+            var mResult = CanGetCookies(mBrowser, mFrame, mRequest);
+
+            return mResult ? 1 : 0;
+        }
+
+        /// <summary>
+        /// Called on the IO thread before sending a network request with a "Cookie"
+        /// request header. Return true to allow cookies to be included in the network
+        /// request or false to block cookies. The |request| object should not be
+        /// modified in this callback.
+        /// </summary>
+        protected virtual bool CanGetCookies(CefBrowser browser, CefFrame frame, CefRequest request)
+        {
+            return true;
+        }
+
+
+        private int can_set_cookie(cef_request_handler_t* self, cef_browser_t* browser, cef_frame_t* frame, cef_request_t* request, cef_cookie_t* cookie)
+        {
+            CheckSelf(self);
+
+            var mBrowser = CefBrowser.FromNative(browser);
+            var mFrame = CefFrame.FromNative(frame);
+            var mRequest = CefRequest.FromNative(request);
+            var mCookie = CefCookie.FromNative(cookie);
+
+            var mResult = CanSetCookie(mBrowser, mFrame, mRequest, mCookie);
+
+            return mResult ? 1 : 0;
+        }
+
+        /// <summary>
+        /// Called on the IO thread when receiving a network request with a
+        /// "Set-Cookie" response header value represented by |cookie|. Return true to
+        /// allow the cookie to be stored or false to block the cookie. The |request|
+        /// object should not be modified in this callback.
+        /// </summary>
+        protected virtual bool CanSetCookie(CefBrowser browser, CefFrame frame, CefRequest request, CefCookie cookie)
+        {
+            return true;
+        }
+
+
         private int on_quota_request(cef_request_handler_t* self, cef_browser_t* browser, cef_string_t* origin_url, long new_size, cef_request_callback_t* callback)
         {
             CheckSelf(self);

@@ -36,7 +36,7 @@ namespace Chromely.CefGlue.Winapi.Browser
             m_core.InvokeAsyncIfPossible(() => m_core.OnStatusMessage(new StatusMessageEventArgs(value)));
         }
 
-		protected override bool OnConsoleMessage(CefBrowser browser, string message, string source, int line)
+        protected override bool OnConsoleMessage(CefBrowser browser, CefLogSeverity level, string message, string source, int line)
 		{
 			var e = new ConsoleMessageEventArgs(message, source, line);
 			m_core.InvokeAsyncIfPossible(() => m_core.OnConsoleMessage(e));

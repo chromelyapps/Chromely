@@ -22,6 +22,8 @@ namespace Xilium.CefGlue.Interop
         internal IntPtr _get_resource_response_filter;
         internal IntPtr _on_resource_load_complete;
         internal IntPtr _get_auth_credentials;
+        internal IntPtr _can_get_cookies;
+        internal IntPtr _can_set_cookie;
         internal IntPtr _on_quota_request;
         internal IntPtr _on_protocol_execution;
         internal IntPtr _on_certificate_error;
@@ -101,6 +103,18 @@ namespace Xilium.CefGlue.Interop
         [SuppressUnmanagedCodeSecurity]
         #endif
         internal delegate int get_auth_credentials_delegate(cef_request_handler_t* self, cef_browser_t* browser, cef_frame_t* frame, int isProxy, cef_string_t* host, int port, cef_string_t* realm, cef_string_t* scheme, cef_auth_callback_t* callback);
+        
+        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
+        #if !DEBUG
+        [SuppressUnmanagedCodeSecurity]
+        #endif
+        internal delegate int can_get_cookies_delegate(cef_request_handler_t* self, cef_browser_t* browser, cef_frame_t* frame, cef_request_t* request);
+        
+        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
+        #if !DEBUG
+        [SuppressUnmanagedCodeSecurity]
+        #endif
+        internal delegate int can_set_cookie_delegate(cef_request_handler_t* self, cef_browser_t* browser, cef_frame_t* frame, cef_request_t* request, cef_cookie_t* cookie);
         
         [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
         #if !DEBUG

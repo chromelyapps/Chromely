@@ -61,12 +61,11 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
             var codeBase = Assembly.GetExecutingAssembly().CodeBase;
             var localFolder = Path.GetDirectoryName(new Uri(codeBase).LocalPath);
             var localesDirPath = Path.Combine(localFolder, "locales");
-            var locale = "en-US";
 
             var settings = new CefSharpGlobal.CefSettings
             {
                 LocalesDirPath = localesDirPath,
-                Locale = locale,
+                Locale = HostConfig.CefLocale,
                 MultiThreadedMessageLoop = true,
                 CachePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "CefSharp\\Cache"),
                 LogSeverity = (CefSharpGlobal.LogSeverity)HostConfig.CefLogSeverity,
@@ -116,30 +115,29 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
             base.OnDestroy(ref packet);
         }
 
-        public void RegisterExternalUrlScheme(UrlScheme scheme)
+        public void RegisterUrlScheme(UrlScheme scheme)
         {
             UrlSchemeProvider.RegisterScheme(scheme);
         }
 
         public void RegisterServiceAssembly(string filename)
         {
-            if (File.Exists(filename))
-            {
-                RegisterServiceAssembly(Assembly.LoadFile(filename));
-            }
+            ServiceAssemblies?.RegisterServiceAssembly(Assembly.LoadFile(filename));
         }
 
         public void RegisterServiceAssembly(Assembly assembly)
         {
-            if (ServiceAssemblies == null)
-            {
-                ServiceAssemblies = new List<Assembly>();
-            }
+            ServiceAssemblies?.RegisterServiceAssembly(assembly);
+        }
 
-            if (assembly != null)
-            {
-                ServiceAssemblies.Add(assembly);
-            }
+        public void RegisterServiceAssemblies(string folder)
+        {
+            ServiceAssemblies?.RegisterServiceAssemblies(folder);
+        }
+
+        public void RegisterServiceAssemblies(List<string> filenames)
+        {
+            ServiceAssemblies?.RegisterServiceAssemblies(filenames);
         }
 
         public void ScanAssemblies()

@@ -7,15 +7,12 @@
     <title>Chromely</title>
     <link rel="stylesheet" href="../Content/css/bootstrap.min.css">
     <script src="../Content/js/jquery.min.js"></script>
+    <script src="../Content/js/tether.min.js"></script>
     <script src="../Content/js/bootstrap.min.js"></script>
     <style type="text/css">
         body, html {
             height: 100%;
             display: grid;
-        }
-
-        .chromely_content {
-            margin: auto;
         }
 
         .centerBlock {
@@ -41,20 +38,9 @@
         }
     </style>
     <script type="text/javascript">
-
-        function infoResult(res) {
-            var jsonData = JSON.parse(res.ResponseText);
-            if (jsonData.ReadyState == 4 && jsonData.Status == 200) {
-                $('#divObjective').html(jsonData.Data.divObjective);
-                $('#divPlatform').html(jsonData.Data.divPlatform);
-                $('#divVersion').html(jsonData.Data.divVersion);
-            }
-        }
-
         function demoRun() {
-            $("#infoPanel").removeClass('hidden');
-            $("#runButton").addClass('hidden');
-            $("#moreInfoButton").removeClass('hidden');
+            $("#demoPage").removeClass('hidden');
+            $("#homePage").addClass('hidden');
 
             var http = new XMLHttpRequest();
             var url = "http://chromely.com/info";
@@ -70,6 +56,20 @@
                 }
             }
             http.send();
+        }
+
+        function backToHomePage() {
+            $("#demoPage").addClass('hidden');
+            $("#homePage").removeClass('hidden');
+        }
+
+        function infoResult(res) {
+            var jsonData = JSON.parse(res.ResponseText);
+            if (jsonData.ReadyState == 4 && jsonData.Status == 200) {
+                $('#divObjective').html(jsonData.Data.divObjective);
+                $('#divPlatform').html(jsonData.Data.divPlatform);
+                $('#divVersion').html(jsonData.Data.divVersion);
+            }
         }
 
         function launchModal1() {
@@ -292,245 +292,302 @@
     </script>
 </head>
 <body>
-    <div class="chromely_content">
+    <div class="container centerBlock">
 
-        <div class="col-md-12">
-            <div class="centerBlock">
-                <img src="../Content/img/chromely.png" class="img-rounded" alt="Cinque Terre" width="240" height="240">
-                <span class="text-primary text-center"><h1>chromely</h1></span>
-                <p class="text-muted text-center">Build .NET/.NET CORE HTML5 Desktop Apps</p>
-            </div>
-        </div>
-
-        <div class="col-md-12" style='padding:20px;'>
-            <div id="runButton" class="centerBlock">
-                <form class="form-inline">
-                    <div class="form-group">
-                        <label for="info">Message Router/Ajax Demo (get chromely info):</label>
+        <!-- Home Page -->
+        <div id="homePage" class="col-12 centerBlock">
+            <div class="col-12">
+                <div class="centerBlock">
+                    <div class="row centerBlock">
+                        <img src="../Content/img/chromely.png" class="img-rounded" alt="Cinque Terre" width="240" height="240">
                     </div>
-                    <button id="buttonDemoRun" type="button" class="btn btn-default" onclick="demoRun()">Run</button>
-                </form>
-            </div>
-            <div id="moreInfoButton" class="centerBlock hidden">
-                <form class="form-inline">
-                    <button type="button" class="btn btn-default" onclick="launchModal1()">Message Router Tests</button>
-                    <button type="button" class="btn btn-default" onclick="launchModal2()">Ajax Tests</button>
-                    <a href="https://github.com/mattkol/Chromely" class="btn btn-default" role="button">more info</a>
-                </form>
-            </div>
-        </div>
-
-        <div id="infoPanel" class="col-md-12 centerBlock hidden">
-
-            <div class="col-md-2">
-            </div>
-
-            <div class="col-md-8">
-                <div class="panel-group">
-
-                    <div class="panel panel-primary">
-                        <div class="panel-heading">Main objective</div>
-                        <div id="divObjective" class="panel-body"></div>
+                    <div class="row centerBlock">
+                        <span class="text-primary text-center"><h2>chromely</h2></span>
                     </div>
-
-                    <div class="panel panel-primary">
-                        <div class="panel-heading">Platforms</div>
-                        <div id="divPlatform" class="panel-body"></div>
+                    <div class="row centerBlock">
+                        <p class="text-muted text-center">Build .NET/.NET CORE HTML5 Desktop Apps</p>
                     </div>
-
-                    <div class="panel panel-primary">
-                        <div class="panel-heading">Current CefSharp/Chromium Version</div>
-                        <div id="divVersion" class="panel-body"></div>
-                    </div>
-
                 </div>
             </div>
 
-            <div class="col-md-2">
+            <div class="col-12" style='padding:20px;'>
+                <div id="runButton" class="centerBlock">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <label for="info">Message Router/Ajax Demos:</label>
+                        </div>
+                        <button id="buttonDemoRun" type="button" class="btn btn-primary" onclick="demoRun()" style='margin: 5px;'>Run</button>
+                    </form>
+                </div>
             </div>
-
         </div>
 
-        <!-- Message Router-->
-        <div id="messageRouterModal" class="modal fade">
-            <div class="modal-dialog">
+        <!-- Demo Page -->
+        <div id="demoPage" class="col-12 centerBlock hidden">
 
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title">Message Router</h4>
+            <div class="col-12">
+                <div class="centerBlock">
+                    <div class="row centerBlock">
+                        <img src="../Content/img/chromely.png" class="img-rounded" alt="Cinque Terre" width="180" height="180">
                     </div>
-                    <div class="modal-body">
-                        <div>
-                            <ul class="nav nav-tabs">
-                                <li class="active"><a data-toggle="tab" href="#sectionA">Restful Service in Local Assembly</a></li>
-                                <li><a data-toggle="tab" href="#sectionB">Restful Service in External Assembly</a></li>
-                                <li><a data-toggle="tab" href="#sectionC">(Post) Restful Service in Local Assembly</a></li>
+                    <div class="row centerBlock">
+                        <span class="text-primary text-center"><h2>demo panel</h2></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div>
+                    <button type="button" class="btn btn-link" onclick="backToHomePage()">Back</button>
+                </div>
+                <div class="centerBlock">
+                    <button type="button" class="btn btn-light" data-toggle="modal" data-target="#messageRouterModal" style='margin: 5px;'>Message Router Demo</button>
+                    <button type="button" class="btn btn-light" data-toggle="modal" data-target="#ajaxModal" style='margin: 5px;'>Ajax Demo</button>
+                    <a href="https://github.com/mattkol/Chromely" class="btn btn-default" role="button" style='margin: 5px;'>more info</a>
+                </div>
+            </div>
+
+            <br>
+
+            <div class="col-12 centerBlock">
+
+                <div>
+                    <div class="card-header card bg-primary text-white">Chromely Main objective</div>
+                    <div id="divObjective"  class="card-body"></div>
+                </div>
+                <br>
+
+                <div>
+                    <div class="card-header card bg-primary text-white">Platforms</div>
+                    <div  id="divPlatform" class="card-body"></div>
+                </div>
+                <br>
+
+                <div>
+                    <div class="card-header card bg-primary text-white">Current CefSharp/Chromium Version</div>
+                    <div id="divVersion" class="card-body"></div>
+                </div>
+                <br>
+
+            </div>
+
+            <!-- The Message Router Modal -->
+            <div class="modal fade" id="messageRouterModal">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">Message Router Demo</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                            <!-- Nav pills -->
+                            <ul class="nav nav-pills" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-toggle="pill" href="#sectionA">Get 1</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="pill" href="#sectionB">Get 2</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="pill" href="#sectionC">Post</a>
+                                </li>
                             </ul>
 
+                            <!-- Tab panes -->
                             <div class="tab-content">
-
-                                <div id="sectionA" class="tab-pane fade in active" style='padding:10px;'>
-                                    <form class="form">
-                                        <div class="form-group">
-                                            <button id="buttonMessageRouterRun1" type="button" class="btn btn-primary" onclick="messageRouterRun1()">Run</button>&ensp;&ensp;/democontroller/movies
+                                <div id="sectionA" class="container tab-pane active">
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            Route Path:&ensp;/democontroller/movies &ensp; (Restful Service in Local Assembly)&ensp;<button id="buttonMessageRouterRun1" type="button" class="btn btn-primary btn-sm" onclick="messageRouterRun1()">Run</button>
                                         </div>
-                                        <div class="form-group">
-                                            <table id="messageRouterResult1" class="table table-striped table-hover ">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Id</th>
-                                                        <th>Title</th>
-                                                        <th>Year</th>
-                                                        <th>Votes</th>
-                                                        <th>Rating</th>
-                                                        <th>Date</th>
-                                                        <th>RestfulAssembly</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody></tbody>
-                                            </table>
+                                        <br><br>
+                                        <div class="col-12">
+                                            <div class='table-responsive'>
+                                                <table id="messageRouterResult1" class='table'>
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Id</th>
+                                                            <th>Title</th>
+                                                            <th>Year</th>
+                                                            <th>Votes</th>
+                                                            <th>Rating</th>
+                                                            <th>Date</th>
+                                                            <th>RestfulAssembly</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
-                                    </form>
+                                    </div>
                                 </div>
-
-                                <div id="sectionB" class="tab-pane fade" style='padding:10px;'>
-                                    <form class="form">
-                                        <div class="form-group">
-                                            <button id="buttonMessageRouterRun2" type="button" class="btn btn-primary" onclick="messageRouterRun2()">Run</button>&ensp;&ensp;/externalcontroller/movies
+                                <div id="sectionB" class="container tab-pane fade">
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            Route Path:&ensp;/externalcontroller/movies &ensp;(Restful Service in External Assembly)&ensp;<button id="buttonMessageRouterRun2" type="button" class="btn btn-primary btn-sm" onclick="messageRouterRun2()">Run</button>
                                         </div>
-                                        <div class="form-group">
-                                            <table id="messageRouterResult2" class="table table-striped table-hover ">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Id</th>
-                                                        <th>Title</th>
-                                                        <th>Year</th>
-                                                        <th>Votes</th>
-                                                        <th>Rating</th>
-                                                        <th>Date</th>
-                                                        <th>RestfulAssembly</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody></tbody>
-                                            </table>
+                                        <br><br>
+                                        <div class="col-12">
+                                            <div class='table-responsive'>
+                                                <table id="messageRouterResult2" class='table'>
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Id</th>
+                                                            <th>Title</th>
+                                                            <th>Year</th>
+                                                            <th>Votes</th>
+                                                            <th>Rating</th>
+                                                            <th>Date</th>
+                                                            <th>RestfulAssembly</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
-                                    </form>
+                                    </div>
                                 </div>
-
-                                <div id="sectionC" class="tab-pane fade" style='padding:10px;'>
-                                    <form class="form">
-                                        <div class="form-group">
-                                            <button id="buttonMessageRouterRun3" type="button" class="btn btn-primary" onclick="messageRouterRun3()">Run</button>&ensp;&ensp;/democontroller/savemovies
+                                <div id="sectionC" class="container tab-pane fade">
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            Route Path:&ensp;/democontroller/savemovies&ensp;(Restful Service in Local Assembly)&ensp;<button id="buttonMessageRouterRun3" type="button" class="btn btn-primary btn-sm" onclick="messageRouterRun3()">Run</button>
                                         </div>
-                                        <div class="form-group">
+                                        <br><br>
+                                        <div class="col-12">
                                             <div id="messageRouterResult3"></div>
                                         </div>
-                                    </form>
+                                    </div>
                                 </div>
-
                             </div>
-
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                        </div>
+
                     </div>
                 </div>
-
             </div>
-        </div>
-        <!-- End Modal -->
-        <!-- Modal Custom Scheme-->
-        <div id="ajaxModal" class="modal fade">
-            <div class="modal-dialog">
 
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title">Ajax Requests</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div>
-                            <ul class="nav nav-tabs">
-                                <li class="active"><a data-toggle="tab" href="#sectionI">(Get) Restful Service in Local Assembly</a></li>
-                                <li><a data-toggle="tab" href="#sectionJ">(Get) Restful Service in External Assembly</a></li>
-                                <li><a data-toggle="tab" href="#sectionK">(Post) Restful Service in Local Assembly</a></li>
+            <!-- The Modal Ajax Requests -->
+            <div class="modal fade" id="ajaxModal">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">Ajax Requests</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                            <!-- Nav pills -->
+                            <ul class="nav nav-pills" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-toggle="pill" href="#sectionI">Get 1</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="pill" href="#sectionJ">Get 2</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="pill" href="#sectionK">Post</a>
+                                </li>
                             </ul>
 
+                            <!-- Tab panes -->
                             <div class="tab-content">
-
-                                <div id="sectionI" class="tab-pane fade in active" style='padding:10px;'>
-                                    <form class="form">
-                                        <div class="form-group">
-                                            <button id="buttonAjaxRun1" type="button" class="btn btn-primary" onclick="ajaxRun1()">Run</button>&ensp;&ensp;http://chromely.com//democontroller/movies
+                                <div id="sectionI" class="container tab-pane active">
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            Route Path:&ensp;/democontroller/movies &ensp; (Restful Service in Local Assembly&ensp;<button id="buttonAjaxRun1" type="button" class="btn btn-primary btn-sm" onclick="ajaxRun1()">Run</button>
                                         </div>
-                                        <div class="form-group">
-                                            <table id="ajaxResult1" class="table table-striped table-hover ">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Id</th>
-                                                        <th>Title</th>
-                                                        <th>Year</th>
-                                                        <th>Votes</th>
-                                                        <th>Rating</th>
-                                                        <th>Date</th>
-                                                        <th>RestfulAssembly</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody></tbody>
-                                            </table>
+                                        <br><br>
+                                        <div class="col-12">
+                                            <div class='table-responsive'>
+                                                <table id="ajaxResult1" class='table'>
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Id</th>
+                                                            <th>Title</th>
+                                                            <th>Year</th>
+                                                            <th>Votes</th>
+                                                            <th>Rating</th>
+                                                            <th>Date</th>
+                                                            <th>RestfulAssembly</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
-                                    </form>
+                                    </div>
                                 </div>
-
-                                <div id="sectionJ" class="tab-pane fade" style='padding:10px;'>
-                                    <form class="form">
-                                        <div class="form-group">
-                                            <button id="buttonAjaxRun2" type="button" class="btn btn-primary" onclick="ajaxRun2()">Run</button>&ensp;&ensp;http://chromely.com//externalcontroller/movies
+                                <div id="sectionJ" class="container tab-pane fade">
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            Route Path:&ensp;/externalcontroller/movies &ensp; (Restful Service in External Assembly)&ensp;<button id="buttonAjaxRun2" type="button" class="btn btn-primary btn-sm" onclick="ajaxRun2()">Run</button>
                                         </div>
-                                        <div class="form-group">
-                                            <table id="ajaxResult2" class="table table-striped table-hover ">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Id</th>
-                                                        <th>Title</th>
-                                                        <th>Year</th>
-                                                        <th>Votes</th>
-                                                        <th>Rating</th>
-                                                        <th>Date</th>
-                                                        <th>RestfulAssembly</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody></tbody>
-                                            </table>
+                                        <br><br>
+                                        <div class="col-12">
+                                            <div class='table-responsive'>
+                                                <table id="ajaxResult2" class='table'>
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Id</th>
+                                                            <th>Title</th>
+                                                            <th>Year</th>
+                                                            <th>Votes</th>
+                                                            <th>Rating</th>
+                                                            <th>Date</th>
+                                                            <th>RestfulAssembly</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
-                                    </form>
+                                    </div>
                                 </div>
-
-                                <div id="sectionK" class="tab-pane fade" style='padding:10px;'>
-                                    <form class="form">
-                                        <div class="form-group">
-                                            <button id="buttonAjaxRun3" type="button" class="btn btn-primary" onclick="ajaxRun3()">Run</button>&ensp;&ensp;http://chromely.com//democontroller/savemovies
+                                <div id="sectionK" class="container tab-pane fade">
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            Route Path:&ensp;/democontroller/savemovies &ensp;(Restful Service in Local Assembly)&ensp;<button id="buttonAjaxRun3" type="button" class="btn btn-primary btn-sm" onclick="ajaxRun3()">Run</button>
                                         </div>
-                                        <div class="form-group">
+                                        <br><br>
+                                        <div class="col-12">
                                             <div id="ajaxResult3"></div>
                                         </div>
-                                    </form>
+                                    </div>
                                 </div>
                             </div>
-
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                        </div>
+
                     </div>
                 </div>
-
             </div>
-        </div>
-        <!-- End Modal -->
 
+        </div>
     </div>
 </body>
 </html>                            

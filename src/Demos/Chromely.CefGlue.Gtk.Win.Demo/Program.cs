@@ -24,12 +24,13 @@
 
 namespace Chromely.CefGlue.Gtk.Win.Demo
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Reflection;
     using Chromely.CefGlue.Gtk.Browser.Handlers;
     using Chromely.CefGlue.Gtk.ChromeHost;
     using Chromely.Core;
     using Chromely.Core.Infrastructure;
-    using System;
-    using System.Reflection;
 
     class Program
     {
@@ -57,15 +58,29 @@ namespace Chromely.CefGlue.Gtk.Win.Demo
                 using (var app = new CefGlueBrowserHost(config))
                 {
                     // Register external url schems
-                    app.RegisterExternalUrlScheme(new UrlScheme("https://github.com/mattkol/Chromely", true));
+                    app.RegisterUrlScheme(new UrlScheme("https://github.com/mattkol/Chromely", true));
 
-                    // Register service assemblies
+                    /*
+                     * Register service assemblies
+                     * Uncomment relevant part to register assemblies
+                     */
+
+                    // 1. Register current/local assembly:
                     app.RegisterServiceAssembly(Assembly.GetExecutingAssembly());
 
-                    // Note ensure external is valid folder.
-                    // Uncomment to register external restful service dlls
-                    // string serviceAssemblyFile = @"C:\ChromelyDlls\Chromely.Service.Demo.dll";
-                    // app.RegisterServiceAssembly(serviceAssemblyFile);
+                    // 2. Register external assembly with file name:
+                    //string serviceAssemblyFile = @"C:\ChromelyDlls\Chromely.Service.Demo.dll";
+                    //app.RegisterServiceAssembly(serviceAssemblyFile);
+
+                    // 3. Register external assemblies with list of filenames:
+                    //string serviceAssemblyFile1 = @"C:\ChromelyDlls\Chromely.Service.Demo.dll";
+                    //List<string> filenames = new List<string>();
+                    //filenames.Add(serviceAssemblyFile1);
+                    //app.RegisterServiceAssemblies(filenames);
+
+                    // 4. Register external assemblies directory:
+                    string serviceAssembliesFolder = @"C:\ChromelyDlls";
+                    app.RegisterServiceAssemblies(serviceAssembliesFolder);
 
                     // Scan assemblies for Controller routes 
                     app.ScanAssemblies();

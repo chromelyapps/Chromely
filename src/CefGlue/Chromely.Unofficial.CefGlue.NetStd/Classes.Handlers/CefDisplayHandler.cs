@@ -128,7 +128,7 @@
         }
 
 
-        private int on_console_message(cef_display_handler_t* self, cef_browser_t* browser, cef_string_t* message, cef_string_t* source, int line)
+        private int on_console_message(cef_display_handler_t* self, cef_browser_t* browser, CefLogSeverity level, cef_string_t* message, cef_string_t* source, int line)
         {
             CheckSelf(self);
 
@@ -136,14 +136,14 @@
             var mMessage = cef_string_t.ToString(message);
             var mSource = cef_string_t.ToString(source);
 
-            return OnConsoleMessage(mBrowser, mMessage, mSource, line) ? 1 : 0;
+            return OnConsoleMessage(mBrowser, level, mMessage, mSource, line) ? 1 : 0;
         }
 
         /// <summary>
         /// Called to display a console message. Return true to stop the message from
         /// being output to the console.
         /// </summary>
-        protected virtual bool OnConsoleMessage(CefBrowser browser, string message, string source, int line)
+        protected virtual bool OnConsoleMessage(CefBrowser browser, CefLogSeverity level, string message, string source, int line)
         {
             return false;
         }

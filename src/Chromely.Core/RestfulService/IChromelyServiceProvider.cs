@@ -31,9 +31,11 @@ namespace Chromely.Core.RestfulService
     public interface IChromelyServiceProvider
     {
         List<Assembly> ServiceAssemblies { get; }
-        void RegisterExternalUrlScheme(UrlScheme scheme);
+        void RegisterUrlScheme(UrlScheme scheme);
         void RegisterServiceAssembly(string filename);
         void RegisterServiceAssembly(Assembly assembly);
+        void RegisterServiceAssemblies(string folder);
+        void RegisterServiceAssemblies(List<string> filenames);
         void ScanAssemblies();
     }
 }

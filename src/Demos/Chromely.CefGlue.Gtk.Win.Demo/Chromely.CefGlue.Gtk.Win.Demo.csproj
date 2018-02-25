@@ -31,6 +31,9 @@
     <None Update="Content\js\jquery.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Content\js\tether.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Views\chromely.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

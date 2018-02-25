@@ -18,6 +18,7 @@
     <None Remove="Content\css\bootstrap.min.css" />
     <None Remove="Content\js\bootstrap.min.js" />
     <None Remove="Content\js\jquery.min.js" />
+    <None Remove="Content\js\tether.min.js" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="chromely.ico">
@@ -29,12 +30,15 @@
     <Content Include="Content\js\bootstrap.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\js\tether.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\js\jquery.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Chromely.CefGlue.Winapi" Version="0.9.0-beta03" />
+    <ProjectReference Include="..\..\Chromely.CefGlue.Winapi\Chromely.CefGlue.Winapi.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Content\img\chromely.png">

@@ -80,7 +80,7 @@ namespace Xilium.CefGlue.Interop
         #if !DEBUG
         [SuppressUnmanagedCodeSecurity]
         #endif
-        internal delegate int on_console_message_delegate(cef_display_handler_t* self, cef_browser_t* browser, cef_string_t* message, cef_string_t* source, int line);
+        internal delegate int on_console_message_delegate(cef_display_handler_t* self, cef_browser_t* browser, CefLogSeverity level, cef_string_t* message, cef_string_t* source, int line);
         
         [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
         #if !DEBUG

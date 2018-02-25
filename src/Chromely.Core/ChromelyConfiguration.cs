@@ -35,6 +35,7 @@ namespace Chromely.Core
             CefLogFile = "logs\\chromely.cef.log";
             CefHostWidth = 1200;
             CefHostHeight = 900;
+            CefLocale = "en-US";
         }
 
         public string CefTitle { get; set; }
@@ -46,6 +47,7 @@ namespace Chromely.Core
         public LogSeverity CefLogSeverity { get; set; }
         public string CefLogFile { get; set; }
         public string CefIconFile { get; set; }
+        public string CefLocale { get; set; }
 
         public static ChromelyConfiguration Create(IChromelyContainer container = null)
         {
@@ -107,6 +109,12 @@ namespace Chromely.Core
             return this;
         }
 
+        public ChromelyConfiguration WithCefLocale(string cefLocale)
+        {
+            CefLocale = cefLocale;
+            return this;
+        }
+
         public ChromelyConfiguration UseDefaultLogger(string logFile = null, bool logToConsole = true, int rollingMaxMBFileSize = 10)
         {
             var simpleLogger = new SimpleLogger(logFile, logToConsole, rollingMaxMBFileSize);
@@ -127,7 +135,7 @@ namespace Chromely.Core
             return this;
         }
 
-        public virtual ChromelyConfiguration RegisterExternaleUrlScheme(string schemeName, string domainName)
+        public virtual ChromelyConfiguration RegisterExternalUrlScheme(string schemeName, string domainName)
         {
             UrlScheme scheme = new UrlScheme(schemeName, domainName, true);
             UrlSchemeProvider.RegisterScheme(scheme);

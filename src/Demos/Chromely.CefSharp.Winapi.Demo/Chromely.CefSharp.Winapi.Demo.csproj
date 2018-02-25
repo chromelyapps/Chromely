@@ -19,7 +19,6 @@
     <None Remove="chromely.ico" />
     <None Remove="Content\css\bootstrap.min.css" />
     <None Remove="Content\js\bootstrap.min.js" />
-    <None Remove="Content\js\jquery.min.js" />
     <None Remove="Views\chromely.html" />
   </ItemGroup>
   <ItemGroup>
@@ -32,19 +31,21 @@
     <Content Include="Content\js\bootstrap.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\js\jquery.min.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Views\chromely.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="CefSharp.Common" Version="63.0.1" />
-    <PackageReference Include="Chromely.CefSharp.Winapi" Version="0.9.0-beta03" />
+    <ProjectReference Include="..\..\Chromely.CefSharp.Winapi\Chromely.CefSharp.Winapi.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Content\img\chromely.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\js\jquery.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\js\tether.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
