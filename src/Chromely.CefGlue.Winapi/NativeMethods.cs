@@ -24,7 +24,7 @@
 
 namespace Chromely.CefGlue.Winapi
 {
-    using Chromely.Core.Winapi;
+    using Chromely.Core.Host;
     using System;
     using System.IO;
     using System.Runtime.InteropServices;

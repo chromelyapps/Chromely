@@ -32,26 +32,28 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
     using Chromely.CefSharp.Winapi.Browser;
     using Chromely.CefSharp.Winapi.Browser.Handlers;
     using Chromely.Core;
+    using Chromely.Core.Host;
     using Chromely.Core.Infrastructure;
     using Chromely.Core.RestfulService;
     using WinApi.Windows;
 
     using CefSharpGlobal = global::CefSharp;
 
-    public class CefSharpBrowserHost : EventedWindowCore, IChromelyServiceProvider
+    public class CefSharpBrowserHost : EventedWindowCore, IChromelyHost, IChromelyServiceProvider
     {
         private ChromiumWebBrowser m_browser;
+        private CefSharpGlobal.CefSettings m_settings;
 
         public CefSharpBrowserHost(ChromelyConfiguration hostConfig)
         {
             HostConfig = hostConfig;
             m_browser = null;
+            m_settings = new CefSharpGlobal.CefSettings();
             ServiceAssemblies = new List<Assembly>();
         }
 
-        public ChromelyConfiguration HostConfig { get; private set; }
-
         public List<Assembly> ServiceAssemblies { get; private set; }
+        public ChromelyConfiguration HostConfig { get; private set; }
 
         protected override void OnCreate(ref CreateWindowPacket packet)
         {
@@ -62,22 +64,26 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
             var localFolder = Path.GetDirectoryName(new Uri(codeBase).LocalPath);
             var localesDirPath = Path.Combine(localFolder, "locales");
 
-            var settings = new CefSharpGlobal.CefSettings
+            m_settings = new CefSharpGlobal.CefSettings
             {
                 LocalesDirPath = localesDirPath,
-                Locale = HostConfig.CefLocale,
+                Locale = HostConfig.Locale,
                 MultiThreadedMessageLoop = true,
                 CachePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "CefSharp\\Cache"),
-                LogSeverity = (CefSharpGlobal.LogSeverity)HostConfig.CefLogSeverity,
-                LogFile = HostConfig.CefLogFile
+                LogSeverity = (CefSharpGlobal.LogSeverity)HostConfig.LogSeverity,
+                LogFile = HostConfig.LogFile
             };
 
-            RegisterSchemeHandlers(settings);
+            // Update configuration settings
+            m_settings.Update(HostConfig.CustomSettings);
+            m_settings.UpdateCommandLineArgs(HostConfig.CommandLineArgs);
+
+            RegisterSchemeHandlers();
 
             //Perform dependency check to make sure all relevant resources are in our output directory.
-            CefSharpGlobal.Cef.Initialize(settings, performDependencyCheck: HostConfig.CefPerformDependencyCheck, browserProcessHandler: null);
+            CefSharpGlobal.Cef.Initialize(m_settings, performDependencyCheck: HostConfig.PerformDependencyCheck, browserProcessHandler: null);
 
-            m_browser = new ChromiumWebBrowser(Handle, HostConfig.CefStartUrl);
+            m_browser = new ChromiumWebBrowser(Handle, HostConfig.StartUrl);
             m_browser.IsBrowserInitializedChanged += IsBrowserInitializedChanged;
             m_browser.MenuHandler = new CefSharpContextMenuHandler();
 
@@ -155,7 +161,7 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
             }
         }
 
-        private void RegisterSchemeHandlers(CefSharpGlobal.CefSettings settings)
+        public void RegisterSchemeHandlers()
         {
             // Register scheme handlers
             IEnumerable<object> schemeHandlerObjs = IoC.GetAllInstances(typeof(ChromelySchemeHandler));
@@ -168,7 +174,7 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
                     if (item is ChromelySchemeHandler)
                     {
                         ChromelySchemeHandler handler = (ChromelySchemeHandler)item;
-                        settings.RegisterScheme(new CefSharpGlobal.CefCustomScheme
+                        m_settings.RegisterScheme(new CefSharpGlobal.CefCustomScheme
                         {
                             SchemeName = handler.SchemeName,
                             DomainName = handler.DomainName,
@@ -181,7 +187,7 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
             }
         }
 
-        private void RegisterJsHandlers()
+        public void RegisterJsHandlers()
         {
             // Register javascript handlers
             IEnumerable<object> jsHandlerObjs = IoC.GetAllInstances(typeof(ChromelyJsHandler));
@@ -211,6 +217,11 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
                     }
                 }
             }
+        }
+
+        public void RegisterMessageRouters()
+        {
+            throw new NotImplementedException();
         }
     }
 }

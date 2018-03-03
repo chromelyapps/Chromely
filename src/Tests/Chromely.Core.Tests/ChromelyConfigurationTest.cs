@@ -31,24 +31,24 @@
 
             ChromelyConfiguration config = ChromelyConfiguration
                                           .Create()
-                                          .WithCefTitle(title)
-                                          .WithCefIconFile(iconFile)
-                                          .WithCefAppArgs(args)
-                                          .WithCefHostSize(hostWidth, hostHeight)
-                                          .WithCefLogFile(cefLogFile)
-                                          .WithCefStartUrl(startUrl)
-                                          .WithCefLogSeverity(logSeverity)
+                                          .WithHostTitle(title)
+                                          .WithHostIconFile(iconFile)
+                                          .WithAppArgs(args)
+                                          .WithHostSize(hostWidth, hostHeight)
+                                          .WithLogFile(cefLogFile)
+                                          .WithStartUrl(startUrl)
+                                          .WithLogSeverity(logSeverity)
                                           .UseDefaultLogger(defaultLogFile, true);
 
 
             Assert.NotNull(config);
-            Assert.Equal(title, config.CefTitle);
-            Assert.Equal(iconFile, config.CefIconFile);
-            Assert.Equal(args, config.CefAppArgs);
-            Assert.Equal(hostWidth, config.CefHostWidth);
-            Assert.Equal(hostHeight, config.CefHostHeight);
-            Assert.Equal(cefLogFile, config.CefLogFile);
-            Assert.Equal(startUrl, config.CefStartUrl);
+            Assert.Equal(title, config.HostTitle);
+            Assert.Equal(iconFile, config.HostIconFile);
+            Assert.Equal(args, config.AppArgs);
+            Assert.Equal(hostWidth, config.HostWidth);
+            Assert.Equal(hostHeight, config.HostHeight);
+            Assert.Equal(cefLogFile, config.LogFile);
+            Assert.Equal(startUrl, config.StartUrl);
         }
     }
 }

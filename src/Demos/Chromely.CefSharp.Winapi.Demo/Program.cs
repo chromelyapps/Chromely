@@ -46,11 +46,11 @@ namespace Chromely.CefSharp.Winapi.Demo
 
                 ChromelyConfiguration config = ChromelyConfiguration
                                               .Create()
-                                              .WithCefAppArgs(args)
-                                              .WithCefHostSize(1200, 900)
-                                              .WithCefLogFile("logs\\chromely.cef_new.log")
-                                              .WithCefStartUrl(startUrl)
-                                              .WithCefLogSeverity(LogSeverity.Info)
+                                              .WithAppArgs(args)
+                                              .WithHostSize(1200, 900)
+                                              .WithLogFile("logs\\chromely.cef_new.log")
+                                              .WithStartUrl(startUrl)
+                                              .WithLogSeverity(LogSeverity.Info)
                                               .UseDefaultLogger("logs\\chromely_new.log", true)
                                               .RegisterSchemeHandler("http", "chromely.com", new CefSharpSchemeHandlerFactory())
                                               .RegisterJsHandler("boundControllerAsync", new CefSharpBoundObject(), null, true);
@@ -87,10 +87,10 @@ namespace Chromely.CefSharp.Winapi.Demo
                     // Scan assemblies for Controller routes 
                     window.ScanAssemblies();
 
-                    window.SetSize(config.CefHostWidth, config.CefHostHeight);
+                    window.SetSize(config.HostWidth, config.HostHeight);
                     window.CenterToScreen();
                     window.Show();
-                    return new EventLoop().Run(window);
+                    return new HostEventLoop().Run(window);
                 }
             }
             catch (Exception exception)

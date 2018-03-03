@@ -25,8 +25,16 @@
 
         protected override void PlatformRunMessageLoop()
         {
-            if (CefRuntime.Platform == CefRuntimePlatform.Windows) Application.Run();
-            else CefRuntime.RunMessageLoop();
+            bool isMultiThreadedLoopSet = HostConfig.GetBooleanValue(CefSettingKeys.MultiThreadedMessageLoop, true);
+
+            if (!isMultiThreadedLoopSet)
+            {
+                CefRuntime.RunMessageLoop();
+            }
+            else
+            {
+                Application.Run();
+            }
         }
 
         protected override void PlatformQuitMessageLoop()

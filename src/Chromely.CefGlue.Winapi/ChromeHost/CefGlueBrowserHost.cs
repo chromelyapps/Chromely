@@ -37,8 +37,9 @@ namespace Chromely.CefGlue.Winapi.ChromeHost
     using Xilium.CefGlue;
     using Xilium.CefGlue.Wrapper;
     using Chromely.CefGlue.Winapi.Browser.Handlers;
+    using Chromely.Core.Host;
 
-    public class CefGlueBrowserHost : EventedWindowCore, IChromelyServiceProvider
+    public class CefGlueBrowserHost : EventedWindowCore, IChromelyHost, IChromelyServiceProvider
     {
         CefWebBrowser m_browser;
 
@@ -50,10 +51,8 @@ namespace Chromely.CefGlue.Winapi.ChromeHost
         }
 
         public static CefMessageRouterBrowserSide BrowserMessageRouter { get; private set; }
-
-        public ChromelyConfiguration HostConfig { get; private set; }
-
         public List<Assembly> ServiceAssemblies { get; private set; }
+        public ChromelyConfiguration HostConfig { get; private set; }
 
         protected override void OnCreate(ref CreateWindowPacket packet)
         {
@@ -66,8 +65,8 @@ namespace Chromely.CefGlue.Winapi.ChromeHost
                 throw ex;
             }
 
-            var mainArgs = new CefMainArgs(HostConfig.CefAppArgs);
-            var app = new CefWebApp();
+            var mainArgs = new CefMainArgs(HostConfig.AppArgs);
+            var app = new CefWebApp(HostConfig);
 
             var exitCode = CefRuntime.ExecuteProcess(mainArgs, app, IntPtr.Zero);
             if (exitCode != -1)
@@ -79,13 +78,18 @@ namespace Chromely.CefGlue.Winapi.ChromeHost
 
             var settings = new CefSettings
             {
-                LocalesDirPath = localFolder,
-                Locale = HostConfig.CefLocale,
+                LocalesDirPath = localesDirPath,
+                Locale = HostConfig.Locale,
                 SingleProcess = false,
-                MultiThreadedMessageLoop = true, 
-                LogSeverity = (CefLogSeverity)HostConfig.CefLogSeverity,
-                LogFile = HostConfig.CefLogFile
+                MultiThreadedMessageLoop = true,
+                LogSeverity = (CefLogSeverity)HostConfig.LogSeverity,
+                LogFile = HostConfig.LogFile,
+                ResourcesDirPath = Path.GetDirectoryName(new Uri(Assembly.GetEntryAssembly().CodeBase).LocalPath),
+                NoSandbox = true
             };
+
+            // Update configuration settings
+            settings.Update(HostConfig.CustomSettings);
 
             CefRuntime.Initialize(mainArgs, settings, app, IntPtr.Zero);
 
@@ -93,10 +97,10 @@ namespace Chromely.CefGlue.Winapi.ChromeHost
             RegisterMessageRouters();
 
             CefBrowserConfig browserConfig = new CefBrowserConfig();
-            browserConfig.StartUrl = HostConfig.CefStartUrl;
+            browserConfig.StartUrl = HostConfig.StartUrl;
             browserConfig.ParentHandle = Handle;
-            browserConfig.AppArgs = HostConfig.CefAppArgs;
-            browserConfig.CefRectangle = new CefRectangle { X = 0, Y = 0, Width = HostConfig.CefHostWidth, Height = HostConfig.CefHostHeight };
+            browserConfig.AppArgs = HostConfig.AppArgs;
+            browserConfig.CefRectangle = new CefRectangle { X = 0, Y = 0, Width = HostConfig.HostWidth, Height = HostConfig.HostHeight };
 
             m_browser = new CefWebBrowser(browserConfig);
 
@@ -161,7 +165,7 @@ namespace Chromely.CefGlue.Winapi.ChromeHost
             }
         }
 
-        private void RegisterSchemeHandlers()
+        public void RegisterSchemeHandlers()
         {
             // Register scheme handlers
             IEnumerable<object> schemeHandlerObjs = IoC.GetAllInstances(typeof(ChromelySchemeHandler));
@@ -183,7 +187,7 @@ namespace Chromely.CefGlue.Winapi.ChromeHost
             }
         }
 
-        private void RegisterMessageRouters()
+        public void RegisterMessageRouters()
         {
             if (!CefRuntime.CurrentlyOn(CefThreadId.UI))
             {

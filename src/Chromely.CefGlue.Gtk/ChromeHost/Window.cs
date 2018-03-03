@@ -13,10 +13,10 @@
         private readonly HostBase m_application;
 
         public Window(HostBase application, ChromelyConfiguration hostConfig)
-            : base(hostConfig.CefTitle, hostConfig.CefHostWidth, hostConfig.CefHostHeight, hostConfig.CefIconFile)
+            : base(hostConfig.HostTitle, hostConfig.HostWidth, hostConfig.HostHeight, hostConfig.HostIconFile)
         {
             m_hostConfig = hostConfig;
-            m_core = new CefWebBrowser(this, new CefBrowserSettings(), hostConfig.CefStartUrl);
+            m_core = new CefWebBrowser(this, new CefBrowserSettings(), hostConfig.StartUrl);
             m_core.Created += new EventHandler(BrowserCreated);
             m_application = application;
 
@@ -39,11 +39,11 @@
             {
                 case CefRuntimePlatform.Windows:
                     var parentHandle = HostXid;
-                    windowInfo.SetAsChild(parentHandle, new CefRectangle(0, 0, m_hostConfig.CefHostWidth, m_hostConfig.CefHostHeight)); 
+                    windowInfo.SetAsChild(parentHandle, new CefRectangle(0, 0, m_hostConfig.HostWidth, m_hostConfig.HostHeight)); 
                     break;
 
                 case CefRuntimePlatform.Linux:
-                    windowInfo.SetAsChild(HostXid, new CefRectangle(0, 0, m_hostConfig.CefHostWidth, m_hostConfig.CefHostHeight));
+                    windowInfo.SetAsChild(HostXid, new CefRectangle(0, 0, m_hostConfig.HostWidth, m_hostConfig.HostHeight));
                     break;
 
                 case CefRuntimePlatform.MacOSX:

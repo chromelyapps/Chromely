@@ -49,14 +49,15 @@
             CefRuntime.Load();
 
             var settings = new CefSettings();
-            settings.MultiThreadedMessageLoop = CefRuntime.Platform == CefRuntimePlatform.Windows;
+            settings.MultiThreadedMessageLoop = true;
             settings.SingleProcess = false;
             settings.LogSeverity = CefLogSeverity.Verbose;
-            settings.LogFile = HostConfig.CefLogFile;
+            settings.LogFile = HostConfig.LogFile;
             settings.ResourcesDirPath = Path.GetDirectoryName(new Uri(Assembly.GetEntryAssembly().CodeBase).LocalPath);
+            settings.LocalesDirPath = Path.Combine(settings.ResourcesDirPath, "locales");
             settings.RemoteDebuggingPort = 20480;
             settings.NoSandbox = true;
-            settings.Locale = HostConfig.CefLocale;
+            settings.Locale = HostConfig.Locale;
 
             var argv = args;
             if (CefRuntime.Platform != CefRuntimePlatform.Windows)
@@ -66,8 +67,11 @@
                 argv[0] = "-";
             }
 
+            // Update configuration settings
+            settings.Update(HostConfig.CustomSettings);
+
             var mainArgs = new CefMainArgs(argv);
-            var app = new CefWebApp();
+            var app = new CefWebApp(HostConfig);
 
             var exitCode = CefRuntime.ExecuteProcess(mainArgs, app, IntPtr.Zero);
             Log.Info((string.Format("CefRuntime.ExecuteProcess() returns {0}", exitCode)));

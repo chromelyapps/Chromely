@@ -91,7 +91,7 @@ namespace Chromely.Core.RestfulService
                     return jsonData.Count;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Swallow
             }

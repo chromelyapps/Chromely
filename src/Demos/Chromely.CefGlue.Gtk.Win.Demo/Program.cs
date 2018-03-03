@@ -45,13 +45,13 @@ namespace Chromely.CefGlue.Gtk.Win.Demo
 
                 ChromelyConfiguration config = ChromelyConfiguration
                                               .Create()
-                                              .WithCefTitle("chromely")
-                                              .WithCefIconFile("chromely.ico")
-                                              .WithCefAppArgs(args)
-                                              .WithCefHostSize(1200, 900)
-                                              .WithCefLogFile("logs\\chromely.cef_new.log")
-                                              .WithCefStartUrl(startUrl)
-                                              .WithCefLogSeverity(LogSeverity.Info)
+                                              .WithHostTitle("chromely")
+                                              .WithHostIconFile("chromely.ico")
+                                              .WithAppArgs(args)
+                                              .WithHostSize(1200, 900)
+                                              .WithLogFile("logs\\chromely.cef_new.log")
+                                              .WithStartUrl(startUrl)
+                                              .WithLogSeverity(LogSeverity.Info)
                                               .UseDefaultLogger("logs\\chromely_new.log", true)
                                               .RegisterSchemeHandler("http", "chromely.com", new CefGlueSchemeHandlerFactory());
 

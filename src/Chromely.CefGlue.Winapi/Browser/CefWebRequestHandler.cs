@@ -7,6 +7,8 @@
 
 namespace Chromely.CefGlue.Winapi.Browser
 {
+    using System;
+    using System.Diagnostics;
     using Chromely.Core.Infrastructure;
     using Xilium.CefGlue;
 
@@ -24,7 +26,32 @@ namespace Chromely.CefGlue.Winapi.Browser
             bool isUrlExternal = UrlSchemeProvider.IsUrlRegisteredExternal(request.Url);
             if (isUrlExternal)
             {
-                System.Diagnostics.Process.Start(request.Url);
+                // https://brockallen.com/2016/09/24/process-start-for-urls-on-net-core/
+                try
+                {
+                    Process.Start(request.Url);
+                }
+                catch
+                {
+                    try
+                    {
+                        // hack because of this: https://github.com/dotnet/corefx/issues/10361
+                        if (CefRuntime.Platform == CefRuntimePlatform.Windows)
+                        {
+                            string url = request.Url.Replace("&", "^&");
+                            Process.Start(new ProcessStartInfo("cmd", $"/c start {url}") { CreateNoWindow = true });
+                        }
+                        else if (CefRuntime.Platform == CefRuntimePlatform.Linux)
+                        {
+                            Process.Start("xdg-open", request.Url);
+                        }
+                    }
+                    catch (Exception exception)
+                    {
+                        Log.Error(exception);
+                    }
+                }
+
                 return true;
             }
 

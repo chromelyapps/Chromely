@@ -4,13 +4,11 @@
  * For more info: https://bitbucket.org/xilium/xilium.cefglue/wiki/Home
  **/
 #endregion
- 
+
 namespace Chromely.CefGlue.Gtk.Browser
 {
     using Chromely.CefGlue.Gtk.Browser.EventParams;
-    using Chromely.Core.Winapi;
     using System;
-    using System.ComponentModel;
     using Xilium.CefGlue;
 
     public sealed class CefWebBrowser

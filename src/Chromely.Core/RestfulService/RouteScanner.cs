@@ -28,6 +28,7 @@ namespace Chromely.Core.RestfulService
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+    using Chromely.Core.Infrastructure;
 
     public class RouteScanner
     {
@@ -42,32 +43,55 @@ namespace Chromely.Core.RestfulService
         {
             Dictionary<string, Route> routeDictionary = new Dictionary<string, Route>();
 
-            var types = from type in m_assembly.GetTypes()
-                        where Attribute.IsDefined(type, typeof(ControllerPropertyAttribute))
-                        select type;
-
-            foreach (var type in types)
+            try
             {
-                if (type.BaseType == typeof(ChromelyController))
-                {
-                    ChromelyController instance = (ChromelyController)Activator.CreateInstance(type);
-                    Dictionary<string, Route> currentRouteDictionary = instance.RouteDictionary;
+                var types = from type in m_assembly.GetLoadableTypes()
+                            where Attribute.IsDefined(type, typeof(ControllerPropertyAttribute))
+                            select type;
 
-                    // Merge with return route dictionary
-                    if ((currentRouteDictionary != null) && (currentRouteDictionary.Count > 0))
+                foreach (var type in types)
+                {
+                    if (type.BaseType == typeof(ChromelyController))
                     {
-                        foreach (var item in currentRouteDictionary)
+                        ChromelyController instance = (ChromelyController)Activator.CreateInstance(type);
+                        Dictionary<string, Route> currentRouteDictionary = instance.RouteDictionary;
+
+                        // Merge with return route dictionary
+                        if ((currentRouteDictionary != null) && (currentRouteDictionary.Count > 0))
                         {
-                            if (!routeDictionary.ContainsKey(item.Key))
+                            foreach (var item in currentRouteDictionary)
                             {
-                                routeDictionary.Add(item.Key, item.Value);
+                                if (!routeDictionary.ContainsKey(item.Key))
+                                {
+                                    routeDictionary.Add(item.Key, item.Value);
+                                }
                             }
                         }
                     }
                 }
             }
+            catch (Exception exception)
+            {
+                Log.Error(exception);
+            }
 
             return routeDictionary;
+        }
+
+    }
+
+    static class RouteScannerExtensions
+    {
+        public static IEnumerable<Type> GetLoadableTypes(this Assembly assembly)
+        {
+            try
+            {
+                return assembly.GetTypes();
+            }
+            catch (ReflectionTypeLoadException e)
+            {
+                return e.Types.Where(t => t != null);
+            }
         }
     }
 }

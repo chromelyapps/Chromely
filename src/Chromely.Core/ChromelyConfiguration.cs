@@ -25,29 +25,34 @@
 namespace Chromely.Core
 {
     using Chromely.Core.Infrastructure;
+    using System.Collections.Generic;
 
     public class ChromelyConfiguration
     {
         public ChromelyConfiguration()
         {
-            CefPerformDependencyCheck = false;
-            CefLogSeverity = LogSeverity.Warning;
-            CefLogFile = "logs\\chromely.cef.log";
-            CefHostWidth = 1200;
-            CefHostHeight = 900;
-            CefLocale = "en-US";
+            PerformDependencyCheck = false;
+            LogSeverity = LogSeverity.Warning;
+            LogFile = "logs\\chromely.cef.log";
+            HostWidth = 1200;
+            HostHeight = 900;
+            Locale = "en-US";
+            CommandLineArgs = new Dictionary<string, string>();
+            CustomSettings = new Dictionary<string, object>();
         }
 
-        public string CefTitle { get; set; }
-        public bool CefPerformDependencyCheck { get; set; }
-        public string[] CefAppArgs { get; set; }
-        public string CefStartUrl { get; set; }
-        public int CefHostWidth { get; set; }
-        public int CefHostHeight { get; set; }
-        public LogSeverity CefLogSeverity { get; set; }
-        public string CefLogFile { get; set; }
-        public string CefIconFile { get; set; }
-        public string CefLocale { get; set; }
+        public string HostTitle { get; set; }
+        public int HostWidth { get; set; }
+        public int HostHeight { get; set; }
+        public string HostIconFile { get; set; }
+        public bool PerformDependencyCheck { get; set; }
+        public string[] AppArgs { get; set; }
+        public string StartUrl { get; set; }
+        public LogSeverity LogSeverity { get; set; }
+        public string LogFile { get; set; }
+        public string Locale { get; set; }
+        public Dictionary<string, string> CommandLineArgs { get; set; }
+        public Dictionary<string, object> CustomSettings { get; set; }
 
         public static ChromelyConfiguration Create(IChromelyContainer container = null)
         {
@@ -59,59 +64,58 @@ namespace Chromely.Core
             return new ChromelyConfiguration();
         }
 
-        public ChromelyConfiguration WithCefAppArgs(string[] args)
+        public ChromelyConfiguration WithAppArgs(string[] args)
         {
-            CefAppArgs = args;
+            AppArgs = args;
             return this;
         }
 
-        public ChromelyConfiguration WithCefDependencyCheck(bool checkDependencies)
+        public ChromelyConfiguration WithDependencyCheck(bool checkDependencies)
         {
-            CefPerformDependencyCheck = checkDependencies;
+            PerformDependencyCheck = checkDependencies;
+            return this;
+        }
+        
+        public ChromelyConfiguration WithStartUrl(string startUrl)
+        {
+            StartUrl = startUrl;
             return this;
         }
 
-
-        public ChromelyConfiguration WithCefStartUrl(string startUrl)
+        public ChromelyConfiguration WithHostTitle(string hostTitle)
         {
-            CefStartUrl = startUrl;
+            HostTitle = hostTitle;
             return this;
         }
 
-        public ChromelyConfiguration WithCefTitle(string title)
+        public ChromelyConfiguration WithHostIconFile(string hostIconFile)
         {
-            CefTitle = title;
+            HostIconFile = hostIconFile;
             return this;
         }
 
-        public ChromelyConfiguration WithCefIconFile(string iconFile)
+        public ChromelyConfiguration WithHostSize(int width, int height)
         {
-            CefIconFile = iconFile;
+            HostWidth = width;
+            HostHeight = height;
             return this;
         }
 
-        public ChromelyConfiguration WithCefHostSize(int width, int height)
+        public ChromelyConfiguration WithLogSeverity(LogSeverity logSeverity)
         {
-            CefHostWidth = width;
-            CefHostHeight = height;
+            LogSeverity = logSeverity;
             return this;
         }
 
-        public ChromelyConfiguration WithCefLogSeverity(LogSeverity logSeverity)
+        public ChromelyConfiguration WithLogFile(string logFile)
         {
-            CefLogSeverity = logSeverity;
+            LogFile = logFile;
             return this;
         }
 
-        public ChromelyConfiguration WithCefLogFile(string cefLogFile)
+        public ChromelyConfiguration WithLocale(string locale)
         {
-            CefLogFile = cefLogFile;
-            return this;
-        }
-
-        public ChromelyConfiguration WithCefLocale(string cefLocale)
-        {
-            CefLocale = cefLocale;
+            Locale = locale;
             return this;
         }
 
@@ -125,6 +129,28 @@ namespace Chromely.Core
         public ChromelyConfiguration WithLogger(IChromelyLogger logger)
         {
             Log.Logger = logger;
+            return this;
+        }
+
+        public ChromelyConfiguration WithCommandLineArg(string name, string value)
+        {
+            if (CommandLineArgs == null)
+            {
+                CommandLineArgs = new Dictionary<string, string>();
+            }
+
+            CommandLineArgs[name] = value;
+            return this;
+        }
+
+        public ChromelyConfiguration WithCustomSetting(string propertyName, object value)
+        {
+            if (CustomSettings == null)
+            {
+                CustomSettings = new Dictionary<string, object>();
+            }
+
+            CustomSettings[propertyName] = value;
             return this;
         }
 

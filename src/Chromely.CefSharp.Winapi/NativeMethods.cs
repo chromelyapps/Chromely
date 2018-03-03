@@ -24,10 +24,10 @@
 
 namespace Chromely.CefSharp.Winapi
 {
-    using Chromely.Core.Winapi;
     using System;
     using System.IO;
     using System.Runtime.InteropServices;
+    using Chromely.Core.Host;
     using WinApi.User32;
 
     public static class NativeMethods

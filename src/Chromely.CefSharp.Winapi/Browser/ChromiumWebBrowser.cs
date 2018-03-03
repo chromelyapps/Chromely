@@ -7,7 +7,7 @@ namespace Chromely.CefSharp.Winapi.Browser
     using System;
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
-    using Chromely.Core.Winapi;
+    using Chromely.Core.Host;
     using Chromely.CefSharp.Winapi.Browser.Internals;
 
     using global::CefSharp;

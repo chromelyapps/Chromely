@@ -25,7 +25,6 @@
 namespace Chromely.CefGlue.Winapi.Demo
 {
     using System;
-    using System.Collections.Generic;
     using System.Reflection;
     using Chromely.CefGlue.Winapi.Browser.Handlers;
     using Chromely.CefGlue.Winapi.ChromeHost;
@@ -46,13 +45,14 @@ namespace Chromely.CefGlue.Winapi.Demo
 
                 ChromelyConfiguration config = ChromelyConfiguration
                                               .Create()
-                                              .WithCefAppArgs(args)
-                                              .WithCefHostSize(1200, 900)
-                                              .WithCefLogFile("logs\\chromely.cef_new.log")
-                                              .WithCefStartUrl(startUrl)
-                                              .WithCefLogSeverity(LogSeverity.Info)
+                                              .WithAppArgs(args)
+                                              .WithHostSize(1200, 900)
+                                              .WithLogFile("logs\\chromely.cef_new.log")
+                                              .WithStartUrl(startUrl)
+                                              .WithLogSeverity(LogSeverity.Info)
                                               .UseDefaultLogger("logs\\chromely_new.log", true)
                                               .RegisterSchemeHandler("http", "chromely.com", new CefGlueSchemeHandlerFactory());
+
 
                 var factory = WinapiHostFactory.Init("chromely.ico");
                 using (var window = factory.CreateWindow(() => new CefGlueBrowserHost(config),
@@ -87,10 +87,10 @@ namespace Chromely.CefGlue.Winapi.Demo
                     // Scan assemblies for Controller routes 
                     window.ScanAssemblies();
 
-                    window.SetSize(config.CefHostWidth, config.CefHostHeight);
+                    window.SetSize(config.HostWidth, config.HostHeight);
                     window.CenterToScreen();
                     window.Show();
-                    return new EventLoop().Run(window);
+                    return new HostEventLoop().Run(window);
                 }
             }
             catch (Exception exception)
