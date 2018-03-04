@@ -23,15 +23,15 @@ class Program
 
       ChromelyConfiguration config = ChromelyConfiguration
                                     .Create()
-                                    .WithCefAppArgs(args)
-                                    .WithCefHostSize(1000, 600)
-                                    .WithCefStartUrl(startUrl);
+                                    .WithAppArgs(args)
+                                    .WithHostSize(1000, 600)
+                                    .WithStartUrl(startUrl);
 
      var factory = WinapiHostFactory.Init();
      using (var window = factory.CreateWindow(() => new CefGlueBrowserHost(config),
            "chromely", constructionParams: new FrameWindowConstructionParams()))
       {
-         window.SetSize(config.CefHostWidth, config.CefHostHeight);
+         window.SetSize(config.HostWidth, config.HostHeight);
          window.CenterToScreen();
          window.Show();
          return new EventLoop().Run(window);
