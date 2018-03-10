@@ -5,10 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Chromely</title>
-    <link rel="stylesheet" href="../Content/css/bootstrap.min.css">
-    <script src="../Content/js/jquery.min.js"></script>
-    <script src="../Content/js/tether.min.js"></script>
-    <script src="../Content/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="./Content/css/bootstrap.min.css">
+    <script src="./Content/js/jquery.min.js"></script>
+    <script src="./Content/js/tether.min.js"></script>
+    <script src="./Content/js/bootstrap.min.js"></script>
     <style type="text/css">
         body, html {
             height: 100%;
@@ -61,15 +61,6 @@
         function backToHomePage() {
             $("#demoPage").addClass('hidden');
             $("#homePage").removeClass('hidden');
-        }
-
-        function infoResult(res) {
-            var jsonData = JSON.parse(res.ResponseText);
-            if (jsonData.ReadyState == 4 && jsonData.Status == 200) {
-                $('#divObjective').html(jsonData.Data.divObjective);
-                $('#divPlatform').html(jsonData.Data.divPlatform);
-                $('#divVersion').html(jsonData.Data.divVersion);
-            }
         }
 
         function launchModal1() {
@@ -299,7 +290,7 @@
             <div class="col-12">
                 <div class="centerBlock">
                     <div class="row centerBlock">
-                        <img src="../Content/img/chromely.png" class="img-rounded" alt="Cinque Terre" width="240" height="240">
+                        <img src="./Content/img/chromely.png" class="img-rounded" alt="Cinque Terre" width="240" height="240">
                     </div>
                     <div class="row centerBlock">
                         <span class="text-primary text-center"><h2>chromely</h2></span>
@@ -328,7 +319,7 @@
             <div class="col-12">
                 <div class="centerBlock">
                     <div class="row centerBlock">
-                        <img src="../Content/img/chromely.png" class="img-rounded" alt="Cinque Terre" width="180" height="180">
+                        <img src="./Content/img/chromely.png" class="img-rounded" alt="Cinque Terre" width="180" height="180">
                     </div>
                     <div class="row centerBlock">
                         <span class="text-primary text-center"><h2>demo panel</h2></span>

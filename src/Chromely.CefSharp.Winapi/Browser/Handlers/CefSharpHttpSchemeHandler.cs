@@ -35,7 +35,7 @@ namespace Chromely.CefSharp.Winapi.Browser.Handlers
     using global::CefSharp;
     using Chromely.CefSharp.Winapi.RestfulService;
 
-    public class CefSharpSchemeHandler : ResourceHandler
+    public class CefSharpHttpSchemeHandler : ResourceHandler
     {
         private ChromelyResponse m_chromelyResponse;
         private string m_mimeType;

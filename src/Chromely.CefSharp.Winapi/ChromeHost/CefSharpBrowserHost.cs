@@ -35,6 +35,7 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
     using Chromely.Core.Host;
     using Chromely.Core.Infrastructure;
     using Chromely.Core.RestfulService;
+    using global::CefSharp;
     using WinApi.Windows;
 
     using CefSharpGlobal = global::CefSharp;
@@ -164,7 +165,7 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
         public void RegisterSchemeHandlers()
         {
             // Register scheme handlers
-            IEnumerable<object> schemeHandlerObjs = IoC.GetAllInstances(typeof(ChromelySchemeHandler));
+            object[] schemeHandlerObjs = IoC.GetAllInstances(typeof(ChromelySchemeHandler));
             if (schemeHandlerObjs != null)
             {
                 var schemeHandlers = schemeHandlerObjs.ToList();
@@ -174,14 +175,46 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
                     if (item is ChromelySchemeHandler)
                     {
                         ChromelySchemeHandler handler = (ChromelySchemeHandler)item;
-                        m_settings.RegisterScheme(new CefSharpGlobal.CefCustomScheme
+                        if (handler.HandlerFactory == null)
                         {
-                            SchemeName = handler.SchemeName,
-                            DomainName = handler.DomainName,
-                            IsSecure = handler.IsSecure,
-                            IsCorsEnabled =  handler.IsCorsEnabled,
-                            SchemeHandlerFactory = (CefSharpGlobal.ISchemeHandlerFactory)handler.HandlerFactory
-                        });
+                            if (handler.UseDefaultResource)
+                            {
+                                m_settings.RegisterScheme(new CefCustomScheme
+                                {
+                                    SchemeName = handler.SchemeName,
+                                    DomainName = handler.DomainName,
+                                    IsSecure = handler.IsSecure,
+                                    IsCorsEnabled = handler.IsCorsEnabled,
+                                    SchemeHandlerFactory = new CefSharpResourceSchemeHandlerFactory()
+                                });
+                            }
+
+                            if (handler.UseDefaultHttp)
+                            {
+                                m_settings.RegisterScheme(new CefCustomScheme
+                                {
+                                    SchemeName = handler.SchemeName,
+                                    DomainName = handler.DomainName,
+                                    IsSecure = handler.IsSecure,
+                                    IsCorsEnabled = handler.IsCorsEnabled,
+                                    SchemeHandlerFactory = new CefSharpHttpSchemeHandlerFactory()
+                                });
+                            }
+                        }
+                        else if (handler.HandlerFactory is ISchemeHandlerFactory)
+                        {
+                            if (item is ChromelySchemeHandler)
+                            {
+                                m_settings.RegisterScheme(new CefCustomScheme
+                                {
+                                    SchemeName = handler.SchemeName,
+                                    DomainName = handler.DomainName,
+                                    IsSecure = handler.IsSecure,
+                                    IsCorsEnabled = handler.IsCorsEnabled,
+                                    SchemeHandlerFactory = (ISchemeHandlerFactory)handler.HandlerFactory
+                                });
+                            }
+                        }
                     }
                 }
             }
@@ -190,7 +223,7 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
         public void RegisterJsHandlers()
         {
             // Register javascript handlers
-            IEnumerable<object> jsHandlerObjs = IoC.GetAllInstances(typeof(ChromelyJsHandler));
+            object[] jsHandlerObjs = IoC.GetAllInstances(typeof(ChromelyJsHandler));
             if (jsHandlerObjs != null)
             {
                 var jsHandlers = jsHandlerObjs.ToList();

@@ -4,7 +4,7 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
     using System;
     using Xilium.CefGlue;
 
-    internal class CefGlueContextMenuHandler : CefContextMenuHandler
+    internal sealed class CefGlueContextMenuHandler : CefContextMenuHandler
     {
         private const int ShowDevTools = 26501;
         private const int CloseDevTools = 26502;

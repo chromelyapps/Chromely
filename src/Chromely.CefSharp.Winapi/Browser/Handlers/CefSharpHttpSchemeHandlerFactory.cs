@@ -22,15 +22,15 @@
  SOFTWARE.
  */
 
-namespace Chromely.CefGlue.Winapi.Browser.Handlers
+namespace Chromely.CefSharp.Winapi.Browser.Handlers
 {
-    using Xilium.CefGlue;
-    
-    public sealed class CefGlueSchemeHandlerFactory : CefSchemeHandlerFactory
+    using global::CefSharp;
+
+    public class CefSharpHttpSchemeHandlerFactory : ISchemeHandlerFactory
     {
-        protected override CefResourceHandler Create(CefBrowser browser, CefFrame frame, string schemeName, CefRequest request)
+        public IResourceHandler Create(IBrowser browser, IFrame frame, string schemeName, IRequest request)
         {
-            return new CefGlueDefaultSchemeHandler();
+            return new CefSharpHttpSchemeHandler();
         }
     }
 }

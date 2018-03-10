@@ -22,15 +22,22 @@
  SOFTWARE.
  */
 
-namespace Chromely.CefGlue.Gtk.Browser.Handlers
+namespace Chromely.Core.Helpers
 {
-    using Xilium.CefGlue;
-    
-    public sealed class CefGlueSchemeHandlerFactory : CefSchemeHandlerFactory
+    public static class CefHandlerKeys
     {
-        protected override CefResourceHandler Create(CefBrowser browser, CefFrame frame, string schemeName, CefRequest request)
-        {
-            return new CefGlueDefaultSchemeHandler();
-        }
+        public const string LifeSpanHandler = "LifeSpanHandler";
+        public const string LoadHandler = "LoadHandler";
+        public const string RequestHandler = "RequestHandler";
+        public const string DisplayHandler = "DisplayHandler";
+        public const string ContextMenuHandler = "ContextMenuHandler";
+        public const string FocusHandler = "FocusHandler";
+        public const string KeyboardHandler = "KeyboardHandler";
+        public const string JSDialogHandler = "JSDialogHandler";
+        public const string DialogHandler = "DialogHandler";
+        public const string DragHandler = "DragHandler";
+        public const string GeolocationHandler = "GeolocationHandler";
+        public const string DownloadHandler = "DownloadHandler";
+        public const string FindHandler = "FindHandler";
     }
 }

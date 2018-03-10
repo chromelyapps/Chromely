@@ -24,7 +24,7 @@ SOFTWARE.
 
 namespace Chromely.CefSharp.Winapi
 {
-    using Chromely.Core;
+    using Chromely.Core.Helpers;
     using System.Collections.Generic;
 
     using CefSharpGlobal = global::CefSharp;

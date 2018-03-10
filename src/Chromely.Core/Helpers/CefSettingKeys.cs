@@ -22,7 +22,7 @@
  SOFTWARE.
  */
 
-namespace Chromely.Core
+namespace Chromely.Core.Helpers
 {
     public static class CefSettingKeys
     {

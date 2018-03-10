@@ -24,9 +24,10 @@
 
 namespace Chromely.CefGlue.Winapi
 {
-    using Chromely.Core;
-    using Chromely.Core.Host;
     using System;
+    using Chromely.Core;
+    using Chromely.Core.Helpers;
+    using Chromely.Core.Host;
     using WinApi.User32;
     using WinApi.Windows;
     using Xilium.CefGlue;

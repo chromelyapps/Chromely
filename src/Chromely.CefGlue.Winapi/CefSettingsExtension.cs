@@ -24,8 +24,8 @@ SOFTWARE.
 
 namespace Chromely.CefGlue.Winapi
 {
-    using Chromely.Core;
     using System.Collections.Generic;
+    using Chromely.Core.Helpers;
     using Xilium.CefGlue;
 
     public static class CefSettingsExtension

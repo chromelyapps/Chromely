@@ -164,7 +164,7 @@
         private void RegisterSchemeHandlers()
         {
             // Register scheme handlers
-            IEnumerable<object> schemeHandlerObjs = IoC.GetAllInstances(typeof(ChromelySchemeHandler));
+            object[] schemeHandlerObjs = IoC.GetAllInstances(typeof(ChromelySchemeHandler));
             if (schemeHandlerObjs != null)
             {
                 var schemeHandlers = schemeHandlerObjs.ToList();
@@ -174,7 +174,19 @@
                     if (item is ChromelySchemeHandler)
                     {
                         ChromelySchemeHandler handler = (ChromelySchemeHandler)item;
-                        if (handler.HandlerFactory is CefSchemeHandlerFactory)
+                        if (handler.HandlerFactory == null)
+                        {
+                            if (handler.UseDefaultResource)
+                            {
+                                CefRuntime.RegisterSchemeHandlerFactory(handler.SchemeName, handler.DomainName, new CefGlueResourceSchemeHandlerFactory());
+                            }
+
+                            if (handler.UseDefaultHttp)
+                            {
+                                CefRuntime.RegisterSchemeHandlerFactory(handler.SchemeName, handler.DomainName, new CefGlueHttpSchemeHandlerFactory());
+                            }
+                        }
+                        else if (handler.HandlerFactory is CefSchemeHandlerFactory)
                         {
                             CefRuntime.RegisterSchemeHandlerFactory(handler.SchemeName, handler.DomainName, (CefSchemeHandlerFactory)handler.HandlerFactory);
                         }

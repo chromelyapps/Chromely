@@ -24,26 +24,32 @@
 
 namespace Chromely.CefGlue.Winapi.Browser.Handlers
 {
-    using Chromely.CefGlue.Winapi.RestfulService;
-    using Chromely.Core.Infrastructure;
-    using Chromely.Core.RestfulService;
     using System;
     using System.IO;
     using System.Net;
-    using System.Text;
     using System.Threading.Tasks;
+    using Chromely.Core.Helpers;
+    using Chromely.Core.Infrastructure;
     using Xilium.CefGlue;
 
-    public sealed class CefGlueDefaultSchemeHandler : CefResourceHandler
+    internal sealed class CefGlueResourceSchemeHandler : CefResourceHandler
     {
+        private Byte[] m_fileBytes;
+        private string m_mime;
         private bool m_completed;
-        private int m_bytesRead;
-        private ChromelyResponse m_chromelyResponse;
+        private int m_totalBytesRead;
+
 
         protected override bool ProcessRequest(CefRequest request, CefCallback callback)
         {
-            bool isCustomScheme = UrlSchemeProvider.IsUrlOfRegisteredCustomScheme(request.Url);
-            if (isCustomScheme)
+            Uri u = new Uri(request.Url);
+            String file = u.Authority + u.AbsolutePath;
+
+            m_totalBytesRead = 0;
+            m_fileBytes = null;
+            m_completed = false;
+
+            if (File.Exists(file))
             {
                 Task.Factory.StartNew(() =>
                 {
@@ -51,15 +57,14 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
                     {
                         try
                         {
-                            m_chromelyResponse = RequestTaskRunner.Run(request);
+                            m_fileBytes = File.ReadAllBytes(file);
+
+                            string extension = Path.GetExtension(file);
+                            m_mime = MimeMapper.GetMimeType(extension);
                         }
                         catch (Exception exception)
                         {
                             Log.Error(exception);
-
-                            m_chromelyResponse = new ChromelyResponse();
-                            m_chromelyResponse.Status = (int)HttpStatusCode.BadRequest;
-                            m_chromelyResponse.Data = "An error occured.";
                         }
                         finally
                         {
@@ -71,7 +76,6 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
                 return true;
             }
 
-            Log.Error(string.Format("Url {0} is not of a registered custom scheme.", request.Url));
             callback.Dispose();
             return false;
         }
@@ -85,51 +89,55 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
 
             try
             {
-                HttpStatusCode status = (m_chromelyResponse != null) ? (HttpStatusCode)m_chromelyResponse.Status : HttpStatusCode.BadRequest;
-                string errorStatus = (m_chromelyResponse != null) ? m_chromelyResponse.Data.ToString() : "Not Found";
-
                 var headers = response.GetHeaderMap();
-                headers.Add("Cache-Control", "private");
                 headers.Add("Access-Control-Allow-Origin", "*");
-                headers.Add("Access-Control-Allow-Methods", "GET,POST");
-                headers.Add("Access-Control-Allow-Headers", "Content-Type");
-                headers.Add("Content-Type", "application/json; charset=utf-8");
                 response.SetHeaderMap(headers);
 
-                response.Status = (int)status;
-                response.MimeType = "application/json";
-                response.StatusText = (status == HttpStatusCode.OK) ? "OK" : errorStatus;
- 
+                response.Status = (int)HttpStatusCode.OK;
+                response.MimeType = m_mime;
+                response.StatusText = "OK";
             }
             catch (Exception exception)
             {
+                response.Status = (int)HttpStatusCode.BadRequest; 
+                response.MimeType = "text/plain";
+                response.StatusText = "Resource loading error.";
+
                 Log.Error(exception);
             }
         }
 
         protected override bool ReadResponse(Stream response, int bytesToRead, out int bytesRead, CefCallback callback)
         {
+            int currBytesRead = 0;
+
             try
             {
                 if (m_completed)
                 {
-                    bytesRead = m_bytesRead;
+                    bytesRead = 0;
+                    m_totalBytesRead = 0;
+                    m_fileBytes = null;
                     return false;
                 }
                 else
                 {
-                    m_bytesRead = 0;
-                    bytesRead = m_bytesRead;
+                    if (m_fileBytes != null)
+                    {
+                        currBytesRead = Math.Min(m_fileBytes.Length - m_totalBytesRead, bytesToRead);
+                        response.Write(m_fileBytes, m_totalBytesRead, currBytesRead);
+                        m_totalBytesRead += currBytesRead;
 
-                    string jsonData = m_chromelyResponse.Data.EnsureResponseIsJsonFormat();
-
-                    var content = Encoding.UTF8.GetBytes(jsonData);
-                    if (bytesToRead < content.Length) throw new NotImplementedException();
-                    response.Write(content, 0, content.Length);
-                    m_bytesRead = content.Length;
-                    bytesRead = m_bytesRead;
-
-                    m_completed = true;
+                        if (m_totalBytesRead >= m_fileBytes.Length)
+                        {
+                            m_completed = true;
+                        }
+                    }
+                    else
+                    {
+                        bytesRead = 0;
+                        m_completed = true;
+                    }
                 }
 
             }
@@ -138,7 +146,7 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
                 Log.Error(exception);
             }
 
-            bytesRead = m_bytesRead;
+            bytesRead = currBytesRead;
             return true;
         }
 
@@ -157,4 +165,3 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
         }
     }
 }
-

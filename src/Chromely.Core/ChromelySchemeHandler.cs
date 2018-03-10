@@ -33,15 +33,30 @@ namespace Chromely.Core.Infrastructure
             Key = Guid.NewGuid().ToString();
         }
 
+        public ChromelySchemeHandler(string schemeName, string domainName, bool useDefaultResource, bool useDefaultHttp, bool isSecured = false, bool isCorsEnabled = true)
+        {
+            Key = Guid.NewGuid().ToString();
+            SchemeName = schemeName;
+            DomainName = domainName;
+            HandlerFactory = null;
+            UseDefaultResource = useDefaultResource;
+            UseDefaultHttp = useDefaultHttp;
+            IsSecure = isSecured;
+            IsCorsEnabled = isCorsEnabled;
+        }
+
         public ChromelySchemeHandler(string schemeName, string domainName, object handlerFactory, bool isSecured = false, bool isCorsEnabled = true)
         {
             Key = Guid.NewGuid().ToString();
             SchemeName = schemeName;
             DomainName = domainName;
             HandlerFactory = handlerFactory;
+            UseDefaultResource = false;
+            UseDefaultHttp = false;
             IsSecure = isSecured;
             IsCorsEnabled = isCorsEnabled;
         }
+
 
         public string Key { get; private set; }
         public string SchemeName { get; set; }
@@ -58,6 +73,8 @@ namespace Chromely.Core.Infrastructure
         //     cases where IsStandard is true.
         /// </summary>
         public bool IsCorsEnabled { get; set; }
+        public bool UseDefaultHttp { get; set; }
+        public bool UseDefaultResource { get; set; }
         public object HandlerFactory { get; set; }
     }
 }

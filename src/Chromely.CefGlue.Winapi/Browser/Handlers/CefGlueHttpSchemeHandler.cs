@@ -22,9 +22,9 @@
  SOFTWARE.
  */
 
-namespace Chromely.CefGlue.Gtk.Browser.Handlers
+namespace Chromely.CefGlue.Winapi.Browser.Handlers
 {
-    using Chromely.CefGlue.Gtk.RestfulService;
+    using Chromely.CefGlue.Winapi.RestfulService;
     using Chromely.Core.Infrastructure;
     using Chromely.Core.RestfulService;
     using System;
@@ -34,11 +34,12 @@ namespace Chromely.CefGlue.Gtk.Browser.Handlers
     using System.Threading.Tasks;
     using Xilium.CefGlue;
 
-    public sealed class CefGlueDefaultSchemeHandler : CefResourceHandler
+    internal sealed class CefGlueHttpSchemeHandler : CefResourceHandler
     {
-        private bool m_completed;
-        private int m_bytesRead;
         private ChromelyResponse m_chromelyResponse;
+        private Byte[] m_responseBytes;
+        private bool m_completed;
+        private int m_totalBytesRead;
 
         protected override bool ProcessRequest(CefRequest request, CefCallback callback)
         {
@@ -52,6 +53,8 @@ namespace Chromely.CefGlue.Gtk.Browser.Handlers
                         try
                         {
                             m_chromelyResponse = RequestTaskRunner.Run(request);
+                            string jsonData = m_chromelyResponse.Data.EnsureResponseIsJsonFormat();
+                            m_responseBytes = Encoding.UTF8.GetBytes(jsonData);
                         }
                         catch (Exception exception)
                         {
@@ -109,27 +112,35 @@ namespace Chromely.CefGlue.Gtk.Browser.Handlers
 
         protected override bool ReadResponse(Stream response, int bytesToRead, out int bytesRead, CefCallback callback)
         {
+            int currBytesRead = 0;
+
             try
             {
                 if (m_completed)
                 {
-                    bytesRead = m_bytesRead;
+                    bytesRead = 0;
+                    m_totalBytesRead = 0;
+                    m_responseBytes = null;
                     return false;
                 }
                 else
                 {
-                    m_bytesRead = 0;
-                    bytesRead = m_bytesRead;
+                    if (m_responseBytes != null)
+                    {
+                        currBytesRead = Math.Min(m_responseBytes.Length - m_totalBytesRead, bytesToRead);
+                        response.Write(m_responseBytes, m_totalBytesRead, currBytesRead);
+                        m_totalBytesRead += currBytesRead;
 
-                    string jsonData = m_chromelyResponse.Data.EnsureResponseIsJsonFormat();
-
-                    var content = Encoding.UTF8.GetBytes(jsonData);
-                    if (bytesToRead < content.Length) throw new NotImplementedException();
-                    response.Write(content, 0, content.Length);
-                    m_bytesRead = content.Length;
-                    bytesRead = m_bytesRead;
-
-                    m_completed = true;
+                        if (m_totalBytesRead >= m_responseBytes.Length)
+                        {
+                            m_completed = true;
+                        }
+                    }
+                    else
+                    {
+                        bytesRead = 0;
+                        m_completed = true;
+                    }
                 }
 
             }
@@ -138,7 +149,7 @@ namespace Chromely.CefGlue.Gtk.Browser.Handlers
                 Log.Error(exception);
             }
 
-            bytesRead = m_bytesRead;
+            bytesRead = currBytesRead;
             return true;
         }
 

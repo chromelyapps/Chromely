@@ -126,6 +126,22 @@ namespace Chromely.Core
             return this;
         }
 
+        public ChromelyConfiguration UseDefaultResourceSchemeHandler(string schemeName, string domainName)
+        {
+            var handler = new ChromelySchemeHandler(schemeName, domainName, true, false);
+            RegisterSchemeHandler(handler);
+
+            return this;
+        }
+
+        public ChromelyConfiguration UseDefaultHttpSchemeHandler(string schemeName, string domainName)
+        {
+            var handler = new ChromelySchemeHandler(schemeName, domainName, false, true);
+            RegisterSchemeHandler(handler);
+
+            return this;
+        }
+
         public ChromelyConfiguration WithLogger(IChromelyLogger logger)
         {
             Log.Logger = logger;
@@ -168,9 +184,9 @@ namespace Chromely.Core
             return this;
         }
 
-        public virtual ChromelyConfiguration RegisterSchemeHandler(string schemeName, string domainName, object handlerFactory)
+        public virtual ChromelyConfiguration RegisterSchemeHandler(string schemeName, string domainName, object handler)
         {
-            return RegisterSchemeHandler(new ChromelySchemeHandler(schemeName, domainName, handlerFactory));
+            return RegisterSchemeHandler(new ChromelySchemeHandler(schemeName, domainName, handler));
         }
 
         public virtual ChromelyConfiguration RegisterSchemeHandler(ChromelySchemeHandler chromelySchemeHandler)

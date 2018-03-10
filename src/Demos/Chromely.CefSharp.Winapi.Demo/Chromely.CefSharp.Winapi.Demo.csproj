@@ -16,22 +16,25 @@
     <OutputPath>bin\x64\Release\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="app\chromely_with_ajax.html" />
     <None Remove="chromely.ico" />
-    <None Remove="Content\css\bootstrap.min.css" />
-    <None Remove="Content\js\bootstrap.min.js" />
-    <None Remove="Views\chromely.html" />
+    <None Remove="app\Content\css\bootstrap.min.css" />
+    <None Remove="app\Content\js\bootstrap.min.js" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\chromely_with_ajax.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="chromely.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\css\bootstrap.min.css">
+    <Content Include="app\Content\css\bootstrap.min.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\js\bootstrap.min.js">
+    <Content Include="app\Content\js\bootstrap.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\chromely.html">
+    <Content Include="app\chromely.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -39,13 +42,13 @@
     <ProjectReference Include="..\..\Chromely.CefSharp.Winapi\Chromely.CefSharp.Winapi.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="Content\img\chromely.png">
+    <None Update="app\Content\img\chromely.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Content\js\jquery.min.js">
+    <None Update="app\Content\js\jquery.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Content\js\tether.min.js">
+    <None Update="app\Content\js\tether.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

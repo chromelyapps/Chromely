@@ -24,12 +24,14 @@
 
 namespace Chromely.CefSharp.Winapi
 {
-    using Chromely.Core;
-    using Chromely.Core.Host;
-    using global::CefSharp;
     using System;
+    using Chromely.Core;
+    using Chromely.Core.Helpers;
+    using Chromely.Core.Host;
     using WinApi.User32;
     using WinApi.Windows;
+
+    using global::CefSharp;
 
     public class HostEventLoop : EventLoopCore
     {

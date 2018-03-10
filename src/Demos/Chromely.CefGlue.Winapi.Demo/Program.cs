@@ -26,7 +26,6 @@ namespace Chromely.CefGlue.Winapi.Demo
 {
     using System;
     using System.Reflection;
-    using Chromely.CefGlue.Winapi.Browser.Handlers;
     using Chromely.CefGlue.Winapi.ChromeHost;
     using Chromely.Core;
     using Chromely.Core.Infrastructure;
@@ -40,8 +39,21 @@ namespace Chromely.CefGlue.Winapi.Demo
             {
                 HostHelpers.SetupDefaultExceptionHandlers();
 
-                string appDirectory = AppDomain.CurrentDomain.BaseDirectory;
-                string startUrl = string.Format("file:///{0}Views/chromely.html", appDirectory);
+                /*
+                * Start url (load html) options:
+                */
+
+                // Options 1 - real standard urls 
+                // string startUrl = "https://google.com";
+
+                // Options 2 - using local resource file handling with default local scheme handler 
+                // Requires - (sample) UseDefaultResourceSchemeHandler("local", string.Empty)
+                // string startUrl = "local://app/chromely.html";
+
+                // Options 3 - using file protocol - using default scheme handler for Ajax/Http requests
+                // Requires - (sample) UseDefaultHttpSchemeHandler("http", "chromely.com")
+                 string appDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                 string startUrl = string.Format("file:///{0}app/chromely_with_ajax.html", appDirectory);
 
                 ChromelyConfiguration config = ChromelyConfiguration
                                               .Create()
@@ -51,7 +63,8 @@ namespace Chromely.CefGlue.Winapi.Demo
                                               .WithStartUrl(startUrl)
                                               .WithLogSeverity(LogSeverity.Info)
                                               .UseDefaultLogger("logs\\chromely_new.log", true)
-                                              .RegisterSchemeHandler("http", "chromely.com", new CefGlueSchemeHandlerFactory());
+                                              .UseDefaultResourceSchemeHandler("local", string.Empty)
+                                              .UseDefaultHttpSchemeHandler("http", "chromely.com");
 
 
                 var factory = WinapiHostFactory.Init("chromely.ico");

@@ -1,11 +1,8 @@
 ﻿namespace Chromely.CefGlue.Gtk.ChromeHost
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-    using Gtk;
     using Xilium.CefGlue;
     using Chromely.Core;
+    using Chromely.Core.Helpers;
 
     public class CefGlueBrowserHost : HostBase
     {

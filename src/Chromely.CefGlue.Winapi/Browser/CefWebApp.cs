@@ -29,7 +29,7 @@ namespace Chromely.CefGlue.Winapi.Browser
 
         protected override void OnRegisterCustomSchemes(CefSchemeRegistrar registrar)
         {
-            IEnumerable<object> schemeHandlerObjs = IoC.GetAllInstances(typeof(ChromelySchemeHandler));
+            object[] schemeHandlerObjs = IoC.GetAllInstances(typeof(ChromelySchemeHandler));
             if (schemeHandlerObjs != null)
             {
                 var schemeHandlers = schemeHandlerObjs.ToList();
@@ -39,10 +39,7 @@ namespace Chromely.CefGlue.Winapi.Browser
                     if (item is ChromelySchemeHandler)
                     {
                         ChromelySchemeHandler handler = (ChromelySchemeHandler)item;
-                        if (handler.HandlerFactory is CefSchemeHandlerFactory)
-                        {
-                            registrar.AddCustomScheme(handler.SchemeName, false, false, false, false, true, true);
-                         }
+                        registrar.AddCustomScheme(handler.SchemeName, false, false, false, false, true, true);
                     }
                 }
             }

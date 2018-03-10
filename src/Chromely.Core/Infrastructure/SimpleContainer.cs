@@ -1,134 +1,289 @@
 ﻿#region Port Info
 /**
- * This is a port of Caliburn.Micro SimpleContainer for Chromely. Mostly provided as-is. 
- * For more info: https://github.com/Caliburn-Micro/Caliburn.Micro/blob/master/src/Caliburn.Micro/SimpleContainer.cs
+ * This is a port of Caliburn.Light SimpleContainer for Chromely. Mostly provided as-is. 
+ * For more info: https://github.com/tibel/Caliburn.Light/blob/master/src/Caliburn.Core/IoC/SimpleContainer.cs
  **/
 #endregion
 
-namespace Caliburn.Micro
+namespace Caliburn.Light
 {
-    using Chromely.Core;
     using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+    using Chromely.Core;
 
     /// <summary>
     /// A simple IoC container.
     /// </summary>
     public class SimpleContainer : IChromelyContainer
     {
-        static readonly Type delegateType = typeof(Delegate);
-        static readonly Type enumerableType = typeof(IEnumerable);
+        private static readonly TypeInfo DelegateType = typeof(Delegate).GetTypeInfo();
+        private static readonly TypeInfo EnumerableType = typeof(IEnumerable).GetTypeInfo();
 
-        readonly List<ContainerEntry> entries;
+        private readonly List<ContainerEntry> m_entries;
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "SimpleContainer" /> class.
+        /// Initializes a new instance of the <see cref="SimpleContainer" /> class.
         /// </summary>
         public SimpleContainer()
         {
-            entries = new List<ContainerEntry>();
+            m_entries = new List<ContainerEntry>();
         }
 
-        SimpleContainer(IEnumerable<ContainerEntry> entries)
+        private SimpleContainer(IEnumerable<ContainerEntry> entries)
         {
-            this.entries = new List<ContainerEntry>(entries);
+            m_entries = new List<ContainerEntry>(entries);
         }
 
         /// <summary>
-        ///   Registers the instance.
+        /// Creates a child container.
         /// </summary>
-        /// <param name = "service">The service.</param>
-        /// <param name = "key">The key.</param>
-        /// <param name = "implementation">The implementation.</param>
-        public void RegisterInstance(Type service, string key, object implementation)
+        /// <returns>A new container.</returns>
+        public SimpleContainer CreateChildContainer()
         {
-            RegisterHandler(service, key, container => implementation);
+            return new SimpleContainer(m_entries);
         }
 
         /// <summary>
-        ///   Registers the class so that a new instance is created on every request.
+        /// Determines if a handler for the service/key has previously been registered.
         /// </summary>
-        /// <param name = "service">The service.</param>
-        /// <param name = "key">The key.</param>
-        /// <param name = "implementation">The implementation.</param>
-        public void RegisterPerRequest(Type service, string key, Type implementation)
+        /// <param name="service">The service.</param>
+        /// <param name="key">The key.</param>
+        /// <returns>True if a handler is registered; false otherwise.</returns>
+        public bool IsRegistered(Type service, string key = null)
         {
-            RegisterHandler(service, key, container => container.BuildInstance(implementation));
+            if (service == null)
+                throw new ArgumentNullException(nameof(service));
+
+            return m_entries.Any(x => x.Service == service && x.Key == key);
         }
 
         /// <summary>
-        ///   Registers the class so that it is created once, on first request, and the same instance is returned to all requestors thereafter.
+        /// Determines if a handler for the service/key has previously been registered.
         /// </summary>
-        /// <param name = "service">The service.</param>
-        /// <param name = "key">The key.</param>
-        /// <param name = "implementation">The implementation.</param>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="key">The key.</param>
+        /// <returns>True if a handler is registered; false otherwise.</returns>
+        public bool IsRegistered<TService>(string key = null)
+        {
+            return IsRegistered(typeof(TService), key);
+        }
+
+        /// <summary>
+        /// Registers the class so that it is created once, on first request, and the same instance is returned to all requestors thereafter.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="key">The key.</param>
+        /// <param name="implementation">The implementation.</param>
         public void RegisterSingleton(Type service, string key, Type implementation)
         {
+            if (service == null)
+                throw new ArgumentNullException(nameof(service));
+            if (implementation == null)
+                throw new ArgumentNullException(nameof(implementation));
+
             object singleton = null;
-            RegisterHandler(service, key, container => singleton ?? (singleton = container.BuildInstance(implementation)));
+            GetOrCreateEntry(service, key).Add(c => singleton ?? (singleton = c.BuildInstance(implementation)));
         }
 
         /// <summary>
-        ///   Registers a custom handler for serving requests from the container.
+        /// Registers the class so that it is created once, on first request, and the same instance is returned to all requestors thereafter.
         /// </summary>
-        /// <param name = "service">The service.</param>
-        /// <param name = "key">The key.</param>
-        /// <param name = "handler">The handler.</param>
-        public void RegisterHandler(Type service, string key, Func<IChromelyContainer, object> handler)
+        /// <typeparam name="TImplementation">The type of the implementation.</typeparam>
+        /// <param name="key">The key.</param>
+        public void RegisterSingleton<TImplementation>(string key = null)
         {
+            RegisterSingleton(typeof(TImplementation), key, typeof(TImplementation));
+        }
+
+        /// <summary>
+        /// Registers the class so that it is created once, on first request, and the same instance is returned to all requestors thereafter.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <typeparam name="TImplementation">The type of the implementation.</typeparam>
+        /// <param name="key">The key.</param>
+        public void RegisterSingleton<TService, TImplementation>(string key = null)
+            where TImplementation : TService
+        {
+            RegisterSingleton(typeof(TService), key, typeof(TImplementation));
+        }
+
+        /// <summary>
+        /// Registers the class so that it is created once, on first request, and the same instance is returned to all requestors thereafter.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="handler">The handler.</param>
+        /// <param name="key">The key.</param>
+        public void RegisterSingleton<TService>(Func<SimpleContainer, TService> handler, string key = null)
+        {
+            if (handler == null)
+                throw new ArgumentNullException(nameof(handler));
+
+            object singleton = null;
+            GetOrCreateEntry(typeof(TService), key).Add(c => singleton ?? (singleton = handler(c)));
+        }
+
+        /// <summary>
+        /// Registers an instance with the container.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="key">The key.</param>
+        /// <param name="instance">The instance.</param>
+        public void RegisterInstance(Type service, string key, object instance)
+        {
+            if (service == null)
+                throw new ArgumentNullException(nameof(service));
+
+            GetOrCreateEntry(service, key).Add(c => instance);
+        }
+
+        /// <summary>
+        /// Registers an instance with the container.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="key">The key.</param>
+        /// <param name="instance">The instance.</param>
+        public void RegisterInstance<TService>(string key, TService instance)
+        {
+            RegisterInstance(typeof(TService), key, instance);
+        }
+
+        /// <summary>
+        /// Registers the class so that a new instance is created on each request.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="key">The key.</param>
+        /// <param name="implementation">The implementation.</param>
+        public void RegisterPerRequest(Type service, string key, Type implementation)
+        {
+            if (service == null)
+                throw new ArgumentNullException(nameof(service));
+            if (implementation == null)
+                throw new ArgumentNullException(nameof(implementation));
+
+            GetOrCreateEntry(service, key).Add(c => c.BuildInstance(implementation));
+        }
+
+        /// <summary>
+        /// Registers the class so that a new instance is created on each request.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="key">The key.</param>
+        public void RegisterPerRequest<TService>(string key = null)
+        {
+            RegisterPerRequest<TService, TService>(key);
+        }
+
+        /// <summary>
+        /// Registers the class so that a new instance is created on each request.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <typeparam name="TImplementation">The type of the implementation.</typeparam>
+        /// <param name="key">The key.</param>
+        public void RegisterPerRequest<TService, TImplementation>(string key = null)
+            where TImplementation : TService
+        {
+            RegisterPerRequest(typeof(TService), key, typeof(TImplementation));
+        }
+
+        /// <summary>
+        /// Registers a custom handler for serving requests from the container.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="handler">The handler.</param>
+        /// <param name="key">The key.</param>
+        public void RegisterPerRequest(Type service, Func<SimpleContainer, object> handler, string key = null)
+        {
+            if (service == null)
+                throw new ArgumentNullException(nameof(service));
+            if (handler == null)
+                throw new ArgumentNullException(nameof(handler));
+
             GetOrCreateEntry(service, key).Add(handler);
         }
 
         /// <summary>
-        ///   Unregisters any handlers for the service/key that have previously been registered.
+        /// Registers a custom handler for serving requests from the container.
         /// </summary>
-        /// <param name = "service">The service.</param>
-        /// <param name = "key">The key.</param>
-        public void UnregisterHandler(Type service, string key)
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="handler">The handler.</param>
+        /// <param name="key">The key.</param>
+        public void RegisterPerRequest<TService>(Func<SimpleContainer, TService> handler, string key = null)
         {
-            var entry = GetEntry(service, key);
-            if (entry != null)
-            {
-                entries.Remove(entry);
-            }
+            if (handler == null)
+                throw new ArgumentNullException(nameof(handler));
+
+            GetOrCreateEntry(typeof(TService), key).Add(c => handler(c));
         }
 
         /// <summary>
-        ///   Requests an instance.
+        /// Unregisters any handlers for the service/key that have previously been registered.
         /// </summary>
-        /// <param name = "service">The service.</param>
-        /// <param name = "key">The key.</param>
-        /// <returns>The instance, or null if a handler is not found.</returns>
-        public object GetInstance(Type service, string key)
+        /// <param name="service">The service.</param>
+        /// <param name="key">The key.</param>
+        /// <returns>true if handler is successfully removed; otherwise, false.</returns>
+        public bool UnregisterHandler(Type service, string key = null)
         {
-            var entry = GetEntry(service, key);
+            if (service == null)
+                throw new ArgumentNullException(nameof(service));
+
+            var entry = m_entries.FirstOrDefault(x => x.Service == service && x.Key == key);
+            if (entry == null) return false;
+            return m_entries.Remove(entry);
+        }
+
+        /// <summary>
+        /// Unregisters any handlers for the service/key that have previously been registered.
+        /// </summary>
+        /// <typeparam name="TService">The of the service.</typeparam>
+        /// <param name="key">The key.</param>
+        /// <returns>true if handler is successfully removed; otherwise, false.</returns>
+        public bool UnregisterHandler<TService>(string key = null)
+        {
+            return UnregisterHandler(typeof(TService), key);
+        }
+
+        /// <summary>
+        /// Requests an instance.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="key">The key.</param>
+        /// <returns>The instance.</returns>
+        public object GetInstance(Type service, string key = null)
+        {
+            if (service == null)
+                throw new ArgumentNullException(nameof(service));
+
+            var entry = m_entries.FirstOrDefault(x => x.Service == service && x.Key == key) ?? m_entries.FirstOrDefault(x => x.Service == service);
             if (entry != null)
             {
-                return entry.Single()(this);
+                if (entry.Count != 1)
+                    throw new InvalidOperationException(string.Format("Found multiple registrations for type '{0}' and key {1}.", service, key));
+
+                return entry[0](this);
             }
 
-            if (service == null)
-            {
-                return null;
-            }
+            var serviceType = service.GetTypeInfo();
 
-            if (delegateType.IsAssignableFrom(service))
+            if (serviceType.IsGenericType && DelegateType.IsAssignableFrom(serviceType))
             {
-                var typeToCreate = service.GetGenericArguments()[0];
+                var typeToCreate = service.GenericTypeArguments[0];
                 var factoryFactoryType = typeof(FactoryFactory<>).MakeGenericType(typeToCreate);
                 var factoryFactoryHost = Activator.CreateInstance(factoryFactoryType);
-                var factoryFactoryMethod = factoryFactoryType.GetMethod("Create", new Type[] { typeof(SimpleContainer) });
-                return factoryFactoryMethod.Invoke(factoryFactoryHost, new object[] { this });
+                var factoryFactoryMethod = factoryFactoryType.GetRuntimeMethod("Create", new[] { typeof(SimpleContainer), typeof(string) });
+                return factoryFactoryMethod.Invoke(factoryFactoryHost, new object[] { this, key });
             }
 
-            if (enumerableType.IsAssignableFrom(service) && service.IsGenericType)
+            if (serviceType.IsGenericType && EnumerableType.IsAssignableFrom(serviceType))
             {
-                var listType = service.GetGenericArguments()[0];
-                var instances = GetAllInstances(listType).ToList();
-                var array = Array.CreateInstance(listType, instances.Count);
+                if (key != null)
+                    throw new InvalidOperationException(string.Format("Requesting type '{0}' with key {1} is not supported.", service, key));
+
+                var listType = service.GenericTypeArguments[0];
+                var instances = GetAllInstances(listType);
+                var array = Array.CreateInstance(listType, instances.Length);
 
                 for (var i = 0; i < array.Length; i++)
                 {
@@ -138,146 +293,110 @@ namespace Caliburn.Micro
                 return array;
             }
 
-            return null;
+            return (serviceType.IsValueType) ? Activator.CreateInstance(service) : null;
         }
 
         /// <summary>
-        /// Determines if a handler for the service/key has previously been registered.
+        /// Requests an instance.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="key">The key.</param>
+        /// <returns>The instance.</returns>
+        public TService GetInstance<TService>(string key = null)
+        {
+            return (TService)GetInstance(typeof(TService), key);
+        }
+
+        /// <summary>
+        /// Requests all instances of a given type.
         /// </summary>
         /// <param name="service">The service.</param>
-        /// <param name="key">The key.</param>
-        /// <returns>True if a handler is registere; false otherwise.</returns>
-        public bool HasHandler(Type service, string key)
-        {
-            return GetEntry(service, key) != null;
-        }
-
-        /// <summary>
-        ///   Requests all instances of a given type.
-        /// </summary>
-        /// <param name = "service">The service.</param>
         /// <returns>All the instances or an empty enumerable if none are found.</returns>
-        public IEnumerable<object> GetAllInstances(Type service)
+        public object[] GetAllInstances(Type service)
         {
-            var entry = GetEntry(service, null);
-            return entry != null ? entry.Select(x => x(this)) : new object[0];
+            if (service == null)
+                throw new ArgumentNullException(nameof(service));
+
+            var instances = m_entries
+                .Where(x => x.Service == service)
+                .SelectMany(e => e.Select(x => x(this)))
+                .ToArray();
+
+            return instances;
         }
 
         /// <summary>
-        ///   Pushes dependencies into an existing instance based on interface properties with setters.
+        /// Gets all instances of a particular type.
         /// </summary>
-        /// <param name = "instance">The instance.</param>
-        public void BuildUp(object instance)
+        /// <typeparam name="TService">The type to resolve.</typeparam>
+        /// <returns>The resolved instances.</returns>
+        public TService[] GetAllInstances<TService>()
         {
-            var injectables = from property in instance.GetType().GetProperties()
-                              where property.CanRead && property.CanWrite && property.PropertyType.IsInterface
-                              select property;
+            var service = typeof(TService);
 
-            foreach (var propertyInfo in injectables)
-            {
-                var injection = GetAllInstances(propertyInfo.PropertyType).ToArray();
-                if (injection.Any())
-                {
-                    propertyInfo.SetValue(instance, injection.First(), null);
-                }
-            }
+            var instances = m_entries
+                .Where(x => x.Service == service)
+                .SelectMany(e => e.Select(x => (TService)x(this)))
+                .ToArray();
+
+            return instances;
         }
 
-        /// <summary>
-        /// Creates a child container.
-        /// </summary>
-        /// <returns>A new container.</returns>
-        public SimpleContainer CreateChildContainer()
+        private ContainerEntry GetOrCreateEntry(Type service, string key)
         {
-            return new SimpleContainer(entries);
-        }
-
-        ContainerEntry GetOrCreateEntry(Type service, string key)
-        {
-            var entry = GetEntry(service, key);
+            var entry = m_entries.FirstOrDefault(x => x.Service == service && x.Key == key);
             if (entry == null)
             {
                 entry = new ContainerEntry { Service = service, Key = key };
-                entries.Add(entry);
+                m_entries.Add(entry);
             }
 
             return entry;
         }
 
-        ContainerEntry GetEntry(Type service, string key)
-        {
-            if (service == null)
-            {
-                return entries.FirstOrDefault(x => x.Key == key);
-            }
-
-            if (key == null)
-            {
-                return entries.FirstOrDefault(x => x.Service == service && x.Key == null)
-                       ?? entries.FirstOrDefault(x => x.Service == service);
-            }
-
-            return entries.FirstOrDefault(x => x.Service == service && x.Key == key);
-        }
-
         /// <summary>
-        ///   Actually does the work of creating the instance and satisfying it's constructor dependencies.
+        /// Actually does the work of creating the instance and satisfying it's constructor dependencies.
         /// </summary>
-        /// <param name = "type">The type.</param>
-        /// <returns></returns>
-        public object BuildInstance(Type type)
+        /// <param name="type">The type.</param>
+        /// <returns>The build instance.</returns>
+        protected object BuildInstance(Type type)
         {
-            var args = DetermineConstructorArgs(type);
+            var constructor = type.GetTypeInfo().DeclaredConstructors
+                .OrderByDescending(c => c.GetParameters().Length)
+                .FirstOrDefault(c => c.IsPublic);
+
+            if (constructor == null)
+                throw new InvalidOperationException(string.Format("Type '{0}' has no public constructor.", type));
+
+            var args = constructor.GetParameters()
+                .Select(info => GetInstance(info.ParameterType, null))
+                .ToArray();
+
             return ActivateInstance(type, args);
         }
 
         /// <summary>
-        ///   Creates an instance of the type with the specified constructor arguments.
+        /// Creates an instance of the type with the specified constructor arguments.
         /// </summary>
-        /// <param name = "type">The type.</param>
-        /// <param name = "args">The constructor args.</param>
+        /// <param name="type">The type.</param>
+        /// <param name="args">The constructor args.</param>
         /// <returns>The created instance.</returns>
         protected virtual object ActivateInstance(Type type, object[] args)
         {
-            var instance = args.Length > 0 ? System.Activator.CreateInstance(type, args) : System.Activator.CreateInstance(type);
-            Activated(instance);
-            return instance;
+            return (args.Length > 0) ? Activator.CreateInstance(type, args) : Activator.CreateInstance(type);
         }
 
-        /// <summary>
-        ///   Occurs when a new instance is created.
-        /// </summary>
-        public event Action<object> Activated = delegate { };
-
-        object[] DetermineConstructorArgs(Type implementation)
-        {
-            var args = new List<object>();
-            var constructor = SelectEligibleConstructor(implementation);
-
-            if (constructor != null)
-                args.AddRange(constructor.GetParameters().Select(info => GetInstance(info.ParameterType, null)));
-
-            return args.ToArray();
-        }
-
-        static ConstructorInfo SelectEligibleConstructor(Type type)
-        {
-            return (from c in type.GetConstructors().Where(c => c.IsPublic)
-                    orderby c.GetParameters().Length descending
-                    select c).FirstOrDefault();
-        }
-
-        class ContainerEntry : List<Func<SimpleContainer, object>>
+        private class ContainerEntry : List<Func<SimpleContainer, object>>
         {
             public string Key;
             public Type Service;
         }
 
-        class FactoryFactory<T>
+        private class FactoryFactory<T>
         {
-            public Func<T> Create(SimpleContainer container)
+            public Func<T> Create(SimpleContainer container, string key)
             {
-                return () => (T)container.GetInstance(typeof(T), null);
+                return () => (T)container.GetInstance(typeof(T), key);
             }
         }
     }

@@ -29,7 +29,7 @@ namespace Chromely.CefGlue.Gtk.Browser
 
         protected override void OnRegisterCustomSchemes(CefSchemeRegistrar registrar)
         {
-            IEnumerable<object> schemeHandlerObjs = IoC.GetAllInstances(typeof(ChromelySchemeHandler));
+            object[] schemeHandlerObjs = IoC.GetAllInstances(typeof(ChromelySchemeHandler));
             if (schemeHandlerObjs != null)
             {
                 var schemeHandlers = schemeHandlerObjs.ToList();

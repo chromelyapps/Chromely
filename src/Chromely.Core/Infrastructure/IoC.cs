@@ -24,7 +24,7 @@
 
 namespace Chromely.Core.Infrastructure
 {
-    using Caliburn.Micro;
+    using Caliburn.Light;
     using System;
     using System.Collections.Generic;
 
@@ -41,11 +41,55 @@ namespace Chromely.Core.Infrastructure
             }
         }
 
-        public static void RegisterInstance(Type service, string key, object implementation)
+        public static bool IsRegistered(Type service, string key)
         {
             if (m_container != null)
             {
-                m_container.RegisterInstance(service, key, implementation);
+                return m_container.IsRegistered(service, key);
+            }
+
+            return false;
+        }
+
+        public static bool IsRegistered<TService>(string key)
+        {
+            if (m_container != null)
+            {
+                return m_container.IsRegistered<TService>(key);
+            }
+
+            return false;
+        }
+
+        public static void RegisterSingleton(Type service, string key, Type implementation)
+        {
+            if (m_container != null)
+            {
+                m_container.RegisterSingleton(service, key, implementation);
+            }
+        }
+
+        public static void RegisterSingleton<TService, TImplementation>(string key) where TImplementation : TService
+        {
+            if (m_container != null)
+            {
+                m_container.RegisterSingleton<TService, TImplementation>(key);
+            }
+        }
+
+        public static void RegisterInstance(Type service, string key, object instance)
+        {
+            if (m_container != null)
+            {
+                m_container.RegisterInstance(service, key, instance);
+            }
+        }
+
+        public static void RegisterInstance<TService>(string key, TService instance)
+        {
+            if (m_container != null)
+            {
+                m_container.RegisterInstance<TService>(key, instance);
             }
         }
 
@@ -57,19 +101,11 @@ namespace Chromely.Core.Infrastructure
             }
         }
 
-        public static void RegisterSingleton(Type service, string key, Type implementation)
+        public static void RegisterPerRequest<TService, TImplementation>(string key) where TImplementation : TService
         {
             if (m_container != null)
             {
-                m_container.RegisterSingleton(service, key, implementation);
-            }
-        }
-
-        public static void RegisterHandler(Type service, string key, Func<IChromelyContainer, object> handler)
-        {
-            if (m_container != null)
-            {
-                m_container.RegisterHandler(service, key, handler);
+                m_container.RegisterPerRequest<TService, TImplementation>(key);
             }
         }
 
@@ -78,6 +114,14 @@ namespace Chromely.Core.Infrastructure
             if (m_container != null)
             {
                 m_container.UnregisterHandler(service, key);
+            }
+        }
+
+        public static void UnregisterHandler<TService>(string key)
+        {
+            if (m_container != null)
+            {
+                m_container.UnregisterHandler<TService>(key);
             }
         }
 
@@ -91,17 +135,17 @@ namespace Chromely.Core.Infrastructure
             return null;
         }
 
-        public static bool HasHandler(Type service, string key)
+        public static TService GetInstance<TService>(string key)
         {
             if (m_container != null)
             {
-                return m_container.HasHandler(service, key);
+                return m_container.GetInstance<TService>(key);
             }
 
-            return false;
+            return default(TService);
         }
 
-        public static IEnumerable<object> GetAllInstances(Type service)
+        public static object[] GetAllInstances(Type service)
         {
             if (m_container != null)
             {
@@ -111,12 +155,16 @@ namespace Chromely.Core.Infrastructure
             return null;
         }
 
-        public static void BuildUp(object instance)
+        public static TService[] GetAllInstances<TService>()
         {
             if (m_container != null)
             {
-                m_container.BuildUp(instance);
+                return m_container.GetAllInstances<TService>();
             }
+
+            return null;
         }
+
+
     }
 }
