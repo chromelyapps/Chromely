@@ -49,5 +49,5 @@ For more info on demos - [Demos](https://github.com/mattkol/Chromely/wiki/Demos)
 * Xilium.CefGlue - https://bitbucket.org/xilium/xilium.cefglue/wiki/Home
 * CefSharp - https://github.com/cefsharp/CefSharp
 * Json Serializer - https://github.com/lbv/litjson
-* Caliburn.Micro Container - https://github.com/Caliburn-Micro/Caliburn.Micro/blob/master/src/Caliburn.Micro/SimpleContainer.cs
+* Caliburn.Light Container - https://github.com/tibel/Caliburn.Light/blob/master/src/Caliburn.Core/IoC/SimpleContainer.cs
 
