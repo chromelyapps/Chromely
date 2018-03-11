@@ -233,7 +233,6 @@ namespace Chromely.CefGlue.Winapi
             {
                 return;
             }
-
         }
     }
 }

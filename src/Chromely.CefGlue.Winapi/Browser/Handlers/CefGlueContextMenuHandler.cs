@@ -4,7 +4,7 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
     using System;
     using Xilium.CefGlue;
 
-    internal sealed class CefGlueContextMenuHandler : CefContextMenuHandler
+    public class CefGlueContextMenuHandler : CefContextMenuHandler
     {
         private const int ShowDevTools = 26501;
         private const int CloseDevTools = 26502;
@@ -14,7 +14,7 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
             //To disable the menu then call clear
             model.Clear();
 
-            //Removing existing menu item
+            // Removing existing menu item
             // Remove "View Source" option
             bool removed = model.Remove((int)CefMenuId.ViewSource);
 

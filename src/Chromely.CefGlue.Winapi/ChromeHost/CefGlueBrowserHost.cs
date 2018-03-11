@@ -41,7 +41,7 @@ namespace Chromely.CefGlue.Winapi.ChromeHost
 
     public class CefGlueBrowserHost : EventedWindowCore, IChromelyHost, IChromelyServiceProvider
     {
-        CefWebBrowser m_browser;
+        CefGlueBrowser m_browser;
 
         public CefGlueBrowserHost(ChromelyConfiguration hostConfig)
         {
@@ -66,7 +66,7 @@ namespace Chromely.CefGlue.Winapi.ChromeHost
             }
 
             var mainArgs = new CefMainArgs(HostConfig.AppArgs);
-            var app = new CefWebApp(HostConfig);
+            var app = new CefGlueApp(HostConfig);
 
             var exitCode = CefRuntime.ExecuteProcess(mainArgs, app, IntPtr.Zero);
             if (exitCode != -1)
@@ -102,7 +102,7 @@ namespace Chromely.CefGlue.Winapi.ChromeHost
             browserConfig.AppArgs = HostConfig.AppArgs;
             browserConfig.CefRectangle = new CefRectangle { X = 0, Y = 0, Width = HostConfig.HostWidth, Height = HostConfig.HostHeight };
 
-            m_browser = new CefWebBrowser(browserConfig);
+            m_browser = new CefGlueBrowser(browserConfig);
 
             base.OnCreate(ref packet);
 
@@ -237,17 +237,17 @@ namespace Chromely.CefGlue.Winapi.ChromeHost
 
         internal sealed class ActionTask : CefTask
         {
-            public Action _action;
+            public Action m_action;
 
             public ActionTask(Action action)
             {
-                _action = action;
+                m_action = action;
             }
 
             protected override void Execute()
             {
-                _action();
-                _action = null;
+                m_action();
+                m_action = null;
             }
         }
 

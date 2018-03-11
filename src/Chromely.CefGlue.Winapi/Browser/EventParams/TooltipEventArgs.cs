@@ -9,7 +9,7 @@ namespace Chromely.CefGlue.Winapi.Browser
 {
     using System;
 
-    internal sealed class TooltipEventArgs : EventArgs
+    public class TooltipEventArgs : EventArgs
 	{
 		public TooltipEventArgs(string text)
 		{

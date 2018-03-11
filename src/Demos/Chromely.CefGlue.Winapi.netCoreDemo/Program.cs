@@ -53,9 +53,10 @@ namespace Chromely.CefGlue.Winapi.netCoreDemo
                 // string startUrl = "local://app/chromely.html";
 
                 // Options 3 - using file protocol - using default scheme handler for Ajax/Http requests
+                // Requires - (sample) UseDefaultResourceSchemeHandler("local", string.Empty)
                 // Requires - (sample) UseDefaultHttpSchemeHandler("http", "chromely.com")
-                 string appDirectory = AppDomain.CurrentDomain.BaseDirectory;
-                 string startUrl = string.Format("file:///{0}app/chromely_with_ajax.html", appDirectory);
+                string appDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                string startUrl = string.Format("file:///{0}app/chromely_with_ajax.html", appDirectory);
 
                 ChromelyConfiguration config = ChromelyConfiguration
                                               .Create()

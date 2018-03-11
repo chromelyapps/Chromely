@@ -10,7 +10,7 @@ namespace Chromely.CefGlue.Winapi.Browser
     using System;
     using Xilium.CefGlue;
 
-    internal sealed class BeforePopupEventArgs : EventArgs
+    public class BeforePopupEventArgs : EventArgs
 	{
 		public BeforePopupEventArgs(
 			CefFrame frame,

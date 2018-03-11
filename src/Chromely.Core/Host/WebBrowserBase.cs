@@ -25,39 +25,10 @@
 namespace Chromely.Core.Host
 {
     using System;
-    using System.Collections.Generic;
-    using System.Reflection;
-    using System.Threading.Tasks;
 
     public abstract class WebBrowserBase : IDisposable
     {
         bool m_disposed;
-
-        /// <summary>
-        /// Executes the Action asynchronously on the UI thread, does not block execution on the calling thread.
-        /// </summary>
-        /// <param name="action">action to be performed on the control</param>
-        public void InvokeAsyncIfPossible(Action action)
-        {
-            var task = new Task(action);
-            task.ContinueWith(r =>
-            {
-                switch (task.Status)
-                {
-                    case TaskStatus.Canceled:
-                        break;
-                    case TaskStatus.Faulted:
-                        action.Invoke();
-                        break;
-                    case TaskStatus.RanToCompletion:
-                        break;
-                    default:
-                        break;
-                }
-            });
-
-            task.Start();
-        }
 
         ~WebBrowserBase()
         {

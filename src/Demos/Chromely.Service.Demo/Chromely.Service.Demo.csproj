@@ -1,11 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
-
   <ItemGroup>
-    <ProjectReference Include="..\..\Chromely.Core\Chromely.Core.csproj" />
+    <PackageReference Include="Chromely.Core" Version="0.9.0-pre01" />
   </ItemGroup>
-
 </Project>

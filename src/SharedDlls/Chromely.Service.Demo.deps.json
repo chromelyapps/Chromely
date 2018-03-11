@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETStandard,Version=v2.0/",
-    "signature": "2468f8819b4e290b1a8667020137de51bd83af19"
+    "signature": "9957a6918ecc643b3662bbda0dd9cb5566843245"
   },
   "compilationOptions": {},
   "targets": {
@@ -9,22 +9,22 @@
     ".NETStandard,Version=v2.0/": {
       "Chromely.Service.Demo/1.0.0": {
         "dependencies": {
-          "Chromely.Core": "0.9.0-beta03",
+          "Chromely.Core": "0.9.0-pre01",
           "NETStandard.Library": "2.0.1"
         },
         "runtime": {
           "Chromely.Service.Demo.dll": {}
         }
       },
+      "Chromely.Core/0.9.0-pre01": {
+        "runtime": {
+          "lib/netstandard2.0/Chromely.Core.dll": {}
+        }
+      },
       "Microsoft.NETCore.Platforms/1.1.0": {},
       "NETStandard.Library/2.0.1": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "1.1.0"
-        }
-      },
-      "Chromely.Core/0.9.0-beta03": {
-        "runtime": {
-          "Chromely.Core.dll": {}
         }
       }
     }
@@ -34,6 +34,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "Chromely.Core/0.9.0-pre01": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-5ZD90tBoZd4ePeOFJUb4eWDnSIsBVW9boToNkqvtecX+E8T2achHz3Y9PpJ52k3Nh/ovxf8hyHKUnLX9qb4Fvg==",
+      "path": "chromely.core/0.9.0-pre01",
+      "hashPath": "chromely.core.0.9.0-pre01.nupkg.sha512"
     },
     "Microsoft.NETCore.Platforms/1.1.0": {
       "type": "package",
@@ -48,11 +55,6 @@
       "sha512": "sha512-oA6nwv9MhEKYvLpjZ0ggSpb1g4CQViDVQjLUcDWg598jtvJbpfeP2reqwI1GLW2TbxC/Ml7xL6BBR1HmKPXlTg==",
       "path": "netstandard.library/2.0.1",
       "hashPath": "netstandard.library.2.0.1.nupkg.sha512"
-    },
-    "Chromely.Core/0.9.0-beta03": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
     }
   }
 }

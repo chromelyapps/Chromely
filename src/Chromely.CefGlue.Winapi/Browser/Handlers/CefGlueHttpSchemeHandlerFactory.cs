@@ -26,7 +26,7 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
 {
     using Xilium.CefGlue;
 
-    internal sealed class CefGlueHttpSchemeHandlerFactory : CefSchemeHandlerFactory
+    public class CefGlueHttpSchemeHandlerFactory : CefSchemeHandlerFactory
     {
         protected override CefResourceHandler Create(CefBrowser browser, CefFrame frame, string schemeName, CefRequest request)
         {

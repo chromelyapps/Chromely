@@ -39,7 +39,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Chromely.CefSharp.Winapi\Chromely.CefSharp.Winapi.csproj" />
+    <PackageReference Include="Chromely.CefSharp.Winapi" Version="63.0.0-pre01" />
   </ItemGroup>
   <ItemGroup>
     <None Update="app\Content\img\chromely.png">

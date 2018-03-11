@@ -34,7 +34,7 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
     using System.Threading.Tasks;
     using Xilium.CefGlue;
 
-    internal sealed class CefGlueHttpSchemeHandler : CefResourceHandler
+    public class CefGlueHttpSchemeHandler : CefResourceHandler
     {
         private ChromelyResponse m_chromelyResponse;
         private Byte[] m_responseBytes;

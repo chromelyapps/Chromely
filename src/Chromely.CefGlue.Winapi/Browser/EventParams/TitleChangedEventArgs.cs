@@ -9,7 +9,7 @@ namespace Chromely.CefGlue.Winapi.Browser
 {
     using System;
 
-    internal sealed class TitleChangedEventArgs : EventArgs
+    public class TitleChangedEventArgs : EventArgs
 	{
 		public TitleChangedEventArgs(string title)
 		{

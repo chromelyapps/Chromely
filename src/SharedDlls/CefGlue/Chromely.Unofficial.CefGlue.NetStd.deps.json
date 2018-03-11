@@ -7,7 +7,7 @@
   "targets": {
     ".NETStandard,Version=v2.0": {},
     ".NETStandard,Version=v2.0/": {
-      "Chromely.Unofficial.CefGlue.NetStd/63.0.3239.132": {
+      "Chromely.Unofficial.CefGlue.NetStd/64.0.3282.119": {
         "dependencies": {
           "NETStandard.Library": "2.0.1",
           "System.Collections.Specialized": "4.3.0",
@@ -208,7 +208,7 @@
     }
   },
   "libraries": {
-    "Chromely.Unofficial.CefGlue.NetStd/63.0.3239.132": {
+    "Chromely.Unofficial.CefGlue.NetStd/64.0.3282.119": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

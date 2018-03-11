@@ -31,25 +31,26 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
     using System.Reflection;
     using Chromely.CefSharp.Winapi.Browser;
     using Chromely.CefSharp.Winapi.Browser.Handlers;
+    using Chromely.CefSharp.Winapi.Browser.Internals;
     using Chromely.Core;
     using Chromely.Core.Host;
     using Chromely.Core.Infrastructure;
     using Chromely.Core.RestfulService;
-    using global::CefSharp;
     using WinApi.Windows;
 
+    using global::CefSharp;
     using CefSharpGlobal = global::CefSharp;
 
     public class CefSharpBrowserHost : EventedWindowCore, IChromelyHost, IChromelyServiceProvider
     {
         private ChromiumWebBrowser m_browser;
-        private CefSharpGlobal.CefSettings m_settings;
+        private CefSettings m_settings;
 
         public CefSharpBrowserHost(ChromelyConfiguration hostConfig)
         {
             HostConfig = hostConfig;
             m_browser = null;
-            m_settings = new CefSharpGlobal.CefSettings();
+            m_settings = new CefSettings();
             ServiceAssemblies = new List<Assembly>();
         }
 
@@ -59,13 +60,13 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
         protected override void OnCreate(ref CreateWindowPacket packet)
         {
             //For Windows 7 and above, best to include relevant app.manifest entries as well
-            CefSharpGlobal.Cef.EnableHighDPISupport();
+            Cef.EnableHighDPISupport();
 
             var codeBase = Assembly.GetExecutingAssembly().CodeBase;
             var localFolder = Path.GetDirectoryName(new Uri(codeBase).LocalPath);
             var localesDirPath = Path.Combine(localFolder, "locales");
 
-            m_settings = new CefSharpGlobal.CefSettings
+            m_settings = new CefSettings
             {
                 LocalesDirPath = localesDirPath,
                 Locale = HostConfig.Locale,
@@ -82,13 +83,14 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
             RegisterSchemeHandlers();
 
             //Perform dependency check to make sure all relevant resources are in our output directory.
-            CefSharpGlobal.Cef.Initialize(m_settings, performDependencyCheck: HostConfig.PerformDependencyCheck, browserProcessHandler: null);
+            Cef.Initialize(m_settings, performDependencyCheck: HostConfig.PerformDependencyCheck, browserProcessHandler: null);
 
             m_browser = new ChromiumWebBrowser(Handle, HostConfig.StartUrl);
             m_browser.IsBrowserInitializedChanged += IsBrowserInitializedChanged;
-            m_browser.MenuHandler = new CefSharpContextMenuHandler();
 
-            m_browser.RequestHandler = new CefSharpRequestHandler();
+            // Set handlers
+            m_browser.SetHandlers();
+
             RegisterJsHandlers();
 
             base.OnCreate(ref packet);
@@ -117,7 +119,7 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
         protected override void OnDestroy(ref Packet packet)
         {
             m_browser.Dispose();
-            CefSharpGlobal.Cef.Shutdown();
+            Cef.Shutdown();
 
             base.OnDestroy(ref packet);
         }
@@ -233,19 +235,22 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
                     if (item is ChromelyJsHandler)
                     {
                         ChromelyJsHandler handler = (ChromelyJsHandler)item;
-                        CefSharpGlobal.BindingOptions options = null;
-                        if ((handler.BindingOptions != null) && (handler.BindingOptions is CefSharpGlobal.BindingOptions))
+                        BindingOptions options = null;
+
+                        if ((handler.BindingOptions != null) && (handler.BindingOptions is BindingOptions))
                         {
-                            options = (CefSharpGlobal.BindingOptions)handler.BindingOptions;
+                            options = (BindingOptions)handler.BindingOptions;
                         }
+
+                        object boundObject = handler.UseDefault ? new CefSharpBoundObject() : handler.BoundObject;
 
                         if (handler.RegisterAsAsync)
                         {
-                            m_browser.RegisterAsyncJsObject(handler.JsMethod, handler.BoundObject, options);
+                            m_browser.RegisterAsyncJsObject(handler.ObjectNameToBind, boundObject, options);
                         }
                         else
                         {
-                            m_browser.RegisterJsObject(handler.JsMethod, handler.BoundObject, options);
+                            m_browser.RegisterJsObject(handler.ObjectNameToBind, boundObject, options);
                         }
                     }
                 }

@@ -26,7 +26,6 @@ namespace Chromely.CefSharp.Winapi.Demo
 {
     using System;
     using System.Reflection;
-    using Chromely.CefSharp.Winapi.Browser.Handlers;
     using Chromely.CefSharp.Winapi.ChromeHost;
     using Chromely.Core;
     using Chromely.Core.Infrastructure;
@@ -51,6 +50,7 @@ namespace Chromely.CefSharp.Winapi.Demo
                 // string startUrl = "local://app/chromely.html";
 
                 // Options 3 - using file protocol - using default scheme handler for Ajax/Http requests
+                // Requires - (sample) UseDefaultResourceSchemeHandler("local", string.Empty)
                 // Requires - (sample) UseDefaultHttpSchemeHandler("http", "chromely.com")
                 string appDirectory = AppDomain.CurrentDomain.BaseDirectory;
                 string startUrl = string.Format("file:///{0}app/chromely_with_ajax.html", appDirectory);
@@ -65,7 +65,7 @@ namespace Chromely.CefSharp.Winapi.Demo
                                               .UseDefaultLogger("logs\\chromely_new.log", true)
                                               .UseDefaultResourceSchemeHandler("local", string.Empty)
                                               .UseDefaultHttpSchemeHandler("http", "chromely.com")
-                                              .RegisterJsHandler("boundControllerAsync", new CefSharpBoundObject(), null, true);
+                                              .UseDefautJsHandler("boundControllerAsync", true);
 
                 var factory = WinapiHostFactory.Init("chromely.ico");
                 using (var window = factory.CreateWindow(() => new CefSharpBrowserHost(config),

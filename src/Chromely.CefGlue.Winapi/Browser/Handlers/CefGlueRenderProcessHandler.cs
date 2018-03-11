@@ -10,7 +10,7 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
     using Xilium.CefGlue;
     using Xilium.CefGlue.Wrapper;
 
-    internal sealed class CefGlueRenderProcessHandler : CefRenderProcessHandler
+    public class CefGlueRenderProcessHandler : CefRenderProcessHandler
     {
         public CefGlueRenderProcessHandler()
         {

@@ -32,7 +32,7 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
     using Xilium.CefGlue;
     using Xilium.CefGlue.Wrapper;
 
-    internal sealed class CefGlueMessageRouterHandler : CefMessageRouterBrowserSide.Handler
+    public class CefGlueMessageRouterHandler : CefMessageRouterBrowserSide.Handler
     {
         public override bool OnQuery(CefBrowser browser, CefFrame frame, long queryId, string request, bool persistent, CefMessageRouterBrowserSide.Callback callback)
         {

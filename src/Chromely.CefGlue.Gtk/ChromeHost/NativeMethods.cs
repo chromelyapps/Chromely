@@ -1,5 +1,30 @@
-﻿namespace Chromely.CefGlue.Gtk.ChromeHost
+﻿/**
+ MIT License
+
+ Copyright (c) 2017 Kola Oyewumi
+
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+
+ The above copyright notice and this permission notice shall be included in all
+ copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE.
+ */
+
+namespace Chromely.CefGlue.Gtk.ChromeHost
 {
+    using Chromely.Core.Infrastructure;
     using System;
     using System.IO;
     using System.Runtime.InteropServices;
@@ -137,6 +162,19 @@
             }
         }
 
+        internal static void SetSizeRequest(IntPtr window, int width, int height)
+        {
+            if (CefRuntime.Platform == CefRuntimePlatform.Windows)
+            {
+                Win.gtk_widget_set_size_request(window, width, height);
+            }
+
+            if (CefRuntime.Platform == CefRuntimePlatform.Linux)
+            {
+                Linux.gtk_widget_set_size_request(window, width, height);
+            }
+        }
+
         internal static void SetWindowResizable(IntPtr window, bool resizable)
         {
             if (CefRuntime.Platform == CefRuntimePlatform.Windows)
@@ -147,6 +185,14 @@
             if (CefRuntime.Platform == CefRuntimePlatform.Linux)
             {
                 Linux.gtk_window_set_resizable(window, resizable);
+            }
+        }
+
+        internal static void SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy)
+        {
+            if (CefRuntime.Platform == CefRuntimePlatform.Windows)
+            {
+                Win.SetWindowPos(hWnd, hWndInsertAfter, X, Y, cx, cy, SetWindowPosFlags.NoZOrder);
             }
         }
 
@@ -216,7 +262,6 @@
 
                 if (!File.Exists(filename))
                 {
-                    // log error
                     return;
                 }
 
@@ -234,12 +279,12 @@
                 Marshal.FreeHGlobal(ptrToAnsi);
                 if (zero != IntPtr.Zero)
                 {
-                    // log error
+                    Log.Error("Icon handle not successfully freed.");
                 }
             }
             catch (Exception exception)
             {
-                // log error
+                Log.Error(exception);
             }
         }
 
@@ -287,6 +332,9 @@
             [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, ExactSpelling = false)]
             internal static extern void gtk_window_resize(IntPtr window, int width, int height);
 
+            [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, ExactSpelling = false)]
+            internal static extern void gtk_widget_set_size_request(IntPtr window, int width, int height);
+            
             [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, ExactSpelling = false)]
             internal static extern void gtk_window_set_resizable(IntPtr window, bool resizable);
 
@@ -358,6 +406,9 @@
             [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, ExactSpelling = false)]
             internal static extern void gtk_window_resize(IntPtr window, int width, int height);
 
+            [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, ExactSpelling = false)]
+            internal static extern void gtk_widget_set_size_request(IntPtr window, int width, int height);
+            
             [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, ExactSpelling = false)]
             internal static extern void gtk_window_set_resizable(IntPtr window, bool resizable);
 

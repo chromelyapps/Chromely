@@ -14,7 +14,7 @@ namespace Chromely.CefGlue.Gtk.Browser.Handlers
             //To disable the menu then call clear
             model.Clear();
 
-            //Removing existing menu item
+            // Removing existing menu item
             // Remove "View Source" option
             bool removed = model.Remove((int)CefMenuId.ViewSource);
 

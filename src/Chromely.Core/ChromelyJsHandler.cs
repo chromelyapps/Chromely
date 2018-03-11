@@ -33,19 +33,31 @@ namespace Chromely.Core.Infrastructure
             Key = Guid.NewGuid().ToString();
         }
 
-        public ChromelyJsHandler(string jsMethod, object boundObject, object bindingOptions, bool registerAsync)
+        public ChromelyJsHandler(string objectNameToBind, bool registerAsync)
         {
             Key = Guid.NewGuid().ToString();
-            JsMethod = jsMethod;
+            ObjectNameToBind = objectNameToBind;
+            BoundObject = null;
+            RegisterAsAsync = registerAsync;
+            BindingOptions = null;
+            UseDefault = true;
+        }
+
+        public ChromelyJsHandler(string objectNameToBind, object boundObject, object bindingOptions, bool registerAsync)
+        {
+            Key = Guid.NewGuid().ToString();
+            ObjectNameToBind = objectNameToBind;
             BoundObject = boundObject;
             RegisterAsAsync = registerAsync;
             BindingOptions = bindingOptions;
+            UseDefault = false;
         }
 
         public string Key { get; private set; }
-        public string JsMethod { get; set; }
+        public string ObjectNameToBind { get; set; }
         public object BoundObject { get; set; }
         public object BindingOptions { get; set; }
         public bool RegisterAsAsync { get; set; }
+        public bool UseDefault { get; set; }
     }
 }

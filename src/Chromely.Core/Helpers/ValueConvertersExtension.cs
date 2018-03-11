@@ -120,5 +120,15 @@ namespace Chromely.Core.Helpers
 
             return false;
         }
+
+        public static string EnumToString(this CefHandlerKey key)
+        {
+            return Enum.GetName(key.GetType(), key);
+        }
+
+        public static EnumType ToEnum<EnumType>(this string enumValue)
+        {
+            return (EnumType)Enum.Parse(typeof(EnumType), enumValue);
+        }
     }
 }

@@ -10,7 +10,7 @@ namespace Chromely.CefGlue.Winapi.Browser
     using System;
     using Xilium.CefGlue;
 
-    internal sealed class AddressChangedEventArgs : EventArgs
+    public class AddressChangedEventArgs : EventArgs
 	{
 		public AddressChangedEventArgs(CefFrame frame, string address)
 		{

@@ -1,21 +1,25 @@
-﻿namespace Chromely.CefGlue.Gtk.Browser.EventParams
+﻿#region Port Info
+/**
+ * This is a port from CefGlue.WindowsForms sample of . Mostly provided as-is. 
+ * For more info: https://bitbucket.org/xilium/xilium.cefglue/wiki/Home
+ **/
+#endregion
+
+namespace Chromely.CefGlue.Gtk.Browser
 {
     using System;
-    using System.Collections.Generic;
-    using System.Text;
+    using Xilium.CefGlue;
 
-    public sealed class AddressChangedEventArgs : EventArgs
-    {
-        private readonly string _address;
+    public class AddressChangedEventArgs : EventArgs
+	{
+		public AddressChangedEventArgs(CefFrame frame, string address)
+		{
+			Address = address;
+			Frame = frame;
+		}
 
-        public AddressChangedEventArgs(string address)
-        {
-            _address = address;
-        }
+		public string Address { get; private set; }
 
-        public string Address
-        {
-            get { return _address; }
-        }
-    }
+		public CefFrame Frame { get; private set; }
+	}
 }

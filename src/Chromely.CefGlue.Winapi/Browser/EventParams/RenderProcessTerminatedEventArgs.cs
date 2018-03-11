@@ -10,7 +10,7 @@ namespace Chromely.CefGlue.Winapi.Browser
     using System;
     using Xilium.CefGlue;
 
-    internal sealed class RenderProcessTerminatedEventArgs : EventArgs
+    public class RenderProcessTerminatedEventArgs : EventArgs
 	{
 		public RenderProcessTerminatedEventArgs(CefTerminationStatus status)
 		{

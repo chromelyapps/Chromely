@@ -24,8 +24,10 @@
 
 namespace Chromely.Core
 {
-    using Chromely.Core.Infrastructure;
+    using System;
     using System.Collections.Generic;
+    using Chromely.Core.Helpers;
+    using Chromely.Core.Infrastructure;
 
     public class ChromelyConfiguration
     {
@@ -142,6 +144,11 @@ namespace Chromely.Core
             return this;
         }
 
+        public ChromelyConfiguration UseDefautJsHandler(string objectNameToBind, bool registerAsync)
+        {
+            return RegisterJsHandler(new ChromelyJsHandler(objectNameToBind, registerAsync));
+        }
+
         public ChromelyConfiguration WithLogger(IChromelyLogger logger)
         {
             Log.Logger = logger;
@@ -181,6 +188,15 @@ namespace Chromely.Core
         {
             UrlScheme scheme = new UrlScheme(schemeName, domainName, true);
             UrlSchemeProvider.RegisterScheme(scheme);
+            return this;
+        }
+
+        public virtual ChromelyConfiguration RegisterCustomHandler(CefHandlerKey key, Type implementation)
+        {
+            Type service = CefHandlerDummyTypes.GetHandlerType(key);
+            string keyStr = key.EnumToString();
+            IoC.RegisterPerRequest(service, keyStr, implementation);
+
             return this;
         }
 

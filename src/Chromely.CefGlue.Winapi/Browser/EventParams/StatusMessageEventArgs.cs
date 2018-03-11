@@ -8,9 +8,8 @@
 namespace Chromely.CefGlue.Winapi.Browser
 {
     using System;
-    using Xilium.CefGlue;
-
-    internal sealed class StatusMessageEventArgs : EventArgs
+ 
+    public class StatusMessageEventArgs : EventArgs
     {
         private readonly string m_value;
 

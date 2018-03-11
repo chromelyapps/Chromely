@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.0/win10-x64",
-    "signature": "dd2cfff608074675369d7d43caae6f232be2b65c"
+    "signature": "acdd0858219857eb97b61743eab96e93af532aba"
   },
   "compilationOptions": {},
   "targets": {
@@ -9,11 +9,35 @@
     ".NETCoreApp,Version=v2.0/win10-x64": {
       "cefglue_winapi_netcoredemo/1.0.0": {
         "dependencies": {
-          "Chromely.CefGlue.Winapi": "0.9.0-beta03",
+          "Chromely.CefGlue.Winapi": "64.0.0-pre01",
           "Microsoft.NETCore.App": "2.0.0"
         },
         "runtime": {
           "cefglue_winapi_netcoredemo.dll": {}
+        }
+      },
+      "Chromely.CefGlue.Winapi/64.0.0-pre01": {
+        "dependencies": {
+          "Chromely.Core": "0.9.0-pre01",
+          "Chromely.Unofficial.CefGlue.NetStd": "64.0.3282.119",
+          "WinApi": "4.0.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Chromely.CefGlue.Winapi.dll": {}
+        }
+      },
+      "Chromely.Core/0.9.0-pre01": {
+        "runtime": {
+          "lib/netstandard2.0/Chromely.Core.dll": {}
+        }
+      },
+      "Chromely.Unofficial.CefGlue.NetStd/64.0.3282.119": {
+        "dependencies": {
+          "System.Collections.Specialized": "4.3.0",
+          "System.IO.UnmanagedMemoryStream": "4.3.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Chromely.Unofficial.CefGlue.NetStd.dll": {}
         }
       },
       "Microsoft.NETCore.App/2.0.0": {
@@ -513,30 +537,6 @@
         "runtime": {
           "lib/netstandard1.4/WinApi.dll": {}
         }
-      },
-      "Chromely.CefGlue.Winapi/0.9.0-beta03": {
-        "dependencies": {
-          "Chromely.Core": "0.9.0-beta03",
-          "Chromely.Unofficial.CefGlue.NetStd": "63.0.3239.132",
-          "WinApi": "4.0.0"
-        },
-        "runtime": {
-          "Chromely.CefGlue.Winapi.dll": {}
-        }
-      },
-      "Chromely.Core/0.9.0-beta03": {
-        "runtime": {
-          "Chromely.Core.dll": {}
-        }
-      },
-      "Chromely.Unofficial.CefGlue.NetStd/63.0.3239.132": {
-        "dependencies": {
-          "System.Collections.Specialized": "4.3.0",
-          "System.IO.UnmanagedMemoryStream": "4.3.0"
-        },
-        "runtime": {
-          "Chromely.Unofficial.CefGlue.NetStd.dll": {}
-        }
       }
     }
   },
@@ -545,6 +545,27 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "Chromely.CefGlue.Winapi/64.0.0-pre01": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-SHu5HfEAGZgjj/IqSxw9KB4jw7cpKWZIDZYfl9uzB0PL+ONdrVbX8M1v7DAH8D1UuZv0aayu3AtroHqffGR7lQ==",
+      "path": "chromely.cefglue.winapi/64.0.0-pre01",
+      "hashPath": "chromely.cefglue.winapi.64.0.0-pre01.nupkg.sha512"
+    },
+    "Chromely.Core/0.9.0-pre01": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-5ZD90tBoZd4ePeOFJUb4eWDnSIsBVW9boToNkqvtecX+E8T2achHz3Y9PpJ52k3Nh/ovxf8hyHKUnLX9qb4Fvg==",
+      "path": "chromely.core/0.9.0-pre01",
+      "hashPath": "chromely.core.0.9.0-pre01.nupkg.sha512"
+    },
+    "Chromely.Unofficial.CefGlue.NetStd/64.0.3282.119": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-4qEVeT2tPDX6GJ/x9eqM+22uX0MYhsZ30mqzkdX2BWnYaObFsBlirjvxsjRHOGwkj2RUBqIpwg/Bcpunuk2WWw==",
+      "path": "chromely.unofficial.cefglue.netstd/64.0.3282.119",
+      "hashPath": "chromely.unofficial.cefglue.netstd.64.0.3282.119.nupkg.sha512"
     },
     "Microsoft.NETCore.App/2.0.0": {
       "type": "package",
@@ -888,21 +909,6 @@
       "sha512": "sha512-xHdXd5/BLrVik4tHI59zVGsagJba+tE73qJpJc+YcfYdTg34I6kiggZcj1cRQwqPo9rz5kCEV2dX5t/Mte76Tg==",
       "path": "winapi/4.0.0",
       "hashPath": "winapi.4.0.0.nupkg.sha512"
-    },
-    "Chromely.CefGlue.Winapi/0.9.0-beta03": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Chromely.Core/0.9.0-beta03": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Chromely.Unofficial.CefGlue.NetStd/63.0.3239.132": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
     }
   }
 }

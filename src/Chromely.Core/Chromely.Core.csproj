@@ -5,7 +5,7 @@
     <Platforms>AnyCPU</Platforms>
     <AssemblyVersion>0.9.0.0</AssemblyVersion>
     <FileVersion>0.9.0.0</FileVersion>
-    <Version>0.9.0.0-beta03</Version>
+    <Version>0.9.0.0-pre01</Version>
     <Authors>Kola Oyewumi</Authors>
     <Company>Kola Oyewumi</Company>
     <PackageTags>Cef Chromium HTML5 Desktop Chromely CefGlue CefSharp Restful  Ajax HTTP XHR MessageRouter JavascriptIntegration NetStandard .NET Core</PackageTags>
@@ -16,10 +16,15 @@
     <PackageIconUrl>https://github.com/mattkol/Chromely/blob/master/nugets/chromely.ico?raw=true</PackageIconUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>- Removed dependency on WinApi
-- Added DependecyCheck flag to ChromelyConfiguration (CefPerformDependencyCheck)
-- Added properties - IsSecure and IsCorsEnabled to ChromelySchemeHandler class
+    <PackageReleaseNotes>- Changes to ChromelyConfiguration - breaking changes
+- Made Cef Setting properties configurable
+- Added option to add extra command line arguments
+- Added local resource scheme handling
+- Added custom handling via handler registration
+
 </PackageReleaseNotes>
+    <RepositoryUrl>https://github.com/mattkol/Chromely</RepositoryUrl>
+    <RepositoryType>Github Repository</RepositoryType>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

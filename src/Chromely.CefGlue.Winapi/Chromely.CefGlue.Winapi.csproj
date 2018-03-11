@@ -3,8 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Platforms>AnyCPU</Platforms>
-    <Version>0.9.0.0-beta03</Version>
-    <AssemblyVersion>0.9.0.0</AssemblyVersion>
+    <Version>64.0.0.0-pre01</Version>
+    <AssemblyVersion>64.0.0.0</AssemblyVersion>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Product>Chromely.CefGlue.Winapi</Product>
@@ -15,10 +15,16 @@
     <PackageProjectUrl>https://github.com/mattkol/Chromely</PackageProjectUrl>
     <PackageIconUrl>https://github.com/mattkol/Chromely/blob/master/nugets/chromely.ico?raw=true</PackageIconUrl>
     <PackageTags>Cef Chromium HTML5 Desktop Chromely CefGlue  Restful  Ajax HTTP XHR MessageRouter JavascriptIntegration  .NET Core</PackageTags>
-    <Description>Chromely CefGlue Winapi implementation library - this is in .NET Standard 2.0 as it can be used in both .NET (Windows) and .NET Core (Windows, Linux).</Description>
-    <PackageReleaseNotes>- Added support for Chromely.Unofficial.CefGlue.NetStd (CefGlue) &gt;= 63.0.3239.132 version.
-- Added DependecyCheck flag to ChromelyConfiguration in Chromely.Core (CefPerformDependencyCheck)
-- Added properties - IsSecure and IsCorsEnabled to ChromelySchemeHandler class</PackageReleaseNotes>
+    <Description>Chromely CefGlue Winapi implementation library - this is in .NET Standard 2.0 as it can be used in both .NET (Windows) and .NET Core (Windows, Linux).  Chromely.CefGlue.Winapi version naming is based on CefGlue (Chromely.Unofficial.CefGlue.NetStd) version referenced.</Description>
+    <PackageReleaseNotes>- Added support for Chromely.Unofficial.CefGlue.NetStd (CefGlue) &gt;= 64.0.3282.119 version.
+- Changes to ChromelyConfiguration - breaking changes
+- Made Cef Setting properties configurable
+- Added option to add extra command line arguments
+- Added local resource scheme handling
+- Added custom handling via handler registration</PackageReleaseNotes>
+    <FileVersion>64.0.0.0</FileVersion>
+    <RepositoryType>Github Repository</RepositoryType>
+    <RepositoryUrl>https://github.com/mattkol/Chromely</RepositoryUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -26,12 +32,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Chromely.Core" Version="0.9.0-pre01" />
+    <PackageReference Include="Chromely.Unofficial.CefGlue.NetStd" Version="64.0.3282.119" />
     <PackageReference Include="WinApi" Version="4.0.0" />
   </ItemGroup>
   
-  <ItemGroup>
-    <ProjectReference Include="..\CefGlue\Chromely.Unofficial.CefGlue.NetStd\Chromely.Unofficial.CefGlue.NetStd.csproj" />
-    <ProjectReference Include="..\Chromely.Core\Chromely.Core.csproj" />
-  </ItemGroup>
-
 </Project>

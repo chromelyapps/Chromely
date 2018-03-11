@@ -10,7 +10,7 @@ namespace Chromely.CefGlue.Winapi.Browser
     using System;
     using Xilium.CefGlue;
 
-    internal sealed class LoadEndEventArgs : EventArgs
+    public class LoadEndEventArgs : EventArgs
 	{
 		public LoadEndEventArgs(CefFrame frame, int httpStatusCode)
 		{

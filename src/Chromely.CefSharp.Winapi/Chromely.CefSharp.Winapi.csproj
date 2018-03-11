@@ -5,22 +5,26 @@
     <CefSharpAnyCpuSupport>true</CefSharpAnyCpuSupport>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
-    <Version>0.9.0.0-beta03</Version>
+    <Version>63.0.0.0-pre01</Version>
     <Authors>Kola Oyewumi</Authors>
     <Company>Kola Oyewumi</Company>
-    <Description>Chromely CefSharp Winapi implementation.</Description>
+    <Description>Chromely CefSharp Winapi implementation. Chromely.CefSharp.Winapi version naming is based on CefSharp.Common  version referenced.</Description>
     <Copyright>Copyright 2017 Kola Oyewumi</Copyright>
     <PackageLicenseUrl>https://github.com/mattkol/Chromely/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/mattkol/Chromely</PackageProjectUrl>
     <PackageIconUrl>https://github.com/mattkol/Chromely/blob/master/nugets/chromely.ico?raw=true</PackageIconUrl>
-    <AssemblyVersion>0.9.0.0</AssemblyVersion>
-    <FileVersion>0.9.0.0</FileVersion>
+    <AssemblyVersion>63.0.0.0</AssemblyVersion>
+    <FileVersion>63.0.0.0</FileVersion>
     <PackageTags>Cef Chromium HTML5 Desktop Chromely CefSharp Restful  Ajax HTTP XHR JavascriptIntegration</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageReleaseNotes>- Added support for CefSharp &gt;= 63.0.0 version.
-- Added DependecyCheck flag to ChromelyConfiguration in Chromely.Core (CefPerformDependencyCheck)
-- Added properties - IsSecure and IsCorsEnabled to ChromelySchemeHandler class
+    <PackageReleaseNotes>- Changes to ChromelyConfiguration - breaking changes
+- Made Cef Setting properties configurable
+- Added option to add extra command line arguments
+- Added local resource scheme handling
+- Added custom handling via handler registration
 - This version still uses legacy .NET Javascript binding (LegacyJavascriptBindingEnabled = true)</PackageReleaseNotes>
+    <RepositoryType>Github Repository</RepositoryType>
+    <RepositoryUrl>https://github.com/mattkol/Chromely</RepositoryUrl>
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -29,13 +33,10 @@
 
   <ItemGroup>
     <PackageReference Include="CefSharp.Common" Version="63.0.0" />
+    <PackageReference Include="Chromely.Core" Version="0.9.0-pre01" />
     <PackageReference Include="WinApi" Version="4.0.0" />
   </ItemGroup>
-  
-  <ItemGroup>
-    <ProjectReference Include="..\Chromely.Core\Chromely.Core.csproj" />
-  </ItemGroup>
-  
+
   <ItemGroup>
     <Reference Include="System.Web" />
   </ItemGroup>

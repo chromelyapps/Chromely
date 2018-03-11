@@ -32,7 +32,7 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
     using Chromely.Core.Infrastructure;
     using Xilium.CefGlue;
 
-    internal sealed class CefGlueResourceSchemeHandler : CefResourceHandler
+    public class CefGlueResourceSchemeHandler : CefResourceHandler
     {
         private Byte[] m_fileBytes;
         private string m_mime;
