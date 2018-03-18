@@ -33,7 +33,12 @@ namespace Chromely.CefSharp.Winapi
     {
         public static void Update(this CefSharpGlobal.CefSettings cefSettings, Dictionary<string, object> customSettings)
         {
-            if ((cefSettings == null) && (customSettings == null))
+            if ((cefSettings == null) || (customSettings == null))
+            {
+                return;
+            }
+
+            if (customSettings.Count == 0)
             {
                 return;
             }

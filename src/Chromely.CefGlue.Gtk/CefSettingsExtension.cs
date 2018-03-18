@@ -32,7 +32,12 @@ namespace Chromely.CefGlue.Gtk
     {
         public static void Update(this CefSettings cefSettings, Dictionary<string, object> customSettings)
         {
-            if ((cefSettings == null) && (customSettings == null))
+            if ((cefSettings == null) || (customSettings == null))
+            {
+                return;
+            }
+
+            if (customSettings.Count == 0)
             {
                 return;
             }

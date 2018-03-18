@@ -31,7 +31,6 @@ namespace Chromely.CefGlue.Gtk.ChromeHost
         protected int m_width;
         protected int m_height;
 
-        private IntPtr m_cefHost;
         private IntPtr m_mainWindow;
         private string m_title;
         private string m_iconFile;
@@ -64,7 +63,7 @@ namespace Chromely.CefGlue.Gtk.ChromeHost
         {
             get
             {
-                return m_cefHost;
+                return m_mainWindow;
             }
         }
 
@@ -72,7 +71,7 @@ namespace Chromely.CefGlue.Gtk.ChromeHost
         {
             get
             {
-                return NativeMethods.GetWindowXid(m_cefHost);
+                return NativeMethods.GetWindowXid(m_mainWindow);
             }
         }
 
@@ -84,13 +83,9 @@ namespace Chromely.CefGlue.Gtk.ChromeHost
             NativeMethods.SetIconFromFile(m_mainWindow, m_iconFile);
 
             NativeMethods.SetSizeRequest(m_mainWindow, m_width, m_height);
-            NativeMethods.SetWindowResizable(m_mainWindow, true);
             NativeMethods.SetWindowPosition(m_mainWindow, NativeMethods.GtkWindowPosition.GTK_WIN_POS_CENTER);
 
-            m_cefHost = NativeMethods.CreateCefHost(m_mainWindow);
-            NativeMethods.SetWindowResizable(m_cefHost, true);
-
-            NativeMethods.AddConfigureEvent(m_cefHost);
+            NativeMethods.AddConfigureEvent(m_mainWindow);
 
             Realized += OnRealized;
             Resized += OnResize;
@@ -119,7 +114,7 @@ namespace Chromely.CefGlue.Gtk.ChromeHost
                 return;
             }
 
-            NativeMethods.GetWindowSize(m_mainWindow, out width, out height);
+            NativeMethods.GetWindowSize(Host, out width, out height);
         }
 
         protected virtual void OnRealized(object sender, EventArgs e)
@@ -154,7 +149,7 @@ namespace Chromely.CefGlue.Gtk.ChromeHost
                 {
                     m_realizeEvent += value;
                     NativeMethods.EventHandler onRealizedHandler = new NativeMethods.EventHandler(LocalRealized);
-                    NativeMethods.ConnectSignal(m_cefHost, "realize", onRealizedHandler, 0, IntPtr.Zero, (int)NativeMethods.GConnectFlags.G_CONNECT_AFTER);
+                    NativeMethods.ConnectSignal(m_mainWindow, "realize", onRealizedHandler, 0, IntPtr.Zero, (int)NativeMethods.GConnectFlags.G_CONNECT_AFTER);
                 }
             }
             remove

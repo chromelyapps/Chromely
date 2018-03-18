@@ -28,6 +28,7 @@ namespace Chromely.CefGlue.Gtk.Win.Demo
     using System.Reflection;
     using Chromely.CefGlue.Gtk.ChromeHost;
     using Chromely.Core;
+    using Chromely.Core.Helpers;
     using Chromely.Core.Infrastructure;
 
     class Program
@@ -47,11 +48,14 @@ namespace Chromely.CefGlue.Gtk.Win.Demo
 
                 // Options 2 - using local resource file handling with default local scheme handler 
                 // Requires - (sample) UseDefaultResourceSchemeHandler("local", string.Empty)
+                //            or register new resource scheme handler - RegisterSchemeHandler("local", string.Empty,  new CustomResourceHandler())
                 // string startUrl = "local://app/chromely.html";
 
                 // Options 3 - using file protocol - using default scheme handler for Ajax/Http requests
                 // Requires - (sample) UseDefaultResourceSchemeHandler("local", string.Empty)
+                //            or register new resource handler - RegisterSchemeHandler("local", string.Empty,  new CustomResourceHandler())
                 // Requires - (sample) UseDefaultHttpSchemeHandler("http", "chromely.com")
+                //            or register new htpp scheme handler - RegisterSchemeHandler("htpp", "test.com",  new CustomHttpHandler())
                 string appDirectory = AppDomain.CurrentDomain.BaseDirectory;
                 string startUrl = string.Format("file:///{0}app/chromely_with_ajax.html", appDirectory);
 
@@ -67,8 +71,7 @@ namespace Chromely.CefGlue.Gtk.Win.Demo
                                               .UseDefaultLogger("logs\\chromely_new.log", true)
                                               .UseDefaultResourceSchemeHandler("local", string.Empty)
                                               .UseDefaultHttpSchemeHandler("http", "chromely.com");
-
-
+ 
                 using (var app = new CefGlueBrowserHost(config))
                 {
                     // Register external url schems
