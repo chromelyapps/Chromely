@@ -19,7 +19,7 @@ class Program
 {
    static int Main(string[] args)
    {
-      string startUrl = "www.google.com";
+      string startUrl = "https://google.com";
 
       ChromelyConfiguration config = ChromelyConfiguration
                                     .Create()
