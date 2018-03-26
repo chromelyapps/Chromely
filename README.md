@@ -51,3 +51,11 @@ For more info on demos - [Demos](https://github.com/mattkol/Chromely/wiki/Demos)
 * Json Serializer - https://github.com/lbv/litjson
 * Caliburn.Light Container - https://github.com/tibel/Caliburn.Light/blob/master/src/Caliburn.Core/IoC/SimpleContainer.cs
 
+Credits
+---
+Thanks to [JetBrains](https://www.jetbrains.com) for the OSS license of Resharper Ultimate.
+
+Improved and optimized using:
+
+<a href="https://www.jetbrains.com/resharper/
+"><img src="https://blog.jetbrains.com/wp-content/uploads/2014/04/logo_resharper.gif" alt="Resharper logo" width="100" /></a>
