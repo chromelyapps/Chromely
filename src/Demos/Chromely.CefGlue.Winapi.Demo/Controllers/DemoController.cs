@@ -1,45 +1,68 @@
-﻿/**
- MIT License
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="DemoController.cs" company="Chromely">
+//   Copyright (c) 2017-2018 Kola Oyewumi
+// </copyright>
+// <license>
+// MIT License
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+// </license>
+// <note>
+// Chromely project is licensed under MIT License. CefGlue, CefSharp, Winapi may have additional licensing.
+// </note>
+// --------------------------------------------------------------------------------------------------------------------
 
- Copyright (c) 2017 Kola Oyewumi
-
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
-
- The above copyright notice and this permission notice shall be included in all
- copies or substantial portions of the Software.
-
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- SOFTWARE.
- */
-
-namespace Chromely.CefGlueApp.Demo.Controllers
+// ReSharper disable once StyleCop.SA1300
+namespace Chromely.CefGlue.Winapi.Demo.Controllers
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+
     using Chromely.Core.RestfulService;
 
+    /// <summary>
+    /// The demo controller.
+    /// </summary>
     [ControllerProperty(Name = "DemoController", Route = "democontroller")]
     public class DemoController : ChromelyController
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DemoController"/> class.
+        /// </summary>
         public DemoController()
         {
-            RegisterGetRequest("/democontroller/movies", GetMovies);
-            RegisterPostRequest("/democontroller/savemovies", SaveMovies);
+            this.RegisterGetRequest("/democontroller/movies", this.GetMovies);
+            this.RegisterPostRequest("/democontroller/savemovies", this.SaveMovies);
         }
 
+        /// <summary>
+        /// The get movies.
+        /// </summary>
+        /// <param name="request">
+        /// The request.
+        /// </param>
+        /// <returns>
+        /// The <see cref="ChromelyResponse"/>.
+        /// </returns>
         private ChromelyResponse GetMovies(ChromelyRequest request)
         {
-
             List<MovieInfo> movieInfos = new List<MovieInfo>();
             string assemblyName = typeof(MovieInfo).Assembly.GetName().Name;
 
@@ -55,11 +78,26 @@ namespace Chromely.CefGlueApp.Demo.Controllers
             return response;
         }
 
+        /// <summary>
+        /// The save movies.
+        /// </summary>
+        /// <param name="request">
+        /// The request.
+        /// </param>
+        /// <returns>
+        /// The <see cref="ChromelyResponse"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// ArgumentNullException - request is null exception.
+        /// </exception>
+        /// <exception cref="Exception">
+        /// Exception - post data is null exception.
+        /// </exception>
         private ChromelyResponse SaveMovies(ChromelyRequest request)
         {
             if (request == null)
             {
-                throw new ArgumentNullException("Request null argument!");
+                throw new ArgumentNullException(nameof(request));
             }
 
             if (request.PostData == null)
@@ -71,31 +109,64 @@ namespace Chromely.CefGlueApp.Demo.Controllers
             var postDataJson = request.PostData.EnsureJson();
             int rowsReceived = postDataJson.ArrayCount();
 
-            response.Data = string.Format("{0} rows of data successfully saved.", rowsReceived);
+            response.Data = $"{rowsReceived} rows of data successfully saved.";
 
             return response;
         }
     }
 
+    /// <summary>
+    /// The movie info.
+    /// </summary>
+    // ReSharper disable once StyleCop.SA1402
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed. Suppression is OK here.")]
+    [SuppressMessage("ReSharper", "StyleCop.SA1600")]
     public class MovieInfo
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MovieInfo"/> class.
+        /// </summary>
+        /// <param name="id">
+        /// The id.
+        /// </param>
+        /// <param name="title">
+        /// The title.
+        /// </param>
+        /// <param name="year">
+        /// The year.
+        /// </param>
+        /// <param name="votes">
+        /// The votes.
+        /// </param>
+        /// <param name="rating">
+        /// The rating.
+        /// </param>
+        /// <param name="assembly">
+        /// The assembly.
+        /// </param>
         public MovieInfo(int id, string title, int year, int votes, double rating, string assembly)
         {
-            Id = id;
-            Title = title;
-            Year = year;
-            Votes = votes;
-            Rating = rating;
-            Date = DateTime.Now;
-            RestfulAssembly = assembly;
+            this.Id = id;
+            this.Title = title;
+            this.Year = year;
+            this.Votes = votes;
+            this.Rating = rating;
+            this.Date = DateTime.Now;
+            this.RestfulAssembly = assembly;
         }
 
         public int Id { get; set; }
+
         public string Title { get; set; }
+
         public int Year { get; set; }
+
         public int Votes { get; set; }
+
         public double Rating { get; set; }
+
         public DateTime Date { get; set; }
+
         public string RestfulAssembly { get; set; }
     }
 }

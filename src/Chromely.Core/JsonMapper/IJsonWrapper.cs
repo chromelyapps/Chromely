@@ -1,32 +1,31 @@
-﻿#region Header
-/**
- * IJsonWrapper.cs
- *   Interface that represents a type capable of handling all kinds of JSON
- *   data. This is mainly used when mapping objects through JsonMapper, and
- *   it's implemented by JsonData.
- *
- * The authors disclaim copyright to this source code. For more details, see
- * the COPYING file included with this distribution.
- **/
-#endregion
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="IJsonWrapper.cs" company="Chromely">
+//   Copyright (c) 2017-2018 Kola Oyewumi
+// </copyright>
+// <license>
+// The authors disclaim copyright to this source code. For more details, see
+// the COPYING file included with this distribution @ https://github.com/lbv/litjson
+// </license>
+// <note>
+// Chromely project is licensed under MIT License. CefGlue, CefSharp, Winapi may have additional licensing.
+//
+// This is a port of LitJson to.NET Standard for Chromely.Mostly provided as-is. 
+// For more info: https://github.com/lbv/litjson
+// </note>
+// --------------------------------------------------------------------------------------------------------------------
 
-#region Port Info
-/**
- * This is a port of LitJson to .NET Standard for Chromely. Mostly provided as-is. 
- * For more info: https://github.com/lbv/litjson
- **/
-#endregion
-
-using System.Collections;
-using System.Collections.Specialized;
-
-
+// ReSharper disable All
 namespace LitJson
 {
+    using System.Collections;
+    using System.Collections.Specialized;
+
+    /// <summary>
+    /// The json type.
+    /// </summary>
     public enum JsonType
     {
         None,
-
         Object,
         Array,
         String,
@@ -36,6 +35,12 @@ namespace LitJson
         Boolean
     }
 
+    /// <summary>
+    /// The JsonWrapper interface.
+    ///  Interface that represents a type capable of handling all kinds of JSON
+    ///   data.This is mainly used when mapping objects through JsonMapper, and
+    ///   it's implemented by JsonData
+    /// </summary>
     public interface IJsonWrapper : IList, IOrderedDictionary
     {
         bool IsArray { get; }

@@ -33,8 +33,11 @@
 
   <ItemGroup>
     <PackageReference Include="CefSharp.Common" Version="63.0.0" />
-    <PackageReference Include="Chromely.Core" Version="0.9.0-pre01" />
     <PackageReference Include="WinApi" Version="4.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Chromely.Core\Chromely.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

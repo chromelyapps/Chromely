@@ -1,99 +1,176 @@
-﻿/**
- MIT License
-
- Copyright (c) 2017 Kola Oyewumi
-
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
-
- The above copyright notice and this permission notice shall be included in all
- copies or substantial portions of the Software.
-
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- SOFTWARE.
- */
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Window.cs" company="Chromely">
+//   Copyright (c) 2017-2018 Kola Oyewumi
+// </copyright>
+// <license>
+// MIT License
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+// </license>
+// <note>
+// Chromely project is licensed under MIT License. CefGlue, CefSharp, Winapi may have additional licensing.
+// </note>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Chromely.CefGlue.Gtk.ChromeHost
 {
+    using System;
     using Chromely.CefGlue.Gtk.Browser;
     using Chromely.Core;
-    using System;
     using Xilium.CefGlue;
 
-    public sealed class Window : NativeWindow
+    /// <summary>
+    /// The window.
+    /// </summary>
+    public class Window : NativeWindow
     {
-        private CefGlueBrowser m_core;
-        private IntPtr m_browserWindowHandle;
-        private ChromelyConfiguration m_hostConfig;
-        private readonly HostBase m_application;
+        /// <summary>
+        /// The m application.
+        /// </summary>
+        private readonly HostBase mApplication;
 
+        /// <summary>
+        /// The m core.
+        /// </summary>
+        private CefGlueBrowser mCore;
+
+        /// <summary>
+        /// The m browser window handle.
+        /// </summary>
+        private IntPtr mBrowserWindowHandle;
+
+        /// <summary>
+        /// The m host config.
+        /// </summary>
+        private ChromelyConfiguration mHostConfig;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Window"/> class.
+        /// </summary>
+        /// <param name="application">
+        /// The application.
+        /// </param>
+        /// <param name="hostConfig">
+        /// The host config.
+        /// </param>
         public Window(HostBase application, ChromelyConfiguration hostConfig)
             : base(hostConfig.HostTitle, hostConfig.HostWidth, hostConfig.HostHeight, hostConfig.HostIconFile)
         {
-            m_hostConfig = hostConfig;
-            m_core = new CefGlueBrowser(this, new CefBrowserSettings(), hostConfig.StartUrl);
-            m_core.Created += new EventHandler(BrowserCreated);
-            m_application = application;
+            this.mHostConfig = hostConfig;
+            this.mCore = new CefGlueBrowser(this, new CefBrowserSettings(), hostConfig.StartUrl);
+            this.mCore.Created += this.BrowserCreated;
+            this.mApplication = application;
 
-            ShowWindow();
+            this.ShowWindow();
         }
 
+        /// <summary>
+        /// The web browser.
+        /// </summary>
+        public CefGlueBrowser WebBrowser => this.mCore;
+
+        #region Close/Dispose
+
+        /// <summary>
+        /// The close.
+        /// </summary>
         public void Close()
         {
-            Dispose();
+            this.Dispose();
         }
 
-        public CefGlueBrowser WebBrowser
+        /// <summary>
+        /// The dispose.
+        /// </summary>
+        public void Dispose()
         {
-            get
+            if (this.mCore != null)
             {
-                return m_core;
+                var browser = this.mCore.CefBrowser;
+                var host = browser.GetHost();
+                host.CloseBrowser();
+                host.Dispose();
+                browser.Dispose();
+                this.mBrowserWindowHandle = IntPtr.Zero;
             }
         }
 
+        #endregion Close/Dispose
+
+        /// <summary>
+        /// The on realized.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        /// <exception cref="NotSupportedException">
+        /// Exception returned for MacOS not supported.
+        /// </exception>
         protected override void OnRealized(object sender, EventArgs e)
         {
             var windowInfo = CefWindowInfo.Create();
             switch (CefRuntime.Platform)
             {
                 case CefRuntimePlatform.Windows:
-                    var parentHandle = HostXid;
-                    windowInfo.SetAsChild(parentHandle, new CefRectangle(0, 0, m_hostConfig.HostWidth, m_hostConfig.HostHeight)); 
+                    var parentHandle = this.HostXid;
+                    windowInfo.SetAsChild(parentHandle, new CefRectangle(0, 0, this.mHostConfig.HostWidth, this.mHostConfig.HostHeight)); 
                     break;
 
                 case CefRuntimePlatform.Linux:
-                    windowInfo.SetAsChild(HostXid, new CefRectangle(0, 0, m_hostConfig.HostWidth, m_hostConfig.HostHeight));
+                    windowInfo.SetAsChild(this.HostXid, new CefRectangle(0, 0, this.mHostConfig.HostWidth, this.mHostConfig.HostHeight));
                     break;
 
                 case CefRuntimePlatform.MacOSX:
+                    throw new NotSupportedException();
+
                 default:
                     throw new NotSupportedException();
             }
 
-            m_core.Create(windowInfo);
+            this.mCore.Create(windowInfo);
         }
 
+        /// <summary>
+        /// The on resize.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
         protected override void OnResize(object sender, EventArgs e)
         {
             if (CefRuntime.Platform == CefRuntimePlatform.Windows)
             {
-                if (m_browserWindowHandle != IntPtr.Zero)
+                if (this.mBrowserWindowHandle != IntPtr.Zero)
                 {
+                    // ReSharper disable once InlineOutVariableDeclaration
                     int width;
+                    // ReSharper disable once InlineOutVariableDeclaration
                     int height;
-                    GetSize(out width, out height);
+                    this.GetSize(out width, out height);
 
-                    NativeMethods.SetWindowPos(m_browserWindowHandle, IntPtr.Zero,
-                        0, 0, width, height);
+                    NativeMethods.SetWindowPos(this.mBrowserWindowHandle, IntPtr.Zero, 0, 0, width, height);
                 }
             }
             else
@@ -102,28 +179,32 @@ namespace Chromely.CefGlue.Gtk.ChromeHost
             }
         }
 
+        /// <summary>
+        /// The on exit.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
         protected override void OnExit(object sender, EventArgs e)
         {
-            m_application.Quit();
+            this.mApplication.Quit();
         }
 
+        /// <summary>
+        /// The browser created.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
         private void BrowserCreated(object sender, EventArgs e)
         {
-            m_browserWindowHandle = m_core.CefBrowser.GetHost().GetWindowHandle();
-        }
-
-        public void Dispose()
-        {
-            if (m_core != null)
-            {
-                var browser = m_core.CefBrowser;
-                var host = browser.GetHost();
-                host.CloseBrowser();
-                host.Dispose();
-                browser.Dispose();
-                browser = null;
-                m_browserWindowHandle = IntPtr.Zero;
-            }
+            this.mBrowserWindowHandle = this.mCore.CefBrowser.GetHost().GetWindowHandle();
         }
     }
 }

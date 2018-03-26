@@ -1,10 +1,37 @@
-﻿#region Port Info
-/**
- * This is a port of Caliburn.Light SimpleContainer for Chromely. Mostly provided as-is. 
- * For more info: https://github.com/tibel/Caliburn.Light/blob/master/src/Caliburn.Core/IoC/SimpleContainer.cs
- **/
-#endregion
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="SimpleContainer.cs" company="Chromely">
+//   Copyright (c) 2017-2018 Kola Oyewumi
+// </copyright>
+// <license>
+// MIT License
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+// </license>
+// <note>
+// Chromely project is licensed under MIT License. CefGlue, CefSharp, Winapi may have additional licensing.
+//
+// This is a port of Caliburn.Light SimpleContainer for Chromely.Mostly provided as-is. 
+// For more info: https://github.com/tibel/Caliburn.Light/blob/master/src/Caliburn.Core/IoC/SimpleContainer.cs
+// </note>
+// --------------------------------------------------------------------------------------------------------------------
 
+// ReSharper disable once CheckNamespace
 namespace Caliburn.Light
 {
     using System;
@@ -19,22 +46,38 @@ namespace Caliburn.Light
     /// </summary>
     public class SimpleContainer : IChromelyContainer
     {
+        /// <summary>
+        /// The delegate type.
+        /// </summary>
         private static readonly TypeInfo DelegateType = typeof(Delegate).GetTypeInfo();
+
+        /// <summary>
+        /// The enumerable type.
+        /// </summary>
         private static readonly TypeInfo EnumerableType = typeof(IEnumerable).GetTypeInfo();
 
-        private readonly List<ContainerEntry> m_entries;
+        /// <summary>
+        /// The list of entries.
+        /// </summary>
+        private readonly List<ContainerEntry> mEntries;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SimpleContainer" /> class.
         /// </summary>
         public SimpleContainer()
         {
-            m_entries = new List<ContainerEntry>();
+            this.mEntries = new List<ContainerEntry>();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SimpleContainer"/> class.
+        /// </summary>
+        /// <param name="entries">
+        /// The entries.
+        /// </param>
         private SimpleContainer(IEnumerable<ContainerEntry> entries)
         {
-            m_entries = new List<ContainerEntry>(entries);
+            this.mEntries = new List<ContainerEntry>(entries);
         }
 
         /// <summary>
@@ -43,7 +86,7 @@ namespace Caliburn.Light
         /// <returns>A new container.</returns>
         public SimpleContainer CreateChildContainer()
         {
-            return new SimpleContainer(m_entries);
+            return new SimpleContainer(this.mEntries);
         }
 
         /// <summary>
@@ -55,9 +98,11 @@ namespace Caliburn.Light
         public bool IsRegistered(Type service, string key = null)
         {
             if (service == null)
+            {
                 throw new ArgumentNullException(nameof(service));
+            }
 
-            return m_entries.Any(x => x.Service == service && x.Key == key);
+            return this.mEntries.Any(x => x.Service == service && x.Key == key);
         }
 
         /// <summary>
@@ -68,7 +113,7 @@ namespace Caliburn.Light
         /// <returns>True if a handler is registered; false otherwise.</returns>
         public bool IsRegistered<TService>(string key = null)
         {
-            return IsRegistered(typeof(TService), key);
+            return this.IsRegistered(typeof(TService), key);
         }
 
         /// <summary>
@@ -80,12 +125,17 @@ namespace Caliburn.Light
         public void RegisterSingleton(Type service, string key, Type implementation)
         {
             if (service == null)
+            {
                 throw new ArgumentNullException(nameof(service));
+            }
+
             if (implementation == null)
+            {
                 throw new ArgumentNullException(nameof(implementation));
+            }
 
             object singleton = null;
-            GetOrCreateEntry(service, key).Add(c => singleton ?? (singleton = c.BuildInstance(implementation)));
+            this.GetOrCreateEntry(service, key).Add(c => singleton ?? (singleton = c.BuildInstance(implementation)));
         }
 
         /// <summary>
@@ -95,7 +145,7 @@ namespace Caliburn.Light
         /// <param name="key">The key.</param>
         public void RegisterSingleton<TImplementation>(string key = null)
         {
-            RegisterSingleton(typeof(TImplementation), key, typeof(TImplementation));
+            this.RegisterSingleton(typeof(TImplementation), key, typeof(TImplementation));
         }
 
         /// <summary>
@@ -107,7 +157,7 @@ namespace Caliburn.Light
         public void RegisterSingleton<TService, TImplementation>(string key = null)
             where TImplementation : TService
         {
-            RegisterSingleton(typeof(TService), key, typeof(TImplementation));
+            this.RegisterSingleton(typeof(TService), key, typeof(TImplementation));
         }
 
         /// <summary>
@@ -119,10 +169,12 @@ namespace Caliburn.Light
         public void RegisterSingleton<TService>(Func<SimpleContainer, TService> handler, string key = null)
         {
             if (handler == null)
+            {
                 throw new ArgumentNullException(nameof(handler));
+            }
 
             object singleton = null;
-            GetOrCreateEntry(typeof(TService), key).Add(c => singleton ?? (singleton = handler(c)));
+            this.GetOrCreateEntry(typeof(TService), key).Add(c => singleton ?? (singleton = handler(c)));
         }
 
         /// <summary>
@@ -134,9 +186,11 @@ namespace Caliburn.Light
         public void RegisterInstance(Type service, string key, object instance)
         {
             if (service == null)
+            {
                 throw new ArgumentNullException(nameof(service));
+            }
 
-            GetOrCreateEntry(service, key).Add(c => instance);
+            this.GetOrCreateEntry(service, key).Add(c => instance);
         }
 
         /// <summary>
@@ -147,7 +201,7 @@ namespace Caliburn.Light
         /// <param name="instance">The instance.</param>
         public void RegisterInstance<TService>(string key, TService instance)
         {
-            RegisterInstance(typeof(TService), key, instance);
+            this.RegisterInstance(typeof(TService), key, instance);
         }
 
         /// <summary>
@@ -159,11 +213,16 @@ namespace Caliburn.Light
         public void RegisterPerRequest(Type service, string key, Type implementation)
         {
             if (service == null)
+            {
                 throw new ArgumentNullException(nameof(service));
-            if (implementation == null)
-                throw new ArgumentNullException(nameof(implementation));
+            }
 
-            GetOrCreateEntry(service, key).Add(c => c.BuildInstance(implementation));
+            if (implementation == null)
+            {
+                throw new ArgumentNullException(nameof(implementation));
+            }
+
+            this.GetOrCreateEntry(service, key).Add(c => c.BuildInstance(implementation));
         }
 
         /// <summary>
@@ -173,7 +232,7 @@ namespace Caliburn.Light
         /// <param name="key">The key.</param>
         public void RegisterPerRequest<TService>(string key = null)
         {
-            RegisterPerRequest<TService, TService>(key);
+            this.RegisterPerRequest<TService, TService>(key);
         }
 
         /// <summary>
@@ -185,7 +244,7 @@ namespace Caliburn.Light
         public void RegisterPerRequest<TService, TImplementation>(string key = null)
             where TImplementation : TService
         {
-            RegisterPerRequest(typeof(TService), key, typeof(TImplementation));
+            this.RegisterPerRequest(typeof(TService), key, typeof(TImplementation));
         }
 
         /// <summary>
@@ -197,11 +256,16 @@ namespace Caliburn.Light
         public void RegisterPerRequest(Type service, Func<SimpleContainer, object> handler, string key = null)
         {
             if (service == null)
+            {
                 throw new ArgumentNullException(nameof(service));
-            if (handler == null)
-                throw new ArgumentNullException(nameof(handler));
+            }
 
-            GetOrCreateEntry(service, key).Add(handler);
+            if (handler == null)
+            {
+                throw new ArgumentNullException(nameof(handler));
+            }
+
+            this.GetOrCreateEntry(service, key).Add(handler);
         }
 
         /// <summary>
@@ -213,9 +277,11 @@ namespace Caliburn.Light
         public void RegisterPerRequest<TService>(Func<SimpleContainer, TService> handler, string key = null)
         {
             if (handler == null)
+            {
                 throw new ArgumentNullException(nameof(handler));
+            }
 
-            GetOrCreateEntry(typeof(TService), key).Add(c => handler(c));
+            this.GetOrCreateEntry(typeof(TService), key).Add(c => handler(c));
         }
 
         /// <summary>
@@ -227,11 +293,17 @@ namespace Caliburn.Light
         public bool UnregisterHandler(Type service, string key = null)
         {
             if (service == null)
+            {
                 throw new ArgumentNullException(nameof(service));
+            }
 
-            var entry = m_entries.FirstOrDefault(x => x.Service == service && x.Key == key);
-            if (entry == null) return false;
-            return m_entries.Remove(entry);
+            var entry = this.mEntries.FirstOrDefault(x => x.Service == service && x.Key == key);
+            if (entry == null)
+            {
+                return false;
+            }
+
+            return this.mEntries.Remove(entry);
         }
 
         /// <summary>
@@ -242,7 +314,7 @@ namespace Caliburn.Light
         /// <returns>true if handler is successfully removed; otherwise, false.</returns>
         public bool UnregisterHandler<TService>(string key = null)
         {
-            return UnregisterHandler(typeof(TService), key);
+            return this.UnregisterHandler(typeof(TService), key);
         }
 
         /// <summary>
@@ -254,13 +326,18 @@ namespace Caliburn.Light
         public object GetInstance(Type service, string key = null)
         {
             if (service == null)
+            {
                 throw new ArgumentNullException(nameof(service));
+            }
 
-            var entry = m_entries.FirstOrDefault(x => x.Service == service && x.Key == key) ?? m_entries.FirstOrDefault(x => x.Service == service);
+            var entry = this.mEntries.FirstOrDefault(x => x.Service == service && x.Key == key) ?? this.mEntries.FirstOrDefault(x => x.Service == service);
             if (entry != null)
             {
                 if (entry.Count != 1)
-                    throw new InvalidOperationException(string.Format("Found multiple registrations for type '{0}' and key {1}.", service, key));
+                {
+                    throw new InvalidOperationException(
+                        string.Format("Found multiple registrations for type '{0}' and key {1}.", service, key));
+                }
 
                 return entry[0](this);
             }
@@ -279,10 +356,13 @@ namespace Caliburn.Light
             if (serviceType.IsGenericType && EnumerableType.IsAssignableFrom(serviceType))
             {
                 if (key != null)
-                    throw new InvalidOperationException(string.Format("Requesting type '{0}' with key {1} is not supported.", service, key));
+                {
+                    throw new InvalidOperationException(
+                        string.Format("Requesting type '{0}' with key {1} is not supported.", service, key));
+                }
 
                 var listType = service.GenericTypeArguments[0];
-                var instances = GetAllInstances(listType);
+                var instances = this.GetAllInstances(listType);
                 var array = Array.CreateInstance(listType, instances.Length);
 
                 for (var i = 0; i < array.Length; i++)
@@ -293,7 +373,7 @@ namespace Caliburn.Light
                 return array;
             }
 
-            return (serviceType.IsValueType) ? Activator.CreateInstance(service) : null;
+            return serviceType.IsValueType ? Activator.CreateInstance(service) : null;
         }
 
         /// <summary>
@@ -304,7 +384,7 @@ namespace Caliburn.Light
         /// <returns>The instance.</returns>
         public TService GetInstance<TService>(string key = null)
         {
-            return (TService)GetInstance(typeof(TService), key);
+            return (TService)this.GetInstance(typeof(TService), key);
         }
 
         /// <summary>
@@ -315,9 +395,11 @@ namespace Caliburn.Light
         public object[] GetAllInstances(Type service)
         {
             if (service == null)
+            {
                 throw new ArgumentNullException(nameof(service));
+            }
 
-            var instances = m_entries
+            var instances = this.mEntries
                 .Where(x => x.Service == service)
                 .SelectMany(e => e.Select(x => x(this)))
                 .ToArray();
@@ -334,24 +416,12 @@ namespace Caliburn.Light
         {
             var service = typeof(TService);
 
-            var instances = m_entries
+            var instances = this.mEntries
                 .Where(x => x.Service == service)
                 .SelectMany(e => e.Select(x => (TService)x(this)))
                 .ToArray();
 
             return instances;
-        }
-
-        private ContainerEntry GetOrCreateEntry(Type service, string key)
-        {
-            var entry = m_entries.FirstOrDefault(x => x.Service == service && x.Key == key);
-            if (entry == null)
-            {
-                entry = new ContainerEntry { Service = service, Key = key };
-                m_entries.Add(entry);
-            }
-
-            return entry;
         }
 
         /// <summary>
@@ -366,13 +436,15 @@ namespace Caliburn.Light
                 .FirstOrDefault(c => c.IsPublic);
 
             if (constructor == null)
+            {
                 throw new InvalidOperationException(string.Format("Type '{0}' has no public constructor.", type));
+            }
 
             var args = constructor.GetParameters()
-                .Select(info => GetInstance(info.ParameterType, null))
+                .Select(info => this.GetInstance(info.ParameterType))
                 .ToArray();
 
-            return ActivateInstance(type, args);
+            return this.ActivateInstance(type, args);
         }
 
         /// <summary>
@@ -386,18 +458,68 @@ namespace Caliburn.Light
             return (args.Length > 0) ? Activator.CreateInstance(type, args) : Activator.CreateInstance(type);
         }
 
-        private class ContainerEntry : List<Func<SimpleContainer, object>>
+        /// <summary>
+        /// The get or create entry.
+        /// </summary>
+        /// <param name="service">
+        /// The service.
+        /// </param>
+        /// <param name="key">
+        /// The key.
+        /// </param>
+        /// <returns>
+        /// The <see cref="ContainerEntry"/>.
+        /// </returns>
+        private ContainerEntry GetOrCreateEntry(Type service, string key)
         {
-            public string Key;
-            public Type Service;
+            var entry = this.mEntries.FirstOrDefault(x => x.Service == service && x.Key == key);
+            if (entry == null)
+            {
+                entry = new ContainerEntry { Service = service, Key = key };
+                this.mEntries.Add(entry);
+            }
+
+            return entry;
         }
 
+        /// <summary>
+        /// The container entry.
+        /// </summary>
+        private class ContainerEntry : List<Func<SimpleContainer, object>>
+        {
+            /// <summary>
+            /// Gets or sets the key.
+            /// </summary>
+            public string Key { get; set; }
+
+            /// <summary>
+            /// Gets or sets the service.
+            /// </summary>
+            public Type Service { get; set; }
+        }
+
+        /// <summary>
+        /// The factory factory.
+        /// </summary>
+        /// <typeparam name="T">
+        /// Object type.
+        /// </typeparam>
         private class FactoryFactory<T>
         {
-            public Func<T> Create(SimpleContainer container, string key)
-            {
-                return () => (T)container.GetInstance(typeof(T), key);
-            }
+            /// <summary>
+            /// The create.
+            /// </summary>
+            /// <param name="container">
+            /// The container.
+            /// </param>
+            /// <param name="key">
+            /// The key.
+            /// </param>
+            /// <returns>
+            /// Function pointer.
+            /// </returns>
+            // ReSharper disable once UnusedMember.Local
+            public Func<T> Create(SimpleContainer container, string key) => () => (T)container.GetInstance(typeof(T), key);
         }
     }
 }

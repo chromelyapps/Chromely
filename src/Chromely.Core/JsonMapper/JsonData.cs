@@ -1,30 +1,33 @@
-﻿#region Header
-/**
- * JsonData.cs
- *   Generic type to hold JSON data (objects, arrays, and so on). This is
- *   the default type returned by JsonMapper.ToObject().
- *
- * The authors disclaim copyright to this source code. For more details, see
- * the COPYING file included with this distribution.
- **/
-#endregion
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="JsonData.cs" company="Chromely">
+//   Copyright (c) 2017-2018 Kola Oyewumi
+// </copyright>
+// <license>
+// The authors disclaim copyright to this source code. For more details, see
+// the COPYING file included with this distribution @ https://github.com/lbv/litjson
+// </license>
+// <note>
+// Chromely project is licensed under MIT License. CefGlue, CefSharp, Winapi may have additional licensing.
+//
+// This is a port of LitJson to.NET Standard for Chromely.Mostly provided as-is. 
+// For more info: https://github.com/lbv/litjson
+// </note>
+// --------------------------------------------------------------------------------------------------------------------
 
-#region Port Info
-/**
- * This is a port of LitJson to .NET Standard for Chromely. Mostly provided as-is. 
- * For more info: https://github.com/lbv/litjson
- **/
-#endregion
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.IO;
-
-
+// ReSharper disable All
 namespace LitJson
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Collections.Specialized;
+    using System.IO;
+
+    /// <summary>
+    /// The json data.
+    /// Generic type to hold JSON data (objects, arrays, and so on). This is
+    ///  the default type returned by JsonMapper.ToObject().
+    /// </summary>
     public class JsonData : IJsonWrapper, IEquatable<JsonData>
     {
         #region Fields
@@ -442,34 +445,36 @@ namespace LitJson
             type = JsonType.String;
             inst_string = str;
         }
+
         #endregion
 
 
         #region Implicit Conversions
-        public static implicit operator JsonData(Boolean data)
+        public static implicit operator JsonData(bool data)
         {
             return new JsonData(data);
         }
 
-        public static implicit operator JsonData(Double data)
+        public static implicit operator JsonData(double data)
         {
             return new JsonData(data);
         }
 
-        public static implicit operator JsonData(Int32 data)
+        public static implicit operator JsonData(int data)
         {
             return new JsonData(data);
         }
 
-        public static implicit operator JsonData(Int64 data)
+        public static implicit operator JsonData(long data)
         {
             return new JsonData(data);
         }
 
-        public static implicit operator JsonData(String data)
+        public static implicit operator JsonData(string data)
         {
             return new JsonData(data);
         }
+
         #endregion
 
 
@@ -518,6 +523,7 @@ namespace LitJson
 
             return data.inst_string;
         }
+
         #endregion
 
 
@@ -526,6 +532,7 @@ namespace LitJson
         {
             EnsureCollection().CopyTo(array, index);
         }
+
         #endregion
 
 
@@ -575,6 +582,7 @@ namespace LitJson
 
             json = null;
         }
+
         #endregion
 
 
@@ -583,6 +591,7 @@ namespace LitJson
         {
             return EnsureCollection().GetEnumerator();
         }
+
         #endregion
 
 
@@ -676,6 +685,7 @@ namespace LitJson
         {
             ToJson(writer);
         }
+
         #endregion
 
 
@@ -718,6 +728,7 @@ namespace LitJson
             EnsureList().RemoveAt(index);
             json = null;
         }
+
         #endregion
 
 
@@ -750,6 +761,7 @@ namespace LitJson
             inst_object.Remove(object_list[idx].Key);
             object_list.RemoveAt(idx);
         }
+
         #endregion
 
 
@@ -860,16 +872,18 @@ namespace LitJson
             {
                 writer.WriteObjectStart();
 
-                foreach (DictionaryEntry entry in ((IDictionary)obj))
+                foreach (DictionaryEntry entry in (IDictionary)obj)
                 {
                     writer.WritePropertyName((string)entry.Key);
                     WriteJson((JsonData)entry.Value, writer);
                 }
+
                 writer.WriteObjectEnd();
 
                 return;
             }
         }
+
         #endregion
 
 

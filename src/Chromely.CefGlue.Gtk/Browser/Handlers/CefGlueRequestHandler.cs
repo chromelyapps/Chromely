@@ -1,27 +1,80 @@
-﻿#region Port Info
-/**
- * This is a port from CefGlue.WindowsForms sample of . Mostly provided as-is. 
- * For more info: https://bitbucket.org/xilium/xilium.cefglue/wiki/Home
- **/
-#endregion
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="CefGlueRequestHandler.cs" company="Chromely">
+//   Copyright (c) 2017-2018 Kola Oyewumi
+// </copyright>
+// <license>
+// MIT License
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+// </license>
+// <note>
+// Chromely project is licensed under MIT License. CefGlue, CefSharp, Winapi may have additional licensing.
+// This is a port from CefGlue.WindowsForms sample of CefGlue. Mostly provided as-is. 
+// For more info: https://bitbucket.org/xilium/xilium.cefglue/wiki/Home
+// </note>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Chromely.CefGlue.Gtk.Browser.Handlers
 {
     using System;
     using System.Diagnostics;
+    using Chromely.CefGlue.Gtk.Browser.EventParams;
     using Chromely.Core.Host;
     using Chromely.Core.Infrastructure;
     using Xilium.CefGlue;
 
+    /// <summary>
+    /// The cef glue request handler.
+    /// </summary>
     public class CefGlueRequestHandler : CefRequestHandler
     {
-        private readonly CefGlueBrowser m_browser;
+        /// <summary>
+        /// The m browser.
+        /// </summary>
+        private readonly CefGlueBrowser mBrowser;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CefGlueRequestHandler"/> class.
+        /// </summary>
         public CefGlueRequestHandler()
         {
-            m_browser = CefGlueBrowser.BrowserCore;
+            this.mBrowser = CefGlueBrowser.BrowserCore;
         }
 
+        /// <summary>
+        /// The on before browse.
+        /// </summary>
+        /// <param name="browser">
+        /// The browser.
+        /// </param>
+        /// <param name="frame">
+        /// The frame.
+        /// </param>
+        /// <param name="request">
+        /// The request.
+        /// </param>
+        /// <param name="isRedirect">
+        /// The is redirect.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
         protected override bool OnBeforeBrowse(CefBrowser browser, CefFrame frame, CefRequest request, bool isRedirect)
         {
             bool isUrlExternal = UrlSchemeProvider.IsUrlRegisteredExternal(request.Url);
@@ -59,14 +112,32 @@ namespace Chromely.CefGlue.Gtk.Browser.Handlers
             return false;
         }
 
+        /// <summary>
+        /// The on plugin crashed.
+        /// </summary>
+        /// <param name="browser">
+        /// The browser.
+        /// </param>
+        /// <param name="pluginPath">
+        /// The plugin path.
+        /// </param>
         protected override void OnPluginCrashed(CefBrowser browser, string pluginPath)
         {
-            m_browser.InvokeAsyncIfPossible(() => m_browser.OnPluginCrashed(new PluginCrashedEventArgs(pluginPath)));
+            this.mBrowser.InvokeAsyncIfPossible(() => this.mBrowser.OnPluginCrashed(new PluginCrashedEventArgs(pluginPath)));
         }
 
+        /// <summary>
+        /// The on render process terminated.
+        /// </summary>
+        /// <param name="browser">
+        /// The browser.
+        /// </param>
+        /// <param name="status">
+        /// The status.
+        /// </param>
         protected override void OnRenderProcessTerminated(CefBrowser browser, CefTerminationStatus status)
         {
-            m_browser.InvokeAsyncIfPossible(() => m_browser.OnRenderProcessTerminated(new RenderProcessTerminatedEventArgs(status)));
+            this.mBrowser.InvokeAsyncIfPossible(() => this.mBrowser.OnRenderProcessTerminated(new RenderProcessTerminatedEventArgs(status)));
         }
     }
 }

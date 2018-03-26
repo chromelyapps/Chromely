@@ -1,28 +1,26 @@
-﻿#region Header
-/**
- * Lexer.cs
- *   JSON lexer implementation based on a finite state machine.
- *
- * The authors disclaim copyright to this source code. For more details, see
- * the COPYING file included with this distribution.
- **/
-#endregion
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="IJsonWrapper.cs" company="Chromely">
+//   Copyright (c) 2017-2018 Kola Oyewumi
+// </copyright>
+// <license>
+// The authors disclaim copyright to this source code. For more details, see
+// the COPYING file included with this distribution @ https://github.com/lbv/litjson
+// </license>
+// <note>
+// Chromely project is licensed under MIT License. CefGlue, CefSharp, Winapi may have additional licensing.
+//
+// This is a port of LitJson to.NET Standard for Chromely.Mostly provided as-is. 
+// For more info: https://github.com/lbv/litjson
+// </note>
+// --------------------------------------------------------------------------------------------------------------------
 
-#region Port Info
-/**
- * This is a port of LitJson to .NET Standard for Chromely. Mostly provided as-is. 
- * For more info: https://github.com/lbv/litjson
- **/
-#endregion
-
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-
-
+// ReSharper disable All
 namespace LitJson
 {
+    using System;
+    using System.IO;
+    using System.Text;
+
     internal class FsmContext
     {
         public bool Return;
@@ -31,7 +29,10 @@ namespace LitJson
         public int StateStack;
     }
 
-
+    /// <summary>
+    /// The lexer.
+    /// JSON lexer implementation based on a finite state machine.
+    /// </summary>
     internal class Lexer
     {
         #region Fields
@@ -40,48 +41,28 @@ namespace LitJson
         private static int[] fsm_return_table;
         private static StateHandler[] fsm_handler_table;
 
-        private bool allow_comments;
-        private bool allow_single_quoted_strings;
-        private bool end_of_input;
         private FsmContext fsm_context;
         private int input_buffer;
         private int input_char;
         private TextReader reader;
         private int state;
         private StringBuilder string_buffer;
-        private string string_value;
-        private int token;
+
         private int unichar;
         #endregion
 
 
         #region Properties
-        public bool AllowComments
-        {
-            get { return allow_comments; }
-            set { allow_comments = value; }
-        }
+        public bool AllowComments { get; set; }
 
-        public bool AllowSingleQuotedStrings
-        {
-            get { return allow_single_quoted_strings; }
-            set { allow_single_quoted_strings = value; }
-        }
+        public bool AllowSingleQuotedStrings { get; set; }
 
-        public bool EndOfInput
-        {
-            get { return end_of_input; }
-        }
+        public bool EndOfInput { get; private set; }
 
-        public int Token
-        {
-            get { return token; }
-        }
+        public int Token { get; private set; }
 
-        public string StringValue
-        {
-            get { return string_value; }
-        }
+        public string StringValue { get; private set; }
+
         #endregion
 
 
@@ -93,13 +74,13 @@ namespace LitJson
 
         public Lexer(TextReader reader)
         {
-            allow_comments = true;
-            allow_single_quoted_strings = true;
+            this.AllowComments = true;
+            this.AllowSingleQuotedStrings = true;
 
             input_buffer = 0;
             string_buffer = new StringBuilder(128);
             state = 1;
-            end_of_input = false;
+            this.EndOfInput = false;
             this.reader = reader;
 
             fsm_context = new FsmContext();
@@ -295,7 +276,7 @@ namespace LitJson
                         return true;
 
                     case '\'':
-                        if (!ctx.L.allow_single_quoted_strings)
+                        if (!ctx.L.AllowSingleQuotedStrings)
                             return false;
 
                         ctx.L.input_char = '"';
@@ -304,7 +285,7 @@ namespace LitJson
                         return true;
 
                     case '/':
-                        if (!ctx.L.allow_comments)
+                        if (!ctx.L.AllowComments)
                             return false;
 
                         ctx.NextState = 25;
@@ -919,7 +900,7 @@ namespace LitJson
             if ((input_char = NextChar()) != -1)
                 return true;
 
-            end_of_input = true;
+            this.EndOfInput = true;
             return false;
         }
 
@@ -948,17 +929,17 @@ namespace LitJson
                 if (!handler(fsm_context))
                     throw new JsonException(input_char);
 
-                if (end_of_input)
+                if (this.EndOfInput)
                     return false;
 
                 if (fsm_context.Return)
                 {
-                    string_value = string_buffer.ToString();
+                    this.StringValue = string_buffer.ToString();
                     string_buffer.Remove(0, string_buffer.Length);
-                    token = fsm_return_table[state - 1];
+                    this.Token = fsm_return_table[state - 1];
 
-                    if (token == (int)ParserToken.Char)
-                        token = input_char;
+                    if (this.Token == (int)ParserToken.Char)
+                        this.Token = input_char;
 
                     state = fsm_context.NextState;
 

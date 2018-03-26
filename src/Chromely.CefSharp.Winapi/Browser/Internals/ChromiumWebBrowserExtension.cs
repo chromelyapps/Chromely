@@ -1,39 +1,55 @@
-﻿/**
- MIT License
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ChromiumWebBrowserExtension.cs" company="Chromely">
+//   Copyright (c) 2017-2018 Kola Oyewumi
+// </copyright>
+// <license>
+// MIT License
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+// </license>
+// <note>
+// Chromely project is licensed under MIT License. CefGlue, CefSharp, Winapi may have additional licensing.
+// </note>
+// --------------------------------------------------------------------------------------------------------------------
 
- Copyright (c) 2017 Kola Oyewumi
-
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
-
- The above copyright notice and this permission notice shall be included in all
- copies or substantial portions of the Software.
-
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- SOFTWARE.
- */
-
- namespace Chromely.CefSharp.Winapi.Browser.Internals
+// ReSharper disable StyleCop.SA1210
+namespace Chromely.CefSharp.Winapi.Browser.Internals
 {
     using System;
+
     using Chromely.CefSharp.Winapi.Browser.Handlers;
     using Chromely.Core.Helpers;
     using Chromely.Core.Infrastructure;
 
     using global::CefSharp;
 
-
+    /// <summary>
+    /// The chromium web browser extension.
+    /// </summary>
     public static class ChromiumWebBrowserExtension
     {
+        /// <summary>
+        /// The set handlers.
+        /// </summary>
+        /// <param name="browser">
+        /// The browser.
+        /// </param>
         public static void SetHandlers(this ChromiumWebBrowser browser)
         {
             try
@@ -42,8 +58,8 @@
                 {
                     object instance = null;
 
-                    Type service = CefHandlerDummyTypes.GetHandlerType(enumKey);
-                    string keyStr = enumKey.EnumToString();
+                    var service = CefHandlerDummyTypes.GetHandlerType(enumKey);
+                    var keyStr = enumKey.EnumToString();
                     try
                     {
                         if (IoC.IsRegistered(service, keyStr))
@@ -63,6 +79,7 @@
                             {
                                 browser.LifeSpanHandler = (ILifeSpanHandler)instance;
                             }
+
                             break;
 
                         case CefHandlerKey.LoadHandler:
@@ -70,6 +87,7 @@
                             {
                                 browser.LoadHandler = (ILoadHandler)instance;
                             }
+
                             break;
 
                         case CefHandlerKey.RequestHandler:
@@ -81,6 +99,7 @@
                             {
                                 browser.RequestHandler = new CefSharpRequestHandler();
                             }
+
                             break;
 
                         case CefHandlerKey.DisplayHandler:
@@ -88,6 +107,7 @@
                             {
                                 browser.DisplayHandler = (IDisplayHandler)instance;
                             }
+
                             break;
 
                         case CefHandlerKey.ContextMenuHandler:
@@ -99,6 +119,7 @@
                             {
                                 browser.MenuHandler = new CefSharpContextMenuHandler();
                             }
+
                             break;
 
                         case CefHandlerKey.FocusHandler:
@@ -106,6 +127,7 @@
                             {
                                 browser.FocusHandler = (IFocusHandler)instance;
                             }
+
                             break;
 
                         case CefHandlerKey.KeyboardHandler:
@@ -113,13 +135,15 @@
                             {
                                 browser.KeyboardHandler = (IKeyboardHandler)instance;
                             }
+
                             break;
 
-                        case CefHandlerKey.JSDialogHandler:
+                        case CefHandlerKey.JsDialogHandler:
                             if ((instance != null) && (instance is IJsDialogHandler))
                             {
                                 browser.JsDialogHandler = (IJsDialogHandler)instance;
                             }
+
                             break;
 
                         case CefHandlerKey.DialogHandler:
@@ -127,6 +151,7 @@
                             {
                                 browser.DialogHandler = (IDialogHandler)instance;
                             }
+
                             break;
 
                         case CefHandlerKey.DragHandler:
@@ -134,6 +159,7 @@
                             {
                                 browser.DragHandler = (IDragHandler)instance;
                             }
+
                             break;
 
                         case CefHandlerKey.GeolocationHandler:
@@ -141,6 +167,7 @@
                             {
                                 browser.GeolocationHandler = (IGeolocationHandler)instance;
                             }
+
                             break;
 
                         case CefHandlerKey.DownloadHandler:
@@ -148,6 +175,7 @@
                             {
                                 browser.DownloadHandler = (IDownloadHandler)instance;
                             }
+
                             break;
 
                         case CefHandlerKey.FindHandler:
@@ -155,8 +183,8 @@
                             {
                                 browser.FindHandler = (IFindHandler)instance;
                             }
-                            break;
 
+                            break;
                     }
                 }
             }
@@ -164,7 +192,6 @@
             {
                 Log.Error(exception);
             }
-
         }
     }
 }

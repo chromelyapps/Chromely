@@ -1,27 +1,34 @@
-﻿/**
- MIT License
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="CefSharpBrowserHost.cs" company="Chromely">
+//   Copyright (c) 2017-2018 Kola Oyewumi
+// </copyright>
+// <license>
+// MIT License
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+// </license>
+// <note>
+// Chromely project is licensed under MIT License. CefGlue, CefSharp, Winapi may have additional licensing.
+// </note>
+// --------------------------------------------------------------------------------------------------------------------
 
- Copyright (c) 2017 Kola Oyewumi
-
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
-
- The above copyright notice and this permission notice shall be included in all
- copies or substantial portions of the Software.
-
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- SOFTWARE.
- */
-
+// ReSharper disable StyleCop.SA1210
 namespace Chromely.CefSharp.Winapi.ChromeHost
 {
     using System;
@@ -29,6 +36,7 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
     using System.IO;
     using System.Linq;
     using System.Reflection;
+
     using Chromely.CefSharp.Winapi.Browser;
     using Chromely.CefSharp.Winapi.Browser.Handlers;
     using Chromely.CefSharp.Winapi.Browser.Internals;
@@ -36,134 +44,129 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
     using Chromely.Core.Host;
     using Chromely.Core.Infrastructure;
     using Chromely.Core.RestfulService;
-    using WinApi.Windows;
 
     using global::CefSharp;
+
+    using WinApi.Windows;
+
     using CefSharpGlobal = global::CefSharp;
 
+    /// <summary>
+    /// The cef sharp browser host.
+    /// </summary>
     public class CefSharpBrowserHost : EventedWindowCore, IChromelyHost, IChromelyServiceProvider
     {
-        private ChromiumWebBrowser m_browser;
-        private CefSettings m_settings;
+        /// <summary>
+        /// The m browser.
+        /// </summary>
+        private ChromiumWebBrowser mBrowser;
 
+        /// <summary>
+        /// The m settings.
+        /// </summary>
+        private CefSettings mSettings;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CefSharpBrowserHost"/> class.
+        /// </summary>
+        /// <param name="hostConfig">
+        /// The host config.
+        /// </param>
         public CefSharpBrowserHost(ChromelyConfiguration hostConfig)
         {
-            HostConfig = hostConfig;
-            m_browser = null;
-            m_settings = new CefSettings();
-            ServiceAssemblies = new List<Assembly>();
+            this.mBrowser = null;
+            this.mSettings = new CefSettings();
+            this.HostConfig = hostConfig;
+            this.ServiceAssemblies = new List<Assembly>();
         }
 
-        public List<Assembly> ServiceAssemblies { get; private set; }
-        public ChromelyConfiguration HostConfig { get; private set; }
+        /// <summary>
+        /// Gets the service assemblies.
+        /// </summary>
+        public List<Assembly> ServiceAssemblies { get; }
 
-        protected override void OnCreate(ref CreateWindowPacket packet)
-        {
-            //For Windows 7 and above, best to include relevant app.manifest entries as well
-            Cef.EnableHighDPISupport();
+        /// <summary>
+        /// Gets the host config.
+        /// </summary>
+        public ChromelyConfiguration HostConfig { get; }
 
-            var codeBase = Assembly.GetExecutingAssembly().CodeBase;
-            var localFolder = Path.GetDirectoryName(new Uri(codeBase).LocalPath);
-            var localesDirPath = Path.Combine(localFolder, "locales");
-
-            m_settings = new CefSettings
-            {
-                LocalesDirPath = localesDirPath,
-                Locale = HostConfig.Locale,
-                MultiThreadedMessageLoop = true,
-                CachePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "CefSharp\\Cache"),
-                LogSeverity = (CefSharpGlobal.LogSeverity)HostConfig.LogSeverity,
-                LogFile = HostConfig.LogFile
-            };
-
-            // Update configuration settings
-            m_settings.Update(HostConfig.CustomSettings);
-            m_settings.UpdateCommandLineArgs(HostConfig.CommandLineArgs);
-
-            RegisterSchemeHandlers();
-
-            //Perform dependency check to make sure all relevant resources are in our output directory.
-            Cef.Initialize(m_settings, performDependencyCheck: HostConfig.PerformDependencyCheck, browserProcessHandler: null);
-
-            m_browser = new ChromiumWebBrowser(Handle, HostConfig.StartUrl);
-            m_browser.IsBrowserInitializedChanged += IsBrowserInitializedChanged;
-
-            // Set handlers
-            m_browser.SetHandlers();
-
-            RegisterJsHandlers();
-
-            base.OnCreate(ref packet);
-
-            Log.Info("Cef browser successfully created.");
-        }
-
-        private void IsBrowserInitializedChanged(object sender, CefSharpGlobal.IsBrowserInitializedChangedEventArgs eventArgs)
-        {
-            if (eventArgs.IsBrowserInitialized)
-            {
-                var size = GetClientSize();
-                m_browser.SetSize(size.Width, size.Height);
-                m_browser.IsBrowserInitializedChanged -= IsBrowserInitializedChanged;
-            }
-        }
-
-        protected override void OnSize(ref SizePacket packet)
-        {
-            base.OnSize(ref packet);
-
-            var size = packet.Size;
-            m_browser.SetSize(size.Width, size.Height);
-        }
-
-        protected override void OnDestroy(ref Packet packet)
-        {
-            m_browser.Dispose();
-            Cef.Shutdown();
-
-            base.OnDestroy(ref packet);
-        }
-
+        /// <summary>
+        /// The register url scheme.
+        /// </summary>
+        /// <param name="scheme">
+        /// The scheme.
+        /// </param>
         public void RegisterUrlScheme(UrlScheme scheme)
         {
             UrlSchemeProvider.RegisterScheme(scheme);
         }
 
+        /// <summary>
+        /// The register service assembly.
+        /// </summary>
+        /// <param name="filename">
+        /// The filename.
+        /// </param>
         public void RegisterServiceAssembly(string filename)
         {
-            ServiceAssemblies?.RegisterServiceAssembly(Assembly.LoadFile(filename));
+            this.ServiceAssemblies?.RegisterServiceAssembly(Assembly.LoadFile(filename));
         }
 
+        /// <summary>
+        /// The register service assembly.
+        /// </summary>
+        /// <param name="assembly">
+        /// The assembly.
+        /// </param>
         public void RegisterServiceAssembly(Assembly assembly)
         {
-            ServiceAssemblies?.RegisterServiceAssembly(assembly);
+            this.ServiceAssemblies?.RegisterServiceAssembly(assembly);
         }
 
+        /// <summary>
+        /// The register service assemblies.
+        /// </summary>
+        /// <param name="folder">
+        /// The folder.
+        /// </param>
         public void RegisterServiceAssemblies(string folder)
         {
-            ServiceAssemblies?.RegisterServiceAssemblies(folder);
+            this.ServiceAssemblies?.RegisterServiceAssemblies(folder);
         }
 
+        /// <summary>
+        /// The register service assemblies.
+        /// </summary>
+        /// <param name="filenames">
+        /// The filenames.
+        /// </param>
         public void RegisterServiceAssemblies(List<string> filenames)
         {
-            ServiceAssemblies?.RegisterServiceAssemblies(filenames);
+            this.ServiceAssemblies?.RegisterServiceAssemblies(filenames);
         }
 
+        /// <summary>
+        /// The scan assemblies.
+        /// </summary>
         public void ScanAssemblies()
         {
-            if ((ServiceAssemblies == null) || (ServiceAssemblies.Count == 0))
+            if ((this.ServiceAssemblies == null) || 
+                this.ServiceAssemblies.Count == 0)
             {
                 return;
             }
 
-            foreach (var assembly in ServiceAssemblies)
+            foreach (var assembly in this.ServiceAssemblies)
             {
-                RouteScanner scanner = new RouteScanner(assembly);
-                Dictionary<string, Route> currentRouteDictionary = scanner.Scan();
+                var scanner = new RouteScanner(assembly);
+                var currentRouteDictionary = scanner.Scan();
                 ServiceRouteProvider.MergeRoutes(currentRouteDictionary);
             }
         }
 
+        /// <summary>
+        /// The register scheme handlers.
+        /// </summary>
         public void RegisterSchemeHandlers()
         {
             // Register scheme handlers
@@ -174,14 +177,13 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
 
                 foreach (var item in schemeHandlers)
                 {
-                    if (item is ChromelySchemeHandler)
+                    if (item is ChromelySchemeHandler handler)
                     {
-                        ChromelySchemeHandler handler = (ChromelySchemeHandler)item;
                         if (handler.HandlerFactory == null)
                         {
                             if (handler.UseDefaultResource)
                             {
-                                m_settings.RegisterScheme(new CefCustomScheme
+                                this.mSettings.RegisterScheme(new CefCustomScheme
                                 {
                                     SchemeName = handler.SchemeName,
                                     DomainName = handler.DomainName,
@@ -193,7 +195,7 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
 
                             if (handler.UseDefaultHttp)
                             {
-                                m_settings.RegisterScheme(new CefCustomScheme
+                                this.mSettings.RegisterScheme(new CefCustomScheme
                                 {
                                     SchemeName = handler.SchemeName,
                                     DomainName = handler.DomainName,
@@ -205,23 +207,23 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
                         }
                         else if (handler.HandlerFactory is ISchemeHandlerFactory)
                         {
-                            if (item is ChromelySchemeHandler)
+                            this.mSettings.RegisterScheme(new CefCustomScheme
                             {
-                                m_settings.RegisterScheme(new CefCustomScheme
-                                {
-                                    SchemeName = handler.SchemeName,
-                                    DomainName = handler.DomainName,
-                                    IsSecure = handler.IsSecure,
-                                    IsCorsEnabled = handler.IsCorsEnabled,
-                                    SchemeHandlerFactory = (ISchemeHandlerFactory)handler.HandlerFactory
-                                });
-                            }
+                                SchemeName = handler.SchemeName,
+                                DomainName = handler.DomainName,
+                                IsSecure = handler.IsSecure,
+                                IsCorsEnabled = handler.IsCorsEnabled,
+                                SchemeHandlerFactory = (ISchemeHandlerFactory)handler.HandlerFactory
+                            });
                         }
                     }
                 }
             }
         }
 
+        /// <summary>
+        /// The register js handlers.
+        /// </summary>
         public void RegisterJsHandlers()
         {
             // Register javascript handlers
@@ -234,32 +236,132 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
                 {
                     if (item is ChromelyJsHandler)
                     {
-                        ChromelyJsHandler handler = (ChromelyJsHandler)item;
+                        var handler = (ChromelyJsHandler)item;
                         BindingOptions options = null;
 
-                        if ((handler.BindingOptions != null) && (handler.BindingOptions is BindingOptions))
+                        if (handler.BindingOptions is BindingOptions)
                         {
                             options = (BindingOptions)handler.BindingOptions;
                         }
 
-                        object boundObject = handler.UseDefault ? new CefSharpBoundObject() : handler.BoundObject;
+                        var boundObject = handler.UseDefault ? new CefSharpBoundObject() : handler.BoundObject;
 
                         if (handler.RegisterAsAsync)
                         {
-                            m_browser.RegisterAsyncJsObject(handler.ObjectNameToBind, boundObject, options);
+                            this.mBrowser.RegisterAsyncJsObject(handler.ObjectNameToBind, boundObject, options);
                         }
                         else
                         {
-                            m_browser.RegisterJsObject(handler.ObjectNameToBind, boundObject, options);
+                            this.mBrowser.RegisterJsObject(handler.ObjectNameToBind, boundObject, options);
                         }
                     }
                 }
             }
         }
 
+        /// <summary>
+        /// The register message routers.
+        /// </summary>
+        /// <exception cref="NotImplementedException">
+        /// Exception - NotImplementedException.
+        /// </exception>
         public void RegisterMessageRouters()
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// The on create.
+        /// </summary>
+        /// <param name="packet">
+        /// The packet.
+        /// </param>
+        protected override void OnCreate(ref CreateWindowPacket packet)
+        {
+            // For Windows 7 and above, best to include relevant app.manifest entries as well
+            Cef.EnableHighDPISupport();
+
+            var codeBase = Assembly.GetExecutingAssembly().CodeBase;
+            var localFolder = Path.GetDirectoryName(new Uri(codeBase).LocalPath);
+            var localesDirPath = Path.Combine(localFolder ?? throw new InvalidOperationException(), "locales");
+
+            this.mSettings = new CefSettings
+            {
+                LocalesDirPath = localesDirPath,
+                Locale = this.HostConfig.Locale,
+                MultiThreadedMessageLoop = true,
+                CachePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "CefSharp\\Cache"),
+                LogSeverity = (CefSharpGlobal.LogSeverity)this.HostConfig.LogSeverity,
+                LogFile = this.HostConfig.LogFile
+            };
+
+            // Update configuration settings
+            this.mSettings.Update(this.HostConfig.CustomSettings);
+            this.mSettings.UpdateCommandLineArgs(this.HostConfig.CommandLineArgs);
+
+            this.RegisterSchemeHandlers();
+
+            // Perform dependency check to make sure all relevant resources are in our output directory.
+            Cef.Initialize(this.mSettings, performDependencyCheck: this.HostConfig.PerformDependencyCheck, browserProcessHandler: null);
+
+            this.mBrowser = new ChromiumWebBrowser(this.Handle, this.HostConfig.StartUrl);
+            this.mBrowser.IsBrowserInitializedChanged += this.IsBrowserInitializedChanged;
+
+            // Set handlers
+            this.mBrowser.SetHandlers();
+
+            this.RegisterJsHandlers();
+
+            base.OnCreate(ref packet);
+
+            Log.Info("Cef browser successfully created.");
+        }
+
+        /// <summary>
+        /// The on size.
+        /// </summary>
+        /// <param name="packet">
+        /// The packet.
+        /// </param>
+        protected override void OnSize(ref SizePacket packet)
+        {
+            base.OnSize(ref packet);
+
+            var size = packet.Size;
+            this.mBrowser.SetSize(size.Width, size.Height);
+        }
+
+        /// <summary>
+        /// The on destroy.
+        /// </summary>
+        /// <param name="packet">
+        /// The packet.
+        /// </param>
+        protected override void OnDestroy(ref Packet packet)
+        {
+            this.mBrowser.Dispose();
+            Cef.Shutdown();
+
+            base.OnDestroy(ref packet);
+        }
+
+        /// <summary>
+        /// The is browser initialized changed.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="eventArgs">
+        /// The event args.
+        /// </param>
+        private void IsBrowserInitializedChanged(object sender, IsBrowserInitializedChangedEventArgs eventArgs)
+        {
+            if (eventArgs.IsBrowserInitialized)
+            {
+                var size = this.GetClientSize();
+                this.mBrowser.SetSize(size.Width, size.Height);
+                this.mBrowser.IsBrowserInitializedChanged -= this.IsBrowserInitializedChanged;
+            }
         }
     }
 }

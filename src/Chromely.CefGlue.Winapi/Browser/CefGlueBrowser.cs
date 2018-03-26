@@ -1,37 +1,155 @@
-﻿#region Port Info
-/**
- * This is a port from CefGlue.WindowsForms sample of . Mostly provided as-is. 
- * For more info: https://bitbucket.org/xilium/xilium.cefglue/wiki/Home
- **/
-#endregion
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="CefGlueBrowser.cs" company="Chromely">
+//   Copyright (c) 2017-2018 Kola Oyewumi
+// </copyright>
+// <license>
+// MIT License
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+// </license>
+// <note>
+// Chromely project is licensed under MIT License. CefGlue, CefSharp, Winapi may have additional licensing.
+// This is a port from CefGlue.WindowsForms sample of CefGlue. Mostly provided as-is. 
+// For more info: https://bitbucket.org/xilium/xilium.cefglue/wiki/Home
+// </note>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Chromely.CefGlue.Winapi.Browser
 {
+    using System;
+
+    using Chromely.CefGlue.Winapi.Browser.EventParams;
     using Chromely.Core.Host;
     using Chromely.Core.Infrastructure;
-    using System;
     using Xilium.CefGlue;
 
+    /// <summary>
+    /// The cef glue browser.
+    /// </summary>
     public class CefGlueBrowser : WebBrowserBase
     {
-        private CefBrowserConfig m_browserConfig;
-        private CefBrowser m_browser;
-        private IntPtr m_browserWindowHandle;
+        /// <summary>
+        /// The m_browser config.
+        /// </summary>
+        private readonly CefBrowserConfig mBrowserConfig;
 
+        /// <summary>
+        /// The m browser.
+        /// </summary>
+        private CefBrowser mBrowser;
+
+        /// <summary>
+        /// The m browser window handle.
+        /// </summary>
+        private IntPtr mBrowserWindowHandle;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CefGlueBrowser"/> class.
+        /// </summary>
+        /// <param name="browserConfig">
+        /// The browser config.
+        /// </param>
         public CefGlueBrowser(CefBrowserConfig browserConfig)
         {
-            m_browserConfig = browserConfig;
-            StartUrl = string.IsNullOrEmpty(browserConfig.StartUrl) ? "about:blank" : browserConfig.StartUrl;
+            this.mBrowserConfig = browserConfig;
+            this.StartUrl = string.IsNullOrEmpty(browserConfig.StartUrl) ? "about:blank" : browserConfig.StartUrl;
 
-            CreateBrowser();
+            this.CreateBrowser();
         }
 
-        public string StartUrl { get; set; }
-        public string Title { get; private set; }
-        public string Address { get; private set; }
-        public CefBrowserSettings BrowserSettings { get; set; }
-        public CefBrowser Browser { get { return m_browser; } }
+        #region Events Handling Properties
 
+        /// <summary>
+        /// The browser created.
+        /// </summary>
+        public event EventHandler BrowserCreated;
+
+        /// <summary>
+        /// The title changed.
+        /// </summary>
+        public event EventHandler<TitleChangedEventArgs> TitleChanged;
+
+        /// <summary>
+        /// The address changed.
+        /// </summary>
+        public event EventHandler<AddressChangedEventArgs> AddressChanged;
+
+        /// <summary>
+        /// The status message.
+        /// </summary>
+        public event EventHandler<StatusMessageEventArgs> StatusMessage;
+
+        /// <summary>
+        /// The console message.
+        /// </summary>
+        public event EventHandler<ConsoleMessageEventArgs> ConsoleMessage;
+
+        /// <summary>
+        /// The loading state change.
+        /// </summary>
+        public event EventHandler<LoadingStateChangeEventArgs> LoadingStateChange;
+
+        /// <summary>
+        /// The tooltip.
+        /// </summary>
+        public event EventHandler<TooltipEventArgs> Tooltip;
+
+        /// <summary>
+        /// The before close.
+        /// </summary>
+        public event EventHandler BeforeClose;
+
+        /// <summary>
+        /// The before popup.
+        /// </summary>
+        public event EventHandler<BeforePopupEventArgs> BeforePopup;
+
+        /// <summary>
+        /// The load end.
+        /// </summary>
+        public event EventHandler<LoadEndEventArgs> LoadEnd;
+
+        /// <summary>
+        /// The load error.
+        /// </summary>
+        public event EventHandler<LoadErrorEventArgs> LoadError;
+
+        /// <summary>
+        /// The load started.
+        /// </summary>
+        public event EventHandler<LoadStartEventArgs> LoadStarted;
+
+        /// <summary>
+        /// The plugin crashed.
+        /// </summary>
+        public event EventHandler<PluginCrashedEventArgs> PluginCrashed;
+
+        /// <summary>
+        /// The render process terminated.
+        /// </summary>
+        public event EventHandler<RenderProcessTerminatedEventArgs> RenderProcessTerminated;
+
+        #endregion Events Handling Properties
+
+        /// <summary>
+        /// Gets the browser core.
+        /// </summary>
         public static CefGlueBrowser BrowserCore
         {
             get
@@ -39,7 +157,7 @@ namespace Chromely.CefGlue.Winapi.Browser
                 if (IoC.IsRegistered(typeof(CefGlueBrowser), typeof(CefGlueBrowser).FullName))
                 {
                     object instance = IoC.GetInstance(typeof(CefGlueBrowser), typeof(CefGlueBrowser).FullName);
-                    if ((instance != null) && (instance is CefGlueBrowser))
+                    if (instance is CefGlueBrowser)
                     {
                         return (CefGlueBrowser)instance;
                     }
@@ -49,162 +167,293 @@ namespace Chromely.CefGlue.Winapi.Browser
             }
         }
 
-        protected virtual CefGlueClient CreateWebClient()
+        /// <summary>
+        /// Gets or sets the start url.
+        /// </summary>
+        public string StartUrl { get; set; }
+
+        /// <summary>
+        /// Gets the title.
+        /// </summary>
+        public string Title { get; private set; }
+
+        /// <summary>
+        /// Gets the address.
+        /// </summary>
+        public string Address { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the browser settings.
+        /// </summary>
+        public CefBrowserSettings BrowserSettings { get; set; }
+
+        /// <summary>
+        /// Gets the browser.
+        /// </summary>
+        public CefBrowser Browser => this.mBrowser;
+
+        /// <summary>
+        /// The resize window.
+        /// </summary>
+        /// <param name="width">
+        /// The width.
+        /// </param>
+        /// <param name="height">
+        /// The height.
+        /// </param>
+        public virtual void ResizeWindow(int width, int height)
         {
-            IoC.RegisterInstance(typeof(CefGlueBrowser), typeof(CefGlueBrowser).FullName, this);
-            CefGlueClient client = new CefGlueClient(CefGlueClientParams.Create(this));
-            return client;
+            this.ResizeWindow(this.mBrowserWindowHandle, width, height);
         }
-
-        private void CreateBrowser()
-        {
-            var windowInfo = CefWindowInfo.Create();
-            windowInfo.SetAsChild(m_browserConfig.ParentHandle, m_browserConfig.CefRectangle);
-
-            var client = CreateWebClient();
-
-            var settings = BrowserSettings;
-            if (settings == null) settings = new CefBrowserSettings { };
-
-            settings.DefaultEncoding = "UTF-8";
-            settings.FileAccessFromFileUrls = CefState.Enabled;
-            settings.UniversalAccessFromFileUrls = CefState.Enabled;
-            settings.WebSecurity = CefState.Enabled; 
-
-            CefBrowserHost.CreateBrowser(windowInfo, client, settings, StartUrl);
-        }
-
-        public void ResizeWindow(int width, int height)
-        {
-            ResizeWindow(m_browserWindowHandle, width, height);
-        }
-
-        public void ResizeWindow(IntPtr handle, int width, int height)
-        {
-            if (handle != IntPtr.Zero)
-            {
-                NativeMethods.SetWindowPos(handle, IntPtr.Zero,
-                    0, 0, width, height,
-                     WinapiConstants.NoZOrder
-                    );
-            }
-        }
-
 
         #region Events Handling
 
-        public event EventHandler BrowserCreated;
-        internal protected virtual void OnBrowserAfterCreated(CefBrowser browser)
+        /// <summary>
+        /// The on browser after created.
+        /// </summary>
+        /// <param name="browser">
+        /// The browser.
+        /// </param>
+        public virtual void OnBrowserAfterCreated(CefBrowser browser)
         {
-            m_browser = browser;
-            m_browserWindowHandle = m_browser.GetHost().GetWindowHandle();
+            this.mBrowser = browser;
+            this.mBrowserWindowHandle = this.mBrowser.GetHost().GetWindowHandle();
 
-            BrowserCreated?.Invoke(this, EventArgs.Empty);
+            this.BrowserCreated?.Invoke(this, EventArgs.Empty);
         }
 
-        public event EventHandler<TitleChangedEventArgs> TitleChanged;
-        internal protected virtual void OnTitleChanged(TitleChangedEventArgs eventArgs)
+        /// <summary>
+        /// The on title changed.
+        /// </summary>
+        /// <param name="eventArgs">
+        /// The event args.
+        /// </param>
+        public virtual void OnTitleChanged(TitleChangedEventArgs eventArgs)
         {
-            Title = eventArgs.Title;
-            TitleChanged?.Invoke(this, eventArgs);
+            this.Title = eventArgs.Title;
+            this.TitleChanged?.Invoke(this, eventArgs);
         }
 
-        public event EventHandler<AddressChangedEventArgs> AddressChanged;
-        internal protected virtual void OnAddressChanged(AddressChangedEventArgs eventArgs)
+        /// <summary>
+        /// The on address changed.
+        /// </summary>
+        /// <param name="eventArgs">
+        /// The event args.
+        /// </param>
+        public virtual void OnAddressChanged(AddressChangedEventArgs eventArgs)
         {
-            Address = eventArgs.Address;
-            AddressChanged?.Invoke(this, eventArgs);
+            this.Address = eventArgs.Address;
+            this.AddressChanged?.Invoke(this, eventArgs);
         }
 
-        public event EventHandler<StatusMessageEventArgs> StatusMessage;
-        internal protected virtual void OnStatusMessage(StatusMessageEventArgs eventArgs)
+        /// <summary>
+        /// The on status message.
+        /// </summary>
+        /// <param name="eventArgs">
+        /// The event args.
+        /// </param>
+        public virtual void OnStatusMessage(StatusMessageEventArgs eventArgs)
         {
-            StatusMessage?.Invoke(this, eventArgs);
+            this.StatusMessage?.Invoke(this, eventArgs);
         }
 
-        public event EventHandler<ConsoleMessageEventArgs> ConsoleMessage;
-        internal protected virtual void OnConsoleMessage(ConsoleMessageEventArgs eventArgs)
+        /// <summary>
+        /// The on console message.
+        /// </summary>
+        /// <param name="eventArgs">
+        /// The event args.
+        /// </param>
+        public virtual void OnConsoleMessage(ConsoleMessageEventArgs eventArgs)
         {
-            ConsoleMessage?.Invoke(this, eventArgs);
+            this.ConsoleMessage?.Invoke(this, eventArgs);
         }
 
-        public event EventHandler<LoadingStateChangeEventArgs> LoadingStateChange;
-        internal protected virtual void OnLoadingStateChange(LoadingStateChangeEventArgs eventArgs)
+        /// <summary>
+        /// The on loading state change.
+        /// </summary>
+        /// <param name="eventArgs">
+        /// The event args.
+        /// </param>
+        public virtual void OnLoadingStateChange(LoadingStateChangeEventArgs eventArgs)
         {
-            LoadingStateChange?.Invoke(this, eventArgs);
+            this.LoadingStateChange?.Invoke(this, eventArgs);
         }
 
-        public event EventHandler<TooltipEventArgs> Tooltip;
-        internal protected virtual void OnTooltip(TooltipEventArgs eventArgs)
+        /// <summary>
+        /// The on tooltip.
+        /// </summary>
+        /// <param name="eventArgs">
+        /// The event args.
+        /// </param>
+        public virtual void OnTooltip(TooltipEventArgs eventArgs)
         {
-            Tooltip?.Invoke(this, eventArgs);
+            this.Tooltip?.Invoke(this, eventArgs);
         }
 
-        public event EventHandler BeforeClose;
-        internal protected virtual void OnBeforeClose()
+        /// <summary>
+        /// The on before close.
+        /// </summary>
+        public virtual void OnBeforeClose()
         {
-            m_browserWindowHandle = IntPtr.Zero;
-            BeforeClose?.Invoke(this, EventArgs.Empty);
+            this.mBrowserWindowHandle = IntPtr.Zero;
+            this.BeforeClose?.Invoke(this, EventArgs.Empty);
         }
 
-        public event EventHandler<BeforePopupEventArgs> BeforePopup;
-        internal protected virtual void OnBeforePopup(BeforePopupEventArgs eventArgs)
+        /// <summary>
+        /// The on before popup.
+        /// </summary>
+        /// <param name="eventArgs">
+        /// The event args.
+        /// </param>
+        public virtual void OnBeforePopup(BeforePopupEventArgs eventArgs)
         {
-            BeforePopup?.Invoke(this, eventArgs);
+            this.BeforePopup?.Invoke(this, eventArgs);
         }
 
-        public event EventHandler<LoadEndEventArgs> LoadEnd;
-        internal protected virtual void OnLoadEnd(LoadEndEventArgs eventArgs)
+        /// <summary>
+        /// The on load end.
+        /// </summary>
+        /// <param name="eventArgs">
+        /// The event args.
+        /// </param>
+        public virtual void OnLoadEnd(LoadEndEventArgs eventArgs)
         {
-            LoadEnd?.Invoke(this, eventArgs);
+            this.LoadEnd?.Invoke(this, eventArgs);
         }
 
-        public event EventHandler<LoadErrorEventArgs> LoadError;
-        internal protected virtual void OnLoadError(LoadErrorEventArgs eventArgs)
+        /// <summary>
+        /// The on load error.
+        /// </summary>
+        /// <param name="eventArgs">
+        /// The event args.
+        /// </param>
+        public virtual void OnLoadError(LoadErrorEventArgs eventArgs)
         {
-            LoadError?.Invoke(this, eventArgs);
+            this.LoadError?.Invoke(this, eventArgs);
         }
 
-        public event EventHandler<LoadStartEventArgs> LoadStarted;
-        internal protected virtual void OnLoadStart(LoadStartEventArgs eventArgs)
+        /// <summary>
+        /// The on load start.
+        /// </summary>
+        /// <param name="eventArgs">
+        /// The event args.
+        /// </param>
+        public virtual void OnLoadStart(LoadStartEventArgs eventArgs)
         {
-            LoadStarted?.Invoke(this, eventArgs);
+            this.LoadStarted?.Invoke(this, eventArgs);
         }
 
-        public event EventHandler<PluginCrashedEventArgs> PluginCrashed;
-        internal protected virtual void OnPluginCrashed(PluginCrashedEventArgs eventArgs)
+        /// <summary>
+        /// The on plugin crashed.
+        /// </summary>
+        /// <param name="eventArgs">
+        /// The event args.
+        /// </param>
+        public virtual void OnPluginCrashed(PluginCrashedEventArgs eventArgs)
         {
-            PluginCrashed?.Invoke(this, eventArgs);
+            this.PluginCrashed?.Invoke(this, eventArgs);
         }
 
-        public event EventHandler<RenderProcessTerminatedEventArgs> RenderProcessTerminated;
-        internal protected virtual void OnRenderProcessTerminated(RenderProcessTerminatedEventArgs eventArgs)
+        /// <summary>
+        /// The on render process terminated.
+        /// </summary>
+        /// <param name="eventArgs">
+        /// The event args.
+        /// </param>
+        public virtual void OnRenderProcessTerminated(RenderProcessTerminatedEventArgs eventArgs)
         {
-            RenderProcessTerminated?.Invoke(this, eventArgs);
+            this.RenderProcessTerminated?.Invoke(this, eventArgs);
         }
 
         #endregion Events Handling
 
         #region Dispose
 
+        /// <summary>
+        /// The dispose.
+        /// </summary>
+        /// <param name="disposing">
+        /// The disposing.
+        /// </param>
         protected override void Dispose(bool disposing)
         {
-            if (m_browser != null && disposing)
+            if (this.mBrowser != null && disposing)
             {
-                var host = m_browser.GetHost();
+                var host = this.mBrowser.GetHost();
                 if (host != null)
                 {
                     host.CloseBrowser();
                     host.Dispose();
                 }
-                m_browser.Dispose();
-                m_browser = null;
-                m_browserWindowHandle = IntPtr.Zero;
+
+                this.mBrowser.Dispose();
+                this.mBrowser = null;
+                this.mBrowserWindowHandle = IntPtr.Zero;
             }
 
             base.Dispose(disposing);
         }
 
         #endregion Dispose
+
+        /// <summary>
+        /// The create browser.
+        /// </summary>
+        private void CreateBrowser()
+        {
+            var windowInfo = CefWindowInfo.Create();
+            windowInfo.SetAsChild(this.mBrowserConfig.ParentHandle, this.mBrowserConfig.CefRectangle);
+
+            var client = this.CreateWebClient();
+
+            var settings = this.BrowserSettings ?? new CefBrowserSettings();
+
+            settings.DefaultEncoding = "UTF-8";
+            settings.FileAccessFromFileUrls = CefState.Enabled;
+            settings.UniversalAccessFromFileUrls = CefState.Enabled;
+            settings.WebSecurity = CefState.Enabled;
+
+            CefBrowserHost.CreateBrowser(windowInfo, client, settings, this.StartUrl);
+        }
+
+        /// <summary>
+        /// The create web client.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="CefGlueClient"/>.
+        /// </returns>
+        private CefGlueClient CreateWebClient()
+        {
+            IoC.RegisterInstance(typeof(CefGlueBrowser), typeof(CefGlueBrowser).FullName, this);
+            CefGlueClient client = new CefGlueClient(CefGlueClientParams.Create(this));
+            return client;
+        }
+
+        /// <summary>
+        /// The resize window.
+        /// </summary>
+        /// <param name="handle">
+        /// The handle.
+        /// </param>
+        /// <param name="width">
+        /// The width.
+        /// </param>
+        /// <param name="height">
+        /// The height.
+        /// </param>
+        private void ResizeWindow(IntPtr handle, int width, int height)
+        {
+            if (handle != IntPtr.Zero)
+            {
+                NativeMethods.SetWindowPos(
+                    handle,
+                    IntPtr.Zero,
+                    0,
+                    0,
+                    width,
+                    height,
+                    WinapiConstants.NoZOrder);
+            }
+        }
     }
 }

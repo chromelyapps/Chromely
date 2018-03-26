@@ -1,38 +1,58 @@
-﻿/**
- MIT License
-
- Copyright (c) 2017 Kola Oyewumi
-
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
-
- The above copyright notice and this permission notice shall be included in all
- copies or substantial portions of the Software.
-
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- SOFTWARE.
- */
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Program.cs" company="Chromely">
+//   Copyright (c) 2017-2018 Kola Oyewumi
+// </copyright>
+// <license>
+// MIT License
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+// </license>
+// <note>
+// Chromely project is licensed under MIT License. CefGlue, CefSharp, Winapi may have additional licensing.
+// </note>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Chromely.CefSharp.Winapi.Demo
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
     using Chromely.CefSharp.Winapi.ChromeHost;
     using Chromely.Core;
     using Chromely.Core.Infrastructure;
     using WinApi.Windows;
 
+    /// <summary>
+    /// The program.
+    /// </summary>
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1400:AccessModifierMustBeDeclared", Justification = "Reviewed. Suppression is OK here.")]
     class Program
     {
+        /// <summary>
+        /// The main.
+        /// </summary>
+        /// <param name="args">
+        /// The args.
+        /// </param>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
         static int Main(string[] args)
         {
             try
@@ -56,7 +76,7 @@ namespace Chromely.CefSharp.Winapi.Demo
                 // Requires - (sample) UseDefaultHttpSchemeHandler("http", "chromely.com")
                 //            or register new htpp scheme handler - RegisterSchemeHandler("htpp", "test.com",  new CustomHttpHandler())
                 string appDirectory = AppDomain.CurrentDomain.BaseDirectory;
-                string startUrl = string.Format("file:///{0}app/chromely_with_ajax.html", appDirectory);
+                string startUrl = $"file:///{appDirectory}app/chromely_with_ajax.html";
 
                 ChromelyConfiguration config = ChromelyConfiguration
                                               .Create()
@@ -65,14 +85,16 @@ namespace Chromely.CefSharp.Winapi.Demo
                                               .WithLogFile("logs\\chromely.cef_new.log")
                                               .WithStartUrl(startUrl)
                                               .WithLogSeverity(LogSeverity.Info)
-                                              .UseDefaultLogger("logs\\chromely_new.log", true)
+                                              .UseDefaultLogger("logs\\chromely_new.log")
                                               .UseDefaultResourceSchemeHandler("local", string.Empty)
                                               .UseDefaultHttpSchemeHandler("http", "chromely.com")
                                               .UseDefautJsHandler("boundControllerAsync", true);
 
                 var factory = WinapiHostFactory.Init("chromely.ico");
-                using (var window = factory.CreateWindow(() => new CefSharpBrowserHost(config),
-                    "chromely", constructionParams: new FrameWindowConstructionParams()))
+                using (var window = factory.CreateWindow(
+                    () => new CefSharpBrowserHost(config),
+                    "chromely",
+                    constructionParams: new FrameWindowConstructionParams()))
                 {
                     // Register external url schems
                     window.RegisterUrlScheme(new UrlScheme("https://github.com/mattkol/Chromely", true));
@@ -86,14 +108,14 @@ namespace Chromely.CefSharp.Winapi.Demo
                     window.RegisterServiceAssembly(Assembly.GetExecutingAssembly());
 
                     // 2. Register external assembly with file name:
-                    //string serviceAssemblyFile = @"C:\ChromelyDlls\Chromely.Service.Demo.dll";
-                    //window.RegisterServiceAssembly(serviceAssemblyFile);
+                    // string serviceAssemblyFile = @"C:\ChromelyDlls\Chromely.Service.Demo.dll";
+                    // window.RegisterServiceAssembly(serviceAssemblyFile);
 
                     // 3. Register external assemblies with list of filenames:
-                    //string serviceAssemblyFile1 = @"C:\ChromelyDlls\Chromely.Service.Demo.dll";
-                    //List<string> filenames = new List<string>();
-                    //filenames.Add(serviceAssemblyFile1);
-                    //window.RegisterServiceAssemblies(filenames);
+                    // string serviceAssemblyFile1 = @"C:\ChromelyDlls\Chromely.Service.Demo.dll";
+                    // List<string> filenames = new List<string>();
+                    // filenames.Add(serviceAssemblyFile1);
+                    // window.RegisterServiceAssemblies(filenames);
 
                     // 4. Register external assemblies directory:
                     string serviceAssembliesFolder = @"C:\ChromelyDlls";
@@ -117,4 +139,3 @@ namespace Chromely.CefSharp.Winapi.Demo
         }
     }
 }
-

@@ -1,46 +1,82 @@
-﻿/**
- MIT License
-
- Copyright (c) 2017 Kola Oyewumi
-
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
-
- The above copyright notice and this permission notice shall be included in all
- copies or substantial portions of the Software.
-
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- SOFTWARE.
- */
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="CefGlueHttpSchemeHandler.cs" company="Chromely">
+//   Copyright (c) 2017-2018 Kola Oyewumi
+// </copyright>
+// <license>
+// MIT License
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+// </license>
+// <note>
+// Chromely project is licensed under MIT License. CefGlue, CefSharp, Winapi may have additional licensing.
+// </note>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Chromely.CefGlue.Gtk.Browser.Handlers
 {
-    using Chromely.CefGlue.Gtk.RestfulService;
-    using Chromely.Core.Infrastructure;
-    using Chromely.Core.RestfulService;
     using System;
     using System.IO;
     using System.Net;
     using System.Text;
     using System.Threading.Tasks;
+    using Chromely.CefGlue.Gtk.RestfulService;
+    using Chromely.Core.Infrastructure;
+    using Chromely.Core.RestfulService;
     using Xilium.CefGlue;
 
-    internal sealed class CefGlueHttpSchemeHandler : CefResourceHandler
+    /// <summary>
+    /// The cef glue http scheme handler.
+    /// </summary>
+    public class CefGlueHttpSchemeHandler : CefResourceHandler
     {
-        private ChromelyResponse m_chromelyResponse;
-        private Byte[] m_responseBytes;
-        private bool m_completed;
-        private int m_totalBytesRead;
+        /// <summary>
+        /// The m chromely response.
+        /// </summary>
+        private ChromelyResponse mChromelyResponse;
 
+        /// <summary>
+        /// The m response bytes.
+        /// </summary>
+        private byte[] mResponseBytes;
+
+        /// <summary>
+        /// The m completed.
+        /// </summary>
+        private bool mCompleted;
+
+        /// <summary>
+        /// The m total bytes read.
+        /// </summary>
+        private int mTotalBytesRead;
+
+        /// <summary>
+        /// The process request.
+        /// </summary>
+        /// <param name="request">
+        /// The request.
+        /// </param>
+        /// <param name="callback">
+        /// The callback.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
         protected override bool ProcessRequest(CefRequest request, CefCallback callback)
         {
             bool isCustomScheme = UrlSchemeProvider.IsUrlOfRegisteredCustomScheme(request.Url);
@@ -52,17 +88,20 @@ namespace Chromely.CefGlue.Gtk.Browser.Handlers
                     {
                         try
                         {
-                            m_chromelyResponse = RequestTaskRunner.Run(request);
-                            string jsonData = m_chromelyResponse.Data.EnsureResponseIsJsonFormat();
-                            m_responseBytes = Encoding.UTF8.GetBytes(jsonData);
+                            this.mChromelyResponse = RequestTaskRunner.Run(request);
+                            string jsonData = this.mChromelyResponse.Data.EnsureResponseIsJsonFormat();
+                            this.mResponseBytes = Encoding.UTF8.GetBytes(jsonData);
                         }
                         catch (Exception exception)
                         {
                             Log.Error(exception);
 
-                            m_chromelyResponse = new ChromelyResponse();
-                            m_chromelyResponse.Status = (int)HttpStatusCode.BadRequest;
-                            m_chromelyResponse.Data = "An error occured.";
+                            this.mChromelyResponse =
+                                new ChromelyResponse
+                                    {
+                                        Status = (int)HttpStatusCode.BadRequest,
+                                        Data = "An error occured."
+                                    };
                         }
                         finally
                         {
@@ -79,6 +118,18 @@ namespace Chromely.CefGlue.Gtk.Browser.Handlers
             return false;
         }
 
+        /// <summary>
+        /// The get response headers.
+        /// </summary>
+        /// <param name="response">
+        /// The response.
+        /// </param>
+        /// <param name="responseLength">
+        /// The response length.
+        /// </param>
+        /// <param name="redirectUrl">
+        /// The redirect url.
+        /// </param>
         protected override void GetResponseHeaders(CefResponse response, out long responseLength, out string redirectUrl)
         {
             // unknown content-length
@@ -88,8 +139,8 @@ namespace Chromely.CefGlue.Gtk.Browser.Handlers
 
             try
             {
-                HttpStatusCode status = (m_chromelyResponse != null) ? (HttpStatusCode)m_chromelyResponse.Status : HttpStatusCode.BadRequest;
-                string errorStatus = (m_chromelyResponse != null) ? m_chromelyResponse.Data.ToString() : "Not Found";
+                HttpStatusCode status = (this.mChromelyResponse != null) ? (HttpStatusCode)this.mChromelyResponse.Status : HttpStatusCode.BadRequest;
+                string errorStatus = (this.mChromelyResponse != null) ? this.mChromelyResponse.Data.ToString() : "Not Found";
 
                 var headers = response.GetHeaderMap();
                 headers.Add("Cache-Control", "private");
@@ -102,7 +153,6 @@ namespace Chromely.CefGlue.Gtk.Browser.Handlers
                 response.Status = (int)status;
                 response.MimeType = "application/json";
                 response.StatusText = (status == HttpStatusCode.OK) ? "OK" : errorStatus;
-
             }
             catch (Exception exception)
             {
@@ -110,39 +160,56 @@ namespace Chromely.CefGlue.Gtk.Browser.Handlers
             }
         }
 
+        /// <summary>
+        /// The read response.
+        /// </summary>
+        /// <param name="response">
+        /// The response.
+        /// </param>
+        /// <param name="bytesToRead">
+        /// The bytes to read.
+        /// </param>
+        /// <param name="bytesRead">
+        /// The bytes read.
+        /// </param>
+        /// <param name="callback">
+        /// The callback.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
         protected override bool ReadResponse(Stream response, int bytesToRead, out int bytesRead, CefCallback callback)
         {
             int currBytesRead = 0;
 
             try
             {
-                if (m_completed)
+                if (this.mCompleted)
                 {
                     bytesRead = 0;
-                    m_totalBytesRead = 0;
-                    m_responseBytes = null;
+                    this.mTotalBytesRead = 0;
+                    this.mResponseBytes = null;
                     return false;
                 }
                 else
                 {
-                    if (m_responseBytes != null)
+                    if (this.mResponseBytes != null)
                     {
-                        currBytesRead = Math.Min(m_responseBytes.Length - m_totalBytesRead, bytesToRead);
-                        response.Write(m_responseBytes, m_totalBytesRead, currBytesRead);
-                        m_totalBytesRead += currBytesRead;
+                        currBytesRead = Math.Min(this.mResponseBytes.Length - this.mTotalBytesRead, bytesToRead);
+                        response.Write(this.mResponseBytes, this.mTotalBytesRead, currBytesRead);
+                        this.mTotalBytesRead += currBytesRead;
 
-                        if (m_totalBytesRead >= m_responseBytes.Length)
+                        if (this.mTotalBytesRead >= this.mResponseBytes.Length)
                         {
-                            m_completed = true;
+                            this.mCompleted = true;
                         }
                     }
                     else
                     {
                         bytesRead = 0;
-                        m_completed = true;
+                        this.mCompleted = true;
                     }
                 }
-
             }
             catch (Exception exception)
             {
@@ -153,19 +220,39 @@ namespace Chromely.CefGlue.Gtk.Browser.Handlers
             return true;
         }
 
+        /// <summary>
+        /// The can get cookie.
+        /// </summary>
+        /// <param name="cookie">
+        /// The cookie.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
         protected override bool CanGetCookie(CefCookie cookie)
         {
             return true;
         }
 
+        /// <summary>
+        /// The can set cookie.
+        /// </summary>
+        /// <param name="cookie">
+        /// The cookie.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
         protected override bool CanSetCookie(CefCookie cookie)
         {
             return true;
         }
 
+        /// <summary>
+        /// The cancel.
+        /// </summary>
         protected override void Cancel()
         {
         }
     }
 }
-

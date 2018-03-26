@@ -1,28 +1,31 @@
-﻿#region Header
-/**
- * JsonMockWrapper.cs
- *   Mock object implementing IJsonWrapper, to facilitate actions like
- *   skipping data more efficiently.
- *
- * The authors disclaim copyright to this source code. For more details, see
- * the COPYING file included with this distribution.
- **/
-#endregion
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="JsonMockWrapper.cs" company="Chromely">
+//   Copyright (c) 2017-2018 Kola Oyewumi
+// </copyright>
+// <license>
+// The authors disclaim copyright to this source code. For more details, see
+// the COPYING file included with this distribution @ https://github.com/lbv/litjson
+// </license>
+// <note>
+// Chromely project is licensed under MIT License. CefGlue, CefSharp, Winapi may have additional licensing.
+//
+// This is a port of LitJson to.NET Standard for Chromely.Mostly provided as-is. 
+// For more info: https://github.com/lbv/litjson
+// </note>
+// --------------------------------------------------------------------------------------------------------------------
 
-#region Port Info
-/**
- * This is a port of LitJson to .NET Standard for Chromely. Mostly provided as-is. 
- * For more info: https://github.com/lbv/litjson
- **/
-#endregion
-
-using System;
-using System.Collections;
-using System.Collections.Specialized;
-
-
+// ReSharper disable All
 namespace LitJson
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Specialized;
+
+    /// <summary>
+    /// The json mock wrapper.
+    /// Mock object implementing IJsonWrapper, to facilitate actions like
+    /// skipping data more efficiently.
+    /// </summary>
     public class JsonMockWrapper : IJsonWrapper
     {
         public bool IsArray { get { return false; } }
@@ -38,7 +41,7 @@ namespace LitJson
         public int GetInt() { return 0; }
         public JsonType GetJsonType() { return JsonType.None; }
         public long GetLong() { return 0L; }
-        public string GetString() { return ""; }
+        public string GetString() { return string.Empty; }
 
         public void SetBoolean(bool val) { }
         public void SetDouble(double val) { }
@@ -47,7 +50,7 @@ namespace LitJson
         public void SetLong(long val) { }
         public void SetString(string val) { }
 
-        public string ToJson() { return ""; }
+        public string ToJson() { return string.Empty; }
         public void ToJson(JsonWriter writer) { }
 
 
@@ -109,6 +112,7 @@ namespace LitJson
         {
             return null;
         }
+
         void IOrderedDictionary.Insert(int i, object k, object v) { }
         void IOrderedDictionary.RemoveAt(int i) { }
     }

@@ -1,54 +1,69 @@
-﻿/**
-MIT License
-
-Copyright (c) 2017 Kola Oyewumi
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-*/
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="CefSettingsExtension.cs" company="Chromely">
+//   Copyright (c) 2017-2018 Kola Oyewumi
+// </copyright>
+// <license>
+// MIT License
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+// </license>
+// <note>
+// Chromely project is licensed under MIT License. CefGlue, CefSharp, Winapi may have additional licensing.
+// </note>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Chromely.CefSharp.Winapi
 {
-    using Chromely.Core.Helpers;
     using System.Collections.Generic;
+
+    using Chromely.Core.Helpers;
 
     using CefSharpGlobal = global::CefSharp;
 
+    /// <summary>
+    /// The cef settings extension.
+    /// </summary>
     public static class CefSettingsExtension
     {
+        /// <summary>
+        /// The update.
+        /// </summary>
+        /// <param name="cefSettings">
+        /// The cef settings.
+        /// </param>
+        /// <param name="customSettings">
+        /// The custom settings.
+        /// </param>
         public static void Update(this CefSharpGlobal.CefSettings cefSettings, Dictionary<string, object> customSettings)
         {
-            if ((cefSettings == null) || (customSettings == null))
-            {
-                return;
-            }
-
-            if (customSettings.Count == 0)
+            if ((cefSettings == null) || 
+                (customSettings == null) ||
+                (customSettings.Count == 0))
             {
                 return;
             }
 
             foreach (var setting in customSettings)
             {
-                bool boolResult = false;
-                int intResult = 0;
-                string strResult = string.Empty;
-
+                string strResult;
+                bool boolResult;
+                int intResult;
                 switch (setting.Key)
                 {
                     // Not supported in CefSharp
@@ -61,6 +76,7 @@ namespace Chromely.CefSharp.Winapi
                         {
                             cefSettings.BrowserSubprocessPath = strResult;
                         }
+
                         break;
 
                     case CefSettingKeys.MultiThreadedMessageLoop:
@@ -68,6 +84,7 @@ namespace Chromely.CefSharp.Winapi
                         {
                             cefSettings.MultiThreadedMessageLoop = boolResult;
                         }
+
                         break;
 
                     case CefSettingKeys.ExternalMessagePump:
@@ -75,6 +92,7 @@ namespace Chromely.CefSharp.Winapi
                         {
                             cefSettings.ExternalMessagePump = boolResult;
                         }
+
                         break;
 
                     case CefSettingKeys.WindowlessRenderingEnabled:
@@ -82,6 +100,7 @@ namespace Chromely.CefSharp.Winapi
                         {
                             cefSettings.WindowlessRenderingEnabled = boolResult;
                         }
+
                         break;
 
                     case CefSettingKeys.CommandLineArgsDisabled:
@@ -89,6 +108,7 @@ namespace Chromely.CefSharp.Winapi
                         {
                             cefSettings.CommandLineArgsDisabled = boolResult;
                         }
+
                         break;
 
                     case CefSettingKeys.CachePath:
@@ -96,6 +116,7 @@ namespace Chromely.CefSharp.Winapi
                         {
                             cefSettings.CachePath = strResult;
                         }
+
                         break;
 
                     case CefSettingKeys.UserDataPath:
@@ -103,6 +124,7 @@ namespace Chromely.CefSharp.Winapi
                         {
                             cefSettings.UserDataPath = strResult;
                         }
+
                         break;
 
                     case CefSettingKeys.PersistSessionCookies:
@@ -110,6 +132,7 @@ namespace Chromely.CefSharp.Winapi
                         {
                             cefSettings.PersistSessionCookies = boolResult;
                         }
+
                         break;
 
                     case CefSettingKeys.PersistUserPreferences:
@@ -117,6 +140,7 @@ namespace Chromely.CefSharp.Winapi
                         {
                             cefSettings.PersistUserPreferences = boolResult;
                         }
+
                         break;
 
                     case CefSettingKeys.UserAgent:
@@ -124,6 +148,7 @@ namespace Chromely.CefSharp.Winapi
                         {
                             cefSettings.UserAgent = strResult;
                         }
+
                         break;
 
                     case CefSettingKeys.ProductVersion:
@@ -131,6 +156,7 @@ namespace Chromely.CefSharp.Winapi
                         {
                             cefSettings.ProductVersion = strResult;
                         }
+
                         break;
 
                     case CefSettingKeys.Locale:
@@ -138,6 +164,7 @@ namespace Chromely.CefSharp.Winapi
                         {
                             cefSettings.Locale = strResult;
                         }
+
                         break;
 
                     case CefSettingKeys.LogFile:
@@ -145,6 +172,7 @@ namespace Chromely.CefSharp.Winapi
                         {
                             cefSettings.LogFile = strResult;
                         }
+
                         break;
 
                     case CefSettingKeys.LogSeverity:
@@ -152,6 +180,7 @@ namespace Chromely.CefSharp.Winapi
                         {
                             cefSettings.LogSeverity = (CefSharpGlobal.LogSeverity)intResult;
                         }
+
                         break;
 
                     case CefSettingKeys.JavaScriptFlags:
@@ -159,6 +188,7 @@ namespace Chromely.CefSharp.Winapi
                         {
                             cefSettings.JavascriptFlags = strResult;
                         }
+
                         break;
 
                     case CefSettingKeys.ResourcesDirPath:
@@ -166,6 +196,7 @@ namespace Chromely.CefSharp.Winapi
                         {
                             cefSettings.ResourcesDirPath = strResult;
                         }
+
                         break;
 
                     case CefSettingKeys.LocalesDirPath:
@@ -173,6 +204,7 @@ namespace Chromely.CefSharp.Winapi
                         {
                             cefSettings.LocalesDirPath = strResult;
                         }
+
                         break;
 
                     case CefSettingKeys.PackLoadingDisabled:
@@ -180,6 +212,7 @@ namespace Chromely.CefSharp.Winapi
                         {
                             cefSettings.PackLoadingDisabled = boolResult;
                         }
+
                         break;
 
                     case CefSettingKeys.RemoteDebuggingPort:
@@ -187,6 +220,7 @@ namespace Chromely.CefSharp.Winapi
                         {
                             cefSettings.RemoteDebuggingPort = intResult;
                         }
+
                         break;
 
                     case CefSettingKeys.UncaughtExceptionStackSize:
@@ -194,6 +228,7 @@ namespace Chromely.CefSharp.Winapi
                         {
                             cefSettings.UncaughtExceptionStackSize = intResult;
                         }
+
                         break;
 
                     case CefSettingKeys.IgnoreCertificateErrors:
@@ -201,6 +236,7 @@ namespace Chromely.CefSharp.Winapi
                         {
                             cefSettings.IgnoreCertificateErrors = boolResult;
                         }
+
                         break;
 
                     // Not supported by CefSharp
@@ -212,6 +248,7 @@ namespace Chromely.CefSharp.Winapi
                         {
                             cefSettings.AcceptLanguageList = strResult;
                         }
+
                         break;
 
                     case CefSettingKeys.FocusedNodeChangedEnabled:
@@ -219,24 +256,33 @@ namespace Chromely.CefSharp.Winapi
                         {
                             cefSettings.FocusedNodeChangedEnabled = boolResult;
                         }
+
                         break;
                 }
             }
         }
 
+        /// <summary>
+        /// The update command line args.
+        /// </summary>
+        /// <param name="cefSettings">
+        /// The cef settings.
+        /// </param>
+        /// <param name="commandLineArgs">
+        /// The command line args.
+        /// </param>
         public static void UpdateCommandLineArgs(this CefSharpGlobal.CefSettings cefSettings, Dictionary<string, string> commandLineArgs)
         {
-            if ((cefSettings == null) && (commandLineArgs == null))
+            if ((cefSettings == null) || 
+                (commandLineArgs == null) ||
+                (cefSettings.CefCommandLineArgs == null))
             {
                 return;
             }
 
-            if (cefSettings.CefCommandLineArgs != null)
+            foreach (var commandArg in commandLineArgs)
             {
-                foreach (var commandArg in commandLineArgs)
-                {
-                    cefSettings.CefCommandLineArgs.Add(commandArg.Key, commandArg.Value);
-                }
+                cefSettings.CefCommandLineArgs.Add(commandArg.Key, commandArg.Value);
             }
         }
     }

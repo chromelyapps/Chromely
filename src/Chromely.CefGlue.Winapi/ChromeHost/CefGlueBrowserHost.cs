@@ -1,26 +1,32 @@
-﻿/**
- MIT License
-
- Copyright (c) 2017 Kola Oyewumi
-
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
-
- The above copyright notice and this permission notice shall be included in all
- copies or substantial portions of the Software.
-
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- SOFTWARE.
- */
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="CefGlueBrowserHost.cs" company="Chromely">
+//   Copyright (c) 2017-2018 Kola Oyewumi
+// </copyright>
+// <license>
+// MIT License
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+// </license>
+// <note>
+// Chromely project is licensed under MIT License. CefGlue, CefSharp, Winapi may have additional licensing.
+// </note>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Chromely.CefGlue.Winapi.ChromeHost
 {
@@ -29,135 +35,124 @@ namespace Chromely.CefGlue.Winapi.ChromeHost
     using System.IO;
     using System.Linq;
     using System.Reflection;
+
     using Chromely.CefGlue.Winapi.Browser;
+    using Chromely.CefGlue.Winapi.Browser.Handlers;
     using Chromely.Core;
+    using Chromely.Core.Host;
     using Chromely.Core.Infrastructure;
     using Chromely.Core.RestfulService;
+
     using WinApi.Windows;
+
     using Xilium.CefGlue;
     using Xilium.CefGlue.Wrapper;
-    using Chromely.CefGlue.Winapi.Browser.Handlers;
-    using Chromely.Core.Host;
 
+    /// <summary>
+    /// The cef glue browser host.
+    /// </summary>
     public class CefGlueBrowserHost : EventedWindowCore, IChromelyHost, IChromelyServiceProvider
     {
-        CefGlueBrowser m_browser;
+        /// <summary>
+        /// The mBrowser.
+        /// </summary>
+        private CefGlueBrowser mBrowser;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CefGlueBrowserHost"/> class.
+        /// </summary>
+        /// <param name="hostConfig">
+        /// The host config.
+        /// </param>
         public CefGlueBrowserHost(ChromelyConfiguration hostConfig)
         {
-            HostConfig = hostConfig;
-            m_browser = null;
-            ServiceAssemblies = new List<Assembly>();
+            this.mBrowser = null;
+            this.HostConfig = hostConfig;
+            this.ServiceAssemblies = new List<Assembly>();
         }
 
+        /// <summary>
+        /// Gets the browser message router.
+        /// </summary>
         public static CefMessageRouterBrowserSide BrowserMessageRouter { get; private set; }
+
+        /// <summary>
+        /// Gets the service assemblies.
+        /// </summary>
         public List<Assembly> ServiceAssemblies { get; private set; }
+
+        /// <summary>
+        /// Gets the host config.
+        /// </summary>
         public ChromelyConfiguration HostConfig { get; private set; }
 
-        protected override void OnCreate(ref CreateWindowPacket packet)
-        {
-            try
-            {
-                CefRuntime.Load();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-            var mainArgs = new CefMainArgs(HostConfig.AppArgs);
-            var app = new CefGlueApp(HostConfig);
-
-            var exitCode = CefRuntime.ExecuteProcess(mainArgs, app, IntPtr.Zero);
-            if (exitCode != -1)
-                return;
-
-            var codeBase = Assembly.GetExecutingAssembly().CodeBase;
-            var localFolder = Path.GetDirectoryName(new Uri(codeBase).LocalPath);
-            var localesDirPath = Path.Combine(localFolder, "locales");
-
-            var settings = new CefSettings
-            {
-                LocalesDirPath = localesDirPath,
-                Locale = HostConfig.Locale,
-                SingleProcess = false,
-                MultiThreadedMessageLoop = true,
-                LogSeverity = (CefLogSeverity)HostConfig.LogSeverity,
-                LogFile = HostConfig.LogFile,
-                ResourcesDirPath = Path.GetDirectoryName(new Uri(Assembly.GetEntryAssembly().CodeBase).LocalPath),
-                NoSandbox = true
-            };
-
-            // Update configuration settings
-            settings.Update(HostConfig.CustomSettings);
-
-            CefRuntime.Initialize(mainArgs, settings, app, IntPtr.Zero);
-
-            RegisterSchemeHandlers();
-            RegisterMessageRouters();
-
-            CefBrowserConfig browserConfig = new CefBrowserConfig();
-            browserConfig.StartUrl = HostConfig.StartUrl;
-            browserConfig.ParentHandle = Handle;
-            browserConfig.AppArgs = HostConfig.AppArgs;
-            browserConfig.CefRectangle = new CefRectangle { X = 0, Y = 0, Width = HostConfig.HostWidth, Height = HostConfig.HostHeight };
-
-            m_browser = new CefGlueBrowser(browserConfig);
-
-            base.OnCreate(ref packet);
-
-            Log.Info("Cef browser successfully created.");
-        }
-
-        protected override void OnSize(ref SizePacket packet)
-        {
-            base.OnSize(ref packet);
-
-            var size = packet.Size;
-            m_browser.ResizeWindow(size.Width, size.Height);
-        }
-
-        protected override void OnDestroy(ref Packet packet)
-        {
-            m_browser.Dispose();
-            CefRuntime.Shutdown();
-
-            base.OnDestroy(ref packet);
-        }
-
+        /// <summary>
+        /// The register url scheme.
+        /// </summary>
+        /// <param name="scheme">
+        /// The scheme.
+        /// </param>
         public void RegisterUrlScheme(UrlScheme scheme)
         {
             UrlSchemeProvider.RegisterScheme(scheme);
         }
 
+        /// <summary>
+        /// The register service assembly.
+        /// </summary>
+        /// <param name="filename">
+        /// The filename.
+        /// </param>
         public void RegisterServiceAssembly(string filename)
         {
-            ServiceAssemblies?.RegisterServiceAssembly(Assembly.LoadFile(filename));
+            this.ServiceAssemblies?.RegisterServiceAssembly(Assembly.LoadFile(filename));
         }
 
+        /// <summary>
+        /// The register service assembly.
+        /// </summary>
+        /// <param name="assembly">
+        /// The assembly.
+        /// </param>
         public void RegisterServiceAssembly(Assembly assembly)
         {
-            ServiceAssemblies?.RegisterServiceAssembly(assembly);
+            this.ServiceAssemblies?.RegisterServiceAssembly(assembly);
         }
 
+        /// <summary>
+        /// The register service assemblies.
+        /// </summary>
+        /// <param name="folder">
+        /// The folder.
+        /// </param>
         public void RegisterServiceAssemblies(string folder)
         {
-            ServiceAssemblies?.RegisterServiceAssemblies(folder);
+            this.ServiceAssemblies?.RegisterServiceAssemblies(folder);
         }
 
+        /// <summary>
+        /// The register service assemblies.
+        /// </summary>
+        /// <param name="filenames">
+        /// The filenames.
+        /// </param>
         public void RegisterServiceAssemblies(List<string> filenames)
         {
-            ServiceAssemblies?.RegisterServiceAssemblies(filenames);
+            this.ServiceAssemblies?.RegisterServiceAssemblies(filenames);
         }
 
+        /// <summary>
+        /// The scan assemblies.
+        /// </summary>
         public void ScanAssemblies()
         {
-            if ((ServiceAssemblies == null) || (ServiceAssemblies.Count == 0))
+            if ((this.ServiceAssemblies == null) || 
+                (this.ServiceAssemblies.Count == 0))
             {
                 return;
             }
 
-            foreach (var assembly in ServiceAssemblies)
+            foreach (var assembly in this.ServiceAssemblies)
             {
                 RouteScanner scanner = new RouteScanner(assembly);
                 Dictionary<string, Route> currentRouteDictionary = scanner.Scan();
@@ -165,6 +160,9 @@ namespace Chromely.CefGlue.Winapi.ChromeHost
             }
         }
 
+        /// <summary>
+        /// The register scheme handlers.
+        /// </summary>
         public void RegisterSchemeHandlers()
         {
             // Register scheme handlers
@@ -199,11 +197,14 @@ namespace Chromely.CefGlue.Winapi.ChromeHost
             }
         }
 
+        /// <summary>
+        /// The register message routers.
+        /// </summary>
         public void RegisterMessageRouters()
         {
             if (!CefRuntime.CurrentlyOn(CefThreadId.UI))
             {
-                PostTask(CefThreadId.UI, this.RegisterMessageRouters);
+                this.PostTask(CefThreadId.UI, this.RegisterMessageRouters);
                 return;
             }
 
@@ -230,27 +231,137 @@ namespace Chromely.CefGlue.Winapi.ChromeHost
             }
         }
 
+        /// <summary>
+        /// The on create.
+        /// </summary>
+        /// <param name="packet">
+        /// The packet.
+        /// </param>
+        /// <exception cref="Exception">
+        /// Rethrown exception on Cef load failure.
+        /// </exception>
+        protected override void OnCreate(ref CreateWindowPacket packet)
+        {
+            // Will throw exception of Cef load fails. 
+            CefRuntime.Load();
+
+            var mainArgs = new CefMainArgs(this.HostConfig.AppArgs);
+            var app = new CefGlueApp(this.HostConfig);
+
+            var exitCode = CefRuntime.ExecuteProcess(mainArgs, app, IntPtr.Zero);
+            if (exitCode != -1)
+            {
+                return;
+            }
+
+            var codeBase = Assembly.GetExecutingAssembly().CodeBase;
+            var localFolder = Path.GetDirectoryName(new Uri(codeBase).LocalPath);
+            var localesDirPath = Path.Combine(localFolder, "locales");
+
+            var settings = new CefSettings
+            {
+                LocalesDirPath = localesDirPath,
+                Locale = this.HostConfig.Locale,
+                SingleProcess = false,
+                MultiThreadedMessageLoop = true,
+                LogSeverity = (CefLogSeverity)this.HostConfig.LogSeverity,
+                LogFile = this.HostConfig.LogFile,
+                ResourcesDirPath = Path.GetDirectoryName(new Uri(Assembly.GetEntryAssembly().CodeBase).LocalPath),
+                NoSandbox = true
+            };
+
+            // Update configuration settings
+            settings.Update(this.HostConfig.CustomSettings);
+
+            CefRuntime.Initialize(mainArgs, settings, app, IntPtr.Zero);
+
+            this.RegisterSchemeHandlers();
+            this.RegisterMessageRouters();
+
+            CefBrowserConfig browserConfig = new CefBrowserConfig();
+            browserConfig.StartUrl = this.HostConfig.StartUrl;
+            browserConfig.ParentHandle = this.Handle;
+            browserConfig.AppArgs = this.HostConfig.AppArgs;
+            browserConfig.CefRectangle = new CefRectangle { X = 0, Y = 0, Width = this.HostConfig.HostWidth, Height = this.HostConfig.HostHeight };
+
+            this.mBrowser = new CefGlueBrowser(browserConfig);
+
+            base.OnCreate(ref packet);
+
+            Log.Info("Cef browser successfully created.");
+        }
+
+        /// <summary>
+        /// The on size.
+        /// </summary>
+        /// <param name="packet">
+        /// The packet.
+        /// </param>
+        protected override void OnSize(ref SizePacket packet)
+        {
+            base.OnSize(ref packet);
+
+            var size = packet.Size;
+            this.mBrowser.ResizeWindow(size.Width, size.Height);
+        }
+
+        /// <summary>
+        /// The on destroy.
+        /// </summary>
+        /// <param name="packet">
+        /// The packet.
+        /// </param>
+        protected override void OnDestroy(ref Packet packet)
+        {
+            this.mBrowser.Dispose();
+            CefRuntime.Shutdown();
+
+            base.OnDestroy(ref packet);
+        }
+
+        /// <summary>
+        /// The post task.
+        /// </summary>
+        /// <param name="threadId">
+        /// The thread id.
+        /// </param>
+        /// <param name="action">
+        /// The action.
+        /// </param>
         private void PostTask(CefThreadId threadId, Action action)
         {
             CefRuntime.PostTask(threadId, new ActionTask(action));
         }
 
-        internal sealed class ActionTask : CefTask
+        /// <summary>
+        /// The action task.
+        /// </summary>
+        private class ActionTask : CefTask
         {
-            public Action m_action;
+            /// <summary>
+            /// The m action.
+            /// </summary>
+            private Action mAction;
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="ActionTask"/> class.
+            /// </summary>
+            /// <param name="action">
+            /// The action.
+            /// </param>
             public ActionTask(Action action)
             {
-                m_action = action;
+                this.mAction = action;
             }
 
+            /// <summary>
+            /// The execute.
+            /// </summary>
             protected override void Execute()
             {
-                m_action();
-                m_action = null;
+                this.mAction();
+                this.mAction = null;
             }
         }
-
-        public delegate void Action();
     }
 }

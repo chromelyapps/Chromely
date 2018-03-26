@@ -32,9 +32,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Chromely.Core" Version="0.9.0-pre01" />
     <PackageReference Include="Chromely.Unofficial.CefGlue.NetStd" Version="64.0.3282.119" />
     <PackageReference Include="WinApi" Version="4.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Chromely.Core\Chromely.Core.csproj" />
   </ItemGroup>
   
 </Project>
