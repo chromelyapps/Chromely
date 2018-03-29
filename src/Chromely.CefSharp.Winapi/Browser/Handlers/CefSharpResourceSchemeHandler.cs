@@ -35,11 +35,9 @@ namespace Chromely.CefSharp.Winapi.Browser.Handlers
     using System.IO;
     using System.Net;
     using System.Threading.Tasks;
-
     using Chromely.Core.Helpers;
     using Chromely.Core.Infrastructure;
     using Chromely.Core.RestfulService;
-
     using global::CefSharp;
 
     /// <summary>
@@ -48,17 +46,17 @@ namespace Chromely.CefSharp.Winapi.Browser.Handlers
     public class CefSharpResourceSchemeHandler : ResourceHandler
     {
         /// <summary>
-        /// The m chromely response.
+        /// The ChromelyResponse response.
         /// </summary>
         private ChromelyResponse mChromelyResponse;
 
         /// <summary>
-        /// The m mime type.
+        /// The mime type.
         /// </summary>
         private string mMimeType;
 
         /// <summary>
-        /// The m stream.
+        /// The stream object.
         /// </summary>
         private Stream mStream = new MemoryStream();
 

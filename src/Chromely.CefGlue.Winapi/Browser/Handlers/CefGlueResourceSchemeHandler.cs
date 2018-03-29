@@ -39,27 +39,27 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
     using Xilium.CefGlue;
 
     /// <summary>
-    /// The cef glue resource scheme handler.
+    /// The CefGlue resource scheme handler.
     /// </summary>
     public class CefGlueResourceSchemeHandler : CefResourceHandler
     {
         /// <summary>
-        /// The m file bytes.
+        /// The file read in bytes.
         /// </summary>
         private byte[] mFileBytes;
 
         /// <summary>
-        /// The m mime.
+        /// The mime type.
         /// </summary>
         private string mMime;
 
         /// <summary>
-        /// The m completed.
+        /// The completed flag.
         /// </summary>
         private bool mCompleted;
 
         /// <summary>
-        /// The m total bytes read.
+        /// The total bytes read.
         /// </summary>
         private int mTotalBytesRead;
 

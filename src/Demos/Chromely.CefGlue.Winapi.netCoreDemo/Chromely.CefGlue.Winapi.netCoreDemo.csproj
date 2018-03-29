@@ -8,7 +8,6 @@
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <ApplicationIcon>chromely.ico</ApplicationIcon>
     <StartupObject />
-    <ApplicationManifest>app.manifest</ApplicationManifest>
     <AssemblyName>cefglue_winapi_netcoredemo</AssemblyName>
   </PropertyGroup>
 
@@ -39,14 +38,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Chromely.CefGlue.Winapi\Chromely.CefGlue.Winapi.csproj" />
-    <ProjectReference Include="..\..\Chromely.Core\Chromely.Core.csproj" />
+    <PackageReference Include="Chromely.CefGlue.Winapi" Version="64.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="app.manifest">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="app\chromely.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

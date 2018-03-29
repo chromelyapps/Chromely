@@ -33,7 +33,7 @@ namespace Chromely.CefSharp.Winapi.Browser.Handlers
     using global::CefSharp;
 
     /// <summary>
-    /// The cef sharp context menu handler.
+    /// The CefSharp context menu handler.
     /// </summary>
     public class CefSharpContextMenuHandler : IContextMenuHandler
     {

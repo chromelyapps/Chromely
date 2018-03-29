@@ -32,14 +32,12 @@
 namespace Chromely.CefSharp.Winapi.Browser.Handlers
 {
     using System.Threading.Tasks;
-
     using Chromely.CefSharp.Winapi.RestfulService;
     using Chromely.Core.RestfulService;
-
     using global::CefSharp;
 
     /// <summary>
-    /// The cef sharp bound object.
+    /// The CefSharp bound object.
     /// </summary>
     public class CefSharpBoundObject
     {

@@ -33,13 +33,11 @@ namespace Chromely.CefSharp.Winapi.Browser.Handlers
 {
     using System;
     using System.Security.Cryptography.X509Certificates;
-
     using Chromely.Core.Infrastructure;
-
     using global::CefSharp;
 
     /// <summary>
-    /// The cef sharp request handler.
+    /// The CefSharp request handler.
     /// </summary>
     public class CefSharpRequestHandler : IRequestHandler
     {

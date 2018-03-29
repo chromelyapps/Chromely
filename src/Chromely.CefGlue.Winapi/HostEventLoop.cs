@@ -31,7 +31,6 @@
 namespace Chromely.CefGlue.Winapi
 {
     using System;
-
     using Chromely.Core;
     using Chromely.Core.Helpers;
     using Chromely.Core.Host;
@@ -45,7 +44,7 @@ namespace Chromely.CefGlue.Winapi
     public class HostEventLoop : EventLoopCore
     {
         /// <summary>
-        /// The m host config.
+        /// The ChromelyConfiguration object.
         /// </summary>
         private ChromelyConfiguration mHostConfig;
 
@@ -112,9 +111,8 @@ namespace Chromely.CefGlue.Winapi
         /// </returns>
         public new int Run(WindowCore mainWindow = null)
         {
-            if ((mainWindow != null) && (mainWindow is IChromelyHost))
+            if (mainWindow is IChromelyHost chromelyHost)
             {
-                IChromelyHost chromelyHost = (IChromelyHost)mainWindow;
                 this.mHostConfig = chromelyHost.HostConfig;
             }
 

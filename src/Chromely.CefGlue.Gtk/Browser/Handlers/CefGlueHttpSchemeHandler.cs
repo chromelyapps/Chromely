@@ -41,27 +41,27 @@ namespace Chromely.CefGlue.Gtk.Browser.Handlers
     using Xilium.CefGlue;
 
     /// <summary>
-    /// The cef glue http scheme handler.
+    /// The CefGlue http scheme handler.
     /// </summary>
     public class CefGlueHttpSchemeHandler : CefResourceHandler
     {
         /// <summary>
-        /// The m chromely response.
+        /// The ChromelyResponse response.
         /// </summary>
         private ChromelyResponse mChromelyResponse;
 
         /// <summary>
-        /// The m response bytes.
+        /// The response in bytes.
         /// </summary>
         private byte[] mResponseBytes;
 
         /// <summary>
-        /// The m completed.
+        /// The completed flag.
         /// </summary>
         private bool mCompleted;
 
         /// <summary>
-        /// The m total bytes read.
+        /// The total bytes read.
         /// </summary>
         private int mTotalBytesRead;
 

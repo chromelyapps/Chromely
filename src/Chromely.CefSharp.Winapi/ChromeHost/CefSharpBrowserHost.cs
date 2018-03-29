@@ -36,7 +36,6 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
     using System.IO;
     using System.Linq;
     using System.Reflection;
-
     using Chromely.CefSharp.Winapi.Browser;
     using Chromely.CefSharp.Winapi.Browser.Handlers;
     using Chromely.CefSharp.Winapi.Browser.Internals;
@@ -44,25 +43,23 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
     using Chromely.Core.Host;
     using Chromely.Core.Infrastructure;
     using Chromely.Core.RestfulService;
-
-    using global::CefSharp;
-
     using WinApi.Windows;
+    using global::CefSharp;
 
     using CefSharpGlobal = global::CefSharp;
 
     /// <summary>
-    /// The cef sharp browser host.
+    /// The CefSharp browser host/window/app.
     /// </summary>
     public class CefSharpBrowserHost : EventedWindowCore, IChromelyHost, IChromelyServiceProvider
     {
         /// <summary>
-        /// The m browser.
+        /// The ChromiumWebBrowser object.
         /// </summary>
         private ChromiumWebBrowser mBrowser;
 
         /// <summary>
-        /// The m settings.
+        /// The CefSettings object.
         /// </summary>
         private CefSettings mSettings;
 
@@ -91,7 +88,7 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
         public ChromelyConfiguration HostConfig { get; }
 
         /// <summary>
-        /// The register url scheme.
+        /// Registers url scheme.
         /// </summary>
         /// <param name="scheme">
         /// The scheme.
@@ -102,7 +99,7 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
         }
 
         /// <summary>
-        /// The register service assembly.
+        /// Registers service assembly.
         /// </summary>
         /// <param name="filename">
         /// The filename.
@@ -113,7 +110,7 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
         }
 
         /// <summary>
-        /// The register service assembly.
+        /// Registers service assembly.
         /// </summary>
         /// <param name="assembly">
         /// The assembly.
@@ -124,7 +121,7 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
         }
 
         /// <summary>
-        /// The register service assemblies.
+        /// Registers service assemblies.
         /// </summary>
         /// <param name="folder">
         /// The folder.
@@ -135,7 +132,7 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
         }
 
         /// <summary>
-        /// The register service assemblies.
+        /// Registers service assemblies.
         /// </summary>
         /// <param name="filenames">
         /// The filenames.
@@ -146,7 +143,7 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
         }
 
         /// <summary>
-        /// The scan assemblies.
+        /// Scan registered assemblies.
         /// </summary>
         public void ScanAssemblies()
         {
@@ -165,12 +162,12 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
         }
 
         /// <summary>
-        /// The register scheme handlers.
+        /// Registers custom scheme handlers.
         /// </summary>
         public void RegisterSchemeHandlers()
         {
             // Register scheme handlers
-            object[] schemeHandlerObjs = IoC.GetAllInstances(typeof(ChromelySchemeHandler));
+            var schemeHandlerObjs = IoC.GetAllInstances(typeof(ChromelySchemeHandler));
             if (schemeHandlerObjs != null)
             {
                 var schemeHandlers = schemeHandlerObjs.ToList();
@@ -222,21 +219,20 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
         }
 
         /// <summary>
-        /// The register js handlers.
+        /// Registers custom Javascript Bound (JSB) handlers.
         /// </summary>
         public void RegisterJsHandlers()
         {
             // Register javascript handlers
-            object[] jsHandlerObjs = IoC.GetAllInstances(typeof(ChromelyJsHandler));
+            var jsHandlerObjs = IoC.GetAllInstances(typeof(ChromelyJsHandler));
             if (jsHandlerObjs != null)
             {
                 var jsHandlers = jsHandlerObjs.ToList();
 
                 foreach (var item in jsHandlers)
                 {
-                    if (item is ChromelyJsHandler)
+                    if (item is ChromelyJsHandler handler)
                     {
-                        var handler = (ChromelyJsHandler)item;
                         BindingOptions options = null;
 
                         if (handler.BindingOptions is BindingOptions)
@@ -260,7 +256,7 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
         }
 
         /// <summary>
-        /// The register message routers.
+        /// Registers custom MessageRouter handlers.
         /// </summary>
         /// <exception cref="NotImplementedException">
         /// Exception - NotImplementedException.
@@ -271,7 +267,7 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
         }
 
         /// <summary>
-        /// The on create.
+        /// OnCreate method.
         /// </summary>
         /// <param name="packet">
         /// The packet.
@@ -302,7 +298,7 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
             this.RegisterSchemeHandlers();
 
             // Perform dependency check to make sure all relevant resources are in our output directory.
-            Cef.Initialize(this.mSettings, performDependencyCheck: this.HostConfig.PerformDependencyCheck, browserProcessHandler: null);
+            Cef.Initialize(this.mSettings, this.HostConfig.PerformDependencyCheck, null);
 
             this.mBrowser = new ChromiumWebBrowser(this.Handle, this.HostConfig.StartUrl);
             this.mBrowser.IsBrowserInitializedChanged += this.IsBrowserInitializedChanged;
@@ -318,7 +314,7 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
         }
 
         /// <summary>
-        /// The on size.
+        /// OnSize method.
         /// </summary>
         /// <param name="packet">
         /// The packet.
@@ -332,7 +328,7 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
         }
 
         /// <summary>
-        /// The on destroy.
+        /// OnDestroy method.
         /// </summary>
         /// <param name="packet">
         /// The packet.
@@ -346,7 +342,7 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
         }
 
         /// <summary>
-        /// The is browser initialized changed.
+        /// Browser initialized changed event handler.
         /// </summary>
         /// <param name="sender">
         /// The sender.

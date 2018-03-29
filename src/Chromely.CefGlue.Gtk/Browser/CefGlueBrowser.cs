@@ -38,17 +38,17 @@ namespace Chromely.CefGlue.Gtk.Browser
     using Xilium.CefGlue;
 
     /// <summary>
-    /// The cef glue browser.
+    /// The CefGlue browser.
     /// </summary>
     public class CefGlueBrowser
     {
         /// <summary>
-        /// The m settings.
+        /// The CefBrowserSettings object.
         /// </summary>
         private readonly CefBrowserSettings mSettings;
 
         /// <summary>
-        /// The m client.
+        /// The CefGlueClient object.
         /// </summary>
         private CefGlueClient mClient;
 

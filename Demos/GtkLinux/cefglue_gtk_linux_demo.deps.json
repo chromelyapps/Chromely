@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.0/ubuntu.16.10-x64",
-    "signature": "bb8de5212b6a5f4a2702742849b148446c1739be"
+    "signature": "aef4ec96e796c4aaed2e372f4d3bff8b51859044"
   },
   "compilationOptions": {},
   "targets": {
@@ -14,11 +14,6 @@
         },
         "runtime": {
           "cefglue_gtk_linux_demo.dll": {}
-        }
-      },
-      "Chromely.Core/0.9.0-pre01": {
-        "runtime": {
-          "lib/netstandard2.0/Chromely.Core.dll": {}
         }
       },
       "Chromely.Unofficial.CefGlue.NetStd/64.0.3282.119": {
@@ -509,11 +504,16 @@
       },
       "Chromely.CefGlue.Gtk/1.0.0": {
         "dependencies": {
-          "Chromely.Core": "0.9.0-pre01",
+          "Chromely.Core": "0.9.0",
           "Chromely.Unofficial.CefGlue.NetStd": "64.0.3282.119"
         },
         "runtime": {
           "Chromely.CefGlue.Gtk.dll": {}
+        }
+      },
+      "Chromely.Core/0.9.0": {
+        "runtime": {
+          "Chromely.Core.dll": {}
         }
       }
     }
@@ -523,13 +523,6 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
-    },
-    "Chromely.Core/0.9.0-pre01": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-5ZD90tBoZd4ePeOFJUb4eWDnSIsBVW9boToNkqvtecX+E8T2achHz3Y9PpJ52k3Nh/ovxf8hyHKUnLX9qb4Fvg==",
-      "path": "chromely.core/0.9.0-pre01",
-      "hashPath": "chromely.core.0.9.0-pre01.nupkg.sha512"
     },
     "Chromely.Unofficial.CefGlue.NetStd/64.0.3282.119": {
       "type": "package",
@@ -952,6 +945,11 @@
       "hashPath": "system.threading.tasks.4.3.0.nupkg.sha512"
     },
     "Chromely.CefGlue.Gtk/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Chromely.Core/0.9.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

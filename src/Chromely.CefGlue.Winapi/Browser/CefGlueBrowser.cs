@@ -33,29 +33,28 @@
 namespace Chromely.CefGlue.Winapi.Browser
 {
     using System;
-
     using Chromely.CefGlue.Winapi.Browser.EventParams;
     using Chromely.Core.Host;
     using Chromely.Core.Infrastructure;
     using Xilium.CefGlue;
 
     /// <summary>
-    /// The cef glue browser.
+    /// The CefGlue browser.
     /// </summary>
     public class CefGlueBrowser : WebBrowserBase
     {
         /// <summary>
-        /// The m_browser config.
+        /// The CefBrowserConfig object.
         /// </summary>
         private readonly CefBrowserConfig mBrowserConfig;
 
         /// <summary>
-        /// The m browser.
+        /// The CefBrowser object.
         /// </summary>
         private CefBrowser mBrowser;
 
         /// <summary>
-        /// The m browser window handle.
+        /// The browser window handle.
         /// </summary>
         private IntPtr mBrowserWindowHandle;
 
@@ -156,7 +155,7 @@ namespace Chromely.CefGlue.Winapi.Browser
             {
                 if (IoC.IsRegistered(typeof(CefGlueBrowser), typeof(CefGlueBrowser).FullName))
                 {
-                    object instance = IoC.GetInstance(typeof(CefGlueBrowser), typeof(CefGlueBrowser).FullName);
+                    var instance = IoC.GetInstance(typeof(CefGlueBrowser), typeof(CefGlueBrowser).FullName);
                     if (instance is CefGlueBrowser)
                     {
                         return (CefGlueBrowser)instance;
@@ -425,7 +424,7 @@ namespace Chromely.CefGlue.Winapi.Browser
         private CefGlueClient CreateWebClient()
         {
             IoC.RegisterInstance(typeof(CefGlueBrowser), typeof(CefGlueBrowser).FullName, this);
-            CefGlueClient client = new CefGlueClient(CefGlueClientParams.Create(this));
+            var client = new CefGlueClient(CefGlueClientParams.Create(this));
             return client;
         }
 

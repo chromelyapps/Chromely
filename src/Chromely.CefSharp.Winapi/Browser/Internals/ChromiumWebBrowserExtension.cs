@@ -32,11 +32,9 @@
 namespace Chromely.CefSharp.Winapi.Browser.Internals
 {
     using System;
-
     using Chromely.CefSharp.Winapi.Browser.Handlers;
     using Chromely.Core.Helpers;
     using Chromely.Core.Infrastructure;
-
     using global::CefSharp;
 
     /// <summary>
@@ -54,11 +52,11 @@ namespace Chromely.CefSharp.Winapi.Browser.Internals
         {
             try
             {
-                foreach (var enumKey in CefHandlerDummyTypes.GetAllHandlerKeys())
+                foreach (var enumKey in CefHandlerFakeTypes.GetAllHandlerKeys())
                 {
                     object instance = null;
 
-                    var service = CefHandlerDummyTypes.GetHandlerType(enumKey);
+                    var service = CefHandlerFakeTypes.GetHandlerType(enumKey);
                     var keyStr = enumKey.EnumToString();
                     try
                     {
@@ -75,25 +73,25 @@ namespace Chromely.CefSharp.Winapi.Browser.Internals
                     switch (enumKey)
                     {
                         case CefHandlerKey.LifeSpanHandler:
-                            if ((instance != null) && (instance is ILifeSpanHandler))
+                            if (instance is ILifeSpanHandler lifeSpanHandler)
                             {
-                                browser.LifeSpanHandler = (ILifeSpanHandler)instance;
+                                browser.LifeSpanHandler = lifeSpanHandler;
                             }
 
                             break;
 
                         case CefHandlerKey.LoadHandler:
-                            if ((instance != null) && (instance is ILoadHandler))
+                            if (instance is ILoadHandler loadHandler)
                             {
-                                browser.LoadHandler = (ILoadHandler)instance;
+                                browser.LoadHandler = loadHandler;
                             }
 
                             break;
 
                         case CefHandlerKey.RequestHandler:
-                            if ((instance != null) && (instance is IRequestHandler))
+                            if (instance is IRequestHandler requestHandler)
                             {
-                                browser.RequestHandler = (IRequestHandler)instance;
+                                browser.RequestHandler = requestHandler;
                             }
                             else
                             {
@@ -103,17 +101,17 @@ namespace Chromely.CefSharp.Winapi.Browser.Internals
                             break;
 
                         case CefHandlerKey.DisplayHandler:
-                            if ((instance != null) && (instance is IDisplayHandler))
+                            if (instance is IDisplayHandler displayHandler)
                             {
-                                browser.DisplayHandler = (IDisplayHandler)instance;
+                                browser.DisplayHandler = displayHandler;
                             }
 
                             break;
 
                         case CefHandlerKey.ContextMenuHandler:
-                            if ((instance != null) && (instance is IContextMenuHandler))
+                            if (instance is IContextMenuHandler contextMenuHandler)
                             {
-                                browser.MenuHandler = (IContextMenuHandler)instance;
+                                browser.MenuHandler = contextMenuHandler;
                             }
                             else
                             {
@@ -123,65 +121,65 @@ namespace Chromely.CefSharp.Winapi.Browser.Internals
                             break;
 
                         case CefHandlerKey.FocusHandler:
-                            if ((instance != null) && (instance is IFocusHandler))
+                            if (instance is IFocusHandler focusHandler)
                             {
-                                browser.FocusHandler = (IFocusHandler)instance;
+                                browser.FocusHandler = focusHandler;
                             }
 
                             break;
 
                         case CefHandlerKey.KeyboardHandler:
-                            if ((instance != null) && (instance is IKeyboardHandler))
+                            if (instance is IKeyboardHandler keyboardHandler)
                             {
-                                browser.KeyboardHandler = (IKeyboardHandler)instance;
+                                browser.KeyboardHandler = keyboardHandler;
                             }
 
                             break;
 
                         case CefHandlerKey.JsDialogHandler:
-                            if ((instance != null) && (instance is IJsDialogHandler))
+                            if (instance is IJsDialogHandler jsDialogHandler)
                             {
-                                browser.JsDialogHandler = (IJsDialogHandler)instance;
+                                browser.JsDialogHandler = jsDialogHandler;
                             }
 
                             break;
 
                         case CefHandlerKey.DialogHandler:
-                            if ((instance != null) && (instance is IDialogHandler))
+                            if (instance is IDialogHandler dialogHandler)
                             {
-                                browser.DialogHandler = (IDialogHandler)instance;
+                                browser.DialogHandler = dialogHandler;
                             }
 
                             break;
 
                         case CefHandlerKey.DragHandler:
-                            if ((instance != null) && (instance is IDragHandler))
+                            if (instance is IDragHandler dragHandler)
                             {
-                                browser.DragHandler = (IDragHandler)instance;
+                                browser.DragHandler = dragHandler;
                             }
 
                             break;
 
                         case CefHandlerKey.GeolocationHandler:
-                            if ((instance != null) && (instance is IGeolocationHandler))
+                            if (instance is IGeolocationHandler geolocationHandler)
                             {
-                                browser.GeolocationHandler = (IGeolocationHandler)instance;
+                                browser.GeolocationHandler = geolocationHandler;
                             }
 
                             break;
 
                         case CefHandlerKey.DownloadHandler:
-                            if ((instance != null) && (instance is IDownloadHandler))
+                            if (instance is IDownloadHandler downloadHandler)
                             {
-                                browser.DownloadHandler = (IDownloadHandler)instance;
+                                browser.DownloadHandler = downloadHandler;
                             }
 
                             break;
 
                         case CefHandlerKey.FindHandler:
-                            if ((instance != null) && (instance is IFindHandler))
+                            if (instance is IFindHandler findHandler)
                             {
-                                browser.FindHandler = (IFindHandler)instance;
+                                browser.FindHandler = findHandler;
                             }
 
                             break;

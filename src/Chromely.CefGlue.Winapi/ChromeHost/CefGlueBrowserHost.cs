@@ -35,26 +35,23 @@ namespace Chromely.CefGlue.Winapi.ChromeHost
     using System.IO;
     using System.Linq;
     using System.Reflection;
-
     using Chromely.CefGlue.Winapi.Browser;
     using Chromely.CefGlue.Winapi.Browser.Handlers;
     using Chromely.Core;
     using Chromely.Core.Host;
     using Chromely.Core.Infrastructure;
     using Chromely.Core.RestfulService;
-
     using WinApi.Windows;
-
     using Xilium.CefGlue;
     using Xilium.CefGlue.Wrapper;
 
     /// <summary>
-    /// The cef glue browser host.
+    /// The CefGlue browser host/window/app.
     /// </summary>
     public class CefGlueBrowserHost : EventedWindowCore, IChromelyHost, IChromelyServiceProvider
     {
         /// <summary>
-        /// The mBrowser.
+        /// The CefGlueBrowser object.
         /// </summary>
         private CefGlueBrowser mBrowser;
 
@@ -79,12 +76,12 @@ namespace Chromely.CefGlue.Winapi.ChromeHost
         /// <summary>
         /// Gets the service assemblies.
         /// </summary>
-        public List<Assembly> ServiceAssemblies { get; private set; }
+        public List<Assembly> ServiceAssemblies { get; }
 
         /// <summary>
         /// Gets the host config.
         /// </summary>
-        public ChromelyConfiguration HostConfig { get; private set; }
+        public ChromelyConfiguration HostConfig { get; }
 
         /// <summary>
         /// The register url scheme.
@@ -154,8 +151,8 @@ namespace Chromely.CefGlue.Winapi.ChromeHost
 
             foreach (var assembly in this.ServiceAssemblies)
             {
-                RouteScanner scanner = new RouteScanner(assembly);
-                Dictionary<string, Route> currentRouteDictionary = scanner.Scan();
+                var scanner = new RouteScanner(assembly);
+                var currentRouteDictionary = scanner.Scan();
                 ServiceRouteProvider.MergeRoutes(currentRouteDictionary);
             }
         }
@@ -166,16 +163,15 @@ namespace Chromely.CefGlue.Winapi.ChromeHost
         public void RegisterSchemeHandlers()
         {
             // Register scheme handlers
-            object[] schemeHandlerObjs = IoC.GetAllInstances(typeof(ChromelySchemeHandler));
+            var schemeHandlerObjs = IoC.GetAllInstances(typeof(ChromelySchemeHandler));
             if (schemeHandlerObjs != null)
             {
                 var schemeHandlers = schemeHandlerObjs.ToList();
 
                 foreach (var item in schemeHandlers)
                 {
-                    if (item is ChromelySchemeHandler)
+                    if (item is ChromelySchemeHandler handler)
                     {
-                        ChromelySchemeHandler handler = (ChromelySchemeHandler)item;
                         if (handler.HandlerFactory == null)
                         {
                             if (handler.UseDefaultResource)
@@ -211,14 +207,14 @@ namespace Chromely.CefGlue.Winapi.ChromeHost
             BrowserMessageRouter = new CefMessageRouterBrowserSide(new CefMessageRouterConfig());
 
             // Register message router handlers
-            List<object> messageRouterHandlers = IoC.GetAllInstances(typeof(ChromelyMesssageRouter)).ToList();
+            var messageRouterHandlers = IoC.GetAllInstances(typeof(ChromelyMesssageRouter)).ToList();
             if ((messageRouterHandlers != null) && (messageRouterHandlers.Count > 0))
             {
                 var routerHandlers = messageRouterHandlers.ToList();
 
                 foreach (var item in routerHandlers)
                 {
-                    ChromelyMesssageRouter routerHandler = (ChromelyMesssageRouter)item;
+                    var routerHandler = (ChromelyMesssageRouter)item;
                     if (routerHandler.Handler is CefMessageRouterBrowserSide.Handler)
                     {
                         BrowserMessageRouter.AddHandler((CefMessageRouterBrowserSide.Handler)routerHandler.Handler);
@@ -278,11 +274,20 @@ namespace Chromely.CefGlue.Winapi.ChromeHost
             this.RegisterSchemeHandlers();
             this.RegisterMessageRouters();
 
-            CefBrowserConfig browserConfig = new CefBrowserConfig();
-            browserConfig.StartUrl = this.HostConfig.StartUrl;
-            browserConfig.ParentHandle = this.Handle;
-            browserConfig.AppArgs = this.HostConfig.AppArgs;
-            browserConfig.CefRectangle = new CefRectangle { X = 0, Y = 0, Width = this.HostConfig.HostWidth, Height = this.HostConfig.HostHeight };
+            var browserConfig = new CefBrowserConfig
+            {
+                StartUrl = this.HostConfig.StartUrl,
+                ParentHandle = this.Handle,
+                AppArgs = this.HostConfig.AppArgs,
+                CefRectangle =
+                    new CefRectangle
+                        {
+                            X = 0,
+                            Y = 0,
+                            Width = this.HostConfig.HostWidth,
+                            Height = this.HostConfig.HostHeight
+                        }
+            };
 
             this.mBrowser = new CefGlueBrowser(browserConfig);
 
@@ -339,7 +344,7 @@ namespace Chromely.CefGlue.Winapi.ChromeHost
         private class ActionTask : CefTask
         {
             /// <summary>
-            /// The m action.
+            /// The action.
             /// </summary>
             private Action mAction;
 

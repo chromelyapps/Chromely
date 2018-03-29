@@ -3,6 +3,6 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Chromely.Core" Version="0.9.0-pre01" />
+    <ProjectReference Include="..\..\Chromely.Core\Chromely.Core.csproj" />
   </ItemGroup>
 </Project>

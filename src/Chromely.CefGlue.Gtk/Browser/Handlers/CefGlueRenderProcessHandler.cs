@@ -36,7 +36,7 @@ namespace Chromely.CefGlue.Gtk.Browser.Handlers
     using Xilium.CefGlue.Wrapper;
 
     /// <summary>
-    /// The cef glue render process handler.
+    /// The CefGlue render process handler.
     /// </summary>
     public class CefGlueRenderProcessHandler : CefRenderProcessHandler
     {

@@ -39,7 +39,7 @@ namespace Chromely.CefGlue.Gtk.Browser.Handlers
     using Xilium.CefGlue.Wrapper;
 
     /// <summary>
-    /// The cef glue message router handler.
+    /// The CefGlue message router handler.
     /// </summary>
     public class CefGlueMessageRouterHandler : CefMessageRouterBrowserSide.Handler
     {

@@ -37,12 +37,12 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
     using Xilium.CefGlue;
 
     /// <summary>
-    /// The cef glue life span handler.
+    /// The CefGlue life span handler.
     /// </summary>
     public class CefGlueLifeSpanHandler : CefLifeSpanHandler
     {
         /// <summary>
-        /// The m browser.
+        /// The CefGlueBrowser object.
         /// </summary>
         private readonly CefGlueBrowser mBrowser;
 

@@ -38,47 +38,47 @@ namespace Chromely.CefGlue.Gtk.ChromeHost
     public class NativeWindow
     {
         /// <summary>
-        /// The m event lock.
+        /// The event lock object.
         /// </summary>
         private readonly object mEventLock = new object();
 
         /// <summary>
-        /// The m title.
+        /// The host/app/window title.
         /// </summary>
         private readonly string mTitle;
 
         /// <summary>
-        /// The m icon file.
+        /// The host/app/window icon file.
         /// </summary>
         private readonly string mIconFile;
 
         /// <summary>
-        /// The m main window.
+        /// The main window.
         /// </summary>
         private IntPtr mMainWindow;
 
         /// <summary>
-        /// The m width.
+        /// The host/app/window width.
         /// </summary>
         private int mWidth;
 
         /// <summary>
-        /// The m height.
+        /// The host/app/window height.
         /// </summary>
         private int mHeight;
 
         /// <summary>
-        /// The m realize event.
+        /// The realize event.
         /// </summary>
         private EventHandler<EventArgs> mRealizeEvent;
 
         /// <summary>
-        /// The m configure event.
+        /// The configure event.
         /// </summary>
         private EventHandler<EventArgs> mConfigureEvent;
 
         /// <summary>
-        /// The m destroy event.
+        /// The destroy event.
         /// </summary>
         private EventHandler<EventArgs> mDestroyEvent;
 

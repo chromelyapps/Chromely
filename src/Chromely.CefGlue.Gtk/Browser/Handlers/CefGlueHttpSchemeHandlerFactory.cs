@@ -33,7 +33,7 @@ namespace Chromely.CefGlue.Gtk.Browser.Handlers
     using Xilium.CefGlue;
 
     /// <summary>
-    /// The cef glue http scheme handler factory.
+    /// The CefGlue http scheme handler factory.
     /// </summary>
     public class CefGlueHttpSchemeHandlerFactory : CefSchemeHandlerFactory
     {

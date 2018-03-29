@@ -37,7 +37,7 @@ namespace Chromely.CefGlue.Winapi.Browser
     using Xilium.CefGlue;
 
     /// <summary>
-    /// The cef glue client params.
+    /// The CefGlue client params.
     /// </summary>
     public class CefGlueClientParams
     {
@@ -126,12 +126,12 @@ namespace Chromely.CefGlue.Winapi.Browser
 
             try
             {
-                foreach (var enumKey in CefHandlerDummyTypes.GetAllHandlerKeys())
+                foreach (var enumKey in CefHandlerFakeTypes.GetAllHandlerKeys())
                 {
                     object instance = null;
 
-                    var service = CefHandlerDummyTypes.GetHandlerType(enumKey);
-                    string keyStr = enumKey.EnumToString();
+                    var service = CefHandlerFakeTypes.GetHandlerType(enumKey);
+                    var keyStr = enumKey.EnumToString();
                     try
                     {
                         if (IoC.IsRegistered(service, keyStr))

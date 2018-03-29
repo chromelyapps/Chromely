@@ -33,7 +33,7 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
     using Xilium.CefGlue;
 
     /// <summary>
-    /// The cef glue resource scheme handler factory.
+    /// The CefGlue resource scheme handler factory.
     /// </summary>
     public class CefGlueResourceSchemeHandlerFactory : CefSchemeHandlerFactory
     {

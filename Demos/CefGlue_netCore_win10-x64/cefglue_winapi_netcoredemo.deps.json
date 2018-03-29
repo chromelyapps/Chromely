@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.0/win10-x64",
-    "signature": "acdd0858219857eb97b61743eab96e93af532aba"
+    "signature": "80444890529e8f8eba5fe47511ac4ce282e8e412"
   },
   "compilationOptions": {},
   "targets": {
@@ -9,16 +9,16 @@
     ".NETCoreApp,Version=v2.0/win10-x64": {
       "cefglue_winapi_netcoredemo/1.0.0": {
         "dependencies": {
-          "Chromely.CefGlue.Winapi": "64.0.0-pre01",
+          "Chromely.CefGlue.Winapi": "64.0.0",
           "Microsoft.NETCore.App": "2.0.0"
         },
         "runtime": {
           "cefglue_winapi_netcoredemo.dll": {}
         }
       },
-      "Chromely.CefGlue.Winapi/64.0.0-pre01": {
+      "Chromely.CefGlue.Winapi/64.0.0": {
         "dependencies": {
-          "Chromely.Core": "0.9.0-pre01",
+          "Chromely.Core": "0.9.0",
           "Chromely.Unofficial.CefGlue.NetStd": "64.0.3282.119",
           "WinApi": "4.0.0"
         },
@@ -26,7 +26,7 @@
           "lib/netstandard2.0/Chromely.CefGlue.Winapi.dll": {}
         }
       },
-      "Chromely.Core/0.9.0-pre01": {
+      "Chromely.Core/0.9.0": {
         "runtime": {
           "lib/netstandard2.0/Chromely.Core.dll": {}
         }
@@ -546,19 +546,19 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Chromely.CefGlue.Winapi/64.0.0-pre01": {
+    "Chromely.CefGlue.Winapi/64.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-SHu5HfEAGZgjj/IqSxw9KB4jw7cpKWZIDZYfl9uzB0PL+ONdrVbX8M1v7DAH8D1UuZv0aayu3AtroHqffGR7lQ==",
-      "path": "chromely.cefglue.winapi/64.0.0-pre01",
-      "hashPath": "chromely.cefglue.winapi.64.0.0-pre01.nupkg.sha512"
+      "sha512": "sha512-go4V9kVGRRm0DyKI2mGkyoNcTFYajJxeDDQluIdsBmyFfOriMK5ad2ZSkT39OhMIPn6UpSY0dAdZYarMw+Gz1g==",
+      "path": "chromely.cefglue.winapi/64.0.0",
+      "hashPath": "chromely.cefglue.winapi.64.0.0.nupkg.sha512"
     },
-    "Chromely.Core/0.9.0-pre01": {
+    "Chromely.Core/0.9.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-5ZD90tBoZd4ePeOFJUb4eWDnSIsBVW9boToNkqvtecX+E8T2achHz3Y9PpJ52k3Nh/ovxf8hyHKUnLX9qb4Fvg==",
-      "path": "chromely.core/0.9.0-pre01",
-      "hashPath": "chromely.core.0.9.0-pre01.nupkg.sha512"
+      "sha512": "sha512-V5X+oKIGHLT9t5jwukqmEKfF+G/wsCGHNVs+1hH9oLMcCSUm8aE+gL5pDngLw74l0tHO78L+pSLKXDL36vzSbA==",
+      "path": "chromely.core/0.9.0",
+      "hashPath": "chromely.core.0.9.0.nupkg.sha512"
     },
     "Chromely.Unofficial.CefGlue.NetStd/64.0.3282.119": {
       "type": "package",

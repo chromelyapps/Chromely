@@ -446,7 +446,7 @@ namespace Chromely.Core
         /// </returns>
         public virtual ChromelyConfiguration RegisterExternalUrlScheme(string schemeName, string domainName)
         {
-            UrlScheme scheme = new UrlScheme(schemeName, domainName, true);
+            var scheme = new UrlScheme(schemeName, domainName, true);
             UrlSchemeProvider.RegisterScheme(scheme);
             return this;
         }
@@ -465,8 +465,8 @@ namespace Chromely.Core
         /// </returns>
         public virtual ChromelyConfiguration RegisterCustomHandler(CefHandlerKey key, Type implementation)
         {
-            Type service = CefHandlerDummyTypes.GetHandlerType(key);
-            string keyStr = key.EnumToString();
+            var service = CefHandlerFakeTypes.GetHandlerType(key);
+            var keyStr = key.EnumToString();
             IoC.RegisterPerRequest(service, keyStr, implementation);
 
             return this;
@@ -505,7 +505,7 @@ namespace Chromely.Core
         {
             if (chromelySchemeHandler != null)
             {
-                UrlScheme scheme = new UrlScheme(chromelySchemeHandler.SchemeName, chromelySchemeHandler.DomainName, false);
+                var scheme = new UrlScheme(chromelySchemeHandler.SchemeName, chromelySchemeHandler.DomainName, false);
                 UrlSchemeProvider.RegisterScheme(scheme);
                 IoC.RegisterInstance(typeof(ChromelySchemeHandler), chromelySchemeHandler.Key, chromelySchemeHandler);
             }

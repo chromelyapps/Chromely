@@ -35,7 +35,6 @@ namespace Chromely.CefGlue.Winapi.Demo
     using System.Reflection;
     using Chromely.CefGlue.Winapi.ChromeHost;
     using Chromely.Core;
-    using Chromely.Core.Helpers;
     using Chromely.Core.Infrastructure;
     using WinApi.Windows;
 
@@ -56,12 +55,12 @@ namespace Chromely.CefGlue.Winapi.Demo
                 // Options 1 - real standard urls 
                 // string startUrl = "https://google.com";
 
-                // Options 2 - using local resource file handling with default local scheme handler 
+                // Options 2 - using local resource file handling with default/custom local scheme handler 
                 // Requires - (sample) UseDefaultResourceSchemeHandler("local", string.Empty)
                 //            or register new resource scheme handler - RegisterSchemeHandler("local", string.Empty,  new CustomResourceHandler())
                 // string startUrl = "local://app/chromely.html";
 
-                // Options 3 - using file protocol - using default scheme handler for Ajax/Http requests
+                // Options 3 - using file protocol - using default/custom scheme handler for Ajax/Http requests
                 // Requires - (sample) UseDefaultResourceSchemeHandler("local", string.Empty)
                 //            or register new resource handler - RegisterSchemeHandler("local", string.Empty,  new CustomResourceHandler())
                 // Requires - (sample) UseDefaultHttpSchemeHandler("http", "chromely.com")
@@ -78,13 +77,7 @@ namespace Chromely.CefGlue.Winapi.Demo
                                               .WithLogSeverity(LogSeverity.Info)
                                               .UseDefaultLogger("logs\\chromely_new.log")
                                               .UseDefaultResourceSchemeHandler("local", string.Empty)
-                                              .UseDefaultHttpSchemeHandler("http", "chromely.com")
-
-                                              .RegisterCustomHandler(CefHandlerKey.LifeSpanHandler, typeof(Browser.Handlers.CefGlueLifeSpanHandler))
-                                              .RegisterCustomHandler(CefHandlerKey.LoadHandler, typeof(Browser.Handlers.CefGlueLoadHandler))
-                                              .RegisterCustomHandler(CefHandlerKey.RequestHandler, typeof(Browser.Handlers.CefGlueRequestHandler))
-                                              .RegisterCustomHandler(CefHandlerKey.DisplayHandler, typeof(Browser.Handlers.CefGlueDisplayHandler))
-                                              .RegisterCustomHandler(CefHandlerKey.ContextMenuHandler, typeof(Browser.Handlers.CefGlueContextMenuHandler));
+                                              .UseDefaultHttpSchemeHandler("http", "chromely.com");
 
                 var factory = WinapiHostFactory.Init("chromely.ico");
                 using (var window = factory.CreateWindow(

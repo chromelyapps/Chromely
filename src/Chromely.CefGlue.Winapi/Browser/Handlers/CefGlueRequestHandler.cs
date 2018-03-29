@@ -34,14 +34,13 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
 {
     using System;
     using System.Diagnostics;
-
     using Chromely.CefGlue.Winapi.Browser.EventParams;
     using Chromely.Core.Host;
     using Chromely.Core.Infrastructure;
     using Xilium.CefGlue;
 
     /// <summary>
-    /// The cef glue request handler.
+    /// The CefGlue request handler.
     /// </summary>
     public class CefGlueRequestHandler : CefRequestHandler
     {

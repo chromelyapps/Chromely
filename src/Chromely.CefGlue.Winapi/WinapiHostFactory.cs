@@ -32,7 +32,6 @@ namespace Chromely.CefGlue.Winapi
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
-
     using WinApi.User32;
     using WinApi.Windows;
 

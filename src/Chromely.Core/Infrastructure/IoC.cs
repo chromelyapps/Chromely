@@ -31,16 +31,15 @@
 namespace Chromely.Core.Infrastructure
 {
     using System;
-
     using Caliburn.Light;
 
     /// <summary>
-    /// The io c.
+    /// Global IOC container implementation.
     /// </summary>
     public static class IoC
     {
         /// <summary>
-        /// The mContainer.
+        /// The default Chromely container.
         /// </summary>
         private static IChromelyContainer mContainer = new SimpleContainer();
 

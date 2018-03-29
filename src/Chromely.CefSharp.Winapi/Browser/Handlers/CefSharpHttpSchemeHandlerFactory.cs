@@ -33,7 +33,7 @@ namespace Chromely.CefSharp.Winapi.Browser.Handlers
     using global::CefSharp;
 
     /// <summary>
-    /// The cef sharp http scheme handler factory.
+    /// The CefSharp http scheme handler factory.
     /// </summary>
     public class CefSharpHttpSchemeHandlerFactory : ISchemeHandlerFactory
     {

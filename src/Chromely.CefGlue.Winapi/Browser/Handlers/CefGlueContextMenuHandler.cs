@@ -34,7 +34,7 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
     using Xilium.CefGlue;
 
     /// <summary>
-    /// The cef glue context menu handler.
+    /// The CefGlue context menu handler.
     /// </summary>
     public class CefGlueContextMenuHandler : CefContextMenuHandler
     {

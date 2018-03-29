@@ -38,7 +38,7 @@ namespace Chromely.Core.Host
     public abstract class WebBrowserBase : IDisposable
     {
         /// <summary>
-        /// The m disposed.
+        /// The disposed flag.
         /// </summary>
         private bool mDisposed;
 
@@ -51,7 +51,7 @@ namespace Chromely.Core.Host
         }
 
         /// <summary>
-        /// The dispose.
+        /// The dispose method.
         /// </summary>
         public void Dispose()
         {
@@ -60,7 +60,7 @@ namespace Chromely.Core.Host
         }
 
         /// <summary>
-        /// The dispose.
+        /// The dispose method - checks if disposing flag is set.
         /// </summary>
         /// <param name="disposing">
         /// The disposing.

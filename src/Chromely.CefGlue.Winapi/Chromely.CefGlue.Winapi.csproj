@@ -3,25 +3,20 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Platforms>AnyCPU</Platforms>
-    <Version>64.0.0.0-pre01</Version>
+    <Version>64.0.0.0</Version>
     <AssemblyVersion>64.0.0.0</AssemblyVersion>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Product>Chromely.CefGlue.Winapi</Product>
     <Authors>Kola Oyewumi</Authors>
     <Company>Kola Oyewumi</Company>
-    <Copyright>Copyright 2017 Kola Oyewumi</Copyright>
+    <Copyright>Copyright 2017-2018 Kola Oyewumi</Copyright>
     <PackageLicenseUrl>https://github.com/mattkol/Chromely/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/mattkol/Chromely</PackageProjectUrl>
     <PackageIconUrl>https://github.com/mattkol/Chromely/blob/master/nugets/chromely.ico?raw=true</PackageIconUrl>
     <PackageTags>Cef Chromium HTML5 Desktop Chromely CefGlue  Restful  Ajax HTTP XHR MessageRouter JavascriptIntegration  .NET Core</PackageTags>
     <Description>Chromely CefGlue Winapi implementation library - this is in .NET Standard 2.0 as it can be used in both .NET (Windows) and .NET Core (Windows, Linux).  Chromely.CefGlue.Winapi version naming is based on CefGlue (Chromely.Unofficial.CefGlue.NetStd) version referenced.</Description>
-    <PackageReleaseNotes>- Added support for Chromely.Unofficial.CefGlue.NetStd (CefGlue) &gt;= 64.0.3282.119 version.
-- Changes to ChromelyConfiguration - breaking changes
-- Made Cef Setting properties configurable
-- Added option to add extra command line arguments
-- Added local resource scheme handling
-- Added custom handling via handler registration</PackageReleaseNotes>
+    <PackageReleaseNotes>- Improved and optimized using ReSharper.</PackageReleaseNotes>
     <FileVersion>64.0.0.0</FileVersion>
     <RepositoryType>Github Repository</RepositoryType>
     <RepositoryUrl>https://github.com/mattkol/Chromely</RepositoryUrl>
@@ -29,6 +24,11 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>bin\Debug\netstandard2.0\Chromely.CefGlue.Winapi.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard2.0\Chromely.CefGlue.Winapi.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

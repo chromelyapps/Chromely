@@ -41,24 +41,24 @@ namespace Chromely.CefGlue.Gtk.ChromeHost
     public class Window : NativeWindow
     {
         /// <summary>
-        /// The m application.
+        /// The host/app/window application.
         /// </summary>
         private readonly HostBase mApplication;
 
         /// <summary>
-        /// The m core.
+        /// The host config.
         /// </summary>
-        private CefGlueBrowser mCore;
+        private readonly ChromelyConfiguration mHostConfig;
 
         /// <summary>
-        /// The m browser window handle.
+        /// The CefGlueBrowser object.
+        /// </summary>
+        private readonly CefGlueBrowser mCore;
+
+        /// <summary>
+        /// The browser window handle.
         /// </summary>
         private IntPtr mBrowserWindowHandle;
-
-        /// <summary>
-        /// The m host config.
-        /// </summary>
-        private ChromelyConfiguration mHostConfig;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Window"/> class.

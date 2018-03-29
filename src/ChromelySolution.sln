@@ -37,7 +37,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chromely.CefGlue.Winapi.Tes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chromely.CefGlue.Winapi.netCoreDemo", "Demos\Chromely.CefGlue.Winapi.netCoreDemo\Chromely.CefGlue.Winapi.netCoreDemo.csproj", "{4E8CF5F5-BB0F-4A82-94CE-69E4A078972B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chromely.CefGlue.Gtk.Linux.Demo", "Demos\Chromely.CefGlue.Gtk.Linux.Demo\Chromely.CefGlue.Gtk.Linux.Demo.csproj", "{C60F3486-8846-4690-87C0-0CB16136EBB3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chromely.CefGlue.Gtk.Linux.Demo", "Demos\Chromely.CefGlue.Gtk.Linux.Demo\Chromely.CefGlue.Gtk.Linux.Demo.csproj", "{C60F3486-8846-4690-87C0-0CB16136EBB3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

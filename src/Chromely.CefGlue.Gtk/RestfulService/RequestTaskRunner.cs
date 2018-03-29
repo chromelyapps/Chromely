@@ -28,7 +28,6 @@
 // </note>
 // --------------------------------------------------------------------------------------------------------------------
 
-
 namespace Chromely.CefGlue.Gtk.RestfulService
 {
     using System;
@@ -41,14 +40,29 @@ namespace Chromely.CefGlue.Gtk.RestfulService
     using Chromely.Core.RestfulService;
     using Xilium.CefGlue;
 
+    /// <summary>
+    /// The request task runner.
+    /// </summary>
     public static class RequestTaskRunner
     {
+        /// <summary>
+        /// The run.
+        /// </summary>
+        /// <param name="request">
+        /// The request.
+        /// </param>
+        /// <returns>
+        /// The <see cref="ChromelyResponse"/>.
+        /// </returns>
+        /// <exception cref="Exception">
+        /// Generic exception - Route path not valid.
+        /// </exception>
         public static ChromelyResponse Run(CefRequest request)
         {
             var uri = new Uri(request.Url);
             string routePath = uri.LocalPath;
 
-            ChromelyResponse response = new ChromelyResponse();
+            var response = new ChromelyResponse();
             if (string.IsNullOrEmpty(routePath))
             {
                 response.ReadyState = (int)ReadyState.ResponseIsReady;
@@ -64,22 +78,40 @@ namespace Chromely.CefGlue.Gtk.RestfulService
                 return response;
             }
 
-            Route route = ServiceRouteProvider.GetRoute(routePath);
+            var route = ServiceRouteProvider.GetRoute(routePath);
 
             if (route == null)
             {
-                throw new Exception(string.Format("Route for path = {0} is null or invalid.", routePath));
+                throw new Exception($"Route for path = {routePath} is null or invalid.");
             }
 
             var parameters = GetParameters(request.Url);
-            string postData = GetPostData(request);
+            var postData = GetPostData(request);
 
             return ExcuteRoute(routePath, parameters, postData);
         }
 
+        /// <summary>
+        /// The run.
+        /// </summary>
+        /// <param name="routePath">
+        /// The route path.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <param name="postData">
+        /// The post data.
+        /// </param>
+        /// <returns>
+        /// The <see cref="ChromelyResponse"/>.
+        /// </returns>
+        /// <exception cref="Exception">
+        /// Generic exception - Route path not valid.
+        /// </exception>
         public static ChromelyResponse Run(string routePath, object parameters, object postData)
         {
-            ChromelyResponse response = new ChromelyResponse();
+            var response = new ChromelyResponse();
             if (string.IsNullOrEmpty(routePath))
             {
                 response.ReadyState = (int)ReadyState.ResponseIsReady;
@@ -95,28 +127,44 @@ namespace Chromely.CefGlue.Gtk.RestfulService
                 return response;
             }
 
-            Route route = ServiceRouteProvider.GetRoute(routePath);
+            var route = ServiceRouteProvider.GetRoute(routePath);
 
             if (route == null)
             {
-                throw new Exception(string.Format("Route for path = {0} is null or invalid.", routePath));
+                throw new Exception($"Route for path = {routePath} is null or invalid.");
             }
 
             return ExcuteRoute(routePath, parameters, postData);
         }
 
+        /// <summary>
+        /// The excute route.
+        /// </summary>
+        /// <param name="routePath">
+        /// The route path.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <param name="postData">
+        /// The post data.
+        /// </param>
+        /// <returns>
+        /// The <see cref="ChromelyResponse"/>.
+        /// </returns>
+        /// <exception cref="Exception">
+        /// Generic exception - Route path not valid.
+        /// </exception>
         private static ChromelyResponse ExcuteRoute(string routePath, object parameters, object postData)
         {
-            ChromelyResponse response = new ChromelyResponse();
-
-            Route route = ServiceRouteProvider.GetRoute(routePath);
+            var route = ServiceRouteProvider.GetRoute(routePath);
 
             if (route == null)
             {
-                throw new Exception(string.Format("Route for path = {0} is null or invalid.", routePath));
+                throw new Exception($"Route for path = {routePath} is null or invalid.");
             }
 
-            response = route.Invoke(routePath, parameters: parameters?.ToObjectDictionary(), postData: postData);
+            var response = route.Invoke(routePath, parameters: parameters?.ToObjectDictionary(), postData: postData);
             response.ReadyState = (int)ReadyState.ResponseIsReady;
             response.Status = (int)System.Net.HttpStatusCode.OK;
             response.StatusText = "OK";
@@ -124,16 +172,29 @@ namespace Chromely.CefGlue.Gtk.RestfulService
             return response;
         }
 
+        /// <summary>
+        /// The get info.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="ChromelyResponse"/>.
+        /// </returns>
         private static ChromelyResponse GetInfo()
         {
-            ChromelyResponse response = new ChromelyResponse();
+            var response = new ChromelyResponse();
+            var chromeVersion = CefRuntime.ChromeVersion;
 
-            string chromeVersion = CefRuntime.ChromeVersion;
-
-            Dictionary<string, string> infoItemDic = new Dictionary<string, string>();
-            infoItemDic.Add("divObjective", "To build HTML5 desktop apps using embedded Chromium without WinForm or WPF. Uses Windows and Linux native GUI API. It can be extended to use WinForm or WPF. Main form of communication with Chromium rendering process is via Ajax HTTP/XHR requests using custom schemes and domains (CefGlue, CefSharp) and .NET/Javascript integration (CefSharp).");
-            infoItemDic.Add("divPlatform", "Cross-platform - Windows, Linux. Built on CefGlue, CefSharp, NET Standard 2.0, .NET Core 2.0, .NET Framework 4.61 and above.");
-            infoItemDic.Add("divVersion", chromeVersion);
+            var infoItemDic = new Dictionary<string, string>
+            {
+                {
+                    "divObjective",
+                    "To build HTML5 desktop apps using embedded Chromium without WinForm or WPF. Uses Windows and Linux native GUI API. It can be extended to use WinForm or WPF. Main form of communication with Chromium rendering process is via Ajax HTTP/XHR requests using custom schemes and domains (CefGlue, CefSharp) and .NET/Javascript integration (CefSharp)."
+                },
+                {
+                    "divPlatform",
+                    "Cross-platform - Windows, Linux. Built on CefGlue, CefSharp, NET Standard 2.0, .NET Core 2.0, .NET Framework 4.61 and above."
+                },
+                { "divVersion", chromeVersion }
+            };
 
             response.ReadyState = (int)ReadyState.ResponseIsReady;
             response.Status = (int)System.Net.HttpStatusCode.OK;
@@ -143,9 +204,18 @@ namespace Chromely.CefGlue.Gtk.RestfulService
             return response;
         }
 
+        /// <summary>
+        /// The get parameters.
+        /// </summary>
+        /// <param name="url">
+        /// The url.
+        /// </param>
+        /// <returns>
+        /// The name value collection.
+        /// </returns>
         private static IDictionary<string, string> GetParameters(string url)
         {
-            NameValueCollection nameValueCollection = new NameValueCollection();
+            var nameValueCollection = new NameValueCollection();
 
             string querystring = string.Empty;
             int index = url.IndexOf('?');
@@ -163,21 +233,25 @@ namespace Chromely.CefGlue.Gtk.RestfulService
             return nameValueCollection.AllKeys.ToDictionary(x => x, x => nameValueCollection[x]);
         }
 
+        /// <summary>
+        /// The get post data.
+        /// </summary>
+        /// <param name="request">
+        /// The request.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
         private static string GetPostData(CefRequest request)
         {
-            if ((request == null) || (request.PostData == null))
+            CefPostDataElement[] postDataElements = request?.PostData?.GetElements();
+
+            if (postDataElements == null || (postDataElements.Length == 0))
             {
                 return string.Empty;
             }
 
-            CefPostDataElement[] postDataElements = request.PostData.GetElements();
-
-            if ((postDataElements == null) || (postDataElements.Length == 0))
-            {
-                return string.Empty;
-            }
-
-            CefPostDataElement dataElement = postDataElements[0];
+            var dataElement = postDataElements[0];
 
             switch (dataElement.ElementType)
             {
@@ -189,7 +263,7 @@ namespace Chromely.CefGlue.Gtk.RestfulService
                     return Encoding.UTF8.GetString(dataElement.GetBytes());
             }
 
-            return string.Empty; 
+            return string.Empty;
         }
     }
 }

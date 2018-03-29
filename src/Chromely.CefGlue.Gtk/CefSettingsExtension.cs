@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RequestTaskRunner.cs" company="Chromely">
+// <copyright file="CefSettingsExtension.cs" company="Chromely">
 //   Copyright (c) 2017-2018 Kola Oyewumi
 // </copyright>
 // <license>
@@ -28,32 +28,40 @@
 // </note>
 // --------------------------------------------------------------------------------------------------------------------
 
-
 namespace Chromely.CefGlue.Gtk
 {
     using System.Collections.Generic;
     using Chromely.Core.Helpers;
     using Xilium.CefGlue;
 
+    /// <summary>
+    /// The cef settings extension.
+    /// </summary>
     public static class CefSettingsExtension
     {
+        /// <summary>
+        /// The update.
+        /// </summary>
+        /// <param name="cefSettings">
+        /// The cef settings.
+        /// </param>
+        /// <param name="customSettings">
+        /// The custom settings.
+        /// </param>
         public static void Update(this CefSettings cefSettings, Dictionary<string, object> customSettings)
         {
-            if ((cefSettings == null) || (customSettings == null))
-            {
-                return;
-            }
-
-            if (customSettings.Count == 0)
+            if ((cefSettings == null) ||
+                (customSettings == null) ||
+                (customSettings.Count == 0))
             {
                 return;
             }
 
             foreach (var setting in customSettings)
             {
-                bool boolResult = false;
-                int intResult = 0;
-                string strResult = string.Empty;
+                bool boolResult;
+                int intResult;
+                string strResult;
 
                 switch (setting.Key)
                 {

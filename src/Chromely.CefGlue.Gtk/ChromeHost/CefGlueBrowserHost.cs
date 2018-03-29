@@ -34,7 +34,7 @@ namespace Chromely.CefGlue.Gtk.ChromeHost
     using Xilium.CefGlue;
 
     /// <summary>
-    /// The cef glue browser host.
+    /// The CefGlue browser host/window/app.
     /// </summary>
     public class CefGlueBrowserHost : HostBase
     {

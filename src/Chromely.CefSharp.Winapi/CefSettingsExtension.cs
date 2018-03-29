@@ -31,7 +31,6 @@
 namespace Chromely.CefSharp.Winapi
 {
     using System.Collections.Generic;
-
     using Chromely.Core.Helpers;
 
     using CefSharpGlobal = global::CefSharp;

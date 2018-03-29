@@ -32,13 +32,11 @@
 namespace Chromely.CefSharp.Winapi
 {
     using System;
-
     using Chromely.Core;
     using Chromely.Core.Helpers;
     using Chromely.Core.Host;
     using WinApi.User32;
     using WinApi.Windows;
-
     using global::CefSharp;
 
     /// <summary>

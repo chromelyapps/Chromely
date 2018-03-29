@@ -42,17 +42,17 @@ namespace Chromely.CefGlue.Winapi.Browser
     using Xilium.CefGlue;
 
     /// <summary>
-    /// The cef glue app.
+    /// The CefGlue app.
     /// </summary>
     public class CefGlueApp : CefApp
     {
         /// <summary>
-        /// The m render process handler.
+        /// The render process handler.
         /// </summary>
         private readonly CefRenderProcessHandler mRenderProcessHandler = new CefGlueRenderProcessHandler();
 
         /// <summary>
-        /// The m host config.
+        /// The host config.
         /// </summary>
         private readonly ChromelyConfiguration mHostConfig;
 

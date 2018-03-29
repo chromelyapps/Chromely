@@ -36,72 +36,72 @@ namespace Chromely.CefGlue.Gtk.Browser
     using Xilium.CefGlue;
 
     /// <summary>
-    /// The cef glue client.
+    /// The CefGlue client.
     /// </summary>
     public class CefGlueClient : CefClient
     {
         /// <summary>
-        /// The m life span handler.
+        /// The life span handler.
         /// </summary>
         private readonly CefLifeSpanHandler mLifeSpanHandler;
 
         /// <summary>
-        /// The m load handler.
+        /// The load handler.
         /// </summary>
         private readonly CefLoadHandler mLoadHandler;
 
         /// <summary>
-        /// The m request handler.
+        /// The request handler.
         /// </summary>
         private readonly CefRequestHandler mRequestHandler;
 
         /// <summary>
-        /// The m display handler.
+        /// The display handler.
         /// </summary>
         private readonly CefDisplayHandler mDisplayHandler;
 
         /// <summary>
-        /// The m context menu handler.
+        /// The context menu handler.
         /// </summary>
         private readonly CefContextMenuHandler mContextMenuHandler;
 
         /// <summary>
-        /// The m focus handler.
+        /// The focus handler.
         /// </summary>
         private readonly CefFocusHandler mFocusHandler;
 
         /// <summary>
-        /// The m keyboard handler.
+        /// The keyboard handler.
         /// </summary>
         private readonly CefKeyboardHandler mKeyboardHandler;
 
         /// <summary>
-        /// The m js dialog handler.
+        /// The Javascript dialog handler.
         /// </summary>
         private readonly CefJSDialogHandler mJsDialogHandler;
 
         /// <summary>
-        /// The m dialog handler.
+        /// The dialog handler.
         /// </summary>
         private readonly CefDialogHandler mDialogHandler;
 
         /// <summary>
-        /// The m drag handler.
+        /// The drag handler.
         /// </summary>
         private readonly CefDragHandler mDragHandler;
 
         /// <summary>
-        /// The m geolocation handler.
+        /// The geolocation handler.
         /// </summary>
         private readonly CefGeolocationHandler mGeolocationHandler;
 
         /// <summary>
-        /// The m download handler.
+        /// The download handler.
         /// </summary>
         private readonly CefDownloadHandler mDownloadHandler;
 
         /// <summary>
-        /// The m find handler.
+        /// The find handler.
         /// </summary>
         private readonly CefFindHandler mFindHandler;
 

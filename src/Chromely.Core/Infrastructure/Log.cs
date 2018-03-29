@@ -33,7 +33,7 @@ namespace Chromely.Core.Infrastructure
     using System;
 
     /// <summary>
-    /// The log.
+    /// Global logger implementation.
     /// </summary>
     public static class Log
     {

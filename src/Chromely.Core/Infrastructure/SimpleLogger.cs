@@ -42,17 +42,17 @@ namespace Chromely.Core.Infrastructure
     public class SimpleLogger : IChromelyLogger
     {
         /// <summary>
-        /// The m filename.
+        /// The filename.
         /// </summary>
         private readonly string mFilename;
 
         /// <summary>
-        /// The m max size in kilo bytes.
+        /// The max size in kilo bytes.
         /// </summary>
         private readonly int mMaxSizeInKiloBytes;
 
         /// <summary>
-        /// The m log to console.
+        /// The log to console flag.
         /// </summary>
         private readonly bool mLogToConsole;
 

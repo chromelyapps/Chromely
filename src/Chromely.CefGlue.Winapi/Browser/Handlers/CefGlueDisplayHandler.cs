@@ -37,7 +37,7 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
     using Xilium.CefGlue;
 
     /// <summary>
-    /// The cef glue display handler.
+    /// The CefGlue display handler.
     /// </summary>
     public class CefGlueDisplayHandler : CefDisplayHandler
     {

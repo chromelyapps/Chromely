@@ -5,11 +5,11 @@
     <CefSharpAnyCpuSupport>true</CefSharpAnyCpuSupport>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
-    <Version>63.0.0.0-pre01</Version>
+    <Version>63.0.0.0</Version>
     <Authors>Kola Oyewumi</Authors>
     <Company>Kola Oyewumi</Company>
     <Description>Chromely CefSharp Winapi implementation. Chromely.CefSharp.Winapi version naming is based on CefSharp.Common  version referenced.</Description>
-    <Copyright>Copyright 2017 Kola Oyewumi</Copyright>
+    <Copyright>Copyright 2017-2018 Kola Oyewumi</Copyright>
     <PackageLicenseUrl>https://github.com/mattkol/Chromely/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/mattkol/Chromely</PackageProjectUrl>
     <PackageIconUrl>https://github.com/mattkol/Chromely/blob/master/nugets/chromely.ico?raw=true</PackageIconUrl>
@@ -17,22 +17,22 @@
     <FileVersion>63.0.0.0</FileVersion>
     <PackageTags>Cef Chromium HTML5 Desktop Chromely CefSharp Restful  Ajax HTTP XHR JavascriptIntegration</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageReleaseNotes>- Changes to ChromelyConfiguration - breaking changes
-- Made Cef Setting properties configurable
-- Added option to add extra command line arguments
-- Added local resource scheme handling
-- Added custom handling via handler registration
-- This version still uses legacy .NET Javascript binding (LegacyJavascriptBindingEnabled = true)</PackageReleaseNotes>
+    <PackageReleaseNotes>- Improved and optimized using ReSharper.</PackageReleaseNotes>
     <RepositoryType>Github Repository</RepositoryType>
     <RepositoryUrl>https://github.com/mattkol/Chromely</RepositoryUrl>
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <PlatformTarget>AnyCPU</PlatformTarget>
+    <DocumentationFile>bin\Debug\net461\Chromely.CefSharp.Winapi.xml</DocumentationFile>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\net461\Chromely.CefSharp.Winapi.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CefSharp.Common" Version="63.0.0" />
+    <PackageReference Include="CefSharp.Common" Version="63.0.3" />
     <PackageReference Include="WinApi" Version="4.0.0" />
   </ItemGroup>
 

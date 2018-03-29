@@ -40,12 +40,12 @@ namespace Chromely.CefGlue.Gtk.Browser.Handlers
     using Xilium.CefGlue;
 
     /// <summary>
-    /// The cef glue request handler.
+    /// The CefGlue request handler.
     /// </summary>
     public class CefGlueRequestHandler : CefRequestHandler
     {
         /// <summary>
-        /// The m browser.
+        /// The CefGlueBrowser object.
         /// </summary>
         private readonly CefGlueBrowser mBrowser;
 

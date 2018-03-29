@@ -38,11 +38,8 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Chromely.CefGlue.Winapi" Version="64.0.0" />
     <PackageReference Include="WinApi" Version="4.0.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Chromely.CefGlue.Winapi\Chromely.CefGlue.Winapi.csproj" />
-    <ProjectReference Include="..\..\Chromely.Core\Chromely.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="app\chromely.html">
