@@ -56,7 +56,7 @@
             <b-tab title="Get1" active>
               <div class="row">
                 <div class="col-12">
-                    Route Path:&ensp;/democontroller/movies &ensp; (Restful Service in Local Assembly)&ensp;<button id="buttonBoundObjectRun1" type="button" class="btn btn-primary btn-sm" onclick="boundObjectRun1()">Run</button>
+                    Route Path:&ensp;/democontroller/movies &ensp; (Restful Service in Local Assembly)&ensp;<button type="button" class="btn btn-primary btn-sm" v-on:click="boundObjectGet1Click()">Run</button>
                 </div>
                 <br><br>
                 <div class="col-12">
@@ -73,8 +73,18 @@
                                     <th>RestfulAssembly</th>
                                 </tr>
                             </thead>
-                            <tbody></tbody>
-                        </table>
+                            <tbody tr v-for="item in boundObjectGet1Result">
+                                <tr>
+                                    <th>{{ item.Id }}</th>
+                                    <th>{{ item.Title }}</th>
+                                    <th>{{ item.Year }}</th>
+                                    <th>{{ item.Votes }}</th>
+                                    <th>{{ item.Rating }}</th>
+                                    <th>{{ item.Date }}</th>
+                                    <th>{{ item.RestfulAssembly }}</th>
+                                </tr>
+                            </tbody>
+                       </table>
                     </div>
                 </div>
               </div>
@@ -82,7 +92,7 @@
             <b-tab title="Get2">
               <div class="row">
                 <div class="col-12">
-                    Route Path:&ensp;/externalcontrolle/movies &ensp; (Restful Service in External Assembly)&ensp;<button id="buttonBoundObjectRun1" type="button" class="btn btn-primary btn-sm" onclick="boundObjectRun1()">Run</button>
+                    Route Path:&ensp;/externalcontroller/movies &ensp; (Restful Service in External Assembly)&ensp;<button type="button" class="btn btn-primary btn-sm" v-on:click="boundObjectGet2Click()">Run</button>
                 </div>
                 <br><br>
                 <div class="col-12">
@@ -99,7 +109,17 @@
                                     <th>RestfulAssembly</th>
                                 </tr>
                             </thead>
-                            <tbody></tbody>
+                           <tbody tr v-for="item in boundObjectGet2Result">
+                                <tr>
+                                    <th>{{ item.Id }}</th>
+                                    <th>{{ item.Title }}</th>
+                                    <th>{{ item.Year }}</th>
+                                    <th>{{ item.Votes }}</th>
+                                    <th>{{ item.Rating }}</th>
+                                    <th>{{ item.Date }}</th>
+                                    <th>{{ item.RestfulAssembly }}</th>
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -108,11 +128,11 @@
             <b-tab title="Post">
                <div class="row">
                   <div class="col-12">
-                        Route Path:&ensp;/democontroller/savemovies&ensp;(Restful Service in Local Assembly)&ensp;<button id="buttonBoundObjectRun3" type="button" class="btn btn-primary btn-sm" onclick="boundObjectRun3()">Run</button>
+                        Route Path:&ensp;/democontroller/savemovies&ensp;(Restful Service in Local Assembly)&ensp;<button type="button" class="btn btn-primary btn-sm" v-on:click="boundObjectPostClick()">Run</button>
                     </div>
                     <br><br>
                     <div class="col-12">
-                        <div id="boundObjectResult3"></div>
+                        <div>{{ boundObjectPostResult }}</div>
                     </div>
                 </div>
             </b-tab>
@@ -129,32 +149,25 @@
   export default {
       data () {
         return {
-            info: {}
+            info: {},
+            boundObjectGet1Result: [],
+            boundObjectGet2Result: [],
+            boundObjectPostResult: 'Post request not ran or no result recieved.'
         }
      },
     methods: {
-        getInfoCallback: function (data) {
-            console.log(data);
-            this.info = data
+
+        /* Start -  Event Handling */
+
+        boundObjectGet1Click: function () {
+           boundObjectService.boundObjectGet('/democontroller/movies', null, this.boundObjectGet1Callback)
         },
 
-        getCallback: function (data) {
-            console.log(data);
+        boundObjectGet2Click: function () {
+           boundObjectService.boundObjectGet('/externalcontroller/movies', null, this.boundObjectGet2Callback)
         },
 
-        postCallback: function (data) {
-            console.log(data);
-        },
-
-        boundObjectInfo: function () {
-           boundObjectService.boundObjectGet('/info', null, this.getInfoCallback)
-        },
-
-        boundObjectGet: function (url) {
-           boundObjectService.boundObjectGet(url, null, this.getCallback)
-        },
-
-        boundObjectPost: function (url) {
+        boundObjectPostClick: function () {
               var moviesJson = [
                 { Id: 1, Title: "The Shawshank Redemption", Year: 1994, Votes: 678790, Rating: 9.2 },
                 { Id: 2, Title: "The Godfather", Year: 1972, votes: 511495, Rating: 9.2 },
@@ -164,7 +177,58 @@
                 { Id: 6, Title: "12 Angry Men", Year: 1957, Votes: 164558, Rating: 8.9 }
             ];
 
-            boundObjectService.boundObjectPost(url, null, moviesJson, this.postCallback)
+            boundObjectService.boundObjectPost('/democontroller/savemovies', null, moviesJson, this.boundObjectPostCallback)
+        },
+
+        /* End - Event Handling */
+        
+        boundObjectInfoCallback: function (res) {
+
+            var tempInfo = { objective: '', platform: '', version: '' }
+            tempInfo.objective = res.divObjective
+            tempInfo.platform = res.divPlatform
+            tempInfo.version = res.divVersion
+
+            this.info = tempInfo
+        },
+
+        boundObjectGet1Callback: function (res) {
+            var dataArray = this.parseArrayResult(res)
+            this.boundObjectGet1Result = dataArray
+        },
+
+        boundObjectGet2Callback: function (res) {
+            var dataArray = this.parseArrayResult(res)
+            this.boundObjectGet2Result = dataArray
+        },
+
+        boundObjectPostCallback: function (res) {
+           this.boundObjectPostResult = res
+        },
+
+        boundObjectInfo: function() {
+           boundObjectService.boundObjectGet('/info', null, this.boundObjectInfoCallback)
+        },
+
+        parseArrayResult: function(data) {
+            var dataArray = [];
+
+            for (var i = 0; i < data.length; i++) {
+                var tempItem = {
+                    Id: data[i].Id,
+                    Title: data[i].Title,
+                    Votes: data[i].Votes,
+                    Year: data[i].Year,
+                    Votes: data[i].Votes,
+                    Rating: data[i].Rating,
+                    Date: data[i].Date,
+                    RestfulAssembly: data[i].RestfulAssembly
+                };
+
+                dataArray.push(tempItem);
+            }
+
+            return dataArray;
         }
     },
     beforeMount(){

@@ -8,6 +8,9 @@ import "./assets/css/chromely.css"
 
 Vue.use(BootstrapVue)
 
+Vue.config.devtools = true
+Vue.config.performance = true
+
 new Vue({
   el: '#app',
   router,

@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <TargetFramework>net461</TargetFramework>
     <Platforms>x64</Platforms>
     <AssemblyName>chromely_vue_cefsharp</AssemblyName>

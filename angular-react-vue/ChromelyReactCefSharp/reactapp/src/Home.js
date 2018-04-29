@@ -10,13 +10,17 @@ const Home = () => (
     <Container>
       <div className="centerBlock">
        <Row>
-          <Col>
-              <Media object src={chromelylogo} className="img-rounded" alt="Chromely Logo" width="200" height="200"  style={{marginTop: '20px'}} >
-              </Media>
-          </Col>
-          <Col>
-             <Media  object src={reactlogo} className="react-logo" alt="react logo" width="240" height="240" >
+           <Col xs="2">
+           </Col>
+           <Col xs="4">
+            <Media object src={chromelylogo} className="img-rounded" alt="Chromely Logo" width="200" height="200">
             </Media>
+          </Col>
+          <Col xs="4">
+              <Media  object src={reactlogo} className="react-logo" alt="react logo" width="240" height="240" >
+            </Media>
+          </Col>
+          <Col xs="2">
           </Col>
         </Row>
 
