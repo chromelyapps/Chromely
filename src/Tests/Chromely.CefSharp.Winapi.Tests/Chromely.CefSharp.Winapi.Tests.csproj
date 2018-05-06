@@ -3,18 +3,20 @@
     <TargetFramework>net461</TargetFramework>
     <CefSharpAnyCpuSupport>true</CefSharpAnyCpuSupport>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <PlatformTarget>x64</PlatformTarget>
-  </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="CefSharp.Common" Version="63.0.3" />
     <PackageReference Include="xunit" Version="2.3.1" />
     <PackageReference Include="xunit.runner.console" Version="2.3.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
+    <PackageReference Include="CefSharp.Common" Version="63.0.3" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Chromely.CefSharp.Winapi\Chromely.CefSharp.Winapi.csproj" />
     <ProjectReference Include="..\..\Chromely.Core\Chromely.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="CefSharp.Core">
+      <HintPath>..\..\..\..\..\..\Users\kolaoyewumi\.nuget\packages\cefsharp.common\63.0.3\CefSharp\x86\CefSharp.Core.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 

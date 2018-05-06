@@ -30,11 +30,15 @@
 
 namespace Chromely.CefSharp.Winapi.Tests.ChromeHost
 {
+    using System.Linq;
+    using Chromely.CefSharp.Winapi.Tests.Models;
     using Chromely.Core;
     using Chromely.Core.Helpers;
     using Chromely.Core.Infrastructure;
+
     using Xunit;
     using Xunit.Abstractions;
+
     using CefSharpGlobal = global::CefSharp;
 
     /// <summary>
@@ -60,6 +64,32 @@ namespace Chromely.CefSharp.Winapi.Tests.ChromeHost
         }
 
         /// <summary>
+        /// The custom schemer tests.
+        /// </summary>
+        [Fact]
+        public void CustomSchemerTests()
+        {
+            var config = this.GetBaseConfig()
+                .RegisterSchemeHandler("http", "cefsharp1.com", new CustomSchemeHandlerFactory());
+
+            var schemeHandlerObjs = IoC.GetAllInstances(typeof(ChromelySchemeHandler));
+
+            Assert.NotNull(schemeHandlerObjs);
+
+            var schemeHandlers = schemeHandlerObjs.ToList();
+            int count = schemeHandlers.Count;
+            Assert.Equal(1, count);
+
+            Assert.True(schemeHandlers[0] is ChromelySchemeHandler);
+
+            ChromelySchemeHandler customSchemeHandler1 = (ChromelySchemeHandler)schemeHandlers[0];
+
+            Assert.Equal("http", customSchemeHandler1.SchemeName);
+            Assert.Equal("cefsharp1.com", customSchemeHandler1.DomainName);
+            Assert.True(customSchemeHandler1.HandlerFactory is CustomSchemeHandlerFactory);
+        }
+
+        /// <summary>
         /// The settings update test.
         /// </summary>
         [Fact]
@@ -70,7 +100,6 @@ namespace Chromely.CefSharp.Winapi.Tests.ChromeHost
             {
                 Locale = hostConfig.Locale,
                 MultiThreadedMessageLoop = false,
-                LogSeverity = (CefSharpGlobal.LogSeverity)hostConfig.LogSeverity,
                 LogFile = hostConfig.LogFile
             };
 
@@ -92,7 +121,6 @@ namespace Chromely.CefSharp.Winapi.Tests.ChromeHost
             Assert.Equal(nameof(CefSettingKeys.ProductVersion), settings.ProductVersion);
             Assert.Equal(nameof(CefSettingKeys.Locale), settings.Locale);
             Assert.Equal(nameof(CefSettingKeys.LogFile), settings.LogFile);
-            Assert.Equal(CefSharpGlobal.LogSeverity.Error, (CefSharpGlobal.LogSeverity)settings.LogSeverity);
             Assert.Equal(nameof(CefSettingKeys.JavaScriptFlags), settings.JavascriptFlags);
             Assert.Equal(nameof(CefSettingKeys.ResourcesDirPath), settings.ResourcesDirPath);
             Assert.Equal(nameof(CefSettingKeys.LocalesDirPath), settings.LocalesDirPath);
@@ -110,10 +138,7 @@ namespace Chromely.CefSharp.Winapi.Tests.ChromeHost
         /// </returns>
         private ChromelyConfiguration GetConfigWithDefaultValues()
         {
-            string defaultLogFile = "logs\\chromely_new.log";
-
-            var config = ChromelyConfiguration.Create()
-                .UseDefaultLogger(defaultLogFile)
+            var config = this.GetBaseConfig()
                 .UseDefaultResourceSchemeHandler("local", string.Empty)
                 .UseDefaultHttpSchemeHandler("http", "chromely.com")
                 .UseDefautJsHandler("boundedObject", true)
@@ -145,12 +170,12 @@ namespace Chromely.CefSharp.Winapi.Tests.ChromeHost
         }
 
         /// <summary>
-        /// The get config.
+        /// The get base config.
         /// </summary>
         /// <returns>
         /// The <see cref="ChromelyConfiguration"/>.
         /// </returns>
-        private ChromelyConfiguration GetConfig()
+        private ChromelyConfiguration GetBaseConfig()
         {
             var title = "chromely";
             var iconFile = "chromely.ico";
