@@ -52,6 +52,24 @@ class Program
   }
 }
 ````
+
+### Run Starter Template (Using dotnet core cli)
+For more info see - [Getting Started CefGlue Winapi](https://github.com/mattkol/Chromely/wiki/Getting-Started-CefGlue-Winapi-(.NET-Core))
+````csharp
+dotnet new chromelywin 
+
+[If chromelywin is not available, please install with - 
+   dotnet new -i "Chromely.CefSharp.Winapi.App::*"
+]
+
+dotnet restore
+dotnet build
+
+[Copy Chromium binaries to the debug folder. Please see Guide 9. Ensure version correct for x64 bit.]
+
+dotnet run
+````
+
 ### Chromely Demos 
 For more info on demos - [Demos](https://github.com/mattkol/Chromely/wiki/Demos)
 ![](https://github.com/mattkol/Chromely/blob/master/Screenshots/chromely_screens.gif)
