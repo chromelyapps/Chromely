@@ -47,8 +47,8 @@ namespace Chromely.Service.Demo
         /// </summary>
         public DemoController()
         {
-            this.RegisterGetRequest("/democontroller/movies", this.GetMovies);
-            this.RegisterPostRequest("/democontroller/savemovies", this.SaveMovies);
+            this.RegisterGetRequest("/externalcontroller/movies", this.GetMovies);
+            this.RegisterPostRequest("/externalcontroller/savemovies", this.SaveMovies);
         }
 
         /// <summary>
