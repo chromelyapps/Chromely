@@ -53,7 +53,7 @@ class Program
 }
 ````
 
-#### Run Starter Template (Using dotnet core cli). For detailed description, please see - [cli demo template install](https://github.com/mattkol/Chromely/wiki/Getting-Started-CefGlue-Winapi-(.NET-Core))
+#### Run Starter Template (Using dotnet core cli). For more info, please see - [cli demo template install](https://github.com/mattkol/Chromely/wiki/dotnet-cli-Starter-Template)
 
 ````csharp
 dotnet new chromelywin 
