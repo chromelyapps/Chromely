@@ -53,7 +53,7 @@ class Program
 }
 ````
 
-#### Run Starter Template (Using dotnet core cli). For more info, please see - [cli demo template install](https://github.com/mattkol/Chromely/wiki/dotnet-cli-Starter-Template)
+#### Run Starter Template (Using dotnet core cli). For more info, please see - [dotnet cli demo template install](https://github.com/mattkol/Chromely/wiki/dotnet-cli-Starter-Template)
 
 ````csharp
 dotnet new chromelywin 
