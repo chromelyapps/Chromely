@@ -128,24 +128,6 @@
         }
 
 
-        private cef_geolocation_handler_t* get_geolocation_handler(cef_client_t* self)
-        {
-            CheckSelf(self);
-
-            var result = GetGeolocationHandler();
-            return result != null ? result.ToNative() : null;
-        }
-
-        /// <summary>
-        /// Return the handler for geolocation permissions requests. If no handler is
-        /// provided geolocation access will be denied by default.
-        /// </summary>
-        protected virtual CefGeolocationHandler GetGeolocationHandler()
-        {
-            return null;
-        }
-
-
         private cef_jsdialog_handler_t* get_jsdialog_handler(cef_client_t* self)
         {
             CheckSelf(self);

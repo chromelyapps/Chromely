@@ -417,11 +417,6 @@
             The drag handler.
             </summary>
         </member>
-        <member name="F:Chromely.CefGlue.Winapi.Browser.CefGlueClient.mGeolocationHandler">
-            <summary>
-            The geolocation handler.
-            </summary>
-        </member>
         <member name="F:Chromely.CefGlue.Winapi.Browser.CefGlueClient.mDownloadHandler">
             <summary>
             The download handler.
@@ -525,14 +520,6 @@
             The <see cref="T:Xilium.CefGlue.CefDragHandler"/>.
             </returns>
         </member>
-        <member name="M:Chromely.CefGlue.Winapi.Browser.CefGlueClient.GetGeolocationHandler">
-            <summary>
-            The get geolocation handler.
-            </summary>
-            <returns>
-            The <see cref="T:Xilium.CefGlue.CefGeolocationHandler"/>.
-            </returns>
-        </member>
         <member name="M:Chromely.CefGlue.Winapi.Browser.CefGlueClient.GetDownloadHandler">
             <summary>
             The get download handler.
@@ -624,11 +611,6 @@
         <member name="P:Chromely.CefGlue.Winapi.Browser.CefGlueClientParams.DragHandler">
             <summary>
             Gets or sets the drag handler.
-            </summary>
-        </member>
-        <member name="P:Chromely.CefGlue.Winapi.Browser.CefGlueClientParams.GeolocationHandler">
-            <summary>
-            Gets or sets the geolocation handler.
             </summary>
         </member>
         <member name="P:Chromely.CefGlue.Winapi.Browser.CefGlueClientParams.DownloadHandler">
@@ -2089,6 +2071,30 @@
             <returns>
             The image pointer.
             </returns>
+        </member>
+        <member name="F:Chromely.CefGlue.Winapi.NativeMethods.RECT.Left">
+            <summary>
+            The left.
+            // x position of upper-left corner
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Winapi.NativeMethods.RECT.Top">
+            <summary>
+            The top.
+            // y position of upper-left corner
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Winapi.NativeMethods.RECT.Right">
+            <summary>
+            The right.
+            // x position of lower-right corner
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Winapi.NativeMethods.RECT.Bottom">
+            <summary>
+            The bottom.
+            y position of lower-right corner
+            </summary>
         </member>
         <member name="T:Chromely.CefGlue.Winapi.RestfulService.RequestTaskRunner">
             <summary>

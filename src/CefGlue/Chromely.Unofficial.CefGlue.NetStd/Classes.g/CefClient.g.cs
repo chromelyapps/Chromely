@@ -47,14 +47,13 @@ namespace Xilium.CefGlue
         private cef_client_t.get_drag_handler_delegate _ds7;
         private cef_client_t.get_find_handler_delegate _ds8;
         private cef_client_t.get_focus_handler_delegate _ds9;
-        private cef_client_t.get_geolocation_handler_delegate _dsa;
-        private cef_client_t.get_jsdialog_handler_delegate _dsb;
-        private cef_client_t.get_keyboard_handler_delegate _dsc;
-        private cef_client_t.get_life_span_handler_delegate _dsd;
-        private cef_client_t.get_load_handler_delegate _dse;
-        private cef_client_t.get_render_handler_delegate _dsf;
-        private cef_client_t.get_request_handler_delegate _ds10;
-        private cef_client_t.on_process_message_received_delegate _ds11;
+        private cef_client_t.get_jsdialog_handler_delegate _dsa;
+        private cef_client_t.get_keyboard_handler_delegate _dsb;
+        private cef_client_t.get_life_span_handler_delegate _dsc;
+        private cef_client_t.get_load_handler_delegate _dsd;
+        private cef_client_t.get_render_handler_delegate _dse;
+        private cef_client_t.get_request_handler_delegate _dsf;
+        private cef_client_t.on_process_message_received_delegate _ds10;
         
         protected CefClient()
         {
@@ -80,22 +79,20 @@ namespace Xilium.CefGlue
             _self->_get_find_handler = Marshal.GetFunctionPointerForDelegate(_ds8);
             _ds9 = new cef_client_t.get_focus_handler_delegate(get_focus_handler);
             _self->_get_focus_handler = Marshal.GetFunctionPointerForDelegate(_ds9);
-            _dsa = new cef_client_t.get_geolocation_handler_delegate(get_geolocation_handler);
-            _self->_get_geolocation_handler = Marshal.GetFunctionPointerForDelegate(_dsa);
-            _dsb = new cef_client_t.get_jsdialog_handler_delegate(get_jsdialog_handler);
-            _self->_get_jsdialog_handler = Marshal.GetFunctionPointerForDelegate(_dsb);
-            _dsc = new cef_client_t.get_keyboard_handler_delegate(get_keyboard_handler);
-            _self->_get_keyboard_handler = Marshal.GetFunctionPointerForDelegate(_dsc);
-            _dsd = new cef_client_t.get_life_span_handler_delegate(get_life_span_handler);
-            _self->_get_life_span_handler = Marshal.GetFunctionPointerForDelegate(_dsd);
-            _dse = new cef_client_t.get_load_handler_delegate(get_load_handler);
-            _self->_get_load_handler = Marshal.GetFunctionPointerForDelegate(_dse);
-            _dsf = new cef_client_t.get_render_handler_delegate(get_render_handler);
-            _self->_get_render_handler = Marshal.GetFunctionPointerForDelegate(_dsf);
-            _ds10 = new cef_client_t.get_request_handler_delegate(get_request_handler);
-            _self->_get_request_handler = Marshal.GetFunctionPointerForDelegate(_ds10);
-            _ds11 = new cef_client_t.on_process_message_received_delegate(on_process_message_received);
-            _self->_on_process_message_received = Marshal.GetFunctionPointerForDelegate(_ds11);
+            _dsa = new cef_client_t.get_jsdialog_handler_delegate(get_jsdialog_handler);
+            _self->_get_jsdialog_handler = Marshal.GetFunctionPointerForDelegate(_dsa);
+            _dsb = new cef_client_t.get_keyboard_handler_delegate(get_keyboard_handler);
+            _self->_get_keyboard_handler = Marshal.GetFunctionPointerForDelegate(_dsb);
+            _dsc = new cef_client_t.get_life_span_handler_delegate(get_life_span_handler);
+            _self->_get_life_span_handler = Marshal.GetFunctionPointerForDelegate(_dsc);
+            _dsd = new cef_client_t.get_load_handler_delegate(get_load_handler);
+            _self->_get_load_handler = Marshal.GetFunctionPointerForDelegate(_dsd);
+            _dse = new cef_client_t.get_render_handler_delegate(get_render_handler);
+            _self->_get_render_handler = Marshal.GetFunctionPointerForDelegate(_dse);
+            _dsf = new cef_client_t.get_request_handler_delegate(get_request_handler);
+            _self->_get_request_handler = Marshal.GetFunctionPointerForDelegate(_dsf);
+            _ds10 = new cef_client_t.on_process_message_received_delegate(on_process_message_received);
+            _self->_on_process_message_received = Marshal.GetFunctionPointerForDelegate(_ds10);
         }
         
         ~CefClient()

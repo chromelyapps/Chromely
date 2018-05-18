@@ -97,11 +97,6 @@ namespace Chromely.CefGlue.Winapi.Browser
         public CefDragHandler DragHandler { get; set; }
 
         /// <summary>
-        /// Gets or sets the geolocation handler.
-        /// </summary>
-        public CefGeolocationHandler GeolocationHandler { get; set; }
-
-        /// <summary>
         /// Gets or sets the download handler.
         /// </summary>
         public CefDownloadHandler DownloadHandler { get; set; }
@@ -242,14 +237,6 @@ namespace Chromely.CefGlue.Winapi.Browser
                             if (instance is CefDragHandler dragHandler)
                             {
                                 clientParams.DragHandler = dragHandler;
-                            }
-
-                            break;
-
-                        case CefHandlerKey.GeolocationHandler:
-                            if (instance is CefGeolocationHandler geolocationHandler)
-                            {
-                                clientParams.GeolocationHandler = geolocationHandler;
                             }
 
                             break;

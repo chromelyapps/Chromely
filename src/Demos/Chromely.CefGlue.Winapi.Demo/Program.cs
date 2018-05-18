@@ -88,8 +88,6 @@ namespace Chromely.CefGlue.Winapi.Demo
                     // Register external url schems
                     window.RegisterUrlScheme(new UrlScheme("https://github.com/mattkol/Chromely", true));
 
-                    // window.RegisterUrlScheme(new UrlScheme("https://google.com", true));
-
                     /*
                      * Register service assemblies
                      * Uncomment relevant part to register assemblies

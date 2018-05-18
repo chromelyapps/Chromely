@@ -25,6 +25,10 @@ namespace Xilium.CefGlue.Interop
         [DllImport(libcef.DllName, EntryPoint = "cef_cookie_manager_get_global_manager", CallingConvention = libcef.CEF_CALL)]
         public static extern cef_cookie_manager_t* get_global_manager(cef_completion_callback_t* callback);
         
+        // GetBlockingManager
+        [DllImport(libcef.DllName, EntryPoint = "cef_cookie_manager_get_blocking_manager", CallingConvention = libcef.CEF_CALL)]
+        public static extern cef_cookie_manager_t* get_blocking_manager();
+        
         // CreateManager
         [DllImport(libcef.DllName, EntryPoint = "cef_cookie_manager_create_manager", CallingConvention = libcef.CEF_CALL)]
         public static extern cef_cookie_manager_t* create_manager(cef_string_t* path, int persist_session_cookies, cef_completion_callback_t* callback);

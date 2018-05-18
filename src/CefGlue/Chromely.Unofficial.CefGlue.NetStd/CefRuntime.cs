@@ -358,22 +358,6 @@
         }
         #endregion
 
-        #region cef_geolocation
-
-        /// <summary>
-        /// Request a one-time geolocation update. This function bypasses any user
-        /// permission checks so should only be used by code that is allowed to access
-        /// location information.
-        /// </summary>
-        public static bool GetGeolocation(CefGetGeolocationCallback callback)
-        {
-            if (callback == null) throw new ArgumentNullException("callback");
-
-            return libcef.get_geolocation(callback.ToNative()) != 0;
-        }
-
-        #endregion
-
         #region cef_origin_whitelist
 
         /// <summary>
@@ -1142,14 +1126,17 @@
         ///
         /// CrashKeys section:
         ///
-        /// Any number of crash keys can be specified for use by the application. Crash
-        /// key values will be truncated based on the specified size (small = 63 bytes,
-        /// medium = 252 bytes, large = 1008 bytes). The value of crash keys can be set
-        /// from any thread or process using the CefSetCrashKeyValue function. These
-        /// key/value pairs will be sent to the crash server along with the crash dump
-        /// file. Medium and large values will be chunked for submission. For example,
-        /// if your key is named "mykey" then the value will be broken into ordered
-        /// chunks and submitted using keys named "mykey-1", "mykey-2", etc.
+        /// A maximum of 26 crash keys of each size can be specified for use by the
+        /// application. Crash key values will be truncated based on the specified size
+        /// (small = 64 bytes, medium = 256 bytes, large = 1024 bytes). The value of
+        /// crash keys can be set from any thread or process using the
+        /// CefSetCrashKeyValue function. These key/value pairs will be sent to the crash
+        /// server along with the crash dump file.+// A maximum of 26 crash keys of each size can be specified for use by the
+        /// application. Crash key values will be truncated based on the specified size
+        /// (small = 64 bytes, medium = 256 bytes, large = 1024 bytes). The value of
+        /// crash keys can be set from any thread or process using the
+        /// CefSetCrashKeyValue function. These key/value pairs will be sent to the crash
+        /// server along with the crash dump file.
         /// </summary>
         public static bool CrashReportingEnabled()
         {

@@ -3,21 +3,21 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Platforms>AnyCPU</Platforms>
-    <Version>64.0.0.0</Version>
-    <AssemblyVersion>64.0.0.0</AssemblyVersion>
+    <Version>65.0.0.0</Version>
+    <AssemblyVersion>65.0.0.0</AssemblyVersion>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Product>Chromely.CefGlue.Winapi</Product>
     <Authors>Kola Oyewumi</Authors>
     <Company>Kola Oyewumi</Company>
-    <Copyright>Copyright 2017-2018 Kola Oyewumi</Copyright>
+    <Copyright>Copyright © 2017-2018 Kola Oyewumi</Copyright>
     <PackageLicenseUrl>https://github.com/mattkol/Chromely/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/mattkol/Chromely</PackageProjectUrl>
     <PackageIconUrl>https://github.com/mattkol/Chromely/blob/master/nugets/chromely.ico?raw=true</PackageIconUrl>
     <PackageTags>Cef Chromium HTML5 Desktop Chromely CefGlue  Restful  Ajax HTTP XHR MessageRouter JavascriptIntegration  .NET Core</PackageTags>
     <Description>Chromely CefGlue Winapi implementation library - this is in .NET Standard 2.0 as it can be used in both .NET (Windows) and .NET Core (Windows, Linux).  Chromely.CefGlue.Winapi version naming is based on CefGlue (Chromely.Unofficial.CefGlue.NetStd) version referenced.</Description>
-    <PackageReleaseNotes>- Improved and optimized using ReSharper.</PackageReleaseNotes>
-    <FileVersion>64.0.0.0</FileVersion>
+    <PackageReleaseNotes>- Geolocation handling removed - https://bitbucket.org/chromiumembedded/cef/issues/2380/geolocation-can-not-work-after-branch-3239</PackageReleaseNotes>
+    <FileVersion>65.0.0.0</FileVersion>
     <RepositoryType>Github Repository</RepositoryType>
     <RepositoryUrl>https://github.com/mattkol/Chromely</RepositoryUrl>
   </PropertyGroup>
@@ -32,7 +32,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Chromely.Unofficial.CefGlue.NetStd" Version="64.0.3282.119" />
+    <PackageReference Include="Chromely.Unofficial.CefGlue.NetStd" Version="65.0.3325.181" />
     <PackageReference Include="WinApi" Version="4.0.0" />
   </ItemGroup>
 

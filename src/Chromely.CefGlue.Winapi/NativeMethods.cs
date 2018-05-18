@@ -181,17 +181,32 @@ namespace Chromely.CefGlue.Winapi
             "SA1600:ElementsMustBeDocumented",
             Justification = "Reviewed. Suppression is OK here.")]
         [StructLayout(LayoutKind.Sequential)]
-
         // ReSharper disable once InconsistentNaming
         public struct RECT
         {
-            public int Left; // x position of upper-left corner
+            /// <summary>
+            /// The left.
+            /// // x position of upper-left corner
+            /// </summary>
+            public int Left; 
 
-            public int Top; // y position of upper-left corner
+            /// <summary>
+            /// The top.
+            /// // y position of upper-left corner
+            /// </summary>
+            public int Top; 
 
-            public int Right; // x position of lower-right corner
+            /// <summary>
+            /// The right.
+            /// // x position of lower-right corner
+            /// </summary>
+            public int Right; 
 
-            public int Bottom; // y position of lower-right corner
+            /// <summary>
+            /// The bottom.
+            /// y position of lower-right corner
+            /// </summary>
+            public int Bottom; 
         }
     }
 }

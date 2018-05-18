@@ -27,6 +27,23 @@
                 );
         }
 
+
+        /// <summary>
+        /// Returns a cookie manager that neither stores nor retrieves cookies. All
+        /// usage of cookies will be blocked including cookies accessed via the network
+        /// (request/response headers), via JavaScript (document.cookie), and via
+        /// CefCookieManager methods. No cookies will be displayed in DevTools. If you
+        /// wish to only block cookies sent via the network use the CefRequestHandler
+        /// CanGetCookies and CanSetCookie methods instead.
+        /// </summary>
+        public static CefCookieManager GetBlockingManager()
+        {
+            return CefCookieManager.FromNative(
+                cef_cookie_manager_t.get_blocking_manager()
+                );
+        }
+
+
         /// <summary>
         /// Creates a new cookie manager. If |path| is empty data will be stored in
         /// memory only. Otherwise, data will be stored at the specified |path|. To

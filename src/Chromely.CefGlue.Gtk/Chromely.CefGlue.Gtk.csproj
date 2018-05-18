@@ -13,11 +13,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Chromely.Unofficial.CefGlue.NetStd" Version="64.0.3282.119" />
+    <PackageReference Include="Chromely.Core" Version="0.9.0" />
+    <PackageReference Include="Chromely.Unofficial.CefGlue.NetStd" Version="65.0.3325.181" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Chromely.Core\Chromely.Core.csproj" />
-  </ItemGroup>
 
 </Project>

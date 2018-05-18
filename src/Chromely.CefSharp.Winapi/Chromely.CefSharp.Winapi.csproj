@@ -9,7 +9,7 @@
     <Authors>Kola Oyewumi</Authors>
     <Company>Kola Oyewumi</Company>
     <Description>Chromely CefSharp Winapi implementation. Chromely.CefSharp.Winapi version naming is based on CefSharp.Common  version referenced.</Description>
-    <Copyright>Copyright 2017-2018 Kola Oyewumi</Copyright>
+    <Copyright>Copyright © 2017-2018 Kola Oyewumi</Copyright>
     <PackageLicenseUrl>https://github.com/mattkol/Chromely/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/mattkol/Chromely</PackageProjectUrl>
     <PackageIconUrl>https://github.com/mattkol/Chromely/blob/master/nugets/chromely.ico?raw=true</PackageIconUrl>

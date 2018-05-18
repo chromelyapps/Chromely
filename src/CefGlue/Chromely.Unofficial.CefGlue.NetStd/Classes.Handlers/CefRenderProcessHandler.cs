@@ -99,30 +99,6 @@
         }
 
 
-        private int on_before_navigation(cef_render_process_handler_t* self, cef_browser_t* browser, cef_frame_t* frame, cef_request_t* request, CefNavigationType navigation_type, int is_redirect)
-        {
-            CheckSelf(self);
-
-            var m_browser = CefBrowser.FromNative(browser);
-            var m_frame = CefFrame.FromNative(frame);
-            var m_request = CefRequest.FromNative(request);
-
-            var result = OnBeforeNavigation(m_browser, m_frame, m_request, navigation_type, is_redirect != 0);
-
-            return result ? 1 : 0;
-        }
-
-        /// <summary>
-        /// Called before browser navigation. Return true to cancel the navigation or
-        /// false to allow the navigation to proceed. The |request| object cannot be
-        /// modified in this callback.
-        /// </summary>
-        protected virtual bool OnBeforeNavigation(CefBrowser browser, CefFrame frame, CefRequest request, CefNavigationType navigation_type, bool isRedirect)
-        {
-            return false;
-        }
-
-
         private void on_context_created(cef_render_process_handler_t* self, cef_browser_t* browser, cef_frame_t* frame, cef_v8context_t* context)
         {
             CheckSelf(self);

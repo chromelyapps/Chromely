@@ -17,13 +17,10 @@
         /// </summary>
         public void Continue(string username, string password)
         {
-            if (username == null) throw new ArgumentNullException("username");
-            if (password == null) throw new ArgumentNullException("password");
-
             fixed (char* username_str = username)
             fixed (char* password_str = password)
             {
-                var n_username = new cef_string_t(username_str, username.Length);
+                var n_username = new cef_string_t(username_str, username != null ? username.Length : 0);
                 var n_password = new cef_string_t(password_str, password != null ? password.Length : 0);
 
                 cef_auth_callback_t.cont(_self, &n_username, &n_password);

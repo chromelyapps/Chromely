@@ -54,7 +54,11 @@
         /// </summary>
         public bool AddBitmap(float scaleFactor, int pixelWidth, int pixelHeight, CefColorType colorType, CefAlphaType alphaType, IntPtr pixelData, int pixelDataSize)
         {
-            throw new NotImplementedException(); // TODO: CefImage.AddBitmap
+            if (pixelData == IntPtr.Zero) throw new ArgumentNullException(nameof(pixelData));
+            if (pixelDataSize < 0) throw new ArgumentOutOfRangeException(nameof(pixelDataSize));
+
+            var n_result = cef_image_t.add_bitmap(_self, scaleFactor, pixelWidth, pixelHeight, colorType, alphaType, (void*)pixelData, (UIntPtr)pixelDataSize);
+            return n_result != 0;
         }
 
         /// <summary>
@@ -64,7 +68,11 @@
         /// </summary>
         public bool AddPng(float scaleFactor, IntPtr pngData, int pngDataSize)
         {
-            throw new NotImplementedException(); // TODO: CefImage.AddPNG
+            if (pngData == IntPtr.Zero) throw new ArgumentNullException(nameof(pngData));
+            if (pngDataSize < 0) throw new ArgumentOutOfRangeException(nameof(pngDataSize));
+
+            var n_result = cef_image_t.add_png(_self, scaleFactor, (void*)pngData, (UIntPtr)pngDataSize);
+            return n_result != 0;
         }
 
         /// <summary>
@@ -72,9 +80,13 @@
         /// image data of size |jpeg_data_size|. The JPEG format does not support
         /// transparency so the alpha byte will be set to 0xFF for all pixels.
         /// </summary>
-        public int AddJpeg(float scaleFactor, IntPtr jpegData, int jpegDataSize)
+        public bool AddJpeg(float scaleFactor, IntPtr jpegData, int jpegDataSize)
         {
-            throw new NotImplementedException(); // TODO: CefImage.AddJPEG
+            if (jpegData == IntPtr.Zero) throw new ArgumentNullException(nameof(jpegData));
+            if (jpegDataSize < 0) throw new ArgumentOutOfRangeException(nameof(jpegDataSize));
+
+            var n_result = cef_image_t.add_png(_self, scaleFactor, (void*)jpegData, (UIntPtr)jpegDataSize);
+            return n_result != 0;
         }
 
         /// <summary>
@@ -84,7 +96,8 @@
         {
             get
             {
-                throw new NotImplementedException(); // TODO: CefImage.GetWidth
+                var n_result = cef_image_t.get_width(_self);
+                return checked((int)n_result);
             }
         }
 
@@ -95,7 +108,8 @@
         {
             get
             {
-                throw new NotImplementedException(); // TODO: CefImage.GetHeight
+                var n_result = cef_image_t.get_height(_self);
+                return checked((int)n_result);
             }
         }
 
@@ -104,7 +118,8 @@
         /// </summary>
         public bool HasRepresentation(float scaleFactor)
         {
-            throw new NotImplementedException(); // TODO: CefImage.HasRepresentation
+            var n_result = cef_image_t.has_representation(_self, scaleFactor);
+            return n_result != 0;
         }
 
         /// <summary>
@@ -112,7 +127,8 @@
         /// </summary>
         public bool RemoveRepresentation(float scaleFactor)
         {
-            throw new NotImplementedException(); // TODO: CefImage.RemoveRepresentation
+            var n_result = cef_image_t.remove_representation(_self, scaleFactor);
+            return n_result != 0;
         }
 
         /// <summary>
@@ -123,7 +139,24 @@
         /// </summary>
         public bool GetRepresentationInfo(float scaleFactor, out float actualScaleFactor, out int pixelWidth, out int pixelHeight)
         {
-            throw new NotImplementedException(); // TODO: CefImage.GetRepresentationInfo
+            float n_actualScaleFactor;
+            int n_pixelWidth;
+            int n_pixelHeight;
+            var n_result = cef_image_t.get_representation_info(_self, scaleFactor, &n_actualScaleFactor, &n_pixelWidth, &n_pixelHeight);
+            if (n_result != 0)
+            {
+                actualScaleFactor = n_actualScaleFactor;
+                pixelWidth = n_pixelWidth;
+                pixelHeight = n_pixelHeight;
+                return true;
+            }
+            else
+            {
+                actualScaleFactor = 0;
+                pixelWidth = 0;
+                pixelHeight = 0;
+                return false;
+            }
         }
 
         /// <summary>
@@ -136,7 +169,21 @@
         /// </summary>
         public CefBinaryValue GetAsBitmap(float scaleFactor, CefColorType colorType, CefAlphaType alphaType, out int pixelWidth, out int pixelHeight)
         {
-            throw new NotImplementedException(); // TODO: CefImage.GetAsBitmap
+            int n_pixelWidth;
+            int n_pixelHeight;
+            var n_result = cef_image_t.get_as_bitmap(_self, scaleFactor, colorType, alphaType, &n_pixelWidth, &n_pixelHeight);
+            if (n_result != null)
+            {
+                pixelWidth = n_pixelWidth;
+                pixelHeight = n_pixelHeight;
+                return CefBinaryValue.FromNative(n_result);
+            }
+            else
+            {
+                pixelWidth = 0;
+                pixelHeight = 0;
+                return null;
+            }
         }
 
         /// <summary>
@@ -148,7 +195,21 @@
         /// </summary>
         public CefBinaryValue GetAsPng(float scaleFactor, bool withTransparency, out int pixelWidth, out int pixelHeight)
         {
-            throw new NotImplementedException(); // TODO: CefImage.GetAsPNG
+            int n_pixelWidth;
+            int n_pixelHeight;
+            var n_result = cef_image_t.get_as_png(_self, scaleFactor, withTransparency ? 1 : 0, &n_pixelWidth, &n_pixelHeight);
+            if (n_result != null)
+            {
+                pixelWidth = n_pixelWidth;
+                pixelHeight = n_pixelHeight;
+                return CefBinaryValue.FromNative(n_result);
+            }
+            else
+            {
+                pixelWidth = 0;
+                pixelHeight = 0;
+                return null;
+            }
         }
 
         /// <summary>
@@ -162,7 +223,21 @@
         /// </summary>
         public CefBinaryValue GetAsJpeg(float scaleFactor, int quality, out int pixelWidth, out int pixelHeight)
         {
-            throw new NotImplementedException(); // TODO: CefImage.GetAsJPEG
+            int n_pixelWidth;
+            int n_pixelHeight;
+            var n_result = cef_image_t.get_as_jpeg(_self, scaleFactor, quality, &n_pixelWidth, &n_pixelHeight);
+            if (n_result != null)
+            {
+                pixelWidth = n_pixelWidth;
+                pixelHeight = n_pixelHeight;
+                return CefBinaryValue.FromNative(n_result);
+            }
+            else
+            {
+                pixelWidth = 0;
+                pixelHeight = 0;
+                return null;
+            }
         }
     }
 }

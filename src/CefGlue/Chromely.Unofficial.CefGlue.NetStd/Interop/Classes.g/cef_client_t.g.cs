@@ -20,7 +20,6 @@ namespace Xilium.CefGlue.Interop
         internal IntPtr _get_drag_handler;
         internal IntPtr _get_find_handler;
         internal IntPtr _get_focus_handler;
-        internal IntPtr _get_geolocation_handler;
         internal IntPtr _get_jsdialog_handler;
         internal IntPtr _get_keyboard_handler;
         internal IntPtr _get_life_span_handler;
@@ -88,12 +87,6 @@ namespace Xilium.CefGlue.Interop
         [SuppressUnmanagedCodeSecurity]
         #endif
         internal delegate cef_focus_handler_t* get_focus_handler_delegate(cef_client_t* self);
-        
-        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
-        #if !DEBUG
-        [SuppressUnmanagedCodeSecurity]
-        #endif
-        internal delegate cef_geolocation_handler_t* get_geolocation_handler_delegate(cef_client_t* self);
         
         [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
         #if !DEBUG

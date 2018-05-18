@@ -91,11 +91,6 @@ namespace Chromely.CefGlue.Gtk.Browser
         private readonly CefDragHandler mDragHandler;
 
         /// <summary>
-        /// The geolocation handler.
-        /// </summary>
-        private readonly CefGeolocationHandler mGeolocationHandler;
-
-        /// <summary>
         /// The download handler.
         /// </summary>
         private readonly CefDownloadHandler mDownloadHandler;
@@ -124,7 +119,6 @@ namespace Chromely.CefGlue.Gtk.Browser
             this.mJsDialogHandler = clientParams.JsDialogHandler;
             this.mDialogHandler = clientParams.DialogHandler;
             this.mDragHandler = clientParams.DragHandler;
-            this.mGeolocationHandler = clientParams.GeolocationHandler;
             this.mDownloadHandler = clientParams.DownloadHandler;
             this.mFindHandler = clientParams.FindHandler;
         }
@@ -242,17 +236,6 @@ namespace Chromely.CefGlue.Gtk.Browser
         protected override CefDragHandler GetDragHandler()
         {
             return this.mDragHandler;
-        }
-
-        /// <summary>
-        /// The get geolocation handler.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="CefGeolocationHandler"/>.
-        /// </returns>
-        protected override CefGeolocationHandler GetGeolocationHandler()
-        {
-            return this.mGeolocationHandler;
         }
 
         /// <summary>
