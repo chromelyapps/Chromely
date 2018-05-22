@@ -238,7 +238,7 @@ namespace Chromely.CefGlue.Winapi.ChromeHost
         /// </exception>
         protected override void OnCreate(ref CreateWindowPacket packet)
         {
-            // Will throw exception of Cef load fails. 
+            // Will throw exception if Cef load fails. 
             CefRuntime.Load();
 
             var mainArgs = new CefMainArgs(this.HostConfig.AppArgs);
