@@ -5,6 +5,7 @@
     <Platforms>x64</Platforms>
     <AssemblyName>cefsharp_winapi_demo</AssemblyName>
     <ApplicationIcon>chromely.ico</ApplicationIcon>
+    <TrimUnusedDependencies>true</TrimUnusedDependencies>
     <StartupObject />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -41,6 +42,7 @@
   <ItemGroup>
     <PackageReference Include="CefSharp.Common" Version="63.0.3" />
     <PackageReference Include="Chromely.CefSharp.Winapi" Version="63.0.0" />
+    <PackageReference Include="Microsoft.Packaging.Tools.Trimming" Version="1.1.0-preview1-25818-01" />
   </ItemGroup>
   <ItemGroup>
     <None Update="app\Content\img\chromely.png">
