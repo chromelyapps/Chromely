@@ -281,7 +281,7 @@ namespace Chromely.CefGlue.Gtk.ChromeHost
             {
                 MultiThreadedMessageLoop = true,
                 SingleProcess = false,
-                LogSeverity = CefLogSeverity.Verbose,
+                LogSeverity = (CefLogSeverity)this.HostConfig.LogSeverity,
                 LogFile = this.HostConfig.LogFile,
                 ResourcesDirPath = Path.GetDirectoryName(
                     new Uri(Assembly.GetEntryAssembly().CodeBase).LocalPath)
