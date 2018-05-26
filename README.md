@@ -1,8 +1,5 @@
-<p align="center">
-  <img src="https://github.com/mattkol/Chromely/blob/master/nugets/chromely.ico?raw=true" />
-  <h1>Chromely</h1>
-</p>
-
+<p align="center"><img src="https://github.com/mattkol/Chromely/blob/master/nugets/chromely.ico?raw=true" /></p>
+<h1 align="center">Chromely</h1>
 
 Chromely is a lightweight alternative to <a href="https://github.com/ElectronNET/Electron.NET">Electron.NET</a>, <a href="https://github.com/electron/electron">Electron</a> for .NET/.NET Core developers.
 
