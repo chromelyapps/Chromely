@@ -79,6 +79,18 @@ For more info on demos - [Demos](https://github.com/mattkol/Chromely/wiki/Demos)
 * Json Serializer - https://github.com/lbv/litjson
 * Caliburn.Light Container - https://github.com/tibel/Caliburn.Light/blob/master/src/Caliburn.Core/IoC/SimpleContainer.cs
 
+Contributing
+---
+Contributions are always welcome, via PRs, issues raised, or any other means.
+
+Author
+---
+[Kola Matthew Oyewumi](https://www.linkedin.com/in/kola-oyewumi-630b1520) 
+
+License
+---
+MIT-licensed
+
 Credits
 ---
 Thanks to [JetBrains](https://www.jetbrains.com) for the OSS license of Resharper Ultimate.
