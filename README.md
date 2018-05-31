@@ -64,7 +64,7 @@ class Program
 dotnet new chromelywin 
 dotnet restore
 dotnet build
-dotnet run
+dotnet run [Ensure that you have Cef binaries downloaded before you run. You can use https://github.com/mattkol/Chromely/wiki/dotnet-cli-Starter-Template link provided.]
 ````
 
 ### Chromely Demos 
