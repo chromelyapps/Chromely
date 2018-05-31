@@ -101,7 +101,7 @@ namespace ChromelyAngularCefGlue
                     window.SetSize(config.HostWidth, config.HostHeight);
                     window.CenterToScreen();
                     window.Show();
-                    return new HostEventLoop().Run(window);
+                    return new EventLoop().Run(window);
                 }
             }
             catch (Exception exception)
