@@ -1,14 +1,19 @@
-<p align="center">
-  <img src="https://github.com/mattkol/Chromely/blob/master/nugets/chromely.ico?raw=true" />
-  <h1>Chromely</h1>
-</p>
-
+<p align="center"><img src="https://github.com/mattkol/Chromely/blob/master/nugets/chromely.ico?raw=true" /></p>
+<h1 align="center">Chromely</h1>
 
 Chromely is a lightweight alternative to <a href="https://github.com/ElectronNET/Electron.NET">Electron.NET</a>, <a href="https://github.com/electron/electron">Electron</a> for .NET/.NET Core developers.
 
-Chromely is a .NET/.NET Core HTML5 Chromium desktop framework. It is focused on building apps using embedded Chromium ([Cef](https://bitbucket.org/chromiumembedded/cef)) without WinForms or WPF. Chromely uses Windows and Linux native GUI API as chromium hosts. It can be extended to use WinForms or WPF. Main form of communication with Chromium rendering process is via Ajax HTTP/XHR requests using custom schemes and domains ([Xilium.CefGlue](https://bitbucket.org/xilium/xilium.cefglue/wiki/Home), [CefSharp](https://github.com/cefsharp/CefSharp)), .NET/Javascript integration ([CefSharp](https://github.com/cefsharp/CefSharp)), Generic Message Routing ([Xilium.CefGlue](https://bitbucket.org/xilium/xilium.cefglue/wiki/Home)).
+Chromely is a .NET/.NET Core HTML5 Chromium desktop framework. It is focused on building apps based on [Xilium.CefGlue](https://bitbucket.org/xilium/xilium.cefglue/wiki/Home), [CefSharp](https://github.com/cefsharp/CefSharp) implementations of  embedded Chromium ([Cef](https://bitbucket.org/chromiumembedded/cef)) **without WinForms or WPF**. Chromely uses Windows and Linux native GUI API as "thin" chromium hosts. It can be extended to use WinForms or WPF. 
 
 With Chromely you can build Single Page Application (SPA) HTML5 desktop apps with or without Node/npm. Building SPA apps using javascript frameworks like Angular, React, Vue or similar is easy. You can use Visual Studio Code or any IDE you are familiar with as long as Chromely knows the entry html file from the compiled/bundled files. For more info please see - [Chromely-Apps](https://github.com/mattkol/Chromely/wiki/Chromely-Apps).
+
+Options of communicating (IPC) with rendering process are via:
+
+1. .NET/Javascript integration ([CefSharp](https://github.com/cefsharp/CefSharp))  -  more info @ [Expose .NET class to JavaScript](https://github.com/mattkol/Chromely/wiki/Expose-.NET-class-to-JavaScript).
+2. Generic Message Routing ([Xilium.CefGlue](https://bitbucket.org/xilium/xilium.cefglue/wiki/Home)) - more info @ [Generic Message Routing](https://github.com/mattkol/Chromely/wiki/Generic-Message-Routing).
+3. Ajax HTTP/XHR ([Xilium.CefGlue](https://bitbucket.org/xilium/xilium.cefglue/wiki/Home), [CefSharp](https://github.com/cefsharp/CefSharp)) -  more info @ [Custom Scheme Handling](https://github.com/mattkol/Chromely/wiki/Custom-Scheme-Handling).
+
+[<h4>Roadmap & Help Wanted</h4>](https://github.com/mattkol/Chromely/wiki/Roadmap-and-Help-Wanted)
 
 ##### If you like Chromely, please give it a star - it helps! #####
 
@@ -73,6 +78,18 @@ For more info on demos - [Demos](https://github.com/mattkol/Chromely/wiki/Demos)
 * CefSharp - https://github.com/cefsharp/CefSharp
 * Json Serializer - https://github.com/lbv/litjson
 * Caliburn.Light Container - https://github.com/tibel/Caliburn.Light/blob/master/src/Caliburn.Core/IoC/SimpleContainer.cs
+
+Contributing
+---
+Contributions are always welcome, via PRs, issues raised, or any other means.
+
+Author
+---
+[Kola Matthew Oyewumi](https://www.linkedin.com/in/kola-oyewumi-630b1520) 
+
+License
+---
+MIT-licensed
 
 Credits
 ---
