@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ChromelyMesssageRouter.cs" company="Chromely">
+// <copyright file="ChromelyMessageRouter.cs" company="Chromely">
 //   Copyright (c) 2017-2018 Kola Oyewumi
 // </copyright>
 // <license>
@@ -37,23 +37,23 @@ namespace Chromely.Core
     /// Registers MessageRouter handler -
     /// https://bitbucket.org/chromiumembedded/cef/wiki/GeneralUsage.md#markdown-header-generic-message-router
     /// </summary>
-    public class ChromelyMesssageRouter
+    public class ChromelyMessageRouter
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ChromelyMesssageRouter"/> class.
+        /// Initializes a new instance of the <see cref="ChromelyMessageRouter"/> class.
         /// </summary>
-        public ChromelyMesssageRouter()
+        public ChromelyMessageRouter()
         {
             this.Key = Guid.NewGuid().ToString();
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ChromelyMesssageRouter"/> class.
+        /// Initializes a new instance of the <see cref="ChromelyMessageRouter"/> class.
         /// </summary>
         /// <param name="handler">
         /// The handler.
         /// </param>
-        public ChromelyMesssageRouter(object handler)
+        public ChromelyMessageRouter(object handler)
         {
             this.Key = Guid.NewGuid().ToString();
             this.Handler = handler;

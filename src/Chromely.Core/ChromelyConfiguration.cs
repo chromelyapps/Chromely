@@ -566,7 +566,7 @@ namespace Chromely.Core
         /// </returns>
         public virtual ChromelyConfiguration RegisterMessageRouterHandler(object chromelyMesssageRouterHandler)
         {
-            return this.RegisterMessageRouterHandler(new ChromelyMesssageRouter(chromelyMesssageRouterHandler));
+            return this.RegisterMessageRouterHandler(new ChromelyMessageRouter(chromelyMesssageRouterHandler));
         }
 
         /// <summary>
@@ -578,11 +578,11 @@ namespace Chromely.Core
         /// <returns>
         /// The <see cref="ChromelyConfiguration"/> object.
         /// </returns>
-        public virtual ChromelyConfiguration RegisterMessageRouterHandler(ChromelyMesssageRouter chromelyMesssageRouter)
+        public virtual ChromelyConfiguration RegisterMessageRouterHandler(ChromelyMessageRouter chromelyMesssageRouter)
         {
             if (chromelyMesssageRouter != null)
             {
-                IoC.RegisterInstance(typeof(ChromelyMesssageRouter), chromelyMesssageRouter.Key, chromelyMesssageRouter);
+                IoC.RegisterInstance(typeof(ChromelyMessageRouter), chromelyMesssageRouter.Key, chromelyMesssageRouter);
             }
 
             return this;

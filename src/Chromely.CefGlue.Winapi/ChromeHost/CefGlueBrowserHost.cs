@@ -207,14 +207,14 @@ namespace Chromely.CefGlue.Winapi.ChromeHost
             BrowserMessageRouter = new CefMessageRouterBrowserSide(new CefMessageRouterConfig());
 
             // Register message router handlers
-            var messageRouterHandlers = IoC.GetAllInstances(typeof(ChromelyMesssageRouter)).ToList();
+            var messageRouterHandlers = IoC.GetAllInstances(typeof(ChromelyMessageRouter)).ToList();
             if ((messageRouterHandlers != null) && (messageRouterHandlers.Count > 0))
             {
                 var routerHandlers = messageRouterHandlers.ToList();
 
                 foreach (var item in routerHandlers)
                 {
-                    var routerHandler = (ChromelyMesssageRouter)item;
+                    var routerHandler = (ChromelyMessageRouter)item;
                     if (routerHandler.Handler is CefMessageRouterBrowserSide.Handler)
                     {
                         BrowserMessageRouter.AddHandler((CefMessageRouterBrowserSide.Handler)routerHandler.Handler);
