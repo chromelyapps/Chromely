@@ -63,7 +63,7 @@ namespace Chromely.CefGlue.Gtk.Win.Demo
                 // Requires - (sample) UseDefaultResourceSchemeHandler("local", string.Empty)
                 //            or register new resource handler - RegisterSchemeHandler("local", string.Empty,  new CustomResourceHandler())
                 // Requires - (sample) UseDefaultHttpSchemeHandler("http", "chromely.com")
-                //            or register new htpp scheme handler - RegisterSchemeHandler("htpp", "test.com",  new CustomHttpHandler())
+                //            or register new http scheme handler - RegisterSchemeHandler("http", "test.com",  new CustomHttpHandler())
                 string appDirectory = AppDomain.CurrentDomain.BaseDirectory;
                 string startUrl = $"file:///{appDirectory}app/chromely_with_ajax.html";
 
