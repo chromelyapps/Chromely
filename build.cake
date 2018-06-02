@@ -97,7 +97,6 @@ Task("Restore")
     .IsDependentOn("Restore.Cef")
     .Does(() => DotNetCoreRestore("./src/ChromelySolution.sln"));
 
-
 Task("Build")
     .IsDependentOn("Restore")
     .Does(() => DotNetCoreBuild("./src/ChromelySolution.sln"));
@@ -109,6 +108,8 @@ Task("Build.Rebuild")
 Task("Build.Force")
     .IsDependentOn("Clean.Force")
     .IsDependentOn("Build");
+
+Task("ReBuild").IsDependentOn("Build.Rebuild"); // Alias for rebuld
 
 Task("Default")
     .IsDependentOn("Build");
