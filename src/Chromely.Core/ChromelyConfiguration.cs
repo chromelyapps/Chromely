@@ -558,31 +558,31 @@ namespace Chromely.Core
         /// <summary>
         /// Registers message router handler.
         /// </summary>
-        /// <param name="chromelyMesssageRouterHandler">
+        /// <param name="ChromelyMessageRouterHandler">
         /// The chromely messsage router handler.
         /// </param>
         /// <returns>
         /// The <see cref="ChromelyConfiguration"/> object.
         /// </returns>
-        public virtual ChromelyConfiguration RegisterMessageRouterHandler(object chromelyMesssageRouterHandler)
+        public virtual ChromelyConfiguration RegisterMessageRouterHandler(object ChromelyMessageRouterHandler)
         {
-            return this.RegisterMessageRouterHandler(new ChromelyMessageRouter(chromelyMesssageRouterHandler));
+            return this.RegisterMessageRouterHandler(new ChromelyMessageRouter(ChromelyMessageRouterHandler));
         }
 
         /// <summary>
         /// Registers message router handler.
         /// </summary>
-        /// <param name="chromelyMesssageRouter">
+        /// <param name="ChromelyMessageRouter">
         /// The chromely messsage router.
         /// </param>
         /// <returns>
         /// The <see cref="ChromelyConfiguration"/> object.
         /// </returns>
-        public virtual ChromelyConfiguration RegisterMessageRouterHandler(ChromelyMessageRouter chromelyMesssageRouter)
+        public virtual ChromelyConfiguration RegisterMessageRouterHandler(ChromelyMessageRouter ChromelyMessageRouter)
         {
-            if (chromelyMesssageRouter != null)
+            if (ChromelyMessageRouter != null)
             {
-                IoC.RegisterInstance(typeof(ChromelyMessageRouter), chromelyMesssageRouter.Key, chromelyMesssageRouter);
+                IoC.RegisterInstance(typeof(ChromelyMessageRouter), ChromelyMessageRouter.Key, ChromelyMessageRouter);
             }
 
             return this;
