@@ -72,7 +72,11 @@ Task("Clean.Force")
     .Does(() => CleanDirectory("./dist"));
 
 Task("Clean")
-    .Does(() => DotNetCoreClean("./src/ChromelySolution.sln"));
+    .Does(() =>
+    {
+        CleanDirectory( "./dist/test");
+        DotNetCoreClean("./src/ChromelySolution.sln");
+    });
 
 Task("Restore.Cef")
     .Does(() => 
@@ -99,7 +103,10 @@ Task("Restore")
 
 Task("Build")
     .IsDependentOn("Restore")
-    .Does(() => DotNetCoreBuild("./src/ChromelySolution.sln"));
+    .Does(() => DotNetCoreBuild("./src/ChromelySolution.sln", new DotNetCoreBuildSettings
+    {
+        NoRestore = true
+    }));
 
 Task("Build.Rebuild")
     .IsDependentOn("Clean")
@@ -108,6 +115,24 @@ Task("Build.Rebuild")
 Task("Build.Force")
     .IsDependentOn("Clean.Force")
     .IsDependentOn("Build");
+
+Task("Test")
+    .IsDependentOn("Build")
+    .Does(() => 
+    {
+        var settings = new DotNetCoreTestSettings
+        {
+            ResultsDirectory = "./dist/test",
+            NoBuild = true,
+            NoRestore = true,
+        };
+
+        var projectFiles = GetFiles("./src/tests/**/*.csproj");
+        foreach(var file in projectFiles)
+        {
+            DotNetCoreTest(file.FullPath, settings);
+        }
+    });
 
 Task("ReBuild").IsDependentOn("Build.Rebuild"); // Alias for rebuld
 
