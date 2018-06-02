@@ -9,7 +9,7 @@ var cefMap = new Dictionary<string, string>()
     ["65.0.0.0"] = "3.3325.1751.ge5b78a5"
 };
 
-void RestoreCefBinary(string packageName ,string baseUrl = "http://opensource.spotify.com/cefbuilds/", string targetDirectory = "./dist")
+void RestoreCefBinary(string packageName ,string baseUrl = "http://opensource.spotify.com/cefbuilds/", string targetDirectory = "./dist/redist")
 {
     CreateDirectory(targetDirectory);
 
@@ -90,11 +90,17 @@ Task("Restore.Cef")
         var linux64Uri = $"cef_binary_{cefVersion}_linux64_minimal.tar.bz2";
         var mac64Uri = $"cef_binary_{cefVersion}_macosx64_minimal.tar.bz2";
         
-        RestoreCefBinary(win32Uri);
-        RestoreCefBinary(win64Uri);
-        RestoreCefBinary(linux32Uri);
-        RestoreCefBinary(linux64Uri);
-        RestoreCefBinary(mac64Uri);     
+        if(IsRunningOnWindows())
+        {
+            RestoreCefBinary(win32Uri);
+            RestoreCefBinary(win64Uri);
+        }
+        if(IsRunningOnUnix())
+        {
+            RestoreCefBinary(linux32Uri);
+            RestoreCefBinary(linux64Uri);
+            RestoreCefBinary(mac64Uri);
+        }
     });
 
 Task("Restore")
