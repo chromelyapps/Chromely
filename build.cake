@@ -67,7 +67,14 @@ void RestoreCefBinary(string packageName ,string baseUrl = "http://opensource.sp
     }
 }
 
-Task("Download.Cef")
+Task("Clean.Force")
+    .IsDependentOn("Clean")
+    .Does(() => CleanDirectory("./dist"));
+
+Task("Clean")
+    .Does(() => DotNetCoreClean("./src/ChromelySolution.sln"));
+
+Task("Restore.Cef")
     .Does(() => 
     {
         var cefWinVersion = XmlPeek("./src/Chromely.CefGlue.Winapi/Chromely.CefGlue.Winapi.csproj", "/Project/PropertyGroup/Version");
@@ -86,13 +93,23 @@ Task("Download.Cef")
         RestoreCefBinary(mac64Uri);     
     });
 
+Task("Restore")
+    .IsDependentOn("Restore.Cef")
+    .Does(() => DotNetCoreRestore("./src/ChromelySolution.sln"));
+
+
 Task("Build")
-    .IsDependentOn("Download.Cef")
-    .Does(() =>
-    {
-        Information("Hello world");
-    });
+    .IsDependentOn("Restore")
+    .Does(() => DotNetCoreBuild("./src/ChromelySolution.sln"));
 
+Task("Build.Rebuild")
+    .IsDependentOn("Clean")
+    .IsDependentOn("Build");
 
-Task("Default").IsDependentOn("Build");
+Task("Build.Force")
+    .IsDependentOn("Clean.Force")
+    .IsDependentOn("Build");
+
+Task("Default")
+    .IsDependentOn("Build");
 RunTarget(target);
