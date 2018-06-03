@@ -1,5 +1,7 @@
 #addin nuget:?package=SharpZipLib
 #addin nuget:?package=Cake.Compression
+#addin nuget:?package=Cake.SemVer
+#addin nuget:?package=semver&version=2.0.4
 
 var target = string.IsNullOrEmpty(Argument("target", "Default")) ? "Default" : Argument("target", "Default");
 
@@ -67,6 +69,60 @@ void RestoreCefBinary(string packageName ,string baseUrl = "http://opensource.sp
     }
 }
 
+void RestoreCef(bool force = false)
+{
+    var cefWinVersion = XmlPeek("./src/Chromely.CefGlue.Winapi/Chromely.CefGlue.Winapi.csproj", "/Project/PropertyGroup/Version");
+    var cefVersion = cefMap[cefWinVersion];
+
+    var win32Uri = $"cef_binary_{cefVersion}_windows32_minimal.tar.bz2";
+    var win64Uri = $"cef_binary_{cefVersion}_windows64_minimal.tar.bz2";
+    var linux32Uri = $"cef_binary_{cefVersion}_linux32_minimal.tar.bz2";
+    var linux64Uri = $"cef_binary_{cefVersion}_linux64_minimal.tar.bz2";
+    var mac64Uri = $"cef_binary_{cefVersion}_macosx64_minimal.tar.bz2";
+    
+    if(force || IsRunningOnWindows())
+    {
+        RestoreCefBinary(win32Uri);
+        RestoreCefBinary(win64Uri);
+    }
+
+    if(force || IsRunningOnUnix())
+    {
+        RestoreCefBinary(linux32Uri);
+        RestoreCefBinary(linux64Uri);
+        RestoreCefBinary(mac64Uri);
+    }
+}
+
+void Pack(bool force = false, string targetDirectory = "./dist/nuget")
+{
+    var cefWinVersion = System.Version.Parse(XmlPeek("./src/Chromely.CefGlue.Winapi/Chromely.CefGlue.Winapi.csproj", "/Project/PropertyGroup/Version"));
+        
+    var semver = CreateSemVer(cefWinVersion.Major, cefWinVersion.Minor, cefWinVersion.Build);
+
+    Information(semver);
+
+    var settings = new NuGetPackSettings()
+    {
+        Version = semver.ToString(),
+        OutputDirectory = targetDirectory,
+    };
+    
+    NuGetPack("./src/Chromely.Cef.Redist/Chromely.Cef.Redist.nuspec", settings);    
+    if(force || IsRunningOnWindows())
+    {
+        NuGetPack("./src/Chromely.Cef.Redist/Windows/Chromely.Cef.Redist.Windows.nuspec", settings);
+        NuGetPack("./src/Chromely.Cef.Redist/win-64/Chromely.Cef.Redist.win-64.nuspec", settings);
+        NuGetPack("./src/Chromely.Cef.Redist/win-86/Chromely.Cef.Redist.win-86.nuspec", settings);
+    }
+    if(force || IsRunningOnUnix())
+    {
+        NuGetPack("./src/Chromely.Cef.Redist/Linux/Chromely.Cef.Redist.Linux.nuspec", settings);
+        NuGetPack("./src/Chromely.Cef.Redist/linux-86/Chromely.Cef.Redist.linux-86.nuspec", settings);
+        NuGetPack("./src/Chromely.Cef.Redist/linux-64/Chromely.Cef.Redist.linux-64.nuspec", settings);
+    }
+}
+
 Task("Clean.Force")
     .IsDependentOn("Clean")
     .Does(() => CleanDirectory("./dist"));
@@ -78,30 +134,11 @@ Task("Clean")
         DotNetCoreClean("./src/ChromelySolution.sln");
     });
 
-Task("Restore.Cef")
-    .Does(() => 
-    {
-        var cefWinVersion = XmlPeek("./src/Chromely.CefGlue.Winapi/Chromely.CefGlue.Winapi.csproj", "/Project/PropertyGroup/Version");
-        var cefVersion = cefMap[cefWinVersion];
+Task("Restore.Cef.Force")
+    .Does(() => RestoreCef(force: true));
 
-        var win32Uri = $"cef_binary_{cefVersion}_windows32_minimal.tar.bz2";
-        var win64Uri = $"cef_binary_{cefVersion}_windows64_minimal.tar.bz2";
-        var linux32Uri = $"cef_binary_{cefVersion}_linux32_minimal.tar.bz2";
-        var linux64Uri = $"cef_binary_{cefVersion}_linux64_minimal.tar.bz2";
-        var mac64Uri = $"cef_binary_{cefVersion}_macosx64_minimal.tar.bz2";
-        
-        if(IsRunningOnWindows())
-        {
-            RestoreCefBinary(win32Uri);
-            RestoreCefBinary(win64Uri);
-        }
-        if(IsRunningOnUnix())
-        {
-            RestoreCefBinary(linux32Uri);
-            RestoreCefBinary(linux64Uri);
-            RestoreCefBinary(mac64Uri);
-        }
-    });
+Task("Restore.Cef")
+    .Does(() => RestoreCef());
 
 Task("Restore")
     .IsDependentOn("Restore.Cef")
@@ -113,6 +150,14 @@ Task("Build")
     {
         NoRestore = true
     }));
+
+Task("Pack.Redist")
+    .IsDependentOn("Restore.Cef")
+    .Does(() => Pack());
+
+Task("Pack.Redist.Force")
+    .IsDependentOn("Restore.Cef.Force")
+    .Does(() => Pack(true));
 
 Task("Build.Rebuild")
     .IsDependentOn("Clean")

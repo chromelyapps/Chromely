@@ -2,14 +2,14 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
-    <RuntimeIdentifiers>win10-x64;ubuntu.16.10-x64</RuntimeIdentifiers>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <RuntimeIdentifiers>win-x64;ubuntu.16.10-x64</RuntimeIdentifiers>
     <Platforms>x64</Platforms>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <ApplicationIcon>chromely.ico</ApplicationIcon>
     <StartupObject />
     <AssemblyName>cefglue_winapi_netcoredemo</AssemblyName>
-    <TrimUnusedDependencies>true</TrimUnusedDependencies>
+    <!-- <TrimUnusedDependencies>true</TrimUnusedDependencies> -->
   </PropertyGroup>
 
   <ItemGroup>
@@ -40,7 +40,7 @@
 
   <ItemGroup>
     <PackageReference Include="Chromely.CefGlue.Winapi" Version="65.0.0" />
-    <PackageReference Include="Microsoft.Packaging.Tools.Trimming" Version="1.1.0-preview1-25818-01" />
+    <PackageReference Include="Package" Version="1.0.*" />
   </ItemGroup>
 
   <ItemGroup>
