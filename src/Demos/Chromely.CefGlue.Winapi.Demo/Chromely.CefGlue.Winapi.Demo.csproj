@@ -5,7 +5,7 @@
     <Platforms>x64</Platforms>
     <AssemblyName>cefglue_winapi_demo</AssemblyName>
     <ApplicationIcon>chromely.ico</ApplicationIcon>
-    <TrimUnusedDependencies>true</TrimUnusedDependencies>
+    <TrimUnusedDependencies>true</TrimUnusedDependencies> 
     <StartupObject />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -39,8 +39,11 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Chromely.CefGlue.Winapi" Version="65.0.0" />
+    <PackageReference Include="Chromely.Cef.Redist.Windows" Version="65.0.*" />
     <PackageReference Include="Microsoft.Packaging.Tools.Trimming" Version="1.1.0-preview1-25818-01" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Chromely.CefGlue.Winapi\Chromely.CefGlue.Winapi.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="app\chromely.html">

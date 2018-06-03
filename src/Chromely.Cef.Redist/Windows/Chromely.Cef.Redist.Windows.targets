@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Target Name="PlatformCheck" BeforeTargets="ResolveAssemblyReferences" Condition="(('$(Platform)' != 'x86') AND ('$(Platform)' != 'x64') AND ('$(Platform)' != 'Win32') AND '$(CefSharpAnyCpuSupport)' != 'true')">
+    <Error Text="$(MSBuildThisFileName) contains unmanaged resoures, set your project and solution platform to x86 or x64. Alternatively for AnyCPU Support see https://github.com/cefsharp/CefSharp/issues/1714" />
+  </Target>
+  
+  <Target Name="FrameworkVersionCheck" BeforeTargets="ResolveAssemblyReferences" Condition="(('$(TargetFrameworkVersion)' == 'v4.5.1') OR ('$(TargetFrameworkVersion)' == 'v4.5') OR ('$(TargetFrameworkVersion)' == 'v4.0'))">
+    <Error Text="CefSharp requires .Net 4.5.2 or higher" />
+  </Target>
+
+  <!--
+    These item groups should be in the .props file, unfortunately Nuget 2.8.x doesn't gurantee the
+    correct ordering .props imports, which we require as this depends on the cef.redist packages
+    exporting an ItemGroup
+   -->
+
+  <ItemGroup Condition="('$(Platform)' == 'x86') OR ('$(Platform)' == 'Win32')">
+    <None Include="@(CefNativeLibsWin86)">
+      <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Visible>false</Visible>
+      <InProject>false</InProject>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(Platform)' == 'x64'">
+    <None Include="@(CefNativeLibsWin64)">
+      <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Visible>false</Visible>
+      <InProject>false</InProject>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(Platform)' == 'AnyCPU'">
+    <None Include="@(CefNativeLibsWin86)">
+      <Link>$(CefSharpTargetDir)\x86\%(RecursiveDir)%(FileName)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Visible>false</Visible>
+      <InProject>false</InProject>
+    </None>
+    <None Include="@(CefNativeLibsWin64)">
+      <Link>$(CefSharpTargetDir)\x64\%(RecursiveDir)%(FileName)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Visible>false</Visible>
+      <InProject>false</InProject>
+    </None>
+  </ItemGroup>
+</Project>
