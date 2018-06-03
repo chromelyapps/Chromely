@@ -290,4 +290,3 @@ __pycache__/
 *.btm.cs
 *.odx.cs
 *.xsd.cs
-/src/Blaster.Chromely/_dist/netstandard2.0

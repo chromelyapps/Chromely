@@ -204,7 +204,7 @@ Task("Test")
         }
     });
 
-Task("ReBuild").IsDependentOn("Build.Rebuild"); // Alias for rebuld
+Task("ReBuild").IsDependentOn("Build.Rebuild"); // Alias for rebuild
 
 Task("Default")
     .IsDependentOn("Build");
