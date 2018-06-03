@@ -5,6 +5,7 @@
 
 dist/
 tools/
+debugpack.txt
 
 # User-specific files
 *.suo

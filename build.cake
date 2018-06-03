@@ -4,7 +4,7 @@
 #addin nuget:?package=semver&version=2.0.4
 
 var target = string.IsNullOrEmpty(Argument("target", "Default")) ? "Default" : Argument("target", "Default");
-
+var debugPack = Argument("debugpack", false);
 var cefMap = new Dictionary<string, string>()
 {
     ["64.0.0.0"] = "3.3282.1741.gcd94615",
@@ -94,17 +94,36 @@ void RestoreCef(bool force = false)
     }
 }
 
-void Pack(bool force = false, string targetDirectory = "./dist/nuget")
+string GetPackVersion()
 {
     var cefWinVersion = System.Version.Parse(XmlPeek("./src/Chromely.CefGlue.Winapi/Chromely.CefGlue.Winapi.csproj", "/Project/PropertyGroup/Version"));
-        
-    var semver = CreateSemVer(cefWinVersion.Major, cefWinVersion.Minor, cefWinVersion.Build);
+
+    if(debugPack)
+    {
+        var debugPackFileName = "./debugpack.txt";
+        if(!FileExists(debugPackFileName))
+        {
+            System.IO.File.WriteAllText(debugPackFileName, "1");
+        }
+
+        var debugPackCounter = int.Parse(System.IO.File.ReadAllText(debugPackFileName));    
+        var semver = CreateSemVer(cefWinVersion.Major, cefWinVersion.Minor, debugPackCounter);    
+        System.IO.File.WriteAllText(debugPackFileName, (debugPackCounter + 1).ToString());
+        return semver.ToString();
+    }
+
+    return CreateSemVer(cefWinVersion.Major, cefWinVersion.Minor, cefWinVersion.Build).ToString();
+}
+
+void Pack(bool force = false, string targetDirectory = "./dist/nuget")
+{
+    var semver = GetPackVersion();
 
     Information(semver);
 
     var settings = new NuGetPackSettings()
     {
-        Version = semver.ToString(),
+        Version = semver,
         OutputDirectory = targetDirectory,
     };
     
