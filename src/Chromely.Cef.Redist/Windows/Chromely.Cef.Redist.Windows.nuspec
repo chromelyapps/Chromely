@@ -19,5 +19,8 @@
       <dependency id="Chromely.Cef.Redist.win-64" version="$version$" />
       <dependency id="Chromely.Cef.Redist.win-86" version="$version$" />
     </dependencies>
-  </metadata>
+  </metadata>  
+  <files>
+    <file src="Chromely.Cef.Redist.Windows.targets" target="build" />
+  </files>
 </package>

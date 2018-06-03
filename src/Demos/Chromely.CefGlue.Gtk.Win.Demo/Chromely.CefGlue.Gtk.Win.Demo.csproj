@@ -6,7 +6,7 @@
     <ApplicationIcon>chromely.ico</ApplicationIcon>
     <StartupObject />
     <AssemblyName>cefglue_gtk_win_demo</AssemblyName>
-    <TrimUnusedDependencies>true</TrimUnusedDependencies>
+    <!--<TrimUnusedDependencies>true</TrimUnusedDependencies>-->
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -17,6 +17,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Chromely.Cef.Redist.win-86" Version="65.0.*" />
     <PackageReference Include="Microsoft.Packaging.Tools.Trimming" Version="1.1.0-preview1-25818-01" />
   </ItemGroup>
   <ItemGroup>

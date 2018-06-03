@@ -18,8 +18,9 @@
   </metadata>
   <files>
     <file src="Chromely.Cef.Redist.win-64.targets" target="build" />
-    <file src="..\..\..\dist\redist\windows64\*.*" target="runtimes\win-x64\native" />
-    <file src="..\..\..\dist\redist\windows64\locales\*.*" target="runtimes\win-x64\native\locales" />
-    <file src="..\..\..\dist\redist\windows64\swiftshader\*.*" target="runtimes\win-x64\native\swiftshader" />
+    <file src="Chromely.Cef.Redist.win-64.props" target="build" />
+    <file src="..\..\..\dist\redist\windows64\*.*" target="" />
+    <file src="..\..\..\dist\redist\windows64\locales\*.*" target="locales" />
+    <file src="..\..\..\dist\redist\windows64\swiftshader\*.*" target="swiftshader" />
   </files>
 </package>
