@@ -5,7 +5,7 @@
     <Platforms>x64</Platforms>
     <AssemblyName>cefglue_winapi_demo</AssemblyName>
     <ApplicationIcon>chromely.ico</ApplicationIcon>
-     <TrimUnusedDependencies>true</TrimUnusedDependencies> 
+    <TrimUnusedDependencies>true</TrimUnusedDependencies> 
     <StartupObject />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
