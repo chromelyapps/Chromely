@@ -9,7 +9,7 @@
     <ApplicationIcon>chromely.ico</ApplicationIcon>
     <StartupObject />
     <AssemblyName>cefglue_gtk_linux_demo</AssemblyName>
-    <!--<TrimUnusedDependencies>true</TrimUnusedDependencies>-->
+    <TrimUnusedDependencies>true</TrimUnusedDependencies>
   </PropertyGroup>
 
   <ItemGroup>

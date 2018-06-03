@@ -6,7 +6,7 @@
     <ApplicationIcon>chromely.ico</ApplicationIcon>
     <StartupObject />
     <AssemblyName>cefglue_gtk_win_demo</AssemblyName>
-    <!--<TrimUnusedDependencies>true</TrimUnusedDependencies>-->
+    <TrimUnusedDependencies>true</TrimUnusedDependencies>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>

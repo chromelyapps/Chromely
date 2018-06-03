@@ -9,7 +9,7 @@
     <ApplicationIcon>chromely.ico</ApplicationIcon>
     <StartupObject />
     <AssemblyName>cefglue_winapi_netcoredemo</AssemblyName>
-    <!-- <TrimUnusedDependencies>true</TrimUnusedDependencies> -->
+     <TrimUnusedDependencies>true</TrimUnusedDependencies> 
   </PropertyGroup>
 
   <ItemGroup>
