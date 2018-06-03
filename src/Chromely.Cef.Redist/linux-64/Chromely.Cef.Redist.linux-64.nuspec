@@ -18,8 +18,8 @@
   </metadata>
   <files>
     <file src="Chromely.Cef.Redist.linux-64.targets" target="build" />
-    <file src="..\..\..\dist\redist\linux64\*.*" target="runtimes\linux-x64\native" />
-    <file src="..\..\..\dist\redist\linux64\locales\*.*" target="runtimes\linux-x64\native\locales" />
-    <file src="..\..\..\dist\redist\linux64\swiftshader\*.*" target="runtimes\linux-x64\native\swiftshader" />
+    <file src="..\..\..\dist\redist\linux64\*.*" target="CEF" />
+    <file src="..\..\..\dist\redist\linux64\locales\*.*" target="CEF\locales" />
+    <file src="..\..\..\dist\redist\linux64\swiftshader\*.*" target="CEF\swiftshader" />
   </files>
 </package>

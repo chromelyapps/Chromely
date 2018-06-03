@@ -20,4 +20,7 @@
       <dependency id="Chromely.Cef.Redist.linux-86" version="$version$" />
     </dependencies>
   </metadata>
+  <files>
+    <file src="Chromely.Cef.Redist.Linux.targets" target="build" />
+  </files>
 </package>

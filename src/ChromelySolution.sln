@@ -47,35 +47,41 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Linux", "Linux", "{013D175C-6227-468C-817B-B155F2056E0E}"
 	ProjectSection(SolutionItems) = preProject
 		Chromely.Cef.Redist\Linux\Chromely.Cef.Redist.Linux.nuspec = Chromely.Cef.Redist\Linux\Chromely.Cef.Redist.Linux.nuspec
+		Chromely.Cef.Redist\Linux\Chromely.Cef.Redist.Linux.targets = Chromely.Cef.Redist\Linux\Chromely.Cef.Redist.Linux.targets
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "linux-64", "linux-64", "{53E8CD5A-AFB4-4D12-A7FB-FB313EE58C3F}"
 	ProjectSection(SolutionItems) = preProject
 		Chromely.Cef.Redist\linux-64\Chromely.Cef.Redist.linux-64.nuspec = Chromely.Cef.Redist\linux-64\Chromely.Cef.Redist.linux-64.nuspec
+		Chromely.Cef.Redist\linux-64\Chromely.Cef.Redist.linux-64.props = Chromely.Cef.Redist\linux-64\Chromely.Cef.Redist.linux-64.props
 		Chromely.Cef.Redist\linux-64\Chromely.Cef.Redist.linux-64.targets = Chromely.Cef.Redist\linux-64\Chromely.Cef.Redist.linux-64.targets
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "linux-86", "linux-86", "{7C0BE0B8-75D8-4DEA-BDD4-1858D423A62C}"
 	ProjectSection(SolutionItems) = preProject
 		Chromely.Cef.Redist\linux-86\Chromely.Cef.Redist.linux-86.nuspec = Chromely.Cef.Redist\linux-86\Chromely.Cef.Redist.linux-86.nuspec
+		Chromely.Cef.Redist\linux-86\Chromely.Cef.Redist.linux-86.props = Chromely.Cef.Redist\linux-86\Chromely.Cef.Redist.linux-86.props
 		Chromely.Cef.Redist\linux-86\Chromely.Cef.Redist.linux-86.targets = Chromely.Cef.Redist\linux-86\Chromely.Cef.Redist.linux-86.targets
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "win-64", "win-64", "{BE30065B-F199-435F-A2DA-E18D565B5F56}"
 	ProjectSection(SolutionItems) = preProject
 		Chromely.Cef.Redist\win-64\Chromely.Cef.Redist.win-64.nuspec = Chromely.Cef.Redist\win-64\Chromely.Cef.Redist.win-64.nuspec
+		Chromely.Cef.Redist\win-64\Chromely.Cef.Redist.win-64.props = Chromely.Cef.Redist\win-64\Chromely.Cef.Redist.win-64.props
 		Chromely.Cef.Redist\win-64\Chromely.Cef.Redist.win-64.targets = Chromely.Cef.Redist\win-64\Chromely.Cef.Redist.win-64.targets
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "win-86", "win-86", "{2640FB67-EA14-413C-BC96-DE374BA71B63}"
 	ProjectSection(SolutionItems) = preProject
 		Chromely.Cef.Redist\win-86\Chromely.Cef.Redist.win-86.nuspec = Chromely.Cef.Redist\win-86\Chromely.Cef.Redist.win-86.nuspec
+		Chromely.Cef.Redist\win-86\Chromely.Cef.Redist.win-86.props = Chromely.Cef.Redist\win-86\Chromely.Cef.Redist.win-86.props
 		Chromely.Cef.Redist\win-86\Chromely.Cef.Redist.win-86.targets = Chromely.Cef.Redist\win-86\Chromely.Cef.Redist.win-86.targets
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Windows", "Windows", "{EC553E41-88CA-43C4-8244-169BA3580E1B}"
 	ProjectSection(SolutionItems) = preProject
 		Chromely.Cef.Redist\Windows\Chromely.Cef.Redist.Windows.nuspec = Chromely.Cef.Redist\Windows\Chromely.Cef.Redist.Windows.nuspec
+		Chromely.Cef.Redist\Windows\Chromely.Cef.Redist.Windows.targets = Chromely.Cef.Redist\Windows\Chromely.Cef.Redist.Windows.targets
 	EndProjectSection
 EndProject
 Global

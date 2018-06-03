@@ -12,9 +12,20 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <GtkNativeLibs86 Include="..\..\..\binaries\gtk32bit\**\*.*" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="chromely.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup Condition="('$(Platform)' == 'x86') OR ('$(Platform)' == 'Win32')">
+    <None Include="@(GtkNativeLibs86)">
+      <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Visible>False</Visible>
+      <InProject>false</InProject>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Chromely.Cef.Redist.win-86" Version="65.0.*" />
