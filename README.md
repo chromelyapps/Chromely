@@ -64,10 +64,12 @@ class Program
 #### Run Starter Template (Using dotnet core cli). For more info, please see - [dotnet cli demo template install](https://github.com/mattkol/Chromely/wiki/dotnet-cli-Starter-Template)
 
 ````csharp
+dotnet new -i "Chromely.CefGlue.Win.Template::*"
 dotnet new chromelywin 
 dotnet restore
 dotnet build
-dotnet run [Ensure that you have Cef binaries downloaded before you run. You can use https://github.com/mattkol/Chromely/wiki/dotnet-cli-Starter-Template link provided.]
+dotnet chromelycef.dll download v65 --cpu=x64 --dest="bin\Debug\netcoreapp2.1"
+dotnet run 
 ````
 
 ### Chromely Demos 
