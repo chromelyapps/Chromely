@@ -30,16 +30,13 @@
 
 namespace Chromely.Core.RestfulService
 {
-    using System;
-    using System.Collections.Generic;
-
     /// <summary>
-    /// The route.
+    /// The route path.
     /// </summary>
-    public class Route
+    public class RoutePath
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Route"/> class.
+        /// Initializes a new instance of the <see cref="RoutePath"/> class.
         /// </summary>
         /// <param name="method">
         /// The method.
@@ -47,15 +44,38 @@ namespace Chromely.Core.RestfulService
         /// <param name="path">
         /// The path.
         /// </param>
-        /// <param name="action">
-        /// The action.
-        /// </param>
-        public Route(Method method, string path, Func<ChromelyRequest, ChromelyResponse> action)
+        public RoutePath(Method method, string path)
         {
             this.Method = method;
+            string methodString = this.ConvertMethod(method);
+            path = string.IsNullOrEmpty(path) ? string.Empty : path;
+            string routeKey = $"{methodString}_{path}";
             this.Path = path;
-            this.Action = action;
+            this.Key = routeKey.ToLower();
         }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RoutePath"/> class.
+        /// </summary>
+        /// <param name="method">
+        /// The method.
+        /// </param>
+        /// <param name="path">
+        /// The path.
+        /// </param>
+        public RoutePath(string method, string path)
+        {
+            string methodString = string.IsNullOrEmpty(method) ? "get" : method;
+            path = string.IsNullOrEmpty(path) ? string.Empty : path;
+            string routeKey = $"{methodString}_{path}";
+            this.Path = path;
+            this.Key = routeKey.ToLower();
+        }
+
+        /// <summary>
+        /// Gets the key.
+        /// </summary>
+        public string Key { get; }
 
         /// <summary>
         /// Gets or sets the method.
@@ -68,43 +88,39 @@ namespace Chromely.Core.RestfulService
         public string Path { get; set; }
 
         /// <summary>
-        /// Gets or sets the action.
+        /// The convert method.
         /// </summary>
-        public Func<ChromelyRequest, ChromelyResponse> Action { get; set; }
-
-        /// <summary>
-        /// Invokes the registered action.
-        /// </summary>
-        /// <param name="routePath">
-        /// The route path.
-        /// </param>
-        /// <param name="parameters">
-        /// The parameters.
-        /// </param>
-        /// <param name="postData">
-        /// The post data.
+        /// <param name="method">
+        /// The method.
         /// </param>
         /// <returns>
-        /// The <see cref="ChromelyResponse"/>.
+        /// The <see cref="string"/>.
         /// </returns>
-        public ChromelyResponse Invoke(RoutePath routePath, IDictionary<string, object> parameters, object postData)
+        private string ConvertMethod(Method method)
         {
-            ChromelyRequest request = new ChromelyRequest(routePath, parameters, postData);
-            return this.Action.Invoke(request);
-        }
-
-        /// <summary>
-        /// Invokes the registered action.
-        /// </summary>
-        /// <param name="request">
-        /// The request.
-        /// </param>
-        /// <returns>
-        /// The <see cref="ChromelyResponse"/>.
-        /// </returns>
-        public ChromelyResponse Invoke(ChromelyRequest request)
-        {
-            return this.Action.Invoke(request);
+            switch (method)
+            {
+                case Method.None:
+                    return "None";
+                case Method.GET:
+                    return "GET";
+                case Method.POST:
+                    return "POST";
+                case Method.PUT:
+                    return "PUT";
+                case Method.DELETE:
+                    return "DELETE";
+                case Method.HEAD:
+                    return "HEAD";
+                case Method.OPTIONS:
+                    return "OPTIONS";
+                case Method.PATCH:
+                    return "PATCH";
+                case Method.MERGE:
+                    return "MERGE";
+                default:
+                    return "GET";
+            }
         }
     }
 }

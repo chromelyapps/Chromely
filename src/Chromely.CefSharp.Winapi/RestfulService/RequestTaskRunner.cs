@@ -52,7 +52,7 @@ namespace Chromely.CefSharp.Winapi.RestfulService
         /// The run async.
         /// </summary>
         /// <param name="routePath">
-        /// The route path.
+        /// The route routePath.
         /// </param>
         /// <param name="parameters">
         /// The parameters.
@@ -63,10 +63,10 @@ namespace Chromely.CefSharp.Winapi.RestfulService
         /// <returns>
         /// The <see cref="Task"/>.
         /// </returns>
-        public static Task<ChromelyResponse> RunAsync(string routePath, object parameters, object postData)
+        public static Task<ChromelyResponse> RunAsync(RoutePath routePath, object parameters, object postData)
         {
             var response = new ChromelyResponse();
-            if (string.IsNullOrEmpty(routePath))
+            if (string.IsNullOrEmpty(routePath.Path))
             {
                 response.ReadyState = (int)ReadyState.ResponseIsReady;
                 response.Status = (int)System.Net.HttpStatusCode.BadRequest;
@@ -75,7 +75,7 @@ namespace Chromely.CefSharp.Winapi.RestfulService
                 return Task.FromResult(response);
             }
 
-            if (routePath.ToLower().Equals("/info"))
+            if (routePath.Path.ToLower().Equals("/info"))
             {
                 response = GetInfo();
                 return Task.FromResult(response);
@@ -107,10 +107,11 @@ namespace Chromely.CefSharp.Winapi.RestfulService
             }
 
             var uri = new Uri(request.Url);
-            string routePath = uri.LocalPath;
+            string path = uri.LocalPath;
             var parameters = GetParameters(request.Url);
             object postData = GetPostData(request);
 
+            var routePath = new RoutePath(request.Method, path);
             return Run(routePath, parameters, postData);
         }
 
@@ -129,10 +130,10 @@ namespace Chromely.CefSharp.Winapi.RestfulService
         /// <returns>
         /// The <see cref="ChromelyResponse"/>.
         /// </returns>
-        public static ChromelyResponse Run(string routePath, object parameters, object postData)
+        public static ChromelyResponse Run(RoutePath routePath, object parameters, object postData)
         {
             var response = new ChromelyResponse();
-            if (string.IsNullOrEmpty(routePath))
+            if (string.IsNullOrEmpty(routePath.Path))
             {
                 response.ReadyState = (int)ReadyState.ResponseIsReady;
                 response.Status = (int)System.Net.HttpStatusCode.BadRequest;
@@ -141,7 +142,7 @@ namespace Chromely.CefSharp.Winapi.RestfulService
                 return response;
             }
 
-            if (routePath.ToLower().Equals("/info"))
+            if (routePath.Path.ToLower().Equals("/info"))
             {
                 return GetInfo();
             }
@@ -167,7 +168,7 @@ namespace Chromely.CefSharp.Winapi.RestfulService
         /// <exception cref="Exception">
         /// Generic exception - Route path not valid.
         /// </exception>
-        private static ChromelyResponse ExcuteRoute(string routePath, object parameters, object postData)
+        private static ChromelyResponse ExcuteRoute(RoutePath routePath, object parameters, object postData)
         {
             var route = ServiceRouteProvider.GetRoute(routePath);
 

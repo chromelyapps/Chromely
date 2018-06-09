@@ -49,7 +49,7 @@ namespace Chromely.Core.RestfulService
         /// <param name="postData">
         /// The post data.
         /// </param>
-        public ChromelyRequest(string routePath, IDictionary<string, object> parameters, object postData)
+        public ChromelyRequest(RoutePath routePath, IDictionary<string, object> parameters, object postData)
         {
             this.RoutePath = routePath;
             this.Parameters = parameters;
@@ -59,7 +59,7 @@ namespace Chromely.Core.RestfulService
         /// <summary>
         /// Gets or sets the route path.
         /// </summary>
-        public string RoutePath { get; set; }
+        public RoutePath RoutePath { get; set; }
 
         /// <summary>
         /// Gets or sets the parameters.

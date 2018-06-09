@@ -73,7 +73,7 @@ namespace Chromely.Core.RestfulService
         /// <summary>
         /// Gets the route path.
         /// </summary>
-        public string RoutePath
+        public string Path
         {
             get
             {
@@ -98,7 +98,7 @@ namespace Chromely.Core.RestfulService
         /// </param>
         protected void RegisterGetRequest(string path, Func<ChromelyRequest, ChromelyResponse> action)
         {
-            this.AddRoute(path, new Route(Method.GET, path, action));
+            this.AddRoute(Method.GET, path, new Route(Method.GET, path, action));
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace Chromely.Core.RestfulService
         /// </param>
         protected void RegisterPostRequest(string path, Func<ChromelyRequest, ChromelyResponse> action)
         {
-            this.AddRoute(path, new Route(Method.POST, path, action));
+            this.AddRoute(Method.POST, path, new Route(Method.POST, path, action));
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace Chromely.Core.RestfulService
         /// </param>
         protected void RegisterPutRequest(string path, Func<ChromelyRequest, ChromelyResponse> action)
         {
-            this.AddRoute(path, new Route(Method.PUT, path, action));
+            this.AddRoute(Method.PUT, path, new Route(Method.PUT, path, action));
         }
 
         /// <summary>
@@ -140,7 +140,7 @@ namespace Chromely.Core.RestfulService
         /// </param>
         protected void RegisterDeleteRequest(string path, Func<ChromelyRequest, ChromelyResponse> action)
         {
-            this.AddRoute(path, new Route(Method.DELETE, path, action));
+            this.AddRoute(Method.DELETE, path, new Route(Method.DELETE, path, action));
         }
 
         /// <summary>
@@ -154,7 +154,7 @@ namespace Chromely.Core.RestfulService
         /// </param>
         protected void RegisterHeadRequest(string path, Func<ChromelyRequest, ChromelyResponse> action)
         {
-            this.AddRoute(path, new Route(Method.HEAD, path, action));
+            this.AddRoute(Method.HEAD, path, new Route(Method.HEAD, path, action));
         }
 
         /// <summary>
@@ -168,7 +168,7 @@ namespace Chromely.Core.RestfulService
         /// </param>
         protected void RegisterOptionsRequest(string path, Func<ChromelyRequest, ChromelyResponse> action)
         {
-            this.AddRoute(path, new Route(Method.OPTIONS, path, action));
+            this.AddRoute(Method.OPTIONS, path, new Route(Method.OPTIONS, path, action));
         }
 
         /// <summary>
@@ -182,7 +182,7 @@ namespace Chromely.Core.RestfulService
         /// </param>
         protected void RegisterPatchRequest(string path, Func<ChromelyRequest, ChromelyResponse> action)
         {
-            this.AddRoute(path, new Route(Method.PATCH, path, action));
+            this.AddRoute(Method.PATCH, path, new Route(Method.PATCH, path, action));
         }
 
         /// <summary>
@@ -196,21 +196,43 @@ namespace Chromely.Core.RestfulService
         /// </param>
         protected void RegisterMergeRequest(string path, Func<ChromelyRequest, ChromelyResponse> action)
         {
-            this.AddRoute(path, new Route(Method.MERGE, path, action));
+            this.AddRoute(Method.MERGE, path, new Route(Method.MERGE, path, action));
         }
 
         /// <summary>
         /// The add route.
         /// </summary>
+        /// <param name="method">
+        /// The method.
+        /// </param>
         /// <param name="path">
         /// The path.
         /// </param>
         /// <param name="route">
         /// The route.
         /// </param>
-        protected void AddRoute(string path, Route route)
+        protected void AddRoute(Method method, string path, Route route)
         {
-            this.RouteDictionary[path] = route;
+            var routhPath = new RoutePath(method, path);
+            this.RouteDictionary[routhPath.Key] = route;
+        }
+
+        /// <summary>
+        /// The add route.
+        /// </summary>
+        /// <param name="method">
+        /// The method.
+        /// </param>
+        /// <param name="path">
+        /// The path.
+        /// </param>
+        /// <param name="route">
+        /// The route.
+        /// </param>
+        protected void AddRoute(string method, string path, Route route)
+        {
+            var routhPath = new RoutePath(method, path);
+            this.RouteDictionary[routhPath.Key] = route;
         }
 
         /// <summary>

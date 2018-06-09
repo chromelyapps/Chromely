@@ -71,7 +71,7 @@ namespace Chromely.Core.Infrastructure
         }
 
         /// <summary>
-        /// Gets route.
+        /// The get route.
         /// </summary>
         /// <param name="routePath">
         /// The route path.
@@ -82,12 +82,12 @@ namespace Chromely.Core.Infrastructure
         /// <exception cref="Exception">
         /// Generic exception - Route Not found.
         /// </exception>
-        public static Route GetRoute(string routePath)
+        public static Route GetRoute(RoutePath routePath)
         {
-            object routeObj = IoC.GetInstance(typeof(Route), routePath);
+            object routeObj = IoC.GetInstance(typeof(Route), routePath.Key);
             if ((routeObj == null) || !(routeObj is Route))
             {
-                throw new Exception(string.Format("No route found for route path = {0}.", routePath));
+                throw new Exception($"No route found for method:{routePath.Method} route path:{routePath.Path}.");
             }
 
             return (Route)routeObj;

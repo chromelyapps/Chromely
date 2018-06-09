@@ -78,10 +78,11 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
             {
                 new Task(() =>
                 {
-                    string routePath = requestData["url"].ToString();
+                    string path = requestData["url"].ToString();
                     object parameters = requestData["parameters"];
                     object postData = requestData["postData"];
 
+                    var routePath = new RoutePath(method, path);
                     var response = RequestTaskRunner.Run(routePath, parameters, postData);
                     var jsonResponse = response.EnsureJson();
 

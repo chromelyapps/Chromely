@@ -60,10 +60,10 @@ namespace Chromely.CefGlue.Gtk.RestfulService
         public static ChromelyResponse Run(CefRequest request)
         {
             var uri = new Uri(request.Url);
-            string routePath = uri.LocalPath;
+            string path = uri.LocalPath;
 
             var response = new ChromelyResponse();
-            if (string.IsNullOrEmpty(routePath))
+            if (string.IsNullOrEmpty(path))
             {
                 response.ReadyState = (int)ReadyState.ResponseIsReady;
                 response.Status = (int)System.Net.HttpStatusCode.BadRequest;
@@ -72,17 +72,18 @@ namespace Chromely.CefGlue.Gtk.RestfulService
                 return response;
             }
 
-            if (routePath.ToLower().Equals("/info"))
+            if (path.ToLower().Equals("/info"))
             {
                 response = GetInfo();
                 return response;
             }
 
+            var routePath = new RoutePath(request.Method, path);
             var route = ServiceRouteProvider.GetRoute(routePath);
 
             if (route == null)
             {
-                throw new Exception($"Route for path = {routePath} is null or invalid.");
+                throw new Exception($"Route for path = {path} is null or invalid.");
             }
 
             var parameters = GetParameters(request.Url);
@@ -109,10 +110,10 @@ namespace Chromely.CefGlue.Gtk.RestfulService
         /// <exception cref="Exception">
         /// Generic exception - Route path not valid.
         /// </exception>
-        public static ChromelyResponse Run(string routePath, object parameters, object postData)
+        public static ChromelyResponse Run(RoutePath routePath, object parameters, object postData)
         {
             var response = new ChromelyResponse();
-            if (string.IsNullOrEmpty(routePath))
+            if (string.IsNullOrEmpty(routePath.Path))
             {
                 response.ReadyState = (int)ReadyState.ResponseIsReady;
                 response.Status = (int)System.Net.HttpStatusCode.BadRequest;
@@ -121,7 +122,7 @@ namespace Chromely.CefGlue.Gtk.RestfulService
                 return response;
             }
 
-            if (routePath.ToLower().Equals("/info"))
+            if (routePath.Path.ToLower().Equals("/info"))
             {
                 response = GetInfo();
                 return response;
@@ -155,7 +156,7 @@ namespace Chromely.CefGlue.Gtk.RestfulService
         /// <exception cref="Exception">
         /// Generic exception - Route path not valid.
         /// </exception>
-        private static ChromelyResponse ExcuteRoute(string routePath, object parameters, object postData)
+        private static ChromelyResponse ExcuteRoute(RoutePath routePath, object parameters, object postData)
         {
             var route = ServiceRouteProvider.GetRoute(routePath);
 

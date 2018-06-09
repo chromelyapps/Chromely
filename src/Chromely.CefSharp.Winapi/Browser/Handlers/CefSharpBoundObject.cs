@@ -44,7 +44,7 @@ namespace Chromely.CefSharp.Winapi.Browser.Handlers
         /// <summary>
         /// The get json.
         /// </summary>
-        /// <param name="routePath">
+        /// <param name="path">
         /// The route path.
         /// </param>
         /// <param name="parameters">
@@ -53,13 +53,14 @@ namespace Chromely.CefSharp.Winapi.Browser.Handlers
         /// <param name="javascriptCallback">
         /// The javascript callback.
         /// </param>
-        public void GetJson(string routePath, object parameters, IJavascriptCallback javascriptCallback)
+        public void GetJson(string path, object parameters, IJavascriptCallback javascriptCallback)
         {
             Task.Run(async () =>
             {
                 using (javascriptCallback)
                 {
-                    ChromelyResponse chromelyResponse = await RequestTaskRunner.RunAsync(routePath, parameters, null);
+                    var routePath = new RoutePath(Method.GET, path);
+                    var chromelyResponse = await RequestTaskRunner.RunAsync(routePath, parameters, null);
                     string jsonResponse = chromelyResponse.EnsureJson();
                     var response = new CallbackResponseStruct(jsonResponse);
                     await javascriptCallback.ExecuteAsync(response);
@@ -70,7 +71,7 @@ namespace Chromely.CefSharp.Winapi.Browser.Handlers
         /// <summary>
         /// The get json.
         /// </summary>
-        /// <param name="routePath">
+        /// <param name="path">
         /// The route path.
         /// </param>
         /// <param name="parameters">
@@ -79,9 +80,10 @@ namespace Chromely.CefSharp.Winapi.Browser.Handlers
         /// <returns>
         /// The <see cref="string"/>.
         /// </returns>
-        public string GetJson(string routePath, object parameters)
+        public string GetJson(string path, object parameters)
         {
-            ChromelyResponse chromelyResponse = RequestTaskRunner.Run(routePath, parameters, null);
+            var routePath = new RoutePath(Method.GET, path);
+            var chromelyResponse = RequestTaskRunner.Run(routePath, parameters, null);
             string jsonResponse = chromelyResponse.EnsureJson();
             return jsonResponse;
         }
@@ -89,7 +91,7 @@ namespace Chromely.CefSharp.Winapi.Browser.Handlers
         /// <summary>
         /// The post json.
         /// </summary>
-        /// <param name="routePath">
+        /// <param name="path">
         /// The route path.
         /// </param>
         /// <param name="parameters">
@@ -101,13 +103,14 @@ namespace Chromely.CefSharp.Winapi.Browser.Handlers
         /// <param name="javascriptCallback">
         /// The javascript callback.
         /// </param>
-        public void PostJson(string routePath, object parameters, object postData, IJavascriptCallback javascriptCallback)
+        public void PostJson(string path, object parameters, object postData, IJavascriptCallback javascriptCallback)
         {
             Task.Run(async () =>
             {
                 using (javascriptCallback)
                 {
-                    ChromelyResponse chromelyResponse = await RequestTaskRunner.RunAsync(routePath, parameters, postData);
+                    var routePath = new RoutePath(Method.POST, path);
+                    var chromelyResponse = await RequestTaskRunner.RunAsync(routePath, parameters, postData);
                     string jsonResponse = chromelyResponse.EnsureJson();
                     var response = new CallbackResponseStruct(jsonResponse);
                     await javascriptCallback.ExecuteAsync(response);
@@ -118,7 +121,7 @@ namespace Chromely.CefSharp.Winapi.Browser.Handlers
         /// <summary>
         /// The post json.
         /// </summary>
-        /// <param name="routePath">
+        /// <param name="path">
         /// The route path.
         /// </param>
         /// <param name="parameters">
@@ -130,9 +133,10 @@ namespace Chromely.CefSharp.Winapi.Browser.Handlers
         /// <returns>
         /// The <see cref="string"/>.
         /// </returns>
-        public string PostJson(string routePath, object parameters, object postData)
+        public string PostJson(string path, object parameters, object postData)
         {
-            ChromelyResponse chromelyResponse = RequestTaskRunner.Run(routePath, parameters, postData);
+            var routePath = new RoutePath(Method.POST, path);
+            var chromelyResponse = RequestTaskRunner.Run(routePath, parameters, postData);
             string jsonResponse = chromelyResponse.EnsureJson();
             return jsonResponse;
         }
