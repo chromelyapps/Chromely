@@ -72,9 +72,11 @@ namespace Chromely.CefGlue.Gtk.Browser.Handlers
             // Remove "View Source" option
             model.Remove((int)CefMenuId.ViewSource);
 
-            // Add new custom menu items
+#if DEBUG
+// Add new custom menu items
             model.AddItem((int)((CefMenuId)ShowDevTools), "Show DevTools");
             model.AddItem((int)((CefMenuId)CloseDevTools), "Close DevTools");
+#endif
         }
 
         /// <summary>
@@ -126,6 +128,7 @@ namespace Chromely.CefGlue.Gtk.Browser.Handlers
         /// </returns>
         protected override bool OnContextMenuCommand(CefBrowser browser, CefFrame frame, CefContextMenuParams state, int commandId, CefEventFlags eventFlags)
         {
+#if DEBUG
             if (commandId == ShowDevTools)
             {
                 var host = browser.GetHost();
@@ -138,7 +141,7 @@ namespace Chromely.CefGlue.Gtk.Browser.Handlers
             {
                 browser.GetHost().CloseDevTools();
             }
-
+#endif
             return false;
         }
 
