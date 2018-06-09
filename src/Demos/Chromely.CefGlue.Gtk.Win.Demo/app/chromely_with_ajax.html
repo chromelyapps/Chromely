@@ -172,7 +172,7 @@
 
             var request = {
                 "method": "POST",
-                "url": "/democontroller/savemovies",
+                "url": "/democontroller/movies",
                 "parameters": null,
                 "postData": moviesJson,
             };
@@ -267,7 +267,7 @@
             ];
 
             var http = new XMLHttpRequest();
-            var url = "http://chromely.com/democontroller/savemovies";
+            var url = "http://chromely.com/democontroller/movies";
             http.open("POST", url, true);
             http.setRequestHeader("Content-type", "application/json");
 
@@ -450,7 +450,7 @@
                                     <br>
                                     <div class="row">
                                         <div class="col-12">
-                                            Route Path:&ensp;/democontroller/savemovies&ensp;(Restful Service in Local Assembly)&ensp;<button id="buttonMessageRouterRun3" type="button" class="btn btn-primary btn-sm" onclick="messageRouterRun3()">Run</button>
+                                            Route Path:&ensp;/democontroller/movies&ensp;(Restful Service in Local Assembly)&ensp;<button id="buttonMessageRouterRun3" type="button" class="btn btn-primary btn-sm" onclick="messageRouterRun3()">Run</button>
                                         </div>
                                         <br><br>
                                         <div class="col-12">
@@ -558,7 +558,7 @@
                                     <br>
                                     <div class="row">
                                         <div class="col-12">
-                                            Route Path:&ensp;/democontroller/savemovies &ensp;(Restful Service in Local Assembly)&ensp;<button id="buttonAjaxRun3" type="button" class="btn btn-primary btn-sm" onclick="ajaxRun3()">Run</button>
+                                            Route Path:&ensp;/democontroller/movies &ensp;(Restful Service in Local Assembly)&ensp;<button id="buttonAjaxRun3" type="button" class="btn btn-primary btn-sm" onclick="ajaxRun3()">Run</button>
                                         </div>
                                         <br><br>
                                         <div class="col-12">

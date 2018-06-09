@@ -48,7 +48,7 @@ namespace Chromely.Service.Demo
         public DemoController()
         {
             this.RegisterGetRequest("/externalcontroller/movies", this.GetMovies);
-            this.RegisterPostRequest("/externalcontroller/savemovies", this.SaveMovies);
+            this.RegisterPostRequest("/externalcontroller/movies", this.SaveMovies);
         }
 
         /// <summary>

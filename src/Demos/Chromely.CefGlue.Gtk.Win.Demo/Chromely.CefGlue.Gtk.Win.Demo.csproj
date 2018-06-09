@@ -28,7 +28,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Chromely.Cef.Redist.win-86" Version="65.0.*" />
     <PackageReference Include="Microsoft.Packaging.Tools.Trimming" Version="1.1.0-preview1-25818-01" />
   </ItemGroup>
   <ItemGroup>

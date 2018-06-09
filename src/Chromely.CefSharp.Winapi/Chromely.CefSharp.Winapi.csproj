@@ -5,7 +5,7 @@
     <CefSharpAnyCpuSupport>true</CefSharpAnyCpuSupport>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
-    <Version>63.0.0.0</Version>
+    <Version>63.0.0.1</Version>
     <Authors>Kola Oyewumi</Authors>
     <Company>Kola Oyewumi</Company>
     <Description>Chromely CefSharp Winapi implementation. Chromely.CefSharp.Winapi version naming is based on CefSharp.Common  version referenced.</Description>
@@ -13,8 +13,8 @@
     <PackageLicenseUrl>https://github.com/mattkol/Chromely/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/mattkol/Chromely</PackageProjectUrl>
     <PackageIconUrl>https://github.com/mattkol/Chromely/blob/master/nugets/chromely.ico?raw=true</PackageIconUrl>
-    <AssemblyVersion>63.0.0.0</AssemblyVersion>
-    <FileVersion>63.0.0.0</FileVersion>
+    <AssemblyVersion>63.0.0.1</AssemblyVersion>
+    <FileVersion>63.0.0.1</FileVersion>
     <PackageTags>Cef Chromium HTML5 Desktop Chromely CefSharp Restful  Ajax HTTP XHR JavascriptIntegration</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageReleaseNotes>- Improved and optimized using ReSharper.</PackageReleaseNotes>

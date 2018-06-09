@@ -49,7 +49,7 @@ namespace Chromely.CefGlue.Winapi.netCoreDemo.Controllers
         public DemoController()
         {
             this.RegisterGetRequest("/democontroller/movies", this.GetMovies);
-            this.RegisterPostRequest("/democontroller/savemovies", this.SaveMovies);
+            this.RegisterPostRequest("/democontroller/movies", this.SaveMovies);
         }
 
         /// <summary>

@@ -39,10 +39,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Chromely.Cef.Redist.Windows" Version="65.0.9" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\Chromely.CefGlue.Winapi\Chromely.CefGlue.Winapi.csproj" />
   </ItemGroup>
 
