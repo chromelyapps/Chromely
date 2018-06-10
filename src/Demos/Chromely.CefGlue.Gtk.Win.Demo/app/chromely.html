@@ -9,7 +9,7 @@
     <script src="Content/js/jquery.min.js"></script>
     <script src="Content/js/tether.min.js"></script>
     <script src="Content/js/bootstrap.min.js"></script>
-    <style type="text/css">
+	    <style type="text/css">
         body, html {
             height: 100%;
             display: grid;
@@ -37,175 +37,36 @@
             width: 80%;
         }
     </style>
-    <script type="text/javascript">
-        function demoRun() {
+	<script>
+		$(document).ready(function(){
+		
+			$('#demoTabs a').on('click', function (e) {
+			  e.preventDefault()
+			   var url = $(this).attr("data-url"); // the remote url for content
+			   demoframe.src = url;
+			});
+		});
+		
+		function demoRun() {
             $("#demoPage").removeClass('hidden');
             $("#homePage").addClass('hidden');
-
-            var request = {
-                "method": "GET",
-                "url": "/info",
-                "parameters": null,
-                "postData": null,
-            };
-
-            window.cefQuery({
-                request: JSON.stringify(request),
-                onSuccess: function (response) {
-                    console.log(response);
-                    var jsonData = JSON.parse(response);
-                    console.log(jsonData);
-                    if (jsonData.ReadyState == 4 && jsonData.Status == 200) {
-                        $('#divObjective').html(jsonData.Data.divObjective);
-                        $('#divPlatform').html(jsonData.Data.divPlatform);
-                        $('#divVersion').html(jsonData.Data.divVersion);
-                    }
-                }, onFailure: function (err, msg) {
-                    console.log(err, msg);
-                }
-            });
-        }
-
-        function backToHomePage() {
-            $("#demoPage").addClass('hidden');
+		}
+			
+		function backToHomePage() {
             $("#homePage").removeClass('hidden');
-        }
-
-        function launchModal1() {
-            $("#messageRouterModal").modal('show');
-        }
-
-        function messageRouterResult1(res) {
-            var jsonData = JSON.parse(res);
-            if (jsonData.ReadyState == 4 && jsonData.Status == 200) {
-                for (var i = 0; i < jsonData.Data.length; i++) {
-                    var row = '<tr>';
-
-                    row += '<td>' + jsonData.Data[i].Id + '</td>';
-                    row += '<td>' + jsonData.Data[i].Title + '</td>';
-                    row += '<td>' + jsonData.Data[i].Year + '</td>';
-                    row += '<td>' + jsonData.Data[i].Votes + '</td>';
-                    row += '<td>' + jsonData.Data[i].Rating + '</td>';
-                    row += '<td>' + jsonData.Data[i].Date + '</td>';
-                    row += '<td>' + jsonData.Data[i].RestfulAssembly + '</td>';
-
-                    row += '</tr>';
-                    $('#messageRouterResult1 tbody').append(row);
-                }
-            }
-        }
-
-        function messageRouterRun1() {
-
-            $('#messageRouterResult1 tbody').html('');
-
-            var request = {
-                "method": "GET",
-                "url": "/democontroller/movies",
-                "parameters": null,
-                "postData": null,
-            };
-
-            window.cefQuery({
-                request: JSON.stringify(request),
-                onSuccess: function (response) {
-                    messageRouterResult1(response);
-                }, onFailure: function (err, msg) {
-                    console.log(err, msg);
-                }
-            });
-        }
-
-
-        function messageRouterResult2(res) {
-            var jsonData = JSON.parse(res);
-            if (jsonData.ReadyState == 4 && jsonData.Status == 200) {
-                for (var i = 0; i < jsonData.Data.length; i++) {
-                    var row = '<tr>';
-
-                    row += '<td>' + jsonData.Data[i].Id + '</td>';
-                    row += '<td>' + jsonData.Data[i].Title + '</td>';
-                    row += '<td>' + jsonData.Data[i].Year + '</td>';
-                    row += '<td>' + jsonData.Data[i].Votes + '</td>';
-                    row += '<td>' + jsonData.Data[i].Rating + '</td>';
-                    row += '<td>' + jsonData.Data[i].Date + '</td>';
-                    row += '<td>' + jsonData.Data[i].RestfulAssembly + '</td>';
-
-                    row += '</tr>';
-                    $('#messageRouterResult2 tbody').append(row);
-                }
-            }
-        }
-
-        function messageRouterRun2() {
-
-            $('#messageRouterResult2 tbody').html('');
-
-            var request = {
-                "method": "GET",
-                "url": "/externalcontroller/movies",
-                "parameters": null,
-                "postData": null,
-            };
-
-            window.cefQuery({
-                request: JSON.stringify(request),
-                onSuccess: function (response) {
-                    messageRouterResult2(response);
-                }, onFailure: function (err, msg) {
-                    console.log(err, msg);
-                }
-            });
-        }
-
-        function messageRouterResult3(res) {
-            var jsonData = JSON.parse(res);
-            if (jsonData.ReadyState == 4 && jsonData.Status == 200) {
-                $('#messageRouterResult3').html(jsonData.Data);
-            }
-        }
-
-        function messageRouterRun3() {
-
-            $('#messageRouterResult3').html('');
-
-            var moviesJson = [
-                { Id: 1, Title: "The Shawshank Redemption", Year: 1994, Votes: 678790, Rating: 9.2 },
-                { Id: 2, Title: "The Godfather", Year: 1972, votes: 511495, Rating: 9.2 },
-                { Id: 3, Title: "The Godfather: Part II", Year: 1974, Votes: 319352, Rating: 9.0 },
-                { Id: 4, Title: "The Good, the Bad and the Ugly", Year: 1966, Votes: 213030, Rating: 8.9 },
-                { Id: 5, Title: "My Fair Lady", Year: 1964, Votes: 533848, Rating: 8.9 },
-                { Id: 6, Title: "12 Angry Men", Year: 1957, Votes: 164558, Rating: 8.9 }
-            ];
-
-            var request = {
-                "method": "POST",
-                "url": "/democontroller/movies",
-                "parameters": null,
-                "postData": moviesJson,
-            };
-
-            window.cefQuery({
-                request: JSON.stringify(request),
-                onSuccess: function (response) {
-                    messageRouterResult3(response);
-                }, onFailure: function (err, msg) {
-                    console.log(err, msg);
-                }
-            });
-        }
-
-    </script>
+            $("#demoPage").addClass('hidden');
+	    }
+	</script>
 </head>
 <body>
-    <div class="container centerBlock">
+  <div id ="maincontainer" class="container centerBlock">
 
-        <!-- Home Page -->
-        <div id="homePage" class="col-12 centerBlock">
+      <!-- Home Page -->
+      <div id="homePage" class="col-12 centerBlock">
             <div class="col-12">
                 <div class="centerBlock">
                     <div class="row centerBlock">
-                        <img src="../Content/img/chromely.png" class="img-rounded" alt="Cinque Terre" width="240" height="240">
+                        <img src="./Content/img/chromely.png" class="img-rounded" alt="Cinque Terre" width="240" height="240">
                     </div>
                     <div class="row centerBlock">
                         <span class="text-primary text-center"><h2>chromely</h2></span>
@@ -220,170 +81,50 @@
                 <div id="runButton" class="centerBlock">
                     <form class="form-inline">
                         <div class="form-group">
-                            <label for="info">Message Router Demos:</label>
+                            <label for="info">Demos:</label>
                         </div>
                         <button id="buttonDemoRun" type="button" class="btn btn-primary" onclick="demoRun()" style='margin: 5px;'>Run</button>
                     </form>
-                </div>
-            </div>
-        </div>
-
-        <!-- Demo Page -->
-        <div id="demoPage" class="col-12 centerBlock hidden">
-
-            <div class="col-12">
-                <div class="centerBlock">
-                    <div class="row centerBlock">
-                        <img src="../Content/img/chromely.png" class="img-rounded" alt="Cinque Terre" width="180" height="180">
-                    </div>
-                    <div class="row centerBlock">
-                        <span class="text-primary text-center"><h2>demo panel</h2></span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-12">
-                <div>
-                    <button type="button" class="btn btn-link" onclick="backToHomePage()">Back</button>
-                </div>
-                <div class="centerBlock">
-                    <button type="button" class="btn btn-light" data-toggle="modal" data-target="#messageRouterModal" style='margin: 5px;'>Message Router Demo</button>
-                    <a href="https://github.com/mattkol/Chromely" class="btn btn-default" role="button" style='margin: 5px;'>more info</a>
-                </div>
-            </div>
-
-            <br>
-
-            <div class="col-12 centerBlock">
-
-                <div>
-                    <div class="card-header card bg-primary text-white">Chromely Main objective</div>
-                    <div id="divObjective"  class="card-body"></div>
-                </div>
-                <br>
-
-                <div>
-                    <div class="card-header card bg-primary text-white">Platforms</div>
-                    <div  id="divPlatform" class="card-body"></div>
-                </div>
-                <br>
-
-                <div>
-                    <div class="card-header card bg-primary text-white">Current CefSharp/Chromium Version</div>
-                    <div id="divVersion" class="card-body"></div>
-                </div>
-                <br>
-
-            </div>
-
-            <!-- The Message Router Modal -->
-            <div class="modal fade" id="messageRouterModal">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-
-                        <!-- Modal Header -->
-                        <div class="modal-header">
-                            <h4 class="modal-title">Message Router Demo</h4>
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        </div>
-
-                        <!-- Modal body -->
-                        <div class="modal-body">
-                            <!-- Nav pills -->
-                            <ul class="nav nav-pills" role="tablist">
-                                <li class="nav-item">
-                                    <a class="nav-link active" data-toggle="pill" href="#sectionA">Get 1</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" data-toggle="pill" href="#sectionB">Get 2</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" data-toggle="pill" href="#sectionC">Post</a>
-                                </li>
-                            </ul>
-
-                            <!-- Tab panes -->
-                            <div class="tab-content">
-                                <div id="sectionA" class="container tab-pane active">
-                                    <br>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            Route Path:&ensp;/democontroller/movies &ensp; (Restful Service in Local Assembly)&ensp;<button id="buttonMessageRouterRun1" type="button" class="btn btn-primary btn-sm" onclick="messageRouterRun1()">Run</button>
-                                        </div>
-                                        <br><br>
-                                        <div class="col-12">
-                                            <div class='table-responsive'>
-                                                <table id="messageRouterResult1" class='table'>
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Id</th>
-                                                            <th>Title</th>
-                                                            <th>Year</th>
-                                                            <th>Votes</th>
-                                                            <th>Rating</th>
-                                                            <th>Date</th>
-                                                            <th>RestfulAssembly</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="sectionB" class="container tab-pane fade">
-                                    <br>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            Route Path:&ensp;/externalcontroller/movies &ensp;(Restful Service in External Assembly)&ensp;<button id="buttonMessageRouterRun2" type="button" class="btn btn-primary btn-sm" onclick="messageRouterRun2()">Run</button>
-                                        </div>
-                                        <br><br>
-                                        <div class="col-12">
-                                            <div class='table-responsive'>
-                                                <table id="messageRouterResult2" class='table'>
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Id</th>
-                                                            <th>Title</th>
-                                                            <th>Year</th>
-                                                            <th>Votes</th>
-                                                            <th>Rating</th>
-                                                            <th>Date</th>
-                                                            <th>RestfulAssembly</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="sectionC" class="container tab-pane fade">
-                                    <br>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            Route Path:&ensp;/democontroller/movies&ensp;(Restful Service in Local Assembly)&ensp;<button id="buttonMessageRouterRun3" type="button" class="btn btn-primary btn-sm" onclick="messageRouterRun3()">Run</button>
-                                        </div>
-                                        <br><br>
-                                        <div class="col-12">
-                                            <div id="messageRouterResult3"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Modal footer -->
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-                        </div>
-
+					<div class="row centerBlock">
+                         <a href="https://github.com/mattkol/Chromely" class="btn btn-default" role="button" style='margin: 5px;'>more info</a>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+		
+  
+      <!-- Demo Page -->
+     <div id="demoPage" class="col-12  hidden">
+    <div class="row" style="height:25px;"></div>
+
+	 <!-- Demo Pages Nav -->
+	<div class="row">
+	  <div class="col-3">
+		<div class="nav flex-column nav-pills" id="demoTabs" role="tablist" aria-orientation="vertical">
+		  <div class="centerBlock">
+          <img src="./Content/img/chromely_gray.png" class="img-rounded" alt="Cinque Terre" width="90" height="90" />
+          </div>
+		  <div class="centerBlock">chromely demo panel</div>
+		  <div class="centerBlock"> <button type="button" class="btn btn-link" onclick="backToHomePage()">&#60;&#60;&#32;Back</button></div>
+		  <div class="row" style="height:50px;"></div>
+		  <a class="nav-link active"  data-toggle="tab" href="#info"  data-url="./pages/info.html"  role="tab" aria-controls="home" aria-selected="true">Info</a>
+		  <a class="nav-link" data-toggle="tab" href="#messagerouterdemo" data-url="./pages/messagerouterdemo.html" role="tab" aria-controls="settings" aria-selected="false">Message Router Demo</a>
+		  <a class="nav-link" data-toggle="tab" href="#ajaxdemo" data-url="./pages/ajaxdemo.html" role="tab" aria-controls="settings" aria-selected="false">Ajax Demo</a>
+		  <a class="nav-link" data-toggle="tab" href="#html5tests" role="tab" data-url="https://html5test.com/" aria-controls="settings" aria-selected="false">HTML5 Tests</a>
+		  <a class="nav-link" data-toggle="tab" href="#html6tests" role="tab" data-url="http://html6test.com/" aria-controls="settings" aria-selected="false">HTML6 Tests</a>
+		  <a class="nav-link" data-toggle="tab" href="#shakatests" role="tab" data-url="https://shaka-player-demo.appspot.com/demo/#asset=https://storage.googleapis.com/shaka-demo-assets/angel-one/dash.mpd;lang=en-US;build=uncompiled" aria-controls="settings" aria-selected="false">Google Shaka Support Tests</a>
+		</div>
+	  </div>
+	  <div class="col-9">
+		<div class="tab-content">
+           <iframe id="demoframe" src="./pages/info.html" width="780" height="800"  frameborder="0" />
+	    </div>
+	  </div>
+	</div>
+	<!-- End Demo Pages Nav -->
+   </div>
+   
+   
+  </div>
 </body>
 </html>                            

@@ -39,51 +39,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chromely.CefGlue.Winapi.net
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chromely.CefGlue.Gtk.Linux.Demo", "Demos\Chromely.CefGlue.Gtk.Linux.Demo\Chromely.CefGlue.Gtk.Linux.Demo.csproj", "{C60F3486-8846-4690-87C0-0CB16136EBB3}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Redist", "Redist", "{8783E328-8FDA-437A-8D11-2194C07AEACC}"
-	ProjectSection(SolutionItems) = preProject
-		Chromely.Cef.Redist\Chromely.Cef.Redist.nuspec = Chromely.Cef.Redist\Chromely.Cef.Redist.nuspec
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Linux", "Linux", "{013D175C-6227-468C-817B-B155F2056E0E}"
-	ProjectSection(SolutionItems) = preProject
-		Chromely.Cef.Redist\Linux\Chromely.Cef.Redist.Linux.nuspec = Chromely.Cef.Redist\Linux\Chromely.Cef.Redist.Linux.nuspec
-		Chromely.Cef.Redist\Linux\Chromely.Cef.Redist.Linux.targets = Chromely.Cef.Redist\Linux\Chromely.Cef.Redist.Linux.targets
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "linux-64", "linux-64", "{53E8CD5A-AFB4-4D12-A7FB-FB313EE58C3F}"
-	ProjectSection(SolutionItems) = preProject
-		Chromely.Cef.Redist\linux-64\Chromely.Cef.Redist.linux-64.nuspec = Chromely.Cef.Redist\linux-64\Chromely.Cef.Redist.linux-64.nuspec
-		Chromely.Cef.Redist\linux-64\Chromely.Cef.Redist.linux-64.props = Chromely.Cef.Redist\linux-64\Chromely.Cef.Redist.linux-64.props
-		Chromely.Cef.Redist\linux-64\Chromely.Cef.Redist.linux-64.targets = Chromely.Cef.Redist\linux-64\Chromely.Cef.Redist.linux-64.targets
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "linux-86", "linux-86", "{7C0BE0B8-75D8-4DEA-BDD4-1858D423A62C}"
-	ProjectSection(SolutionItems) = preProject
-		Chromely.Cef.Redist\linux-86\Chromely.Cef.Redist.linux-86.nuspec = Chromely.Cef.Redist\linux-86\Chromely.Cef.Redist.linux-86.nuspec
-		Chromely.Cef.Redist\linux-86\Chromely.Cef.Redist.linux-86.props = Chromely.Cef.Redist\linux-86\Chromely.Cef.Redist.linux-86.props
-		Chromely.Cef.Redist\linux-86\Chromely.Cef.Redist.linux-86.targets = Chromely.Cef.Redist\linux-86\Chromely.Cef.Redist.linux-86.targets
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "win-64", "win-64", "{BE30065B-F199-435F-A2DA-E18D565B5F56}"
-	ProjectSection(SolutionItems) = preProject
-		Chromely.Cef.Redist\win-64\Chromely.Cef.Redist.win-64.nuspec = Chromely.Cef.Redist\win-64\Chromely.Cef.Redist.win-64.nuspec
-		Chromely.Cef.Redist\win-64\Chromely.Cef.Redist.win-64.props = Chromely.Cef.Redist\win-64\Chromely.Cef.Redist.win-64.props
-		Chromely.Cef.Redist\win-64\Chromely.Cef.Redist.win-64.targets = Chromely.Cef.Redist\win-64\Chromely.Cef.Redist.win-64.targets
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "win-86", "win-86", "{2640FB67-EA14-413C-BC96-DE374BA71B63}"
-	ProjectSection(SolutionItems) = preProject
-		Chromely.Cef.Redist\win-86\Chromely.Cef.Redist.win-86.nuspec = Chromely.Cef.Redist\win-86\Chromely.Cef.Redist.win-86.nuspec
-		Chromely.Cef.Redist\win-86\Chromely.Cef.Redist.win-86.props = Chromely.Cef.Redist\win-86\Chromely.Cef.Redist.win-86.props
-		Chromely.Cef.Redist\win-86\Chromely.Cef.Redist.win-86.targets = Chromely.Cef.Redist\win-86\Chromely.Cef.Redist.win-86.targets
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Windows", "Windows", "{EC553E41-88CA-43C4-8244-169BA3580E1B}"
-	ProjectSection(SolutionItems) = preProject
-		Chromely.Cef.Redist\Windows\Chromely.Cef.Redist.Windows.nuspec = Chromely.Cef.Redist\Windows\Chromely.Cef.Redist.Windows.nuspec
-		Chromely.Cef.Redist\Windows\Chromely.Cef.Redist.Windows.targets = Chromely.Cef.Redist\Windows\Chromely.Cef.Redist.Windows.targets
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -270,12 +225,6 @@ Global
 		{A94A1FB5-DBCE-4A39-8C90-CAE93B5CB675} = {25C4FBF4-EF53-4E55-97E1-55587A5228CA}
 		{4E8CF5F5-BB0F-4A82-94CE-69E4A078972B} = {D56CCFF2-71C9-406D-9E5B-F09949FA6775}
 		{C60F3486-8846-4690-87C0-0CB16136EBB3} = {D56CCFF2-71C9-406D-9E5B-F09949FA6775}
-		{013D175C-6227-468C-817B-B155F2056E0E} = {8783E328-8FDA-437A-8D11-2194C07AEACC}
-		{53E8CD5A-AFB4-4D12-A7FB-FB313EE58C3F} = {8783E328-8FDA-437A-8D11-2194C07AEACC}
-		{7C0BE0B8-75D8-4DEA-BDD4-1858D423A62C} = {8783E328-8FDA-437A-8D11-2194C07AEACC}
-		{BE30065B-F199-435F-A2DA-E18D565B5F56} = {8783E328-8FDA-437A-8D11-2194C07AEACC}
-		{2640FB67-EA14-413C-BC96-DE374BA71B63} = {8783E328-8FDA-437A-8D11-2194C07AEACC}
-		{EC553E41-88CA-43C4-8244-169BA3580E1B} = {8783E328-8FDA-437A-8D11-2194C07AEACC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {970C1133-7B56-4953-B1D8-AEA029C44561}

@@ -66,7 +66,7 @@ namespace Chromely.CefGlue.Gtk.Linux.Demo
                 // Requires - (sample) UseDefaultHttpSchemeHandler("http", "chromely.com")
                 //            or register new http scheme handler - RegisterSchemeHandler("http", "test.com",  new CustomHttpHandler())
                 string appDirectory = AppDomain.CurrentDomain.BaseDirectory;
-                string startUrl = $"file:///{appDirectory}app/chromely_with_ajax.html";
+                string startUrl = $"file:///{appDirectory}app/chromely.html";
 
                 ChromelyConfiguration config = ChromelyConfiguration
                                               .Create()

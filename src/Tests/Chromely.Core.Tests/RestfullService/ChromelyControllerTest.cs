@@ -122,7 +122,7 @@ namespace Chromely.Core.Tests.RestfullService
             var routeGet1 = routeDict["/testcontroller/get1"];
             Assert.NotNull(routeGet1);
 
-            var response = routeGet1.Invoke(new ChromelyRequest("/testcontroller/get1", null, null));
+            var response = routeGet1.Invoke(new ChromelyRequest(new RoutePath(Method.GET,  "/testcontroller/get1"), null, null));
             Assert.NotNull(response);
             Assert.True(response.Data is int);
             Assert.Equal(1000, (int)response.Data);
@@ -138,7 +138,7 @@ namespace Chromely.Core.Tests.RestfullService
             var routeGet2 = routeDict["/testcontroller/get2"];
             Assert.NotNull(routeGet2);
 
-            ChromelyResponse response = routeGet2.Invoke(new ChromelyRequest("/testcontroller/get2", null, null));
+            ChromelyResponse response = routeGet2.Invoke(new ChromelyRequest(new RoutePath(Method.GET, "/testcontroller/get2"), null, null));
             Assert.NotNull(response);
             Assert.True(response.Data is string);
             Assert.Equal("Test Get 2", (string)response.Data);
@@ -155,7 +155,7 @@ namespace Chromely.Core.Tests.RestfullService
             Assert.NotNull(routeSave);
 
             var parameter = DateTime.Now.ToString(CultureInfo.InvariantCulture);
-            var response = routeSave.Invoke(new ChromelyRequest("/testcontroller/save", null, parameter));
+            var response = routeSave.Invoke(new ChromelyRequest(new RoutePath(Method.POST, "/testcontroller/save"), null, parameter));
             Assert.NotNull(response);
             Assert.True(response.Data is string);
             Assert.Equal(parameter, (string)response.Data);

@@ -385,11 +385,6 @@
             The drag handler.
             </summary>
         </member>
-        <member name="F:Chromely.CefGlue.Gtk.Browser.CefGlueClient.mGeolocationHandler">
-            <summary>
-            The geolocation handler.
-            </summary>
-        </member>
         <member name="F:Chromely.CefGlue.Gtk.Browser.CefGlueClient.mDownloadHandler">
             <summary>
             The download handler.
@@ -493,14 +488,6 @@
             The <see cref="T:Xilium.CefGlue.CefDragHandler"/>.
             </returns>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.Browser.CefGlueClient.GetGeolocationHandler">
-            <summary>
-            The get geolocation handler.
-            </summary>
-            <returns>
-            The <see cref="T:Xilium.CefGlue.CefGeolocationHandler"/>.
-            </returns>
-        </member>
         <member name="M:Chromely.CefGlue.Gtk.Browser.CefGlueClient.GetDownloadHandler">
             <summary>
             The get download handler.
@@ -592,11 +579,6 @@
         <member name="P:Chromely.CefGlue.Gtk.Browser.CefGlueClientParams.DragHandler">
             <summary>
             Gets or sets the drag handler.
-            </summary>
-        </member>
-        <member name="P:Chromely.CefGlue.Gtk.Browser.CefGlueClientParams.GeolocationHandler">
-            <summary>
-            Gets or sets the geolocation handler.
             </summary>
         </member>
         <member name="P:Chromely.CefGlue.Gtk.Browser.CefGlueClientParams.DownloadHandler">
@@ -2759,7 +2741,7 @@
             Generic exception - Route path not valid.
             </exception>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.RestfulService.RequestTaskRunner.Run(System.String,System.Object,System.Object)">
+        <member name="M:Chromely.CefGlue.Gtk.RestfulService.RequestTaskRunner.Run(Chromely.Core.RestfulService.RoutePath,System.Object,System.Object)">
             <summary>
             The run.
             </summary>
@@ -2779,7 +2761,7 @@
             Generic exception - Route path not valid.
             </exception>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.RestfulService.RequestTaskRunner.ExcuteRoute(System.String,System.Object,System.Object)">
+        <member name="M:Chromely.CefGlue.Gtk.RestfulService.RequestTaskRunner.ExcuteRoute(Chromely.Core.RestfulService.RoutePath,System.Object,System.Object)">
             <summary>
             The excute route.
             </summary>

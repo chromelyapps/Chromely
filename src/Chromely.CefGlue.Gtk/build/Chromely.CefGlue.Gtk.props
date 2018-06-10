@@ -1,0 +1,25 @@
+<!-- Chromely.CefGlue.Gtk.props 
+This is a post build cef binaries download for Chromely.CefGlue.Winapi
+If this is not successful, developers can try running this on cmd, using help to get the options:
+
+chromelycef.exe download -h
+"$(MSBuildThisFileDirectory)\chromelycef.exe" -h
+
+chromelycef.exel will be found in the Chromely.CefGlue.Winapi package location.
+-->
+<Project>
+ 
+   <PropertyGroup>
+     <DownloadCefBinariesExe Condition=" '$(OS)' != 'Windows_NT' ">dotnet "$(MSBuildThisFileDirectory)\linux\chromelycef.dll"</DownloadCefBinariesExe>
+     <DownloadCefBinariesExe Condition=" '$(OS)' == 'Windows_NT' ">"$(MSBuildThisFileDirectory)\win\chromelycef.exe"</DownloadCefBinariesExe>
+      <DownloadCefBinariesExe>"$(MSBuildThisFileDirectory)\chromelycef.exe"</DownloadCefBinariesExe>
+      <ChromiumVersionParameter>v65</ChromiumVersionParameter>
+      <CefVersionParameter>3.3325.1751.ge5b78a5</CefVersionParameter>
+    </PropertyGroup>
+
+    <Target Name="DownloadCefBinaries" AfterTargets="CoreCompile">
+      <Message Text="$(DownloadCefBinariesExe) download $(ChromiumVersionParameter) --cef-binary-version=$(CefVersionParameter) --cpu=$(Platform) --dest=$(MSBuildProjectDirectory)\$(OutputPath)"  Importance="high" />
+      <Exec Command="$(DownloadCefBinariesExe) download $(ChromiumVersionParameter) --cef-binary-version=$(CefVersionParameter) --cpu=$(Platform) --dest=$(MSBuildProjectDirectory)\$(OutputPath)" ContinueOnError="WarnAndContinue"/>
+    </Target>
+
+</Project>
