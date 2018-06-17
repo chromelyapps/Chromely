@@ -67,6 +67,7 @@ namespace Chromely.CefGlue.Winapi.Demo
                 //            or register new http scheme handler - RegisterSchemeHandler("http", "test.com",  new CustomHttpHandler())
                 // string appDirectory = AppDomain.CurrentDomain.BaseDirectory;
                 // string startUrl = $"file:///{appDirectory}app/chromely.html";
+
                 ChromelyConfiguration config = ChromelyConfiguration
                                               .Create()
                                               .WithAppArgs(args)
@@ -77,7 +78,7 @@ namespace Chromely.CefGlue.Winapi.Demo
                                               .UseDefaultLogger("logs\\chromely_new.log")
                                               .UseDefaultResourceSchemeHandler("local", string.Empty)
                                               .UseDefaultHttpSchemeHandler("http", "chromely.com");
-
+    
                 var factory = WinapiHostFactory.Init("chromely.ico");
                 using (var window = factory.CreateWindow(
                     () => new CefGlueBrowserHost(config),

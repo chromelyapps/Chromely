@@ -73,7 +73,7 @@ namespace Chromely.CefGlue.Gtk.ChromeHost
             : base(hostConfig.HostTitle, hostConfig.HostWidth, hostConfig.HostHeight, hostConfig.HostIconFile)
         {
             this.mHostConfig = hostConfig;
-            this.mCore = new CefGlueBrowser(this, new CefBrowserSettings(), hostConfig.StartUrl);
+            this.mCore = new CefGlueBrowser(this, hostConfig, new CefBrowserSettings());
             this.mCore.Created += this.BrowserCreated;
             this.mApplication = application;
 

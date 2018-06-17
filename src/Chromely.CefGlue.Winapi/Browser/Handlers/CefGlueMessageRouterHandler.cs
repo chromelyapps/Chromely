@@ -30,7 +30,6 @@
 
 namespace Chromely.CefGlue.Winapi.Browser.Handlers
 {
-    using System;
     using System.Threading.Tasks;
     using Chromely.CefGlue.Winapi.RestfulService;
     using Chromely.Core.RestfulService;
@@ -69,21 +68,21 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
         /// </returns>
         public override bool OnQuery(CefBrowser browser, CefFrame frame, long queryId, string request, bool persistent, CefMessageRouterBrowserSide.Callback callback)
         {
-            JsonData requestData = JsonMapper.ToObject(request);
-            string method = requestData["method"].ToString();
+            var requestData = JsonMapper.ToObject(request);
+            var method = requestData.Keys.Contains("method") ? requestData["method"].ToString() : string.Empty;
             method = string.IsNullOrWhiteSpace(method) ? string.Empty : method;
 
-            if (method.Equals("Get", StringComparison.InvariantCultureIgnoreCase) ||
-                method.Equals("Post", StringComparison.InvariantCultureIgnoreCase))
+            if (RoutePath.ValidMethod(method))
             {
                 new Task(() =>
                 {
-                    string path = requestData["url"].ToString();
-                    object parameters = requestData["parameters"];
-                    object postData = requestData["postData"];
+                    var id = requestData.Keys.Contains("id") ? requestData["id"].ToString() : string.Empty;
+                    var path = requestData.Keys.Contains("url") ? requestData["url"].ToString() : string.Empty;
+                    var parameters = requestData.Keys.Contains("parameters") ? requestData["parameters"] : null;
+                    var postData = requestData.Keys.Contains("postData") ? requestData["postData"] : null;
 
                     var routePath = new RoutePath(method, path);
-                    var response = RequestTaskRunner.Run(routePath, parameters, postData);
+                    var response = RequestTaskRunner.Run(id, routePath, parameters, postData);
                     var jsonResponse = response.EnsureJson();
 
                     callback.Success(jsonResponse);

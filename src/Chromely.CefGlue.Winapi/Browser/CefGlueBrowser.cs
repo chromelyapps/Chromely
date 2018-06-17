@@ -34,6 +34,7 @@ namespace Chromely.CefGlue.Winapi.Browser
 {
     using System;
     using Chromely.CefGlue.Winapi.Browser.EventParams;
+    using Chromely.CefGlue.Winapi.Browser.FrameHandlers;
     using Chromely.Core.Host;
     using Chromely.Core.Infrastructure;
     using Xilium.CefGlue;
@@ -57,6 +58,11 @@ namespace Chromely.CefGlue.Winapi.Browser
         /// The browser window handle.
         /// </summary>
         private IntPtr mBrowserWindowHandle;
+
+        /// <summary>
+        /// The m websocket started.
+        /// </summary>
+        private bool mWebsocketStarted;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CefGlueBrowser"/> class.
@@ -218,6 +224,12 @@ namespace Chromely.CefGlue.Winapi.Browser
             this.mBrowser = browser;
             this.mBrowserWindowHandle = this.mBrowser.GetHost().GetWindowHandle();
 
+            // Register browser 
+            CefGlueFrameHandler frameHandler = new CefGlueFrameHandler(browser);
+            IoC.RegisterInstance(typeof(CefGlueFrameHandler), typeof(CefGlueFrameHandler).FullName, frameHandler);
+
+            this.StartWebsocket();
+
             this.BrowserCreated?.Invoke(this, EventArgs.Empty);
         }
 
@@ -376,6 +388,11 @@ namespace Chromely.CefGlue.Winapi.Browser
         /// </param>
         protected override void Dispose(bool disposing)
         {
+            if (this.mWebsocketStarted)
+            {
+                WebsocketServerRunner.StopServer();
+            }
+
             if (this.mBrowser != null && disposing)
             {
                 var host = this.mBrowser.GetHost();
@@ -452,6 +469,25 @@ namespace Chromely.CefGlue.Winapi.Browser
                     width,
                     height,
                     WinapiConstants.NoZOrder);
+            }
+        }
+
+        /// <summary>
+        /// The start websocket.
+        /// </summary>
+        private void StartWebsocket()
+        {
+            try
+            {
+                if (this.mBrowserConfig.StartWebSocket)
+                {
+                    WebsocketServerRunner.StartServer(this.mBrowserConfig.WebsocketAddress, this.mBrowserConfig.WebsocketPort);
+                    this.mWebsocketStarted = true;
+                }
+            }
+            catch (Exception exception)
+            {
+                Log.Error(exception);
             }
         }
     }

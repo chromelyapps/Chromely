@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -10,20 +10,20 @@
     <script src="../Content/js/tether.min.js"></script>
     <script src="../Content/js/bootstrap.min.js"></script>
     <script>
-	$(document).ready(function(){
-        function infoResult(res) {
-            var jsonData = JSON.parse(res.ResponseText);
-            if (jsonData.ReadyState == 4 && jsonData.Status == 200) {
-                $('#divObjective').html(jsonData.Data.divObjective);
-                $('#divPlatform').html(jsonData.Data.divPlatform);
-                $('#divVersion').html(jsonData.Data.divVersion);
+        $(document).ready(function(){
+            function infoResult(res) {
+                var jsonData = JSON.parse(res.ResponseText);
+                if (jsonData.ReadyState == 4 && jsonData.Status == 200) {
+                    $('#divObjective').html(jsonData.Data.divObjective);
+                    $('#divPlatform').html(jsonData.Data.divPlatform);
+                    $('#divVersion').html(jsonData.Data.divVersion);
+                }
             }
-        }
 		
-	    boundControllerAsync.getJson("/info", null, infoResult);
-    });
+            boundControllerAsync.getJson("/info", null, infoResult);
+        });
 			
-	</script
+    </script>
 </head>
 <body>
 <div class="col-9 centerBlock">

@@ -51,6 +51,7 @@ namespace Chromely.Core
             this.HostWidth = 1200;
             this.HostHeight = 900;
             this.Locale = "en-US";
+            this.StartWebSocket = false;
             this.CommandLineArgs = new Dictionary<string, string>();
             this.CustomSettings = new Dictionary<string, object>();
         }
@@ -104,6 +105,21 @@ namespace Chromely.Core
         /// Gets or sets the locale.
         /// </summary>
         public string Locale { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether start web socket.
+        /// </summary>
+        public bool StartWebSocket { get; set; }
+
+        /// <summary>
+        /// Gets or sets the websocket address.
+        /// </summary>
+        public string WebsocketAddress { get; set; }
+
+        /// <summary>
+        /// Gets or sets the websocket port.
+        /// </summary>
+        public int WebsocketPort { get; set; }
 
         /// <summary>
         /// Gets or sets the command line args.
@@ -350,6 +366,26 @@ namespace Chromely.Core
         public ChromelyConfiguration UseDefautJsHandler(string objectNameToBind, bool registerAsync)
         {
             return this.RegisterJsHandler(new ChromelyJsHandler(objectNameToBind, registerAsync));
+        }
+
+        /// <summary>
+        /// The start websocket server with the address and port provided.
+        /// </summary>
+        /// <param name="address">
+        /// The address.
+        /// </param>
+        /// <param name="port">
+        /// The port.
+        /// </param>
+        /// <returns>
+        /// The <see cref="ChromelyConfiguration"/>.
+        /// </returns>
+        public ChromelyConfiguration StartWebsocketServerWith(string address, int port)
+        {
+            this.StartWebSocket = true;
+            this.WebsocketAddress = address;
+            this.WebsocketPort = port;
+            return this;
         }
 
         /// <summary>

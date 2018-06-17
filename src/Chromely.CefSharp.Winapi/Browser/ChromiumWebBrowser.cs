@@ -32,8 +32,12 @@
 namespace Chromely.CefSharp.Winapi.Browser
 {
     using System;
+
+    using Chromely.CefSharp.Winapi.Browser.FrameHandlers;
     using Chromely.CefSharp.Winapi.Browser.Internals;
     using Chromely.Core.Host;
+    using Chromely.Core.Infrastructure;
+
     using global::CefSharp;
     using global::CefSharp.Internals;
 
@@ -528,6 +532,10 @@ namespace Chromely.CefSharp.Winapi.Browser
             {
                 browser.MainFrame.LoadUrl(this.Address);
             }
+
+            // Register browser 
+            CefSharpFrameHandler frameHandler = new CefSharpFrameHandler(browser);
+            IoC.RegisterInstance(typeof(CefSharpFrameHandler), typeof(CefSharpFrameHandler).FullName, frameHandler);
 
             this.IsBrowserInitializedChanged?.Invoke(this, new IsBrowserInitializedChangedEventArgs(this.IsBrowserInitialized));
         }

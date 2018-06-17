@@ -73,7 +73,7 @@ namespace Chromely.CefSharp.Winapi.Demo.Controllers
             movieInfos.Add(new MovieInfo(id: 5, title: "My Fair Lady", year: 1964, votes: 533848, rating: 8.9, assembly: assemblyName));
             movieInfos.Add(new MovieInfo(id: 6, title: "12 Angry Men", year: 1957, votes: 164558, rating: 8.9, assembly: assemblyName));
 
-            ChromelyResponse response = new ChromelyResponse();
+            ChromelyResponse response = new ChromelyResponse(request.Id);
             response.Data = movieInfos;
             return response;
         }
@@ -105,7 +105,7 @@ namespace Chromely.CefSharp.Winapi.Demo.Controllers
                 throw new Exception("Post data is null or invalid.");
             }
 
-            ChromelyResponse response = new ChromelyResponse();
+            ChromelyResponse response = new ChromelyResponse(request.Id);
             var postDataJson = request.PostData.EnsureJson();
             int rowsReceived = postDataJson.ArrayCount();
 

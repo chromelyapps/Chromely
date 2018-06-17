@@ -279,6 +279,9 @@ namespace Chromely.CefGlue.Winapi.ChromeHost
                 StartUrl = this.HostConfig.StartUrl,
                 ParentHandle = this.Handle,
                 AppArgs = this.HostConfig.AppArgs,
+                StartWebSocket = this.HostConfig.StartWebSocket,
+                WebsocketAddress = this.HostConfig.WebsocketAddress,
+                WebsocketPort = this.HostConfig.WebsocketPort,
                 CefRectangle =
                     new CefRectangle
                         {

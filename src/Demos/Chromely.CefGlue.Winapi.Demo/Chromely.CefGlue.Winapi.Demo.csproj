@@ -15,6 +15,7 @@
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="app\Content\js\popper.min.js" />
     <None Remove="chromely.ico" />
     <None Remove="app\Content\css\bootstrap.min.css" />
     <None Remove="app\Content\js\bootstrap.min.js" />
@@ -22,6 +23,9 @@
     <None Remove="app\Content\js\tether.min.js" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\Content\js\popper.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="chromely.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -45,6 +49,9 @@
     <ProjectReference Include="..\..\Chromely.CefGlue.Winapi\Chromely.CefGlue.Winapi.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <None Update="app\chromely_websocket.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="app\chromely.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -61,6 +68,15 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="app\pages\info.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="app\pages\javascriptdemo.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="app\pages\websocketdemo - Copy.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="app\pages\websocketdemo.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="app\pages\messagerouterdemo.html">

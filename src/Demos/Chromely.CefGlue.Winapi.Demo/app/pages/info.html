@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -21,9 +21,7 @@
 			window.cefQuery({
 				request: JSON.stringify(request),
 				onSuccess: function (response) {
-					console.log(response);
 					var jsonData = JSON.parse(response);
-					console.log(jsonData);
 					if (jsonData.ReadyState == 4 && jsonData.Status == 200) {
 						$('#divObjective').html(jsonData.Data.divObjective);
 						$('#divPlatform').html(jsonData.Data.divPlatform);

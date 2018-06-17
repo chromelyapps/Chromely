@@ -33,8 +33,11 @@ namespace Chromely.Core.RestfulService
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Collections.Specialized;
     using System.ComponentModel;
     using System.Linq;
+    using System.Web;
+
     using LitJson;
 
     /// <summary>
@@ -245,6 +248,35 @@ namespace Chromely.Core.RestfulService
             }
 
             return dictionary;
+        }
+
+        /// <summary>
+        /// The get parameters.
+        /// </summary>
+        /// <param name="url">
+        /// The url.
+        /// </param>
+        /// <returns>
+        /// The name value collection.
+        /// </returns>
+        public static IDictionary<string, string> GetParameters(this string url)
+        {
+            var nameValueCollection = new NameValueCollection();
+
+            string querystring = string.Empty;
+            int index = url.IndexOf('?');
+            if (index > 0)
+            {
+                querystring = url.Substring(url.IndexOf('?'));
+                nameValueCollection = HttpUtility.ParseQueryString(querystring);
+            }
+
+            if (string.IsNullOrEmpty(querystring))
+            {
+                return new Dictionary<string, string>();
+            }
+
+            return nameValueCollection.AllKeys.ToDictionary(x => x, x => nameValueCollection[x]);
         }
 
         /// <summary>

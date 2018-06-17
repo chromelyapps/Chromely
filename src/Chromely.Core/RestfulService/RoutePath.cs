@@ -88,6 +88,65 @@ namespace Chromely.Core.RestfulService
         public string Path { get; set; }
 
         /// <summary>
+        /// The valid method.
+        /// </summary>
+        /// <param name="method">
+        /// The method.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        public static bool ValidMethod(Method method)
+        {
+            switch (method)
+            {
+                case Method.GET:
+                case Method.POST:
+                case Method.PUT:
+                case Method.DELETE:
+                case Method.HEAD:
+                case Method.OPTIONS:
+                case Method.PATCH:
+                case Method.MERGE:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        /// <summary>
+        /// The valid method.
+        /// </summary>
+        /// <param name="method">
+        /// The method.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        public static bool ValidMethod(string method)
+        {
+            if (string.IsNullOrEmpty(method))
+            {
+                return false;
+            }
+
+            switch (method.ToUpper())
+            {
+                case "GET":
+                case "POST":
+                case "PUT":
+                case "DELETE":
+                case "HEAD":
+                case "OPTIONS":
+                case "PATCH":
+                case "MERGE":
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        /// <summary>
         /// The convert method.
         /// </summary>
         /// <param name="method">

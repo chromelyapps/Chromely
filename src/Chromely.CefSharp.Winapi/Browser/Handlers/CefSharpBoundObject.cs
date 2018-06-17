@@ -60,7 +60,7 @@ namespace Chromely.CefSharp.Winapi.Browser.Handlers
                 using (javascriptCallback)
                 {
                     var routePath = new RoutePath(Method.GET, path);
-                    var chromelyResponse = await RequestTaskRunner.RunAsync(routePath, parameters, null);
+                    var chromelyResponse = await RequestTaskRunner.RunAsync(string.Empty, routePath, parameters, null);
                     string jsonResponse = chromelyResponse.EnsureJson();
                     var response = new CallbackResponseStruct(jsonResponse);
                     await javascriptCallback.ExecuteAsync(response);
@@ -83,7 +83,7 @@ namespace Chromely.CefSharp.Winapi.Browser.Handlers
         public string GetJson(string path, object parameters)
         {
             var routePath = new RoutePath(Method.GET, path);
-            var chromelyResponse = RequestTaskRunner.Run(routePath, parameters, null);
+            var chromelyResponse = RequestTaskRunner.Run(string.Empty, routePath, parameters, null);
             string jsonResponse = chromelyResponse.EnsureJson();
             return jsonResponse;
         }
@@ -110,7 +110,7 @@ namespace Chromely.CefSharp.Winapi.Browser.Handlers
                 using (javascriptCallback)
                 {
                     var routePath = new RoutePath(Method.POST, path);
-                    var chromelyResponse = await RequestTaskRunner.RunAsync(routePath, parameters, postData);
+                    var chromelyResponse = await RequestTaskRunner.RunAsync(string.Empty, routePath, parameters, postData);
                     string jsonResponse = chromelyResponse.EnsureJson();
                     var response = new CallbackResponseStruct(jsonResponse);
                     await javascriptCallback.ExecuteAsync(response);
@@ -136,7 +136,7 @@ namespace Chromely.CefSharp.Winapi.Browser.Handlers
         public string PostJson(string path, object parameters, object postData)
         {
             var routePath = new RoutePath(Method.POST, path);
-            var chromelyResponse = RequestTaskRunner.Run(routePath, parameters, postData);
+            var chromelyResponse = RequestTaskRunner.Run(string.Empty, routePath, parameters, postData);
             string jsonResponse = chromelyResponse.EnsureJson();
             return jsonResponse;
         }

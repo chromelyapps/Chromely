@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CefBrowserConfig.cs" company="Chromely">
+// <copyright file="FrameHandler.cs" company="Chromely">
 //   Copyright (c) 2017-2018 Kola Oyewumi
 // </copyright>
 // <license>
@@ -28,49 +28,78 @@
 // </note>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Chromely.CefGlue.Winapi.Browser
+namespace Chromely.CefSharp.Winapi
 {
-    using System;
-    using Xilium.CefGlue;
+    using global::CefSharp;
+    using Chromely.CefSharp.Winapi.Browser.FrameHandlers;
+    using Chromely.Core.Infrastructure;
 
     /// <summary>
-    /// The cef browser config.
+    /// The frame handler extension.
     /// </summary>
-    public class CefBrowserConfig
+    public static class FrameHandler
     {
         /// <summary>
-        /// Gets or sets the parent handle.
+        /// The browser.
         /// </summary>
-        public IntPtr ParentHandle { get; set; }
+        private static IBrowser browser;
 
         /// <summary>
-        /// Gets or sets the cef rectangle.
+        /// Gets the browser.
         /// </summary>
-        public CefRectangle CefRectangle { get; set; }
+        private static IBrowser Browser
+        {
+            get
+            {
+                if (browser != null)
+                {
+                    return browser;
+                }
+
+                CefSharpFrameHandler cefSharpFrameHandler = IoC.GetInstance<CefSharpFrameHandler>(typeof(CefSharpFrameHandler).FullName);
+                if (cefSharpFrameHandler != null)
+                {
+                    browser = cefSharpFrameHandler.Browser;
+                }
+
+                return browser;
+            }
+        }
 
         /// <summary>
-        /// Gets or sets the app args.
+        /// The get main frame.
         /// </summary>
-        public string[] AppArgs { get; set; }
+        /// <returns>
+        /// The <see cref="IFrame"/>.
+        /// </returns>
+        public static IFrame GetMainFrame()
+        {
+            return Browser?.MainFrame;
+        }
 
         /// <summary>
-        /// Gets or sets the start url.
+        /// The get frame.
         /// </summary>
-        public string StartUrl { get; set; }
+        /// <param name="name">
+        /// The name.
+        /// </param>
+        /// <returns>
+        /// The <see cref="IFrame"/>.
+        /// </returns>
+        public static IFrame GetFrame(string name)
+        {
+            return Browser?.GetFrame(name);
+        }
 
         /// <summary>
-        /// Gets or sets a value indicating whether start web socket.
+        /// The get browser.
         /// </summary>
-        public bool StartWebSocket { get; set; }
-
-        /// <summary>
-        /// Gets or sets the websocket address.
-        /// </summary>
-        public string WebsocketAddress { get; set; }
-
-        /// <summary>
-        /// Gets or sets the websocket port.
-        /// </summary>
-        public int WebsocketPort { get; set; }
+        /// <returns>
+        /// The <see cref="IBrowser"/>.
+        /// </returns>
+        public static IBrowser GetBrowser()
+        {
+            return Browser;
+        }
     }
 }

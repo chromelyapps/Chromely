@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Route.cs" company="Chromely">
+// <copyright file="CefGlueFrameHandler.cs" company="Chromely">
 //   Copyright (c) 2017-2018 Kola Oyewumi
 // </copyright>
 // <license>
@@ -28,92 +28,91 @@
 // </note>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Chromely.Core.RestfulService
+namespace Chromely.CefGlue.Winapi.Browser.FrameHandlers
 {
     using System;
     using System.Collections.Generic;
-    using System.Threading.Tasks;
+    using System.Linq;
+
+    using Xilium.CefGlue;
 
     /// <summary>
-    /// The route.
+    /// The CefGlue frame handler.
     /// </summary>
-    public class Route
+    internal class CefGlueFrameHandler
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Route"/> class.
+        /// The browser.
         /// </summary>
-        /// <param name="method">
-        /// The method.
+        private readonly CefBrowser browser;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CefGlueFrameHandler"/> class.
+        /// </summary>
+        /// <param name="browser">
+        /// The browser.
         /// </param>
-        /// <param name="path">
-        /// The path.
-        /// </param>
-        /// <param name="action">
-        /// The action.
-        /// </param>
-        public Route(Method method, string path, Func<ChromelyRequest, ChromelyResponse> action)
+        public CefGlueFrameHandler(CefBrowser browser)
         {
-            this.Method = method;
-            this.Path = path;
-            this.Action = action;
+            this.browser = browser;
         }
 
         /// <summary>
-        /// Gets or sets the method.
+        /// Gets the browser.
         /// </summary>
-        public Method Method { get; set; }
-
-        /// <summary>
-        /// Gets or sets the path.
-        /// </summary>
-        public string Path { get; set; }
-
-        /// <summary>
-        /// Gets or sets the action.
-        /// </summary>
-        public Func<ChromelyRequest, ChromelyResponse> Action { get; set; }
-
-        /// <summary>
-        /// Gets or sets the action async.
-        /// </summary>
-        public Func<ChromelyRequest, Task<ChromelyResponse>> ActionAsync { get; set; }
-
-        /// <summary>
-        /// Invokes the registered action.
-        /// </summary>
-        /// <param name="requestId">
-        /// The request identifier.
-        /// </param>
-        /// <param name="routePath">
-        /// The route path.
-        /// </param>
-        /// <param name="parameters">
-        /// The parameters.
-        /// </param>
-        /// <param name="postData">
-        /// The post data.
-        /// </param>
-        /// <returns>
-        /// The <see cref="ChromelyResponse"/>.
-        /// </returns>
-        public ChromelyResponse Invoke(string requestId, RoutePath routePath, IDictionary<string, object> parameters, object postData)
+        public CefBrowser Browser
         {
-            ChromelyRequest request = new ChromelyRequest(requestId, routePath, parameters, postData);
-            return this.Action.Invoke(request);
+            get
+            {
+                if (this.browser == null)
+                {
+                    throw new Exception("Browser object cannot be null.");
+                }
+
+                return this.browser;
+            }
+        }
+
+
+        /// <summary>
+        /// Gets the get frame identifiers.
+        /// </summary>
+        public List<long> GetFrameIdentifiers => this.Browser.GetFrameIdentifiers()?.ToList();
+
+        /// <summary>
+        /// Gets the get frame names.
+        /// </summary>
+        public List<string> GetFrameNames => this.Browser.GetFrameNames()?.ToList();
+
+        /// <summary>
+        /// The get main frame.
+        /// </summary>
+        /// <returns>
+        /// The <see>
+        ///         <cref>CefFrame</cref>
+        ///     </see>
+        ///     .
+        /// </returns>
+        public CefFrame GetMainFrame()
+        {
+            return this.Browser.GetMainFrame();
         }
 
         /// <summary>
-        /// Invokes the registered action.
+        /// The get frame.
         /// </summary>
-        /// <param name="request">
-        /// The request.
+        /// <param name="frameName">
+        /// The frame name.
         /// </param>
         /// <returns>
-        /// The <see cref="ChromelyResponse"/>.
+        /// The <see>
+        ///         <cref>IFrame</cref>
+        ///     </see>
+        ///     .
         /// </returns>
-        public ChromelyResponse Invoke(ChromelyRequest request)
+        public CefFrame GetFrame(string frameName)
         {
-            return this.Action.Invoke(request);
+            return this.Browser.GetFrame(frameName);
         }
     }
 }

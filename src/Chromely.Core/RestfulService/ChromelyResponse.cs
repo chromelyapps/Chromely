@@ -36,6 +36,30 @@ namespace Chromely.Core.RestfulService
     public class ChromelyResponse
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="ChromelyResponse"/> class.
+        /// </summary>
+        public ChromelyResponse()
+        {
+            this.RequestId = string.Empty;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ChromelyResponse"/> class.
+        /// </summary>
+        /// <param name="requestId">
+        /// The request id.
+        /// </param>
+        public ChromelyResponse(string requestId)
+        {
+            this.RequestId = requestId;
+        }
+
+        /// <summary>
+        /// Gets or sets the route path.
+        /// </summary>
+        public string RequestId { get; set; }
+
+        /// <summary>
         /// Gets or sets the ready state.
         /// </summary>
         public int ReadyState { get; set; }

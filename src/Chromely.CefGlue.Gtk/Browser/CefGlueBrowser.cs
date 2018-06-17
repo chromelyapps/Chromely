@@ -34,6 +34,7 @@ namespace Chromely.CefGlue.Gtk.Browser
 {
     using System;
     using Chromely.CefGlue.Gtk.Browser.EventParams;
+    using Chromely.Core;
     using Chromely.Core.Infrastructure;
     using Xilium.CefGlue;
 
@@ -42,6 +43,11 @@ namespace Chromely.CefGlue.Gtk.Browser
     /// </summary>
     public class CefGlueBrowser
     {
+        /// <summary>
+        /// The host config.
+        /// </summary>
+        private readonly ChromelyConfiguration mHostConfig;
+
         /// <summary>
         /// The CefBrowserSettings object.
         /// </summary>
@@ -53,22 +59,28 @@ namespace Chromely.CefGlue.Gtk.Browser
         private CefGlueClient mClient;
 
         /// <summary>
+        /// The m websocket started.
+        /// </summary>
+        private bool mWebsocketStarted;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="CefGlueBrowser"/> class.
         /// </summary>
         /// <param name="owner">
         /// The owner.
         /// </param>
+        /// <param name="hostConfig">
+        /// The host config.
+        /// </param>
         /// <param name="settings">
         /// The settings.
         /// </param>
-        /// <param name="startUrl">
-        /// The start url.
-        /// </param>
-        public CefGlueBrowser(object owner, CefBrowserSettings settings, string startUrl)
+        public CefGlueBrowser(object owner, ChromelyConfiguration hostConfig, CefBrowserSettings settings)
         {
             this.Owner = owner;
+            this.mHostConfig = hostConfig;
             this.mSettings = settings;
-            this.StartUrl = startUrl;
+            this.StartUrl = hostConfig.StartUrl;
         }
 
         #region Events Handling Properties
@@ -212,6 +224,11 @@ namespace Chromely.CefGlue.Gtk.Browser
         /// </summary>
         public void Close()
         {
+            if (this.mWebsocketStarted)
+            {
+                WebsocketServerRunner.StopServer();
+            }
+
             if (this.CefBrowser != null)
             {
                 var host = this.CefBrowser.GetHost();
@@ -233,6 +250,7 @@ namespace Chromely.CefGlue.Gtk.Browser
         public virtual void OnCreated(CefBrowser browser)
         {
             this.CefBrowser = browser;
+            this.StartWebsocket();
             this.Created?.Invoke(this, EventArgs.Empty);
         }
 
@@ -379,5 +397,24 @@ namespace Chromely.CefGlue.Gtk.Browser
         }
 
         #endregion Events Handling
+
+        /// <summary>
+        /// The start websocket.
+        /// </summary>
+        private void StartWebsocket()
+        {
+            try
+            {
+                if (this.mHostConfig.StartWebSocket)
+                {
+                    WebsocketServerRunner.StartServer(this.mHostConfig.WebsocketAddress, this.mHostConfig.WebsocketPort);
+                    this.mWebsocketStarted = true;
+                }
+            }
+            catch (Exception exception)
+            {
+                Log.Error(exception);
+            }
+        }
     }
 }

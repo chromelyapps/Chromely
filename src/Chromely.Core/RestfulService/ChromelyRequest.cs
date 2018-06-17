@@ -32,6 +32,8 @@ namespace Chromely.Core.RestfulService
 {
     using System.Collections.Generic;
 
+    using LitJson;
+
     /// <summary>
     /// The chromely request.
     /// </summary>
@@ -55,6 +57,51 @@ namespace Chromely.Core.RestfulService
             this.Parameters = parameters;
             this.PostData = postData;
         }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ChromelyRequest"/> class.
+        /// </summary>
+        /// <param name="id">
+        /// The id.
+        /// </param>
+        /// <param name="routePath">
+        /// The route path.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <param name="postData">
+        /// The post data.
+        /// </param>
+        public ChromelyRequest(string id, RoutePath routePath, IDictionary<string, object> parameters, object postData)
+        {
+            this.Id = id;
+            this.RoutePath = routePath;
+            this.Parameters = parameters;
+            this.PostData = postData;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ChromelyRequest"/> class.
+        /// </summary>
+        /// <param name="jsonData">
+        /// The json data.
+        /// </param>
+        public ChromelyRequest(JsonData jsonData)
+        {
+            string method = jsonData.Keys.Contains("method") ? jsonData["method"].ToString() : "get";
+            string url = jsonData.Keys.Contains("url") ? jsonData["url"].ToString() : string.Empty;
+            this.RoutePath = new RoutePath(method, url);
+
+            this.Id = jsonData.Keys.Contains("id") ? jsonData["id"].ToString() : this.Id;
+            this.Parameters = jsonData.Keys.Contains("parameters") ? jsonData["parameters"]?.ObjectToDictionary() : this.Parameters;
+            this.PostData = jsonData.Keys.Contains("postData") ? jsonData["postData"] : this.PostData;
+        }
+
+        /// <summary>
+        /// Gets or sets the id.
+        /// </summary>
+        public string Id { get; set; }
 
         /// <summary>
         /// Gets or sets the route path.
