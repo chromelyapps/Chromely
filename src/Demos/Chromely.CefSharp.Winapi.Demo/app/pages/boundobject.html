@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -11,6 +11,7 @@
     <script src="../Content/js/bootstrap.min.js"></script>
     <script type="text/javascript">
         function boundObjectResult1(res) {
+            $('#boundObjectResult1 tbody').empty();
             var jsonData = JSON.parse(res.ResponseText);
             if (jsonData.ReadyState == 4 && jsonData.Status == 200) {
                 for (var i = 0; i < jsonData.Data.length; i++) {
@@ -37,8 +38,8 @@
             boundControllerAsync.getJson("/democontroller/movies", null, boundObjectResult1);
         }
 
-
         function boundObjectResult2(res) {
+            $('#boundObjectResult2 tbody').empty();
             var jsonData = JSON.parse(res.ResponseText);
             if (jsonData.ReadyState == 4 && jsonData.Status == 200) {
                 for (var i = 0; i < jsonData.Data.length; i++) {

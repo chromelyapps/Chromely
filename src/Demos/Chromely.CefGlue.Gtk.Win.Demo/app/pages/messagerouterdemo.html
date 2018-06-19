@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -11,6 +11,7 @@
     <script src="../Content/js/bootstrap.min.js"></script>
     <script type="text/javascript">
         function messageRouterResult1(res) {
+            $('#messageRouterResult1 tbody').empty();
             var jsonData = JSON.parse(res);
             if (jsonData.ReadyState == 4 && jsonData.Status == 200) {
                 for (var i = 0; i < jsonData.Data.length; i++) {
@@ -51,8 +52,8 @@
             });
         }
 
-
         function messageRouterResult2(res) {
+            $('#messageRouterResult2 tbody').empty();
             var jsonData = JSON.parse(res);
             if (jsonData.ReadyState == 4 && jsonData.Status == 200) {
                 for (var i = 0; i < jsonData.Data.length; i++) {

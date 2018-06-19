@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -19,6 +19,7 @@
             http.open("GET", url, true);
 
             http.onreadystatechange = function () {
+                $('#ajaxResult1 tbody').empty();
                 if (http.readyState == 4 && http.status == 200) {
                     var jsonData = JSON.parse(http.responseText);
                     for (var i = 0; i < jsonData.length; i++) {
@@ -49,6 +50,7 @@
             http.open("GET", url, true);
 
             http.onreadystatechange = function () {
+                $('#ajaxResult2 tbody').empty();
                 if (http.readyState == 4 && http.status == 200) {
                     var jsonData = JSON.parse(http.responseText);
                     for (var i = 0; i < jsonData.length; i++) {

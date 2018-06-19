@@ -109,7 +109,7 @@ namespace Chromely.CefGlue.Winapi.Demo.Controllers
             var postDataJson = request.PostData.EnsureJson();
             int rowsReceived = postDataJson.ArrayCount();
 
-            response.Data = $"{rowsReceived} rows of data successfully saved.";
+            response.Data = $"{DateTime.Now}: {rowsReceived} rows of data successfully saved.";
 
             return response;
         }

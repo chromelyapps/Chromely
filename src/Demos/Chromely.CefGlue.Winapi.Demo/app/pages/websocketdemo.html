@@ -1,0 +1,440 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chromely</title>
+    <link rel="stylesheet" href="../Content/css/bootstrap.min.css">
+    <script src="../Content/js/jquery.min.js"></script>
+    <script src="../Content/js/tether.min.js"></script>
+    <script src="../Content/js/popper.min.js"></script>
+    <script src="../Content/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="col-9 centerBlock">
+        <ul class="nav justify-content-end">
+            <li class="nav-item">
+                <a class="nav-link active" id="navrequests" data-toggle="tab" href="#requests">Requests</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="navrealtime" data-toggle="tab" href="#realtime">Realtime</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="navmanage" data-toggle="tab" href="#manage">Manage</a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+
+            <!-- Requests Content -->
+            <div id="requests" class="tab-pane active">
+                <!-- Nav pills -->
+                <ul class="nav nav-pills" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="pill" href="#sectionA">Get 1</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="pill" href="#sectionB">Get 2</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="pill" href="#sectionC">Post</a>
+                    </li>
+                </ul>
+                <div class="row" style="height:25px;"></div>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div id="sectionA" class="container tab-pane active">
+                        <br>
+                        <div class="row">
+                            <div class="col-12">
+                                Route Path:&ensp;/democontroller/movies &ensp; (Restful Service in Local Assembly)&ensp;<button id="buttonMessageRouterGet1" type="button" class="btn btn-primary btn-sm">Run</button>
+                            </div>
+                            <div style="height:100px;"></div>
+                            <div class="col-12">
+                                <div class='table-responsive'>
+                                    <table id="messageRouterResult1" class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Id</th>
+                                                <th>Title</th>
+                                                <th>Year</th>
+                                                <th>Votes</th>
+                                                <th>Rating</th>
+                                                <th>Date</th>
+                                                <th>RestfulAssembly</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="sectionB" class="container tab-pane fade">
+                        <br>
+                        <div class="row">
+                            <div class="col-12">
+                                Route Path:&ensp;/externalcontroller/movies &ensp;(Restful Service in External Assembly)&ensp;<button id="buttonMessageRouterGet2" type="button" class="btn btn-primary btn-sm">Run</button>
+                            </div>
+                            <div style="height:100px;"></div>
+                            <div class="col-12">
+                                <div class='table-responsive'>
+                                    <table id="messageRouterResult2" class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Id</th>
+                                                <th>Title</th>
+                                                <th>Year</th>
+                                                <th>Votes</th>
+                                                <th>Rating</th>
+                                                <th>Date</th>
+                                                <th>RestfulAssembly</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="sectionC" class="container tab-pane fade">
+                        <br>
+                        <div class="row">
+                            <div class="col-12">
+                                Route Path:&ensp;/democontroller/movies&ensp;(Restful Service in Local Assembly)&ensp;<button id="buttonMessageRouterPost" type="button" class="btn btn-primary btn-sm">Run</button>
+                            </div>
+                            <div style="height:100px;"></div>
+                            <div class="col-12">
+                                <div id="messageRouterResult3"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Tab panes -->
+
+            </div>
+            <!-- End Requests Content -->
+            <!-- Realtime Content -->
+            <div id="realtime" class="tab-pane">
+
+                <div class="card">
+                    <h5 class="card-header">Realtime</h5>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="row col-12">
+                                <div class="col-8">
+                                    <textarea class="form-control" id="echomessage1" rows="1"></textarea>
+                                </div>
+
+                                <div class="form-check mb-2 mr-sm-2 mb-sm-0">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="checkbox"> Broadcast
+                                    </label>
+                                </div>
+                                <div class="dropdown">
+                                    <button class="btn-sm btn-primary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Send
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                        <button class="dropdown-item" type="button">Connection 1</button>
+                                        <button class="dropdown-item" type="button">Connection 2</button>
+                                        <button class="dropdown-item" type="button">Connection 3</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row col-12">
+                            <table id="eventstable" class="table table-striped" style="margin-top: 10px;">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" style="width: 100px;">Time</th>
+                                        <th scope="col" style="width: 50px;">Conn</th>
+                                        <th scope="col">Event</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+            <!-- End Realtime Content -->
+            <!-- Manage Content -->
+            <div id="manage" class="tab-pane">
+                <div class="card">
+                    <h5 class="card-header">Manage</h5>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="row col-12">
+                                <button id="serverstart" type="button" class="btn btn-primary btn-sm" onclick="runServerCommands('start', '/websocketmanager/start')" style="margin: 5px;">Start Server</button>
+                                <button id="serverstop" type="button" class="btn btn-primary btn-sm" onclick="runServerCommands('stop', '/websocketmanager/stop')" style="margin: 5px;">Stop Server</button>
+                                <button id="serverstatus" type="button" class="btn btn-primary btn-sm" onclick="runServerCommands('status', '/websocketmanager/status')" style="margin: 5px;">Check Server Status</button>
+                            </div>
+                        </div>
+                        <div class="row col-12">
+                            <table id="resulttable" class="table table-striped" style="margin-top: 10px;">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" style="width: 100px;">Time</th>
+                                        <th scope="col">Event</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+            <!-- End Manage Content -->
+        </div>
+
+    </div>
+    <script type="text/javascript">
+        function requestsConn() {
+            // create a new websocket and connect
+            window.ws = new window.WebSocket('ws://localhost:8181/?name=requestsconn');
+
+            // when data is comming from the server, this method is called
+            ws.onmessage = function (evt) {
+                console.log(JSON.parse(evt.data));
+
+                var jsonData = JSON.parse(evt.data);
+                switch (jsonData.RequestId) {
+                    case "requestget1": {
+                        $('#messageRouterResult1 tbody').empty();
+                        if (jsonData.ReadyState == 4 && jsonData.Status == 200) {
+                            for (var i = 0; i < jsonData.Data.length; i++) {
+                                var row = '<tr>';
+
+                                row += '<td>' + jsonData.Data[i].Id + '</td>';
+                                row += '<td>' + jsonData.Data[i].Title + '</td>';
+                                row += '<td>' + jsonData.Data[i].Year + '</td>';
+                                row += '<td>' + jsonData.Data[i].Votes + '</td>';
+                                row += '<td>' + jsonData.Data[i].Rating + '</td>';
+                                row += '<td>' + jsonData.Data[i].Date + '</td>';
+                                row += '<td>' + jsonData.Data[i].RestfulAssembly + '</td>';
+
+                                row += '</tr>';
+                                $('#messageRouterResult1 tbody').append(row);
+                            }
+                        }
+                    }
+                        break;
+                    case "requestget2": {
+                        $('#messageRouterResult2 tbody').empty();
+                        if (jsonData.ReadyState == 4 && jsonData.Status == 200) {
+                            for (var i = 0; i < jsonData.Data.length; i++) {
+                                var row = '<tr>';
+
+                                row += '<td>' + jsonData.Data[i].Id + '</td>';
+                                row += '<td>' + jsonData.Data[i].Title + '</td>';
+                                row += '<td>' + jsonData.Data[i].Year + '</td>';
+                                row += '<td>' + jsonData.Data[i].Votes + '</td>';
+                                row += '<td>' + jsonData.Data[i].Rating + '</td>';
+                                row += '<td>' + jsonData.Data[i].Date + '</td>';
+                                row += '<td>' + jsonData.Data[i].RestfulAssembly + '</td>';
+
+                                row += '</tr>';
+                                $('#messageRouterResult2 tbody').append(row);
+                            }
+                        }
+                    }
+                        break;
+                    case "requestpost": {
+                            if (jsonData.ReadyState == 4 && jsonData.Status == 200) {
+                                $('#messageRouterResult3').html(jsonData.Data);
+                            }
+                    }
+                        break;
+                    default: {
+                    }
+                }
+            };
+
+            // when the connection is established, this method is called
+            ws.onopen = function () {
+                $("#buttonMessageRouterGet1").removeClass('disabled');
+                $("#buttonMessageRouterGet2").removeClass('disabled');
+                $("#buttonMessageRouterPost").removeClass('disabled');
+
+                var row = '<tr>';
+                row += '<td>' + currentDayTime() + '</td>';
+                row += '<td>requestsconn</td>';
+                row += '<td>connection opened.</td>';
+                row += '</tr>';
+                $('#eventstable tbody').append(row);
+
+                console.log(row);
+            };
+
+            // when the connection is closed, this method is called
+            ws.onclose = function () {
+                var row = '<tr>';
+                row += '<td>' + currentDayTime() + '</td>';
+                row += '<td>requestsconn</td>';
+                row += '<td>connection closed.</td>';
+                row += '</tr>';
+                $('#eventstable tbody').append(row);
+            };
+
+            document.getElementById("buttonMessageRouterGet1").addEventListener("click",
+                function () {
+                    var requestId = "requestget1";
+                    var request = {
+                        "id": requestId,
+                        "method": "GET",
+                        "url": "/democontroller/movies",
+                        "parameters": null,
+                        "postData": null
+                    };
+
+                    ws.send(JSON.stringify(request));
+                });
+
+            document.getElementById("buttonMessageRouterGet2").addEventListener("click",
+                function () {
+                    var requestId = "requestget2";
+                    var request = {
+                        "id": requestId,
+                        "method": "GET",
+                        "url": "/externalcontroller/movies",
+                        "parameters": null,
+                        "postData": null
+                    };
+
+                    ws.send(JSON.stringify(request));
+                });
+
+            document.getElementById("buttonMessageRouterPost").addEventListener("click",
+                function () {
+                    var moviesJson = [
+                        { Id: 1, Title: "The Shawshank Redemption", Year: 1994, Votes: 678790, Rating: 9.2 },
+                        { Id: 2, Title: "The Godfather", Year: 1972, votes: 511495, Rating: 9.2 },
+                        { Id: 3, Title: "The Godfather: Part II", Year: 1974, Votes: 319352, Rating: 9.0 },
+                        { Id: 4, Title: "The Good, the Bad and the Ugly", Year: 1966, Votes: 213030, Rating: 8.9 },
+                        { Id: 5, Title: "My Fair Lady", Year: 1964, Votes: 533848, Rating: 8.9 },
+                        { Id: 6, Title: "12 Angry Men", Year: 1957, Votes: 164558, Rating: 8.9 }
+                    ];
+
+                    var requestId = "requestpost";
+                    var request = {
+                        "id": requestId,
+                        "method": "POST",
+                        "url": "/democontroller/movies",
+                        "parameters": null,
+                        "postData": moviesJson,
+                    };
+
+                    ws.send(JSON.stringify(request));
+                });
+        }
+
+        function currentDayTime() {
+            var currentdate = new Date();
+            return currentdate.getDate() + "/"
+                + (currentdate.getMonth() + 1) + "/"
+                + currentdate.getFullYear() + " @ "
+                + currentdate.getHours() + ":"
+                + currentdate.getMinutes() + ":"
+                + currentdate.getSeconds();
+        }
+
+        var start = function () {
+            $("#buttonMessageRouterGet1").addClass('disabled');
+            $("#buttonMessageRouterGet2").addClass('disabled');
+            $("#buttonMessageRouterPost").addClass('disabled');
+
+            $('#eventstable tbody').empty();
+
+            runServerCommands("status", "/websocketmanager/status");
+            requestsConn();
+        }
+
+        window.onload = start;
+    </script>
+    <script type="text/javascript">
+        function runServerResult(res) {
+            var jsonData = JSON.parse(res);
+            if (jsonData.ReadyState == 4 && jsonData.Status == 200) {
+                console.log(jsonData.Data);
+                console.log("request id" + jsonData.RequestId);
+                switch (jsonData.RequestId) {
+                    case "start": {
+                        console.log(jsonData.Data);
+                        if (jsonData.Data == true) {
+                            $("#serverstart").addClass('disabled');
+                            $("#serverstop").removeClass('disabled');
+                        } else {
+                            $("#serverstart").removeClass('disabled');
+                            $("#serverstop").addClass('disabled');
+                        }
+                    }
+                        break;
+                    case "stop": {
+                        if (jsonData.Data == true) {
+                            $("#serverstart").removeClass('disabled');
+                            $("#serverstop").addClass('disabled');
+                        } else {
+                            $("#serverstart").addClass('disabled');
+                            $("#serverstop").removeClass('disabled');
+                        }
+                    }
+                        break;
+                    case "status": {
+                        if (jsonData.Data == true) {
+                            $("#serverstart").addClass('disabled');
+                            $("#serverstop").removeClass('disabled');
+                        } else {
+                            $("#serverstart").removeClass('disabled');
+                            $("#serverstop").addClass('disabled');
+                        }
+                    }
+                        break;
+                    default: {
+                        console.log(jsonData.Data);
+                    }
+                }
+            }
+        }
+
+        function runServerCommands(requestId, url) {
+
+            $('#messageRouterResult1 tbody').html('');
+
+            var request = {
+                "id": requestId,
+                "method": "GET",
+                "url": url,
+                "parameters": null,
+                "postData": null
+            };
+
+            window.cefQuery({
+                request: JSON.stringify(request),
+                onSuccess: function (response) {
+                    runServerResult(response);
+                }, onFailure: function (err, msg) {
+                    console.log(err, msg);
+                }
+            });
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+	

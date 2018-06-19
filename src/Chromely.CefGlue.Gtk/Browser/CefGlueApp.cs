@@ -87,8 +87,12 @@ namespace Chromely.CefGlue.Gtk.Browser
                         ChromelySchemeHandler handler = (ChromelySchemeHandler)item;
                         if (handler.HandlerFactory is CefSchemeHandlerFactory)
                         {
-                            registrar.AddCustomScheme(handler.SchemeName, false, false, false, false, true, true);
-                         }
+                            bool isStandardScheme = UrlScheme.IsStandardScheme(handler.SchemeName);
+                            if (!isStandardScheme)
+                            {
+                                registrar.AddCustomScheme(handler.SchemeName, true, false, false, false, true, true);
+                            }
+                        }
                     }
                 }
             }

@@ -92,6 +92,36 @@ namespace Chromely.Core.Infrastructure
         public bool IsExternal { get; set; }
 
         /// <summary>
+        /// Check if scheme is a standard type.
+        /// </summary>
+        /// <param name="scheme">
+        /// The scheme.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        public static bool IsStandardScheme(string scheme)
+        {
+            if (string.IsNullOrEmpty(scheme))
+            {
+                return false;
+            }
+
+            switch (scheme.ToLower())
+            {
+                case "http":
+                case "https":
+                case "file":
+                case "ftp":
+                case "about":
+                case "data":
+                    return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Checks if url is of same scheme as the object url.
         /// </summary>
         /// <param name="url">
