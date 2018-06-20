@@ -12,9 +12,20 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <GtkNativeLibs86 Include="..\..\..\binaries\gtk32bit\**\*.*" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="chromely.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup Condition="('$(Platform)' == 'x86') OR ('$(Platform)' == 'Win32')">
+    <None Include="@(GtkNativeLibs86)">
+      <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Visible>False</Visible>
+      <InProject>false</InProject>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Packaging.Tools.Trimming" Version="1.1.0-preview1-25818-01" />
@@ -35,6 +46,9 @@
     <None Update="app\Content\img\chromely.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="app\Content\img\chromely_gray.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="app\Content\js\bootstrap.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -44,5 +58,17 @@
     <None Update="app\Content\js\tether.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="app\pages\ajaxdemo.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="app\pages\info.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="app\pages\messagerouterdemo.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="logs\" />
   </ItemGroup>
 </Project>

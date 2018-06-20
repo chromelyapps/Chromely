@@ -12,10 +12,13 @@ Options of communicating (IPC) with rendering process are via:
 1. .NET/Javascript integration ([CefSharp](https://github.com/cefsharp/CefSharp))  -  more info @ [Expose .NET class to JavaScript](https://github.com/mattkol/Chromely/wiki/Expose-.NET-class-to-JavaScript).
 2. Generic Message Routing ([Xilium.CefGlue](https://bitbucket.org/xilium/xilium.cefglue/wiki/Home)) - more info @ [Generic Message Routing](https://github.com/mattkol/Chromely/wiki/Generic-Message-Routing).
 3. Ajax HTTP/XHR ([Xilium.CefGlue](https://bitbucket.org/xilium/xilium.cefglue/wiki/Home), [CefSharp](https://github.com/cefsharp/CefSharp)) -  more info @ [Custom Scheme Handling](https://github.com/mattkol/Chromely/wiki/Custom-Scheme-Handling).
+ 4. (**In Development**) Websocket (ws) ([Xilium.CefGlue](https://bitbucket.org/xilium/xilium.cefglue/wiki/Home)) -  this will implement [Cef CefServer](https://bitbucket.org/chromiumembedded/cef/issues/2278/expose-internal-http-websockets-server).
 
-[<h4>Roadmap & Help Wanted</h4>](https://github.com/mattkol/Chromely/wiki/Roadmap-and-Help-Wanted)
+[<h4>Roadmap & Help Wanted</h4>](https://github.com/mattkol/Chromely/wiki/Roadmap-and-Help-Wanted) 
 
 ##### If you like Chromely, please give it a star - it helps! #####
+
+Have a quick question? Wanna chat? Connect on  [![Join the chat at https://gitter.im/chromely_/Lobby](https://badges.gitter.im/chromely_/Lobby.svg)](https://gitter.im/chromely_/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ### Platforms
 Cross-platform - Windows, Linux. Built on CefGlue, CefSharp, NET Standard 2.0, .NET Core 2.0, .NET Framework 4.61 and above.
@@ -28,7 +31,8 @@ Cross-platform - Windows, Linux. Built on CefGlue, CefSharp, NET Standard 2.0, .
 For more info/documentation, please check [Chromely wiki](https://github.com/mattkol/Chromely/wiki). 
 <br>[![Chromely + Angular](https://img.shields.io/badge/Chromely%20Apps-Built%20with%20Angular%202%2B-green.svg)](https://github.com/mattkol/Chromely/wiki/Chromely-Apps)
 <br>[![Chromely + React](https://img.shields.io/badge/Chromely%20Apps-Built%20with%20React-green.svg)](https://github.com/mattkol/Chromely/wiki/Chromely-Apps)
-<br>[![Chromely + Vue](https://img.shields.io/badge/Chromely%20Apps-Built%20with%20Vue-green.svg)](https://github.com/mattkol/Chromely/wiki/Chromely-Apps)
+<br>[![Chromely + Vue](https://img.shields.io/badge/Chromely%20Apps-Built%20with%20Vue-green.svg)](https://github.com/mattkol/Chromely/wiki/Chromely-Apps) 
+
 
 ### Creating a Simple App (Using CefGlue with Winapi host)
 For more info see - [Getting Started](https://github.com/mattkol/Chromely/wiki/Getting-Started)
@@ -61,10 +65,12 @@ class Program
 #### Run Starter Template (Using dotnet core cli). For more info, please see - [dotnet cli demo template install](https://github.com/mattkol/Chromely/wiki/dotnet-cli-Starter-Template)
 
 ````csharp
+dotnet new -i "Chromely.CefGlue.Win.Template::*"
 dotnet new chromelywin 
 dotnet restore
 dotnet build
-dotnet run
+dotnet chromelycef.dll download v65 --cpu=x64 --dest="bin\Debug\netcoreapp2.1"
+dotnet run 
 ````
 
 ### Chromely Demos 

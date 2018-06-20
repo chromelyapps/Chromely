@@ -32,10 +32,8 @@ namespace Chromely.CefGlue.Winapi.RestfulService
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.Specialized;
-    using System.Linq;
     using System.Text;
-    using System.Web;
+
     using Chromely.Core.Infrastructure;
     using Chromely.Core.RestfulService;
     using Xilium.CefGlue;
@@ -60,10 +58,10 @@ namespace Chromely.CefGlue.Winapi.RestfulService
         public static ChromelyResponse Run(CefRequest request)
         {
             var uri = new Uri(request.Url);
-            string routePath = uri.LocalPath;
+            string path = uri.LocalPath;
 
             var response = new ChromelyResponse();
-            if (string.IsNullOrEmpty(routePath))
+            if (string.IsNullOrEmpty(path))
             {
                 response.ReadyState = (int)ReadyState.ResponseIsReady;
                 response.Status = (int)System.Net.HttpStatusCode.BadRequest;
@@ -72,28 +70,84 @@ namespace Chromely.CefGlue.Winapi.RestfulService
                 return response;
             }
 
-            if (routePath.ToLower().Equals("/info"))
+            if (path.ToLower().Equals("/info"))
             {
                 response = GetInfo();
                 return response;
             }
 
+            var routePath = new RoutePath(request.Method, path);
             var route = ServiceRouteProvider.GetRoute(routePath);
 
             if (route == null)
             {
-                throw new Exception($"Route for path = {routePath} is null or invalid.");
+                throw new Exception($"Route for path = {path} is null or invalid.");
             }
 
-            var parameters = GetParameters(request.Url);
+            var parameters = request.Url.GetParameters();
             var postData = GetPostData(request);
 
-            return ExcuteRoute(routePath, parameters, postData);
+            return ExcuteRoute(string.Empty, routePath, parameters, postData);
         }
 
         /// <summary>
         /// The run.
         /// </summary>
+        /// <param name="request">
+        /// The request.
+        /// </param>
+        /// <returns>
+        /// The <see cref="ChromelyResponse"/>.
+        /// </returns>
+        /// <exception cref="Exception">
+        /// Generic exception - Route path not valid.
+        /// </exception>
+        public static ChromelyResponse Run(ChromelyRequest request)
+        {
+            var response = new ChromelyResponse(request.Id);
+            if (request.RoutePath == null)
+            {
+                response.ReadyState = (int)ReadyState.ResponseIsReady;
+                response.Status = (int)System.Net.HttpStatusCode.BadRequest;
+                response.StatusText = "Bad Request";
+
+                return response;
+            }
+
+            if (string.IsNullOrEmpty(request.RoutePath.Path))
+            {
+                response.ReadyState = (int)ReadyState.ResponseIsReady;
+                response.Status = (int)System.Net.HttpStatusCode.BadRequest;
+                response.StatusText = "Bad Request";
+
+                return response;
+            }
+
+            if (request.RoutePath.Path.ToLower().Equals("/info"))
+            {
+                response = GetInfo();
+                return response;
+            }
+
+            var route = ServiceRouteProvider.GetRoute(request.RoutePath);
+
+            if (route == null)
+            {
+                throw new Exception($"Route for path = {request.RoutePath} is null or invalid.");
+            }
+
+            var parameters = request.Parameters ?? request.RoutePath.Path.GetParameters()?.ToObjectDictionary();
+            var postData = request.PostData;
+
+            return ExcuteRoute(request.Id, request.RoutePath, parameters, postData);
+        }
+
+        /// <summary>
+        /// The run.
+        /// </summary>
+        /// <param name="requestId">
+        /// The request identifier.
+        /// </param>
         /// <param name="routePath">
         /// The route path.
         /// </param>
@@ -109,10 +163,10 @@ namespace Chromely.CefGlue.Winapi.RestfulService
         /// <exception cref="Exception">
         /// Generic exception - Route path not valid.
         /// </exception>
-        public static ChromelyResponse Run(string routePath, object parameters, object postData)
+        public static ChromelyResponse Run(string requestId, RoutePath routePath, object parameters, object postData)
         {
-            var response = new ChromelyResponse();
-            if (string.IsNullOrEmpty(routePath))
+            var response = new ChromelyResponse(requestId);
+            if (string.IsNullOrEmpty(routePath.Path))
             {
                 response.ReadyState = (int)ReadyState.ResponseIsReady;
                 response.Status = (int)System.Net.HttpStatusCode.BadRequest;
@@ -121,7 +175,7 @@ namespace Chromely.CefGlue.Winapi.RestfulService
                 return response;
             }
 
-            if (routePath.ToLower().Equals("/info"))
+            if (routePath.Path.ToLower().Equals("/info"))
             {
                 response = GetInfo();
                 return response;
@@ -134,12 +188,15 @@ namespace Chromely.CefGlue.Winapi.RestfulService
                 throw new Exception($"Route for path = {routePath} is null or invalid.");
             }
 
-            return ExcuteRoute(routePath, parameters, postData);
+            return ExcuteRoute(requestId, routePath, parameters, postData);
         }
 
         /// <summary>
         /// The excute route.
         /// </summary>
+        /// <param name="requestId">
+        /// The request identifier.
+        /// </param>
         /// <param name="routePath">
         /// The route path.
         /// </param>
@@ -155,7 +212,7 @@ namespace Chromely.CefGlue.Winapi.RestfulService
         /// <exception cref="Exception">
         /// Generic exception - Route path not valid.
         /// </exception>
-        private static ChromelyResponse ExcuteRoute(string routePath, object parameters, object postData)
+        private static ChromelyResponse ExcuteRoute(string requestId, RoutePath routePath, object parameters, object postData)
         {
             var route = ServiceRouteProvider.GetRoute(routePath);
 
@@ -164,7 +221,7 @@ namespace Chromely.CefGlue.Winapi.RestfulService
                 throw new Exception($"Route for path = {routePath} is null or invalid.");
             }
 
-            var response = route.Invoke(routePath, parameters: parameters?.ToObjectDictionary(), postData: postData);
+            var response = route.Invoke(requestId: requestId, routePath: routePath, parameters: parameters?.ToObjectDictionary(), postData: postData);
             response.ReadyState = (int)ReadyState.ResponseIsReady;
             response.Status = (int)System.Net.HttpStatusCode.OK;
             response.StatusText = "OK";
@@ -202,35 +259,6 @@ namespace Chromely.CefGlue.Winapi.RestfulService
             response.Data = infoItemDic;
 
             return response;
-        }
-
-        /// <summary>
-        /// The get parameters.
-        /// </summary>
-        /// <param name="url">
-        /// The url.
-        /// </param>
-        /// <returns>
-        /// The name value collection.
-        /// </returns>
-        private static IDictionary<string, string> GetParameters(string url)
-        {
-            var nameValueCollection = new NameValueCollection();
-
-            string querystring = string.Empty;
-            int index = url.IndexOf('?');
-            if (index > 0)
-            {
-                querystring = url.Substring(url.IndexOf('?'));
-                nameValueCollection = HttpUtility.ParseQueryString(querystring);
-            }
-
-            if (string.IsNullOrEmpty(querystring))
-            {
-                return new Dictionary<string, string>();
-            }
-
-            return nameValueCollection.AllKeys.ToDictionary(x => x, x => nameValueCollection[x]);
         }
 
         /// <summary>

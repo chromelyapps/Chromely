@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chromely</title>
+    <link rel="stylesheet" href="../Content/css/bootstrap.min.css">
+    <script src="../Content/js/jquery.min.js"></script>
+    <script src="../Content/js/tether.min.js"></script>
+    <script src="../Content/js/bootstrap.min.js"></script>
+    <script>
+	$(document).ready(function(){
+			var request = {
+				"method": "GET",
+				"url": "/info",
+				"parameters": null,
+				"postData": null,
+			};
+
+			window.cefQuery({
+				request: JSON.stringify(request),
+				onSuccess: function (response) {
+					var jsonData = JSON.parse(response);
+					if (jsonData.ReadyState == 4 && jsonData.Status == 200) {
+						$('#divObjective').html(jsonData.Data.divObjective);
+						$('#divPlatform').html(jsonData.Data.divPlatform);
+						$('#divVersion').html(jsonData.Data.divVersion);
+					}
+				}, onFailure: function (err, msg) {
+					console.log(err, msg);
+				}
+			});
+		});
+			
+	</script
+</head>
+<body>
+<div class="col-9 centerBlock">
+
+	 <!-- View Page Content -->
+	 <div class="row">
+	  <div>
+			<div class="card-header"><h4 class"text-primary">Chromely Main objective</h4></div>
+			<div id="divObjective" class="card-body"></div>
+	  </div>
+	  <div>
+			<div class="card-header"><h4 class"text-primary">Platforms</h4></div>
+			<div id="divPlatform" class="card-body"></div>
+		</div>
+	  <div>
+			<div class="card-header"><h4 class"text-primary">CefGlue Version</h4></div>
+			<div id="divVersion" class="card-body"></div>
+		</div>
+		
+	</div>
+	 <!-- End View Page Content -->
+	 
+
+	</div>
+</body>
+</html>                            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	

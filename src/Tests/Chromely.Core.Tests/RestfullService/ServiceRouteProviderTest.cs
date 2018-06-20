@@ -80,8 +80,9 @@ namespace Chromely.Core.Tests.RestfullService
 
             foreach (var item in routeDict)
             {
-                var route = ServiceRouteProvider.GetRoute(item.Key);
-                Assert.NotNull(route);
+                var getRoute = ServiceRouteProvider.GetRoute(new RoutePath(Method.GET, item.Key));
+                var postRoute = ServiceRouteProvider.GetRoute(new RoutePath(Method.GET, item.Key));
+                Assert.True((getRoute != null) || (postRoute != null));
             }
         }
 

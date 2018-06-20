@@ -1,0 +1,216 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chromely</title>
+    <link rel="stylesheet" href="../Content/css/bootstrap.min.css">
+    <script src="../Content/js/jquery.min.js"></script>
+    <script src="../Content/js/tether.min.js"></script>
+    <script src="../Content/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        function ajaxRun1() {
+
+            $('#ajaxResult1 tbody').html('');
+
+            var http = new XMLHttpRequest();
+            var url = "http://chromely.com/democontroller/movies";
+            http.open("GET", url, true);
+
+            http.onreadystatechange = function () {
+                $('#ajaxResult1 tbody').empty();
+                if (http.readyState == 4 && http.status == 200) {
+                    var jsonData = JSON.parse(http.responseText);
+                    for (var i = 0; i < jsonData.length; i++) {
+                        var row = '<tr>';
+
+                        row += '<td>' + jsonData[i].Id + '</td>';
+                        row += '<td>' + jsonData[i].Title + '</td>';
+                        row += '<td>' + jsonData[i].Year + '</td>';
+                        row += '<td>' + jsonData[i].Votes + '</td>';
+                        row += '<td>' + jsonData[i].Rating + '</td>';
+                        row += '<td>' + jsonData[i].Date + '</td>';
+                        row += '<td>' + jsonData[i].RestfulAssembly + '</td>';
+
+                        row += '</tr>';
+                        $('#ajaxResult1 tbody').append(row);
+                    }
+                }
+            }
+            http.send();
+        }
+
+        function ajaxRun2() {
+
+            $('#ajaxResult2 tbody').html('');
+
+            var http = new XMLHttpRequest();
+            var url = "http://chromely.com/externalcontroller/movies";
+            http.open("GET", url, true);
+
+            http.onreadystatechange = function () {
+                $('#ajaxResult2 tbody').empty();
+                if (http.readyState == 4 && http.status == 200) {
+                    var jsonData = JSON.parse(http.responseText);
+                    for (var i = 0; i < jsonData.length; i++) {
+                        var row = '<tr>';
+
+                        row += '<td>' + jsonData[i].Id + '</td>';
+                        row += '<td>' + jsonData[i].Title + '</td>';
+                        row += '<td>' + jsonData[i].Year + '</td>';
+                        row += '<td>' + jsonData[i].Votes + '</td>';
+                        row += '<td>' + jsonData[i].Rating + '</td>';
+                        row += '<td>' + jsonData[i].Date + '</td>';
+                        row += '<td>' + jsonData[i].RestfulAssembly + '</td>';
+
+                        row += '</tr>';
+                        $('#ajaxResult2 tbody').append(row);
+                    }
+                }
+            }
+            http.send();
+        }
+
+        function ajaxRun3() {
+
+            $('#ajaxResult3').html('');
+
+            var moviesJson = [
+                { Id: 1, Title: "The Shawshank Redemption", Year: 1994, Votes: 678790, Rating: 9.2 },
+                { Id: 2, Title: "The Godfather", Year: 1972, votes: 511495, Rating: 9.2 },
+                { Id: 3, Title: "The Godfather: Part II", Year: 1974, Votes: 319352, Rating: 9.0 },
+                { Id: 4, Title: "The Good, the Bad and the Ugly", Year: 1966, Votes: 213030, Rating: 8.9 },
+                { Id: 5, Title: "My Fair Lady", Year: 1964, Votes: 533848, Rating: 8.9 },
+                { Id: 6, Title: "12 Angry Men", Year: 1957, Votes: 164558, Rating: 8.9 }
+            ];
+
+            var http = new XMLHttpRequest();
+            var url = "http://chromely.com/democontroller/movies";
+            http.open("POST", url, true);
+            http.setRequestHeader("Content-type", "application/json");
+
+            http.onreadystatechange = function () {
+                if (http.readyState == 4 && http.status == 200) {
+                    var jsonData = JSON.parse(http.responseText);
+                    $('#ajaxResult3').html(jsonData.Data);
+                }
+            }
+
+            http.send(JSON.stringify(moviesJson));
+        }
+    </script>
+</head>
+<body>
+  <div class="col-9 centerBlock">
+
+	<!-- Nav pills -->
+	<ul class="nav nav-pills" role="tablist">
+		<li class="nav-item">
+			<a class="nav-link active" data-toggle="pill" href="#sectionI">Get 1</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" data-toggle="pill" href="#sectionJ">Get 2</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" data-toggle="pill" href="#sectionK">Post</a>
+		</li>
+	</ul>
+
+    <div class="row" style="height:25px;"></div>
+		
+	<!-- Tab panes -->
+	<div class="tab-content">
+		<div id="sectionI" class="container tab-pane active">
+			<br>
+			<div class="row">
+				<div class="col-12">
+					Route Path:&ensp;/democontroller/movies &ensp; (Restful Service in Local Assembly&ensp;<button id="buttonAjaxRun1" type="button" class="btn btn-primary btn-sm" onclick="ajaxRun1()">Run</button>
+				</div>
+				<div style="height:100px;"></div>
+				<div class="col-12">
+					<div class='table-responsive'>
+						<table id="ajaxResult1" class='table'>
+							<thead>
+								<tr>
+									<th>Id</th>
+									<th>Title</th>
+									<th>Year</th>
+									<th>Votes</th>
+									<th>Rating</th>
+									<th>Date</th>
+									<th>RestfulAssembly</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="sectionJ" class="container tab-pane fade">
+			<br>
+			<div class="row">
+				<div class="col-12">
+					Route Path:&ensp;/externalcontroller/movies &ensp; (Restful Service in External Assembly)&ensp;<button id="buttonAjaxRun2" type="button" class="btn btn-primary btn-sm" onclick="ajaxRun2()">Run</button>
+				</div>
+				<div style="height:100px;"></div>
+				<div class="col-12">
+					<div class='table-responsive'>
+						<table id="ajaxResult2" class='table'>
+							<thead>
+								<tr>
+									<th>Id</th>
+									<th>Title</th>
+									<th>Year</th>
+									<th>Votes</th>
+									<th>Rating</th>
+									<th>Date</th>
+									<th>RestfulAssembly</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="sectionK" class="container tab-pane fade">
+			<br>
+			<div class="row">
+				<div class="col-12">
+					Route Path:&ensp;/democontroller/movies &ensp;(Restful Service in Local Assembly)&ensp;<button id="buttonAjaxRun3" type="button" class="btn btn-primary btn-sm" onclick="ajaxRun3()">Run</button>
+				</div>
+				<div style="height:100px;"></div>
+				<div class="col-12">
+					<div id="ajaxResult3"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+  
+   </div>
+
+	</div>
+</body>
+</html>                            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	

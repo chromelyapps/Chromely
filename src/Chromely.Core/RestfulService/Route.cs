@@ -32,6 +32,7 @@ namespace Chromely.Core.RestfulService
 {
     using System;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// The route.
@@ -73,8 +74,16 @@ namespace Chromely.Core.RestfulService
         public Func<ChromelyRequest, ChromelyResponse> Action { get; set; }
 
         /// <summary>
+        /// Gets or sets the action async.
+        /// </summary>
+        public Func<ChromelyRequest, Task<ChromelyResponse>> ActionAsync { get; set; }
+
+        /// <summary>
         /// Invokes the registered action.
         /// </summary>
+        /// <param name="requestId">
+        /// The request identifier.
+        /// </param>
         /// <param name="routePath">
         /// The route path.
         /// </param>
@@ -87,9 +96,9 @@ namespace Chromely.Core.RestfulService
         /// <returns>
         /// The <see cref="ChromelyResponse"/>.
         /// </returns>
-        public ChromelyResponse Invoke(string routePath, IDictionary<string, object> parameters, object postData)
+        public ChromelyResponse Invoke(string requestId, RoutePath routePath, IDictionary<string, object> parameters, object postData)
         {
-            ChromelyRequest request = new ChromelyRequest(routePath, parameters, postData);
+            ChromelyRequest request = new ChromelyRequest(requestId, routePath, parameters, postData);
             return this.Action.Invoke(request);
         }
 

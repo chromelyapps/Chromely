@@ -51,6 +51,7 @@ namespace Chromely.Core
             this.HostWidth = 1200;
             this.HostHeight = 900;
             this.Locale = "en-US";
+            this.StartWebSocket = false;
             this.CommandLineArgs = new Dictionary<string, string>();
             this.CustomSettings = new Dictionary<string, object>();
         }
@@ -104,6 +105,21 @@ namespace Chromely.Core
         /// Gets or sets the locale.
         /// </summary>
         public string Locale { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether start web socket.
+        /// </summary>
+        public bool StartWebSocket { get; set; }
+
+        /// <summary>
+        /// Gets or sets the websocket address.
+        /// </summary>
+        public string WebsocketAddress { get; set; }
+
+        /// <summary>
+        /// Gets or sets the websocket port.
+        /// </summary>
+        public int WebsocketPort { get; set; }
 
         /// <summary>
         /// Gets or sets the command line args.
@@ -353,6 +369,26 @@ namespace Chromely.Core
         }
 
         /// <summary>
+        /// The start websocket server with the address and port provided.
+        /// </summary>
+        /// <param name="address">
+        /// The address.
+        /// </param>
+        /// <param name="port">
+        /// The port.
+        /// </param>
+        /// <returns>
+        /// The <see cref="ChromelyConfiguration"/>.
+        /// </returns>
+        public ChromelyConfiguration StartWebsocketServerWith(string address, int port)
+        {
+            this.StartWebSocket = true;
+            this.WebsocketAddress = address;
+            this.WebsocketPort = port;
+            return this;
+        }
+
+        /// <summary>
         /// Sets with logger object to use. Should be of type <see cref="IChromelyLogger"/>
         /// </summary>
         /// <param name="logger">
@@ -558,31 +594,31 @@ namespace Chromely.Core
         /// <summary>
         /// Registers message router handler.
         /// </summary>
-        /// <param name="chromelyMesssageRouterHandler">
+        /// <param name="ChromelyMessageRouterHandler">
         /// The chromely messsage router handler.
         /// </param>
         /// <returns>
         /// The <see cref="ChromelyConfiguration"/> object.
         /// </returns>
-        public virtual ChromelyConfiguration RegisterMessageRouterHandler(object chromelyMesssageRouterHandler)
+        public virtual ChromelyConfiguration RegisterMessageRouterHandler(object ChromelyMessageRouterHandler)
         {
-            return this.RegisterMessageRouterHandler(new ChromelyMesssageRouter(chromelyMesssageRouterHandler));
+            return this.RegisterMessageRouterHandler(new ChromelyMessageRouter(ChromelyMessageRouterHandler));
         }
 
         /// <summary>
         /// Registers message router handler.
         /// </summary>
-        /// <param name="chromelyMesssageRouter">
+        /// <param name="ChromelyMessageRouter">
         /// The chromely messsage router.
         /// </param>
         /// <returns>
         /// The <see cref="ChromelyConfiguration"/> object.
         /// </returns>
-        public virtual ChromelyConfiguration RegisterMessageRouterHandler(ChromelyMesssageRouter chromelyMesssageRouter)
+        public virtual ChromelyConfiguration RegisterMessageRouterHandler(ChromelyMessageRouter ChromelyMessageRouter)
         {
-            if (chromelyMesssageRouter != null)
+            if (ChromelyMessageRouter != null)
             {
-                IoC.RegisterInstance(typeof(ChromelyMesssageRouter), chromelyMesssageRouter.Key, chromelyMesssageRouter);
+                IoC.RegisterInstance(typeof(ChromelyMessageRouter), ChromelyMessageRouter.Key, ChromelyMessageRouter);
             }
 
             return this;

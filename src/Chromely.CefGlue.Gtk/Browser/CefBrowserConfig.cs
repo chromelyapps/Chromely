@@ -57,5 +57,20 @@ namespace Chromely.CefGlue.Gtk.Browser
         /// Gets or sets the start url.
         /// </summary>
         public string StartUrl { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether start web socket.
+        /// </summary>
+        public bool StartWebSocket { get; set; }
+
+        /// <summary>
+        /// Gets or sets the websocket address.
+        /// </summary>
+        public string WebsocketAddress { get; set; }
+
+        /// <summary>
+        /// Gets or sets the websocket port.
+        /// </summary>
+        public int WebsocketPort { get; set; }
     }
 }

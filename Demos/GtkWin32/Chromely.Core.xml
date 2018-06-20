@@ -390,18 +390,18 @@
             <summary>
             Registers message router handler.
             </summary>
-            <param name="chromelyMesssageRouterHandler">
+            <param name="ChromelyMessageRouterHandler">
             The chromely messsage router handler.
             </param>
             <returns>
             The <see cref="T:Chromely.Core.ChromelyConfiguration"/> object.
             </returns>
         </member>
-        <member name="M:Chromely.Core.ChromelyConfiguration.RegisterMessageRouterHandler(Chromely.Core.ChromelyMesssageRouter)">
+        <member name="M:Chromely.Core.ChromelyConfiguration.RegisterMessageRouterHandler(Chromely.Core.ChromelyMessageRouter)">
             <summary>
             Registers message router handler.
             </summary>
-            <param name="chromelyMesssageRouter">
+            <param name="ChromelyMessageRouter">
             The chromely messsage router.
             </param>
             <returns>
@@ -534,32 +534,32 @@
             Gets or sets a value indicating whether use default.
             </summary>
         </member>
-        <member name="T:Chromely.Core.ChromelyMesssageRouter">
+        <member name="T:Chromely.Core.ChromelyMessageRouter">
             <summary>
             The chromely messsage router.
             Registers MessageRouter handler -
             https://bitbucket.org/chromiumembedded/cef/wiki/GeneralUsage.md#markdown-header-generic-message-router
             </summary>
         </member>
-        <member name="M:Chromely.Core.ChromelyMesssageRouter.#ctor">
+        <member name="M:Chromely.Core.ChromelyMessageRouter.#ctor">
             <summary>
-            Initializes a new instance of the <see cref="T:Chromely.Core.ChromelyMesssageRouter"/> class.
+            Initializes a new instance of the <see cref="T:Chromely.Core.ChromelyMessageRouter"/> class.
             </summary>
         </member>
-        <member name="M:Chromely.Core.ChromelyMesssageRouter.#ctor(System.Object)">
+        <member name="M:Chromely.Core.ChromelyMessageRouter.#ctor(System.Object)">
             <summary>
-            Initializes a new instance of the <see cref="T:Chromely.Core.ChromelyMesssageRouter"/> class.
+            Initializes a new instance of the <see cref="T:Chromely.Core.ChromelyMessageRouter"/> class.
             </summary>
             <param name="handler">
             The handler.
             </param>
         </member>
-        <member name="P:Chromely.Core.ChromelyMesssageRouter.Key">
+        <member name="P:Chromely.Core.ChromelyMessageRouter.Key">
             <summary>
             Gets the key.
             </summary>
         </member>
-        <member name="P:Chromely.Core.ChromelyMesssageRouter.Handler">
+        <member name="P:Chromely.Core.ChromelyMessageRouter.Handler">
             <summary>
             Gets or sets the handler.
             </summary>
@@ -1835,9 +1835,9 @@
             The new route dictionary.
             </param>
         </member>
-        <member name="M:Chromely.Core.Infrastructure.ServiceRouteProvider.GetRoute(System.String)">
+        <member name="M:Chromely.Core.Infrastructure.ServiceRouteProvider.GetRoute(Chromely.Core.RestfulService.RoutePath)">
             <summary>
-            Gets route.
+            The get route.
             </summary>
             <param name="routePath">
             The route path.
@@ -2195,7 +2195,7 @@
             Gets the route name.
             </summary>
         </member>
-        <member name="P:Chromely.Core.RestfulService.ChromelyController.RoutePath">
+        <member name="P:Chromely.Core.RestfulService.ChromelyController.Path">
             <summary>
             Gets the route path.
             </summary>
@@ -2288,10 +2288,27 @@
             The action.
             </param>
         </member>
-        <member name="M:Chromely.Core.RestfulService.ChromelyController.AddRoute(System.String,Chromely.Core.RestfulService.Route)">
+        <member name="M:Chromely.Core.RestfulService.ChromelyController.AddRoute(Chromely.Core.RestfulService.Method,System.String,Chromely.Core.RestfulService.Route)">
             <summary>
             The add route.
             </summary>
+            <param name="method">
+            The method.
+            </param>
+            <param name="path">
+            The path.
+            </param>
+            <param name="route">
+            The route.
+            </param>
+        </member>
+        <member name="M:Chromely.Core.RestfulService.ChromelyController.AddRoute(System.String,System.String,Chromely.Core.RestfulService.Route)">
+            <summary>
+            The add route.
+            </summary>
+            <param name="method">
+            The method.
+            </param>
             <param name="path">
             The path.
             </param>
@@ -2312,7 +2329,7 @@
             The chromely request.
             </summary>
         </member>
-        <member name="M:Chromely.Core.RestfulService.ChromelyRequest.#ctor(System.String,System.Collections.Generic.IDictionary{System.String,System.Object},System.Object)">
+        <member name="M:Chromely.Core.RestfulService.ChromelyRequest.#ctor(Chromely.Core.RestfulService.RoutePath,System.Collections.Generic.IDictionary{System.String,System.Object},System.Object)">
             <summary>
             Initializes a new instance of the <see cref="T:Chromely.Core.RestfulService.ChromelyRequest"/> class.
             </summary>
@@ -2687,7 +2704,7 @@
             Gets or sets the action.
             </summary>
         </member>
-        <member name="M:Chromely.Core.RestfulService.Route.Invoke(System.String,System.Collections.Generic.IDictionary{System.String,System.Object},System.Object)">
+        <member name="M:Chromely.Core.RestfulService.Route.Invoke(Chromely.Core.RestfulService.RoutePath,System.Collections.Generic.IDictionary{System.String,System.Object},System.Object)">
             <summary>
             Invokes the registered action.
             </summary>
@@ -2713,6 +2730,59 @@
             </param>
             <returns>
             The <see cref="T:Chromely.Core.RestfulService.ChromelyResponse"/>.
+            </returns>
+        </member>
+        <member name="T:Chromely.Core.RestfulService.RoutePath">
+            <summary>
+            The route path.
+            </summary>
+        </member>
+        <member name="M:Chromely.Core.RestfulService.RoutePath.#ctor(Chromely.Core.RestfulService.Method,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.Core.RestfulService.RoutePath"/> class.
+            </summary>
+            <param name="method">
+            The method.
+            </param>
+            <param name="path">
+            The path.
+            </param>
+        </member>
+        <member name="M:Chromely.Core.RestfulService.RoutePath.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.Core.RestfulService.RoutePath"/> class.
+            </summary>
+            <param name="method">
+            The method.
+            </param>
+            <param name="path">
+            The path.
+            </param>
+        </member>
+        <member name="P:Chromely.Core.RestfulService.RoutePath.Key">
+            <summary>
+            Gets the key.
+            </summary>
+        </member>
+        <member name="P:Chromely.Core.RestfulService.RoutePath.Method">
+            <summary>
+            Gets or sets the method.
+            </summary>
+        </member>
+        <member name="P:Chromely.Core.RestfulService.RoutePath.Path">
+            <summary>
+            Gets or sets the path.
+            </summary>
+        </member>
+        <member name="M:Chromely.Core.RestfulService.RoutePath.ConvertMethod(Chromely.Core.RestfulService.Method)">
+            <summary>
+            The convert method.
+            </summary>
+            <param name="method">
+            The method.
+            </param>
+            <returns>
+            The <see cref="T:System.String"/>.
             </returns>
         </member>
         <member name="T:Chromely.Core.RestfulService.RouteScanner">
