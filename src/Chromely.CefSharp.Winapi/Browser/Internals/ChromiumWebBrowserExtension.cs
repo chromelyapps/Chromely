@@ -77,6 +77,10 @@ namespace Chromely.CefSharp.Winapi.Browser.Internals
                             {
                                 browser.LifeSpanHandler = lifeSpanHandler;
                             }
+                            else
+                            {
+                                browser.LifeSpanHandler = new CefSharpLifeSpanHandler();
+                            }
 
                             break;
 

@@ -47,6 +47,46 @@ namespace Chromely.CefGlue.Gtk
     public static class WebsocketMessageSender
     {
         /// <summary>
+        /// The lock obejct 1.
+        /// </summary>
+        private static readonly object ObjLock1 = new object();
+
+        /// <summary>
+        /// The lock obejct 2.
+        /// </summary>
+        private static readonly object ObjLock2 = new object();
+
+        /// <summary>
+        /// The lock obejct 3.
+        /// </summary>
+        private static readonly object ObjLock3 = new object();
+
+        /// <summary>
+        /// The lock obejct 4.
+        /// </summary>
+        private static readonly object ObjLock4 = new object();
+
+        /// <summary>
+        /// The lock obejct 5.
+        /// </summary>
+        private static readonly object ObjLock5 = new object();
+
+        /// <summary>
+        /// The lock obejct 6.
+        /// </summary>
+        private static readonly object ObjLock6 = new object();
+
+        /// <summary>
+        /// The lock obejct 7.
+        /// </summary>
+        private static readonly object ObjLock7 = new object();
+
+        /// <summary>
+        /// The lock obejct 8.
+        /// </summary>
+        private static readonly object ObjLock8 = new object();
+
+        /// <summary>
         /// The cefserver.
         /// </summary>
         private static CefServer cefserver;
@@ -84,7 +124,7 @@ namespace Chromely.CefGlue.Gtk
         /// </param>
         public static void Send(string clientName, ChromelyResponse response)
         {
-            Task.Factory.StartNew(() =>
+            lock (ObjLock1)
             {
                 try
                 {
@@ -110,7 +150,7 @@ namespace Chromely.CefGlue.Gtk
                 {
                     Log.Error(exception);
                 }
-            });
+            }
         }
 
         /// <summary>
@@ -124,7 +164,7 @@ namespace Chromely.CefGlue.Gtk
         /// </param>
         public static void Send(int connectionId, ChromelyResponse response)
         {
-            Task.Factory.StartNew(() =>
+            lock (ObjLock2)
             {
                 try
                 {
@@ -150,7 +190,122 @@ namespace Chromely.CefGlue.Gtk
                 {
                     Log.Error(exception);
                 }
-            });
+            }
+        }
+
+        /// <summary>
+        /// The send.
+        /// </summary>
+        /// <param name="clientName">
+        /// The client name.
+        /// </param>
+        /// <param name="data">
+        /// The data.
+        /// </param>
+        public static void Send(string clientName, string data)
+        {
+            lock (ObjLock3)
+            {
+                try
+                {
+                    if (string.IsNullOrEmpty(clientName))
+                    {
+                        return;
+                    }
+
+                    if (string.IsNullOrEmpty(data))
+                    {
+                        return;
+                    }
+
+                    if (Server == null)
+                    {
+                        return;
+                    }
+
+                    SendMessage(clientName, data);
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception);
+                }
+            }
+        }
+
+        /// <summary>
+        /// The send.
+        /// </summary>
+        /// <param name="connectionId">
+        /// The connection id.
+        /// </param>
+        /// <param name="data">
+        /// The data.
+        /// </param>
+        public static void Send(int connectionId, string data)
+        {
+            lock (ObjLock4)
+            {
+                try
+                {
+                    if (connectionId == 0)
+                    {
+                        return;
+                    }
+
+                    if (string.IsNullOrEmpty(data))
+                    {
+                        return;
+                    }
+
+                    if (Server == null)
+                    {
+                        return;
+                    }
+
+                    SendMessage(connectionId, data);
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception);
+                }
+            }
+        }
+
+        /// <summary>
+        /// The send.
+        /// </summary>
+        /// <param name="connectionId">
+        /// The connection id.
+        /// </param>
+        /// <param name="data">
+        /// The data.
+        /// </param>
+        /// <param name="dataSize">
+        /// The data size.
+        /// </param>
+        public static void Send(int connectionId, IntPtr data, long dataSize)
+        {
+            lock (ObjLock5)
+            {
+                try
+                {
+                    if (connectionId == 0)
+                    {
+                        return;
+                    }
+
+                    if (Server == null)
+                    {
+                        return;
+                    }
+
+                    SendMessage(connectionId, data, dataSize);
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception);
+                }
+            }
         }
 
         /// <summary>
@@ -164,7 +319,7 @@ namespace Chromely.CefGlue.Gtk
         /// </param>
         public static void Broadcast(int connectionId, ChromelyResponse response)
         {
-            Task.Factory.StartNew(() =>
+            lock (ObjLock6)
             {
                 try
                 {
@@ -190,85 +345,7 @@ namespace Chromely.CefGlue.Gtk
                 {
                     Log.Error(exception);
                 }
-            });
-        }
-
-        /// <summary>
-        /// The send.
-        /// </summary>
-        /// <param name="clientName">
-        /// The client name.
-        /// </param>
-        /// <param name="data">
-        /// The data.
-        /// </param>
-        public static void Send(string clientName, string data)
-        {
-            Task.Factory.StartNew(() =>
-            {
-                try
-                {
-                    if (string.IsNullOrEmpty(clientName))
-                    {
-                        return;
-                    }
-
-                    if (string.IsNullOrEmpty(data))
-                    {
-                        return;
-                    }
-
-                    if (Server == null)
-                    {
-                        return;
-                    }
-
-                    SendMessage(clientName, data);
-                }
-                catch (Exception exception)
-                {
-                    Log.Error(exception);
-                }
-            });
-        }
-
-        /// <summary>
-        /// The send.
-        /// </summary>
-        /// <param name="connectionId">
-        /// The connection id.
-        /// </param>
-        /// <param name="data">
-        /// The data.
-        /// </param>
-        public static void Send(int connectionId, string data)
-        {
-            Task.Factory.StartNew(() =>
-            {
-                try
-                {
-                    if (connectionId == 0)
-                    {
-                        return;
-                    }
-
-                    if (string.IsNullOrEmpty(data))
-                    {
-                        return;
-                    }
-
-                    if (Server == null)
-                    {
-                        return;
-                    }
-
-                    SendMessage(connectionId, data);
-                }
-                catch (Exception exception)
-                {
-                    Log.Error(exception);
-                }
-            });
+            }
         }
 
         /// <summary>
@@ -282,7 +359,7 @@ namespace Chromely.CefGlue.Gtk
         /// </param>
         public static void Broadcast(int connectionId, string data)
         {
-            Task.Factory.StartNew(() =>
+            lock (ObjLock7)
             {
                 try
                 {
@@ -302,7 +379,39 @@ namespace Chromely.CefGlue.Gtk
                 {
                     Log.Error(exception);
                 }
-            });
+            }
+        }
+
+        /// <summary>
+        /// The broadcast.
+        /// </summary>
+        /// <param name="connectionId">
+        /// The connection id.
+        /// </param>
+        /// <param name="data">
+        /// The data.
+        /// </param>
+        /// <param name="dataSize">
+        /// The data size.
+        /// </param>
+        public static void Broadcast(int connectionId, IntPtr data, long dataSize)
+        {
+            lock (ObjLock8)
+            {
+                try
+                {
+                    if (connectionId == 0)
+                    {
+                        return;
+                    }
+
+                    BroadcastMessage(connectionId, data, dataSize);
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception);
+                }
+            }
         }
 
         /// <summary>
@@ -316,43 +425,46 @@ namespace Chromely.CefGlue.Gtk
         /// </param>
         private static void SendMessage(string clientName, string data)
         {
-            IntPtr outIntPtr = IntPtr.Zero;
-
-            try
+            Task.Run(() =>
             {
-                if (string.IsNullOrEmpty(data))
+                IntPtr outIntPtr = IntPtr.Zero;
+
+                try
                 {
-                    return;
+                    if (string.IsNullOrEmpty(data))
+                    {
+                        return;
+                    }
+
+                    int connectionId = ConnectionNameMapper.GetConnectionId(clientName);
+
+                    if (connectionId == 0)
+                    {
+                        return;
+                    }
+
+                    if (Server == null)
+                    {
+                        return;
+                    }
+
+                    byte[] outputByte = Encoding.UTF8.GetBytes(data);
+
+                    outIntPtr = Marshal.AllocHGlobal(outputByte.Length);
+                    Marshal.Copy(outputByte, 0, outIntPtr, outputByte.Length);
+
+                    Server.SendWebSocketMessage(connectionId, outIntPtr, outputByte.Length);
                 }
-
-                int connectionId = ConnectionNameMapper.GetConnectionId(clientName);
-
-                if (connectionId == 0)
+                catch (Exception exception)
                 {
-                    return;
+                    Log.Error(exception);
                 }
-
-                if (Server == null)
+                finally
                 {
-                    return;
+                    // Free the unmanaged memory.
+                    Marshal.FreeHGlobal(outIntPtr);
                 }
-
-                byte[] outputByte = Encoding.UTF8.GetBytes(data);
-
-                outIntPtr = Marshal.AllocHGlobal(outputByte.Length);
-                Marshal.Copy(outputByte, 0, outIntPtr, outputByte.Length);
-
-                Server.SendWebSocketMessage(connectionId, outIntPtr, outputByte.Length);
-            }
-            catch (Exception exception)
-            {
-                Log.Error(exception);
-            }
-            finally
-            {
-                // Free the unmanaged memory.
-                Marshal.FreeHGlobal(outIntPtr);
-            }
+            });
         }
 
         /// <summary>
@@ -366,36 +478,72 @@ namespace Chromely.CefGlue.Gtk
         /// </param>
         private static void SendMessage(int connectionId, string data)
         {
-            IntPtr outIntPtr = IntPtr.Zero;
-
-            try
+            Task.Run(() =>
             {
-                if (string.IsNullOrEmpty(data))
+                IntPtr outIntPtr = IntPtr.Zero;
+
+                try
                 {
-                    return;
-                }
+                    if (string.IsNullOrEmpty(data))
+                    {
+                        return;
+                    }
 
-                if (Server == null)
+                    if (Server == null)
+                    {
+                        return;
+                    }
+
+                    byte[] outputByte = Encoding.UTF8.GetBytes(data);
+
+                    outIntPtr = Marshal.AllocHGlobal(outputByte.Length);
+                    Marshal.Copy(outputByte, 0, outIntPtr, outputByte.Length);
+
+                    Server.SendWebSocketMessage(connectionId, outIntPtr, outputByte.Length);
+                }
+                catch (Exception exception)
                 {
-                    return;
+                    Log.Error(exception);
                 }
+                finally
+                {
+                    // Free the unmanaged memory.
+                    Marshal.FreeHGlobal(outIntPtr);
+                }
+            });
+        }
 
-                byte[] outputByte = Encoding.UTF8.GetBytes(data);
+        /// <summary>
+        /// The send message.
+        /// </summary>
+        /// <param name="connectionId">
+        /// The connection id.
+        /// </param>
+        /// <param name="data">
+        /// The data.
+        /// </param>
+        /// <param name="dataSize">
+        /// The data size.
+        /// </param>
+        private static void SendMessage(int connectionId, IntPtr data, long dataSize)
+        {
+            Task.Run(() =>
+                {
+                    try
+                    {
 
-                outIntPtr = Marshal.AllocHGlobal(outputByte.Length);
-                Marshal.Copy(outputByte, 0, outIntPtr, outputByte.Length);
+                        if (Server == null)
+                        {
+                            return;
+                        }
 
-                Server.SendWebSocketMessage(connectionId, outIntPtr, outputByte.Length);
-            }
-            catch (Exception exception)
-            {
-                Log.Error(exception);
-            }
-            finally
-            {
-                // Free the unmanaged memory.
-                Marshal.FreeHGlobal(outIntPtr);
-            }
+                        Server.SendWebSocketMessage(connectionId, data, dataSize);
+                    }
+                    catch (Exception exception)
+                    {
+                        Log.Error(exception);
+                    }
+                });
         }
 
         /// <summary>
@@ -409,59 +557,117 @@ namespace Chromely.CefGlue.Gtk
         /// </param>
         private static void BroadcastMessage(int connectionId, string data)
         {
-            IntPtr outIntPtr = IntPtr.Zero;
-
-            try
+            Task.Run(() =>
             {
-                if (string.IsNullOrEmpty(data))
+                IntPtr outIntPtr = IntPtr.Zero;
+
+                try
                 {
-                    return;
-                }
-
-                var connectionIds = ConnectionNameMapper.ConnectionIds;
-
-                if (connectionIds == null)
-                {
-                    return;
-                }
-
-                if (connectionIds.Count == 0)
-                {
-                    return;
-                }
-
-                if ((connectionIds.Count == 1) && (connectionIds[0] == connectionId))
-                {
-                    return;
-                }
-
-                if (Server == null)
-                {
-                    return;
-                }
-
-                byte[] outputByte = Encoding.UTF8.GetBytes(data);
-
-                outIntPtr = Marshal.AllocHGlobal(outputByte.Length);
-                Marshal.Copy(outputByte, 0, outIntPtr, outputByte.Length);
-
-                foreach (int id in connectionIds)
-                {
-                    if (id != connectionId)
+                    if (string.IsNullOrEmpty(data))
                     {
-                        Server.SendWebSocketMessage(id, outIntPtr, outputByte.Length);
+                        return;
+                    }
+
+                    var connectionIds = ConnectionNameMapper.ConnectionIds;
+
+                    if (connectionIds == null)
+                    {
+                        return;
+                    }
+
+                    if (connectionIds.Count == 0)
+                    {
+                        return;
+                    }
+
+                    if ((connectionIds.Count == 1) && (connectionIds[0] == connectionId))
+                    {
+                        return;
+                    }
+
+                    if (Server == null)
+                    {
+                        return;
+                    }
+
+                    byte[] outputByte = Encoding.UTF8.GetBytes(data);
+
+                    outIntPtr = Marshal.AllocHGlobal(outputByte.Length);
+                    Marshal.Copy(outputByte, 0, outIntPtr, outputByte.Length);
+
+                    foreach (int id in connectionIds)
+                    {
+                        if (id != connectionId)
+                        {
+                            Server.SendWebSocketMessage(id, outIntPtr, outputByte.Length);
+                        }
                     }
                 }
-            }
-            catch (Exception exception)
-            {
-                Log.Error(exception);
-            }
-            finally
-            {
-                // Free the unmanaged memory.
-                Marshal.FreeHGlobal(outIntPtr);
-            }
+                catch (Exception exception)
+                {
+                    Log.Error(exception);
+                }
+                finally
+                {
+                    // Free the unmanaged memory.
+                    Marshal.FreeHGlobal(outIntPtr);
+                }
+            });
+        }
+
+        /// <summary>
+        /// The broadcast message.
+        /// </summary>
+        /// <param name="connectionId">
+        /// The connection id.
+        /// </param>
+        /// <param name="data">
+        /// The data.
+        /// </param>
+        /// <param name="dataSize">
+        /// The data size.
+        /// </param>
+        private static void BroadcastMessage(int connectionId, IntPtr data, long dataSize)
+        {
+            Task.Run(() =>
+                {
+                    try
+                    {
+                        var connectionIds = ConnectionNameMapper.ConnectionIds;
+
+                        if (connectionIds == null)
+                        {
+                            return;
+                        }
+
+                        if (connectionIds.Count == 0)
+                        {
+                            return;
+                        }
+
+                        if ((connectionIds.Count == 1) && (connectionIds[0] == connectionId))
+                        {
+                            return;
+                        }
+
+                        if (Server == null)
+                        {
+                            return;
+                        }
+
+                        foreach (int id in connectionIds)
+                        {
+                            if (id != connectionId)
+                            {
+                                Server.SendWebSocketMessage(id, data, dataSize);
+                            }
+                        }
+                    }
+                    catch (Exception exception)
+                    {
+                        Log.Error(exception);
+                    }
+                });
         }
     }
 }

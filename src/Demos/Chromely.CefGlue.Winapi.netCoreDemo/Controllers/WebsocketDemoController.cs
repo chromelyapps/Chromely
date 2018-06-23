@@ -29,7 +29,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 // ReSharper disable once StyleCop.SA1300
-namespace Chromely.CefGlue.Winapi.Demo.Controllers
+namespace Chromely.CefGlue.Winapi.netCoreDemo.Controllers
 {
     using System;
     using System.Threading.Tasks;

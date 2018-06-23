@@ -33,6 +33,7 @@ namespace Chromely.CefGlue.Winapi
     using System;
 
     using Chromely.CefGlue.Winapi.Browser.ServerHandlers;
+    using Chromely.Core;
     using Chromely.Core.Infrastructure;
 
     /// <summary>
@@ -113,7 +114,11 @@ namespace Chromely.CefGlue.Winapi
                     return;
                 }
 
-                mServerHandler = new CefGlueServerHandler();
+                var sockeHandler = IoC.GetInstance<IChromelyWebsocketHandler>(typeof(IChromelyWebsocketHandler).FullName)
+                                   ?? new CefGlueWebsocketHandler();
+
+                ConnectionNameMapper.Clear();
+                mServerHandler = new CefGlueServerHandler(sockeHandler);
                 mServerHandler.StartServer(Address, Port, OnStartServerComplete);
             }
             catch (Exception exception)

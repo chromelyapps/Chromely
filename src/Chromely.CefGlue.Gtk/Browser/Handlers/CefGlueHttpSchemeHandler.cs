@@ -82,7 +82,7 @@ namespace Chromely.CefGlue.Gtk.Browser.Handlers
             bool isCustomScheme = UrlSchemeProvider.IsUrlOfRegisteredCustomScheme(request.Url);
             if (isCustomScheme)
             {
-                Task.Factory.StartNew(() =>
+                Task.Run(() =>
                 {
                     using (callback)
                     {

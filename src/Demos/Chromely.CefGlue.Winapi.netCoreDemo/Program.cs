@@ -87,6 +87,7 @@ namespace Chromely.CefGlue.Winapi.netCoreDemo
                                               // Alternate approach for multi-process, is to add a subprocess application
                                               // .WithCustomSetting(CefSettingKeys.BrowserSubprocessPath, full_path_to_subprocess)
                                               .WithCustomSetting(CefSettingKeys.SingleProcess, true);
+                                              //.UseDefaultWebsocketHandler(string.Empty, 8181, true);
 
                 var factory = WinapiHostFactory.Init("chromely.ico");
                 using (var window = factory.CreateWindow(

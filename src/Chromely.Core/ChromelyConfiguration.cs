@@ -369,7 +369,7 @@ namespace Chromely.Core
         }
 
         /// <summary>
-        /// The start websocket server with the address and port provided.
+        /// The use default websocket handler.
         /// </summary>
         /// <param name="address">
         /// The address.
@@ -377,14 +377,17 @@ namespace Chromely.Core
         /// <param name="port">
         /// The port.
         /// </param>
+        /// <param name="onloadstartserver">
+        /// The onloadstartserver.
+        /// </param>
         /// <returns>
         /// The <see cref="ChromelyConfiguration"/>.
         /// </returns>
-        public ChromelyConfiguration StartWebsocketServerWith(string address, int port)
+        public ChromelyConfiguration UseDefaultWebsocketHandler(string address, int port, bool onloadstartserver)
         {
-            this.StartWebSocket = true;
             this.WebsocketAddress = address;
             this.WebsocketPort = port;
+            this.StartWebSocket = onloadstartserver;
             return this;
         }
 
@@ -531,19 +534,19 @@ namespace Chromely.Core
         /// <summary>
         /// Registers scheme handler.
         /// </summary>
-        /// <param name="chromelySchemeHandler">
+        /// <param name="schemeHandler">
         /// The chromely scheme handler.
         /// </param>
         /// <returns>
         /// The <see cref="ChromelyConfiguration"/> object.
         /// </returns>
-        public virtual ChromelyConfiguration RegisterSchemeHandler(ChromelySchemeHandler chromelySchemeHandler)
+        public virtual ChromelyConfiguration RegisterSchemeHandler(ChromelySchemeHandler schemeHandler)
         {
-            if (chromelySchemeHandler != null)
+            if (schemeHandler != null)
             {
-                var scheme = new UrlScheme(chromelySchemeHandler.SchemeName, chromelySchemeHandler.DomainName, false);
+                var scheme = new UrlScheme(schemeHandler.SchemeName, schemeHandler.DomainName, false);
                 UrlSchemeProvider.RegisterScheme(scheme);
-                IoC.RegisterInstance(typeof(ChromelySchemeHandler), chromelySchemeHandler.Key, chromelySchemeHandler);
+                IoC.RegisterInstance(typeof(ChromelySchemeHandler), schemeHandler.Key, schemeHandler);
             }
 
             return this;
@@ -594,34 +597,76 @@ namespace Chromely.Core
         /// <summary>
         /// Registers message router handler.
         /// </summary>
-        /// <param name="ChromelyMessageRouterHandler">
+        /// <param name="messageRouterHandler">
         /// The chromely messsage router handler.
         /// </param>
         /// <returns>
         /// The <see cref="ChromelyConfiguration"/> object.
         /// </returns>
-        public virtual ChromelyConfiguration RegisterMessageRouterHandler(object ChromelyMessageRouterHandler)
+        public virtual ChromelyConfiguration RegisterMessageRouterHandler(object messageRouterHandler)
         {
-            return this.RegisterMessageRouterHandler(new ChromelyMessageRouter(ChromelyMessageRouterHandler));
+            return this.RegisterMessageRouterHandler(new ChromelyMessageRouter(messageRouterHandler));
         }
 
         /// <summary>
         /// Registers message router handler.
         /// </summary>
-        /// <param name="ChromelyMessageRouter">
+        /// <param name="messageRouterHandler">
         /// The chromely messsage router.
         /// </param>
         /// <returns>
         /// The <see cref="ChromelyConfiguration"/> object.
         /// </returns>
-        public virtual ChromelyConfiguration RegisterMessageRouterHandler(ChromelyMessageRouter ChromelyMessageRouter)
+        public virtual ChromelyConfiguration RegisterMessageRouterHandler(ChromelyMessageRouter messageRouterHandler)
         {
-            if (ChromelyMessageRouter != null)
+            if (messageRouterHandler != null)
             {
-                IoC.RegisterInstance(typeof(ChromelyMessageRouter), ChromelyMessageRouter.Key, ChromelyMessageRouter);
+                IoC.RegisterInstance(typeof(ChromelyMessageRouter), messageRouterHandler.Key, messageRouterHandler);
             }
 
             return this;
         }
+
+
+        /// <summary>
+        /// The register websocket handler.
+        /// </summary>
+        /// <param name="sockeHandler">
+        /// The socke handler.
+        /// </param>
+        /// <param name="address">
+        /// The address.
+        /// </param>
+        /// <param name="port">
+        /// The port.
+        /// </param>
+        /// <param name="onloadstartserver">
+        /// The onloadstartserver.
+        /// </param>
+        /// <returns>
+        /// The <see cref="ChromelyConfiguration"/>.
+        /// </returns>
+        public ChromelyConfiguration RegisterWebsocketHandler(IChromelyWebsocketHandler sockeHandler, string address, int port, bool onloadstartserver)
+        {
+            if (sockeHandler == null)
+            {
+                return this;
+            }
+
+            // Remove handler if exists - only one handler is allowed.
+            bool isHandlerRegistered = IoC.IsRegistered<IChromelyWebsocketHandler>(typeof(IChromelyWebsocketHandler).FullName);
+            if (isHandlerRegistered)
+            {
+                IoC.UnregisterHandler<IChromelyWebsocketHandler>(typeof(IChromelyWebsocketHandler).FullName);
+            }
+
+            IoC.RegisterInstance(typeof(IChromelyWebsocketHandler), typeof(IChromelyWebsocketHandler).FullName, sockeHandler);
+
+            this.WebsocketAddress = address;
+            this.WebsocketPort = port;
+            this.StartWebSocket = onloadstartserver;
+            return this;
+        }
+
     }
 }

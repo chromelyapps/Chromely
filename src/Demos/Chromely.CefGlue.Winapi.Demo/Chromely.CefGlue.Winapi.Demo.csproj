@@ -73,9 +73,6 @@
     <None Update="app\pages\javascriptdemo.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="app\pages\websocketdemo - Copy.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="app\pages\websocketdemo.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

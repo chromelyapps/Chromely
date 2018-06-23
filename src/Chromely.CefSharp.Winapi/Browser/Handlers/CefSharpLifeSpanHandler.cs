@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CefGlueLifeSpanHandler.cs" company="Chromely">
+// <copyright file="CefSharpContextMenuHandler.cs" company="Chromely">
 //   Copyright (c) 2017-2018 Kola Oyewumi
 // </copyright>
 // <license>
@@ -25,77 +25,69 @@
 // </license>
 // <note>
 // Chromely project is licensed under MIT License. CefGlue, CefSharp, Winapi may have additional licensing.
-// This is a port from CefGlue.WindowsForms sample of CefGlue. Mostly provided as-is. 
-// For more info: https://bitbucket.org/xilium/xilium.cefglue/wiki/Home
 // </note>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Chromely.CefGlue.Winapi.Browser.Handlers
+namespace Chromely.CefSharp.Winapi.Browser.Handlers
 {
-    using Chromely.Core.Host;
     using Chromely.Core.Infrastructure;
 
-    using Xilium.CefGlue;
+    using global::CefSharp;
 
     /// <summary>
-    /// The CefGlue life span handler.
+    /// The cef sharp life span handler.
     /// </summary>
-    public class CefGlueLifeSpanHandler : CefLifeSpanHandler
+    public class CefSharpLifeSpanHandler : ILifeSpanHandler
     {
-        /// <summary>
-        /// The CefGlueBrowser object.
-        /// </summary>
-        private readonly CefGlueBrowser mBrowser;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CefGlueLifeSpanHandler"/> class.
-        /// </summary>
-        public CefGlueLifeSpanHandler()
-        {
-            this.mBrowser = CefGlueBrowser.BrowserCore;
-        }
-
-        /// <summary>
-        /// The on after created.
-        /// </summary>
-        /// <param name="browser">
-        /// The browser.
-        /// </param>
-        protected override void OnAfterCreated(CefBrowser browser)
-        {
-            base.OnAfterCreated(browser);
-
-            this.mBrowser.InvokeAsyncIfPossible(() => this.mBrowser.OnBrowserAfterCreated(browser));
-        }
-
         /// <summary>
         /// The do close.
         /// </summary>
+        /// <param name="browserControl">
+        /// The browser control.
+        /// </param>
         /// <param name="browser">
         /// The browser.
         /// </param>
         /// <returns>
         /// The <see cref="bool"/>.
         /// </returns>
-        protected override bool DoClose(CefBrowser browser)
+        public bool DoClose(IWebBrowser browserControl, IBrowser browser)
         {
             return false;
         }
 
         /// <summary>
-        /// The on before close.
+        /// The on after created.
         /// </summary>
+        /// <param name="browserControl">
+        /// The browser control.
+        /// </param>
         /// <param name="browser">
         /// The browser.
         /// </param>
-        protected override void OnBeforeClose(CefBrowser browser)
+        public void OnAfterCreated(IWebBrowser browserControl, IBrowser browser)
         {
-            this.mBrowser.InvokeAsyncIfPossible(this.mBrowser.OnBeforeClose);
+        }
+
+        /// <summary>
+        /// The on before close.
+        /// </summary>
+        /// <param name="browserControl">
+        /// The browser control.
+        /// </param>
+        /// <param name="browser">
+        /// The browser.
+        /// </param>
+        public void OnBeforeClose(IWebBrowser browserControl, IBrowser browser)
+        {
         }
 
         /// <summary>
         /// The on before popup.
         /// </summary>
+        /// <param name="browserControl">
+        /// The browser control.
+        /// </param>
         /// <param name="browser">
         /// The browser.
         /// </param>
@@ -120,24 +112,26 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
         /// <param name="windowInfo">
         /// The window info.
         /// </param>
-        /// <param name="client">
-        /// The client.
-        /// </param>
-        /// <param name="settings">
-        /// The settings.
+        /// <param name="browserSettings">
+        /// The browser settings.
         /// </param>
         /// <param name="noJavascriptAccess">
         /// The no javascript access.
         /// </param>
+        /// <param name="newBrowser">
+        /// The new browser.
+        /// </param>
         /// <returns>
         /// The <see cref="bool"/>.
         /// </returns>
-        protected override bool OnBeforePopup(CefBrowser browser, CefFrame frame, string targetUrl, string targetFrameName, CefWindowOpenDisposition targetDisposition, bool userGesture, CefPopupFeatures popupFeatures, CefWindowInfo windowInfo, ref CefClient client, CefBrowserSettings settings, ref bool noJavascriptAccess)
+        public bool OnBeforePopup(IWebBrowser browserControl, IBrowser browser, IFrame frame, string targetUrl, string targetFrameName, WindowOpenDisposition targetDisposition, bool userGesture, IPopupFeatures popupFeatures, IWindowInfo windowInfo, IBrowserSettings browserSettings, ref bool noJavascriptAccess, out IWebBrowser newBrowser)
         {
+            newBrowser = null;
+
             var isUrlExternal = UrlSchemeProvider.IsUrlRegisteredExternal(targetUrl);
             if (isUrlExternal)
             {
-                RegisteredExternalUrl.Launch(targetUrl);
+                System.Diagnostics.Process.Start(targetUrl);
             }
 
             return true;

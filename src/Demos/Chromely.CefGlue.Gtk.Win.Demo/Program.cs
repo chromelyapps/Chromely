@@ -78,6 +78,7 @@ namespace Chromely.CefGlue.Gtk.Win.Demo
                                               .UseDefaultLogger("logs\\chromely_new.log")
                                               .UseDefaultResourceSchemeHandler("local", string.Empty)
                                               .UseDefaultHttpSchemeHandler("http", "chromely.com");
+                                              //.UseDefaultWebsocketHandler(string.Empty, 8181, true);
 
 
                 using (var app = new CefGlueBrowserHost(config))
