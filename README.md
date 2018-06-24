@@ -12,7 +12,7 @@ Options of communicating (IPC) with rendering process are via:
 1. .NET/Javascript integration ([CefSharp](https://github.com/cefsharp/CefSharp))  -  more info @ [Expose .NET class to JavaScript](https://github.com/mattkol/Chromely/wiki/Expose-.NET-class-to-JavaScript).
 2. Generic Message Routing ([Xilium.CefGlue](https://bitbucket.org/xilium/xilium.cefglue/wiki/Home)) - more info @ [Generic Message Routing](https://github.com/mattkol/Chromely/wiki/Generic-Message-Routing).
 3. Ajax HTTP/XHR ([Xilium.CefGlue](https://bitbucket.org/xilium/xilium.cefglue/wiki/Home), [CefSharp](https://github.com/cefsharp/CefSharp)) -  more info @ [Custom Scheme Handling](https://github.com/mattkol/Chromely/wiki/Custom-Scheme-Handling).
- 4. (**In Development**) Websocket (ws) ([Xilium.CefGlue](https://bitbucket.org/xilium/xilium.cefglue/wiki/Home)) -  this will implement [Cef CefServer](https://bitbucket.org/chromiumembedded/cef/issues/2278/expose-internal-http-websockets-server).
+ 4. Real-time with Websocket (ws) ([Xilium.CefGlue](https://bitbucket.org/xilium/xilium.cefglue/wiki/Home)) -   more info @ [Real-time with Websocket](https://github.com/mattkol/Chromely/wiki/Real-time-with-Websocket).
 
 [<h4>Roadmap & Help Wanted</h4>](https://github.com/mattkol/Chromely/wiki/Roadmap-and-Help-Wanted) 
 
