@@ -99,8 +99,6 @@ License
 * CefSharp is [BSD](https://opensource.org/licenses/BSD-3-Clause) licensed, so it can be used in both proprietary and free/open source applications. For the full details, see the [LICENSE](https://github.com/cefsharp/CefSharp/blob/master/LICENSE) file.
 * CefGlue is licensed under MIT License with portions of code licensed under New BSD License. For more info [see](https://bitbucket.org/xilium/xilium.cefglue/wiki/Home).
 
-* Chromely is MIT - licensed
-
 Credits
 ---
 Thanks to [JetBrains](https://www.jetbrains.com) for the OSS license of Resharper Ultimate.
