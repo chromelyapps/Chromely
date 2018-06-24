@@ -327,8 +327,6 @@
 
         // when data is comming from the server, this method is called
         requestWs.onmessage = function (evt) {
-            console.log(JSON.parse(evt.data));
-
             var jsonData = JSON.parse(evt.data);
             switch (jsonData.RequestId) {
             case "requestget1": {
@@ -720,8 +718,6 @@
     function runServerResult(res) {
         var jsonData = JSON.parse(res);
         if (jsonData.ReadyState == 4 && jsonData.Status == 200) {
-            console.log(jsonData.Data);
-            console.log("request id" + jsonData.RequestId);
             switch (jsonData.RequestId) {
             case "start": 
                 break;
@@ -735,14 +731,13 @@
                         }
 
                         var row = currentDayTime() + ' - ';
-                        row += 'server currently running';
+                        row += 'server currently running.';
                         row += '\n';
                         $('#eventstextarea').append(row);
 
                         eventlogcount += 1;
 
-                        console.log(eventlogcount);
-                        if (!this.firstload) {
+                          if (!this.firstload) {
 
                             $("#navrequests").removeClass('disabled');
                             $("#navrequests").addClass('active');
@@ -760,7 +755,8 @@
                     } else {
 
                         var row = currentDayTime() + ' - ';
-                        row += 'server not currently running';
+                        row += 'server not currently running.';
+                        row += 'For Websocket setup please see - https://github.com/mattkol/Chromely/wiki/Real-time-with-Websocket';
                         row += '\n';
                         $('#eventstextarea').append(row);
                     }

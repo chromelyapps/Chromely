@@ -39,7 +39,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Chromely.CefGlue.Winapi\Chromely.CefGlue.Winapi.csproj" />
+    <PackageReference Include="Chromely.CefGlue.Winapi" Version="66.0.0-pre01" />
   </ItemGroup>
 
   <ItemGroup>

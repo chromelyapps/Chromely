@@ -3,9 +3,9 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Platforms>AnyCPU</Platforms>
-    <Version>65.0.0.1</Version>
-    <AssemblyVersion>65.0.0.1</AssemblyVersion>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Version>66.0.0.0-pre01</Version>
+    <AssemblyVersion>66.0.0.0</AssemblyVersion>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Product>Chromely.CefGlue.Winapi</Product>
     <Authors>Kola Oyewumi</Authors>
@@ -15,9 +15,13 @@
     <PackageProjectUrl>https://github.com/mattkol/Chromely</PackageProjectUrl>
     <PackageIconUrl>https://github.com/mattkol/Chromely/blob/master/nugets/chromely.ico?raw=true</PackageIconUrl>
     <PackageTags>Cef Chromium HTML5 Desktop Chromely CefGlue  Restful  Ajax HTTP XHR MessageRouter JavascriptIntegration  .NET Core</PackageTags>
-    <Description>Chromely CefGlue Winapi implementation library - this is in .NET Standard 2.0 as it can be used in both .NET (Windows) and .NET Core (Windows, Linux).  Chromely.CefGlue.Winapi version naming is based on CefGlue (Chromely.Unofficial.CefGlue.NetStd) version referenced.</Description>
-    <PackageReleaseNotes>- Geolocation handling removed - https://bitbucket.org/chromiumembedded/cef/issues/2380/geolocation-can-not-work-after-branch-3239</PackageReleaseNotes>
-    <FileVersion>65.0.0.0</FileVersion>
+    <Description>Chromely CefGlue Winapi implementation library - this is in .NET Standard 2.0 as it can be used in both .NET (Windows) and .NET Core (Windows, Linux).  Chromely.CefGlue.Winapi version naming is based on CefGlue Cef version implemented.</Description>
+    <PackageReleaseNotes>- CefGlue source code is now included, Chromely.Unofficial.CefGlue.NetStd is no longer needed.
+- Websocket implementation -  implements Cef CefServer - https://bitbucket.org/chromiumembedded/cef/issues/2278/expose-internal-http-websockets-server
+- Changed menu context handler - devtool now only available during debug.
+- Changed menu context handler - creation of popup window removed.
+- Added frame handling - needed to run JavaScript methods.</PackageReleaseNotes>
+    <FileVersion>66.0.0.0</FileVersion>
     <RepositoryType>Github Repository</RepositoryType>
     <RepositoryUrl>https://github.com/mattkol/Chromely</RepositoryUrl>
   </PropertyGroup>
@@ -29,14 +33,20 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DocumentationFile>bin\Release\netstandard2.0\Chromely.CefGlue.Winapi.xml</DocumentationFile>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="CefGlue\Interop\Base\cef_string_t.disabled.cs" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="System.Collections.Specialized" Version="4.3.0" />
+    <PackageReference Include="System.IO.UnmanagedMemoryStream" Version="4.3.0" />
     <PackageReference Include="WinApi" Version="4.0.0" />
   </ItemGroup>
-
+  
   <ItemGroup>
-    <ProjectReference Include="..\CefGlue\Chromely.Unofficial.CefGlue.NetStd\Chromely.Unofficial.CefGlue.NetStd.csproj" />
     <ProjectReference Include="..\Chromely.Core\Chromely.Core.csproj" />
   </ItemGroup>
 

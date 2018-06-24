@@ -308,6 +308,55 @@ namespace Chromely.CefSharp.Winapi.Browser.Handlers
         }
 
         /// <summary>
+        /// The can get cookies.
+        /// </summary>
+        /// <param name="browserControl">
+        /// The browser control.
+        /// </param>
+        /// <param name="browser">
+        /// The browser.
+        /// </param>
+        /// <param name="frame">
+        /// The frame.
+        /// </param>
+        /// <param name="request">
+        /// The request.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        public bool CanGetCookies(IWebBrowser browserControl, IBrowser browser, IFrame frame, IRequest request)
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// The can set cookie.
+        /// </summary>
+        /// <param name="browserControl">
+        /// The browser control.
+        /// </param>
+        /// <param name="browser">
+        /// The browser.
+        /// </param>
+        /// <param name="frame">
+        /// The frame.
+        /// </param>
+        /// <param name="request">
+        /// The request.
+        /// </param>
+        /// <param name="cookie">
+        /// The cookie.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        public bool CanSetCookie(IWebBrowser browserControl, IBrowser browser, IFrame frame, IRequest request, Cookie cookie)
+        {
+            return true;
+        }
+
+        /// <summary>
         /// The on quota request.
         /// </summary>
         /// <param name="browserControl">

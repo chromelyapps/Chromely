@@ -32,6 +32,7 @@
 namespace Chromely.CefGlue.Gtk.Win.Demo.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using Chromely.CefGlue.Gtk.Browser.ServerHandlers;
     using Chromely.Core.Infrastructure;
@@ -59,6 +60,11 @@ namespace Chromely.CefGlue.Gtk.Win.Demo.Controllers
         private int mReceiverConnectionId;
 
         /// <summary>
+        /// The m server sent messages.
+        /// </summary>
+        private List<string> mServerSentMessages;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="WebsocketDemoController"/> class.
         /// </summary>
         public WebsocketDemoController()
@@ -66,6 +72,13 @@ namespace Chromely.CefGlue.Gtk.Win.Demo.Controllers
             this.mReceiveFromServer = false;
             this.mSecondsDelay = 5;
             this.mReceiverConnectionId = 0;
+
+            this.mServerSentMessages = new List<string>();
+            this.mServerSentMessages.Add("https://github.com/mattkol/Chromely");
+            this.mServerSentMessages.Add("Chromely Webscocket demo");
+            this.mServerSentMessages.Add("Build HTML5 desktop apps with Chromely");
+            this.mServerSentMessages.Add("Real-time app dev with Chromely");
+            this.mServerSentMessages.Add("For more info see - https://github.com/mattkol/Chromely/wiki/Real-time-with-Websocket");
 
             this.RegisterGetRequest("/websocketmanager/start", this.StartServer);
             this.RegisterGetRequest("/websocketmanager/stop", this.StopServer);
@@ -110,7 +123,7 @@ namespace Chromely.CefGlue.Gtk.Win.Demo.Controllers
             response.ReadyState = (int)ReadyState.ResponseIsReady;
             response.Status = (int)System.Net.HttpStatusCode.OK;
             response.StatusText = "OK";
-            response.Data = true; 
+            response.Data = true;
             return response;
         }
 
@@ -187,21 +200,25 @@ namespace Chromely.CefGlue.Gtk.Win.Demo.Controllers
         private void SendMessagesToClient()
         {
             Task.Run(() =>
+            {
+                try
                 {
-                    try
+                    int index = 0;
+                    while (this.mReceiveFromServer)
                     {
-                        while (this.mReceiveFromServer)
-                        {
-                            string data = $"{DateTime.Now}: hello from server.";
-                            WebsocketMessageSender.Send(this.mReceiverConnectionId, data);
-                            System.Threading.Thread.Sleep(this.mSecondsDelay * 1000);
-                        }
+                        string info = this.mServerSentMessages[index];
+                        string data = $"{DateTime.Now}: {info}.";
+                        WebsocketMessageSender.Send(this.mReceiverConnectionId, data);
+                        System.Threading.Thread.Sleep(this.mSecondsDelay * 1000);
+                        index++;
+                        index = (index >= this.mServerSentMessages.Count) ? 0 : index;
                     }
-                    catch (Exception exception)
-                    {
-                        Log.Error(exception);
-                    }
-                });
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception);
+                }
+            });
         }
     }
 }

@@ -13,8 +13,8 @@ chromelycef.exel will be found in the Chromely.CefGlue.Winapi package location.
      <DownloadCefBinariesExe Condition=" '$(OS)' != 'Windows_NT' ">dotnet "$(MSBuildThisFileDirectory)\linux\chromelycef.dll"</DownloadCefBinariesExe>
      <DownloadCefBinariesExe Condition=" '$(OS)' == 'Windows_NT' ">"$(MSBuildThisFileDirectory)\win\chromelycef.exe"</DownloadCefBinariesExe>
       <DownloadCefBinariesExe>"$(MSBuildThisFileDirectory)\chromelycef.exe"</DownloadCefBinariesExe>
-      <ChromiumVersionParameter>v65</ChromiumVersionParameter>
-      <CefVersionParameter>3.3325.1751.ge5b78a5</CefVersionParameter>
+      <ChromiumVersionParameter>v66</ChromiumVersionParameter>
+      <CefVersionParameter>3.3359.1772.gd1df190</CefVersionParameter>
     </PropertyGroup>
 
     <Target Name="DownloadCefBinaries" AfterTargets="CoreCompile">

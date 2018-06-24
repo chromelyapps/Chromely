@@ -35,6 +35,7 @@ namespace Chromely.CefSharp.Winapi.Browser
 
     using Chromely.CefSharp.Winapi.Browser.FrameHandlers;
     using Chromely.CefSharp.Winapi.Browser.Internals;
+    using Chromely.Core.Helpers;
     using Chromely.Core.Host;
     using Chromely.Core.Infrastructure;
 
@@ -309,11 +310,6 @@ namespace Chromely.CefSharp.Winapi.Browser
         /// Gets or sets the resource handler factory.
         /// </summary>
         public IResourceHandlerFactory ResourceHandlerFactory { get; set; }
-
-        /// <summary>
-        /// Gets or sets the geolocation handler.
-        /// </summary>
-        public IGeolocationHandler GeolocationHandler { get; set; }
 
         #endregion Handler Properties
 

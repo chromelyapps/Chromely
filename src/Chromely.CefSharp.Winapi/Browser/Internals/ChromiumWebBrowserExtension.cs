@@ -164,14 +164,6 @@ namespace Chromely.CefSharp.Winapi.Browser.Internals
 
                             break;
 
-                        case CefHandlerKey.GeolocationHandler:
-                            if (instance is IGeolocationHandler geolocationHandler)
-                            {
-                                browser.GeolocationHandler = geolocationHandler;
-                            }
-
-                            break;
-
                         case CefHandlerKey.DownloadHandler:
                             if (instance is IDownloadHandler downloadHandler)
                             {

@@ -69,13 +69,16 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
         /// <param name="request">
         /// The request.
         /// </param>
+        /// <param name="userGesture">
+        /// The user gesture.
+        /// </param>
         /// <param name="isRedirect">
         /// The is redirect.
         /// </param>
         /// <returns>
         /// The <see cref="bool"/>.
         /// </returns>
-        protected override bool OnBeforeBrowse(CefBrowser browser, CefFrame frame, CefRequest request, bool isRedirect)
+        protected override bool OnBeforeBrowse(CefBrowser browser, CefFrame frame, CefRequest request, bool userGesture, bool isRedirect)
         {
             var isUrlExternal = UrlSchemeProvider.IsUrlRegisteredExternal(request.Url);
             if (isUrlExternal)

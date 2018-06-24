@@ -96,11 +96,6 @@ namespace Chromely.Core.Helpers
         public interface IDragHandler {}
 
         /// <summary>
-        /// The GeolocationHandler interface.
-        /// </summary>
-        public interface IGeolocationHandler {}
-
-        /// <summary>
         /// The DownloadHandler interface.
         /// </summary>
         public interface IDownloadHandler {}
@@ -153,9 +148,6 @@ namespace Chromely.Core.Helpers
                 case CefHandlerKey.DragHandler:
                     return typeof(IDragHandler);
 
-                case CefHandlerKey.GeolocationHandler:
-                    return typeof(IGeolocationHandler);
-
                 case CefHandlerKey.DownloadHandler:
                     return typeof(IDownloadHandler);
 
@@ -186,7 +178,6 @@ namespace Chromely.Core.Helpers
                                 CefHandlerKey.JsDialogHandler,
                                 CefHandlerKey.DialogHandler,
                                 CefHandlerKey.DragHandler,
-                                CefHandlerKey.GeolocationHandler,
                                 CefHandlerKey.DownloadHandler,
                                 CefHandlerKey.FindHandler
                             };

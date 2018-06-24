@@ -45,12 +45,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="CefSharp.Common" Version="63.0.3" />
-    <PackageReference Include="Chromely.CefSharp.Winapi" Version="63.0.0.1" />
+    <PackageReference Include="CefSharp.Common" Version="65.0.0-pre01" />
+    <PackageReference Include="Chromely.CefSharp.Winapi" Version="65.0.0-pre01" />
     <PackageReference Include="Microsoft.Packaging.Tools.Trimming" Version="1.1.0-preview1-25818-01" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Chromely.CefSharp.Winapi\Chromely.CefSharp.Winapi.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="app\Content\img\chromely.png">
