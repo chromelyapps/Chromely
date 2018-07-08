@@ -54,6 +54,10 @@ namespace Chromely.Core
             this.StartWebSocket = false;
             this.CommandLineArgs = new Dictionary<string, string>();
             this.CustomSettings = new Dictionary<string, object>();
+
+#if DEBUG
+            this.DebuggingMode = true;
+#endif
         }
 
         /// <summary>
@@ -122,6 +126,11 @@ namespace Chromely.Core
         public int WebsocketPort { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether is debugging.
+        /// </summary>
+        public bool DebuggingMode { get; set; }
+
+        /// <summary>
         /// Gets or sets the command line args.
         /// </summary>
         public Dictionary<string, string> CommandLineArgs { get; set; }
@@ -177,6 +186,21 @@ namespace Chromely.Core
         public ChromelyConfiguration WithDependencyCheck(bool checkDependencies)
         {
             this.PerformDependencyCheck = checkDependencies;
+            return this;
+        }
+
+        /// <summary>
+        /// The with is debugging.
+        /// </summary>
+        /// <param name="debugging">
+        /// The isdebugging.
+        /// </param>
+        /// <returns>
+        /// The <see cref="ChromelyConfiguration"/>.
+        /// </returns>
+        public ChromelyConfiguration WithDebuggingMode(bool debugging)
+        {
+            this.DebuggingMode = debugging;
             return this;
         }
 

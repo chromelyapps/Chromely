@@ -31,6 +31,10 @@
 namespace Chromely.CefGlue.Gtk.Browser.Handlers
 {
     using System;
+
+    using Chromely.Core;
+    using Chromely.Core.Infrastructure;
+
     using Xilium.CefGlue;
 
     /// <summary>
@@ -47,6 +51,24 @@ namespace Chromely.CefGlue.Gtk.Browser.Handlers
         /// The close dev tools.
         /// </summary>
         private const int CloseDevTools = 26502;
+
+        /// <summary>
+        /// The debugging.
+        /// </summary>
+        private readonly bool debugging;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CefGlueContextMenuHandler"/> class.
+        /// </summary>
+        public CefGlueContextMenuHandler()
+        {
+            var config = IoC.GetInstance(typeof(ChromelyConfiguration), typeof(ChromelyConfiguration).FullName);
+            if (config is ChromelyConfiguration)
+            {
+                var chromelyConfiguration = (ChromelyConfiguration)config;
+                this.debugging = chromelyConfiguration.DebuggingMode;
+            }
+        }
 
         /// <summary>
         /// The on before context menu.
@@ -72,11 +94,12 @@ namespace Chromely.CefGlue.Gtk.Browser.Handlers
             // Remove "View Source" option
             model.Remove((int)CefMenuId.ViewSource);
 
-#if DEBUG
-// Add new custom menu items
-            model.AddItem((int)((CefMenuId)ShowDevTools), "Show DevTools");
-            model.AddItem((int)((CefMenuId)CloseDevTools), "Close DevTools");
-#endif
+            if (this.debugging)
+            {
+                // Add new custom menu items
+                model.AddItem((int)((CefMenuId)ShowDevTools), "Show DevTools");
+                model.AddItem((int)((CefMenuId)CloseDevTools), "Close DevTools");
+            }
         }
 
         /// <summary>
@@ -128,20 +151,22 @@ namespace Chromely.CefGlue.Gtk.Browser.Handlers
         /// </returns>
         protected override bool OnContextMenuCommand(CefBrowser browser, CefFrame frame, CefContextMenuParams state, int commandId, CefEventFlags eventFlags)
         {
-#if DEBUG
-            if (commandId == ShowDevTools)
+            if (this.debugging)
             {
-                var host = browser.GetHost();
-                var wi = CefWindowInfo.Create();
-                wi.SetAsPopup(IntPtr.Zero, "DevTools");
-                host.ShowDevTools(wi, new DevToolsWebClient(), new CefBrowserSettings(), new CefPoint(0, 0));
+                if (commandId == ShowDevTools)
+                {
+                    var host = browser.GetHost();
+                    var wi = CefWindowInfo.Create();
+                    wi.SetAsPopup(IntPtr.Zero, "DevTools");
+                    host.ShowDevTools(wi, new DevToolsWebClient(), new CefBrowserSettings(), new CefPoint(0, 0));
+                }
+
+                if (commandId == CloseDevTools)
+                {
+                    browser.GetHost().CloseDevTools();
+                }
             }
 
-            if (commandId == CloseDevTools)
-            {
-                browser.GetHost().CloseDevTools();
-            }
-#endif
             return false;
         }
 

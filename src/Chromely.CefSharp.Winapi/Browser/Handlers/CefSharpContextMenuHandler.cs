@@ -30,6 +30,9 @@
 
 namespace Chromely.CefSharp.Winapi.Browser.Handlers
 {
+    using Chromely.Core;
+    using Chromely.Core.Infrastructure;
+
     using global::CefSharp;
 
     /// <summary>
@@ -46,6 +49,24 @@ namespace Chromely.CefSharp.Winapi.Browser.Handlers
         /// The close dev tools.
         /// </summary>
         private const int CloseDevTools = 26502;
+
+        /// <summary>
+        /// The debugging.
+        /// </summary>
+        private readonly bool debugging;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CefSharpContextMenuHandler"/> class.
+        /// </summary>
+        public CefSharpContextMenuHandler()
+        {
+            var config = IoC.GetInstance(typeof(ChromelyConfiguration), typeof(ChromelyConfiguration).FullName);
+            if (config is ChromelyConfiguration)
+            {
+                var chromelyConfiguration = (ChromelyConfiguration)config;
+                this.debugging = chromelyConfiguration.DebuggingMode;
+            }
+        }
 
         /// <summary>
         /// The on before context menu.
@@ -74,11 +95,12 @@ namespace Chromely.CefSharp.Winapi.Browser.Handlers
             // Remove "View Source" option
             model.Remove(CefMenuCommand.ViewSource);
 
-#if DEBUG
-            // Add new custom menu items
-            model.AddItem((CefMenuCommand)ShowDevTools, "Show DevTools");
-            model.AddItem((CefMenuCommand)CloseDevTools, "Close DevTools");
-#endif
+            if (this.debugging)
+            {
+                // Add new custom menu items
+                model.AddItem((CefMenuCommand)ShowDevTools, "Show DevTools");
+                model.AddItem((CefMenuCommand)CloseDevTools, "Close DevTools");
+            }
         }
 
         /// <summary>
@@ -107,18 +129,20 @@ namespace Chromely.CefSharp.Winapi.Browser.Handlers
         /// </returns>
         bool IContextMenuHandler.OnContextMenuCommand(IWebBrowser browserControl, IBrowser browser, IFrame frame, IContextMenuParams parameters, CefMenuCommand commandId, CefEventFlags eventFlags)
         {
-#if DEBUG
-            if ((int)commandId == ShowDevTools)
+
+            if (this.debugging)
             {
-                browser.ShowDevTools();
+                if ((int)commandId == ShowDevTools)
+                {
+                    browser.ShowDevTools();
+                }
+
+                if ((int)commandId == CloseDevTools)
+                {
+                    browser.CloseDevTools();
+                }
             }
 
-            if ((int)commandId == CloseDevTools)
-            {
-                browser.CloseDevTools();
-            }
-
-#endif
             return false;
         }
 

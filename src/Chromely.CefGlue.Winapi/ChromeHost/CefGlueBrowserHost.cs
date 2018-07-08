@@ -65,6 +65,7 @@ namespace Chromely.CefGlue.Winapi.ChromeHost
         {
             this.mBrowser = null;
             this.HostConfig = hostConfig;
+            IoC.RegisterInstance(typeof(ChromelyConfiguration), typeof(ChromelyConfiguration).FullName, hostConfig);
             this.ServiceAssemblies = new List<Assembly>();
         }
 
