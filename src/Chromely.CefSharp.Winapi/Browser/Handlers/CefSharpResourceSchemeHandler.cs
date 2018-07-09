@@ -79,7 +79,7 @@ namespace Chromely.CefSharp.Winapi.Browser.Handlers
 
             if (File.Exists(file))
             {
-                Task.Factory.StartNew(() =>
+                Task.Run(() =>
                 {
                     using (callback)
                     {

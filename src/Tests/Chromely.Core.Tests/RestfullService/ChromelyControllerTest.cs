@@ -119,10 +119,11 @@ namespace Chromely.Core.Tests.RestfullService
         public void Get1InvokeTest()
         {
             var routeDict = this.BaseTest();
-            var routeGet1 = routeDict["/testcontroller/get1"];
+            string routeKey = this.GetRouteKey(Method.GET, "/testcontroller/movies");
+            var routeGet1 = routeDict[routeKey];
             Assert.NotNull(routeGet1);
 
-            var response = routeGet1.Invoke(new ChromelyRequest(new RoutePath(Method.GET,  "/testcontroller/get1"), null, null));
+            var response = routeGet1.Invoke(new ChromelyRequest(new RoutePath(Method.GET, "/testcontroller/movies"), null, null));
             Assert.NotNull(response);
             Assert.True(response.Data is int);
             Assert.Equal(1000, (int)response.Data);
@@ -135,10 +136,11 @@ namespace Chromely.Core.Tests.RestfullService
         public void Get2InvokeTest()
         {
             var routeDict = this.BaseTest();
-            var routeGet2 = routeDict["/testcontroller/get2"];
+            string routeKey = this.GetRouteKey(Method.GET, "/testcontroller/sitcoms");
+            var routeGet2 = routeDict[routeKey];
             Assert.NotNull(routeGet2);
 
-            ChromelyResponse response = routeGet2.Invoke(new ChromelyRequest(new RoutePath(Method.GET, "/testcontroller/get2"), null, null));
+            ChromelyResponse response = routeGet2.Invoke(new ChromelyRequest(new RoutePath(Method.GET, "/testcontroller/sitcoms"), null, null));
             Assert.NotNull(response);
             Assert.True(response.Data is string);
             Assert.Equal("Test Get 2", (string)response.Data);
@@ -151,7 +153,8 @@ namespace Chromely.Core.Tests.RestfullService
         public void SaveInvokeTest()
         {
             var routeDict = this.BaseTest();
-            var routeSave = routeDict["/testcontroller/save"];
+            string routeKey = this.GetRouteKey(Method.POST, "/testcontroller/movies");
+            var routeSave = routeDict[routeKey];
             Assert.NotNull(routeSave);
 
             var parameter = DateTime.Now.ToString(CultureInfo.InvariantCulture);
@@ -177,6 +180,24 @@ namespace Chromely.Core.Tests.RestfullService
         }
 
         /// <summary>
+        /// The get route key.
+        /// </summary>
+        /// <param name="method">
+        /// The method.
+        /// </param>
+        /// <param name="path">
+        /// The path.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
+        private string GetRouteKey(Method method, string path)
+        {
+            var routhPath = new RoutePath(method, path);
+            return routhPath.Key;
+        }
+
+        /// <summary>
         /// The test controller.
         /// </summary>
         [ControllerProperty(Name = "TestController", Route = "testcontroller")]
@@ -187,9 +208,9 @@ namespace Chromely.Core.Tests.RestfullService
             /// </summary>
             public TestController()
             {
-                this.RegisterGetRequest("/testcontroller/get1", this.Get1);
-                this.RegisterGetRequest("/testcontroller/get2", this.Get2);
-                this.RegisterPostRequest("/testcontroller/save", this.Save);
+                this.RegisterGetRequest("/testcontroller/movies", this.Get1);
+                this.RegisterGetRequest("/testcontroller/sitcoms", this.Get2);
+                this.RegisterPostRequest("/testcontroller/movies", this.Save);
             }
 
             /// <summary>

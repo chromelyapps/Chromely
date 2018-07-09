@@ -10,34 +10,23 @@
     <script src="../Content/js/tether.min.js"></script>
     <script src="../Content/js/bootstrap.min.js"></script>
     <script>
-	$(document).ready(function(){
-			var request = {
-				"method": "GET",
-				"url": "/info",
-				"parameters": null,
-				"postData": null,
-			};
-
-			window.cefQuery({
-				request: JSON.stringify(request),
-				onSuccess: function (response) {
-					var jsonData = JSON.parse(response);
-					if (jsonData.ReadyState == 4 && jsonData.Status == 200) {
-						$('#divObjective').html(jsonData.Data.divObjective);
-						$('#divPlatform').html(jsonData.Data.divPlatform);
-						$('#divVersion').html(jsonData.Data.divVersion);
-					}
-				}, onFailure: function (err, msg) {
-					console.log(err, msg);
-				}
-			});
-		});
+        $(document).ready(function(){
+            function infoResult(res) {
+                var jsonData = JSON.parse(res.ResponseText);
+                if (jsonData.ReadyState == 4 && jsonData.Status == 200) {
+                    $('#divObjective').html(jsonData.Data.divObjective);
+                    $('#divPlatform').html(jsonData.Data.divPlatform);
+                    $('#divVersion').html(jsonData.Data.divVersion);
+                }
+            }
+		
+            boundControllerAsync.getJson("/info", null, infoResult);
+        });
 			
-	</script
+    </script>
 </head>
 <body>
 <div class="col-9 centerBlock">
-
 	 <!-- View Page Content -->
 	 <div class="row">
 	  <div>
@@ -49,15 +38,13 @@
 			<div id="divPlatform" class="card-body"></div>
 		</div>
 	  <div>
-			<div class="card-header"><h4 class"text-primary">CefGlue Version</h4></div>
+			<div class="card-header"><h4 class"text-primary">CefSharp/Chromium Version</h4></div>
 			<div id="divVersion" class="card-body"></div>
 		</div>
 		
 	</div>
 	 <!-- End View Page Content -->
-	 
-
-	</div>
+</div>
 </body>
 </html>                            
 

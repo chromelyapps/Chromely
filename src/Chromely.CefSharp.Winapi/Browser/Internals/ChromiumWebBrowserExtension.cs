@@ -77,6 +77,10 @@ namespace Chromely.CefSharp.Winapi.Browser.Internals
                             {
                                 browser.LifeSpanHandler = lifeSpanHandler;
                             }
+                            else
+                            {
+                                browser.LifeSpanHandler = new CefSharpLifeSpanHandler();
+                            }
 
                             break;
 
@@ -156,14 +160,6 @@ namespace Chromely.CefSharp.Winapi.Browser.Internals
                             if (instance is IDragHandler dragHandler)
                             {
                                 browser.DragHandler = dragHandler;
-                            }
-
-                            break;
-
-                        case CefHandlerKey.GeolocationHandler:
-                            if (instance is IGeolocationHandler geolocationHandler)
-                            {
-                                browser.GeolocationHandler = geolocationHandler;
                             }
 
                             break;

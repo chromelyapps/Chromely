@@ -71,7 +71,7 @@ namespace Chromely.Core.Tests
             var result = scanner.Scan();
             Assert.NotNull(result);
 
-            Assert.Equal(6, result.Count);
+            Assert.Equal(9, result.Count);
         }
 
         /// <summary>

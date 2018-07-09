@@ -164,5 +164,16 @@ namespace Chromely.CefGlue.Winapi.Browser.ServerHandlers
 
             return 0;
         }
+
+        /// <summary>
+        /// The clear.
+        /// </summary>
+        public static void Clear()
+        {
+            lock (ObjLock)
+            {
+                ConnNameDict.Clear();
+            }
+        }
     }
 }

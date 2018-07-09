@@ -3,9 +3,9 @@
   <PropertyGroup>
     <TargetFramework>net461</TargetFramework>
     <CefSharpAnyCpuSupport>true</CefSharpAnyCpuSupport>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
-    <Version>63.0.0.1</Version>
+    <Version>65.0.0.0-pre01</Version>
     <Authors>Kola Oyewumi</Authors>
     <Company>Kola Oyewumi</Company>
     <Description>Chromely CefSharp Winapi implementation. Chromely.CefSharp.Winapi version naming is based on CefSharp.Common  version referenced.</Description>
@@ -13,11 +13,13 @@
     <PackageLicenseUrl>https://github.com/mattkol/Chromely/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/mattkol/Chromely</PackageProjectUrl>
     <PackageIconUrl>https://github.com/mattkol/Chromely/blob/master/nugets/chromely.ico?raw=true</PackageIconUrl>
-    <AssemblyVersion>63.0.0.1</AssemblyVersion>
-    <FileVersion>63.0.0.1</FileVersion>
+    <AssemblyVersion>65.0.0.0</AssemblyVersion>
+    <FileVersion>65.0.0.0</FileVersion>
     <PackageTags>Cef Chromium HTML5 Desktop Chromely CefSharp Restful  Ajax HTTP XHR JavascriptIntegration</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageReleaseNotes>- Improved and optimized using ReSharper.</PackageReleaseNotes>
+    <PackageReleaseNotes>- Changed menu context handler - devtool now only available during debug.
+- Changed menu context handler - creation of popup window removed.
+- Added frame handling -  needed to run JavaScript methods.</PackageReleaseNotes>
     <RepositoryType>Github Repository</RepositoryType>
     <RepositoryUrl>https://github.com/mattkol/Chromely</RepositoryUrl>
   </PropertyGroup>
@@ -32,7 +34,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CefSharp.Common" Version="63.0.3" />
+    <PackageReference Include="CefSharp.Common" Version="65.0.0-pre01" />
     <PackageReference Include="WinApi" Version="4.0.0" />
   </ItemGroup>
 

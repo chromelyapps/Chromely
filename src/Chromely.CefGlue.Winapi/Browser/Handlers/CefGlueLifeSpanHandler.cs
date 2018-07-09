@@ -32,8 +32,9 @@
 
 namespace Chromely.CefGlue.Winapi.Browser.Handlers
 {
-    using Chromely.CefGlue.Winapi.Browser.EventParams;
     using Chromely.Core.Host;
+    using Chromely.Core.Infrastructure;
+
     using Xilium.CefGlue;
 
     /// <summary>
@@ -133,22 +134,13 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
         /// </returns>
         protected override bool OnBeforePopup(CefBrowser browser, CefFrame frame, string targetUrl, string targetFrameName, CefWindowOpenDisposition targetDisposition, bool userGesture, CefPopupFeatures popupFeatures, CefWindowInfo windowInfo, ref CefClient client, CefBrowserSettings settings, ref bool noJavascriptAccess)
         {
-            var eventArgs = new BeforePopupEventArgs(
-                frame,
-                targetUrl,
-                targetFrameName,
-                popupFeatures,
-                windowInfo,
-                client,
-                settings,
-                noJavascriptAccess);
+            var isUrlExternal = UrlSchemeProvider.IsUrlRegisteredExternal(targetUrl);
+            if (isUrlExternal)
+            {
+                RegisteredExternalUrl.Launch(targetUrl);
+            }
 
-            this.mBrowser.InvokeAsyncIfPossible(() => this.mBrowser.OnBeforePopup(eventArgs));
-
-            client = eventArgs.Client;
-            noJavascriptAccess = eventArgs.NoJavascriptAccess;
-
-            return eventArgs.Handled;
+            return true;
         }
     }
 }

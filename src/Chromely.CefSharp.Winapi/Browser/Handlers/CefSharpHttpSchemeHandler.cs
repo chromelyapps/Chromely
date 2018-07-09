@@ -78,7 +78,7 @@ namespace Chromely.CefSharp.Winapi.Browser.Handlers
             bool isCustomScheme = UrlSchemeProvider.IsUrlOfRegisteredCustomScheme(request.Url);
             if (isCustomScheme)
             {
-                Task.Factory.StartNew(() =>
+                Task.Run(() =>
                 {
                     using (callback)
                     {

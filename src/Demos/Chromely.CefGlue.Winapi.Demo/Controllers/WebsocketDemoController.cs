@@ -33,8 +33,9 @@ namespace Chromely.CefGlue.Winapi.Demo.Controllers
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
-
+    using System.Threading.Tasks;
+    using Chromely.CefGlue.Winapi.Browser.ServerHandlers;
+    using Chromely.Core.Infrastructure;
     using Chromely.Core.RestfulService;
 
     /// <summary>
@@ -44,13 +45,46 @@ namespace Chromely.CefGlue.Winapi.Demo.Controllers
     public class WebsocketDemoController : ChromelyController
     {
         /// <summary>
+        /// The m seconds delay.
+        /// </summary>
+        private readonly int mSecondsDelay;
+
+        /// <summary>
+        /// The m receive from server.
+        /// </summary>
+        private bool mReceiveFromServer;
+
+        /// <summary>
+        /// The m receiver connection id.
+        /// </summary>
+        private int mReceiverConnectionId;
+
+        /// <summary>
+        /// The m server sent messages.
+        /// </summary>
+        private List<string> mServerSentMessages;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="WebsocketDemoController"/> class.
         /// </summary>
         public WebsocketDemoController()
         {
+            this.mReceiveFromServer = false;
+            this.mSecondsDelay = 5;
+            this.mReceiverConnectionId = 0;
+
+            this.mServerSentMessages = new List<string>();
+            this.mServerSentMessages.Add("https://github.com/mattkol/Chromely");
+            this.mServerSentMessages.Add("Chromely Webscocket demo");
+            this.mServerSentMessages.Add("Build HTML5 desktop apps with Chromely");
+            this.mServerSentMessages.Add("Real-time app dev with Chromely");
+            this.mServerSentMessages.Add("For more info see - https://github.com/mattkol/Chromely/wiki/Real-time-with-Websocket");
+
             this.RegisterGetRequest("/websocketmanager/start", this.StartServer);
             this.RegisterGetRequest("/websocketmanager/stop", this.StopServer);
             this.RegisterGetRequest("/websocketmanager/status", this.CheckStatus);
+            this.RegisterPostRequest("/receivefromserver/start", this.StartReceivingFromServer);
+            this.RegisterPostRequest("/receivefromserver/stop", this.StopReceivingFromServer);
         }
 
         /// <summary>
@@ -110,6 +144,81 @@ namespace Chromely.CefGlue.Winapi.Demo.Controllers
             response.StatusText = "OK";
             response.Data = WebsocketServerRunner.IsServerRunning;
             return response;
+        }
+
+        /// <summary>
+        /// The start receiving from server.
+        /// </summary>
+        /// <param name="request">
+        /// The request.
+        /// </param>
+        /// <returns>
+        /// The <see cref="ChromelyResponse"/>.
+        /// </returns>
+        private ChromelyResponse StartReceivingFromServer(ChromelyRequest request)
+        {
+            string clientname = request.PostData?.ToString() ?? string.Empty;
+            this.mReceiverConnectionId = ConnectionNameMapper.GetConnectionId(clientname);
+            if (!this.mReceiveFromServer)
+            {
+                this.mReceiveFromServer = true;
+                this.SendMessagesToClient();
+            }
+
+            ChromelyResponse response = new ChromelyResponse(request.Id);
+            response.ReadyState = (int)ReadyState.ResponseIsReady;
+            response.Status = (int)System.Net.HttpStatusCode.OK;
+            response.StatusText = "OK";
+            response.Data = "OK";
+            return response;
+        }
+
+        /// <summary>
+        /// The stop receiving from server.
+        /// </summary>
+        /// <param name="request">
+        /// The request.
+        /// </param>
+        /// <returns>
+        /// The <see cref="ChromelyResponse"/>.
+        /// </returns>
+        private ChromelyResponse StopReceivingFromServer(ChromelyRequest request)
+        {
+            this.mReceiveFromServer = false;
+
+            ChromelyResponse response = new ChromelyResponse(request.Id);
+            response.ReadyState = (int)ReadyState.ResponseIsReady;
+            response.Status = (int)System.Net.HttpStatusCode.OK;
+            response.StatusText = "OK";
+            response.Data = "OK";
+            return response;
+        }
+
+        /// <summary>
+        /// The send messages to client.
+        /// </summary>
+        private void SendMessagesToClient()
+        {
+            Task.Run(() =>
+                {
+                    try
+                    {
+                        int index = 0;
+                        while (this.mReceiveFromServer)
+                        {
+                            string info = this.mServerSentMessages[index];
+                            string data = $"{DateTime.Now}: {info}.";
+                            WebsocketMessageSender.Send(this.mReceiverConnectionId, data);
+                            System.Threading.Thread.Sleep(this.mSecondsDelay * 1000);
+                            index++;
+                            index = (index >= this.mServerSentMessages.Count) ? 0 : index;
+                        }
+                    }
+                    catch (Exception exception)
+                    {
+                        Log.Error(exception);
+                    }
+                });
         }
     }
 }

@@ -91,11 +91,6 @@ namespace Chromely.Core.Helpers
         DragHandler,
 
         /// <summary>
-        /// The geolocation handler.
-        /// </summary>
-        GeolocationHandler,
-
-        /// <summary>
         /// The download handler.
         /// </summary>
         DownloadHandler,

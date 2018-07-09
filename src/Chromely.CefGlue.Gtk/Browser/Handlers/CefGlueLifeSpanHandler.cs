@@ -32,6 +32,8 @@
 
 namespace Chromely.CefGlue.Gtk.Browser.Handlers
 {
+    using Chromely.Core.Infrastructure;
+
     using Xilium.CefGlue;
 
     /// <summary>
@@ -87,6 +89,56 @@ namespace Chromely.CefGlue.Gtk.Browser.Handlers
         /// </param>
         protected override void OnBeforeClose(CefBrowser browser)
         {
+        }
+
+        /// <summary>
+        /// The on before popup.
+        /// </summary>
+        /// <param name="browser">
+        /// The browser.
+        /// </param>
+        /// <param name="frame">
+        /// The frame.
+        /// </param>
+        /// <param name="targetUrl">
+        /// The target url.
+        /// </param>
+        /// <param name="targetFrameName">
+        /// The target frame name.
+        /// </param>
+        /// <param name="targetDisposition">
+        /// The target disposition.
+        /// </param>
+        /// <param name="userGesture">
+        /// The user gesture.
+        /// </param>
+        /// <param name="popupFeatures">
+        /// The popup features.
+        /// </param>
+        /// <param name="windowInfo">
+        /// The window info.
+        /// </param>
+        /// <param name="client">
+        /// The client.
+        /// </param>
+        /// <param name="settings">
+        /// The settings.
+        /// </param>
+        /// <param name="noJavascriptAccess">
+        /// The no javascript access.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        protected override bool OnBeforePopup(CefBrowser browser, CefFrame frame, string targetUrl, string targetFrameName, CefWindowOpenDisposition targetDisposition, bool userGesture, CefPopupFeatures popupFeatures, CefWindowInfo windowInfo, ref CefClient client, CefBrowserSettings settings, ref bool noJavascriptAccess)
+        {
+            var isUrlExternal = UrlSchemeProvider.IsUrlRegisteredExternal(targetUrl);
+            if (isUrlExternal)
+            {
+                RegisteredExternalUrl.Launch(targetUrl);
+            }
+
+            return true;
         }
     }
 }

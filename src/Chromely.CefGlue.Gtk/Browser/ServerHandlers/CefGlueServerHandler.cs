@@ -31,14 +31,8 @@
 namespace Chromely.CefGlue.Gtk.Browser.ServerHandlers
 {
     using System;
-    using System.Runtime.InteropServices;
-    using System.Text;
-    using System.Threading.Tasks;
-
-    using Chromely.CefGlue.Gtk.RestfulService;
+    using Chromely.Core;
     using Chromely.Core.Infrastructure;
-    using Chromely.Core.RestfulService;
-    using LitJson;
     using Xilium.CefGlue;
 
     /// <summary>
@@ -57,6 +51,16 @@ namespace Chromely.CefGlue.Gtk.Browser.ServerHandlers
         private const int DefaultServerBacklog = 10;
 
         /// <summary>
+        /// The lock obj.
+        /// </summary>
+        private readonly object mlockObj = new object();
+
+        /// <summary>
+        /// The m websocket handler.
+        /// </summary>
+        private readonly IChromelyWebsocketHandler mWebsocketHandler;
+
+        /// <summary>
         /// The m complete callback.
         /// </summary>
         private Action mCompleteCallback;
@@ -65,6 +69,17 @@ namespace Chromely.CefGlue.Gtk.Browser.ServerHandlers
         /// The m server.
         /// </summary>
         private CefServer mServer;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CefGlueServerHandler"/> class.
+        /// </summary>
+        /// <param name="websocketHandler">
+        /// The websocket handler.
+        /// </param>
+        public CefGlueServerHandler(IChromelyWebsocketHandler websocketHandler)
+        {
+            this.mWebsocketHandler = websocketHandler;
+        }
 
         /// <summary>
         /// Gets the address.
@@ -207,6 +222,7 @@ namespace Chromely.CefGlue.Gtk.Browser.ServerHandlers
         {
             if (this.mServer == null)
             {
+                ConnectionNameMapper.Clear();
                 this.mServer = server;
                 IoC.RegisterInstance(typeof(CefServer), typeof(CefServer).FullName, this.mServer);
                 this.IsServerRunning = server.IsRunning;
@@ -337,37 +353,10 @@ namespace Chromely.CefGlue.Gtk.Browser.ServerHandlers
         /// </param>
         protected override void OnWebSocketMessage(CefServer server, int connectionId, IntPtr data, long dataSize)
         {
-            Task.Factory.StartNew(() =>
+            lock (this.mlockObj)
             {
-                IntPtr tempPtr = IntPtr.Zero;
-                IntPtr outIntPtr = IntPtr.Zero;
-
-                try
-                {
-                    var managedArray = new byte[dataSize];
-                    Marshal.Copy(data, managedArray, 0, (int)dataSize);
-                    tempPtr = Marshal.AllocHGlobal(managedArray.Length);
-                    Marshal.Copy(managedArray, 0, tempPtr, managedArray.Length);
-
-                    var requestString = Encoding.UTF8.GetString(managedArray);
-
-                    var jsonData = JsonMapper.ToObject<JsonData>(requestString);
-                    var request = new ChromelyRequest(jsonData);
-
-                    var response = RequestTaskRunner.Run(request);
-                    WebsocketMessageSender.Send(connectionId, response);
-                }
-                catch (Exception exception)
-                {
-                    Log.Error(exception);
-                }
-                finally
-                {
-                    // Free the unmanaged memory.
-                    Marshal.FreeHGlobal(tempPtr);
-                    Marshal.FreeHGlobal(outIntPtr);
-                }
-            });
+                this.mWebsocketHandler?.OnMessage(connectionId, data, dataSize);
+            }
         }
 
         /// <summary>

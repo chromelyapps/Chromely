@@ -57,6 +57,7 @@ namespace Chromely.CefGlue.Gtk.ChromeHost
         protected HostBase(ChromelyConfiguration hostConfig)
         {
             this.HostConfig = hostConfig;
+            IoC.RegisterInstance(typeof(ChromelyConfiguration), typeof(ChromelyConfiguration).FullName, hostConfig);
             this.ServiceAssemblies = new List<Assembly>();
         }
 

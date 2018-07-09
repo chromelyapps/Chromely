@@ -76,8 +76,7 @@ namespace Chromely.CefGlue.Winapi.Demo
                                               .WithLogSeverity(LogSeverity.Info)
                                               .UseDefaultLogger("logs\\chromely_new.log")
                                               .UseDefaultResourceSchemeHandler("local", string.Empty)
-                                              .UseDefaultHttpSchemeHandler("http", "chromely.com")
-                                              .StartWebsocketServerWith(string.Empty, 8181);
+                                              .UseDefaultHttpSchemeHandler("http", "chromely.com");
 
                 var factory = WinapiHostFactory.Init("chromely.ico");
                 using (var window = factory.CreateWindow(
