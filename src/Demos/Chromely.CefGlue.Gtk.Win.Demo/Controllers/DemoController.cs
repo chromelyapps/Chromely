@@ -128,6 +128,13 @@ namespace Chromely.CefGlue.Gtk.Win.Demo.Controllers
         /// <summary>
         /// Initializes a new instance of the <see cref="MovieInfo"/> class.
         /// </summary>
+        public MovieInfo()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MovieInfo"/> class.
+        /// </summary>
         /// <param name="id">
         /// The id.
         /// </param>
@@ -155,14 +162,6 @@ namespace Chromely.CefGlue.Gtk.Win.Demo.Controllers
             this.Rating = rating;
             this.Date = DateTime.Now;
             this.RestfulAssembly = assembly;
-        }
-
-        /// <summary>
-        /// Initializes a new empty instance of the <see cref="MovieInfo"/> class.
-        /// </summary>
-        public MovieInfo()
-        {
-
         }
 
         public int Id { get; set; }
