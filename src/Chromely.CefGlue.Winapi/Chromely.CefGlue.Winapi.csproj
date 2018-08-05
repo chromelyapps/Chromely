@@ -19,7 +19,7 @@
     <PackageReleaseNotes>- CefGlue source code is now included, Chromely.Unofficial.CefGlue.NetStd is no longer needed.
 - Websocket implementation -  implements Cef CefServer - https://bitbucket.org/chromiumembedded/cef/issues/2278/expose-internal-http-websockets-server
 - Changed menu context handler - devtool now only available during debug.
-- Changed menu context handler - creation of popup window removed.
+- Changed lifespan  handler - creation of popup window removed.
 - Added frame handling - needed to run JavaScript methods.</PackageReleaseNotes>
     <FileVersion>66.0.0.0</FileVersion>
     <RepositoryType>Github Repository</RepositoryType>

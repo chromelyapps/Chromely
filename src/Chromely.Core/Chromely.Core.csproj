@@ -16,8 +16,7 @@
     <PackageIconUrl>https://github.com/mattkol/Chromely/blob/master/nugets/chromely.ico?raw=true</PackageIconUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>- Websocket handler interface added.
-</PackageReleaseNotes>
+    <PackageReleaseNotes>- Websocket implementation</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/mattkol/Chromely</RepositoryUrl>
     <RepositoryType>Github Repository</RepositoryType>
   </PropertyGroup>

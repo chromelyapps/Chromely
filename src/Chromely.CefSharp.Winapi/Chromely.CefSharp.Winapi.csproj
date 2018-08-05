@@ -18,7 +18,7 @@
     <PackageTags>Cef Chromium HTML5 Desktop Chromely CefSharp Restful  Ajax HTTP XHR JavascriptIntegration</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageReleaseNotes>- Changed menu context handler - devtool now only available during debug.
-- Changed menu context handler - creation of popup window removed.
+- Changed lifespan handler - creation of popup window removed.
 - Added frame handling -  needed to run JavaScript methods.</PackageReleaseNotes>
     <RepositoryType>Github Repository</RepositoryType>
     <RepositoryUrl>https://github.com/mattkol/Chromely</RepositoryUrl>

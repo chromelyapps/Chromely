@@ -242,11 +242,6 @@
             Gets or sets the resource handler factory.
             </summary>
         </member>
-        <member name="P:Chromely.CefSharp.Winapi.Browser.ChromiumWebBrowser.GeolocationHandler">
-            <summary>
-            Gets or sets the geolocation handler.
-            </summary>
-        </member>
         <member name="P:Chromely.CefSharp.Winapi.Browser.ChromiumWebBrowser.CanGoForward">
             <summary>
             Gets a value indicating whether can go forward.
@@ -446,6 +441,64 @@
             will attempt to load libcef.dll and will subsiquently throw an exception.
             </summary>
         </member>
+        <member name="T:Chromely.CefSharp.Winapi.Browser.FrameHandlers.CefSharpFrameHandler">
+            <summary>
+            The CefSharp frame handler.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefSharp.Winapi.Browser.FrameHandlers.CefSharpFrameHandler.browser">
+            <summary>
+            The browser.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefSharp.Winapi.Browser.FrameHandlers.CefSharpFrameHandler.#ctor(CefSharp.IBrowser)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.CefSharp.Winapi.Browser.FrameHandlers.CefSharpFrameHandler"/> class.
+            </summary>
+            <param name="browser">
+            The browser.
+            </param>
+        </member>
+        <member name="P:Chromely.CefSharp.Winapi.Browser.FrameHandlers.CefSharpFrameHandler.Browser">
+            <summary>
+            Gets the browser.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefSharp.Winapi.Browser.FrameHandlers.CefSharpFrameHandler.GetFrameIdentifiers">
+            <summary>
+            Gets the get frame identifiers.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefSharp.Winapi.Browser.FrameHandlers.CefSharpFrameHandler.GetFrameNames">
+            <summary>
+            Gets the get frame names.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefSharp.Winapi.Browser.FrameHandlers.CefSharpFrameHandler.GetMainFrame">
+            <summary>
+            The get main frame.
+            </summary>
+            <returns>
+            The <see>
+                    <cref>IFrame</cref>
+                </see>
+                .
+            </returns>
+        </member>
+        <member name="M:Chromely.CefSharp.Winapi.Browser.FrameHandlers.CefSharpFrameHandler.GetFrame(System.String)">
+            <summary>
+            The get frame.
+            </summary>
+            <param name="frameName">
+            The frame name.
+            </param>
+            <returns>
+            The <see>
+                    <cref>IFrame</cref>
+                </see>
+                .
+            </returns>
+        </member>
         <member name="T:Chromely.CefSharp.Winapi.Browser.Handlers.CallbackResponseStruct">
             <summary>
             The callback response struct.
@@ -473,7 +526,7 @@
             <summary>
             The get json.
             </summary>
-            <param name="routePath">
+            <param name="path">
             The route path.
             </param>
             <param name="parameters">
@@ -487,7 +540,7 @@
             <summary>
             The get json.
             </summary>
-            <param name="routePath">
+            <param name="path">
             The route path.
             </param>
             <param name="parameters">
@@ -501,7 +554,7 @@
             <summary>
             The post json.
             </summary>
-            <param name="routePath">
+            <param name="path">
             The route path.
             </param>
             <param name="parameters">
@@ -518,7 +571,7 @@
             <summary>
             The post json.
             </summary>
-            <param name="routePath">
+            <param name="path">
             The route path.
             </param>
             <param name="parameters">
@@ -544,6 +597,16 @@
         <member name="F:Chromely.CefSharp.Winapi.Browser.Handlers.CefSharpContextMenuHandler.CloseDevTools">
             <summary>
             The close dev tools.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefSharp.Winapi.Browser.Handlers.CefSharpContextMenuHandler.debugging">
+            <summary>
+            The debugging.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefSharp.Winapi.Browser.Handlers.CefSharpContextMenuHandler.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.CefSharp.Winapi.Browser.Handlers.CefSharpContextMenuHandler"/> class.
             </summary>
         </member>
         <member name="M:Chromely.CefSharp.Winapi.Browser.Handlers.CefSharpContextMenuHandler.CefSharp#IContextMenuHandler#OnBeforeContextMenu(CefSharp.IWebBrowser,CefSharp.IBrowser,CefSharp.IFrame,CefSharp.IContextMenuParams,CefSharp.IMenuModel)">
@@ -706,6 +769,91 @@
             </param>
             <returns>
             The <see cref="T:CefSharp.IResourceHandler"/>.
+            </returns>
+        </member>
+        <member name="T:Chromely.CefSharp.Winapi.Browser.Handlers.CefSharpLifeSpanHandler">
+            <summary>
+            The cef sharp life span handler.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefSharp.Winapi.Browser.Handlers.CefSharpLifeSpanHandler.DoClose(CefSharp.IWebBrowser,CefSharp.IBrowser)">
+            <summary>
+            The do close.
+            </summary>
+            <param name="browserControl">
+            The browser control.
+            </param>
+            <param name="browser">
+            The browser.
+            </param>
+            <returns>
+            The <see cref="T:System.Boolean"/>.
+            </returns>
+        </member>
+        <member name="M:Chromely.CefSharp.Winapi.Browser.Handlers.CefSharpLifeSpanHandler.OnAfterCreated(CefSharp.IWebBrowser,CefSharp.IBrowser)">
+            <summary>
+            The on after created.
+            </summary>
+            <param name="browserControl">
+            The browser control.
+            </param>
+            <param name="browser">
+            The browser.
+            </param>
+        </member>
+        <member name="M:Chromely.CefSharp.Winapi.Browser.Handlers.CefSharpLifeSpanHandler.OnBeforeClose(CefSharp.IWebBrowser,CefSharp.IBrowser)">
+            <summary>
+            The on before close.
+            </summary>
+            <param name="browserControl">
+            The browser control.
+            </param>
+            <param name="browser">
+            The browser.
+            </param>
+        </member>
+        <member name="M:Chromely.CefSharp.Winapi.Browser.Handlers.CefSharpLifeSpanHandler.OnBeforePopup(CefSharp.IWebBrowser,CefSharp.IBrowser,CefSharp.IFrame,System.String,System.String,CefSharp.WindowOpenDisposition,System.Boolean,CefSharp.IPopupFeatures,CefSharp.IWindowInfo,CefSharp.IBrowserSettings,System.Boolean@,CefSharp.IWebBrowser@)">
+            <summary>
+            The on before popup.
+            </summary>
+            <param name="browserControl">
+            The browser control.
+            </param>
+            <param name="browser">
+            The browser.
+            </param>
+            <param name="frame">
+            The frame.
+            </param>
+            <param name="targetUrl">
+            The target url.
+            </param>
+            <param name="targetFrameName">
+            The target frame name.
+            </param>
+            <param name="targetDisposition">
+            The target disposition.
+            </param>
+            <param name="userGesture">
+            The user gesture.
+            </param>
+            <param name="popupFeatures">
+            The popup features.
+            </param>
+            <param name="windowInfo">
+            The window info.
+            </param>
+            <param name="browserSettings">
+            The browser settings.
+            </param>
+            <param name="noJavascriptAccess">
+            The no javascript access.
+            </param>
+            <param name="newBrowser">
+            The new browser.
+            </param>
+            <returns>
+            The <see cref="T:System.Boolean"/>.
             </returns>
         </member>
         <member name="T:Chromely.CefSharp.Winapi.Browser.Handlers.CefSharpRequestHandler">
@@ -905,6 +1053,49 @@
             <param name="status">
             The status.
             </param>
+        </member>
+        <member name="M:Chromely.CefSharp.Winapi.Browser.Handlers.CefSharpRequestHandler.CanGetCookies(CefSharp.IWebBrowser,CefSharp.IBrowser,CefSharp.IFrame,CefSharp.IRequest)">
+            <summary>
+            The can get cookies.
+            </summary>
+            <param name="browserControl">
+            The browser control.
+            </param>
+            <param name="browser">
+            The browser.
+            </param>
+            <param name="frame">
+            The frame.
+            </param>
+            <param name="request">
+            The request.
+            </param>
+            <returns>
+            The <see cref="T:System.Boolean"/>.
+            </returns>
+        </member>
+        <member name="M:Chromely.CefSharp.Winapi.Browser.Handlers.CefSharpRequestHandler.CanSetCookie(CefSharp.IWebBrowser,CefSharp.IBrowser,CefSharp.IFrame,CefSharp.IRequest,CefSharp.Cookie)">
+            <summary>
+            The can set cookie.
+            </summary>
+            <param name="browserControl">
+            The browser control.
+            </param>
+            <param name="browser">
+            The browser.
+            </param>
+            <param name="frame">
+            The frame.
+            </param>
+            <param name="request">
+            The request.
+            </param>
+            <param name="cookie">
+            The cookie.
+            </param>
+            <returns>
+            The <see cref="T:System.Boolean"/>.
+            </returns>
         </member>
         <member name="M:Chromely.CefSharp.Winapi.Browser.Handlers.CefSharpRequestHandler.CefSharp#IRequestHandler#OnQuotaRequest(CefSharp.IWebBrowser,CefSharp.IBrowser,System.String,System.Int64,CefSharp.IRequestCallback)">
             <summary>
@@ -1325,38 +1516,46 @@
             The event args.
             </param>
         </member>
-        <member name="T:Chromely.CefSharp.Winapi.HostEventLoop">
+        <member name="T:Chromely.CefSharp.Winapi.FrameHandler">
             <summary>
-            The host event loop.
+            The frame handler extension.
             </summary>
         </member>
-        <member name="F:Chromely.CefSharp.Winapi.HostEventLoop.mHostConfig">
+        <member name="F:Chromely.CefSharp.Winapi.FrameHandler.browser">
             <summary>
-            The m_host config.
+            The browser.
             </summary>
         </member>
-        <member name="M:Chromely.CefSharp.Winapi.HostEventLoop.#ctor">
+        <member name="P:Chromely.CefSharp.Winapi.FrameHandler.Browser">
             <summary>
-            Initializes a new instance of the <see cref="T:Chromely.CefSharp.Winapi.HostEventLoop"/> class.
+            Gets the browser.
             </summary>
         </member>
-        <member name="M:Chromely.CefSharp.Winapi.HostEventLoop.RunCore">
+        <member name="M:Chromely.CefSharp.Winapi.FrameHandler.GetMainFrame">
             <summary>
-            The run core.
+            The get main frame.
             </summary>
             <returns>
-            The <see cref="T:System.Int32"/>.
+            The <see cref="T:CefSharp.IFrame"/>.
             </returns>
         </member>
-        <member name="M:Chromely.CefSharp.Winapi.HostEventLoop.Run(WinApi.Windows.WindowCore)">
+        <member name="M:Chromely.CefSharp.Winapi.FrameHandler.GetFrame(System.String)">
             <summary>
-            The run.
+            The get frame.
             </summary>
-            <param name="mainWindow">
-            The main window.
+            <param name="name">
+            The name.
             </param>
             <returns>
-            The <see cref="T:System.Int32"/>.
+            The <see cref="T:CefSharp.IFrame"/>.
+            </returns>
+        </member>
+        <member name="M:Chromely.CefSharp.Winapi.FrameHandler.GetBrowser">
+            <summary>
+            The get browser.
+            </summary>
+            <returns>
+            The <see cref="T:CefSharp.IBrowser"/>.
             </returns>
         </member>
         <member name="T:Chromely.CefSharp.Winapi.HostHelpers">
@@ -1514,12 +1713,15 @@
             The request task runner.
             </summary>
         </member>
-        <member name="M:Chromely.CefSharp.Winapi.RestfulService.RequestTaskRunner.RunAsync(System.String,System.Object,System.Object)">
+        <member name="M:Chromely.CefSharp.Winapi.RestfulService.RequestTaskRunner.RunAsync(System.String,Chromely.Core.RestfulService.RoutePath,System.Object,System.Object)">
             <summary>
             The run async.
             </summary>
+            <param name="requestId">
+            The request identifier.
+            </param>
             <param name="routePath">
-            The route path.
+            The route routePath.
             </param>
             <param name="parameters">
             The parameters.
@@ -1545,10 +1747,13 @@
             Generic exception - Route path not valid.
             </exception>
         </member>
-        <member name="M:Chromely.CefSharp.Winapi.RestfulService.RequestTaskRunner.Run(System.String,System.Object,System.Object)">
+        <member name="M:Chromely.CefSharp.Winapi.RestfulService.RequestTaskRunner.Run(System.String,Chromely.Core.RestfulService.RoutePath,System.Object,System.Object)">
             <summary>
             The run.
             </summary>
+            <param name="requestId">
+            The request identifier.
+            </param>
             <param name="routePath">
             The route path.
             </param>
@@ -1562,10 +1767,13 @@
             The <see cref="T:Chromely.Core.RestfulService.ChromelyResponse"/>.
             </returns>
         </member>
-        <member name="M:Chromely.CefSharp.Winapi.RestfulService.RequestTaskRunner.ExcuteRoute(System.String,System.Object,System.Object)">
+        <member name="M:Chromely.CefSharp.Winapi.RestfulService.RequestTaskRunner.ExcuteRoute(System.String,Chromely.Core.RestfulService.RoutePath,System.Object,System.Object)">
             <summary>
             The excute route.
             </summary>
+            <param name="requestId">
+            The request identifier.
+            </param>
             <param name="routePath">
             The route path.
             </param>
@@ -1588,17 +1796,6 @@
             </summary>
             <returns>
             The <see cref="T:Chromely.Core.RestfulService.ChromelyResponse"/>.
-            </returns>
-        </member>
-        <member name="M:Chromely.CefSharp.Winapi.RestfulService.RequestTaskRunner.GetParameters(System.String)">
-            <summary>
-            The get parameters.
-            </summary>
-            <param name="url">
-            The url.
-            </param>
-            <returns>
-            The name value collection.
             </returns>
         </member>
         <member name="M:Chromely.CefSharp.Winapi.RestfulService.RequestTaskRunner.GetPostData(CefSharp.IRequest)">
