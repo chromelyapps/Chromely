@@ -29,6 +29,21 @@
             Gets or sets the start url.
             </summary>
         </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.CefBrowserConfig.StartWebSocket">
+            <summary>
+            Gets or sets a value indicating whether start web socket.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.CefBrowserConfig.WebsocketAddress">
+            <summary>
+            Gets or sets the websocket address.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.CefBrowserConfig.WebsocketPort">
+            <summary>
+            Gets or sets the websocket port.
+            </summary>
+        </member>
         <member name="T:Chromely.CefGlue.Gtk.Browser.CefGlueApp">
             <summary>
             The CefGlue app.
@@ -84,6 +99,11 @@
             The CefGlue browser.
             </summary>
         </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser.mHostConfig">
+            <summary>
+            The host config.
+            </summary>
+        </member>
         <member name="F:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser.mSettings">
             <summary>
             The CefBrowserSettings object.
@@ -94,18 +114,23 @@
             The CefGlueClient object.
             </summary>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser.#ctor(System.Object,Xilium.CefGlue.CefBrowserSettings,System.String)">
+        <member name="F:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser.mWebsocketStarted">
+            <summary>
+            The m websocket started.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser.#ctor(System.Object,Chromely.Core.ChromelyConfiguration,Xilium.CefGlue.CefBrowserSettings)">
             <summary>
             Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser"/> class.
             </summary>
             <param name="owner">
             The owner.
             </param>
+            <param name="hostConfig">
+            The host config.
+            </param>
             <param name="settings">
             The settings.
-            </param>
-            <param name="startUrl">
-            The start url.
             </param>
         </member>
         <member name="E:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser.Created">
@@ -329,6 +354,11 @@
             <param name="eventArgs">
             The event args.
             </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser.StartWebsocket">
+            <summary>
+            The start websocket.
+            </summary>
         </member>
         <member name="T:Chromely.CefGlue.Gtk.Browser.CefGlueClient">
             <summary>
@@ -1013,6 +1043,64 @@
             Gets or sets a value indicating whether handled.
             </summary>
         </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.FrameHandlers.CefGlueFrameHandler">
+            <summary>
+            The CefGlue frame handler.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.FrameHandlers.CefGlueFrameHandler.browser">
+            <summary>
+            The browser.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.FrameHandlers.CefGlueFrameHandler.#ctor(Xilium.CefGlue.CefBrowser)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.Browser.FrameHandlers.CefGlueFrameHandler"/> class.
+            </summary>
+            <param name="browser">
+            The browser.
+            </param>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.FrameHandlers.CefGlueFrameHandler.Browser">
+            <summary>
+            Gets the browser.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.FrameHandlers.CefGlueFrameHandler.GetFrameIdentifiers">
+            <summary>
+            Gets the get frame identifiers.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.FrameHandlers.CefGlueFrameHandler.GetFrameNames">
+            <summary>
+            Gets the get frame names.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.FrameHandlers.CefGlueFrameHandler.GetMainFrame">
+            <summary>
+            The get main frame.
+            </summary>
+            <returns>
+            The <see>
+                    <cref>CefFrame</cref>
+                </see>
+                .
+            </returns>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.FrameHandlers.CefGlueFrameHandler.GetFrame(System.String)">
+            <summary>
+            The get frame.
+            </summary>
+            <param name="frameName">
+            The frame name.
+            </param>
+            <returns>
+            The <see>
+                    <cref>IFrame</cref>
+                </see>
+                .
+            </returns>
+        </member>
         <member name="T:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueContextMenuHandler">
             <summary>
             The CefGlue context menu handler.
@@ -1026,6 +1114,16 @@
         <member name="F:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueContextMenuHandler.CloseDevTools">
             <summary>
             The close dev tools.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueContextMenuHandler.debugging">
+            <summary>
+            The debugging.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueContextMenuHandler.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueContextMenuHandler"/> class.
             </summary>
         </member>
         <member name="M:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueContextMenuHandler.OnBeforeContextMenu(Xilium.CefGlue.CefBrowser,Xilium.CefGlue.CefFrame,Xilium.CefGlue.CefContextMenuParams,Xilium.CefGlue.CefMenuModel)">
@@ -1362,6 +1460,47 @@
             The browser.
             </param>
         </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueLifeSpanHandler.OnBeforePopup(Xilium.CefGlue.CefBrowser,Xilium.CefGlue.CefFrame,System.String,System.String,Xilium.CefGlue.CefWindowOpenDisposition,System.Boolean,Xilium.CefGlue.CefPopupFeatures,Xilium.CefGlue.CefWindowInfo,Xilium.CefGlue.CefClient@,Xilium.CefGlue.CefBrowserSettings,System.Boolean@)">
+            <summary>
+            The on before popup.
+            </summary>
+            <param name="browser">
+            The browser.
+            </param>
+            <param name="frame">
+            The frame.
+            </param>
+            <param name="targetUrl">
+            The target url.
+            </param>
+            <param name="targetFrameName">
+            The target frame name.
+            </param>
+            <param name="targetDisposition">
+            The target disposition.
+            </param>
+            <param name="userGesture">
+            The user gesture.
+            </param>
+            <param name="popupFeatures">
+            The popup features.
+            </param>
+            <param name="windowInfo">
+            The window info.
+            </param>
+            <param name="client">
+            The client.
+            </param>
+            <param name="settings">
+            The settings.
+            </param>
+            <param name="noJavascriptAccess">
+            The no javascript access.
+            </param>
+            <returns>
+            The <see cref="T:System.Boolean"/>.
+            </returns>
+        </member>
         <member name="T:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueLoadHandler">
             <summary>
             The CefGlue load handler.
@@ -1562,7 +1701,7 @@
             Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueRequestHandler"/> class.
             </summary>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueRequestHandler.OnBeforeBrowse(Xilium.CefGlue.CefBrowser,Xilium.CefGlue.CefFrame,Xilium.CefGlue.CefRequest,System.Boolean)">
+        <member name="M:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueRequestHandler.OnBeforeBrowse(Xilium.CefGlue.CefBrowser,Xilium.CefGlue.CefFrame,Xilium.CefGlue.CefRequest,System.Boolean,System.Boolean)">
             <summary>
             The on before browse.
             </summary>
@@ -1574,6 +1713,9 @@
             </param>
             <param name="request">
             The request.
+            </param>
+            <param name="userGesture">
+            The user gesture.
             </param>
             <param name="isRedirect">
             The is redirect.
@@ -1728,6 +1870,658 @@
             <returns>
             The <see cref="T:Xilium.CefGlue.CefResourceHandler"/>.
             </returns>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler">
+            <summary>
+            The CefGlue server handler.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.DefaultServerAddress">
+            <summary>
+            The default server address.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.DefaultServerBacklog">
+            <summary>
+            The default server backlog.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.mlockObj">
+            <summary>
+            The lock obj.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.mWebsocketHandler">
+            <summary>
+            The m websocket handler.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.mCompleteCallback">
+            <summary>
+            The m complete callback.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.mServer">
+            <summary>
+            The m server.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.#ctor(Chromely.Core.IChromelyWebsocketHandler)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler"/> class.
+            </summary>
+            <param name="websocketHandler">
+            The websocket handler.
+            </param>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.Address">
+            <summary>
+            Gets the address.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.Port">
+            <summary>
+            Gets the port.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.IsServerRunning">
+            <summary>
+            Gets a value indicating whether is server running.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.StartServer(System.String,System.Int32,System.Action)">
+            <summary>
+            The start server.
+            </summary>
+            <param name="address">
+            The address.
+            </param>
+            <param name="port">
+            The port.
+            </param>
+            <param name="completecallback">
+            The completecallback.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.StartServer(System.Int32,System.Action)">
+            <summary>
+            The start server.
+            </summary>
+            <param name="port">
+            The port.
+            </param>
+            <param name="completecallback">
+            The completecallback.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.StopServer(System.Action)">
+            <summary>
+            The stop server.
+            </summary>
+            <param name="completecallback">
+            The completecallback.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.DisposeServer">
+            <summary>
+            The dispose server.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.OnServerCreated(Xilium.CefGlue.CefServer)">
+            <summary>
+            The on server created.
+            </summary>
+            <param name="server">
+            The server.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.OnServerDestroyed(Xilium.CefGlue.CefServer)">
+            <summary>
+            The on server destroyed.
+            </summary>
+            <param name="server">
+            The server.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.OnClientConnected(Xilium.CefGlue.CefServer,System.Int32)">
+            <summary>
+            The on client connected.
+            </summary>
+            <param name="server">
+            The server.
+            </param>
+            <param name="connectionId">
+            The connection id.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.OnClientDisconnected(Xilium.CefGlue.CefServer,System.Int32)">
+            <summary>
+            The on client disconnected.
+            </summary>
+            <param name="server">
+            The server.
+            </param>
+            <param name="connectionId">
+            The connection id.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.OnHttpRequest(Xilium.CefGlue.CefServer,System.Int32,System.String,Xilium.CefGlue.CefRequest)">
+            <summary>
+            The on http request.
+            </summary>
+            <param name="server">
+            The server.
+            </param>
+            <param name="connectionId">
+            The connection id.
+            </param>
+            <param name="clientAddress">
+            The client address.
+            </param>
+            <param name="request">
+            The request.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.OnWebSocketConnected(Xilium.CefGlue.CefServer,System.Int32)">
+            <summary>
+            The on web socket connected.
+            </summary>
+            <param name="server">
+            The server.
+            </param>
+            <param name="connectionId">
+            The connection id.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.OnWebSocketRequest(Xilium.CefGlue.CefServer,System.Int32,System.String,Xilium.CefGlue.CefRequest,Xilium.CefGlue.CefCallback)">
+            <summary>
+            The on web socket request.
+            </summary>
+            <param name="server">
+            The server.
+            </param>
+            <param name="connectionId">
+            The connection id.
+            </param>
+            <param name="clientAddress">
+            The client address.
+            </param>
+            <param name="request">
+            The request.
+            </param>
+            <param name="callback">
+            The callback.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.OnWebSocketMessage(Xilium.CefGlue.CefServer,System.Int32,System.IntPtr,System.Int64)">
+            <summary>
+            The on web socket message.
+            </summary>
+            <param name="server">
+            The server.
+            </param>
+            <param name="connectionId">
+            The connection id.
+            </param>
+            <param name="data">
+            The data.
+            </param>
+            <param name="dataSize">
+            The data size.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.RunCompleteCallback(System.Boolean)">
+            <summary>
+            The run complete callback.
+            </summary>
+            <param name="isRunning">
+            The is running.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.PostTask(Xilium.CefGlue.CefThreadId,System.Action{System.String,System.Int32,System.Action},System.String,System.Int32,System.Action)">
+            <summary>
+            The post task.
+            </summary>
+            <param name="threadId">
+            The thread id.
+            </param>
+            <param name="action">
+            The action.
+            </param>
+            <param name="address">
+            The address.
+            </param>
+            <param name="port">
+            The port.
+            </param>
+            <param name="completionCallback">
+            The completion callback.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.PostTask(Xilium.CefGlue.CefThreadId,System.Action{System.Int32,System.Action},System.Int32,System.Action)">
+            <summary>
+            The post task.
+            </summary>
+            <param name="threadId">
+            The thread id.
+            </param>
+            <param name="action">
+            The action.
+            </param>
+            <param name="port">
+            The port.
+            </param>
+            <param name="completionCallback">
+            The completion callback.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.PostTask(Xilium.CefGlue.CefThreadId,System.Action{System.Action},System.Action)">
+            <summary>
+            The post task.
+            </summary>
+            <param name="threadId">
+            The thread id.
+            </param>
+            <param name="action">
+            The action.
+            </param>
+            <param name="completionCallback">
+            The completion callback.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.PostTask(Xilium.CefGlue.CefThreadId,System.Action{System.Boolean},System.Boolean)">
+            <summary>
+            The post task.
+            </summary>
+            <param name="threadId">
+            The thread id.
+            </param>
+            <param name="action">
+            The action.
+            </param>
+            <param name="flag">
+            The flag.
+            </param>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask1">
+            <summary>
+            The action task.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask1.mAddress">
+            <summary>
+            The m address.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask1.mPort">
+            <summary>
+            The m port.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask1.mCompletionCallback">
+            <summary>
+            The m completion callback.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask1.mAction">
+            <summary>
+            The action.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask1.#ctor(System.Action{System.String,System.Int32,System.Action},System.String,System.Int32,System.Action)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask1"/> class.
+            </summary>
+            <param name="action">
+            The action.
+            </param>
+            <param name="address">
+            The address.
+            </param>
+            <param name="port">
+            The port.
+            </param>
+            <param name="completionCallback">
+            The completion callback.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask1.Execute">
+            <summary>
+            The execute.
+            </summary>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask2">
+            <summary>
+            The action task.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask2.mPort">
+            <summary>
+            The m port.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask2.mCompletionCallback">
+            <summary>
+            The m completion callback.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask2.mAction">
+            <summary>
+            The action.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask2.#ctor(System.Action{System.Int32,System.Action},System.Int32,System.Action)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask2"/> class.
+            </summary>
+            <param name="action">
+            The action.
+            </param>
+            <param name="port">
+            The port.
+            </param>
+            <param name="completionCallback">
+            The completion callback.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask2.Execute">
+            <summary>
+            The execute.
+            </summary>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask3">
+            <summary>
+            The action task.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask3.mCompletionCallback">
+            <summary>
+            The m completion callback.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask3.mAction">
+            <summary>
+            The action.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask3.#ctor(System.Action{System.Action},System.Action)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask3"/> class.
+            </summary>
+            <param name="action">
+            The action.
+            </param>
+            <param name="completionCallback">
+            The completion callback.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask3.Execute">
+            <summary>
+            The execute.
+            </summary>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask4">
+            <summary>
+            The action task.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask4.mFlag">
+            <summary>
+            The m flag.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask4.mAction">
+            <summary>
+            The action.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask4.#ctor(System.Action{System.Boolean},System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask4"/> class.
+            </summary>
+            <param name="action">
+            The action.
+            </param>
+            <param name="flag">
+            The flag.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask4.Execute">
+            <summary>
+            The execute.
+            </summary>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueWebsocketHandler">
+            <summary>
+            The CefGlue websocket handler.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueWebsocketHandler.OnMessage(System.Int32,System.IntPtr,System.Int64)">
+            <summary>
+            The on message.
+            </summary>
+            <param name="connectionId">
+            The connection id.
+            </param>
+            <param name="data">
+            The data.
+            </param>
+            <param name="dataSize">
+            The data size.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueWebsocketHandler.Send(System.Int32,System.IntPtr,System.Int64)">
+            <summary>
+            The send.
+            </summary>
+            <param name="connectionId">
+            The connection id.
+            </param>
+            <param name="data">
+            The data.
+            </param>
+            <param name="dataSize">
+            The data size.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueWebsocketHandler.Send(System.Int32,System.String)">
+            <summary>
+            The send.
+            </summary>
+            <param name="connectionId">
+            The connection id.
+            </param>
+            <param name="data">
+            The data.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueWebsocketHandler.Send(System.Int32,Chromely.Core.RestfulService.ChromelyResponse)">
+            <summary>
+            The send.
+            </summary>
+            <param name="connectionId">
+            The connection id.
+            </param>
+            <param name="response">
+            The response.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueWebsocketHandler.Broadcast(System.Int32,System.IntPtr,System.Int64)">
+            <summary>
+            The broadcast.
+            </summary>
+            <param name="connectionId">
+            The connection id.
+            </param>
+            <param name="data">
+            The data.
+            </param>
+            <param name="dataSize">
+            The data size.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueWebsocketHandler.Broadcast(System.Int32,System.String)">
+            <summary>
+            The broadcast.
+            </summary>
+            <param name="connectionId">
+            The connection id.
+            </param>
+            <param name="data">
+            The data.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueWebsocketHandler.Broadcast(System.Int32,Chromely.Core.RestfulService.ChromelyResponse)">
+            <summary>
+            The broadcast.
+            </summary>
+            <param name="connectionId">
+            The connection id.
+            </param>
+            <param name="response">
+            The response.
+            </param>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.ServerHandlers.ConnectionNameMapper">
+            <summary>
+            The socket connection name mapper.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.ConnectionNameMapper.ConnectionName">
+            <summary>
+            The connection name.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.ConnectionNameMapper.ObjLock">
+            <summary>
+            The lock object.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.ConnectionNameMapper.ConnNameDict">
+            <summary>
+            The conn name dict.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.ServerHandlers.ConnectionNameMapper.ConnectionIds">
+            <summary>
+            Gets the connection ids.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.ConnectionNameMapper.Add(System.String,System.Int32)">
+            <summary>
+            The add.
+            </summary>
+            <param name="url">
+            The name.
+            </param>
+            <param name="connectionId">
+            The connection id.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.ConnectionNameMapper.GetName(System.Int32)">
+            <summary>
+            The get name.
+            </summary>
+            <param name="connectionId">
+            The connection id.
+            </param>
+            <returns>
+            The <see cref="T:System.String"/>.
+            </returns>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.ConnectionNameMapper.GetConnectionId(System.String)">
+            <summary>
+            The get connection id.
+            </summary>
+            <param name="name">
+            The name.
+            </param>
+            <returns>
+            The <see cref="T:System.Int32"/>.
+            </returns>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.ConnectionNameMapper.Clear">
+            <summary>
+            The clear.
+            </summary>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.ServerHandlers.MessageType">
+            <summary>
+            The message type.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.MessageType.None">
+            <summary>
+            The none.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.MessageType.Echo">
+            <summary>
+            The echo.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.MessageType.TargetRecepient">
+            <summary>
+            The target recepient.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.MessageType.Broadcast">
+            <summary>
+            The broadcast.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.MessageType.ControllerAction">
+            <summary>
+            The controller action.
+            </summary>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.ServerHandlers.RequestInfo">
+            <summary>
+            The request info.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.RequestInfo.mMessageType">
+            <summary>
+            The m message type.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.RequestInfo.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.Browser.ServerHandlers.RequestInfo"/> class.
+            </summary>
+            <param name="requestString">
+            The request string.
+            </param>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.ServerHandlers.RequestInfo.Type">
+            <summary>
+            Gets the type.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.ServerHandlers.RequestInfo.TargetConnectionId">
+            <summary>
+            Gets the target connection id.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.ServerHandlers.RequestInfo.TargetName">
+            <summary>
+            Gets the target name.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.ServerHandlers.RequestInfo.Url">
+            <summary>
+            Gets the url.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.ServerHandlers.RequestInfo.Broadcast">
+            <summary>
+            Gets a value indicating whether broadcast.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.ServerHandlers.RequestInfo.Data">
+            <summary>
+            Gets the data.
+            </summary>
         </member>
         <member name="T:Chromely.CefGlue.Gtk.CefSettingsExtension">
             <summary>
@@ -2702,6 +3496,48 @@
             The e.
             </param>
         </member>
+        <member name="T:Chromely.CefGlue.Gtk.FrameHandler">
+            <summary>
+            The frame handler extension.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.FrameHandler.browser">
+            <summary>
+            The browser.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.FrameHandler.Browser">
+            <summary>
+            Gets the browser.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.FrameHandler.GetMainFrame">
+            <summary>
+            The get main frame.
+            </summary>
+            <returns>
+            The <see cref="T:Xilium.CefGlue.CefFrame"/>.
+            </returns>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.FrameHandler.GetFrame(System.String)">
+            <summary>
+            The get frame.
+            </summary>
+            <param name="name">
+            The name.
+            </param>
+            <returns>
+            The <see cref="T:Xilium.CefGlue.CefFrame"/>.
+            </returns>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.FrameHandler.GetBrowser">
+            <summary>
+            The get browser.
+            </summary>
+            <returns>
+            The <see cref="T:Xilium.CefGlue.CefBrowser"/>.
+            </returns>
+        </member>
         <member name="T:Chromely.CefGlue.Gtk.HostHelpers">
             <summary>
             The host helpers.
@@ -2722,6 +3558,19 @@
             The setup default exception handlers.
             </summary>
         </member>
+        <member name="T:Chromely.CefGlue.Gtk.RegisteredExternalUrl">
+            <summary>
+            The registered external url.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.RegisteredExternalUrl.Launch(System.String)">
+            <summary>
+            The launch.
+            </summary>
+            <param name="requestUrl">
+            The request url.
+            </param>
+        </member>
         <member name="T:Chromely.CefGlue.Gtk.RestfulService.RequestTaskRunner">
             <summary>
             The request task runner.
@@ -2741,10 +3590,27 @@
             Generic exception - Route path not valid.
             </exception>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.RestfulService.RequestTaskRunner.Run(System.String,System.Object,System.Object)">
+        <member name="M:Chromely.CefGlue.Gtk.RestfulService.RequestTaskRunner.Run(Chromely.Core.RestfulService.ChromelyRequest)">
             <summary>
             The run.
             </summary>
+            <param name="request">
+            The request.
+            </param>
+            <returns>
+            The <see cref="T:Chromely.Core.RestfulService.ChromelyResponse"/>.
+            </returns>
+            <exception cref="T:System.Exception">
+            Generic exception - Route path not valid.
+            </exception>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.RestfulService.RequestTaskRunner.Run(System.String,Chromely.Core.RestfulService.RoutePath,System.Object,System.Object)">
+            <summary>
+            The run.
+            </summary>
+            <param name="requestId">
+            The request identifier.
+            </param>
             <param name="routePath">
             The route path.
             </param>
@@ -2761,10 +3627,13 @@
             Generic exception - Route path not valid.
             </exception>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.RestfulService.RequestTaskRunner.ExcuteRoute(System.String,System.Object,System.Object)">
+        <member name="M:Chromely.CefGlue.Gtk.RestfulService.RequestTaskRunner.ExcuteRoute(System.String,Chromely.Core.RestfulService.RoutePath,System.Object,System.Object)">
             <summary>
             The excute route.
             </summary>
+            <param name="requestId">
+            The request identifier.
+            </param>
             <param name="routePath">
             The route path.
             </param>
@@ -2789,17 +3658,6 @@
             The <see cref="T:Chromely.Core.RestfulService.ChromelyResponse"/>.
             </returns>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.RestfulService.RequestTaskRunner.GetParameters(System.String)">
-            <summary>
-            The get parameters.
-            </summary>
-            <param name="url">
-            The url.
-            </param>
-            <returns>
-            The name value collection.
-            </returns>
-        </member>
         <member name="M:Chromely.CefGlue.Gtk.RestfulService.RequestTaskRunner.GetPostData(Xilium.CefGlue.CefRequest)">
             <summary>
             The get post data.
@@ -2810,6 +3668,280 @@
             <returns>
             The <see cref="T:System.String"/>.
             </returns>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.WebsocketMessageSender">
+            <summary>
+            The frame handler extension.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.WebsocketMessageSender.ObjLock1">
+            <summary>
+            The lock obejct 1.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.WebsocketMessageSender.ObjLock2">
+            <summary>
+            The lock obejct 2.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.WebsocketMessageSender.ObjLock3">
+            <summary>
+            The lock obejct 3.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.WebsocketMessageSender.ObjLock4">
+            <summary>
+            The lock obejct 4.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.WebsocketMessageSender.ObjLock5">
+            <summary>
+            The lock obejct 5.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.WebsocketMessageSender.ObjLock6">
+            <summary>
+            The lock obejct 6.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.WebsocketMessageSender.ObjLock7">
+            <summary>
+            The lock obejct 7.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.WebsocketMessageSender.ObjLock8">
+            <summary>
+            The lock obejct 8.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.WebsocketMessageSender.cefserver">
+            <summary>
+            The cefserver.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.WebsocketMessageSender.Server">
+            <summary>
+            Gets the browser.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.WebsocketMessageSender.Send(System.String,Chromely.Core.RestfulService.ChromelyResponse)">
+            <summary>
+            The send.
+            </summary>
+            <param name="clientName">
+            The client name.
+            </param>
+            <param name="response">
+            The response.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.WebsocketMessageSender.Send(System.Int32,Chromely.Core.RestfulService.ChromelyResponse)">
+            <summary>
+            The send.
+            </summary>
+            <param name="connectionId">
+            The connection id.
+            </param>
+            <param name="response">
+            The response.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.WebsocketMessageSender.Send(System.String,System.String)">
+            <summary>
+            The send.
+            </summary>
+            <param name="clientName">
+            The client name.
+            </param>
+            <param name="data">
+            The data.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.WebsocketMessageSender.Send(System.Int32,System.String)">
+            <summary>
+            The send.
+            </summary>
+            <param name="connectionId">
+            The connection id.
+            </param>
+            <param name="data">
+            The data.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.WebsocketMessageSender.Send(System.Int32,System.IntPtr,System.Int64)">
+            <summary>
+            The send.
+            </summary>
+            <param name="connectionId">
+            The connection id.
+            </param>
+            <param name="data">
+            The data.
+            </param>
+            <param name="dataSize">
+            The data size.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.WebsocketMessageSender.Broadcast(System.Int32,Chromely.Core.RestfulService.ChromelyResponse)">
+            <summary>
+            The broadcast.
+            </summary>
+            <param name="connectionId">
+            The connection id.
+            </param>
+            <param name="response">
+            The response.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.WebsocketMessageSender.Broadcast(System.Int32,System.String)">
+            <summary>
+            The broadcast.
+            </summary>
+            <param name="connectionId">
+            The connection id.
+            </param>
+            <param name="data">
+            The data.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.WebsocketMessageSender.Broadcast(System.Int32,System.IntPtr,System.Int64)">
+            <summary>
+            The broadcast.
+            </summary>
+            <param name="connectionId">
+            The connection id.
+            </param>
+            <param name="data">
+            The data.
+            </param>
+            <param name="dataSize">
+            The data size.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.WebsocketMessageSender.SendMessage(System.String,System.String)">
+            <summary>
+            The send message.
+            </summary>
+            <param name="clientName">
+            The client name.
+            </param>
+            <param name="data">
+            The data.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.WebsocketMessageSender.SendMessage(System.Int32,System.String)">
+            <summary>
+            The send message.
+            </summary>
+            <param name="connectionId">
+            The connection id.
+            </param>
+            <param name="data">
+            The data.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.WebsocketMessageSender.SendMessage(System.Int32,System.IntPtr,System.Int64)">
+            <summary>
+            The send message.
+            </summary>
+            <param name="connectionId">
+            The connection id.
+            </param>
+            <param name="data">
+            The data.
+            </param>
+            <param name="dataSize">
+            The data size.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.WebsocketMessageSender.BroadcastMessage(System.Int32,System.String)">
+            <summary>
+            The broadcast message.
+            </summary>
+            <param name="connectionId">
+            The connection id.
+            </param>
+            <param name="data">
+            The data.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.WebsocketMessageSender.BroadcastMessage(System.Int32,System.IntPtr,System.Int64)">
+            <summary>
+            The broadcast message.
+            </summary>
+            <param name="connectionId">
+            The connection id.
+            </param>
+            <param name="data">
+            The data.
+            </param>
+            <param name="dataSize">
+            The data size.
+            </param>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.WebsocketServerRunner">
+            <summary>
+            The websocket server runner.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.WebsocketServerRunner.mServerHandler">
+            <summary>
+            The m server handler.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.WebsocketServerRunner.Address">
+            <summary>
+            Gets the server address.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.WebsocketServerRunner.Port">
+            <summary>
+            Gets the port.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.WebsocketServerRunner.IsServerRunning">
+            <summary>
+            Gets a value indicating whether is server running.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.WebsocketServerRunner.StartServer">
+            <summary>
+            The start server.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.WebsocketServerRunner.StartServer(System.Int32)">
+            <summary>
+            The start server.
+            </summary>
+            <param name="port">
+            The port.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.WebsocketServerRunner.StartServer(System.String,System.Int32)">
+            <summary>
+            The start server.
+            </summary>
+            <param name="address">
+            The address.
+            </param>
+            <param name="port">
+            The port.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.WebsocketServerRunner.StopServer">
+            <summary>
+            The stop server.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.WebsocketServerRunner.OnStartServerComplete">
+            <summary>
+            The on start server complete.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.WebsocketServerRunner.OnStopServerComplete">
+            <summary>
+            The on stop server complete.
+            </summary>
         </member>
     </members>
 </doc>

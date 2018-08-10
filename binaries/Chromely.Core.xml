@@ -64,6 +64,26 @@
             Gets or sets the locale.
             </summary>
         </member>
+        <member name="P:Chromely.Core.ChromelyConfiguration.StartWebSocket">
+            <summary>
+            Gets or sets a value indicating whether start web socket.
+            </summary>
+        </member>
+        <member name="P:Chromely.Core.ChromelyConfiguration.WebsocketAddress">
+            <summary>
+            Gets or sets the websocket address.
+            </summary>
+        </member>
+        <member name="P:Chromely.Core.ChromelyConfiguration.WebsocketPort">
+            <summary>
+            Gets or sets the websocket port.
+            </summary>
+        </member>
+        <member name="P:Chromely.Core.ChromelyConfiguration.DebuggingMode">
+            <summary>
+            Gets or sets a value indicating whether is debugging.
+            </summary>
+        </member>
         <member name="P:Chromely.Core.ChromelyConfiguration.CommandLineArgs">
             <summary>
             Gets or sets the command line args.
@@ -105,6 +125,17 @@
             </param>
             <returns>
             The <see cref="T:Chromely.Core.ChromelyConfiguration"/> object.
+            </returns>
+        </member>
+        <member name="M:Chromely.Core.ChromelyConfiguration.WithDebuggingMode(System.Boolean)">
+            <summary>
+            The with is debugging.
+            </summary>
+            <param name="debugging">
+            The isdebugging.
+            </param>
+            <returns>
+            The <see cref="T:Chromely.Core.ChromelyConfiguration"/>.
             </returns>
         </member>
         <member name="M:Chromely.Core.ChromelyConfiguration.WithStartUrl(System.String)">
@@ -246,6 +277,23 @@
             The <see cref="T:Chromely.Core.ChromelyConfiguration"/> object.
             </returns>
         </member>
+        <member name="M:Chromely.Core.ChromelyConfiguration.UseDefaultWebsocketHandler(System.String,System.Int32,System.Boolean)">
+            <summary>
+            The use default websocket handler.
+            </summary>
+            <param name="address">
+            The address.
+            </param>
+            <param name="port">
+            The port.
+            </param>
+            <param name="onloadstartserver">
+            The onloadstartserver.
+            </param>
+            <returns>
+            The <see cref="T:Chromely.Core.ChromelyConfiguration"/>.
+            </returns>
+        </member>
         <member name="M:Chromely.Core.ChromelyConfiguration.WithLogger(Chromely.Core.IChromelyLogger)">
             <summary>
             Sets with logger object to use. Should be of type <see cref="T:Chromely.Core.IChromelyLogger"/>
@@ -348,7 +396,7 @@
             <summary>
             Registers scheme handler.
             </summary>
-            <param name="chromelySchemeHandler">
+            <param name="schemeHandler">
             The chromely scheme handler.
             </param>
             <returns>
@@ -390,7 +438,7 @@
             <summary>
             Registers message router handler.
             </summary>
-            <param name="ChromelyMessageRouterHandler">
+            <param name="messageRouterHandler">
             The chromely messsage router handler.
             </param>
             <returns>
@@ -401,11 +449,31 @@
             <summary>
             Registers message router handler.
             </summary>
-            <param name="ChromelyMessageRouter">
+            <param name="messageRouterHandler">
             The chromely messsage router.
             </param>
             <returns>
             The <see cref="T:Chromely.Core.ChromelyConfiguration"/> object.
+            </returns>
+        </member>
+        <member name="M:Chromely.Core.ChromelyConfiguration.RegisterWebsocketHandler(Chromely.Core.IChromelyWebsocketHandler,System.String,System.Int32,System.Boolean)">
+            <summary>
+            The register websocket handler.
+            </summary>
+            <param name="sockeHandler">
+            The socke handler.
+            </param>
+            <param name="address">
+            The address.
+            </param>
+            <param name="port">
+            The port.
+            </param>
+            <param name="onloadstartserver">
+            The onloadstartserver.
+            </param>
+            <returns>
+            The <see cref="T:Chromely.Core.ChromelyConfiguration"/>.
             </returns>
         </member>
         <member name="T:Chromely.Core.ChromelyConfigurationExtension">
@@ -719,11 +787,6 @@
             The DragHandler interface.
             </summary>
         </member>
-        <member name="T:Chromely.Core.Helpers.CefHandlerFakeTypes.IGeolocationHandler">
-            <summary>
-            The GeolocationHandler interface.
-            </summary>
-        </member>
         <member name="T:Chromely.Core.Helpers.CefHandlerFakeTypes.IDownloadHandler">
             <summary>
             The DownloadHandler interface.
@@ -811,11 +874,6 @@
         <member name="F:Chromely.Core.Helpers.CefHandlerKey.DragHandler">
             <summary>
             The drag handler.
-            </summary>
-        </member>
-        <member name="F:Chromely.Core.Helpers.CefHandlerKey.GeolocationHandler">
-            <summary>
-            The geolocation handler.
             </summary>
         </member>
         <member name="F:Chromely.Core.Helpers.CefHandlerKey.DownloadHandler">
@@ -1485,6 +1543,97 @@
             The message.
             </param>
         </member>
+        <member name="T:Chromely.Core.IChromelyWebsocketHandler">
+            <summary>
+            The ChromelyWebsocketHandler interface.
+            </summary>
+        </member>
+        <member name="M:Chromely.Core.IChromelyWebsocketHandler.OnMessage(System.Int32,System.IntPtr,System.Int64)">
+            <summary>
+            The on message.
+            </summary>
+            <param name="connectionId">
+            The connection id.
+            </param>
+            <param name="data">
+            The data.
+            </param>
+            <param name="dataSize">
+            The data size.
+            </param>
+        </member>
+        <member name="M:Chromely.Core.IChromelyWebsocketHandler.Send(System.Int32,System.IntPtr,System.Int64)">
+            <summary>
+            The send.
+            </summary>
+            <param name="connectionId">
+            The connection id.
+            </param>
+            <param name="data">
+            The data.
+            </param>
+            <param name="dataSize">
+            The data size.
+            </param>
+        </member>
+        <member name="M:Chromely.Core.IChromelyWebsocketHandler.Send(System.Int32,System.String)">
+            <summary>
+            The send.
+            </summary>
+            <param name="connectionId">
+            The connection id.
+            </param>
+            <param name="data">
+            The data.
+            </param>
+        </member>
+        <member name="M:Chromely.Core.IChromelyWebsocketHandler.Send(System.Int32,Chromely.Core.RestfulService.ChromelyResponse)">
+            <summary>
+            The send.
+            </summary>
+            <param name="connectionId">
+            The connection id.
+            </param>
+            <param name="response">
+            The response.
+            </param>
+        </member>
+        <member name="M:Chromely.Core.IChromelyWebsocketHandler.Broadcast(System.Int32,System.IntPtr,System.Int64)">
+            <summary>
+            The broadcast.
+            </summary>
+            <param name="connectionId">
+            The connection id.
+            </param>
+            <param name="data">
+            The data.
+            </param>
+            <param name="dataSize">
+            The data size.
+            </param>
+        </member>
+        <member name="M:Chromely.Core.IChromelyWebsocketHandler.Broadcast(System.Int32,System.String)">
+            <summary>
+            The broadcast.
+            </summary>
+            <param name="connectionId">
+            The connection id.
+            </param>
+            <param name="data">
+            The data.
+            </param>
+        </member>
+        <member name="M:Chromely.Core.IChromelyWebsocketHandler.Broadcast(System.Int32,Chromely.Core.RestfulService.ChromelyResponse)">
+            <summary>
+            The broadcast.
+            </summary>
+            <param name="connectionId">
+            The connection id.
+            </param>
+            <param name="response">
+            The response.
+            </param>
+        </member>
         <member name="T:Chromely.Core.Infrastructure.IoC">
             <summary>
             Global IOC container implementation.
@@ -2119,6 +2268,17 @@
             Gets or sets a value indicating whether is external.
             </summary>
         </member>
+        <member name="M:Chromely.Core.Infrastructure.UrlScheme.IsStandardScheme(System.String)">
+            <summary>
+            Check if scheme is a standard type.
+            </summary>
+            <param name="scheme">
+            The scheme.
+            </param>
+            <returns>
+            The <see cref="T:System.Boolean"/>.
+            </returns>
+        </member>
         <member name="M:Chromely.Core.Infrastructure.UrlScheme.IsUrlOfSameScheme(System.String)">
             <summary>
             Checks if url is of same scheme as the object url.
@@ -2343,6 +2503,36 @@
             The post data.
             </param>
         </member>
+        <member name="M:Chromely.Core.RestfulService.ChromelyRequest.#ctor(System.String,Chromely.Core.RestfulService.RoutePath,System.Collections.Generic.IDictionary{System.String,System.Object},System.Object)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.Core.RestfulService.ChromelyRequest"/> class.
+            </summary>
+            <param name="id">
+            The id.
+            </param>
+            <param name="routePath">
+            The route path.
+            </param>
+            <param name="parameters">
+            The parameters.
+            </param>
+            <param name="postData">
+            The post data.
+            </param>
+        </member>
+        <member name="M:Chromely.Core.RestfulService.ChromelyRequest.#ctor(LitJson.JsonData)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.Core.RestfulService.ChromelyRequest"/> class.
+            </summary>
+            <param name="jsonData">
+            The json data.
+            </param>
+        </member>
+        <member name="P:Chromely.Core.RestfulService.ChromelyRequest.Id">
+            <summary>
+            Gets or sets the id.
+            </summary>
+        </member>
         <member name="P:Chromely.Core.RestfulService.ChromelyRequest.RoutePath">
             <summary>
             Gets or sets the route path.
@@ -2361,6 +2551,24 @@
         <member name="T:Chromely.Core.RestfulService.ChromelyResponse">
             <summary>
             The chromely response.
+            </summary>
+        </member>
+        <member name="M:Chromely.Core.RestfulService.ChromelyResponse.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.Core.RestfulService.ChromelyResponse"/> class.
+            </summary>
+        </member>
+        <member name="M:Chromely.Core.RestfulService.ChromelyResponse.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.Core.RestfulService.ChromelyResponse"/> class.
+            </summary>
+            <param name="requestId">
+            The request id.
+            </param>
+        </member>
+        <member name="P:Chromely.Core.RestfulService.ChromelyResponse.RequestId">
+            <summary>
+            Gets or sets the route path.
             </summary>
         </member>
         <member name="P:Chromely.Core.RestfulService.ChromelyResponse.ReadyState">
@@ -2470,6 +2678,17 @@
             </typeparam>
             <returns>
             The <see cref="T:System.Collections.IDictionary"/>.
+            </returns>
+        </member>
+        <member name="M:Chromely.Core.RestfulService.ExtensionMethods.GetParameters(System.String)">
+            <summary>
+            The get parameters.
+            </summary>
+            <param name="url">
+            The url.
+            </param>
+            <returns>
+            The name value collection.
             </returns>
         </member>
         <member name="M:Chromely.Core.RestfulService.ExtensionMethods.IsOfType``1(System.Object)">
@@ -2704,10 +2923,18 @@
             Gets or sets the action.
             </summary>
         </member>
-        <member name="M:Chromely.Core.RestfulService.Route.Invoke(Chromely.Core.RestfulService.RoutePath,System.Collections.Generic.IDictionary{System.String,System.Object},System.Object)">
+        <member name="P:Chromely.Core.RestfulService.Route.ActionAsync">
+            <summary>
+            Gets or sets the action async.
+            </summary>
+        </member>
+        <member name="M:Chromely.Core.RestfulService.Route.Invoke(System.String,Chromely.Core.RestfulService.RoutePath,System.Collections.Generic.IDictionary{System.String,System.Object},System.Object)">
             <summary>
             Invokes the registered action.
             </summary>
+            <param name="requestId">
+            The request identifier.
+            </param>
             <param name="routePath">
             The route path.
             </param>
@@ -2773,6 +3000,28 @@
             <summary>
             Gets or sets the path.
             </summary>
+        </member>
+        <member name="M:Chromely.Core.RestfulService.RoutePath.ValidMethod(Chromely.Core.RestfulService.Method)">
+            <summary>
+            The valid method.
+            </summary>
+            <param name="method">
+            The method.
+            </param>
+            <returns>
+            The <see cref="T:System.Boolean"/>.
+            </returns>
+        </member>
+        <member name="M:Chromely.Core.RestfulService.RoutePath.ValidMethod(System.String)">
+            <summary>
+            The valid method.
+            </summary>
+            <param name="method">
+            The method.
+            </param>
+            <returns>
+            The <see cref="T:System.Boolean"/>.
+            </returns>
         </member>
         <member name="M:Chromely.Core.RestfulService.RoutePath.ConvertMethod(Chromely.Core.RestfulService.Method)">
             <summary>

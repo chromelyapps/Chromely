@@ -4,7 +4,7 @@
     <CefSharpAnyCpuSupport>true</CefSharpAnyCpuSupport>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="CefSharp.Common" Version="65.0.0-pre01" />
+    <PackageReference Include="CefSharp.Common" Version="65.0.0" />
     <PackageReference Include="xunit" Version="2.3.1" />
     <PackageReference Include="xunit.runner.console" Version="2.3.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
@@ -13,11 +13,5 @@
     <ProjectReference Include="..\..\Chromely.CefSharp.Winapi\Chromely.CefSharp.Winapi.csproj" />
     <ProjectReference Include="..\..\Chromely.Core\Chromely.Core.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="CefSharp.Core">
-      <HintPath>..\..\..\..\..\..\Users\kolaoyewumi\.nuget\packages\cefsharp.common\63.0.3\CefSharp\x86\CefSharp.Core.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 
 </Project>

@@ -39,7 +39,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Chromely.CefGlue.Winapi" Version="66.0.0-pre01" />
+    <PackageReference Include="Chromely.CefGlue.Winapi" Version="66.0.0" />
   </ItemGroup>
 
   <ItemGroup>

@@ -107,7 +107,9 @@ namespace Chromely.CefGlue.Gtk.Linux.Demo.Controllers
 
             ChromelyResponse response = new ChromelyResponse(request.Id);
             var postDataJson = request.PostData.EnsureJson();
-            int rowsReceived = postDataJson.ArrayCount();
+            var movies = LitJson.JsonMapper.ToObject<List<MovieInfo>>(postDataJson);
+
+            int rowsReceived = movies.ArrayCount();
 
             response.Data = $"{DateTime.Now}: {rowsReceived} rows of data successfully saved.";
 
@@ -123,6 +125,13 @@ namespace Chromely.CefGlue.Gtk.Linux.Demo.Controllers
     [SuppressMessage("ReSharper", "StyleCop.SA1600")]
     public class MovieInfo
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MovieInfo"/> class.
+        /// </summary>
+        public MovieInfo()
+        {
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MovieInfo"/> class.
         /// </summary>
