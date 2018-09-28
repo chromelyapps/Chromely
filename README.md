@@ -82,7 +82,7 @@ For more info on demos - [Demos](https://github.com/mattkol/Chromely/wiki/Demos)
 ### References
 * WinApi - https://github.com/prasannavl/WinApi
 * Cef - https://bitbucket.org/chromiumembedded/cef
-* Xilium.CefGlue - https://bitbucket.org/xilium/xilium.cefglue/wiki/Home
+* Xilium.CefGlue - https://gitlab.com/xiliumhq/chromiumembedded/cefglue
 * CefSharp - https://github.com/cefsharp/CefSharp
 * Json Serializer - https://github.com/lbv/litjson
 * Caliburn.Light Container - https://github.com/tibel/Caliburn.Light/blob/master/src/Caliburn.Core/IoC/SimpleContainer.cs
