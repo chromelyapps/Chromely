@@ -1,4 +1,4 @@
-### To Run The Code
+### To Run The App
 To download the cef binaries, on cmd line run in same folder as binaries:
 
 - chromelycef.exe download --cpu=x64 --cef-binary-version="3.3325.1758.g9aea513"
