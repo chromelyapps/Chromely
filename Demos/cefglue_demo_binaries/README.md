@@ -1,6 +1,6 @@
 
 ### To Run The App
-To download the cef binaries, on cmd line run in same folder as binaries:
+To download the cef binaries, on **cmd** line run in same folder as binaries:
 
 - chromelycef.exe download v66 --cpu=x64 --cef-binary-version="3.3359.1772.gd1df190"
 
