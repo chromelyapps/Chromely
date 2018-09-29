@@ -1,0 +1,132 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chromely</title>
+    <link rel="stylesheet" href="Content/css/bootstrap.min.css">
+    <script src="Content/js/jquery.min.js"></script>
+    <script src="Content/js/tether.min.js"></script>
+    <script src="Content/js/bootstrap.min.js"></script>
+	<style type="text/css">
+        body, html {
+            height: 100%;
+            display: grid;
+        }
+
+        .centerBlock {
+            display: table;
+            margin: auto;
+        }
+
+        .show {
+            display: block !important;
+        }
+
+        .hidden {
+            display: none !important;
+            visibility: hidden !important;
+        }
+
+        .invisible {
+            visibility: hidden;
+        }
+
+        .modal-dialog {
+            width: 80%;
+        }
+    </style>
+	<script>
+		$(document).ready(function(){
+		
+			$('#demoTabs a').on('click', function (e) {
+			  e.preventDefault()
+			   var url = $(this).attr("data-url"); // the remote url for content
+			   demoframe.src = url;
+			});
+		});
+		
+		function demoRun() {
+            $("#demoPage").removeClass('hidden');
+            $("#homePage").addClass('hidden');
+		}
+			
+		function backToHomePage() {
+            $("#homePage").removeClass('hidden');
+            $("#demoPage").addClass('hidden');
+	    }
+	</script>
+</head>
+<body>
+  <div id ="maincontainer" class="container centerBlock">
+
+      <!-- Home Page -->
+      <div id="homePage" class="col-12 centerBlock">
+            <div class="col-12">
+                <div class="centerBlock">
+                    <div class="row centerBlock">
+                        <img src="./Content/img/chromely.png" class="img-rounded" alt="Cinque Terre" width="240" height="240">
+                    </div>
+                    <div class="row centerBlock">
+                        <span class="text-primary text-center"><h2>chromely</h2></span>
+                    </div>
+                    <div class="row centerBlock">
+                        <p class="text-muted text-center">Build .NET/.NET CORE HTML5 Desktop Apps</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12" style='padding:20px;'>
+                <div id="runButton" class="centerBlock">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <label for="info">Demos:</label>
+                        </div>
+                        <button id="buttonDemoRun" type="button" class="btn btn-primary" onclick="demoRun()" style='margin: 5px;'>Run</button>
+                    </form>
+					<div class="row centerBlock">
+                         <a href="https://github.com/mattkol/Chromely" class="btn btn-default" role="button" style='margin: 5px;'>more info</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+		
+  
+      <!-- Demo Page -->
+     <div id="demoPage" class="col-12  hidden">
+    <div class="row" style="height:25px;"></div>
+
+	 <!-- Demo Pages Nav -->
+	<div class="row">
+	  <div class="col-3">
+		<div class="nav flex-column nav-pills" id="demoTabs" role="tablist" aria-orientation="vertical">
+		  <div class="centerBlock">
+          <img src="./Content/img/chromely_gray.png" class="img-rounded" alt="Cinque Terre" width="90" height="90" />
+          </div>
+		  <div class="centerBlock">chromely demo panel</div>
+		  <div class="centerBlock"> <button type="button" class="btn btn-link" onclick="backToHomePage()">&#60;&#60;&#32;Back</button></div>
+		  <div class="row" style="height:50px;"></div>
+		  <a class="nav-link active"  data-toggle="tab" href="#info"  data-url="./pages/info.html"  role="tab" aria-controls="home" aria-selected="true">Info</a>
+		  <a class="nav-link" data-toggle="tab" href="#messagerouterdemo" data-url="./pages/messagerouterdemo.html" role="tab" aria-controls="settings" aria-selected="false">Message Router Demo</a>
+		  <a class="nav-link" data-toggle="tab" href="#ajaxdemo" data-url="./pages/ajaxdemo.html" role="tab" aria-controls="settings" aria-selected="false">Ajax Demo</a>
+		  <a class="nav-link" data-toggle="tab" href="#javascriptdemo" data-url="./pages/javascriptdemo.html" role="tab" aria-controls="settings" aria-selected="false">Execute JavaScript Demo</a>
+		  <a class="nav-link" data-toggle="tab" href="#websocketdemo" data-url="./pages/websocketdemo.html" role="tab" aria-controls="settings" aria-selected="false">Websocket Demo</a>
+		  <a class="nav-link" data-toggle="tab" href="#html5tests" role="tab" data-url="https://html5test.com/" aria-controls="settings" aria-selected="false">HTML5 Tests</a>
+		  <a class="nav-link" data-toggle="tab" href="#html6tests" role="tab" data-url="http://html6test.com/" aria-controls="settings" aria-selected="false">HTML6 Tests</a>
+		  <a class="nav-link" data-toggle="tab" href="#shakatests" role="tab" data-url="https://shaka-player-demo.appspot.com/demo/#asset=https://storage.googleapis.com/shaka-demo-assets/angel-one/dash.mpd;lang=en-US;build=uncompiled" aria-controls="settings" aria-selected="false">Google Shaka Support Tests</a>
+		</div>
+	  </div>
+	  <div class="col-9">
+		<div class="tab-content">
+           <iframe id="demoframe" name="alldemoframe" src="./pages/info.html" width="780" height="800"  frameborder="0" />
+	    </div>
+	  </div>
+	</div>
+	<!-- End Demo Pages Nav -->
+   </div>
+   
+   
+  </div>
+</body>
+</html>                            
