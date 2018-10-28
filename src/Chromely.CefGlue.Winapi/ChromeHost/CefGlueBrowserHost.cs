@@ -103,7 +103,7 @@ namespace Chromely.CefGlue.Winapi.ChromeHost
         /// </param>
         public void RegisterServiceAssembly(string filename)
         {
-            this.ServiceAssemblies?.RegisterServiceAssembly(Assembly.LoadFile(filename));
+            this.ServiceAssemblies?.RegisterServiceAssembly(filename);
         }
 
         /// <summary>

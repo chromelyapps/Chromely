@@ -30,6 +30,8 @@
 
 namespace Chromely.Core.RestfulService
 {
+    using Chromely.Core.Infrastructure;
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Reflection;
@@ -50,9 +52,19 @@ namespace Chromely.Core.RestfulService
         /// </param>
         public static void RegisterServiceAssembly(this List<Assembly> serviceAssemblies, string filename)
         {
-            if (File.Exists(filename))
+            if (!File.Exists(filename))
             {
-                serviceAssemblies.RegisterServiceAssembly(Assembly.LoadFile(filename));
+                Log.Error($"Assembly file: {filename} does not exist.");
+            }
+
+            try
+            {
+                var assembly = Assembly.LoadFrom(filename);
+                serviceAssemblies.RegisterServiceAssembly(assembly);
+            }
+            catch (Exception exception)
+            {
+                Log.Error(exception);
             }
         }
 

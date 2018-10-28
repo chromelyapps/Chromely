@@ -142,7 +142,7 @@ namespace Chromely.CefGlue.Gtk.ChromeHost
         /// </param>
         public void RegisterServiceAssembly(string filename)
         {
-            this.ServiceAssemblies?.RegisterServiceAssembly(Assembly.LoadFile(filename));
+            this.ServiceAssemblies?.RegisterServiceAssembly(filename);
         }
 
         /// <summary>
