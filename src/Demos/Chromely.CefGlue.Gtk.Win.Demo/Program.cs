@@ -71,7 +71,7 @@ namespace Chromely.CefGlue.Gtk.Win.Demo
                                               .WithHostTitle("chromely")
                                               .WithHostIconFile("chromely.ico")
                                               .WithAppArgs(args)
-                                              .WithHostSize(1200, 900)
+                                              .WithHostSize(1200, 700)
                                               .WithLogFile("logs\\chromely.cef_new.log")
                                               .WithStartUrl(startUrl)
                                               .WithLogSeverity(LogSeverity.Info)

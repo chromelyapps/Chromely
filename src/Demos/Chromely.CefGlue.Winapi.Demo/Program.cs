@@ -47,6 +47,7 @@ namespace Chromely.CefGlue.Winapi.Demo
             try
             {
                 HostHelpers.SetupDefaultExceptionHandlers();
+                string appDirectory = AppDomain.CurrentDomain.BaseDirectory;
 
                 /*
                 * Start url (load html) options:
@@ -65,12 +66,11 @@ namespace Chromely.CefGlue.Winapi.Demo
                 //            or register new resource handler - RegisterSchemeHandler("local", string.Empty,  new CustomResourceHandler())
                 // Requires - (sample) UseDefaultHttpSchemeHandler("http", "chromely.com")
                 //            or register new http scheme handler - RegisterSchemeHandler("http", "test.com",  new CustomHttpHandler())
-                // string appDirectory = AppDomain.CurrentDomain.BaseDirectory;
                 // string startUrl = $"file:///{appDirectory}app/chromely.html";
                 ChromelyConfiguration config = ChromelyConfiguration
                                               .Create()
                                               .WithAppArgs(args)
-                                              .WithHostSize(1200, 900)
+                                              .WithHostSize(1200, 700)
                                               .WithLogFile("logs\\chromely.cef_new.log")
                                               .WithStartUrl(startUrl)
                                               .WithLogSeverity(LogSeverity.Info)
@@ -96,8 +96,8 @@ namespace Chromely.CefGlue.Winapi.Demo
                     window.RegisterServiceAssembly(Assembly.GetExecutingAssembly());
 
                     // 2. Register external assembly with file name:
-                    // string serviceAssemblyFile = @"C:\ChromelyDlls\Chromely.Service.Demo.dll";
-                    // window.RegisterServiceAssembly(serviceAssemblyFile);
+                    string externalAssembly = System.IO.Path.Combine(appDirectory, "Chromely.Service.Demo.dll");
+                    window.RegisterServiceAssembly(externalAssembly);
 
                     // 3. Register external assemblies with list of filenames:
                     // string serviceAssemblyFile1 = @"C:\ChromelyDlls\Chromely.Service.Demo.dll";
@@ -106,8 +106,8 @@ namespace Chromely.CefGlue.Winapi.Demo
                     // window.RegisterServiceAssemblies(filenames);
 
                     // 4. Register external assemblies directory:
-                    string serviceAssembliesFolder = @"C:\ChromelyDlls";
-                    window.RegisterServiceAssemblies(serviceAssembliesFolder);
+                    // string serviceAssembliesFolder = @"C:\ChromelyDlls";
+                    // window.RegisterServiceAssemblies(serviceAssembliesFolder);
 
                     // Scan assemblies for Controller routes 
                     window.ScanAssemblies();

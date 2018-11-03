@@ -77,5 +77,8 @@
     <None Update="app\pages\messagerouterdemo.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Chromely.Service.Demo.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>
