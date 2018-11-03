@@ -239,6 +239,8 @@ namespace Chromely.CefGlue.Winapi.ChromeHost
         /// </exception>
         protected override void OnCreate(ref CreateWindowPacket packet)
         {
+            CefRuntime.EnableHighDpiSupport();
+
             // Will throw exception if Cef load fails. 
             CefRuntime.Load();
 
