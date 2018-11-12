@@ -74,14 +74,7 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
             this.mBrowser = null;
             this.mSettings = new CefSettings();
             this.HostConfig = hostConfig;
-            IoC.RegisterInstance(typeof(ChromelyConfiguration), typeof(ChromelyConfiguration).FullName, hostConfig);
-            this.ServiceAssemblies = new List<Assembly>();
         }
-
-        /// <summary>
-        /// Gets the service assemblies.
-        /// </summary>
-        public List<Assembly> ServiceAssemblies { get; }
 
         /// <summary>
         /// Gets the host config.
@@ -107,7 +100,7 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
         /// </param>
         public void RegisterServiceAssembly(string filename)
         {
-            this.ServiceAssemblies?.RegisterServiceAssembly(filename);
+            this.HostConfig?.ServiceAssemblies?.RegisterServiceAssembly(filename);
         }
 
         /// <summary>
@@ -118,7 +111,7 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
         /// </param>
         public void RegisterServiceAssembly(Assembly assembly)
         {
-            this.ServiceAssemblies?.RegisterServiceAssembly(assembly);
+            this.HostConfig?.ServiceAssemblies?.RegisterServiceAssembly(assembly);
         }
 
         /// <summary>
@@ -129,7 +122,7 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
         /// </param>
         public void RegisterServiceAssemblies(string folder)
         {
-            this.ServiceAssemblies?.RegisterServiceAssemblies(folder);
+            this.HostConfig?.ServiceAssemblies?.RegisterServiceAssemblies(folder);
         }
 
         /// <summary>
@@ -140,7 +133,7 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
         /// </param>
         public void RegisterServiceAssemblies(List<string> filenames)
         {
-            this.ServiceAssemblies?.RegisterServiceAssemblies(filenames);
+            this.HostConfig?.ServiceAssemblies?.RegisterServiceAssemblies(filenames);
         }
 
         /// <summary>
@@ -148,17 +141,22 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
         /// </summary>
         public void ScanAssemblies()
         {
-            if ((this.ServiceAssemblies == null) || 
-                this.ServiceAssemblies.Count == 0)
+            if ((this.HostConfig?.ServiceAssemblies == null) ||
+                this.HostConfig?.ServiceAssemblies.Count == 0)
             {
                 return;
             }
 
-            foreach (var assembly in this.ServiceAssemblies)
+            foreach (var assembly in this.HostConfig?.ServiceAssemblies)
             {
-                var scanner = new RouteScanner(assembly);
-                var currentRouteDictionary = scanner.Scan();
-                ServiceRouteProvider.MergeRoutes(currentRouteDictionary);
+                if (!assembly.IsScanned)
+                {
+                    var scanner = new RouteScanner(assembly.Assembly);
+                    var currentRouteDictionary = scanner.Scan();
+                    ServiceRouteProvider.MergeRoutes(currentRouteDictionary);
+
+                    assembly.IsScanned = true;
+                }
             }
         }
 

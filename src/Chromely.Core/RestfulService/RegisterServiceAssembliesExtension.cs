@@ -34,6 +34,7 @@ namespace Chromely.Core.RestfulService
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using System.Reflection;
 
     /// <summary>
@@ -50,7 +51,7 @@ namespace Chromely.Core.RestfulService
         /// <param name="filename">
         /// The filename.
         /// </param>
-        public static void RegisterServiceAssembly(this List<Assembly> serviceAssemblies, string filename)
+        public static void RegisterServiceAssembly(this List<ControllerAssemblyInfo> serviceAssemblies, string filename)
         {
             if (!File.Exists(filename))
             {
@@ -77,7 +78,7 @@ namespace Chromely.Core.RestfulService
         /// <param name="filenames">
         /// The filenames.
         /// </param>
-        public static void RegisterServiceAssemblies(this List<Assembly> serviceAssemblies, List<string> filenames)
+        public static void RegisterServiceAssemblies(this List<ControllerAssemblyInfo> serviceAssemblies, List<string> filenames)
         {
             if (filenames != null && (filenames.Count > 0))
             {
@@ -97,7 +98,7 @@ namespace Chromely.Core.RestfulService
         /// <param name="folderPath">
         /// The folder path.
         /// </param>
-        public static void RegisterServiceAssemblies(this List<Assembly> serviceAssemblies, string folderPath)
+        public static void RegisterServiceAssemblies(this List<ControllerAssemblyInfo> serviceAssemblies, string folderPath)
         {
             if (Directory.Exists(folderPath))
             {
@@ -117,16 +118,19 @@ namespace Chromely.Core.RestfulService
         /// <param name="assembly">
         /// The assembly.
         /// </param>
-        public static void RegisterServiceAssembly(this List<Assembly> serviceAssemblies, Assembly assembly)
+        public static void RegisterServiceAssembly(this List<ControllerAssemblyInfo> serviceAssemblies, Assembly assembly)
         {
             if (serviceAssemblies == null)
             {
-                serviceAssemblies = new List<Assembly>();
+                serviceAssemblies = new List<ControllerAssemblyInfo>();
             }
 
             if (assembly != null)
             {
-                serviceAssemblies.Add(assembly);
+                if (!serviceAssemblies.Select(x => x.Key).Contains(assembly.FullName))
+                {
+                    serviceAssemblies.Add(new ControllerAssemblyInfo(assembly));
+                }
             }
         }
     }

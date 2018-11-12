@@ -68,7 +68,7 @@ namespace Chromely.Core
         /// </param>
         public ChromelySchemeHandler(string schemeName, string domainName, bool useDefaultResource, bool useDefaultHttp, bool isSecured = false, bool isCorsEnabled = true)
         {
-            this.Key = Guid.NewGuid().ToString();
+            this.Key = $"{schemeName}_{domainName}";
             this.SchemeName = schemeName;
             this.DomainName = domainName;
             this.HandlerFactory = null;
@@ -98,7 +98,7 @@ namespace Chromely.Core
         /// </param>
         public ChromelySchemeHandler(string schemeName, string domainName, object handlerFactory, bool isSecured = false, bool isCorsEnabled = true)
         {
-            this.Key = Guid.NewGuid().ToString();
+            this.Key = $"{schemeName}_{domainName}";
             this.SchemeName = schemeName;
             this.DomainName = domainName;
             this.HandlerFactory = handlerFactory;

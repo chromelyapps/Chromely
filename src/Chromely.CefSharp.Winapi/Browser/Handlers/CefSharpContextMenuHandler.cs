@@ -60,12 +60,7 @@ namespace Chromely.CefSharp.Winapi.Browser.Handlers
         /// </summary>
         public CefSharpContextMenuHandler()
         {
-            var config = IoC.GetInstance(typeof(ChromelyConfiguration), typeof(ChromelyConfiguration).FullName);
-            if (config is ChromelyConfiguration)
-            {
-                var chromelyConfiguration = (ChromelyConfiguration)config;
-                this.debugging = chromelyConfiguration.DebuggingMode;
-            }
+            this.debugging = ChromelyConfiguration.Instance.DebuggingMode;
         }
 
         /// <summary>

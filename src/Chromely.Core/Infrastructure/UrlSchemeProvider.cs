@@ -58,7 +58,10 @@ namespace Chromely.Core.Infrastructure
         {
             lock (ObjLock)
             {
-                UrlSchemes.Add(scheme);
+                if (!UrlSchemes.Contains(scheme))
+                {
+                    UrlSchemes.Add(scheme);
+                }
             }
         }
 

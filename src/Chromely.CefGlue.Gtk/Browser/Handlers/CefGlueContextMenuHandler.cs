@@ -62,12 +62,7 @@ namespace Chromely.CefGlue.Gtk.Browser.Handlers
         /// </summary>
         public CefGlueContextMenuHandler()
         {
-            var config = IoC.GetInstance(typeof(ChromelyConfiguration), typeof(ChromelyConfiguration).FullName);
-            if (config is ChromelyConfiguration)
-            {
-                var chromelyConfiguration = (ChromelyConfiguration)config;
-                this.debugging = chromelyConfiguration.DebuggingMode;
-            }
+            this.debugging = ChromelyConfiguration.Instance.DebuggingMode;
         }
 
         /// <summary>

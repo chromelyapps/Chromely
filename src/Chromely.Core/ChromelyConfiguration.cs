@@ -32,8 +32,11 @@ namespace Chromely.Core
 {
     using System;
     using System.Collections.Generic;
+    using System.Reflection;
+
     using Chromely.Core.Helpers;
     using Chromely.Core.Infrastructure;
+    using Chromely.Core.RestfulService;
 
     /// <summary>
     /// The Chromely configuration.
@@ -41,17 +44,35 @@ namespace Chromely.Core
     public class ChromelyConfiguration
     {
         /// <summary>
+        /// The instance.
+        /// </summary>
+        private static readonly ChromelyConfiguration instance = new ChromelyConfiguration();
+
+        /// <summary>
+        /// Gets the instance.
+        /// </summary>
+        public static ChromelyConfiguration Instance
+        {
+            get
+            {
+                return instance;
+            }
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ChromelyConfiguration"/> class.
         /// </summary>
-        public ChromelyConfiguration()
+        private ChromelyConfiguration()
         {
             this.PerformDependencyCheck = false;
+            this.ShutdownCefOnExit = true;
             this.LogSeverity = LogSeverity.Warning;
             this.LogFile = "logs\\chromely.cef.log";
             this.HostWidth = 1200;
             this.HostHeight = 900;
             this.Locale = "en-US";
             this.StartWebSocket = false;
+            this.ServiceAssemblies = new List<ControllerAssemblyInfo>();
             this.CommandLineArgs = new Dictionary<string, string>();
             this.CustomSettings = new Dictionary<string, object>();
 
@@ -84,6 +105,12 @@ namespace Chromely.Core
         /// Gets or sets a value indicating whether CEF browser creation should perform dependency check.
         /// </summary>
         public bool PerformDependencyCheck { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether CEF should be shutdown on application exit.
+        /// Default is true.
+        /// </summary>
+        public bool ShutdownCefOnExit { get; set; }
 
         /// <summary>
         /// Gets or sets the app args.
@@ -131,6 +158,11 @@ namespace Chromely.Core
         public bool DebuggingMode { get; set; }
 
         /// <summary>
+        /// Gets the service assemblies.
+        /// </summary>
+        public List<ControllerAssemblyInfo> ServiceAssemblies { get; }
+
+        /// <summary>
         /// Gets or sets the command line args.
         /// </summary>
         public Dictionary<string, string> CommandLineArgs { get; set; }
@@ -156,7 +188,7 @@ namespace Chromely.Core
                 IoC.Container = container;
             }
 
-            return new ChromelyConfiguration();
+            return Instance;
         }
 
         /// <summary>
@@ -186,6 +218,21 @@ namespace Chromely.Core
         public ChromelyConfiguration WithDependencyCheck(bool checkDependencies)
         {
             this.PerformDependencyCheck = checkDependencies;
+            return this;
+        }
+
+        /// <summary>
+        /// The with shutdown cef on exit.
+        /// </summary>
+        /// <param name="shutdownCefOnExitFlag">
+        /// The shutdown cef on exit flag.
+        /// </param>
+        /// <returns>
+        /// The <see cref="ChromelyConfiguration"/>.
+        /// </returns>
+        public ChromelyConfiguration WithShutdownCefOnExit(bool shutdownCefOnExitFlag)
+        {
+            this.ShutdownCefOnExit = shutdownCefOnExitFlag;
             return this;
         }
 
@@ -476,6 +523,67 @@ namespace Chromely.Core
             return this;
         }
 
+
+        /// <summary>
+        /// Registers service assembly.
+        /// </summary>
+        /// <param name="filename">
+        /// The filename.
+        /// </param>
+        /// <returns>
+        /// The <see cref="ChromelyConfiguration"/> object.
+        /// </returns>
+        public ChromelyConfiguration RegisterServiceAssembly(string filename)
+        {
+            this.ServiceAssemblies?.RegisterServiceAssembly(Assembly.LoadFile(filename));
+            return this;
+        }
+
+        /// <summary>
+        /// Registers service assembly.
+        /// </summary>
+        /// <param name="assembly">
+        /// The assembly.
+        /// </param>
+        /// <returns>
+        /// The <see cref="ChromelyConfiguration"/> object.
+        /// </returns>
+        public ChromelyConfiguration RegisterServiceAssembly(Assembly assembly)
+        {
+            this.ServiceAssemblies?.RegisterServiceAssembly(assembly);
+            return this;
+        }
+
+        /// <summary>
+        /// Registers service assemblies.
+        /// </summary>
+        /// <param name="folder">
+        /// The folder.
+        /// </param>
+        /// <returns>
+        /// The <see cref="ChromelyConfiguration"/> object.
+        /// </returns>
+        public ChromelyConfiguration RegisterServiceAssemblies(string folder)
+        {
+            this.ServiceAssemblies?.RegisterServiceAssemblies(folder);
+            return this;
+        }
+
+        /// <summary>
+        /// Registers service assemblies.
+        /// </summary>
+        /// <param name="filenames">
+        /// The filenames.
+        /// </param>
+        /// <returns>
+        /// The <see cref="ChromelyConfiguration"/> object.
+        /// </returns>
+        public ChromelyConfiguration RegisterServiceAssemblies(List<string> filenames)
+        {
+            this.ServiceAssemblies?.RegisterServiceAssemblies(filenames);
+            return this;
+        }
+
         /// <summary>
         /// Registers customr url scheme.
         /// </summary>
@@ -492,6 +600,21 @@ namespace Chromely.Core
         {
             UrlScheme scheme = new UrlScheme(schemeName, domainName, false);
             UrlSchemeProvider.RegisterScheme(scheme);
+            return this;
+        }
+
+        /// <summary>
+        /// Registers customr url scheme.
+        /// </summary>
+        /// <param name="urlScheme">
+        /// The url scheme object.
+        /// </param>
+        /// <returns>
+        /// The <see cref="ChromelyConfiguration"/> object.
+        /// </returns>
+        public virtual ChromelyConfiguration RegisterCustomrUrlScheme(UrlScheme urlScheme)
+        {
+            UrlSchemeProvider.RegisterScheme(urlScheme);
             return this;
         }
 
@@ -579,8 +702,8 @@ namespace Chromely.Core
         /// <summary>
         /// Registers Javascript object handler.
         /// </summary>
-        /// <param name="jsMethod">
-        /// The js method.
+        /// <param name="javascriptMethod">
+        /// The javascrpt method.
         /// </param>
         /// <param name="boundObject">
         /// The bound object.
@@ -594,9 +717,9 @@ namespace Chromely.Core
         /// <returns>
         /// The <see cref="ChromelyConfiguration"/> object.
         /// </returns>
-        public virtual ChromelyConfiguration RegisterJsHandler(string jsMethod, object boundObject, object boundingOptions, bool registerAsync)
+        public virtual ChromelyConfiguration RegisterJsHandler(string javascriptMethod, object boundObject, object boundingOptions, bool registerAsync)
         {
-            return this.RegisterJsHandler(new ChromelyJsHandler(jsMethod, boundObject, boundingOptions, registerAsync));
+            return this.RegisterJsHandler(new ChromelyJsHandler(javascriptMethod, boundObject, boundingOptions, registerAsync));
         }
 
         /// <summary>
@@ -691,6 +814,5 @@ namespace Chromely.Core
             this.StartWebSocket = onloadstartserver;
             return this;
         }
-
     }
 }

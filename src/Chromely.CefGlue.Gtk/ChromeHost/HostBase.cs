@@ -57,8 +57,6 @@ namespace Chromely.CefGlue.Gtk.ChromeHost
         protected HostBase(ChromelyConfiguration hostConfig)
         {
             this.HostConfig = hostConfig;
-            IoC.RegisterInstance(typeof(ChromelyConfiguration), typeof(ChromelyConfiguration).FullName, hostConfig);
-            this.ServiceAssemblies = new List<Assembly>();
         }
 
         #region Destructor
@@ -82,11 +80,6 @@ namespace Chromely.CefGlue.Gtk.ChromeHost
         /// Gets the host config.
         /// </summary>
         public ChromelyConfiguration HostConfig { get; }
-
-        /// <summary>
-        /// Gets the service assemblies.
-        /// </summary>
-        public List<Assembly> ServiceAssemblies { get; }
 
         /// <summary>
         /// Gets or sets the main view.
@@ -142,7 +135,7 @@ namespace Chromely.CefGlue.Gtk.ChromeHost
         /// </param>
         public void RegisterServiceAssembly(string filename)
         {
-            this.ServiceAssemblies?.RegisterServiceAssembly(filename);
+            this.HostConfig?.ServiceAssemblies?.RegisterServiceAssembly(filename);
         }
 
         /// <summary>
@@ -153,7 +146,7 @@ namespace Chromely.CefGlue.Gtk.ChromeHost
         /// </param>
         public void RegisterServiceAssembly(Assembly assembly)
         {
-            this.ServiceAssemblies?.RegisterServiceAssembly(assembly);
+            this.HostConfig?.ServiceAssemblies?.RegisterServiceAssembly(assembly);
         }
 
         /// <summary>
@@ -164,7 +157,7 @@ namespace Chromely.CefGlue.Gtk.ChromeHost
         /// </param>
         public void RegisterServiceAssemblies(string folder)
         {
-            this.ServiceAssemblies?.RegisterServiceAssemblies(folder);
+            this.HostConfig?.ServiceAssemblies?.RegisterServiceAssemblies(folder);
         }
 
         /// <summary>
@@ -175,7 +168,7 @@ namespace Chromely.CefGlue.Gtk.ChromeHost
         /// </param>
         public void RegisterServiceAssemblies(List<string> filenames)
         {
-            this.ServiceAssemblies?.RegisterServiceAssemblies(filenames);
+            this.HostConfig?.ServiceAssemblies?.RegisterServiceAssemblies(filenames);
         }
 
         /// <summary>
@@ -183,16 +176,21 @@ namespace Chromely.CefGlue.Gtk.ChromeHost
         /// </summary>
         public void ScanAssemblies()
         {
-            if ((this.ServiceAssemblies == null) || (this.ServiceAssemblies.Count == 0))
+            if ((this.HostConfig?.ServiceAssemblies == null) || (this.HostConfig?.ServiceAssemblies.Count == 0))
             {
                 return;
             }
 
-            foreach (var assembly in this.ServiceAssemblies)
+            foreach (var assembly in this.HostConfig?.ServiceAssemblies)
             {
-                RouteScanner scanner = new RouteScanner(assembly);
-                Dictionary<string, Route> currentRouteDictionary = scanner.Scan();
-                ServiceRouteProvider.MergeRoutes(currentRouteDictionary);
+                if (!assembly.IsScanned)
+                {
+                    RouteScanner scanner = new RouteScanner(assembly.Assembly);
+                    Dictionary<string, Route> currentRouteDictionary = scanner.Scan();
+                    ServiceRouteProvider.MergeRoutes(currentRouteDictionary);
+
+                    assembly.IsScanned = true;
+                }
             }
         }
 
