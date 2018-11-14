@@ -275,6 +275,8 @@ namespace Chromely.CefGlue.Winapi.ChromeHost
             this.RegisterSchemeHandlers();
             this.RegisterMessageRouters();
 
+            var clientSize = this.GetClientSize();
+
             var browserConfig = new CefBrowserConfig
             {
                 StartUrl = this.HostConfig.StartUrl,
@@ -288,12 +290,13 @@ namespace Chromely.CefGlue.Winapi.ChromeHost
                         {
                             X = 0,
                             Y = 0,
-                            Width = this.HostConfig.HostWidth,
-                            Height = this.HostConfig.HostHeight
-                        }
+                            Width = clientSize.Width,
+                            Height = clientSize.Height
+                    }
             };
 
             this.mBrowser = new CefGlueBrowser(browserConfig);
+            this.mBrowser.BrowserCreated += OnBrowserCreated;
 
             base.OnCreate(ref packet);
 
@@ -326,6 +329,21 @@ namespace Chromely.CefGlue.Winapi.ChromeHost
             CefRuntime.Shutdown();
 
             base.OnDestroy(ref packet);
+        }
+
+        /// <summary>
+        /// The on browser created.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        private void OnBrowserCreated(object sender, EventArgs e)
+        {
+            var clientSize = GetWindowSize();
+            this.mBrowser.ResizeWindow(clientSize.Width, clientSize.Height);
         }
 
         /// <summary>

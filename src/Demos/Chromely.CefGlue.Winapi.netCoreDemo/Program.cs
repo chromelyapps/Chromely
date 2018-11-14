@@ -92,7 +92,9 @@ namespace Chromely.CefGlue.Winapi.netCoreDemo
                 using (var window = factory.CreateWindow(
                     () => new CefGlueBrowserHost(config),
                     "chromely",
-                    constructionParams: new FrameWindowConstructionParams()))
+                    width: config.HostWidth,
+                    height: config.HostHeight,
+                    constructionParams: WindowState.Normal))
                 {
                     // Register external url schems
                     window.RegisterUrlScheme(new UrlScheme("https://github.com/mattkol/Chromely", true));
@@ -124,7 +126,6 @@ namespace Chromely.CefGlue.Winapi.netCoreDemo
                     // Scan assemblies for Controller routes 
                     window.ScanAssemblies();
 
-                    window.SetSize(config.HostWidth, config.HostHeight);
                     window.CenterToScreen();
                     window.Show();
                     return new EventLoop().Run(window);
