@@ -32,6 +32,7 @@ namespace Chromely.Core
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
 
     using Chromely.Core.Helpers;
@@ -46,22 +47,14 @@ namespace Chromely.Core
         /// <summary>
         /// The instance.
         /// </summary>
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1311:StaticReadonlyFieldsMustBeginWithUpperCaseLetter", Justification = "Reviewed. Suppression is OK here.")]
+        // ReSharper disable once InconsistentNaming
         private static readonly ChromelyConfiguration instance = new ChromelyConfiguration();
 
         /// <summary>
-        /// Gets the instance.
+        /// Prevents a default instance of the <see cref="ChromelyConfiguration"/> class from being created.
         /// </summary>
-        public static ChromelyConfiguration Instance
-        {
-            get
-            {
-                return instance;
-            }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ChromelyConfiguration"/> class.
-        /// </summary>
+        [SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1201:ElementsMustAppearInTheCorrectOrder", Justification = "Reviewed. Suppression is OK here.")]
         private ChromelyConfiguration()
         {
             this.PerformDependencyCheck = false;
@@ -79,6 +72,19 @@ namespace Chromely.Core
 #if DEBUG
             this.DebuggingMode = true;
 #endif
+        }
+
+        /// <summary>
+        /// Gets the instance.
+        /// </summary>
+        public static ChromelyConfiguration Instance
+        {
+            // ReSharper disable once ArrangeAccessorOwnerBody
+            get
+            {
+                // ReSharper disable once ArrangeAccessorOwnerBody
+                return instance;
+            }
         }
 
         /// <summary>
