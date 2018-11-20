@@ -17,7 +17,7 @@ chromelycef.exel will be found in the Chromely.CefGlue.Winapi package location.
 
     <Target Name="DownloadCefBinaries" AfterTargets="CoreCompile">
       <Message Text="$(DownloadCefBinariesExe) download $(ChromiumVersionParameter) --cef-binary-version=$(CefVersionParameter) --cpu=$(Platform) --dest=$(MSBuildProjectDirectory)\$(OutputPath)"  Importance="high" />
-      <Exec Command="$(DownloadCefBinariesExe) download $(ChromiumVersionParameter) --cef-binary-version=$(CefVersionParameter) --cpu=$(Platform) --dest=$(MSBuildProjectDirectory)\$(OutputPath)" ContinueOnError="WarnAndContinue"/>
+      <Exec Command="$(DownloadCefBinariesExe) download $(ChromiumVersionParameter) --cef-binary-version=$(CefVersionParameter) --cpu=$(Platform) --dest=&quot;$(MSBuildProjectDirectory)\$(OutputPath) &quot; " ContinueOnError="WarnAndContinue"/>
     </Target>
 
 </Project>
