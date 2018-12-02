@@ -1,31 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Program.cs" company="Chromely">
-//   Copyright (c) 2017-2018 Kola Oyewumi
+// <copyright file="Program.cs" company="Chromely Projects">
+//   Copyright (c) 2017-2018 Chromely Projects
 // </copyright>
 // <license>
-// MIT License
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
+//      See the LICENSE.md file in the project root for more information.
 // </license>
-// <note>
-// Chromely project is licensed under MIT License. CefGlue, CefSharp, Winapi may have additional licensing.
-// </note>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Chromely.CefGlue.Gtk.Linux.Demo
@@ -33,9 +12,11 @@ namespace Chromely.CefGlue.Gtk.Linux.Demo
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
-    using Chromely.CefGlue.Gtk.ChromeHost;
+
+    using Chromely.CefGlue.Gtk.App;
     using Chromely.Core;
     using Chromely.Core.Helpers;
+    using Chromely.Core.Host;
     using Chromely.Core.Infrastructure;
 
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1400:AccessModifierMustBeDeclared", Justification = "Reviewed. Suppression is OK here.")]
@@ -47,6 +28,7 @@ namespace Chromely.CefGlue.Gtk.Linux.Demo
             try
             {
                 HostHelpers.SetupDefaultExceptionHandlers();
+                string appDirectory = AppDomain.CurrentDomain.BaseDirectory;
 
                 /*
                 * Start url (load html) options:
@@ -65,11 +47,10 @@ namespace Chromely.CefGlue.Gtk.Linux.Demo
                 //            or register new resource handler - RegisterSchemeHandler("local", string.Empty,  new CustomResourceHandler())
                 // Requires - (sample) UseDefaultHttpSchemeHandler("http", "chromely.com")
                 //            or register new http scheme handler - RegisterSchemeHandler("http", "test.com",  new CustomHttpHandler())
-                // string appDirectory = AppDomain.CurrentDomain.BaseDirectory;
                 // string startUrl = $"file:///{appDirectory}app/chromely.html";
-
                 ChromelyConfiguration config = ChromelyConfiguration
                                               .Create()
+                                              .WithHostMode(WindowState.Normal)
                                               .WithHostTitle("chromely")
                                               .WithHostIconFile("chromely.ico")
                                               .WithAppArgs(args)
@@ -91,7 +72,7 @@ namespace Chromely.CefGlue.Gtk.Linux.Demo
                                              .WithCommandLineArg("disable-smooth-scrolling", "1")
                                              .WithCommandLineArg("no-sandbox", "1");
 
-                using (var app = new CefGlueBrowserHost(config))
+                using (var app = new ChromelyApplication(config))
                 {
                     // Register external url schems
                     app.RegisterUrlScheme(new UrlScheme("https://github.com/mattkol/Chromely", true));
@@ -115,8 +96,8 @@ namespace Chromely.CefGlue.Gtk.Linux.Demo
                     // app.RegisterServiceAssemblies(filenames);
 
                     // 4. Register external assemblies directory:
-                    // string serviceAssembliesFolder = @"C:\ChromelyDlls";
-                    // app.RegisterServiceAssemblies(serviceAssembliesFolder);
+                    string externalAssembly = System.IO.Path.Combine(appDirectory, "Chromely.Service.Demo.dll");
+                    app.RegisterServiceAssembly(externalAssembly);
 
                     // Scan assemblies for Controller routes 
                     app.ScanAssemblies();

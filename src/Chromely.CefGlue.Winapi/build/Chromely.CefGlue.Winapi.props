@@ -10,14 +10,14 @@ chromelycef.exel will be found in the Chromely.CefGlue.Winapi package location.
 <Project>
  
    <PropertyGroup>
-      <DownloadCefBinariesExe>"$(MSBuildThisFileDirectory)\chromelycef.exe"</DownloadCefBinariesExe>
-      <ChromiumVersionParameter>v66</ChromiumVersionParameter>
-      <CefVersionParameter>3.3359.1772.gd1df190</CefVersionParameter>
+     <DownloadCefBinariesExe>"$(MSBuildThisFileDirectory)\chromelycef.exe"</DownloadCefBinariesExe>
+     <ChromiumVersionParameter>v66</ChromiumVersionParameter>
+     <CefVersionParameter>3.3359.1772.gd1df190</CefVersionParameter>
     </PropertyGroup>
 
     <Target Name="DownloadCefBinaries" AfterTargets="CoreCompile">
-      <Message Text="$(DownloadCefBinariesExe) download $(ChromiumVersionParameter) --cef-binary-version=$(CefVersionParameter) --cpu=$(Platform) --dest=$(MSBuildProjectDirectory)\$(OutputPath)"  Importance="high" />
-      <Exec Command="$(DownloadCefBinariesExe) download $(ChromiumVersionParameter) --cef-binary-version=$(CefVersionParameter) --cpu=$(Platform) --dest=&quot;$(MSBuildProjectDirectory)\$(OutputPath) &quot; " ContinueOnError="WarnAndContinue"/>
+      <Message Text="$(DownloadCefBinariesExe) download $(ChromiumVersionParameter) --cef-binary-version=$(CefVersionParameter) --cpu=$(Platform) --dest=&quot;$(MSBuildProjectDirectory)\$(OutputPath)&quot;"  Importance="high" />
+      <Exec Command="$(DownloadCefBinariesExe) download $(ChromiumVersionParameter) --cef-binary-version=$(CefVersionParameter) --cpu=$(Platform) --dest=&quot;$(MSBuildProjectDirectory)\$(OutputPath)&quot;" ContinueOnError="WarnAndContinue"/>
     </Target>
 
 </Project>

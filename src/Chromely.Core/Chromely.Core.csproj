@@ -6,17 +6,17 @@
     <AssemblyVersion>0.9.2.0</AssemblyVersion>
     <FileVersion>0.9.2.0</FileVersion>
     <Version>0.9.2.0</Version>
-    <Authors>Kola Oyewumi</Authors>
-    <Company>Kola Oyewumi</Company>
+    <Authors>Chromely Projects</Authors>
+    <Company>Chromely Projects</Company>
     <PackageTags>Cef Chromium HTML5 Desktop Chromely CefGlue CefSharp Restful  Ajax HTTP XHR MessageRouter JavascriptIntegration NetStandard .NET Core</PackageTags>
     <Description>This is a .NET Standard library. It is the base/core library required to build either Chromely CefSharp or Chromely CefGlue apps. It has all the common features and functionalities for both types of apps on either Windows or Linux.</Description>
-    <Copyright>Copyright © 2017-2018 Kola Oyewumi</Copyright>
+    <Copyright>Copyright © 2017-2018 Chromely Projects</Copyright>
     <PackageLicenseUrl>https://github.com/mattkol/Chromely/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/mattkol/Chromely</PackageProjectUrl>
     <PackageIconUrl>https://github.com/mattkol/Chromely/blob/master/nugets/chromely.ico?raw=true</PackageIconUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>- Websocket implementation</PackageReleaseNotes>
+    <PackageReleaseNotes> - Added WindowState options - Normal, Maximize, Fullscreen.</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/mattkol/Chromely</RepositoryUrl>
     <RepositoryType>Github Repository</RepositoryType>
   </PropertyGroup>

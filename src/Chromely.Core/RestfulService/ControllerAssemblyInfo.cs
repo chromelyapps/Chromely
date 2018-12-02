@@ -1,47 +1,46 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ControllerAssemblyInfo.cs" company="Chromely">
-//   Copyright (c) 2017-2018 Kola Oyewumi
+// <copyright file="ControllerAssemblyInfo.cs" company="Chromely Projects">
+//   Copyright (c) 2017-2018 Chromely Projects
 // </copyright>
 // <license>
-// MIT License
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
+//      See the LICENSE.md file in the project root for more information.
 // </license>
-// <note>
-// Chromely project is licensed under MIT License. CefGlue, CefSharp, Winapi may have additional licensing.
-// </note>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Chromely.Core.RestfulService
 {
     using System.Reflection;
 
+    /// <summary>
+    /// The controller assembly info.
+    /// </summary>
     public class ControllerAssemblyInfo
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ControllerAssemblyInfo"/> class.
+        /// </summary>
+        /// <param name="assembly">
+        /// The assembly.
+        /// </param>
         public ControllerAssemblyInfo(Assembly assembly)
         {
             Assembly = assembly;
             Key = assembly.FullName;
         }
 
+        /// <summary>
+        /// Gets or sets the assembly.
+        /// </summary>
         public Assembly Assembly { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether is scanned.
+        /// </summary>
         public bool IsScanned { get; set; }
+
+        /// <summary>
+        /// Gets the key.
+        /// </summary>
         public string Key { get;  }
     }
 }

@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <Platforms>AnyCPU</Platforms>
     <RootNamespace>Xilium.CefGlue</RootNamespace>
-    <Copyright>Copyright © 2017-2018 Kola Oyewumi</Copyright>
+    <Copyright>Copyright © 2017-2018 Chromely Projects</Copyright>
     <PackageProjectUrl>https://github.com/mattkol/Chromely</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/mattkol/Chromely/blob/master/LICENSE</PackageLicenseUrl>
     <PackageIconUrl>https://github.com/mattkol/Chromely/blob/master/nugets/chromely.ico?raw=true</PackageIconUrl>
@@ -14,8 +14,8 @@
     <AssemblyVersion>66.0.3359.117</AssemblyVersion>
     <FileVersion>66.0.3359.117</FileVersion>
     <PackageTags>Cef Chromium HTML5 Desktop Chromely CefGlue CefSharp Restful  Ajax HTTP XHR JavascriptIntegration NetStandard .NET Core</PackageTags>
-    <Authors>Kola Oyewumi</Authors>
-    <Company />
+    <Authors>Chromely Projects</Authors>
+    <Company>Chromely Projects</Company>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Version>66.0.3359.117</Version>
     <RepositoryType>Github Repository</RepositoryType>

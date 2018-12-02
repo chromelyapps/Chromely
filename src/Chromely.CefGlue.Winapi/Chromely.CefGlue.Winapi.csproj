@@ -8,9 +8,9 @@
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Product>Chromely.CefGlue.Winapi</Product>
-    <Authors>Kola Oyewumi</Authors>
-    <Company>Kola Oyewumi</Company>
-    <Copyright>Copyright © 2017-2018 Kola Oyewumi</Copyright>
+    <Authors>Chromely Projects</Authors>
+    <Company>Chromely Projects</Company>
+    <Copyright>Copyright © 2017-2018 Chromely Projects</Copyright>
     <PackageLicenseUrl>https://github.com/mattkol/Chromely/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/mattkol/Chromely</PackageProjectUrl>
     <PackageIconUrl>https://github.com/mattkol/Chromely/blob/master/nugets/chromely.ico?raw=true</PackageIconUrl>
@@ -52,6 +52,18 @@
 
   <ItemGroup>
     <None Include="build\**" Pack="True" PackagePath="build\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="build\Chromely.CefGlue.Winapi.props">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="build\chromelycef.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="build\chromelycef.exe.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   
 </Project>

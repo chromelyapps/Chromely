@@ -1,34 +1,13 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CefGlueBrowserHostTest.cs" company="Chromely">
-//   Copyright (c) 2017-2018 Kola Oyewumi
+// <copyright file="ChromelyApplicationTest.cs" company="Chromely Projects">
+//   Copyright (c) 2017-2018 Chromely Projects
 // </copyright>
 // <license>
-// MIT License
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
+//      See the LICENSE.md file in the project root for more information.
 // </license>
-// <note>
-// Chromely project is licensed under MIT License. CefGlue, CefSharp, Winapi may have additional licensing.
-// </note>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Chromely.CefGlue.Gtk.Tests.ChromeHost
+namespace Chromely.CefGlue.Gtk.Tests.App
 {
     using Chromely.Core;
     using Chromely.Core.Helpers;
@@ -38,9 +17,9 @@ namespace Chromely.CefGlue.Gtk.Tests.ChromeHost
     using Xunit.Abstractions;
 
     /// <summary>
-    /// The chromely configuration test.
+    /// The chromely application test.
     /// </summary>
-    public class CefGlueBrowserHostTest
+    public class ChromelyApplicationTest
     {
         /// <summary>
         /// The output.
@@ -49,12 +28,12 @@ namespace Chromely.CefGlue.Gtk.Tests.ChromeHost
         private readonly ITestOutputHelper mTestOutput;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CefGlueBrowserHostTest"/> class.
+        /// Initializes a new instance of the <see cref="ChromelyApplicationTest"/> class.
         /// </summary>
         /// <param name="testOutput">
         /// The test output.
         /// </param>
-        public CefGlueBrowserHostTest(ITestOutputHelper testOutput)
+        public ChromelyApplicationTest(ITestOutputHelper testOutput)
         {
             this.mTestOutput = testOutput;
         }
@@ -69,7 +48,6 @@ namespace Chromely.CefGlue.Gtk.Tests.ChromeHost
             var settings = new CefSettings
             {
                 Locale = hostConfig.Locale,
-                SingleProcess = false,
                 MultiThreadedMessageLoop = false,
                 LogSeverity = (CefLogSeverity)hostConfig.LogSeverity,
                 LogFile = hostConfig.LogFile,
@@ -80,7 +58,6 @@ namespace Chromely.CefGlue.Gtk.Tests.ChromeHost
             settings.Update(hostConfig.CustomSettings);
 
             Assert.True(settings.NoSandbox);
-            Assert.True(settings.SingleProcess);
             Assert.True(settings.MultiThreadedMessageLoop);
             Assert.True(settings.ExternalMessagePump);
             Assert.True(settings.WindowlessRenderingEnabled);

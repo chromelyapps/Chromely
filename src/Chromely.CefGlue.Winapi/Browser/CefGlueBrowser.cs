@@ -1,33 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CefGlueBrowser.cs" company="Chromely">
-//   Copyright (c) 2017-2018 Kola Oyewumi
+// <copyright file="CefGlueBrowser.cs" company="Chromely Projects">
+//   Copyright (c) 2017-2018 Chromely Projects
 // </copyright>
 // <license>
-// MIT License
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
+//      See the LICENSE.md file in the project root for more information.
 // </license>
-// <note>
-// Chromely project is licensed under MIT License. CefGlue, CefSharp, Winapi may have additional licensing.
-// This is a port from CefGlue.WindowsForms sample of CefGlue. Mostly provided as-is. 
-// For more info: https://bitbucket.org/xilium/xilium.cefglue/wiki/Home
-// </note>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Chromely.CefGlue.Winapi.Browser
@@ -37,6 +14,9 @@ namespace Chromely.CefGlue.Winapi.Browser
     using Chromely.CefGlue.Winapi.Browser.FrameHandlers;
     using Chromely.Core.Host;
     using Chromely.Core.Infrastructure;
+
+    using WinApi.User32;
+
     using Xilium.CefGlue;
 
     /// <summary>
@@ -84,21 +64,6 @@ namespace Chromely.CefGlue.Winapi.Browser
         /// The browser created.
         /// </summary>
         public event EventHandler BrowserCreated;
-
-        /// <summary>
-        /// The title changed.
-        /// </summary>
-        public event EventHandler<TitleChangedEventArgs> TitleChanged;
-
-        /// <summary>
-        /// The address changed.
-        /// </summary>
-        public event EventHandler<AddressChangedEventArgs> AddressChanged;
-
-        /// <summary>
-        /// The status message.
-        /// </summary>
-        public event EventHandler<StatusMessageEventArgs> StatusMessage;
 
         /// <summary>
         /// The console message.
@@ -231,41 +196,6 @@ namespace Chromely.CefGlue.Winapi.Browser
             this.StartWebsocket();
 
             this.BrowserCreated?.Invoke(this, EventArgs.Empty);
-        }
-
-        /// <summary>
-        /// The on title changed.
-        /// </summary>
-        /// <param name="eventArgs">
-        /// The event args.
-        /// </param>
-        public virtual void OnTitleChanged(TitleChangedEventArgs eventArgs)
-        {
-            this.Title = eventArgs.Title;
-            this.TitleChanged?.Invoke(this, eventArgs);
-        }
-
-        /// <summary>
-        /// The on address changed.
-        /// </summary>
-        /// <param name="eventArgs">
-        /// The event args.
-        /// </param>
-        public virtual void OnAddressChanged(AddressChangedEventArgs eventArgs)
-        {
-            this.Address = eventArgs.Address;
-            this.AddressChanged?.Invoke(this, eventArgs);
-        }
-
-        /// <summary>
-        /// The on status message.
-        /// </summary>
-        /// <param name="eventArgs">
-        /// The event args.
-        /// </param>
-        public virtual void OnStatusMessage(StatusMessageEventArgs eventArgs)
-        {
-            this.StatusMessage?.Invoke(this, eventArgs);
         }
 
         /// <summary>
@@ -468,7 +398,7 @@ namespace Chromely.CefGlue.Winapi.Browser
                     0,
                     width,
                     height,
-                    WinapiConstants.NoZOrder);
+                    WindowPositionFlags.SWP_NOZORDER);
             }
         }
 

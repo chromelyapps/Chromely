@@ -1,7 +1,4 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="JsonMockWrapper.cs" company="Chromely">
-//   Copyright (c) 2017-2018 Kola Oyewumi
-// </copyright>
 // <license>
 // The authors disclaim copyright to this source code. For more details, see
 // the COPYING file included with this distribution @ https://github.com/lbv/litjson

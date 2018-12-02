@@ -1,36 +1,19 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="NativeWindow.cs" company="Chromely">
-//   Copyright (c) 2017-2018 Kola Oyewumi
+// <copyright file="NativeWindow.cs" company="Chromely Projects">
+//   Copyright (c) 2017-2018 Chromely Projects
 // </copyright>
 // <license>
-// MIT License
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
+//      See the LICENSE.md file in the project root for more information.
 // </license>
-// <note>
-// Chromely project is licensed under MIT License. CefGlue, CefSharp, Winapi may have additional licensing.
-// </note>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Chromely.CefGlue.Gtk.ChromeHost
+namespace Chromely.CefGlue.Gtk.App
 {
     using System;
+    using System.Net.Mime;
+
+    using Chromely.Core;
+    using Chromely.Core.Host;
 
     /// <summary>
     /// The native window.
@@ -43,29 +26,14 @@ namespace Chromely.CefGlue.Gtk.ChromeHost
         private readonly object mEventLock = new object();
 
         /// <summary>
-        /// The host/app/window title.
+        /// The m host config.
         /// </summary>
-        private readonly string mTitle;
-
-        /// <summary>
-        /// The host/app/window icon file.
-        /// </summary>
-        private readonly string mIconFile;
+        private readonly ChromelyConfiguration mHostConfig;
 
         /// <summary>
         /// The main window.
         /// </summary>
         private IntPtr mMainWindow;
-
-        /// <summary>
-        /// The host/app/window width.
-        /// </summary>
-        private int mWidth;
-
-        /// <summary>
-        /// The host/app/window height.
-        /// </summary>
-        private int mHeight;
 
         /// <summary>
         /// The realize event.
@@ -87,33 +55,20 @@ namespace Chromely.CefGlue.Gtk.ChromeHost
         /// </summary>
         public NativeWindow()
         {
-            this.mTitle = "chromely";
-            this.mIconFile = null;
-            this.mWidth = 1200;
-            this.mHeight = 800;
+            this.mMainWindow = IntPtr.Zero;
+            this.mHostConfig = ChromelyConfiguration.Create();
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NativeWindow"/> class.
         /// </summary>
-        /// <param name="title">
-        /// The title.
+        /// <param name="hostConfig">
+        /// The host config.
         /// </param>
-        /// <param name="width">
-        /// The width.
-        /// </param>
-        /// <param name="height">
-        /// The height.
-        /// </param>
-        /// <param name="iconFile">
-        /// The icon file.
-        /// </param>
-        public NativeWindow(string title, int width, int height, string iconFile = null)
+        public NativeWindow(ChromelyConfiguration hostConfig)
         {
-            this.mTitle = title;
-            this.mWidth = width;
-            this.mHeight = height;
-            this.mIconFile = iconFile;
+            this.mMainWindow = IntPtr.Zero;
+            this.mHostConfig = hostConfig;
         }
 
         #region Events
@@ -296,7 +251,7 @@ namespace Chromely.CefGlue.Gtk.ChromeHost
         /// </param>
         protected virtual void OnExit(object sender, EventArgs e)
         {
-            Application.Quit();
+            NativeMethods.Quit();
         }
 
         /// <summary>
@@ -305,12 +260,30 @@ namespace Chromely.CefGlue.Gtk.ChromeHost
         private void CreateWindow()
         {
             this.mMainWindow = NativeMethods.NewWindow(NativeMethods.GtkWindowType.GtkWindowToplevel);
-            NativeMethods.SetTitle(this.mMainWindow, this.mTitle);
+            NativeMethods.SetTitle(this.mMainWindow, this.mHostConfig.HostTitle);
 
-            NativeMethods.SetIconFromFile(this.mMainWindow, this.mIconFile);
+            NativeMethods.SetIconFromFile(this.mMainWindow, this.mHostConfig.HostIconFile);
 
-            NativeMethods.SetSizeRequest(this.mMainWindow, this.mWidth, this.mHeight);
-            NativeMethods.SetWindowPosition(this.mMainWindow, NativeMethods.GtkWindowPosition.GtkWinPosCenter);
+            NativeMethods.SetSizeRequest(this.mMainWindow, this.mHostConfig.HostWidth, this.mHostConfig.HostHeight);
+
+            if (this.mHostConfig.HostCenterScreen)
+            {
+                NativeMethods.SetWindowPosition(this.mMainWindow, NativeMethods.GtkWindowPosition.GtkWinPosCenter);
+            }
+
+            switch (this.mHostConfig.HostState)
+            {
+                case WindowState.Normal:
+                    break;
+
+                case WindowState.Maximize:
+                    NativeMethods.SetWindowMaximize(this.mMainWindow);
+                    break;
+
+                case WindowState.Fullscreen:
+                    NativeMethods.SetFullscreen(this.mMainWindow);
+                    break;
+            }
 
             NativeMethods.AddConfigureEvent(this.mMainWindow);
 

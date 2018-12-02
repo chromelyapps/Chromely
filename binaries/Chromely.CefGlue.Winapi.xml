@@ -132,21 +132,6 @@
             The browser created.
             </summary>
         </member>
-        <member name="E:Chromely.CefGlue.Winapi.Browser.CefGlueBrowser.TitleChanged">
-            <summary>
-            The title changed.
-            </summary>
-        </member>
-        <member name="E:Chromely.CefGlue.Winapi.Browser.CefGlueBrowser.AddressChanged">
-            <summary>
-            The address changed.
-            </summary>
-        </member>
-        <member name="E:Chromely.CefGlue.Winapi.Browser.CefGlueBrowser.StatusMessage">
-            <summary>
-            The status message.
-            </summary>
-        </member>
         <member name="E:Chromely.CefGlue.Winapi.Browser.CefGlueBrowser.ConsoleMessage">
             <summary>
             The console message.
@@ -244,30 +229,6 @@
             </summary>
             <param name="browser">
             The browser.
-            </param>
-        </member>
-        <member name="M:Chromely.CefGlue.Winapi.Browser.CefGlueBrowser.OnTitleChanged(Chromely.CefGlue.Winapi.Browser.EventParams.TitleChangedEventArgs)">
-            <summary>
-            The on title changed.
-            </summary>
-            <param name="eventArgs">
-            The event args.
-            </param>
-        </member>
-        <member name="M:Chromely.CefGlue.Winapi.Browser.CefGlueBrowser.OnAddressChanged(Chromely.CefGlue.Winapi.Browser.EventParams.AddressChangedEventArgs)">
-            <summary>
-            The on address changed.
-            </summary>
-            <param name="eventArgs">
-            The event args.
-            </param>
-        </member>
-        <member name="M:Chromely.CefGlue.Winapi.Browser.CefGlueBrowser.OnStatusMessage(Chromely.CefGlue.Winapi.Browser.EventParams.StatusMessageEventArgs)">
-            <summary>
-            The on status message.
-            </summary>
-            <param name="eventArgs">
-            The event args.
             </param>
         </member>
         <member name="M:Chromely.CefGlue.Winapi.Browser.CefGlueBrowser.OnConsoleMessage(Chromely.CefGlue.Winapi.Browser.EventParams.ConsoleMessageEventArgs)">
@@ -1194,42 +1155,6 @@
             <summary>
             Initializes a new instance of the <see cref="T:Chromely.CefGlue.Winapi.Browser.Handlers.CefGlueDisplayHandler"/> class.
             </summary>
-        </member>
-        <member name="M:Chromely.CefGlue.Winapi.Browser.Handlers.CefGlueDisplayHandler.OnTitleChange(Xilium.CefGlue.CefBrowser,System.String)">
-            <summary>
-            The on title change.
-            </summary>
-            <param name="browser">
-            The browser.
-            </param>
-            <param name="title">
-            The title.
-            </param>
-        </member>
-        <member name="M:Chromely.CefGlue.Winapi.Browser.Handlers.CefGlueDisplayHandler.OnAddressChange(Xilium.CefGlue.CefBrowser,Xilium.CefGlue.CefFrame,System.String)">
-            <summary>
-            The on address change.
-            </summary>
-            <param name="browser">
-            The browser.
-            </param>
-            <param name="frame">
-            The frame.
-            </param>
-            <param name="url">
-            The url.
-            </param>
-        </member>
-        <member name="M:Chromely.CefGlue.Winapi.Browser.Handlers.CefGlueDisplayHandler.OnStatusMessage(Xilium.CefGlue.CefBrowser,System.String)">
-            <summary>
-            The on status message.
-            </summary>
-            <param name="browser">
-            The browser.
-            </param>
-            <param name="value">
-            The value.
-            </param>
         </member>
         <member name="M:Chromely.CefGlue.Winapi.Browser.Handlers.CefGlueDisplayHandler.OnConsoleMessage(Xilium.CefGlue.CefBrowser,Xilium.CefGlue.CefLogSeverity,System.String,System.String,System.Int32)">
             <summary>
@@ -2537,14 +2462,14 @@
             Gets the browser message router.
             </summary>
         </member>
-        <member name="P:Chromely.CefGlue.Winapi.ChromeHost.CefGlueBrowserHost.ServiceAssemblies">
-            <summary>
-            Gets the service assemblies.
-            </summary>
-        </member>
         <member name="P:Chromely.CefGlue.Winapi.ChromeHost.CefGlueBrowserHost.HostConfig">
             <summary>
             Gets the host config.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Winapi.ChromeHost.CefGlueBrowserHost.Show">
+            <summary>
+            The show.
             </summary>
         </member>
         <member name="M:Chromely.CefGlue.Winapi.ChromeHost.CefGlueBrowserHost.RegisterUrlScheme(Chromely.Core.Infrastructure.UrlScheme)">
@@ -2627,6 +2552,17 @@
             </summary>
             <param name="packet">
             The packet.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Winapi.ChromeHost.CefGlueBrowserHost.OnBrowserCreated(System.Object,System.EventArgs)">
+            <summary>
+            The on browser created.
+            </summary>
+            <param name="sender">
+            The sender.
+            </param>
+            <param name="e">
+            The e.
             </param>
         </member>
         <member name="M:Chromely.CefGlue.Winapi.ChromeHost.CefGlueBrowserHost.PostTask(Xilium.CefGlue.CefThreadId,System.Action)">
@@ -2766,7 +2702,7 @@
             The <see cref="T:System.IntPtr"/>.
             </returns>
         </member>
-        <member name="M:Chromely.CefGlue.Winapi.NativeMethods.SetWindowPos(System.IntPtr,System.IntPtr,System.Int32,System.Int32,System.Int32,System.Int32,Chromely.Core.Host.WinapiConstants)">
+        <member name="M:Chromely.CefGlue.Winapi.NativeMethods.SetWindowPos(System.IntPtr,System.IntPtr,System.Int32,System.Int32,System.Int32,System.Int32,WinApi.User32.WindowPositionFlags)">
             <summary>
             The set window pos.
             </summary>
@@ -3278,6 +3214,56 @@
             <returns>
             The <see cref="T:WinApi.Windows.WindowFactory"/>.
             </returns>
+        </member>
+        <member name="T:Chromely.CefGlue.Winapi.WindowState">
+            <summary>
+            The winapi construction params.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Winapi.WindowState.Normal">
+            <summary>
+            Gets the normal.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Winapi.WindowState.Maximized">
+            <summary>
+            Gets the maximized.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Winapi.WindowState.Fullscreen">
+            <summary>
+            Gets the fullscreen.
+            </summary>
+        </member>
+        <member name="T:Chromely.CefGlue.Winapi.WindowState.MaximizedParams">
+            <summary>
+            The maximized params.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Winapi.WindowState.MaximizedParams.Styles">
+            <summary>
+            The styles.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Winapi.WindowState.MaximizedParams.ExStyles">
+            <summary>
+            The ex styles.
+            </summary>
+        </member>
+        <member name="T:Chromely.CefGlue.Winapi.WindowState.FullscreenParams">
+            <summary>
+            The fullscreen params.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Winapi.WindowState.FullscreenParams.Styles">
+            <summary>
+            The styles.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Winapi.WindowState.FullscreenParams.ExStyles">
+            <summary>
+            The ex styles.
+            </summary>
         </member>
         <member name="M:Xilium.CefGlue.CefRuntime.Load">
             <summary>

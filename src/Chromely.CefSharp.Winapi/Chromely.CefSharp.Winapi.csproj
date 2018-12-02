@@ -5,17 +5,17 @@
     <CefSharpAnyCpuSupport>true</CefSharpAnyCpuSupport>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
-    <Version>65.0.0.0</Version>
-    <Authors>Kola Oyewumi</Authors>
-    <Company>Kola Oyewumi</Company>
+    <Version>67.0.0.0</Version>
+    <Authors>Chromely Projects</Authors>
+    <Company>Chromely Projects</Company>
     <Description>Chromely CefSharp Winapi implementation. Chromely.CefSharp.Winapi version naming is based on CefSharp.Common  version referenced.</Description>
-    <Copyright>Copyright © 2017-2018 Kola Oyewumi</Copyright>
+    <Copyright>Copyright © 2017-2018 Chromely Projects</Copyright>
     <PackageLicenseUrl>https://github.com/mattkol/Chromely/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/mattkol/Chromely</PackageProjectUrl>
     <PackageIconUrl>https://github.com/mattkol/Chromely/blob/master/nugets/chromely.ico?raw=true</PackageIconUrl>
-    <AssemblyVersion>65.0.0.0</AssemblyVersion>
-    <FileVersion>65.0.0.0</FileVersion>
-    <PackageTags>Cef Chromium HTML5 Desktop Chromely CefSharp Restful  Ajax HTTP XHR JavascriptIntegration</PackageTags>
+    <AssemblyVersion>67.0.0.0</AssemblyVersion>
+    <FileVersion>67.0.0.0</FileVersion>
+    <PackageTags>Cef Chromium HTML5 Desktop Chromely CefSharp Restful Ajax HTTP XHR JavascriptIntegration</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageReleaseNotes>- Changed menu context handler - devtool now only available during debug.
 - Changed lifespan handler - creation of popup window removed.
@@ -34,7 +34,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CefSharp.Common" Version="65.0.0" />
+    <PackageReference Include="CefSharp.Common" Version="67.0.0" />
     <PackageReference Include="WinApi" Version="4.0.0" />
   </ItemGroup>
 

@@ -2,6 +2,31 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Platforms>AnyCPU</Platforms>
+    <Version>66.0.0.0-beta</Version>
+    <AssemblyVersion>66.0.0.0</AssemblyVersion>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Product>Chromely.CefGlue.Gtk</Product>
+    <Authors>Chromely Projects</Authors>
+    <Company>Chromely Projects</Company>
+    <Copyright>Copyright © 2017-2018 Chromely Projects</Copyright>
+    <PackageLicenseUrl>https://github.com/mattkol/Chromely/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/mattkol/Chromely</PackageProjectUrl>
+    <PackageIconUrl>https://github.com/mattkol/Chromely/blob/master/nugets/chromely.ico?raw=true</PackageIconUrl>
+    <PackageTags>Cef Chromium HTML5 Desktop Chromely CefGlue  Restful  Ajax HTTP XHR MessageRouter JavascriptIntegration  .NET Core</PackageTags>
+    <Description>Chromely CefGlue Gtk implementation library - this is in .NET Standard 2.0 as it can be used in both .NET (Windows) and .NET Core (Windows, Linux).  Chromely.CefGlue.Gtk version naming is based on CefGlue Cef version implemented.</Description>
+    <PackageReleaseNotes>
+      - Added WindowState options - Normal, Maximize, Fullscreen.
+      - Rename CefGlueBrowserHost to ChromelyApplication - breaking changes!
+    </PackageReleaseNotes>
+    <FileVersion>66.0.0.0-beta</FileVersion>
+    <RepositoryType>Github Repository</RepositoryType>
+    <RepositoryUrl>https://github.com/mattkol/Chromely</RepositoryUrl>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -19,6 +44,27 @@
 
   <ItemGroup>
     <None Include="build\**" Pack="True" PackagePath="build\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="build\Chromely.CefGlue.Gtk.props">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="build\linux\chromelycef.deps.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="build\linux\chromelycef.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="build\linux\chromelycef.runtimeconfig.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="build\win\chromelycef.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="build\win\chromelycef.exe.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

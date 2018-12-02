@@ -9,9 +9,29 @@
             The Chromely configuration.
             </summary>
         </member>
+        <member name="F:Chromely.Core.ChromelyConfiguration.instance">
+            <summary>
+            The instance.
+            </summary>
+        </member>
         <member name="M:Chromely.Core.ChromelyConfiguration.#ctor">
             <summary>
-            Initializes a new instance of the <see cref="T:Chromely.Core.ChromelyConfiguration"/> class.
+            Prevents a default instance of the <see cref="T:Chromely.Core.ChromelyConfiguration"/> class from being created.
+            </summary>
+        </member>
+        <member name="P:Chromely.Core.ChromelyConfiguration.Instance">
+            <summary>
+            Gets the instance.
+            </summary>
+        </member>
+        <member name="P:Chromely.Core.ChromelyConfiguration.HostState">
+            <summary>
+            Gets or sets the host state.
+            </summary>
+        </member>
+        <member name="P:Chromely.Core.ChromelyConfiguration.HostCenterScreen">
+            <summary>
+            Gets or sets a value indicating whether host center screen.
             </summary>
         </member>
         <member name="P:Chromely.Core.ChromelyConfiguration.HostTitle">
@@ -37,6 +57,12 @@
         <member name="P:Chromely.Core.ChromelyConfiguration.PerformDependencyCheck">
             <summary>
             Gets or sets a value indicating whether CEF browser creation should perform dependency check.
+            </summary>
+        </member>
+        <member name="P:Chromely.Core.ChromelyConfiguration.ShutdownCefOnExit">
+            <summary>
+            Gets or sets a value indicating whether CEF should be shutdown on application exit.
+            Default is true.
             </summary>
         </member>
         <member name="P:Chromely.Core.ChromelyConfiguration.AppArgs">
@@ -84,6 +110,11 @@
             Gets or sets a value indicating whether is debugging.
             </summary>
         </member>
+        <member name="P:Chromely.Core.ChromelyConfiguration.ServiceAssemblies">
+            <summary>
+            Gets the service assemblies.
+            </summary>
+        </member>
         <member name="P:Chromely.Core.ChromelyConfiguration.CommandLineArgs">
             <summary>
             Gets or sets the command line args.
@@ -127,6 +158,17 @@
             The <see cref="T:Chromely.Core.ChromelyConfiguration"/> object.
             </returns>
         </member>
+        <member name="M:Chromely.Core.ChromelyConfiguration.WithShutdownCefOnExit(System.Boolean)">
+            <summary>
+            The with shutdown cef on exit.
+            </summary>
+            <param name="shutdownCefOnExitFlag">
+            The shutdown cef on exit flag.
+            </param>
+            <returns>
+            The <see cref="T:Chromely.Core.ChromelyConfiguration"/>.
+            </returns>
+        </member>
         <member name="M:Chromely.Core.ChromelyConfiguration.WithDebuggingMode(System.Boolean)">
             <summary>
             The with is debugging.
@@ -147,6 +189,20 @@
             </param>
             <returns>
             The <see cref="T:Chromely.Core.ChromelyConfiguration"/> object.
+            </returns>
+        </member>
+        <member name="M:Chromely.Core.ChromelyConfiguration.WithHostMode(Chromely.Core.Host.WindowState,System.Boolean)">
+            <summary>
+            The with host mode.
+            </summary>
+            <param name="windowState">
+            The window state.
+            </param>
+            <param name="centerScreen">
+            The center screen.
+            </param>
+            <returns>
+            The <see cref="T:Chromely.Core.ChromelyConfiguration"/>.
             </returns>
         </member>
         <member name="M:Chromely.Core.ChromelyConfiguration.WithHostTitle(System.String)">
@@ -333,6 +389,50 @@
             The <see cref="T:Chromely.Core.ChromelyConfiguration"/> object.
             </returns>
         </member>
+        <member name="M:Chromely.Core.ChromelyConfiguration.RegisterServiceAssembly(System.String)">
+            <summary>
+            Registers service assembly.
+            </summary>
+            <param name="filename">
+            The filename.
+            </param>
+            <returns>
+            The <see cref="T:Chromely.Core.ChromelyConfiguration"/> object.
+            </returns>
+        </member>
+        <member name="M:Chromely.Core.ChromelyConfiguration.RegisterServiceAssembly(System.Reflection.Assembly)">
+            <summary>
+            Registers service assembly.
+            </summary>
+            <param name="assembly">
+            The assembly.
+            </param>
+            <returns>
+            The <see cref="T:Chromely.Core.ChromelyConfiguration"/> object.
+            </returns>
+        </member>
+        <member name="M:Chromely.Core.ChromelyConfiguration.RegisterServiceAssemblies(System.String)">
+            <summary>
+            Registers service assemblies.
+            </summary>
+            <param name="folder">
+            The folder.
+            </param>
+            <returns>
+            The <see cref="T:Chromely.Core.ChromelyConfiguration"/> object.
+            </returns>
+        </member>
+        <member name="M:Chromely.Core.ChromelyConfiguration.RegisterServiceAssemblies(System.Collections.Generic.List{System.String})">
+            <summary>
+            Registers service assemblies.
+            </summary>
+            <param name="filenames">
+            The filenames.
+            </param>
+            <returns>
+            The <see cref="T:Chromely.Core.ChromelyConfiguration"/> object.
+            </returns>
+        </member>
         <member name="M:Chromely.Core.ChromelyConfiguration.RegisterCustomrUrlScheme(System.String,System.String)">
             <summary>
             Registers customr url scheme.
@@ -342,6 +442,17 @@
             </param>
             <param name="domainName">
             The domain name.
+            </param>
+            <returns>
+            The <see cref="T:Chromely.Core.ChromelyConfiguration"/> object.
+            </returns>
+        </member>
+        <member name="M:Chromely.Core.ChromelyConfiguration.RegisterCustomrUrlScheme(Chromely.Core.Infrastructure.UrlScheme)">
+            <summary>
+            Registers customr url scheme.
+            </summary>
+            <param name="urlScheme">
+            The url scheme object.
             </param>
             <returns>
             The <see cref="T:Chromely.Core.ChromelyConfiguration"/> object.
@@ -407,8 +518,8 @@
             <summary>
             Registers Javascript object handler.
             </summary>
-            <param name="jsMethod">
-            The js method.
+            <param name="javascriptMethod">
+            The javascrpt method.
             </param>
             <param name="boundObject">
             The bound object.
@@ -1222,123 +1333,24 @@
             Gets or sets the point.
             </summary>
         </member>
-        <member name="T:Chromely.Core.Host.WinapiConstants">
+        <member name="T:Chromely.Core.Host.WindowState">
             <summary>
-            The winapi constants.
+            The window state.
             </summary>
         </member>
-        <member name="F:Chromely.Core.Host.WinapiConstants.AsyncWindowPosition">
+        <member name="F:Chromely.Core.Host.WindowState.Normal">
             <summary>
-            If the calling thread and the thread that owns the window are attached to different input queues, 
-            the system posts the request to the thread that owns the window. This prevents the calling thread from 
-            blocking its execution while other threads process the request.
-            </summary>
-            <remarks>SWP_ASYNCWINDOWPOS</remarks>
-        </member>
-        <member name="F:Chromely.Core.Host.WinapiConstants.DeferErase">
-            <summary>
-            Prevents generation of the WM_SYNCPAINT message.
-            </summary>
-            <remarks>SWP_DEFERERASE</remarks>
-        </member>
-        <member name="F:Chromely.Core.Host.WinapiConstants.DrawFrame">
-            <summary>
-            Draws a frame (defined in the window's class description) around the window.
-            </summary>
-            <remarks>SWP_DRAWFRAME</remarks>
-        </member>
-        <member name="F:Chromely.Core.Host.WinapiConstants.FrameChanged">
-            <summary>
-            Applies new frame styles set using the SetWindowLong function. Sends a WM_NCCALCSIZE message to 
-            the window, even if the window's size is not being changed. If this flag is not specified, WM_NCCALCSIZE 
-            is sent only when the window's size is being changed.
-            </summary>
-            <remarks>SWP_FRAMECHANGED</remarks>
-        </member>
-        <member name="F:Chromely.Core.Host.WinapiConstants.HideWindow">
-            <summary>
-            Hides the window.
-            </summary>
-            <remarks>SWP_HIDEWINDOW</remarks>
-        </member>
-        <member name="F:Chromely.Core.Host.WinapiConstants.NoActivate">
-            <summary>
-            Does not activate the window. If this flag is not set, the window is activated and moved to the 
-            top of either the topmost or non-topmost group (depending on the setting of the hWndInsertAfter parameter).
-            </summary>
-            <remarks>SWP_NOACTIVATE</remarks>
-        </member>
-        <member name="F:Chromely.Core.Host.WinapiConstants.NoCopyBits">
-            <summary>
-            Discards the entire contents of the client area. If this flag is not specified, the valid contents 
-            of the client area are saved and copied back into the client area after the window is sized or repositioned.
-            </summary>
-            <remarks>SWP_NOCOPYBITS</remarks>
-        </member>
-        <member name="F:Chromely.Core.Host.WinapiConstants.NoMove">
-            <summary>
-            Retains the current position (ignores X and Y parameters).
-            </summary>
-            <remarks>SWP_NOMOVE</remarks>
-        </member>
-        <member name="F:Chromely.Core.Host.WinapiConstants.NoOwnerZOrder">
-            <summary>
-            Does not change the owner window's position in the Z order.
-            </summary>
-            <remarks>SWP_NOOWNERZORDER</remarks>
-        </member>
-        <member name="F:Chromely.Core.Host.WinapiConstants.NoRedraw">
-            <summary>
-            Does not redraw changes. If this flag is set, no repainting of any kind occurs. This applies to 
-            the client area, the nonclient area (including the title bar and scroll bars), and any part of the parent 
-            window uncovered as a result of the window being moved. When this flag is set, the application must 
-            explicitly invalidate or redraw any parts of the window and parent window that need redrawing.
-            </summary>
-            <remarks>SWP_NOREDRAW</remarks>
-        </member>
-        <member name="F:Chromely.Core.Host.WinapiConstants.NoReposition">
-            <summary>
-            Same as the SWP_NOOWNERZORDER flag.
-            </summary>
-            <remarks>SWP_NOREPOSITION</remarks>
-        </member>
-        <member name="F:Chromely.Core.Host.WinapiConstants.NoSendChanging">
-            <summary>
-            Prevents the window from receiving the WM_WINDOWPOSCHANGING message.
-            </summary>
-            <remarks>SWP_NOSENDCHANGING</remarks>
-        </member>
-        <member name="F:Chromely.Core.Host.WinapiConstants.NoSize">
-            <summary>
-            Retains the current size (ignores the cx and cy parameters).
-            </summary>
-            <remarks>SWP_NOSIZE</remarks>
-        </member>
-        <member name="F:Chromely.Core.Host.WinapiConstants.NoZOrder">
-            <summary>
-            Retains the current Z order (ignores the hWndInsertAfter parameter).
-            </summary>
-            <remarks>SWP_NOZORDER</remarks>
-        </member>
-        <member name="F:Chromely.Core.Host.WinapiConstants.ShowWindow">
-            <summary>
-            Displays the window.
-            </summary>
-            <remarks>SWP_SHOWWINDOW</remarks>
-        </member>
-        <member name="F:Chromely.Core.Host.WinapiConstants.WM_MOVE">
-            <summary>
-            The w m_ move
+            The normal.
             </summary>
         </member>
-        <member name="F:Chromely.Core.Host.WinapiConstants.WM_MOVING">
+        <member name="F:Chromely.Core.Host.WindowState.Maximize">
             <summary>
-            The w m_ moving
+            The maximize.
             </summary>
         </member>
-        <member name="F:Chromely.Core.Host.WinapiConstants.WM_ACTIVATE">
+        <member name="F:Chromely.Core.Host.WindowState.Fullscreen">
             <summary>
-            The w m_ activate
+            The fullscreen.
             </summary>
         </member>
         <member name="T:Chromely.Core.IChromelyContainer">
@@ -2591,6 +2603,34 @@
             Gets or sets the data.
             </summary>
         </member>
+        <member name="T:Chromely.Core.RestfulService.ControllerAssemblyInfo">
+            <summary>
+            The controller assembly info.
+            </summary>
+        </member>
+        <member name="M:Chromely.Core.RestfulService.ControllerAssemblyInfo.#ctor(System.Reflection.Assembly)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.Core.RestfulService.ControllerAssemblyInfo"/> class.
+            </summary>
+            <param name="assembly">
+            The assembly.
+            </param>
+        </member>
+        <member name="P:Chromely.Core.RestfulService.ControllerAssemblyInfo.Assembly">
+            <summary>
+            Gets or sets the assembly.
+            </summary>
+        </member>
+        <member name="P:Chromely.Core.RestfulService.ControllerAssemblyInfo.IsScanned">
+            <summary>
+            Gets or sets a value indicating whether is scanned.
+            </summary>
+        </member>
+        <member name="P:Chromely.Core.RestfulService.ControllerAssemblyInfo.Key">
+            <summary>
+            Gets the key.
+            </summary>
+        </member>
         <member name="T:Chromely.Core.RestfulService.ControllerPropertyAttribute">
             <summary>
             The controller property attribute.
@@ -2708,11 +2748,6 @@
         <member name="T:Chromely.Core.RestfulService.IChromelyServiceProvider">
             <summary>
             The ChromelyServiceProvider interface.
-            </summary>
-        </member>
-        <member name="P:Chromely.Core.RestfulService.IChromelyServiceProvider.ServiceAssemblies">
-            <summary>
-            Gets the service assemblies.
             </summary>
         </member>
         <member name="M:Chromely.Core.RestfulService.IChromelyServiceProvider.RegisterUrlScheme(Chromely.Core.Infrastructure.UrlScheme)">
@@ -2845,7 +2880,7 @@
             The registration of service assemblies extension.
             </summary>
         </member>
-        <member name="M:Chromely.Core.RestfulService.RegisterServiceAssembliesExtension.RegisterServiceAssembly(System.Collections.Generic.List{System.Reflection.Assembly},System.String)">
+        <member name="M:Chromely.Core.RestfulService.RegisterServiceAssembliesExtension.RegisterServiceAssembly(System.Collections.Generic.List{Chromely.Core.RestfulService.ControllerAssemblyInfo},System.String)">
             <summary>
             Registers service assembly.
             </summary>
@@ -2856,7 +2891,7 @@
             The filename.
             </param>
         </member>
-        <member name="M:Chromely.Core.RestfulService.RegisterServiceAssembliesExtension.RegisterServiceAssemblies(System.Collections.Generic.List{System.Reflection.Assembly},System.Collections.Generic.List{System.String})">
+        <member name="M:Chromely.Core.RestfulService.RegisterServiceAssembliesExtension.RegisterServiceAssemblies(System.Collections.Generic.List{Chromely.Core.RestfulService.ControllerAssemblyInfo},System.Collections.Generic.List{System.String})">
             <summary>
             Registers service assemblies.
             </summary>
@@ -2867,7 +2902,7 @@
             The filenames.
             </param>
         </member>
-        <member name="M:Chromely.Core.RestfulService.RegisterServiceAssembliesExtension.RegisterServiceAssemblies(System.Collections.Generic.List{System.Reflection.Assembly},System.String)">
+        <member name="M:Chromely.Core.RestfulService.RegisterServiceAssembliesExtension.RegisterServiceAssemblies(System.Collections.Generic.List{Chromely.Core.RestfulService.ControllerAssemblyInfo},System.String)">
             <summary>
             Registers service assemblies.
             </summary>
@@ -2878,7 +2913,7 @@
             The folder path.
             </param>
         </member>
-        <member name="M:Chromely.Core.RestfulService.RegisterServiceAssembliesExtension.RegisterServiceAssembly(System.Collections.Generic.List{System.Reflection.Assembly},System.Reflection.Assembly)">
+        <member name="M:Chromely.Core.RestfulService.RegisterServiceAssembliesExtension.RegisterServiceAssembly(System.Collections.Generic.List{Chromely.Core.RestfulService.ControllerAssemblyInfo},System.Reflection.Assembly)">
             <summary>
             Registers service assembly.
             </summary>

@@ -45,7 +45,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="CefSharp.Common" Version="65.0.0" />
+    <PackageReference Include="CefSharp.Common" Version="67.0.0" />
     <PackageReference Include="Microsoft.Packaging.Tools.Trimming" Version="1.1.0-preview1-25818-01" />
   </ItemGroup>
   <ItemGroup>

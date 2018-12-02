@@ -1,34 +1,13 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="HostBase.cs" company="Chromely">
-//   Copyright (c) 2017-2018 Kola Oyewumi
+// <copyright file="ApplicationBase.cs" company="Chromely Projects">
+//   Copyright (c) 2017-2018 Chromely Projects
 // </copyright>
 // <license>
-// MIT License
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
+//      See the LICENSE.md file in the project root for more information.
 // </license>
-// <note>
-// Chromely project is licensed under MIT License. CefGlue, CefSharp, Winapi may have additional licensing.
-// </note>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Chromely.CefGlue.Gtk.ChromeHost
+namespace Chromely.CefGlue.Gtk.App
 {
     using System;
     using System.Collections.Generic;
@@ -44,17 +23,17 @@ namespace Chromely.CefGlue.Gtk.ChromeHost
     using Xilium.CefGlue.Wrapper;
 
     /// <summary>
-    /// The host base.
+    /// The application base.
     /// </summary>
-    public abstract class HostBase : IChromelyServiceProvider, IDisposable
+    public abstract class ApplicationBase : IChromelyServiceProvider, IDisposable
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="HostBase"/> class.
+        /// Initializes a new instance of the <see cref="ApplicationBase"/> class.
         /// </summary>
         /// <param name="hostConfig">
         /// The host config.
         /// </param>
-        protected HostBase(ChromelyConfiguration hostConfig)
+        protected ApplicationBase(ChromelyConfiguration hostConfig)
         {
             this.HostConfig = hostConfig;
         }
@@ -62,9 +41,9 @@ namespace Chromely.CefGlue.Gtk.ChromeHost
         #region Destructor
 
         /// <summary>
-        /// Finalizes an instance of the <see cref="HostBase"/> class. 
+        /// Finalizes an instance of the <see cref="ApplicationBase"/> class. 
         /// </summary>
-        ~HostBase()
+        ~ApplicationBase()
         {
             this.Dispose(false);
         }
@@ -279,7 +258,6 @@ namespace Chromely.CefGlue.Gtk.ChromeHost
             var settings = new CefSettings
             {
                 MultiThreadedMessageLoop = true,
-                SingleProcess = false,
                 LogSeverity = (CefLogSeverity)this.HostConfig.LogSeverity,
                 LogFile = this.HostConfig.LogFile,
                 ResourcesDirPath = Path.GetDirectoryName(
@@ -306,8 +284,6 @@ namespace Chromely.CefGlue.Gtk.ChromeHost
             var app = new CefGlueApp(this.HostConfig);
 
             var exitCode = CefRuntime.ExecuteProcess(mainArgs, app, IntPtr.Zero);
-            Log.Info(string.Format("CefRuntime.ExecuteProcess() returns {0}", exitCode));
-
             if (exitCode != -1)
             {
                 // An error has occured.
@@ -395,7 +371,7 @@ namespace Chromely.CefGlue.Gtk.ChromeHost
 
             // Register message router handlers
             List<object> messageRouterHandlers = IoC.GetAllInstances(typeof(ChromelyMessageRouter)).ToList();
-            if ((messageRouterHandlers != null) && (messageRouterHandlers.Count > 0))
+            if (messageRouterHandlers.Any())
             {
                 var routerHandlers = messageRouterHandlers.ToList();
 

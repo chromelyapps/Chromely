@@ -4,6 +4,11 @@
         <name>Chromely.CefSharp.Winapi</name>
     </assembly>
     <members>
+        <member name="T:Chromely.CefSharp.Winapi.Browser.CefSettings">
+            <summary>
+            The cef settings.
+            </summary>
+        </member>
         <member name="T:Chromely.CefSharp.Winapi.Browser.ChromiumWebBrowser">
             <summary>
             The chromium web browser.
@@ -17,6 +22,11 @@
         <member name="F:Chromely.CefSharp.Winapi.Browser.ChromiumWebBrowser.mBrowser">
             <summary>
             The browser
+            </summary>
+        </member>
+        <member name="F:Chromely.CefSharp.Winapi.Browser.ChromiumWebBrowser.mSettings">
+            <summary>
+            The m settings.
             </summary>
         </member>
         <member name="F:Chromely.CefSharp.Winapi.Browser.ChromiumWebBrowser.mInitialized">
@@ -36,13 +46,22 @@
             user attempts to set after browser created)
             </summary>
         </member>
-        <member name="M:Chromely.CefSharp.Winapi.Browser.ChromiumWebBrowser.#ctor(System.IntPtr,System.String,System.Boolean)">
+        <member name="M:Chromely.CefSharp.Winapi.Browser.ChromiumWebBrowser.#ctor(System.IntPtr,CefSharp.AbstractCefSettings,System.String,System.Boolean)">
             <summary>
             Initializes a new instance of the <see cref="T:Chromely.CefSharp.Winapi.Browser.ChromiumWebBrowser"/> class.
             </summary>
-            <param name="parent">The parent handle.</param>
-            <param name="address">The address.</param>
-            <param name="useLegacyJavascriptBindingEnabled">Flag to use whether Javascript binding should be used.</param>
+            <param name="parent">
+            The parent handle.
+            </param>
+            <param name="settings">
+            The m Settings.
+            </param>
+            <param name="address">
+            The address.
+            </param>
+            <param name="useLegacyJavascriptBindingEnabled">
+            Flag to use whether Javascript binding should be used.
+            </param>
         </member>
         <member name="E:Chromely.CefSharp.Winapi.Browser.ChromiumWebBrowser.LoadError">
             <summary>
@@ -861,7 +880,7 @@
             The CefSharp request handler.
             </summary>
         </member>
-        <member name="M:Chromely.CefSharp.Winapi.Browser.Handlers.CefSharpRequestHandler.CefSharp#IRequestHandler#OnBeforeBrowse(CefSharp.IWebBrowser,CefSharp.IBrowser,CefSharp.IFrame,CefSharp.IRequest,System.Boolean)">
+        <member name="M:Chromely.CefSharp.Winapi.Browser.Handlers.CefSharpRequestHandler.CefSharp#IRequestHandler#OnBeforeBrowse(CefSharp.IWebBrowser,CefSharp.IBrowser,CefSharp.IFrame,CefSharp.IRequest,System.Boolean,System.Boolean)">
             <summary>
             The on before browse.
             </summary>
@@ -876,6 +895,9 @@
             </param>
             <param name="request">
             The request.
+            </param>
+            <param name="userGesture">
+            The user Gesture.
             </param>
             <param name="isRedirect">
             The is redirect.
@@ -1363,7 +1385,7 @@
             The cef settings extension.
             </summary>
         </member>
-        <member name="M:Chromely.CefSharp.Winapi.CefSettingsExtension.Update(CefSharp.CefSettings,System.Collections.Generic.Dictionary{System.String,System.Object})">
+        <member name="M:Chromely.CefSharp.Winapi.CefSettingsExtension.Update(Chromely.CefSharp.Winapi.Browser.CefSettings,System.Collections.Generic.Dictionary{System.String,System.Object})">
             <summary>
             The update.
             </summary>
@@ -1374,7 +1396,7 @@
             The custom settings.
             </param>
         </member>
-        <member name="M:Chromely.CefSharp.Winapi.CefSettingsExtension.UpdateCommandLineArgs(CefSharp.CefSettings,System.Collections.Generic.Dictionary{System.String,System.String})">
+        <member name="M:Chromely.CefSharp.Winapi.CefSettingsExtension.UpdateCommandLineArgs(Chromely.CefSharp.Winapi.Browser.CefSettings,System.Collections.Generic.Dictionary{System.String,System.String})">
             <summary>
             The update command line args.
             </summary>
@@ -1407,11 +1429,6 @@
             <param name="hostConfig">
             The host config.
             </param>
-        </member>
-        <member name="P:Chromely.CefSharp.Winapi.ChromeHost.CefSharpBrowserHost.ServiceAssemblies">
-            <summary>
-            Gets the service assemblies.
-            </summary>
         </member>
         <member name="P:Chromely.CefSharp.Winapi.ChromeHost.CefSharpBrowserHost.HostConfig">
             <summary>
@@ -1619,7 +1636,7 @@
             The <see cref="T:System.IntPtr"/>.
             </returns>
         </member>
-        <member name="M:Chromely.CefSharp.Winapi.NativeMethods.SetWindowPos(System.IntPtr,System.IntPtr,System.Int32,System.Int32,System.Int32,System.Int32,Chromely.Core.Host.WinapiConstants)">
+        <member name="M:Chromely.CefSharp.Winapi.NativeMethods.SetWindowPos(System.IntPtr,System.IntPtr,System.Int32,System.Int32,System.Int32,System.Int32,WinApi.User32.WindowPositionFlags)">
             <summary>
             The set window pos.
             </summary>
@@ -1850,6 +1867,56 @@
             <returns>
             The <see cref="T:WinApi.Windows.WindowFactory"/>.
             </returns>
+        </member>
+        <member name="T:Chromely.CefSharp.Winapi.WindowState">
+            <summary>
+            The winapi construction params.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefSharp.Winapi.WindowState.Normal">
+            <summary>
+            Gets the normal.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefSharp.Winapi.WindowState.Maximized">
+            <summary>
+            Gets the maximized.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefSharp.Winapi.WindowState.Fullscreen">
+            <summary>
+            Gets the fullscreen.
+            </summary>
+        </member>
+        <member name="T:Chromely.CefSharp.Winapi.WindowState.MaximizedParams">
+            <summary>
+            The maximized params.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefSharp.Winapi.WindowState.MaximizedParams.Styles">
+            <summary>
+            The styles.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefSharp.Winapi.WindowState.MaximizedParams.ExStyles">
+            <summary>
+            The ex styles.
+            </summary>
+        </member>
+        <member name="T:Chromely.CefSharp.Winapi.WindowState.FullscreenParams">
+            <summary>
+            The fullscreen params.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefSharp.Winapi.WindowState.FullscreenParams.Styles">
+            <summary>
+            The styles.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefSharp.Winapi.WindowState.FullscreenParams.ExStyles">
+            <summary>
+            The ex styles.
+            </summary>
         </member>
     </members>
 </doc>
