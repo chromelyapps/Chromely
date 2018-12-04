@@ -11,6 +11,7 @@ namespace Chromely.CefGlue.Gtk.Browser
 {
     using System;
     using Chromely.CefGlue.Gtk.Browser.EventParams;
+    using Chromely.CefGlue.Gtk.Browser.FrameHandlers;
     using Chromely.Core;
     using Chromely.Core.Infrastructure;
     using Xilium.CefGlue;
@@ -28,7 +29,7 @@ namespace Chromely.CefGlue.Gtk.Browser
         /// <summary>
         /// The CefBrowserSettings object.
         /// </summary>
-        private readonly CefBrowserSettings mSettings;
+        private CefBrowserSettings mSettings;
 
         /// <summary>
         /// The CefGlueClient object.
@@ -193,6 +194,13 @@ namespace Chromely.CefGlue.Gtk.Browser
                 this.mClient = new CefGlueClient(CefGlueClientParams.Create(this));
             }
 
+            mSettings = this.mSettings ?? new CefBrowserSettings();
+
+            mSettings.DefaultEncoding = "UTF-8";
+            mSettings.FileAccessFromFileUrls = CefState.Enabled;
+            mSettings.UniversalAccessFromFileUrls = CefState.Enabled;
+            mSettings.WebSecurity = CefState.Enabled;
+
             CefBrowserHost.CreateBrowser(windowInfo, this.mClient, this.mSettings, this.StartUrl);
         }
 
@@ -227,6 +235,11 @@ namespace Chromely.CefGlue.Gtk.Browser
         public virtual void OnCreated(CefBrowser browser)
         {
             this.CefBrowser = browser;
+
+            // Register browser frame
+            CefGlueFrameHandler frameHandler = new CefGlueFrameHandler(browser);
+            IoC.RegisterInstance(typeof(CefGlueFrameHandler), typeof(CefGlueFrameHandler).FullName, frameHandler);
+
             this.StartWebsocket();
             this.Created?.Invoke(this, EventArgs.Empty);
         }
