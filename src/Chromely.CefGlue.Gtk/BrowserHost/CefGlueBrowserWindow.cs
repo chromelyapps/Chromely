@@ -1,30 +1,29 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CefGlueBrowserHost.cs" company="Chromely Projects">
+// <copyright file="CefGlueBrowserWindow.cs" company="Chromely Projects">
 //   Copyright (c) 2017-2018 Chromely Projects
 // </copyright>
 // <license>
-//      See the LICENSE.md file in the project root for more information.
+// See the LICENSE.md file in the project root for more information.
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Chromely.CefGlue.Winapi.BrowserHost
+namespace Chromely.CefGlue.Gtk.BrowserHost
 {
-    using System;
     using Chromely.Core;
-    using WinApi.User32;
+    using Xilium.CefGlue;
 
     /// <summary>
-    /// The cef glue chromium window.
+    /// The CefGlue browser host/window/app.
     /// </summary>
-    public class CefGlueBrowserHost : HostBase
+    public class CefGlueBrowserWindow : HostBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CefGlueBrowserHost"/> class.
+        /// Initializes a new instance of the <see cref="CefGlueBrowserWindow"/> class.
         /// </summary>
         /// <param name="hostConfig">
         /// The host config.
         /// </param>
-        public CefGlueBrowserHost(ChromelyConfiguration hostConfig) 
+        public CefGlueBrowserWindow(ChromelyConfiguration hostConfig) 
             : base(hostConfig)
         {
         }
@@ -32,31 +31,46 @@ namespace Chromely.CefGlue.Winapi.BrowserHost
         /// <summary>
         /// The platform initialize.
         /// </summary>
-        protected override void Initialize()
+        protected override void PlatformInitialize()
         {
+            Application.Init();
         }
 
         /// <summary>
         /// The platform shutdown.
         /// </summary>
-        protected override void Shutdown()
+        protected override void PlatformShutdown()
         {
         }
 
         /// <summary>
         /// The platform run message loop.
         /// </summary>
-        protected override void RunMessageLoop()
+        protected override void PlatformRunMessageLoop()
         {
-            NativeWindow.RunMessageLoop();
+            if (CefRuntime.Platform == CefRuntimePlatform.Windows)
+            {
+                Application.Run();
+            }
+            else
+            {
+                CefRuntime.RunMessageLoop();
+            }
         }
 
         /// <summary>
         /// The platform quit message loop.
         /// </summary>
-        protected override void QuitMessageLoop()
+        protected override void PlatformQuitMessageLoop()
         {
-            NativeWindow.Exit();
+            if (CefRuntime.Platform == CefRuntimePlatform.Windows)
+            {
+                Application.Quit();
+            }
+            else
+            {
+                CefRuntime.QuitMessageLoop();
+            }
         }
 
         /// <summary>

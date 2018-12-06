@@ -72,7 +72,7 @@ namespace Chromely.CefGlue.Gtk.Linux.Demo
                                 .WithCommandLineArg("disable-smooth-scrolling", "1")
                                 .WithCommandLineArg("no-sandbox", "1");
 
-                using (var app = new CefGlueBrowserHost(config))
+                using (var app = new CefGlueBrowserWindow(config))
                 {
                     // Register external url schems
                     app.RegisterUrlScheme(new UrlScheme("https://github.com/mattkol/Chromely", true));

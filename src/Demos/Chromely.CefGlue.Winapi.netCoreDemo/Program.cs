@@ -71,7 +71,7 @@ namespace Chromely.CefGlue.Winapi.netCoreDemo
                                 // .WithCustomSetting(CefSettingKeys.BrowserSubprocessPath, full_path_to_subprocess)
                                 .WithCustomSetting(CefSettingKeys.SingleProcess, true);
 
-                using (var app = new CefGlueBrowserHost(config))
+                using (var app = new CefGlueBrowserWindow(config))
                 {
                     // Register external url schems
                     app.RegisterUrlScheme(new UrlScheme("https://github.com/mattkol/Chromely", true));

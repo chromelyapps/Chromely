@@ -61,7 +61,7 @@ namespace Chromely.CefGlue.Gtk.Win.Demo
                                 .UseDefaultHttpSchemeHandler("http", "chromely.com");
                                 //.UseDefaultWebsocketHandler(string.Empty, 8181, true);
 
-                using (var app = new CefGlueBrowserHost(config))
+                using (var app = new CefGlueBrowserWindow(config))
                 {
                     // Register external url schems
                     app.RegisterUrlScheme(new UrlScheme("https://github.com/mattkol/Chromely", true));

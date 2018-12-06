@@ -63,7 +63,7 @@ namespace Chromely.CefGlue.Winapi.Demo
                                 .UseDefaultResourceSchemeHandler("local", string.Empty)
                                 .UseDefaultHttpSchemeHandler("http", "chromely.com");
 
-                using (var app = new CefGlueBrowserHost(config))
+                using (var app = new CefGlueBrowserWindow(config))
                 {
                     // Register external url schems
                     app.RegisterUrlScheme(new UrlScheme("https://github.com/mattkol/Chromely", true));

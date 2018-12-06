@@ -4,40 +4,101 @@
         <name>Chromely.CefGlue.Gtk</name>
     </assembly>
     <members>
-        <member name="T:Chromely.CefGlue.Gtk.App.ApplicationBase">
+        <member name="T:Chromely.CefGlue.Gtk.BrowserHost.Application">
             <summary>
-            The application base.
+            The application.
             </summary>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.ApplicationBase.#ctor(Chromely.Core.ChromelyConfiguration)">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.Application.Init">
             <summary>
-            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.App.ApplicationBase"/> class.
+            The init.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.Application.Run">
+            <summary>
+            The run.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.Application.Quit">
+            <summary>
+            The quit.
+            </summary>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.BrowserHost.CefGlueBrowserWindow">
+            <summary>
+            The CefGlue browser host/window/app.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.CefGlueBrowserWindow.#ctor(Chromely.Core.ChromelyConfiguration)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.BrowserHost.CefGlueBrowserWindow"/> class.
             </summary>
             <param name="hostConfig">
             The host config.
             </param>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.ApplicationBase.Finalize">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.CefGlueBrowserWindow.PlatformInitialize">
             <summary>
-            Finalizes an instance of the <see cref="T:Chromely.CefGlue.Gtk.App.ApplicationBase"/> class. 
+            The platform initialize.
             </summary>
         </member>
-        <member name="P:Chromely.CefGlue.Gtk.App.ApplicationBase.BrowserMessageRouter">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.CefGlueBrowserWindow.PlatformShutdown">
+            <summary>
+            The platform shutdown.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.CefGlueBrowserWindow.PlatformRunMessageLoop">
+            <summary>
+            The platform run message loop.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.CefGlueBrowserWindow.PlatformQuitMessageLoop">
+            <summary>
+            The platform quit message loop.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.CefGlueBrowserWindow.CreateMainView">
+            <summary>
+            The create main view.
+            </summary>
+            <returns>
+            The <see cref="T:Chromely.CefGlue.Gtk.BrowserHost.Window"/>.
+            </returns>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.BrowserHost.HostBase">
+            <summary>
+            The host base.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.HostBase.#ctor(Chromely.Core.ChromelyConfiguration)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.BrowserHost.HostBase"/> class.
+            </summary>
+            <param name="hostConfig">
+            The host config.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.HostBase.Finalize">
+            <summary>
+            Finalizes an instance of the <see cref="T:Chromely.CefGlue.Gtk.BrowserHost.HostBase"/> class. 
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.BrowserHost.HostBase.BrowserMessageRouter">
             <summary>
             Gets the browser message router.
             </summary>
         </member>
-        <member name="P:Chromely.CefGlue.Gtk.App.ApplicationBase.HostConfig">
+        <member name="P:Chromely.CefGlue.Gtk.BrowserHost.HostBase.HostConfig">
             <summary>
             Gets the host config.
             </summary>
         </member>
-        <member name="P:Chromely.CefGlue.Gtk.App.ApplicationBase.MainView">
+        <member name="P:Chromely.CefGlue.Gtk.BrowserHost.HostBase.MainView">
             <summary>
             Gets or sets the main view.
             </summary>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.ApplicationBase.Run(System.String[])">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.HostBase.Run(System.String[])">
             <summary>
             The run.
             </summary>
@@ -48,12 +109,12 @@
             The <see cref="T:System.Int32"/>.
             </returns>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.ApplicationBase.Quit">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.HostBase.Quit">
             <summary>
             The quit.
             </summary>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.ApplicationBase.RegisterUrlScheme(Chromely.Core.Infrastructure.UrlScheme)">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.HostBase.RegisterUrlScheme(Chromely.Core.Infrastructure.UrlScheme)">
             <summary>
             The register url scheme.
             </summary>
@@ -61,7 +122,7 @@
             The scheme.
             </param>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.ApplicationBase.RegisterServiceAssembly(System.String)">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.HostBase.RegisterServiceAssembly(System.String)">
             <summary>
             The register service assembly.
             </summary>
@@ -69,7 +130,7 @@
             The filename.
             </param>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.ApplicationBase.RegisterServiceAssembly(System.Reflection.Assembly)">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.HostBase.RegisterServiceAssembly(System.Reflection.Assembly)">
             <summary>
             The register service assembly.
             </summary>
@@ -77,7 +138,7 @@
             The assembly.
             </param>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.ApplicationBase.RegisterServiceAssemblies(System.String)">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.HostBase.RegisterServiceAssemblies(System.String)">
             <summary>
             The register service assemblies.
             </summary>
@@ -85,7 +146,7 @@
             The folder.
             </param>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.ApplicationBase.RegisterServiceAssemblies(System.Collections.Generic.List{System.String})">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.HostBase.RegisterServiceAssemblies(System.Collections.Generic.List{System.String})">
             <summary>
             The register service assemblies.
             </summary>
@@ -93,17 +154,17 @@
             The filenames.
             </param>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.ApplicationBase.ScanAssemblies">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.HostBase.ScanAssemblies">
             <summary>
             The scan assemblies.
             </summary>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.ApplicationBase.Dispose">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.HostBase.Dispose">
             <summary>
             The dispose.
             </summary>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.ApplicationBase.Dispose(System.Boolean)">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.HostBase.Dispose(System.Boolean)">
             <summary>
             The dispose.
             </summary>
@@ -111,35 +172,35 @@
             The disposing.
             </param>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.ApplicationBase.PlatformInitialize">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.HostBase.PlatformInitialize">
             <summary>
             The platform initialize.
             </summary>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.ApplicationBase.PlatformShutdown">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.HostBase.PlatformShutdown">
             <summary>
             The platform shutdown.
             </summary>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.ApplicationBase.PlatformRunMessageLoop">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.HostBase.PlatformRunMessageLoop">
             <summary>
             The platform run message loop.
             </summary>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.ApplicationBase.PlatformQuitMessageLoop">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.HostBase.PlatformQuitMessageLoop">
             <summary>
             The platform quit message loop.
             </summary>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.ApplicationBase.CreateMainView">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.HostBase.CreateMainView">
             <summary>
             The create main view.
             </summary>
             <returns>
-            The <see cref="T:Chromely.CefGlue.Gtk.App.Window"/>.
+            The <see cref="T:Chromely.CefGlue.Gtk.BrowserHost.Window"/>.
             </returns>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.ApplicationBase.PostTask(Xilium.CefGlue.CefThreadId,System.Action)">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.HostBase.PostTask(Xilium.CefGlue.CefThreadId,System.Action)">
             <summary>
             The post task.
             </summary>
@@ -150,7 +211,7 @@
             The action.
             </param>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.ApplicationBase.RunInternal(System.String[])">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.HostBase.RunInternal(System.String[])">
             <summary>
             The run internal.
             </summary>
@@ -161,86 +222,45 @@
             The <see cref="T:System.Int32"/>.
             </returns>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.ApplicationBase.RegisterSchemeHandlers">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.HostBase.RegisterSchemeHandlers">
             <summary>
             The register scheme handlers.
             </summary>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.ApplicationBase.RegisterMessageRouters">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.HostBase.RegisterMessageRouters">
             <summary>
             The register message routers.
             </summary>
         </member>
-        <member name="T:Chromely.CefGlue.Gtk.App.ApplicationBase.ActionTask">
+        <member name="T:Chromely.CefGlue.Gtk.BrowserHost.HostBase.ActionTask">
             <summary>
             The action task.
             </summary>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.ApplicationBase.ActionTask.#ctor(System.Action)">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.HostBase.ActionTask.#ctor(System.Action)">
             <summary>
-            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.App.ApplicationBase.ActionTask"/> class.
+            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.BrowserHost.HostBase.ActionTask"/> class.
             </summary>
             <param name="action">
             The action.
             </param>
         </member>
-        <member name="P:Chromely.CefGlue.Gtk.App.ApplicationBase.ActionTask.Action">
+        <member name="P:Chromely.CefGlue.Gtk.BrowserHost.HostBase.ActionTask.Action">
             <summary>
             Gets or sets the action.
             </summary>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.ApplicationBase.ActionTask.Execute">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.HostBase.ActionTask.Execute">
             <summary>
             The execute.
             </summary>
         </member>
-        <member name="T:Chromely.CefGlue.Gtk.App.ChromelyApplication">
-            <summary>
-            The CefGlue browser host/window/app.
-            </summary>
-        </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.ChromelyApplication.#ctor(Chromely.Core.ChromelyConfiguration)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.App.ChromelyApplication"/> class.
-            </summary>
-            <param name="hostConfig">
-            The host config.
-            </param>
-        </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.ChromelyApplication.PlatformInitialize">
-            <summary>
-            The platform initialize.
-            </summary>
-        </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.ChromelyApplication.PlatformShutdown">
-            <summary>
-            The platform shutdown.
-            </summary>
-        </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.ChromelyApplication.PlatformRunMessageLoop">
-            <summary>
-            The platform run message loop.
-            </summary>
-        </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.ChromelyApplication.PlatformQuitMessageLoop">
-            <summary>
-            The platform quit message loop.
-            </summary>
-        </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.ChromelyApplication.CreateMainView">
-            <summary>
-            The create main view.
-            </summary>
-            <returns>
-            The <see cref="T:Chromely.CefGlue.Gtk.App.Window"/>.
-            </returns>
-        </member>
-        <member name="T:Chromely.CefGlue.Gtk.App.NativeMethods">
+        <member name="T:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods">
             <summary>
             The native methods.
             </summary>
         </member>
-        <member name="T:Chromely.CefGlue.Gtk.App.NativeMethods.EventHandler">
+        <member name="T:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.EventHandler">
             <summary>
             The event handler.
             </summary>
@@ -248,42 +268,42 @@
             The event args.
             </param>
         </member>
-        <member name="T:Chromely.CefGlue.Gtk.App.NativeMethods.GtkWindowType">
+        <member name="T:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.GtkWindowType">
             <summary>
             The gtk window type.
             </summary>
         </member>
-        <member name="T:Chromely.CefGlue.Gtk.App.NativeMethods.GtkEvent">
+        <member name="T:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.GtkEvent">
             <summary>
             The gtk event.
             </summary>
         </member>
-        <member name="T:Chromely.CefGlue.Gtk.App.NativeMethods.GtkWindowPosition">
+        <member name="T:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.GtkWindowPosition">
             <summary>
             The gtk window position.
             </summary>
         </member>
-        <member name="T:Chromely.CefGlue.Gtk.App.NativeMethods.GConnectFlags">
+        <member name="T:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.GConnectFlags">
             <summary>
             The g connect flags.
             </summary>
         </member>
-        <member name="F:Chromely.CefGlue.Gtk.App.NativeMethods.GConnectFlags.GConnectAfter">
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.GConnectFlags.GConnectAfter">
             <summary>
             whether the handler should be called before or after the default handler of the signal.
             </summary>
         </member>
-        <member name="F:Chromely.CefGlue.Gtk.App.NativeMethods.GConnectFlags.GConnectSwapped">
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.GConnectFlags.GConnectSwapped">
             <summary>
             whether the instance and data should be swapped when calling the handler; see g_signal_connect_swapped() for an example.
             </summary>
         </member>
-        <member name="T:Chromely.CefGlue.Gtk.App.NativeMethods.SetWindowPosFlags">
+        <member name="T:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.SetWindowPosFlags">
             <summary>
             The set window pos flags.
             </summary>
         </member>
-        <member name="F:Chromely.CefGlue.Gtk.App.NativeMethods.SetWindowPosFlags.AsyncWindowPosition">
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.SetWindowPosFlags.AsyncWindowPosition">
             <summary>
             If the calling thread and the thread that owns the window are attached to different input queues, 
             the system posts the request to the thread that owns the window. This prevents the calling thread from 
@@ -291,19 +311,19 @@
             </summary>
             <remarks>SWP_ASYNCWINDOWPOS</remarks>
         </member>
-        <member name="F:Chromely.CefGlue.Gtk.App.NativeMethods.SetWindowPosFlags.DeferErase">
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.SetWindowPosFlags.DeferErase">
             <summary>
             Prevents generation of the WM_SYNCPAINT message.
             </summary>
             <remarks>SWP_DEFERERASE</remarks>
         </member>
-        <member name="F:Chromely.CefGlue.Gtk.App.NativeMethods.SetWindowPosFlags.DrawFrame">
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.SetWindowPosFlags.DrawFrame">
             <summary>
             Draws a frame (defined in the window's class description) around the window.
             </summary>
             <remarks>SWP_DRAWFRAME</remarks>
         </member>
-        <member name="F:Chromely.CefGlue.Gtk.App.NativeMethods.SetWindowPosFlags.FrameChanged">
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.SetWindowPosFlags.FrameChanged">
             <summary>
             Applies new frame styles set using the SetWindowLong function. Sends a WM_NCCALCSIZE message to 
             the window, even if the window's size is not being changed. If this flag is not specified, WM_NCCALCSIZE 
@@ -311,39 +331,39 @@
             </summary>
             <remarks>SWP_FRAMECHANGED</remarks>
         </member>
-        <member name="F:Chromely.CefGlue.Gtk.App.NativeMethods.SetWindowPosFlags.HideWindow">
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.SetWindowPosFlags.HideWindow">
             <summary>
             Hides the window.
             </summary>
             <remarks>SWP_HIDEWINDOW</remarks>
         </member>
-        <member name="F:Chromely.CefGlue.Gtk.App.NativeMethods.SetWindowPosFlags.NoActivate">
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.SetWindowPosFlags.NoActivate">
             <summary>
             Does not activate the window. If this flag is not set, the window is activated and moved to the 
             top of either the topmost or non-topmost group (depending on the setting of the hWndInsertAfter parameter).
             </summary>
             <remarks>SWP_NOACTIVATE</remarks>
         </member>
-        <member name="F:Chromely.CefGlue.Gtk.App.NativeMethods.SetWindowPosFlags.NoCopyBits">
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.SetWindowPosFlags.NoCopyBits">
             <summary>
             Discards the entire contents of the client area. If this flag is not specified, the valid contents 
             of the client area are saved and copied back into the client area after the window is sized or repositioned.
             </summary>
             <remarks>SWP_NOCOPYBITS</remarks>
         </member>
-        <member name="F:Chromely.CefGlue.Gtk.App.NativeMethods.SetWindowPosFlags.NoMove">
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.SetWindowPosFlags.NoMove">
             <summary>
             Retains the current position (ignores X and Y parameters).
             </summary>
             <remarks>SWP_NOMOVE</remarks>
         </member>
-        <member name="F:Chromely.CefGlue.Gtk.App.NativeMethods.SetWindowPosFlags.NoOwnerZOrder">
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.SetWindowPosFlags.NoOwnerZOrder">
             <summary>
             Does not change the owner window's position in the Z order.
             </summary>
             <remarks>SWP_NOOWNERZORDER</remarks>
         </member>
-        <member name="F:Chromely.CefGlue.Gtk.App.NativeMethods.SetWindowPosFlags.NoRedraw">
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.SetWindowPosFlags.NoRedraw">
             <summary>
             Does not redraw changes. If this flag is set, no repainting of any kind occurs. This applies to 
             the client area, the nonclient area (including the title bar and scroll bars), and any part of the parent 
@@ -352,37 +372,37 @@
             </summary>
             <remarks>SWP_NOREDRAW</remarks>
         </member>
-        <member name="F:Chromely.CefGlue.Gtk.App.NativeMethods.SetWindowPosFlags.NoReposition">
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.SetWindowPosFlags.NoReposition">
             <summary>
             Same as the SWP_NOOWNERZORDER flag.
             </summary>
             <remarks>SWP_NOREPOSITION</remarks>
         </member>
-        <member name="F:Chromely.CefGlue.Gtk.App.NativeMethods.SetWindowPosFlags.NoSendChanging">
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.SetWindowPosFlags.NoSendChanging">
             <summary>
             Prevents the window from receiving the WM_WINDOWPOSCHANGING message.
             </summary>
             <remarks>SWP_NOSENDCHANGING</remarks>
         </member>
-        <member name="F:Chromely.CefGlue.Gtk.App.NativeMethods.SetWindowPosFlags.NoSize">
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.SetWindowPosFlags.NoSize">
             <summary>
             Retains the current size (ignores the cx and cy parameters).
             </summary>
             <remarks>SWP_NOSIZE</remarks>
         </member>
-        <member name="F:Chromely.CefGlue.Gtk.App.NativeMethods.SetWindowPosFlags.NoZOrder">
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.SetWindowPosFlags.NoZOrder">
             <summary>
             Retains the current Z order (ignores the hWndInsertAfter parameter).
             </summary>
             <remarks>SWP_NOZORDER</remarks>
         </member>
-        <member name="F:Chromely.CefGlue.Gtk.App.NativeMethods.SetWindowPosFlags.ShowWindow">
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.SetWindowPosFlags.ShowWindow">
             <summary>
             Displays the window.
             </summary>
             <remarks>SWP_SHOWWINDOW</remarks>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.NativeMethods.InitWindow(System.Int32,System.String[])">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.InitWindow(System.Int32,System.String[])">
             <summary>
             The init window.
             </summary>
@@ -393,7 +413,7 @@
             The argv.
             </param>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.NativeMethods.GetWindowXid(System.IntPtr)">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.GetWindowXid(System.IntPtr)">
             <summary>
             The get window xid.
             </summary>
@@ -404,7 +424,7 @@
             The <see cref="T:System.IntPtr"/>.
             </returns>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.NativeMethods.ShowAll(System.IntPtr)">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.ShowAll(System.IntPtr)">
             <summary>
             The show all.
             </summary>
@@ -412,17 +432,17 @@
             The window.
             </param>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.NativeMethods.Run">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.Run">
             <summary>
             The run.
             </summary>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.NativeMethods.Quit">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.Quit">
             <summary>
             The quit.
             </summary>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.NativeMethods.NewWindow(Chromely.CefGlue.Gtk.App.NativeMethods.GtkWindowType)">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.NewWindow(Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.GtkWindowType)">
             <summary>
             The new window.
             </summary>
@@ -433,7 +453,7 @@
             The <see cref="T:System.IntPtr"/>.
             </returns>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.NativeMethods.CreateCefHost(System.IntPtr)">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.CreateCefHost(System.IntPtr)">
             <summary>
             The create cef host.
             </summary>
@@ -444,7 +464,7 @@
             The <see cref="T:System.IntPtr"/>.
             </returns>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.NativeMethods.SetTitle(System.IntPtr,System.String)">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.SetTitle(System.IntPtr,System.String)">
             <summary>
             The set title.
             </summary>
@@ -455,7 +475,7 @@
             The title.
             </param>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.NativeMethods.SetWindowSize(System.IntPtr,System.Int32,System.Int32)">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.SetWindowSize(System.IntPtr,System.Int32,System.Int32)">
             <summary>
             The set window size.
             </summary>
@@ -469,21 +489,7 @@
             The height.
             </param>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.NativeMethods.SetDefaultWindowSize(System.IntPtr,System.Int32,System.Int32)">
-            <summary>
-            The set default window size.
-            </summary>
-            <param name="window">
-            The window.
-            </param>
-            <param name="width">
-            The width.
-            </param>
-            <param name="height">
-            The height.
-            </param>
-        </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.NativeMethods.SetSizeRequest(System.IntPtr,System.Int32,System.Int32)">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.SetSizeRequest(System.IntPtr,System.Int32,System.Int32)">
             <summary>
             The set size request.
             </summary>
@@ -497,7 +503,7 @@
             The height.
             </param>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.NativeMethods.SetWindowResizable(System.IntPtr,System.Boolean)">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.SetWindowResizable(System.IntPtr,System.Boolean)">
             <summary>
             The set window resizable.
             </summary>
@@ -508,7 +514,7 @@
             The resizable.
             </param>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.NativeMethods.SetWindowPos(System.IntPtr,System.IntPtr,System.Int32,System.Int32,System.Int32,System.Int32)">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.SetWindowPos(System.IntPtr,System.IntPtr,System.Int32,System.Int32,System.Int32,System.Int32)">
             <summary>
             The set window pos.
             </summary>
@@ -531,7 +537,7 @@
             The cy.
             </param>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.NativeMethods.SetWindowPosition(System.IntPtr,Chromely.CefGlue.Gtk.App.NativeMethods.GtkWindowPosition)">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.SetWindowPosition(System.IntPtr,Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.GtkWindowPosition)">
             <summary>
             The set window position.
             </summary>
@@ -542,23 +548,7 @@
             The position.
             </param>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.NativeMethods.SetWindowMaximize(System.IntPtr)">
-            <summary>
-            The set window maximize.
-            </summary>
-            <param name="window">
-            The window.
-            </param>
-        </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.NativeMethods.SetFullscreen(System.IntPtr)">
-            <summary>
-            The set fullscreen.
-            </summary>
-            <param name="window">
-            The window.
-            </param>
-        </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.NativeMethods.AddConfigureEvent(System.IntPtr)">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.AddConfigureEvent(System.IntPtr)">
             <summary>
             The add configure event.
             </summary>
@@ -566,7 +556,7 @@
             The window.
             </param>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.NativeMethods.GetWindowSize(System.IntPtr,System.Int32@,System.Int32@)">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.GetWindowSize(System.IntPtr,System.Int32@,System.Int32@)">
             <summary>
             The get window size.
             </summary>
@@ -580,7 +570,7 @@
             The height.
             </param>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.NativeMethods.ConnectSignal(System.IntPtr,System.String,System.Delegate,System.Int32,System.IntPtr,System.Int32)">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.ConnectSignal(System.IntPtr,System.String,System.Delegate,System.Int32,System.IntPtr,System.Int32)">
             <summary>
             The connect signal.
             </summary>
@@ -603,7 +593,7 @@
             The flags.
             </param>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.NativeMethods.SetIconFromFile(System.IntPtr,System.String)">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.SetIconFromFile(System.IntPtr,System.String)">
             <summary>
             The set icon from file.
             </summary>
@@ -614,150 +604,174 @@
             The filename.
             </param>
         </member>
-        <member name="T:Chromely.CefGlue.Gtk.App.NativeMethods.StructEventArgs">
+        <member name="T:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.StructEventArgs">
             <summary>
             The struct event args.
             </summary>
         </member>
-        <member name="F:Chromely.CefGlue.Gtk.App.NativeMethods.StructEventArgs.Handle">
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.StructEventArgs.Handle">
             <summary>
             The handle.
             </summary>
         </member>
-        <member name="T:Chromely.CefGlue.Gtk.App.NativeMethods.Win">
+        <member name="T:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.Win">
             <summary>
             The win.
             </summary>
         </member>
-        <member name="F:Chromely.CefGlue.Gtk.App.NativeMethods.Win.GtkLib">
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.Win.GtkLib">
             <summary>
             The gtk lib.
             </summary>
         </member>
-        <member name="F:Chromely.CefGlue.Gtk.App.NativeMethods.Win.GObjLib">
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.Win.GObjLib">
             <summary>
             The g obj lib.
             </summary>
         </member>
-        <member name="F:Chromely.CefGlue.Gtk.App.NativeMethods.Win.GdkLib">
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.Win.GdkLib">
             <summary>
             The gdk lib.
             </summary>
         </member>
-        <member name="F:Chromely.CefGlue.Gtk.App.NativeMethods.Win.GlibLib">
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.Win.GlibLib">
             <summary>
             The glib lib.
             </summary>
         </member>
-        <member name="T:Chromely.CefGlue.Gtk.App.NativeMethods.Linux">
+        <member name="T:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.Linux">
             <summary>
             The linux.
             </summary>
         </member>
-        <member name="F:Chromely.CefGlue.Gtk.App.NativeMethods.Linux.GtkLib">
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.Linux.GtkLib">
             <summary>
             The gtk lib.
             </summary>
         </member>
-        <member name="F:Chromely.CefGlue.Gtk.App.NativeMethods.Linux.GObjLib">
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.Linux.GObjLib">
             <summary>
             The g obj lib.
             </summary>
         </member>
-        <member name="F:Chromely.CefGlue.Gtk.App.NativeMethods.Linux.GdkLib">
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.Linux.GdkLib">
             <summary>
             The gdk lib.
             </summary>
         </member>
-        <member name="F:Chromely.CefGlue.Gtk.App.NativeMethods.Linux.GlibLib">
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.Linux.GlibLib">
             <summary>
             The glib lib.
             </summary>
         </member>
-        <member name="T:Chromely.CefGlue.Gtk.App.NativeWindow">
+        <member name="T:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow">
             <summary>
             The native window.
             </summary>
         </member>
-        <member name="F:Chromely.CefGlue.Gtk.App.NativeWindow.mEventLock">
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.mEventLock">
             <summary>
             The event lock object.
             </summary>
         </member>
-        <member name="F:Chromely.CefGlue.Gtk.App.NativeWindow.mHostConfig">
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.mTitle">
             <summary>
-            The m host config.
+            The host/app/window title.
             </summary>
         </member>
-        <member name="F:Chromely.CefGlue.Gtk.App.NativeWindow.mMainWindow">
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.mIconFile">
+            <summary>
+            The host/app/window icon file.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.mWidth">
+            <summary>
+            The host/app/window width.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.mHeight">
+            <summary>
+            The host/app/window height.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.mMainWindow">
             <summary>
             The main window.
             </summary>
         </member>
-        <member name="F:Chromely.CefGlue.Gtk.App.NativeWindow.mRealizeEvent">
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.mRealizeEvent">
             <summary>
             The realize event.
             </summary>
         </member>
-        <member name="F:Chromely.CefGlue.Gtk.App.NativeWindow.mConfigureEvent">
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.mConfigureEvent">
             <summary>
             The configure event.
             </summary>
         </member>
-        <member name="F:Chromely.CefGlue.Gtk.App.NativeWindow.mDestroyEvent">
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.mDestroyEvent">
             <summary>
             The destroy event.
             </summary>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.NativeWindow.#ctor">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.#ctor">
             <summary>
-            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.App.NativeWindow"/> class.
+            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow"/> class.
             </summary>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.NativeWindow.#ctor(Chromely.Core.ChromelyConfiguration)">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.#ctor(System.String,System.Int32,System.Int32,System.String)">
             <summary>
-            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.App.NativeWindow"/> class.
+            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow"/> class.
             </summary>
-            <param name="hostConfig">
-            The host config.
+            <param name="title">
+            The title.
+            </param>
+            <param name="width">
+            The width.
+            </param>
+            <param name="height">
+            The height.
+            </param>
+            <param name="iconFile">
+            The icon file.
             </param>
         </member>
-        <member name="E:Chromely.CefGlue.Gtk.App.NativeWindow.Realized">
+        <member name="E:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.Realized">
             <summary>
             The realized.
             </summary>
         </member>
-        <member name="E:Chromely.CefGlue.Gtk.App.NativeWindow.Resized">
+        <member name="E:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.Resized">
             <summary>
             The resized.
             </summary>
         </member>
-        <member name="E:Chromely.CefGlue.Gtk.App.NativeWindow.Exited">
+        <member name="E:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.Exited">
             <summary>
             The exited.
             </summary>
         </member>
-        <member name="P:Chromely.CefGlue.Gtk.App.NativeWindow.Handle">
+        <member name="P:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.Handle">
             <summary>
             Gets the handle.
             </summary>
         </member>
-        <member name="P:Chromely.CefGlue.Gtk.App.NativeWindow.Host">
+        <member name="P:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.Host">
             <summary>
             The host.
             </summary>
         </member>
-        <member name="P:Chromely.CefGlue.Gtk.App.NativeWindow.HostXid">
+        <member name="P:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.HostXid">
             <summary>
             The host xid.
             </summary>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.NativeWindow.ShowWindow">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.ShowWindow">
             <summary>
             The show window.
             </summary>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.NativeWindow.ResizeHost(System.IntPtr,System.Int32,System.Int32)">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.ResizeHost(System.IntPtr,System.Int32,System.Int32)">
             <summary>
             The resize host.
             </summary>
@@ -771,7 +785,7 @@
             The height.
             </param>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.NativeWindow.GetSize(System.Int32@,System.Int32@)">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.GetSize(System.Int32@,System.Int32@)">
             <summary>
             The get size.
             </summary>
@@ -782,7 +796,7 @@
             The height.
             </param>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.NativeWindow.OnRealized(System.Object,System.EventArgs)">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.OnRealized(System.Object,System.EventArgs)">
             <summary>
             The on realized.
             </summary>
@@ -793,7 +807,7 @@
             The e.
             </param>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.NativeWindow.OnResize(System.Object,System.EventArgs)">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.OnResize(System.Object,System.EventArgs)">
             <summary>
             The on resize.
             </summary>
@@ -804,7 +818,7 @@
             The e.
             </param>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.NativeWindow.OnExit(System.Object,System.EventArgs)">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.OnExit(System.Object,System.EventArgs)">
             <summary>
             The on exit.
             </summary>
@@ -815,12 +829,12 @@
             The e.
             </param>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.NativeWindow.CreateWindow">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.CreateWindow">
             <summary>
             The create window.
             </summary>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.NativeWindow.LocalRealized(Chromely.CefGlue.Gtk.App.NativeMethods.StructEventArgs)">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.LocalRealized(Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.StructEventArgs)">
             <summary>
             The local realized.
             </summary>
@@ -828,7 +842,7 @@
             The event args.
             </param>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.NativeWindow.LocalConfigured(Chromely.CefGlue.Gtk.App.NativeMethods.StructEventArgs)">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.LocalConfigured(Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.StructEventArgs)">
             <summary>
             The local configured.
             </summary>
@@ -836,7 +850,7 @@
             The event args.
             </param>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.NativeWindow.LocalDestroyed(Chromely.CefGlue.Gtk.App.NativeMethods.StructEventArgs)">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.LocalDestroyed(Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.StructEventArgs)">
             <summary>
             The local destroyed.
             </summary>
@@ -844,34 +858,34 @@
             The event args.
             </param>
         </member>
-        <member name="T:Chromely.CefGlue.Gtk.App.Window">
+        <member name="T:Chromely.CefGlue.Gtk.BrowserHost.Window">
             <summary>
             The window.
             </summary>
         </member>
-        <member name="F:Chromely.CefGlue.Gtk.App.Window.mApplication">
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.Window.mApplication">
             <summary>
             The host/app/window application.
             </summary>
         </member>
-        <member name="F:Chromely.CefGlue.Gtk.App.Window.mHostConfig">
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.Window.mHostConfig">
             <summary>
             The host config.
             </summary>
         </member>
-        <member name="F:Chromely.CefGlue.Gtk.App.Window.mCore">
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.Window.mCore">
             <summary>
             The CefGlueBrowser object.
             </summary>
         </member>
-        <member name="F:Chromely.CefGlue.Gtk.App.Window.mBrowserWindowHandle">
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.Window.mBrowserWindowHandle">
             <summary>
             The browser window handle.
             </summary>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.Window.#ctor(Chromely.CefGlue.Gtk.App.ApplicationBase,Chromely.Core.ChromelyConfiguration)">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.Window.#ctor(Chromely.CefGlue.Gtk.BrowserHost.HostBase,Chromely.Core.ChromelyConfiguration)">
             <summary>
-            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.App.Window"/> class.
+            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.BrowserHost.Window"/> class.
             </summary>
             <param name="application">
             The application.
@@ -880,22 +894,22 @@
             The host config.
             </param>
         </member>
-        <member name="P:Chromely.CefGlue.Gtk.App.Window.WebBrowser">
+        <member name="P:Chromely.CefGlue.Gtk.BrowserHost.Window.WebBrowser">
             <summary>
             The web browser.
             </summary>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.Window.Close">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.Window.Close">
             <summary>
             The close.
             </summary>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.Window.Dispose">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.Window.Dispose">
             <summary>
             The dispose.
             </summary>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.Window.OnRealized(System.Object,System.EventArgs)">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.Window.OnRealized(System.Object,System.EventArgs)">
             <summary>
             The on realized.
             </summary>
@@ -909,7 +923,7 @@
             Exception returned for MacOS not supported.
             </exception>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.Window.OnResize(System.Object,System.EventArgs)">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.Window.OnResize(System.Object,System.EventArgs)">
             <summary>
             The on resize.
             </summary>
@@ -920,7 +934,7 @@
             The e.
             </param>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.Window.OnExit(System.Object,System.EventArgs)">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.Window.OnExit(System.Object,System.EventArgs)">
             <summary>
             The on exit.
             </summary>
@@ -931,9 +945,9 @@
             The e.
             </param>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.App.Window.BrowserCreated(System.Object,System.EventArgs)">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.Window.OnBrowserCreated(System.Object,System.EventArgs)">
             <summary>
-            The browser created.
+            The on browser created.
             </summary>
             <param name="sender">
             The sender.
