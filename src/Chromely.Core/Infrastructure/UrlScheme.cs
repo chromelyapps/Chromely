@@ -30,9 +30,9 @@ namespace Chromely.Core.Infrastructure
         /// </param>
         public UrlScheme(string scheme, string host, bool isExternal)
         {
-            this.Scheme = scheme;
-            this.Host = host;
-            this.IsExternal = isExternal;
+            Scheme = scheme;
+            Host = host;
+            IsExternal = isExternal;
         }
 
         /// <summary>
@@ -49,9 +49,9 @@ namespace Chromely.Core.Infrastructure
             if (!string.IsNullOrEmpty(url))
             {
                 var uri = new Uri(url);
-                this.Scheme = uri.Scheme;
-                this.Host = uri.Host;
-                this.IsExternal = isExternal;
+                Scheme = uri.Scheme;
+                Host = uri.Host;
+                IsExternal = isExternal;
             }
         }
 
@@ -111,8 +111,8 @@ namespace Chromely.Core.Infrastructure
         /// </returns>
         public bool IsUrlOfSameScheme(string url)
         {
-            if (string.IsNullOrEmpty(this.Scheme) ||
-                string.IsNullOrEmpty(this.Host) ||
+            if (string.IsNullOrEmpty(Scheme) ||
+                string.IsNullOrEmpty(Host) ||
                 string.IsNullOrEmpty(url))
             {
                 return false;
@@ -126,8 +126,8 @@ namespace Chromely.Core.Infrastructure
                 return false;
             }
 
-            if (this.Scheme.ToLower().Equals(uri.Scheme) &&
-                this.Host.ToLower().Equals(uri.Host))
+            if (Scheme.ToLower().Equals(uri.Scheme) &&
+                Host.ToLower().Equals(uri.Host))
             {
                 return true;
             }

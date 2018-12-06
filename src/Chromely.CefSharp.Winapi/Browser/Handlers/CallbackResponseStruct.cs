@@ -22,7 +22,7 @@ namespace Chromely.CefSharp.Winapi.Browser.Handlers
         /// </param>
         public CallbackResponseStruct(string response)
         {
-            this.ResponseText = response;
+            ResponseText = response;
         }
 
         /// <summary>

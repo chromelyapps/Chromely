@@ -28,7 +28,7 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
         /// </summary>
         public CefGlueDisplayHandler()
         {
-            this.mBrowser = CefGlueBrowser.BrowserCore;
+            mBrowser = CefGlueBrowser.BrowserCore;
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
         protected override bool OnConsoleMessage(CefBrowser browser, CefLogSeverity level, string message, string source, int line)
         {
             var evntArgs = new ConsoleMessageEventArgs(message, source, line);
-            this.mBrowser.InvokeAsyncIfPossible(() => this.mBrowser.OnConsoleMessage(evntArgs));
+            mBrowser.InvokeAsyncIfPossible(() => mBrowser.OnConsoleMessage(evntArgs));
             return evntArgs.Handled;
         }
 
@@ -74,7 +74,7 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
         protected override bool OnTooltip(CefBrowser browser, string text)
         {
             var evntArgs = new TooltipEventArgs(text);
-            this.mBrowser.InvokeAsyncIfPossible(() => this.mBrowser.OnTooltip(evntArgs));
+            mBrowser.InvokeAsyncIfPossible(() => mBrowser.OnTooltip(evntArgs));
             return evntArgs.Handled;
         }
     }

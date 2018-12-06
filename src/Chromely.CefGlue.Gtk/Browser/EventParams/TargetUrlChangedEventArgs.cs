@@ -24,7 +24,7 @@ namespace Chromely.CefGlue.Gtk.Browser.EventParams
         /// </param>
         public TargetUrlChangedEventArgs(string targetUrl)
         {
-            this.TargetUrl = targetUrl;
+            TargetUrl = targetUrl;
         }
 
         /// <summary>

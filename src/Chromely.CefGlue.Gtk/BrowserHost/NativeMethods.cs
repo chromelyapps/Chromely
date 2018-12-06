@@ -3,11 +3,11 @@
 //   Copyright (c) 2017-2018 Chromely Projects
 // </copyright>
 // <license>
-//      See the LICENSE.md file in the project root for more information.
+// See the LICENSE.md file in the project root for more information.
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Chromely.CefGlue.Gtk.App
+namespace Chromely.CefGlue.Gtk.BrowserHost
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
@@ -315,7 +315,7 @@ namespace Chromely.CefGlue.Gtk.App
         {
             if (CefRuntime.Platform == CefRuntimePlatform.Windows)
             {
-                return Win.gtk_window_new(type);
+                 return Win.gtk_window_new(type);
             }
 
             if (CefRuntime.Platform == CefRuntimePlatform.Linux)
@@ -398,31 +398,6 @@ namespace Chromely.CefGlue.Gtk.App
             if (CefRuntime.Platform == CefRuntimePlatform.Linux)
             {
                 Linux.gtk_window_resize(window, width, height);
-            }
-        }
-
-        /// <summary>
-        /// The set default window size.
-        /// </summary>
-        /// <param name="window">
-        /// The window.
-        /// </param>
-        /// <param name="width">
-        /// The width.
-        /// </param>
-        /// <param name="height">
-        /// The height.
-        /// </param>
-        internal static void SetDefaultWindowSize(IntPtr window, int width, int height)
-        {
-            if (CefRuntime.Platform == CefRuntimePlatform.Windows)
-            {
-                Win.gtk_window_set_default_size(window, width, height);
-            }
-
-            if (CefRuntime.Platform == CefRuntimePlatform.Linux)
-            {
-                Linux.gtk_window_set_default_size(window, width, height);
             }
         }
 
@@ -521,44 +496,6 @@ namespace Chromely.CefGlue.Gtk.App
             if (CefRuntime.Platform == CefRuntimePlatform.Linux)
             {
                 Linux.gtk_window_set_position(window, position);
-            }
-        }
-
-        /// <summary>
-        /// The set window maximize.
-        /// </summary>
-        /// <param name="window">
-        /// The window.
-        /// </param>
-        internal static void SetWindowMaximize(IntPtr window)
-        {
-            if (CefRuntime.Platform == CefRuntimePlatform.Windows)
-            {
-                Win.gtk_window_maximize(window);
-            }
-
-            if (CefRuntime.Platform == CefRuntimePlatform.Linux)
-            {
-                Linux.gtk_window_maximize(window);
-            }
-        }
-
-        /// <summary>
-        /// The set fullscreen.
-        /// </summary>
-        /// <param name="window">
-        /// The window.
-        /// </param>
-        internal static void SetFullscreen(IntPtr window)
-        {
-            if (CefRuntime.Platform == CefRuntimePlatform.Windows)
-            {
-                Win.gtk_window_fullscreen(window);
-            }
-
-            if (CefRuntime.Platform == CefRuntimePlatform.Linux)
-            {
-                Linux.gtk_window_fullscreen(window);
             }
         }
 
@@ -760,12 +697,6 @@ namespace Chromely.CefGlue.Gtk.App
             internal static extern bool gtk_window_set_position(IntPtr window, GtkWindowPosition position);
 
             [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, ExactSpelling = false)]
-            internal static extern bool gtk_window_maximize(IntPtr window);
-
-            [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, ExactSpelling = false)]
-            internal static extern bool gtk_window_fullscreen(IntPtr window);
-
-            [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, ExactSpelling = false)]
             internal static extern void gtk_widget_add_events(IntPtr window, GtkEvent eventType);
 
             [DllImport("user32.dll")]
@@ -774,9 +705,6 @@ namespace Chromely.CefGlue.Gtk.App
 
             [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, ExactSpelling = false)]
             internal static extern void gtk_window_resize(IntPtr window, int width, int height);
-
-            [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, ExactSpelling = false)]
-            internal static extern void gtk_window_set_default_size(IntPtr window, int width, int height);
 
             [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, ExactSpelling = false)]
             internal static extern void gtk_widget_set_size_request(IntPtr window, int width, int height);
@@ -872,19 +800,10 @@ namespace Chromely.CefGlue.Gtk.App
             internal static extern bool gtk_window_set_position(IntPtr window, GtkWindowPosition position);
 
             [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, ExactSpelling = false)]
-            internal static extern bool gtk_window_maximize(IntPtr window);
-
-            [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, ExactSpelling = false)]
-            internal static extern bool gtk_window_fullscreen(IntPtr window);
-
-            [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, ExactSpelling = false)]
             internal static extern void gtk_widget_add_events(IntPtr window, GtkEvent eventType);
 
             [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, ExactSpelling = false)]
             internal static extern void gtk_window_resize(IntPtr window, int width, int height);
-
-            [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, ExactSpelling = false)]
-            internal static extern void gtk_window_set_default_size(IntPtr window, int width, int height);
 
             [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, ExactSpelling = false)]
             internal static extern void gtk_widget_set_size_request(IntPtr window, int width, int height);

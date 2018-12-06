@@ -41,7 +41,7 @@ namespace Chromely.CefSharp.Winapi.Tests.ChromeHost
         /// </param>
         public CefSharpBrowserHostTest(ITestOutputHelper testOutput)
         {
-            this.mTestOutput = testOutput;
+            mTestOutput = testOutput;
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace Chromely.CefSharp.Winapi.Tests.ChromeHost
         [Fact]
         public void CustomSchemerTests()
         {
-            var config = this.GetBaseConfig()
+            var config = GetBaseConfig()
                 .RegisterSchemeHandler("http", "cefsharp1.com", new CustomSchemeHandlerFactory());
 
             var schemeHandlerObjs = IoC.GetAllInstances(typeof(ChromelySchemeHandler));
@@ -76,7 +76,7 @@ namespace Chromely.CefSharp.Winapi.Tests.ChromeHost
         [Fact]
         public void SettingsUpdateTest()
         {
-            var hostConfig = this.GetConfigWithDefaultValues();
+            var hostConfig = GetConfigWithDefaultValues();
             var settings = new CefSettings
             {
                 Locale = hostConfig.Locale,
@@ -118,7 +118,7 @@ namespace Chromely.CefSharp.Winapi.Tests.ChromeHost
         /// </returns>
         private ChromelyConfiguration GetConfigWithDefaultValues()
         {
-            var config = this.GetBaseConfig()
+            var config = GetBaseConfig()
                 .UseDefaultResourceSchemeHandler("local", string.Empty)
                 .UseDefaultHttpSchemeHandler("http", "chromely.com")
                 .UseDefautJsHandler("boundedObject", true)

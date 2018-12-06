@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ApplicationBase.cs" company="Chromely Projects">
+// <copyright file="HostBase.cs" company="Chromely Projects">
 //   Copyright (c) 2017-2018 Chromely Projects
 // </copyright>
 // <license>
@@ -7,15 +7,16 @@
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Chromely.CefGlue.Gtk.App
+namespace Chromely.CefGlue.Winapi.BrowserHost
 {
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Reflection;
-    using Chromely.CefGlue.Gtk.Browser;
-    using Chromely.CefGlue.Gtk.Browser.Handlers;
+
+    using Chromely.CefGlue.Winapi.Browser;
+    using Chromely.CefGlue.Winapi.Browser.Handlers;
     using Chromely.Core;
     using Chromely.Core.Infrastructure;
     using Chromely.Core.RestfulService;
@@ -23,29 +24,29 @@ namespace Chromely.CefGlue.Gtk.App
     using Xilium.CefGlue.Wrapper;
 
     /// <summary>
-    /// The application base.
+    /// The host base.
     /// </summary>
-    public abstract class ApplicationBase : IChromelyServiceProvider, IDisposable
+    public abstract class HostBase : IChromelyServiceProvider, IDisposable
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ApplicationBase"/> class.
+        /// Initializes a new instance of the <see cref="HostBase"/> class.
         /// </summary>
         /// <param name="hostConfig">
         /// The host config.
         /// </param>
-        protected ApplicationBase(ChromelyConfiguration hostConfig)
+        protected HostBase(ChromelyConfiguration hostConfig)
         {
-            this.HostConfig = hostConfig;
+            HostConfig = hostConfig;
         }
 
         #region Destructor
 
         /// <summary>
-        /// Finalizes an instance of the <see cref="ApplicationBase"/> class. 
+        /// Finalizes an instance of the <see cref="HostBase"/> class. 
         /// </summary>
-        ~ApplicationBase()
+        ~HostBase()
         {
-            this.Dispose(false);
+            Dispose(false);
         }
 
         #endregion Destructor
@@ -78,7 +79,7 @@ namespace Chromely.CefGlue.Gtk.App
         {
             try
             {
-                return this.RunInternal(args);
+                return RunInternal(args);
             }
             catch (Exception exception)
             {
@@ -92,7 +93,7 @@ namespace Chromely.CefGlue.Gtk.App
         /// </summary>
         public void Quit()
         {
-            this.PlatformQuitMessageLoop();
+            QuitMessageLoop();
         }
 
         /// <summary>
@@ -114,7 +115,7 @@ namespace Chromely.CefGlue.Gtk.App
         /// </param>
         public void RegisterServiceAssembly(string filename)
         {
-            this.HostConfig?.ServiceAssemblies?.RegisterServiceAssembly(filename);
+            HostConfig?.ServiceAssemblies?.RegisterServiceAssembly(filename);
         }
 
         /// <summary>
@@ -125,7 +126,7 @@ namespace Chromely.CefGlue.Gtk.App
         /// </param>
         public void RegisterServiceAssembly(Assembly assembly)
         {
-            this.HostConfig?.ServiceAssemblies?.RegisterServiceAssembly(assembly);
+            HostConfig?.ServiceAssemblies?.RegisterServiceAssembly(assembly);
         }
 
         /// <summary>
@@ -136,7 +137,7 @@ namespace Chromely.CefGlue.Gtk.App
         /// </param>
         public void RegisterServiceAssemblies(string folder)
         {
-            this.HostConfig?.ServiceAssemblies?.RegisterServiceAssemblies(folder);
+            HostConfig?.ServiceAssemblies?.RegisterServiceAssemblies(folder);
         }
 
         /// <summary>
@@ -147,7 +148,7 @@ namespace Chromely.CefGlue.Gtk.App
         /// </param>
         public void RegisterServiceAssemblies(List<string> filenames)
         {
-            this.HostConfig?.ServiceAssemblies?.RegisterServiceAssemblies(filenames);
+            HostConfig?.ServiceAssemblies?.RegisterServiceAssemblies(filenames);
         }
 
         /// <summary>
@@ -155,12 +156,12 @@ namespace Chromely.CefGlue.Gtk.App
         /// </summary>
         public void ScanAssemblies()
         {
-            if ((this.HostConfig?.ServiceAssemblies == null) || (this.HostConfig?.ServiceAssemblies.Count == 0))
+            if ((HostConfig?.ServiceAssemblies == null) || (HostConfig?.ServiceAssemblies.Count == 0))
             {
                 return;
             }
 
-            foreach (var assembly in this.HostConfig?.ServiceAssemblies)
+            foreach (var assembly in HostConfig?.ServiceAssemblies)
             {
                 if (!assembly.IsScanned)
                 {
@@ -180,7 +181,7 @@ namespace Chromely.CefGlue.Gtk.App
         /// </summary>
         public void Dispose()
         {
-            this.Dispose(true);
+            Dispose(true);
             GC.SuppressFinalize(this);
         }
 
@@ -201,22 +202,22 @@ namespace Chromely.CefGlue.Gtk.App
         /// <summary>
         /// The platform initialize.
         /// </summary>
-        protected abstract void PlatformInitialize();
+        protected abstract void Initialize();
 
         /// <summary>
         /// The platform shutdown.
         /// </summary>
-        protected abstract void PlatformShutdown();
+        protected abstract void Shutdown();
 
         /// <summary>
         /// The platform run message loop.
         /// </summary>
-        protected abstract void PlatformRunMessageLoop();
+        protected abstract void RunMessageLoop();
 
         /// <summary>
         /// The platform quit message loop.
         /// </summary>
-        protected abstract void PlatformQuitMessageLoop();
+        protected abstract void QuitMessageLoop();
 
         /// <summary>
         /// The create main view.
@@ -258,8 +259,8 @@ namespace Chromely.CefGlue.Gtk.App
             var settings = new CefSettings
             {
                 MultiThreadedMessageLoop = true,
-                LogSeverity = (CefLogSeverity)this.HostConfig.LogSeverity,
-                LogFile = this.HostConfig.LogFile,
+                LogSeverity = (CefLogSeverity)HostConfig.LogSeverity,
+                LogFile = HostConfig.LogFile,
                 ResourcesDirPath = Path.GetDirectoryName(
                     new Uri(Assembly.GetEntryAssembly().CodeBase).LocalPath)
             };
@@ -267,7 +268,7 @@ namespace Chromely.CefGlue.Gtk.App
             settings.LocalesDirPath = Path.Combine(settings.ResourcesDirPath, "locales");
             settings.RemoteDebuggingPort = 20480;
             settings.NoSandbox = true;
-            settings.Locale = this.HostConfig.Locale;
+            settings.Locale = HostConfig.Locale;
 
             var argv = args;
             if (CefRuntime.Platform != CefRuntimePlatform.Windows)
@@ -278,12 +279,14 @@ namespace Chromely.CefGlue.Gtk.App
             }
 
             // Update configuration settings
-            settings.Update(this.HostConfig.CustomSettings);
+            settings.Update(HostConfig.CustomSettings);
 
             var mainArgs = new CefMainArgs(argv);
-            var app = new CefGlueApp(this.HostConfig);
+            var app = new CefGlueApp(HostConfig);
 
             var exitCode = CefRuntime.ExecuteProcess(mainArgs, app, IntPtr.Zero);
+            Log.Info(string.Format("CefRuntime.ExecuteProcess() returns {0}", exitCode));
+
             if (exitCode != -1)
             {
                 // An error has occured.
@@ -301,21 +304,22 @@ namespace Chromely.CefGlue.Gtk.App
 
             CefRuntime.Initialize(mainArgs, settings, app, IntPtr.Zero);
 
-            this.RegisterSchemeHandlers();
-            this.RegisterMessageRouters();
+            RegisterSchemeHandlers();
+            RegisterMessageRouters();
 
-            this.PlatformInitialize();
+            Initialize();
 
-            this.MainView = this.CreateMainView();
+            MainView = CreateMainView();
+            MainView.CenterToScreen();
 
-            this.PlatformRunMessageLoop();
+            RunMessageLoop();
 
-            this.MainView.Dispose();
-            this.MainView = null;
+            MainView.Dispose();
+            MainView = null;
 
             CefRuntime.Shutdown();
 
-            this.PlatformShutdown();
+            Shutdown();
 
             return 0;
         }
@@ -363,7 +367,7 @@ namespace Chromely.CefGlue.Gtk.App
         {
             if (!CefRuntime.CurrentlyOn(CefThreadId.UI))
             {
-                PostTask(CefThreadId.UI, this.RegisterMessageRouters);
+                PostTask(CefThreadId.UI, RegisterMessageRouters);
                 return;
             }
 
@@ -371,7 +375,7 @@ namespace Chromely.CefGlue.Gtk.App
 
             // Register message router handlers
             List<object> messageRouterHandlers = IoC.GetAllInstances(typeof(ChromelyMessageRouter)).ToList();
-            if (messageRouterHandlers.Any())
+            if ((messageRouterHandlers != null) && (messageRouterHandlers.Count > 0))
             {
                 var routerHandlers = messageRouterHandlers.ToList();
 
@@ -403,7 +407,7 @@ namespace Chromely.CefGlue.Gtk.App
             /// </param>
             public ActionTask(Action action)
             {
-                this.Action = action;
+                Action = action;
             }
 
             /// <summary>
@@ -416,8 +420,8 @@ namespace Chromely.CefGlue.Gtk.App
             /// </summary>
             protected override void Execute()
             {
-                this.Action();
-                this.Action = null;
+                Action();
+                Action = null;
             }
         }
     }

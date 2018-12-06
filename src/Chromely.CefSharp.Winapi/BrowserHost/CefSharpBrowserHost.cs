@@ -8,7 +8,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 // ReSharper disable StyleCop.SA1210
-namespace Chromely.CefSharp.Winapi.ChromeHost
+namespace Chromely.CefSharp.Winapi.BrowserHost
 {
     using System;
     using System.Collections.Generic;
@@ -50,9 +50,9 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
         /// </param>
         public CefSharpBrowserHost(ChromelyConfiguration hostConfig)
         {
-            this.mBrowser = null;
-            this.mSettings = new CefSettings();
-            this.HostConfig = hostConfig;
+            mBrowser = null;
+            mSettings = new CefSettings();
+            HostConfig = hostConfig;
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
         /// </param>
         public void RegisterServiceAssembly(string filename)
         {
-            this.HostConfig?.ServiceAssemblies?.RegisterServiceAssembly(filename);
+            HostConfig?.ServiceAssemblies?.RegisterServiceAssembly(filename);
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
         /// </param>
         public void RegisterServiceAssembly(Assembly assembly)
         {
-            this.HostConfig?.ServiceAssemblies?.RegisterServiceAssembly(assembly);
+            HostConfig?.ServiceAssemblies?.RegisterServiceAssembly(assembly);
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
         /// </param>
         public void RegisterServiceAssemblies(string folder)
         {
-            this.HostConfig?.ServiceAssemblies?.RegisterServiceAssemblies(folder);
+            HostConfig?.ServiceAssemblies?.RegisterServiceAssemblies(folder);
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
         /// </param>
         public void RegisterServiceAssemblies(List<string> filenames)
         {
-            this.HostConfig?.ServiceAssemblies?.RegisterServiceAssemblies(filenames);
+            HostConfig?.ServiceAssemblies?.RegisterServiceAssemblies(filenames);
         }
 
         /// <summary>
@@ -120,13 +120,13 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
         /// </summary>
         public void ScanAssemblies()
         {
-            if ((this.HostConfig?.ServiceAssemblies == null) ||
-                this.HostConfig?.ServiceAssemblies.Count == 0)
+            if ((HostConfig?.ServiceAssemblies == null) ||
+                HostConfig?.ServiceAssemblies.Count == 0)
             {
                 return;
             }
 
-            foreach (var assembly in this.HostConfig?.ServiceAssemblies)
+            foreach (var assembly in HostConfig?.ServiceAssemblies)
             {
                 if (!assembly.IsScanned)
                 {
@@ -158,7 +158,7 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
                         {
                             if (handler.UseDefaultResource)
                             {
-                                this.mSettings.RegisterScheme(new CefCustomScheme
+                                mSettings.RegisterScheme(new CefCustomScheme
                                 {
                                     SchemeName = handler.SchemeName,
                                     DomainName = handler.DomainName,
@@ -170,7 +170,7 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
 
                             if (handler.UseDefaultHttp)
                             {
-                                this.mSettings.RegisterScheme(new CefCustomScheme
+                                mSettings.RegisterScheme(new CefCustomScheme
                                 {
                                     SchemeName = handler.SchemeName,
                                     DomainName = handler.DomainName,
@@ -182,7 +182,7 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
                         }
                         else if (handler.HandlerFactory is ISchemeHandlerFactory)
                         {
-                            this.mSettings.RegisterScheme(new CefCustomScheme
+                            mSettings.RegisterScheme(new CefCustomScheme
                             {
                                 SchemeName = handler.SchemeName,
                                 DomainName = handler.DomainName,
@@ -222,11 +222,11 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
 
                         if (handler.RegisterAsAsync)
                         {
-                            this.mBrowser.RegisterAsyncJsObject(handler.ObjectNameToBind, boundObject, options);
+                            mBrowser.RegisterAsyncJsObject(handler.ObjectNameToBind, boundObject, options);
                         }
                         else
                         {
-                            this.mBrowser.RegisterJsObject(handler.ObjectNameToBind, boundObject, options);
+                            mBrowser.RegisterJsObject(handler.ObjectNameToBind, boundObject, options);
                         }
                     }
                 }
@@ -259,32 +259,32 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
             var localFolder = Path.GetDirectoryName(new Uri(codeBase).LocalPath);
             var localesDirPath = Path.Combine(localFolder ?? throw new InvalidOperationException(), "locales");
 
-            this.mSettings = new CefSettings
+            mSettings = new CefSettings
             {
                 LocalesDirPath = localesDirPath,
-                Locale = this.HostConfig.Locale,
+                Locale = HostConfig.Locale,
                 MultiThreadedMessageLoop = true,
                 CachePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "CefSharp\\Cache"),
-                LogSeverity = (CefSharpGlobal.LogSeverity)this.HostConfig.LogSeverity,
-                LogFile = this.HostConfig.LogFile
+                LogSeverity = (CefSharpGlobal.LogSeverity)HostConfig.LogSeverity,
+                LogFile = HostConfig.LogFile
             };
 
             // Update configuration settings
-            this.mSettings.Update(this.HostConfig.CustomSettings);
-            this.mSettings.UpdateCommandLineArgs(this.HostConfig.CommandLineArgs);
+            mSettings.Update(HostConfig.CustomSettings);
+            mSettings.UpdateCommandLineArgs(HostConfig.CommandLineArgs);
 
-            this.RegisterSchemeHandlers();
+            RegisterSchemeHandlers();
 
             // Perform dependency check to make sure all relevant resources are in our output directory.
-            Cef.Initialize(this.mSettings, this.HostConfig.PerformDependencyCheck, null);
+            Cef.Initialize(mSettings, HostConfig.PerformDependencyCheck, null);
 
-            this.mBrowser = new ChromiumWebBrowser(this.Handle, this.mSettings, this.HostConfig.StartUrl);
-            this.mBrowser.IsBrowserInitializedChanged += this.IsBrowserInitializedChanged;
+            mBrowser = new ChromiumWebBrowser(Handle, mSettings, HostConfig.StartUrl);
+            mBrowser.IsBrowserInitializedChanged += IsBrowserInitializedChanged;
 
             // Set handlers
-            this.mBrowser.SetHandlers();
+            mBrowser.SetHandlers();
 
-            this.RegisterJsHandlers();
+            RegisterJsHandlers();
 
             base.OnCreate(ref packet);
 
@@ -301,10 +301,10 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
         {
             base.OnSize(ref packet);
 
-            if (this.mBrowser != null)
+            if (mBrowser != null)
             {
                 var size = packet.Size;
-                this.mBrowser.SetSize(size.Width, size.Height);
+                mBrowser.SetSize(size.Width, size.Height);
             }
         }
 
@@ -316,7 +316,7 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
         /// </param>
         protected override void OnDestroy(ref Packet packet)
         {
-            this.mBrowser?.Dispose();
+            mBrowser?.Dispose();
             Cef.Shutdown();
 
             base.OnDestroy(ref packet);
@@ -335,9 +335,9 @@ namespace Chromely.CefSharp.Winapi.ChromeHost
         {
             if (eventArgs.IsBrowserInitialized)
             {
-                var size = this.GetClientSize();
-                this.mBrowser.SetSize(size.Width, size.Height);
-                this.mBrowser.IsBrowserInitializedChanged -= this.IsBrowserInitializedChanged;
+                var size = GetClientSize();
+                mBrowser.SetSize(size.Width, size.Height);
+                mBrowser.IsBrowserInitializedChanged -= IsBrowserInitializedChanged;
             }
         }
     }

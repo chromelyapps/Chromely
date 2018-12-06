@@ -29,7 +29,7 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
         /// </summary>
         public CefGlueLifeSpanHandler()
         {
-            this.mBrowser = CefGlueBrowser.BrowserCore;
+            mBrowser = CefGlueBrowser.BrowserCore;
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
         {
             base.OnAfterCreated(browser);
 
-            this.mBrowser.InvokeAsyncIfPossible(() => this.mBrowser.OnBrowserAfterCreated(browser));
+            mBrowser.InvokeAsyncIfPossible(() => mBrowser.OnBrowserAfterCreated(browser));
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
         /// </param>
         protected override void OnBeforeClose(CefBrowser browser)
         {
-            this.mBrowser.InvokeAsyncIfPossible(this.mBrowser.OnBeforeClose);
+            mBrowser.InvokeAsyncIfPossible(mBrowser.OnBeforeClose);
         }
 
         /// <summary>

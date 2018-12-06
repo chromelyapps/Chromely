@@ -30,9 +30,9 @@ namespace Chromely.CefGlue.Gtk.Browser.EventParams
         /// </param>
         public LoadingStateChangedEventArgs(bool isLoading, bool canGoBack, bool canGoForward)
         {
-            this.Loading = isLoading;
-            this.CanGoBack = canGoBack;
-            this.CanGoForward = canGoForward;
+            Loading = isLoading;
+            CanGoBack = canGoBack;
+            CanGoForward = canGoForward;
         }
 
         /// <summary>

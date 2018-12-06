@@ -32,8 +32,8 @@ namespace Chromely.Core.Tests.RestfullService
         /// </param>
         public UrlSchemeProviderTest(ITestOutputHelper testOutput)
         {
-            this.mTestOutput = testOutput;
-            this.Init();
+            mTestOutput = testOutput;
+            Init();
         }
 
         /// <summary>

@@ -28,8 +28,8 @@ namespace Chromely.CefGlue.Winapi.Browser.EventParams
         /// </param>
         public LoadEndEventArgs(CefFrame frame, int httpStatusCode)
         {
-            this.Frame = frame;
-            this.HttpStatusCode = httpStatusCode;
+            Frame = frame;
+            HttpStatusCode = httpStatusCode;
         }
 
         /// <summary>

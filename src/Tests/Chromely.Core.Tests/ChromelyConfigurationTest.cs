@@ -72,7 +72,7 @@ namespace Chromely.Core.Tests
         /// </param>
         public ChromelyConfigurationTest(ITestOutputHelper testOutput)
         {
-            this.mTestOutput = testOutput;
+            mTestOutput = testOutput;
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace Chromely.Core.Tests
         [Fact]
         public void BasicConfigTest()
         {
-            var config = this.GetBaseChromelyConfiguration();
+            var config = GetBaseChromelyConfiguration();
 
             Assert.NotNull(config);
             Assert.Equal(Title, config.HostTitle);

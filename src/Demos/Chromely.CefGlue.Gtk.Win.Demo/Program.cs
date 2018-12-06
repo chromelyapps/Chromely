@@ -12,7 +12,7 @@ namespace Chromely.CefGlue.Gtk.Win.Demo
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
-    using Chromely.CefGlue.Gtk.App;
+    using Chromely.CefGlue.Gtk.BrowserHost;
     using Chromely.Core;
     using Chromely.Core.Host;
     using Chromely.Core.Infrastructure;
@@ -46,22 +46,22 @@ namespace Chromely.CefGlue.Gtk.Win.Demo
                 // Requires - (sample) UseDefaultHttpSchemeHandler("http", "chromely.com")
                 //            or register new http scheme handler - RegisterSchemeHandler("http", "test.com",  new CustomHttpHandler())
                 // string startUrl = $"file:///{appDirectory}app/chromely.html";
-                ChromelyConfiguration config = ChromelyConfiguration
-                                              .Create()
-                                              .WithHostMode(WindowState.Normal)
-                                              .WithHostTitle("chromely")
-                                              .WithHostIconFile("chromely.ico")
-                                              .WithAppArgs(args)
-                                              .WithHostSize(1200, 700)
-                                              .WithLogFile("logs\\chromely.cef_new.log")
-                                              .WithStartUrl(startUrl)
-                                              .WithLogSeverity(LogSeverity.Info)
-                                              .UseDefaultLogger("logs\\chromely_new.log")
-                                              .UseDefaultResourceSchemeHandler("local", string.Empty)
-                                              .UseDefaultHttpSchemeHandler("http", "chromely.com");
-                                              //.UseDefaultWebsocketHandler(string.Empty, 8181, true);
+                var config = ChromelyConfiguration
+                                .Create()
+                                .WithHostMode(WindowState.Fullscreen)
+                                .WithHostTitle("chromely")
+                                .WithHostIconFile("chromely.ico")
+                                .WithAppArgs(args)
+                                .WithHostSize(1200, 700)
+                                .WithLogFile("logs\\chromely.cef_new.log")
+                                .WithStartUrl(startUrl)
+                                .WithLogSeverity(LogSeverity.Info)
+                                .UseDefaultLogger("logs\\chromely_new.log")
+                                .UseDefaultResourceSchemeHandler("local", string.Empty)
+                                .UseDefaultHttpSchemeHandler("http", "chromely.com");
+                                //.UseDefaultWebsocketHandler(string.Empty, 8181, true);
 
-                using (var app = new ChromelyApplication(config))
+                using (var app = new CefGlueBrowserHost(config))
                 {
                     // Register external url schems
                     app.RegisterUrlScheme(new UrlScheme("https://github.com/mattkol/Chromely", true));

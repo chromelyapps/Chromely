@@ -33,28 +33,28 @@ namespace Chromely.CefGlue.Gtk.Browser.ServerHandlers
                                 ? string.Empty 
                                 : requestString;
 
-            this.mMessageType = MessageType.None;
+            mMessageType = MessageType.None;
             var jsonData = JsonMapper.ToObject<JsonData>(requestString);
 
-            this.TargetName = jsonData.Keys.Contains("targetname") ? jsonData["targetname"].ToString() : string.Empty;
-            this.Url = jsonData.Keys.Contains("url") ? jsonData["url"].ToString() : string.Empty;
-            this.Data = jsonData.Keys.Contains("data") ? jsonData["data"].ToString() : string.Empty;
+            TargetName = jsonData.Keys.Contains("targetname") ? jsonData["targetname"].ToString() : string.Empty;
+            Url = jsonData.Keys.Contains("url") ? jsonData["url"].ToString() : string.Empty;
+            Data = jsonData.Keys.Contains("data") ? jsonData["data"].ToString() : string.Empty;
             string broadcastStr = jsonData.Keys.Contains("broadcast") ? jsonData["broadcast"].ToString() : string.Empty;
 
-            if (string.IsNullOrEmpty(this.TargetName) 
-                && string.IsNullOrEmpty(this.Url)
-                && string.IsNullOrEmpty(this.Data)
+            if (string.IsNullOrEmpty(TargetName) 
+                && string.IsNullOrEmpty(Url)
+                && string.IsNullOrEmpty(Data)
                 && string.IsNullOrEmpty(broadcastStr))
             {
-                this.Data = requestString;
-                this.mMessageType = MessageType.Echo;
+                Data = requestString;
+                mMessageType = MessageType.Echo;
             }
 
             bool.TryParse(broadcastStr, out var broadcast);
-            this.Broadcast = broadcast;
-            this.mMessageType = this.Broadcast 
+            Broadcast = broadcast;
+            mMessageType = Broadcast 
                                   ? MessageType.Broadcast
-                                  : this.mMessageType;
+                                  : mMessageType;
         }
 
         /// <summary>
@@ -64,22 +64,22 @@ namespace Chromely.CefGlue.Gtk.Browser.ServerHandlers
         {
             get
             {
-                if (this.mMessageType != MessageType.None)
+                if (mMessageType != MessageType.None)
                 {
-                    return this.mMessageType;
+                    return mMessageType;
                 }
 
-                if (!string.IsNullOrEmpty(this.Url))
+                if (!string.IsNullOrEmpty(Url))
                 {
                     return MessageType.ControllerAction;
                 }
 
-                if (!string.IsNullOrEmpty(this.TargetName))
+                if (!string.IsNullOrEmpty(TargetName))
                 {
                     return MessageType.TargetRecepient;
                 }
 
-                return this.Broadcast 
+                return Broadcast 
                            ? MessageType.Broadcast 
                            : MessageType.Echo;
             }
@@ -88,7 +88,7 @@ namespace Chromely.CefGlue.Gtk.Browser.ServerHandlers
         /// <summary>
         /// Gets the target connection id.
         /// </summary>
-        public int TargetConnectionId => ConnectionNameMapper.GetConnectionId(this.TargetName);
+        public int TargetConnectionId => ConnectionNameMapper.GetConnectionId(TargetName);
 
         /// <summary>
         /// Gets the target name.

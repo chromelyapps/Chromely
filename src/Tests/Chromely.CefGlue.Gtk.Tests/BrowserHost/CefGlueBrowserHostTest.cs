@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ChromelyApplicationTest.cs" company="Chromely Projects">
+// <copyright file="CefGlueBrowserHostTest.cs" company="Chromely Projects">
 //   Copyright (c) 2017-2018 Chromely Projects
 // </copyright>
 // <license>
@@ -7,7 +7,7 @@
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Chromely.CefGlue.Gtk.Tests.App
+namespace Chromely.CefGlue.Gtk.Tests.BrowserHost
 {
     using Chromely.Core;
     using Chromely.Core.Helpers;
@@ -19,7 +19,7 @@ namespace Chromely.CefGlue.Gtk.Tests.App
     /// <summary>
     /// The chromely application test.
     /// </summary>
-    public class ChromelyApplicationTest
+    public class CefGlueBrowserHostTest
     {
         /// <summary>
         /// The output.
@@ -28,14 +28,14 @@ namespace Chromely.CefGlue.Gtk.Tests.App
         private readonly ITestOutputHelper mTestOutput;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ChromelyApplicationTest"/> class.
+        /// Initializes a new instance of the <see cref="CefGlueBrowserHostTest"/> class.
         /// </summary>
         /// <param name="testOutput">
         /// The test output.
         /// </param>
-        public ChromelyApplicationTest(ITestOutputHelper testOutput)
+        public CefGlueBrowserHostTest(ITestOutputHelper testOutput)
         {
-            this.mTestOutput = testOutput;
+            mTestOutput = testOutput;
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace Chromely.CefGlue.Gtk.Tests.App
         [Fact]
         public void SettingsUpdateTest()
         {
-            var hostConfig = this.GetConfigWithDefaultValues();
+            var hostConfig = GetConfigWithDefaultValues();
             var settings = new CefSettings
             {
                 Locale = hostConfig.Locale,

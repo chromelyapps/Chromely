@@ -25,7 +25,7 @@ namespace Chromely.CefGlue.Gtk.Browser.EventParams
         /// </param>
         public RenderProcessTerminatedEventArgs(CefTerminationStatus status)
         {
-            this.Status = status;
+            Status = status;
         }
 
         /// <summary>

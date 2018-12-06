@@ -27,8 +27,8 @@ namespace Chromely.CefSharp.Winapi.Demo.Controllers
         /// </summary>
         public DemoController()
         {
-            this.RegisterGetRequest("/democontroller/movies", this.GetMovies);
-            this.RegisterPostRequest("/democontroller/movies", this.SaveMovies);
+            RegisterGetRequest("/democontroller/movies", GetMovies);
+            RegisterPostRequest("/democontroller/movies", SaveMovies);
         }
 
         /// <summary>
@@ -134,13 +134,13 @@ namespace Chromely.CefSharp.Winapi.Demo.Controllers
         /// </param>
         public MovieInfo(int id, string title, int year, int votes, double rating, string assembly)
         {
-            this.Id = id;
-            this.Title = title;
-            this.Year = year;
-            this.Votes = votes;
-            this.Rating = rating;
-            this.Date = DateTime.Now;
-            this.RestfulAssembly = assembly;
+            Id = id;
+            Title = title;
+            Year = year;
+            Votes = votes;
+            Rating = rating;
+            Date = DateTime.Now;
+            RestfulAssembly = assembly;
         }
 
         public int Id { get; set; }

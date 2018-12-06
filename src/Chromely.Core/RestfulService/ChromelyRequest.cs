@@ -32,9 +32,9 @@ namespace Chromely.Core.RestfulService
         /// </param>
         public ChromelyRequest(RoutePath routePath, IDictionary<string, object> parameters, object postData)
         {
-            this.RoutePath = routePath;
-            this.Parameters = parameters;
-            this.PostData = postData;
+            RoutePath = routePath;
+            Parameters = parameters;
+            PostData = postData;
         }
 
         /// <summary>
@@ -54,10 +54,10 @@ namespace Chromely.Core.RestfulService
         /// </param>
         public ChromelyRequest(string id, RoutePath routePath, IDictionary<string, object> parameters, object postData)
         {
-            this.Id = id;
-            this.RoutePath = routePath;
-            this.Parameters = parameters;
-            this.PostData = postData;
+            Id = id;
+            RoutePath = routePath;
+            Parameters = parameters;
+            PostData = postData;
         }
 
         /// <summary>
@@ -70,11 +70,11 @@ namespace Chromely.Core.RestfulService
         {
             string method = jsonData.Keys.Contains("method") ? jsonData["method"].ToString() : "get";
             string url = jsonData.Keys.Contains("url") ? jsonData["url"].ToString() : string.Empty;
-            this.RoutePath = new RoutePath(method, url);
+            RoutePath = new RoutePath(method, url);
 
-            this.Id = jsonData.Keys.Contains("id") ? jsonData["id"].ToString() : this.Id;
-            this.Parameters = jsonData.Keys.Contains("parameters") ? jsonData["parameters"]?.ObjectToDictionary() : this.Parameters;
-            this.PostData = jsonData.Keys.Contains("postData") ? jsonData["postData"] : this.PostData;
+            Id = jsonData.Keys.Contains("id") ? jsonData["id"].ToString() : Id;
+            Parameters = jsonData.Keys.Contains("parameters") ? jsonData["parameters"]?.ObjectToDictionary() : Parameters;
+            PostData = jsonData.Keys.Contains("postData") ? jsonData["postData"] : PostData;
         }
 
         /// <summary>

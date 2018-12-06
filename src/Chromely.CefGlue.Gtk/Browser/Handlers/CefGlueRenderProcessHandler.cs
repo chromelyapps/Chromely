@@ -22,7 +22,7 @@ namespace Chromely.CefGlue.Gtk.Browser.Handlers
         /// </summary>
         public CefGlueRenderProcessHandler()
         {
-            this.MessageRouter = new CefMessageRouterRendererSide(new CefMessageRouterConfig());
+            MessageRouter = new CefMessageRouterRendererSide(new CefMessageRouterConfig());
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace Chromely.CefGlue.Gtk.Browser.Handlers
         /// </param>
         protected override void OnContextCreated(CefBrowser browser, CefFrame frame, CefV8Context context)
         {
-            this.MessageRouter.OnContextCreated(browser, frame, context);
+            MessageRouter.OnContextCreated(browser, frame, context);
 
             // MessageRouter.OnContextCreated doesn't capture CefV8Context immediately,
             // so we able to release it immediately in this call.
@@ -66,7 +66,7 @@ namespace Chromely.CefGlue.Gtk.Browser.Handlers
         protected override void OnContextReleased(CefBrowser browser, CefFrame frame, CefV8Context context)
         {
             // MessageRouter.OnContextReleased releases captured CefV8Context (if have).
-            this.MessageRouter.OnContextReleased(browser, frame, context);
+            MessageRouter.OnContextReleased(browser, frame, context);
 
             // Release CefV8Context.
             context.Dispose();
@@ -89,7 +89,7 @@ namespace Chromely.CefGlue.Gtk.Browser.Handlers
         /// </returns>
         protected override bool OnProcessMessageReceived(CefBrowser browser, CefProcessId sourceProcess, CefProcessMessage message)
         {
-            var handled = this.MessageRouter.OnProcessMessageReceived(browser, sourceProcess, message);
+            var handled = MessageRouter.OnProcessMessageReceived(browser, sourceProcess, message);
             if (handled)
             {
                 return true;

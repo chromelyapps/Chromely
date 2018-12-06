@@ -31,7 +31,7 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
         /// </summary>
         public CefGlueRequestHandler()
         {
-            this.mBrowser = CefGlueBrowser.BrowserCore;
+            mBrowser = CefGlueBrowser.BrowserCore;
         }
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
         /// </param>
         protected override void OnPluginCrashed(CefBrowser browser, string pluginPath)
         {
-            this.mBrowser.InvokeAsyncIfPossible(() => this.mBrowser.OnPluginCrashed(new PluginCrashedEventArgs(pluginPath)));
+            mBrowser.InvokeAsyncIfPossible(() => mBrowser.OnPluginCrashed(new PluginCrashedEventArgs(pluginPath)));
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
         /// </param>
         protected override void OnRenderProcessTerminated(CefBrowser browser, CefTerminationStatus status)
         {
-            this.mBrowser.InvokeAsyncIfPossible(() => this.mBrowser.OnRenderProcessTerminated(new RenderProcessTerminatedEventArgs(status)));
+            mBrowser.InvokeAsyncIfPossible(() => mBrowser.OnRenderProcessTerminated(new RenderProcessTerminatedEventArgs(status)));
         }
     }
 }

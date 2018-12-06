@@ -12,10 +12,11 @@ namespace Chromely.CefGlue.Winapi.Demo
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
-    using Chromely.CefGlue.Winapi.ChromeHost;
+
+    using Chromely.CefGlue.Winapi.BrowserHost;
     using Chromely.Core;
+    using Chromely.Core.Host;
     using Chromely.Core.Infrastructure;
-    using WinApi.Windows;
 
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1400:AccessModifierMustBeDeclared", Justification = "Reviewed. Suppression is OK here.")]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
@@ -46,29 +47,26 @@ namespace Chromely.CefGlue.Winapi.Demo
                 // Requires - (sample) UseDefaultHttpSchemeHandler("http", "chromely.com")
                 //            or register new http scheme handler - RegisterSchemeHandler("http", "test.com",  new CustomHttpHandler())
                 // string startUrl = $"file:///{appDirectory}app/chromely.html";
-                ChromelyConfiguration config = ChromelyConfiguration
-                                              .Create()
-                                              .WithAppArgs(args)
-                                              .WithHostSize(1200, 700)
-                                              .WithLogFile("logs\\chromely.cef_new.log")
-                                              .WithStartUrl(startUrl)
-                                              .WithLogSeverity(LogSeverity.Info)
-                                              .UseDefaultLogger("logs\\chromely_new.log")
-                                              .UseDefaultResourceSchemeHandler("local", string.Empty)
-                                              .UseDefaultHttpSchemeHandler("http", "chromely.com");
+                var config = ChromelyConfiguration
+                                .Create()
+                                .WithHostMode(WindowState.Maximize)
+                                .WithHostTitle("chromely")
+                                .WithHostIconFile("chromely.ico")
+                                .WithAppArgs(args)
+                                .WithHostSize(1200, 700)
+                                .WithAppArgs(args)
+                                .WithHostSize(1200, 700)
+                                .WithLogFile("logs\\chromely.cef_new.log")
+                                .WithStartUrl(startUrl)
+                                .WithLogSeverity(LogSeverity.Info)
+                                .UseDefaultLogger("logs\\chromely_new.log")
+                                .UseDefaultResourceSchemeHandler("local", string.Empty)
+                                .UseDefaultHttpSchemeHandler("http", "chromely.com");
 
-                var factory = WinapiHostFactory.Init("chromely.ico");
-                using (var window = factory.CreateWindow(
-                    () => new CefGlueBrowserHost(config),
-                    "chromely",
-                    width: config.HostWidth, 
-                    height: config.HostHeight,
-                    constructionParams: WindowState.Normal))
+                using (var app = new CefGlueBrowserHost(config))
                 {
-                    // Note - ALT + F4 (To terminate fullscreen window).
-
                     // Register external url schems
-                    window.RegisterUrlScheme(new UrlScheme("https://github.com/mattkol/Chromely", true));
+                    app.RegisterUrlScheme(new UrlScheme("https://github.com/mattkol/Chromely", true));
 
                     /*
                      * Register service assemblies
@@ -76,28 +74,25 @@ namespace Chromely.CefGlue.Winapi.Demo
                      */
 
                     // 1. Register current/local assembly:
-                    window.RegisterServiceAssembly(Assembly.GetExecutingAssembly());
+                    app.RegisterServiceAssembly(Assembly.GetExecutingAssembly());
 
                     // 2. Register external assembly with file name:
-                    string externalAssembly = System.IO.Path.Combine(appDirectory, "Chromely.Service.Demo.dll");
-                    window.RegisterServiceAssembly(externalAssembly);
+                    // string serviceAssemblyFile = @"C:\ChromelyDlls\Chromely.Service.Demo.dll";
+                    // app.RegisterServiceAssembly(serviceAssemblyFile);
 
                     // 3. Register external assemblies with list of filenames:
                     // string serviceAssemblyFile1 = @"C:\ChromelyDlls\Chromely.Service.Demo.dll";
                     // List<string> filenames = new List<string>();
                     // filenames.Add(serviceAssemblyFile1);
-                    // window.RegisterServiceAssemblies(filenames);
+                    // app.RegisterServiceAssemblies(filenames);
 
                     // 4. Register external assemblies directory:
-                    // string serviceAssembliesFolder = @"C:\ChromelyDlls";
-                    // window.RegisterServiceAssemblies(serviceAssembliesFolder);
+                    string serviceAssembliesFolder = @"C:\ChromelyDlls";
+                    app.RegisterServiceAssemblies(serviceAssembliesFolder);
 
                     // Scan assemblies for Controller routes 
-                    window.ScanAssemblies();
-
-                    window.CenterToScreen();
-                    window.Show();
-                    return new EventLoop().Run(window);
+                    app.ScanAssemblies();
+                    return app.Run(args);
                 }
             }
             catch (Exception exception)

@@ -41,8 +41,8 @@ namespace Chromely.Core.Tests.RestfullService
         /// </param>
         public ChromelyControllerTest(ITestOutputHelper testOutput)
         {
-            this.mTestOutput = testOutput;
-            this.mTestController = new TestController();
+            mTestOutput = testOutput;
+            mTestController = new TestController();
         }
 
         /// <summary>
@@ -51,9 +51,9 @@ namespace Chromely.Core.Tests.RestfullService
         [Fact]
         public void IsControllerTest()
         {
-            Assert.NotNull(this.mTestController);
-            Assert.True(this.mTestController != null);
-            Assert.True(Attribute.IsDefined(this.mTestController.GetType(), typeof(ControllerPropertyAttribute)));
+            Assert.NotNull(mTestController);
+            Assert.True(mTestController != null);
+            Assert.True(Attribute.IsDefined(mTestController.GetType(), typeof(ControllerPropertyAttribute)));
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace Chromely.Core.Tests.RestfullService
         [Fact]
         public void RouteCountTest()
         {
-            var routeDict = this.BaseTest();
+            var routeDict = BaseTest();
 
             Assert.Equal(3, routeDict.Count);
         }
@@ -73,7 +73,7 @@ namespace Chromely.Core.Tests.RestfullService
         [Fact]
         public void GetRouteCountTest()
         {
-            var routeDict = this.BaseTest();
+            var routeDict = BaseTest();
 
             var values = routeDict.Values;
             Assert.Equal(2, values.Count(x => x.Method == Method.GET));
@@ -85,7 +85,7 @@ namespace Chromely.Core.Tests.RestfullService
         [Fact]
         public void SaveRouteCountTest()
         {
-            var routeDict = this.BaseTest();
+            var routeDict = BaseTest();
             var values = routeDict.Values;
 
             Assert.Equal(1, values.Count(x => x.Method == Method.POST));
@@ -97,8 +97,8 @@ namespace Chromely.Core.Tests.RestfullService
         [Fact]
         public void Get1InvokeTest()
         {
-            var routeDict = this.BaseTest();
-            string routeKey = this.GetRouteKey(Method.GET, "/testcontroller/movies");
+            var routeDict = BaseTest();
+            string routeKey = GetRouteKey(Method.GET, "/testcontroller/movies");
             var routeGet1 = routeDict[routeKey];
             Assert.NotNull(routeGet1);
 
@@ -114,8 +114,8 @@ namespace Chromely.Core.Tests.RestfullService
         [Fact]
         public void Get2InvokeTest()
         {
-            var routeDict = this.BaseTest();
-            string routeKey = this.GetRouteKey(Method.GET, "/testcontroller/sitcoms");
+            var routeDict = BaseTest();
+            string routeKey = GetRouteKey(Method.GET, "/testcontroller/sitcoms");
             var routeGet2 = routeDict[routeKey];
             Assert.NotNull(routeGet2);
 
@@ -131,8 +131,8 @@ namespace Chromely.Core.Tests.RestfullService
         [Fact]
         public void SaveInvokeTest()
         {
-            var routeDict = this.BaseTest();
-            string routeKey = this.GetRouteKey(Method.POST, "/testcontroller/movies");
+            var routeDict = BaseTest();
+            string routeKey = GetRouteKey(Method.POST, "/testcontroller/movies");
             var routeSave = routeDict[routeKey];
             Assert.NotNull(routeSave);
 
@@ -151,8 +151,8 @@ namespace Chromely.Core.Tests.RestfullService
         /// </returns>
         private Dictionary<string, Route> BaseTest()
         {
-            Assert.NotNull(this.mTestController);
-            var routeDict = this.mTestController.RouteDictionary;
+            Assert.NotNull(mTestController);
+            var routeDict = mTestController.RouteDictionary;
             Assert.NotNull(routeDict);
 
             return routeDict;
@@ -187,9 +187,9 @@ namespace Chromely.Core.Tests.RestfullService
             /// </summary>
             public TestController()
             {
-                this.RegisterGetRequest("/testcontroller/movies", this.Get1);
-                this.RegisterGetRequest("/testcontroller/sitcoms", this.Get2);
-                this.RegisterPostRequest("/testcontroller/movies", this.Save);
+                RegisterGetRequest("/testcontroller/movies", Get1);
+                RegisterGetRequest("/testcontroller/sitcoms", Get2);
+                RegisterPostRequest("/testcontroller/movies", Save);
             }
 
             /// <summary>

@@ -12,32 +12,29 @@ namespace Chromely.CefGlue.Winapi.Browser
     using System;
     using Chromely.CefGlue.Winapi.Browser.EventParams;
     using Chromely.CefGlue.Winapi.Browser.FrameHandlers;
-    using Chromely.Core.Host;
+    using Chromely.Core;
     using Chromely.Core.Infrastructure;
-
-    using WinApi.User32;
-
     using Xilium.CefGlue;
 
     /// <summary>
     /// The CefGlue browser.
     /// </summary>
-    public class CefGlueBrowser : WebBrowserBase
+    public class CefGlueBrowser
     {
         /// <summary>
-        /// The CefBrowserConfig object.
+        /// The host config.
         /// </summary>
-        private readonly CefBrowserConfig mBrowserConfig;
+        private readonly ChromelyConfiguration mHostConfig;
 
         /// <summary>
-        /// The CefBrowser object.
+        /// The CefBrowserSettings object.
         /// </summary>
-        private CefBrowser mBrowser;
+        private CefBrowserSettings mSettings;
 
         /// <summary>
-        /// The browser window handle.
+        /// The CefGlueClient object.
         /// </summary>
-        private IntPtr mBrowserWindowHandle;
+        private CefGlueClient mClient;
 
         /// <summary>
         /// The m websocket started.
@@ -47,23 +44,44 @@ namespace Chromely.CefGlue.Winapi.Browser
         /// <summary>
         /// Initializes a new instance of the <see cref="CefGlueBrowser"/> class.
         /// </summary>
-        /// <param name="browserConfig">
-        /// The browser config.
+        /// <param name="owner">
+        /// The owner.
         /// </param>
-        public CefGlueBrowser(CefBrowserConfig browserConfig)
+        /// <param name="hostConfig">
+        /// The host config.
+        /// </param>
+        /// <param name="settings">
+        /// The settings.
+        /// </param>
+        public CefGlueBrowser(object owner, ChromelyConfiguration hostConfig, CefBrowserSettings settings)
         {
-            this.mBrowserConfig = browserConfig;
-            this.StartUrl = string.IsNullOrEmpty(browserConfig.StartUrl) ? "about:blank" : browserConfig.StartUrl;
-
-            this.CreateBrowser();
+            Owner = owner;
+            mHostConfig = hostConfig;
+            mSettings = settings;
+            StartUrl = hostConfig.StartUrl;
         }
 
         #region Events Handling Properties
 
         /// <summary>
-        /// The browser created.
+        /// The created.
         /// </summary>
-        public event EventHandler BrowserCreated;
+        public event EventHandler Created;
+
+        /// <summary>
+        /// The title changed.
+        /// </summary>
+        public event EventHandler<TitleChangedEventArgs> TitleChanged;
+
+        /// <summary>
+        /// The address changed.
+        /// </summary>
+        public event EventHandler<AddressChangedEventArgs> AddressChanged;
+
+        /// <summary>
+        /// The status message.
+        /// </summary>
+        public event EventHandler<StatusMessageEventArgs> StatusMessage;
 
         /// <summary>
         /// The console message.
@@ -127,15 +145,20 @@ namespace Chromely.CefGlue.Winapi.Browser
                 if (IoC.IsRegistered(typeof(CefGlueBrowser), typeof(CefGlueBrowser).FullName))
                 {
                     var instance = IoC.GetInstance(typeof(CefGlueBrowser), typeof(CefGlueBrowser).FullName);
-                    if (instance is CefGlueBrowser)
+                    if (instance is CefGlueBrowser browser)
                     {
-                        return (CefGlueBrowser)instance;
+                        return browser;
                     }
                 }
 
                 return null;
             }
         }
+
+        /// <summary>
+        /// Gets the owner.
+        /// </summary>
+        public object Owner { get; }
 
         /// <summary>
         /// Gets or sets the start url.
@@ -153,49 +176,107 @@ namespace Chromely.CefGlue.Winapi.Browser
         public string Address { get; private set; }
 
         /// <summary>
-        /// Gets or sets the browser settings.
+        /// Gets the cef browser.
         /// </summary>
-        public CefBrowserSettings BrowserSettings { get; set; }
+        public CefBrowser CefBrowser { get; private set; }
 
         /// <summary>
-        /// Gets the browser.
+        /// The create.
         /// </summary>
-        public CefBrowser Browser => this.mBrowser;
-
-        /// <summary>
-        /// The resize window.
-        /// </summary>
-        /// <param name="width">
-        /// The width.
+        /// <param name="windowInfo">
+        /// The window info.
         /// </param>
-        /// <param name="height">
-        /// The height.
-        /// </param>
-        public virtual void ResizeWindow(int width, int height)
+        public void Create(CefWindowInfo windowInfo)
         {
-            this.ResizeWindow(this.mBrowserWindowHandle, width, height);
+            if (mClient == null)
+            {
+                IoC.RegisterInstance(typeof(CefGlueBrowser), typeof(CefGlueBrowser).FullName, this);
+                mClient = new CefGlueClient(CefGlueClientParams.Create(this));
+            }
+
+            mSettings = this.mSettings ?? new CefBrowserSettings();
+
+            mSettings.DefaultEncoding = "UTF-8";
+            mSettings.FileAccessFromFileUrls = CefState.Enabled;
+            mSettings.UniversalAccessFromFileUrls = CefState.Enabled;
+            mSettings.WebSecurity = CefState.Enabled;
+
+            CefBrowserHost.CreateBrowser(windowInfo, mClient, mSettings, StartUrl);
+        }
+
+        /// <summary>
+        /// The close.
+        /// </summary>
+        public void Close()
+        {
+            if (mWebsocketStarted)
+            {
+                WebsocketServerRunner.StopServer();
+            }
+
+            if (CefBrowser != null)
+            {
+                var host = CefBrowser.GetHost();
+                host.CloseBrowser(true);
+                host.Dispose();
+                CefBrowser.Dispose();
+                CefBrowser = null;
+            }
         }
 
         #region Events Handling
 
         /// <summary>
-        /// The on browser after created.
+        /// The on created.
         /// </summary>
         /// <param name="browser">
         /// The browser.
         /// </param>
         public virtual void OnBrowserAfterCreated(CefBrowser browser)
         {
-            this.mBrowser = browser;
-            this.mBrowserWindowHandle = this.mBrowser.GetHost().GetWindowHandle();
+            CefBrowser = browser;
 
             // Register browser 
             CefGlueFrameHandler frameHandler = new CefGlueFrameHandler(browser);
             IoC.RegisterInstance(typeof(CefGlueFrameHandler), typeof(CefGlueFrameHandler).FullName, frameHandler);
 
-            this.StartWebsocket();
+            StartWebsocket();
+            Created?.Invoke(this, EventArgs.Empty);
+        }
 
-            this.BrowserCreated?.Invoke(this, EventArgs.Empty);
+        /// <summary>
+        /// The on title changed.
+        /// </summary>
+        /// <param name="eventArgs">
+        /// The event args.
+        /// </param>
+        public virtual void OnTitleChanged(TitleChangedEventArgs eventArgs)
+        {
+            Title = eventArgs.Title;
+            TitleChanged?.Invoke(this, eventArgs);
+        }
+
+        /// <summary>
+        /// The on address changed.
+        /// </summary>
+        /// <param name="eventArgs">
+        /// The event args.
+        /// </param>
+        public virtual void OnAddressChanged(AddressChangedEventArgs eventArgs)
+        {
+            Address = eventArgs.Address;
+            AddressChanged?.Invoke(this, eventArgs);
+        }
+
+        /// <summary>
+        /// The on status message.
+        /// </summary>
+        /// <param name="eventArgs">
+        /// The event args.
+        /// </param>
+        public virtual void OnStatusMessage(StatusMessageEventArgs eventArgs)
+        {
+            StatusMessage?.Invoke(this, eventArgs);
         }
 
         /// <summary>
@@ -206,7 +287,7 @@ namespace Chromely.CefGlue.Winapi.Browser
         /// </param>
         public virtual void OnConsoleMessage(ConsoleMessageEventArgs eventArgs)
         {
-            this.ConsoleMessage?.Invoke(this, eventArgs);
+            ConsoleMessage?.Invoke(this, eventArgs);
         }
 
         /// <summary>
@@ -217,7 +298,7 @@ namespace Chromely.CefGlue.Winapi.Browser
         /// </param>
         public virtual void OnLoadingStateChange(LoadingStateChangeEventArgs eventArgs)
         {
-            this.LoadingStateChange?.Invoke(this, eventArgs);
+            LoadingStateChange?.Invoke(this, eventArgs);
         }
 
         /// <summary>
@@ -228,7 +309,7 @@ namespace Chromely.CefGlue.Winapi.Browser
         /// </param>
         public virtual void OnTooltip(TooltipEventArgs eventArgs)
         {
-            this.Tooltip?.Invoke(this, eventArgs);
+            Tooltip?.Invoke(this, eventArgs);
         }
 
         /// <summary>
@@ -236,8 +317,7 @@ namespace Chromely.CefGlue.Winapi.Browser
         /// </summary>
         public virtual void OnBeforeClose()
         {
-            this.mBrowserWindowHandle = IntPtr.Zero;
-            this.BeforeClose?.Invoke(this, EventArgs.Empty);
+            BeforeClose?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -248,7 +328,7 @@ namespace Chromely.CefGlue.Winapi.Browser
         /// </param>
         public virtual void OnBeforePopup(BeforePopupEventArgs eventArgs)
         {
-            this.BeforePopup?.Invoke(this, eventArgs);
+            BeforePopup?.Invoke(this, eventArgs);
         }
 
         /// <summary>
@@ -259,7 +339,7 @@ namespace Chromely.CefGlue.Winapi.Browser
         /// </param>
         public virtual void OnLoadEnd(LoadEndEventArgs eventArgs)
         {
-            this.LoadEnd?.Invoke(this, eventArgs);
+            LoadEnd?.Invoke(this, eventArgs);
         }
 
         /// <summary>
@@ -270,7 +350,7 @@ namespace Chromely.CefGlue.Winapi.Browser
         /// </param>
         public virtual void OnLoadError(LoadErrorEventArgs eventArgs)
         {
-            this.LoadError?.Invoke(this, eventArgs);
+            LoadError?.Invoke(this, eventArgs);
         }
 
         /// <summary>
@@ -281,7 +361,7 @@ namespace Chromely.CefGlue.Winapi.Browser
         /// </param>
         public virtual void OnLoadStart(LoadStartEventArgs eventArgs)
         {
-            this.LoadStarted?.Invoke(this, eventArgs);
+            LoadStarted?.Invoke(this, eventArgs);
         }
 
         /// <summary>
@@ -292,7 +372,7 @@ namespace Chromely.CefGlue.Winapi.Browser
         /// </param>
         public virtual void OnPluginCrashed(PluginCrashedEventArgs eventArgs)
         {
-            this.PluginCrashed?.Invoke(this, eventArgs);
+            PluginCrashed?.Invoke(this, eventArgs);
         }
 
         /// <summary>
@@ -303,104 +383,10 @@ namespace Chromely.CefGlue.Winapi.Browser
         /// </param>
         public virtual void OnRenderProcessTerminated(RenderProcessTerminatedEventArgs eventArgs)
         {
-            this.RenderProcessTerminated?.Invoke(this, eventArgs);
+            RenderProcessTerminated?.Invoke(this, eventArgs);
         }
 
         #endregion Events Handling
-
-        #region Dispose
-
-        /// <summary>
-        /// The dispose.
-        /// </summary>
-        /// <param name="disposing">
-        /// The disposing.
-        /// </param>
-        protected override void Dispose(bool disposing)
-        {
-            if (this.mWebsocketStarted)
-            {
-                WebsocketServerRunner.StopServer();
-            }
-
-            if (this.mBrowser != null && disposing)
-            {
-                var host = this.mBrowser.GetHost();
-                if (host != null)
-                {
-                    host.CloseBrowser();
-                    host.Dispose();
-                }
-
-                this.mBrowser.Dispose();
-                this.mBrowser = null;
-                this.mBrowserWindowHandle = IntPtr.Zero;
-            }
-
-            base.Dispose(disposing);
-        }
-
-        #endregion Dispose
-
-        /// <summary>
-        /// The create browser.
-        /// </summary>
-        private void CreateBrowser()
-        {
-            var windowInfo = CefWindowInfo.Create();
-            windowInfo.SetAsChild(this.mBrowserConfig.ParentHandle, this.mBrowserConfig.CefRectangle);
-
-            var client = this.CreateWebClient();
-
-            var settings = this.BrowserSettings ?? new CefBrowserSettings();
-
-            settings.DefaultEncoding = "UTF-8";
-            settings.FileAccessFromFileUrls = CefState.Enabled;
-            settings.UniversalAccessFromFileUrls = CefState.Enabled;
-            settings.WebSecurity = CefState.Enabled;
-
-            CefBrowserHost.CreateBrowser(windowInfo, client, settings, this.StartUrl);
-        }
-
-        /// <summary>
-        /// The create web client.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="CefGlueClient"/>.
-        /// </returns>
-        private CefGlueClient CreateWebClient()
-        {
-            IoC.RegisterInstance(typeof(CefGlueBrowser), typeof(CefGlueBrowser).FullName, this);
-            var client = new CefGlueClient(CefGlueClientParams.Create(this));
-            return client;
-        }
-
-        /// <summary>
-        /// The resize window.
-        /// </summary>
-        /// <param name="handle">
-        /// The handle.
-        /// </param>
-        /// <param name="width">
-        /// The width.
-        /// </param>
-        /// <param name="height">
-        /// The height.
-        /// </param>
-        private void ResizeWindow(IntPtr handle, int width, int height)
-        {
-            if (handle != IntPtr.Zero)
-            {
-                NativeMethods.SetWindowPos(
-                    handle,
-                    IntPtr.Zero,
-                    0,
-                    0,
-                    width,
-                    height,
-                    WindowPositionFlags.SWP_NOZORDER);
-            }
-        }
 
         /// <summary>
         /// The start websocket.
@@ -409,10 +395,10 @@ namespace Chromely.CefGlue.Winapi.Browser
         {
             try
             {
-                if (this.mBrowserConfig.StartWebSocket)
+                if (mHostConfig.StartWebSocket)
                 {
-                    WebsocketServerRunner.StartServer(this.mBrowserConfig.WebsocketAddress, this.mBrowserConfig.WebsocketPort);
-                    this.mWebsocketStarted = true;
+                    WebsocketServerRunner.StartServer(mHostConfig.WebsocketAddress, mHostConfig.WebsocketPort);
+                    mWebsocketStarted = true;
                 }
             }
             catch (Exception exception)

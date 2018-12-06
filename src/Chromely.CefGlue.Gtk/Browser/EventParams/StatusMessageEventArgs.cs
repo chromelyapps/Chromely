@@ -24,7 +24,7 @@ namespace Chromely.CefGlue.Gtk.Browser.EventParams
         /// </param>
         public StatusMessageEventArgs(string value)
         {
-            this.Value = value;
+            Value = value;
         }
 
         /// <summary>

@@ -32,9 +32,9 @@ namespace Chromely.Core.RestfulService
         /// </param>
         public Route(Method method, string path, Func<ChromelyRequest, ChromelyResponse> action)
         {
-            this.Method = method;
-            this.Path = path;
-            this.Action = action;
+            Method = method;
+            Path = path;
+            Action = action;
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace Chromely.Core.RestfulService
         public ChromelyResponse Invoke(string requestId, RoutePath routePath, IDictionary<string, object> parameters, object postData)
         {
             ChromelyRequest request = new ChromelyRequest(requestId, routePath, parameters, postData);
-            return this.Action.Invoke(request);
+            return Action.Invoke(request);
         }
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace Chromely.Core.RestfulService
         /// </returns>
         public ChromelyResponse Invoke(ChromelyRequest request)
         {
-            return this.Action.Invoke(request);
+            return Action.Invoke(request);
         }
     }
 }

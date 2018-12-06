@@ -12,7 +12,7 @@ namespace Chromely.CefSharp.Winapi.Demo
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
-    using Chromely.CefSharp.Winapi.ChromeHost;
+    using Chromely.CefSharp.Winapi.BrowserHost;
     using Chromely.Core;
     using Chromely.Core.Infrastructure;
     using WinApi.Windows;

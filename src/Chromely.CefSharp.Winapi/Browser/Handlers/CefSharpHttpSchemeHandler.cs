@@ -63,18 +63,18 @@ namespace Chromely.CefSharp.Winapi.Browser.Handlers
                     {
                         try
                         {
-                            this.mChromelyResponse = RequestTaskRunner.Run(request);
+                            mChromelyResponse = RequestTaskRunner.Run(request);
 
-                            string jsonData = this.mChromelyResponse.Data.EnsureResponseIsJsonFormat();
+                            string jsonData = mChromelyResponse.Data.EnsureResponseIsJsonFormat();
                             var content = Encoding.UTF8.GetBytes(jsonData);
-                            this.mStream.Write(content, 0, content.Length);
-                            this.mMimeType = "application/json";
+                            mStream.Write(content, 0, content.Length);
+                            mMimeType = "application/json";
                         }
                         catch (Exception exception)
                         {
                             Log.Error(exception);
 
-                            this.mChromelyResponse =
+                            mChromelyResponse =
                                 new ChromelyResponse
                                     {
                                         Status = (int)HttpStatusCode.BadRequest,
@@ -113,7 +113,7 @@ namespace Chromely.CefSharp.Winapi.Browser.Handlers
         /// </returns>
         public override Stream GetResponse(IResponse response, out long responseLength, out string redirectUrl)
         {
-            responseLength = this.mStream.Length;
+            responseLength = mStream.Length;
             redirectUrl = null;
 
             var headers = response.ResponseHeaders;
@@ -124,11 +124,11 @@ namespace Chromely.CefSharp.Winapi.Browser.Handlers
             headers.Add("Content-Type", "application/json; charset=utf-8");
             response.ResponseHeaders = headers;
 
-            response.StatusCode = this.mChromelyResponse.Status;
-            response.StatusText = this.mChromelyResponse.StatusText;
-            response.MimeType = this.mMimeType; 
+            response.StatusCode = mChromelyResponse.Status;
+            response.StatusText = mChromelyResponse.StatusText;
+            response.MimeType = mMimeType; 
 
-            return this.mStream;
+            return mStream;
         }
     }
 }

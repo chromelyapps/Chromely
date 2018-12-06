@@ -19,7 +19,7 @@ namespace Chromely.Core.RestfulService
         /// </summary>
         public ChromelyResponse()
         {
-            this.RequestId = string.Empty;
+            RequestId = string.Empty;
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace Chromely.Core.RestfulService
         /// </param>
         public ChromelyResponse(string requestId)
         {
-            this.RequestId = requestId;
+            RequestId = requestId;
         }
 
         /// <summary>

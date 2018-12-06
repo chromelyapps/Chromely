@@ -27,8 +27,8 @@ namespace Chromely.CefSharp.Winapi.Demo.Controllers
         /// </summary>
         public ExecuteJavaScriptDemoController()
         {
-            this.RegisterPostRequest("/executejavascript/execute", this.Execute);
-            this.RegisterPostRequest("/executejavascript/evaluate", this.Evaluate);
+            RegisterPostRequest("/executejavascript/execute", Execute);
+            RegisterPostRequest("/executejavascript/evaluate", Evaluate);
         }
 
         /// <summary>
@@ -133,13 +133,13 @@ namespace Chromely.CefSharp.Winapi.Demo.Controllers
             /// </param>
             public ScriptInfo(object postData)
             {
-                this.FrameName = string.Empty;
-                this.Script = string.Empty;
+                FrameName = string.Empty;
+                Script = string.Empty;
                 if (postData != null)
                 {
                     JsonData jsonData = JsonMapper.ToObject(postData.ToString());
-                    this.FrameName = jsonData.Keys.Contains("framename") ? jsonData["framename"].ToString() : string.Empty;
-                    this.Script = jsonData.Keys.Contains("script") ? jsonData["script"].ToString() : string.Empty;
+                    FrameName = jsonData.Keys.Contains("framename") ? jsonData["framename"].ToString() : string.Empty;
+                    Script = jsonData.Keys.Contains("script") ? jsonData["script"].ToString() : string.Empty;
                 }
             }
 

@@ -41,7 +41,7 @@ namespace Chromely.CefGlue.Winapi.Browser
         /// </param>
         public CefGlueApp(ChromelyConfiguration hostConfig)
         {
-            this.mHostConfig = hostConfig;
+            mHostConfig = hostConfig;
         }
 
         /// <summary>
@@ -83,9 +83,9 @@ namespace Chromely.CefGlue.Winapi.Browser
         protected override void OnBeforeCommandLineProcessing(string processType, CefCommandLine commandLine)
         {
             // Get all custom command line argument switches
-            if (this.mHostConfig?.CommandLineArgs != null)
+            if (mHostConfig?.CommandLineArgs != null)
             {
-                foreach (var commandArg in this.mHostConfig.CommandLineArgs)
+                foreach (var commandArg in mHostConfig.CommandLineArgs)
                 {
                     commandLine.AppendSwitch(commandArg.Key, commandArg.Value);
                 }
@@ -112,7 +112,7 @@ namespace Chromely.CefGlue.Winapi.Browser
         /// </returns>
         protected override CefRenderProcessHandler GetRenderProcessHandler()
         {
-            return this.mRenderProcessHandler;
+            return mRenderProcessHandler;
         }
     }
 }

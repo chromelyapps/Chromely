@@ -34,10 +34,10 @@ namespace Chromely.CefGlue.Gtk.Browser.EventParams
         /// </param>
         public LoadErrorEventArgs(CefFrame frame, CefErrorCode errorCode, string errorText, string failedUrl)
         {
-            this.Frame = frame;
-            this.ErrorCode = errorCode;
-            this.ErrorText = errorText;
-            this.FailedUrl = failedUrl;
+            Frame = frame;
+            ErrorCode = errorCode;
+            ErrorText = errorText;
+            FailedUrl = failedUrl;
         }
 
         /// <summary>

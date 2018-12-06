@@ -33,7 +33,7 @@ namespace Chromely.CefGlue.Gtk.Browser.FrameHandlers
         /// </param>
         public CefGlueFrameHandler(CefBrowser browser)
         {
-            this.browser = browser;
+            browser = browser;
         }
 
         /// <summary>
@@ -43,12 +43,12 @@ namespace Chromely.CefGlue.Gtk.Browser.FrameHandlers
         {
             get
             {
-                if (this.browser == null)
+                if (browser == null)
                 {
                     throw new Exception("Browser object cannot be null.");
                 }
 
-                return this.browser;
+                return browser;
             }
         }
 
@@ -56,12 +56,12 @@ namespace Chromely.CefGlue.Gtk.Browser.FrameHandlers
         /// <summary>
         /// Gets the get frame identifiers.
         /// </summary>
-        public List<long> GetFrameIdentifiers => this.Browser.GetFrameIdentifiers()?.ToList();
+        public List<long> GetFrameIdentifiers => Browser.GetFrameIdentifiers()?.ToList();
 
         /// <summary>
         /// Gets the get frame names.
         /// </summary>
-        public List<string> GetFrameNames => this.Browser.GetFrameNames()?.ToList();
+        public List<string> GetFrameNames => Browser.GetFrameNames()?.ToList();
 
         /// <summary>
         /// The get main frame.
@@ -74,7 +74,7 @@ namespace Chromely.CefGlue.Gtk.Browser.FrameHandlers
         /// </returns>
         public CefFrame GetMainFrame()
         {
-            return this.Browser.GetMainFrame();
+            return Browser.GetMainFrame();
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace Chromely.CefGlue.Gtk.Browser.FrameHandlers
         /// </returns>
         public CefFrame GetFrame(string frameName)
         {
-            return this.Browser.GetFrame(frameName);
+            return Browser.GetFrame(frameName);
         }
     }
 }

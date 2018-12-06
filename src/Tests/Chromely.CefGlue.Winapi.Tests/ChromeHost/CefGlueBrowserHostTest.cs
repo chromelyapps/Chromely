@@ -35,7 +35,7 @@ namespace Chromely.CefGlue.Winapi.Tests.ChromeHost
         /// </param>
         public CefGlueBrowserHostTest(ITestOutputHelper testOutput)
         {
-            this.mTestOutput = testOutput;
+            mTestOutput = testOutput;
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace Chromely.CefGlue.Winapi.Tests.ChromeHost
         [Fact]
         public void SettingsUpdateTest()
         {
-            var hostConfig = this.GetConfigWithDefaultValues();
+            var hostConfig = GetConfigWithDefaultValues();
             var settings = new CefSettings
             {
                 Locale = hostConfig.Locale,

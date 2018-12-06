@@ -30,9 +30,9 @@ namespace Chromely.CefGlue.Winapi.Browser.EventParams
         /// </param>
         public ConsoleMessageEventArgs(string message, string source, int line)
         {
-            this.Message = message;
-            this.Source = source;
-            this.Line = line;
+            Message = message;
+            Source = source;
+            Line = line;
         }
 
         /// <summary>

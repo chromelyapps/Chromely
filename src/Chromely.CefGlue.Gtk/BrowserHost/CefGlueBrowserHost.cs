@@ -1,13 +1,13 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ChromelyApplication.cs" company="Chromely Projects">
+// <copyright file="CefGlueBrowserHost.cs" company="Chromely Projects">
 //   Copyright (c) 2017-2018 Chromely Projects
 // </copyright>
 // <license>
-//      See the LICENSE.md file in the project root for more information.
+// See the LICENSE.md file in the project root for more information.
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Chromely.CefGlue.Gtk.App
+namespace Chromely.CefGlue.Gtk.BrowserHost
 {
     using Chromely.Core;
     using Xilium.CefGlue;
@@ -15,15 +15,15 @@ namespace Chromely.CefGlue.Gtk.App
     /// <summary>
     /// The CefGlue browser host/window/app.
     /// </summary>
-    public class ChromelyApplication : ApplicationBase
+    public class CefGlueBrowserHost : HostBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ChromelyApplication"/> class.
+        /// Initializes a new instance of the <see cref="CefGlueBrowserHost"/> class.
         /// </summary>
         /// <param name="hostConfig">
         /// The host config.
         /// </param>
-        public ChromelyApplication(ChromelyConfiguration hostConfig)
+        public CefGlueBrowserHost(ChromelyConfiguration hostConfig) 
             : base(hostConfig)
         {
         }
@@ -33,7 +33,7 @@ namespace Chromely.CefGlue.Gtk.App
         /// </summary>
         protected override void PlatformInitialize()
         {
-            NativeMethods.InitWindow(0, null);
+            Application.Init();
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace Chromely.CefGlue.Gtk.App
         {
             if (CefRuntime.Platform == CefRuntimePlatform.Windows)
             {
-                NativeMethods.Run();
+                Application.Run();
             }
             else
             {
@@ -65,7 +65,7 @@ namespace Chromely.CefGlue.Gtk.App
         {
             if (CefRuntime.Platform == CefRuntimePlatform.Windows)
             {
-                NativeMethods.Quit();
+                Application.Quit();
             }
             else
             {
@@ -81,7 +81,7 @@ namespace Chromely.CefGlue.Gtk.App
         /// </returns>
         protected override Window CreateMainView()
         {
-            return new Window(this, this.HostConfig);
+            return new Window(this, HostConfig);
         }
     }
 }

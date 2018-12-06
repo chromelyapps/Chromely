@@ -39,7 +39,7 @@ namespace Chromely.CefGlue.Gtk.Browser.Handlers
         /// </summary>
         public CefGlueContextMenuHandler()
         {
-            this.debugging = ChromelyConfiguration.Instance.DebuggingMode;
+            debugging = ChromelyConfiguration.Instance.DebuggingMode;
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace Chromely.CefGlue.Gtk.Browser.Handlers
             // Remove "View Source" option
             model.Remove((int)CefMenuId.ViewSource);
 
-            if (this.debugging)
+            if (debugging)
             {
                 // Add new custom menu items
                 model.AddItem((int)((CefMenuId)ShowDevTools), "Show DevTools");
@@ -123,7 +123,7 @@ namespace Chromely.CefGlue.Gtk.Browser.Handlers
         /// </returns>
         protected override bool OnContextMenuCommand(CefBrowser browser, CefFrame frame, CefContextMenuParams state, int commandId, CefEventFlags eventFlags)
         {
-            if (this.debugging)
+            if (debugging)
             {
                 if (commandId == ShowDevTools)
                 {

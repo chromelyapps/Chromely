@@ -3,17 +3,13 @@
 //   Copyright (c) 2017-2018 Chromely Projects
 // </copyright>
 // <license>
-//      See the LICENSE.md file in the project root for more information.
+// See the LICENSE.md file in the project root for more information.
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Chromely.CefGlue.Gtk.App
+namespace Chromely.CefGlue.Gtk.BrowserHost
 {
     using System;
-    using System.Net.Mime;
-
-    using Chromely.Core;
-    using Chromely.Core.Host;
 
     /// <summary>
     /// The native window.
@@ -26,9 +22,24 @@ namespace Chromely.CefGlue.Gtk.App
         private readonly object mEventLock = new object();
 
         /// <summary>
-        /// The m host config.
+        /// The host/app/window title.
         /// </summary>
-        private readonly ChromelyConfiguration mHostConfig;
+        private readonly string mTitle;
+
+        /// <summary>
+        /// The host/app/window icon file.
+        /// </summary>
+        private readonly string mIconFile;
+
+        /// <summary>
+        /// The host/app/window width.
+        /// </summary>
+        private readonly int mWidth;
+
+        /// <summary>
+        /// The host/app/window height.
+        /// </summary>
+        private readonly int mHeight;
 
         /// <summary>
         /// The main window.
@@ -55,20 +66,33 @@ namespace Chromely.CefGlue.Gtk.App
         /// </summary>
         public NativeWindow()
         {
-            this.mMainWindow = IntPtr.Zero;
-            this.mHostConfig = ChromelyConfiguration.Create();
+            mTitle = "chromely";
+            mIconFile = null;
+            mWidth = 1200;
+            mHeight = 800;
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NativeWindow"/> class.
         /// </summary>
-        /// <param name="hostConfig">
-        /// The host config.
+        /// <param name="title">
+        /// The title.
         /// </param>
-        public NativeWindow(ChromelyConfiguration hostConfig)
+        /// <param name="width">
+        /// The width.
+        /// </param>
+        /// <param name="height">
+        /// The height.
+        /// </param>
+        /// <param name="iconFile">
+        /// The icon file.
+        /// </param>
+        public NativeWindow(string title, int width, int height, string iconFile = null)
         {
-            this.mMainWindow = IntPtr.Zero;
-            this.mHostConfig = hostConfig;
+            mTitle = title;
+            mWidth = width;
+            mHeight = height;
+            mIconFile = iconFile;
         }
 
         #region Events
@@ -80,20 +104,20 @@ namespace Chromely.CefGlue.Gtk.App
         {
             add
             {
-                lock (this.mEventLock)
+                lock (mEventLock)
                 {
-                    this.mRealizeEvent += value;
-                    NativeMethods.EventHandler onRealizedHandler = this.LocalRealized;
-                    NativeMethods.ConnectSignal(this.mMainWindow, "realize", onRealizedHandler, 0, IntPtr.Zero, (int)NativeMethods.GConnectFlags.GConnectAfter);
+                    mRealizeEvent += value;
+                    NativeMethods.EventHandler onRealizedHandler = LocalRealized;
+                    NativeMethods.ConnectSignal(mMainWindow, "realize", onRealizedHandler, 0, IntPtr.Zero, (int)NativeMethods.GConnectFlags.GConnectAfter);
                 }
             }
 
             remove
             {
-                lock (this.mEventLock)
+                lock (mEventLock)
                 {
                     // ReSharper disable once DelegateSubtraction
-                    this.mRealizeEvent -= value;
+                    mRealizeEvent -= value;
                 }
             }
         }
@@ -105,20 +129,20 @@ namespace Chromely.CefGlue.Gtk.App
         {
             add
             {
-                lock (this.mEventLock)
+                lock (mEventLock)
                 {
-                    this.mConfigureEvent += value;
-                    NativeMethods.EventHandler onConfiguredHandler = this.LocalConfigured;
-                    NativeMethods.ConnectSignal(this.mMainWindow, "configure-event", onConfiguredHandler, 0, IntPtr.Zero, (int)NativeMethods.GConnectFlags.GConnectAfter);
+                    mConfigureEvent += value;
+                    NativeMethods.EventHandler onConfiguredHandler = LocalConfigured;
+                    NativeMethods.ConnectSignal(mMainWindow, "configure-event", onConfiguredHandler, 0, IntPtr.Zero, (int)NativeMethods.GConnectFlags.GConnectAfter);
                 }
             }
 
             remove
             {
-                lock (this.mEventLock)
+                lock (mEventLock)
                 {
                     // ReSharper disable once DelegateSubtraction
-                    this.mConfigureEvent -= value;
+                    mConfigureEvent -= value;
                 }
             }
         }
@@ -130,20 +154,20 @@ namespace Chromely.CefGlue.Gtk.App
         {
             add
             {
-                lock (this.mEventLock)
+                lock (mEventLock)
                 {
-                    this.mDestroyEvent += value;
-                    NativeMethods.EventHandler onDestroyedHandler = this.LocalDestroyed;
-                    NativeMethods.ConnectSignal(this.mMainWindow, "destroy", onDestroyedHandler, 0, IntPtr.Zero, (int)NativeMethods.GConnectFlags.GConnectAfter);
+                    mDestroyEvent += value;
+                    NativeMethods.EventHandler onDestroyedHandler = LocalDestroyed;
+                    NativeMethods.ConnectSignal(mMainWindow, "destroy", onDestroyedHandler, 0, IntPtr.Zero, (int)NativeMethods.GConnectFlags.GConnectAfter);
                 }
             }
 
             remove
             {
-                lock (this.mEventLock)
+                lock (mEventLock)
                 {
                     // ReSharper disable once DelegateSubtraction
-                    this.mDestroyEvent -= value;
+                    mDestroyEvent -= value;
                 }
             }
         }
@@ -153,24 +177,24 @@ namespace Chromely.CefGlue.Gtk.App
         /// <summary>
         /// Gets the handle.
         /// </summary>
-        public IntPtr Handle => this.mMainWindow;
+        public IntPtr Handle => mMainWindow;
 
         /// <summary>
         /// The host.
         /// </summary>
-        public IntPtr Host => this.mMainWindow;
+        public IntPtr Host => mMainWindow;
 
         /// <summary>
         /// The host xid.
         /// </summary>
-        public IntPtr HostXid => NativeMethods.GetWindowXid(this.mMainWindow);
+        public IntPtr HostXid => NativeMethods.GetWindowXid(mMainWindow);
 
         /// <summary>
         /// The show window.
         /// </summary>
         public void ShowWindow()
         {
-            this.CreateWindow();
+            CreateWindow();
         }
 
         /// <summary>
@@ -204,12 +228,12 @@ namespace Chromely.CefGlue.Gtk.App
             width = 0;
             height = 0;
 
-            if (this.mMainWindow == IntPtr.Zero)
+            if (mMainWindow == IntPtr.Zero)
             {
                 return;
             }
 
-            NativeMethods.GetWindowSize(this.Host, out width, out height);
+            NativeMethods.GetWindowSize(Host, out width, out height);
         }
 
         /// <summary>
@@ -236,8 +260,8 @@ namespace Chromely.CefGlue.Gtk.App
         /// </param>
         protected virtual void OnResize(object sender, EventArgs e)
         {
-            this.GetSize(out var width, out var height);
-            NativeMethods.SetWindowSize(this.Host, width, height);
+            GetSize(out var width, out var height);
+            NativeMethods.SetWindowSize(Host, width, height);
         }
 
         /// <summary>
@@ -251,7 +275,7 @@ namespace Chromely.CefGlue.Gtk.App
         /// </param>
         protected virtual void OnExit(object sender, EventArgs e)
         {
-            NativeMethods.Quit();
+            Application.Quit();
         }
 
         /// <summary>
@@ -259,39 +283,21 @@ namespace Chromely.CefGlue.Gtk.App
         /// </summary>
         private void CreateWindow()
         {
-            this.mMainWindow = NativeMethods.NewWindow(NativeMethods.GtkWindowType.GtkWindowToplevel);
-            NativeMethods.SetTitle(this.mMainWindow, this.mHostConfig.HostTitle);
+            mMainWindow = NativeMethods.NewWindow(NativeMethods.GtkWindowType.GtkWindowToplevel);
+            NativeMethods.SetTitle(mMainWindow, mTitle);
 
-            NativeMethods.SetIconFromFile(this.mMainWindow, this.mHostConfig.HostIconFile);
+            NativeMethods.SetIconFromFile(mMainWindow, mIconFile);
 
-            NativeMethods.SetSizeRequest(this.mMainWindow, this.mHostConfig.HostWidth, this.mHostConfig.HostHeight);
+            NativeMethods.SetSizeRequest(mMainWindow, mWidth, mHeight);
+            NativeMethods.SetWindowPosition(mMainWindow, NativeMethods.GtkWindowPosition.GtkWinPosCenter);
 
-            if (this.mHostConfig.HostCenterScreen)
-            {
-                NativeMethods.SetWindowPosition(this.mMainWindow, NativeMethods.GtkWindowPosition.GtkWinPosCenter);
-            }
+            NativeMethods.AddConfigureEvent(mMainWindow);
 
-            switch (this.mHostConfig.HostState)
-            {
-                case WindowState.Normal:
-                    break;
+            Realized += OnRealized;
+            Resized += OnResize;
+            Exited += OnExit;
 
-                case WindowState.Maximize:
-                    NativeMethods.SetWindowMaximize(this.mMainWindow);
-                    break;
-
-                case WindowState.Fullscreen:
-                    NativeMethods.SetFullscreen(this.mMainWindow);
-                    break;
-            }
-
-            NativeMethods.AddConfigureEvent(this.mMainWindow);
-
-            this.Realized += this.OnRealized;
-            this.Resized += this.OnResize;
-            this.Exited += this.OnExit;
-
-            NativeMethods.ShowAll(this.mMainWindow);
+            NativeMethods.ShowAll(mMainWindow);
         }
 
         /// <summary>
@@ -302,7 +308,7 @@ namespace Chromely.CefGlue.Gtk.App
         /// </param>
         private void LocalRealized(NativeMethods.StructEventArgs eventArgs)
         {
-            this.mRealizeEvent(this, new EventArgs());
+            mRealizeEvent(this, new EventArgs());
         }
 
         /// <summary>
@@ -313,7 +319,7 @@ namespace Chromely.CefGlue.Gtk.App
         /// </param>
         private void LocalConfigured(NativeMethods.StructEventArgs eventArgs)
         {
-            this.mConfigureEvent(this, new EventArgs());
+            mConfigureEvent(this, new EventArgs());
         }
 
         /// <summary>
@@ -324,7 +330,7 @@ namespace Chromely.CefGlue.Gtk.App
         /// </param>
         private void LocalDestroyed(NativeMethods.StructEventArgs eventArgs)
         {
-            this.mDestroyEvent(this, new EventArgs());
+            mDestroyEvent(this, new EventArgs());
         }
     }
 }

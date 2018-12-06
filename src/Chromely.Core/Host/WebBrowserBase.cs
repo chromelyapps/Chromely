@@ -26,7 +26,7 @@ namespace Chromely.Core.Host
         /// </summary>
         ~WebBrowserBase()
         {
-            this.Dispose(false);
+            Dispose(false);
         }
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace Chromely.Core.Host
         /// </summary>
         public void Dispose()
         {
-            this.Dispose(true);
+            Dispose(true);
             GC.SuppressFinalize(this);
         }
 
@@ -46,7 +46,7 @@ namespace Chromely.Core.Host
         /// </param>
         protected virtual void Dispose(bool disposing)
         {
-            if (this.mDisposed)
+            if (mDisposed)
             {
                 return;
             }
@@ -57,7 +57,7 @@ namespace Chromely.Core.Host
                 // IDisposable only
             }
 
-            this.mDisposed = true;
+            mDisposed = true;
         }
     }
 }

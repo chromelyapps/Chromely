@@ -3,11 +3,11 @@
 //   Copyright (c) 2017-2018 Chromely Projects
 // </copyright>
 // <license>
-//      See the LICENSE.md file in the project root for more information.
+// See the LICENSE.md file in the project root for more information.
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Chromely.CefGlue.Gtk.App
+namespace Chromely.CefGlue.Gtk.BrowserHost
 {
     using System;
     using Chromely.CefGlue.Gtk.Browser;
@@ -22,7 +22,7 @@ namespace Chromely.CefGlue.Gtk.App
         /// <summary>
         /// The host/app/window application.
         /// </summary>
-        private readonly ApplicationBase mApplication;
+        private readonly HostBase mApplication;
 
         /// <summary>
         /// The host config.
@@ -48,21 +48,21 @@ namespace Chromely.CefGlue.Gtk.App
         /// <param name="hostConfig">
         /// The host config.
         /// </param>
-        public Window(ApplicationBase application, ChromelyConfiguration hostConfig)
-            : base(hostConfig)
+        public Window(HostBase application, ChromelyConfiguration hostConfig)
+            : base(hostConfig.HostTitle, hostConfig.HostWidth, hostConfig.HostHeight, hostConfig.HostIconFile)
         {
-            this.mHostConfig = hostConfig;
-            this.mCore = new CefGlueBrowser(this, hostConfig, new CefBrowserSettings());
-            this.mCore.Created += this.BrowserCreated;
-            this.mApplication = application;
+            mHostConfig = hostConfig;
+            mCore = new CefGlueBrowser(this, hostConfig, new CefBrowserSettings());
+            mCore.Created += OnBrowserCreated;
+            mApplication = application;
 
-            this.ShowWindow();
+            ShowWindow();
         }
 
         /// <summary>
         /// The web browser.
         /// </summary>
-        public CefGlueBrowser WebBrowser => this.mCore;
+        public CefGlueBrowser WebBrowser => mCore;
 
         #region Close/Dispose
 
@@ -71,7 +71,7 @@ namespace Chromely.CefGlue.Gtk.App
         /// </summary>
         public void Close()
         {
-            this.Dispose();
+            Dispose();
         }
 
         /// <summary>
@@ -79,14 +79,14 @@ namespace Chromely.CefGlue.Gtk.App
         /// </summary>
         public void Dispose()
         {
-            if (this.mCore != null)
+            if (mCore != null)
             {
-                var browser = this.mCore.CefBrowser;
+                var browser = mCore.CefBrowser;
                 var host = browser.GetHost();
                 host.CloseBrowser();
                 host.Dispose();
                 browser.Dispose();
-                this.mBrowserWindowHandle = IntPtr.Zero;
+                mBrowserWindowHandle = IntPtr.Zero;
             }
         }
 
@@ -110,12 +110,12 @@ namespace Chromely.CefGlue.Gtk.App
             switch (CefRuntime.Platform)
             {
                 case CefRuntimePlatform.Windows:
-                    var parentHandle = this.HostXid;
-                    windowInfo.SetAsChild(parentHandle, new CefRectangle(0, 0, this.mHostConfig.HostWidth, this.mHostConfig.HostHeight));
+                    var parentHandle = HostXid;
+                    windowInfo.SetAsChild(parentHandle, new CefRectangle(0, 0, mHostConfig.HostWidth, mHostConfig.HostHeight)); 
                     break;
 
                 case CefRuntimePlatform.Linux:
-                    windowInfo.SetAsChild(this.HostXid, new CefRectangle(0, 0, this.mHostConfig.HostWidth, this.mHostConfig.HostHeight));
+                    windowInfo.SetAsChild(HostXid, new CefRectangle(0, 0, mHostConfig.HostWidth, mHostConfig.HostHeight));
                     break;
 
                 case CefRuntimePlatform.MacOSX:
@@ -125,7 +125,7 @@ namespace Chromely.CefGlue.Gtk.App
                     throw new NotSupportedException();
             }
 
-            this.mCore.Create(windowInfo);
+            mCore.Create(windowInfo);
         }
 
         /// <summary>
@@ -141,15 +141,15 @@ namespace Chromely.CefGlue.Gtk.App
         {
             if (CefRuntime.Platform == CefRuntimePlatform.Windows)
             {
-                if (this.mBrowserWindowHandle != IntPtr.Zero)
+                if (mBrowserWindowHandle != IntPtr.Zero)
                 {
                     // ReSharper disable once InlineOutVariableDeclaration
                     int width;
                     // ReSharper disable once InlineOutVariableDeclaration
                     int height;
-                    this.GetSize(out width, out height);
+                    GetSize(out width, out height);
 
-                    NativeMethods.SetWindowPos(this.mBrowserWindowHandle, IntPtr.Zero, 0, 0, width, height);
+                    NativeMethods.SetWindowPos(mBrowserWindowHandle, IntPtr.Zero, 0, 0, width, height);
                 }
             }
             else
@@ -169,11 +169,11 @@ namespace Chromely.CefGlue.Gtk.App
         /// </param>
         protected override void OnExit(object sender, EventArgs e)
         {
-            this.mApplication.Quit();
+            mApplication.Quit();
         }
 
         /// <summary>
-        /// The browser created.
+        /// The on browser created.
         /// </summary>
         /// <param name="sender">
         /// The sender.
@@ -181,17 +181,9 @@ namespace Chromely.CefGlue.Gtk.App
         /// <param name="e">
         /// The e.
         /// </param>
-        private void BrowserCreated(object sender, EventArgs e)
+        private void OnBrowserCreated(object sender, EventArgs e)
         {
-            this.mBrowserWindowHandle = this.mCore.CefBrowser.GetHost().GetWindowHandle();
-
-            // ReSharper disable once InlineOutVariableDeclaration
-            int width;
-            // ReSharper disable once InlineOutVariableDeclaration
-            int height;
-            this.GetSize(out width, out height);
-
-            NativeMethods.SetWindowPos(this.mBrowserWindowHandle, IntPtr.Zero, 0, 0, width, height);
+            mBrowserWindowHandle = mCore.CefBrowser.GetHost().GetWindowHandle();
         }
     }
 }

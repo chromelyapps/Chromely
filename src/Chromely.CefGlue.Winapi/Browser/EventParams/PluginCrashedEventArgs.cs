@@ -24,7 +24,7 @@ namespace Chromely.CefGlue.Winapi.Browser.EventParams
         /// </param>
         public PluginCrashedEventArgs(string pluginPath)
         {
-            this.PluginPath = pluginPath;
+            PluginPath = pluginPath;
         }
 
         /// <summary>

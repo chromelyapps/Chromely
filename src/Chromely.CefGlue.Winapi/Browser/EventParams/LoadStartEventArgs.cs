@@ -25,7 +25,7 @@ namespace Chromely.CefGlue.Winapi.Browser.EventParams
         /// </param>
         public LoadStartEventArgs(CefFrame frame)
         {
-            this.Frame = frame;
+            Frame = frame;
         }
 
         /// <summary>

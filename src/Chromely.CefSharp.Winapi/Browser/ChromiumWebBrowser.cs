@@ -26,6 +26,11 @@ namespace Chromely.CefSharp.Winapi.Browser
     public class ChromiumWebBrowser : WebBrowserBase, IWebBrowserInternal
     {
         /// <summary>
+        /// The m settings.
+        /// </summary>
+        private readonly AbstractCefSettings mSettings;
+
+        /// <summary>
         /// The managed cef browser adapter
         /// </summary>
         private ManagedCefBrowserAdapter managedCefBrowserAdapter;
@@ -34,11 +39,6 @@ namespace Chromely.CefSharp.Winapi.Browser
         /// The browser
         /// </summary>
         private IBrowser mBrowser;
-
-        /// <summary>
-        /// The m settings.
-        /// </summary>
-        private AbstractCefSettings mSettings;
 
         /// <summary>
         /// A flag that indicates whether or not <see cref="InitializeFieldsAndCefIfRequired"/> has been called.
@@ -74,11 +74,11 @@ namespace Chromely.CefSharp.Winapi.Browser
         /// </param>
         public ChromiumWebBrowser(IntPtr parent, AbstractCefSettings settings, string address,  bool useLegacyJavascriptBindingEnabled = true)
         {
-            this.Address = address;
-            this.mSettings = settings;
+            Address = address;
+            mSettings = settings;
             CefSharpSettings.LegacyJavascriptBindingEnabled = useLegacyJavascriptBindingEnabled;
-            this.InitializeFieldsAndCefIfRequired();
-            this.CreateBrowser(parent);
+            InitializeFieldsAndCefIfRequired();
+            CreateBrowser(parent);
         }
 
         #region  Event Properties
@@ -186,11 +186,11 @@ namespace Chromely.CefSharp.Winapi.Browser
         /// <value>The request context.</value>
         public IRequestContext RequestContext
         {
-            get => this.mRequestContext;
+            get => mRequestContext;
 
             set
             {
-                if (this.mBrowserCreated)
+                if (mBrowserCreated)
                 {
                     throw new Exception("Browser has already been created. RequestContext must be" +
                                         "set before the underlying CEF browser is created.");
@@ -201,7 +201,7 @@ namespace Chromely.CefSharp.Winapi.Browser
                     throw new Exception($"RequestContxt can only be of type {typeof(RequestContext)} or null");
                 }
 
-                this.mRequestContext = value;
+                mRequestContext = value;
             }
         }
 
@@ -209,7 +209,7 @@ namespace Chromely.CefSharp.Winapi.Browser
         /// Gets the browser adapter.
         /// </summary>
         /// <value>The browser adapter.</value>
-        IBrowserAdapter IWebBrowserInternal.BrowserAdapter => this.managedCefBrowserAdapter;
+        IBrowserAdapter IWebBrowserInternal.BrowserAdapter => managedCefBrowserAdapter;
 
         /// <summary>
         /// Gets a value indicating whether is loading.
@@ -329,7 +329,7 @@ namespace Chromely.CefSharp.Winapi.Browser
         /// <summary>
         /// Gets the javascript object repository.
         /// </summary>
-        public IJavascriptObjectRepository JavascriptObjectRepository => this.managedCefBrowserAdapter?.JavascriptObjectRepository;
+        public IJavascriptObjectRepository JavascriptObjectRepository => managedCefBrowserAdapter?.JavascriptObjectRepository;
 
         /// <summary>
         /// Gets or sets a value indicating whether this instance has parent.
@@ -345,16 +345,16 @@ namespace Chromely.CefSharp.Winapi.Browser
         {
             if (((IWebBrowserInternal)this).HasParent == false)
             {
-                if (this.IsBrowserInitialized == false || this.mBrowser == null)
+                if (IsBrowserInitialized == false || mBrowser == null)
                 {
-                    this.RequestContext = Cef.GetGlobalRequestContext();
-                    this.mBrowserCreated = true;
-                    this.managedCefBrowserAdapter.CreateBrowser(this.BrowserSettings, (RequestContext)this.RequestContext, parent, null);
+                    RequestContext = Cef.GetGlobalRequestContext();
+                    mBrowserCreated = true;
+                    managedCefBrowserAdapter.CreateBrowser(BrowserSettings, (RequestContext)RequestContext, parent, null);
                 }
                 else
                 {
                     // If the browser already exists we'll reparent it to the new Handle
-                    var browserHandle = this.mBrowser.GetHost().GetWindowHandle();
+                    var browserHandle = mBrowser.GetHost().GetWindowHandle();
                     NativeMethodWrapper.SetWindowParent(browserHandle, parent);
                 }
             }
@@ -366,13 +366,13 @@ namespace Chromely.CefSharp.Winapi.Browser
         /// <param name="url">The URL to be loaded.</param>
         public void Load(string url)
         {
-            if (this.IsBrowserInitialized)
+            if (IsBrowserInitialized)
             {
                 this.GetMainFrame().LoadUrl(url);
             }
             else
             {
-                this.Address = url;
+                Address = url;
             }
         }
 
@@ -402,18 +402,18 @@ namespace Chromely.CefSharp.Winapi.Browser
                                     no longer be registered and you will have to migrate to the new method.");
             }
 
-            if (this.IsBrowserInitialized)
+            if (IsBrowserInitialized)
             {
                 throw new Exception("Browser is already initialized. RegisterJsObject must be" +
                                     "called before the underlying CEF browser is created.");
             }
 
-            this.InitializeFieldsAndCefIfRequired();
+            InitializeFieldsAndCefIfRequired();
 
             // Enable WCF if not already enabled
             CefSharpSettings.WcfEnabled = true;
 
-            var objectRepository = this.managedCefBrowserAdapter.JavascriptObjectRepository;
+            var objectRepository = managedCefBrowserAdapter.JavascriptObjectRepository;
 
             if (objectRepository == null)
             {
@@ -449,15 +449,15 @@ namespace Chromely.CefSharp.Winapi.Browser
                                     no longer be registered and you will have to migrate to the new method.");
             }
 
-            if (this.IsBrowserInitialized)
+            if (IsBrowserInitialized)
             {
                 throw new Exception("Browser is already initialized. RegisterJsObject must be" +
                                     "called before the underlying CEF browser is created.");
             }
 
-            this.InitializeFieldsAndCefIfRequired();
+            InitializeFieldsAndCefIfRequired();
 
-            var objectRepository = this.managedCefBrowserAdapter.JavascriptObjectRepository;
+            var objectRepository = managedCefBrowserAdapter.JavascriptObjectRepository;
 
             if (objectRepository == null)
             {
@@ -478,9 +478,9 @@ namespace Chromely.CefSharp.Winapi.Browser
         /// </param>
         public void SetSize(int width, int height)
         {
-            if (this.mInitialized)
+            if (mInitialized)
             {
-                this.ResizeBrowser(width, height);
+                ResizeBrowser(width, height);
             }
         }
 
@@ -492,7 +492,7 @@ namespace Chromely.CefSharp.Winapi.Browser
         {
             this.ThrowExceptionIfBrowserNotInitialized();
 
-            return this.mBrowser;
+            return mBrowser;
         }
 
         /// <summary>
@@ -514,19 +514,19 @@ namespace Chromely.CefSharp.Winapi.Browser
         /// <param name="browser">The browser.</param>
         void IWebBrowserInternal.OnAfterBrowserCreated(IBrowser browser)
         {
-            this.mBrowser = browser;
-            this.IsBrowserInitialized = true;
+            mBrowser = browser;
+            IsBrowserInitialized = true;
 
-            if (!string.IsNullOrEmpty(this.Address))
+            if (!string.IsNullOrEmpty(Address))
             {
-                browser.MainFrame.LoadUrl(this.Address);
+                browser.MainFrame.LoadUrl(Address);
             }
 
             // Register browser 
             CefSharpFrameHandler frameHandler = new CefSharpFrameHandler(browser);
             IoC.RegisterInstance(typeof(CefSharpFrameHandler), typeof(CefSharpFrameHandler).FullName, frameHandler);
 
-            this.IsBrowserInitializedChanged?.Invoke(this, new IsBrowserInitializedChangedEventArgs(this.IsBrowserInitialized));
+            IsBrowserInitializedChanged?.Invoke(this, new IsBrowserInitializedChangedEventArgs(IsBrowserInitialized));
         }
 
         /// <summary>
@@ -535,8 +535,8 @@ namespace Chromely.CefSharp.Winapi.Browser
         /// <param name="args">The <see cref="AddressChangedEventArgs"/> instance containing the event data.</param>
         void IWebBrowserInternal.SetAddress(AddressChangedEventArgs args)
         {
-            this.Address = args.Address;
-            this.AddressChanged?.Invoke(this, args);
+            Address = args.Address;
+            AddressChanged?.Invoke(this, args);
         }
 
         /// <summary>
@@ -545,11 +545,11 @@ namespace Chromely.CefSharp.Winapi.Browser
         /// <param name="args">The <see cref="LoadingStateChangedEventArgs"/> instance containing the event data.</param>
         void IWebBrowserInternal.SetLoadingStateChange(LoadingStateChangedEventArgs args)
         {
-            this.CanGoBack = args.CanGoBack;
-            this.CanGoForward = args.CanGoForward;
-            this.IsLoading = args.IsLoading;
+            CanGoBack = args.CanGoBack;
+            CanGoForward = args.CanGoForward;
+            IsLoading = args.IsLoading;
 
-            this.LoadingStateChanged?.Invoke(this, args);
+            LoadingStateChanged?.Invoke(this, args);
         }
 
         /// <summary>
@@ -558,7 +558,7 @@ namespace Chromely.CefSharp.Winapi.Browser
         /// <param name="args">The <see cref="TitleChangedEventArgs"/> instance containing the event data.</param>
         void IWebBrowserInternal.SetTitle(TitleChangedEventArgs args)
         {
-            this.TitleChanged?.Invoke(this, args);
+            TitleChanged?.Invoke(this, args);
         }
 
         /// <summary>
@@ -567,7 +567,7 @@ namespace Chromely.CefSharp.Winapi.Browser
         /// <param name="tooltipText">The tooltip text.</param>
         void IWebBrowserInternal.SetTooltipText(string tooltipText)
         {
-            this.TooltipText = tooltipText;
+            TooltipText = tooltipText;
         }
 
         /// <summary>
@@ -576,7 +576,7 @@ namespace Chromely.CefSharp.Winapi.Browser
         /// <param name="args">The <see cref="FrameLoadStartEventArgs"/> instance containing the event data.</param>
         void IWebBrowserInternal.OnFrameLoadStart(FrameLoadStartEventArgs args)
         {
-            this.FrameLoadStart?.Invoke(this, args);
+            FrameLoadStart?.Invoke(this, args);
         }
 
         /// <summary>
@@ -585,7 +585,7 @@ namespace Chromely.CefSharp.Winapi.Browser
         /// <param name="args">The <see cref="FrameLoadEndEventArgs"/> instance containing the event data.</param>
         void IWebBrowserInternal.OnFrameLoadEnd(FrameLoadEndEventArgs args)
         {
-            this.FrameLoadEnd?.Invoke(this, args);
+            FrameLoadEnd?.Invoke(this, args);
         }
 
         /// <summary>
@@ -594,7 +594,7 @@ namespace Chromely.CefSharp.Winapi.Browser
         /// <param name="args">The <see cref="ConsoleMessageEventArgs"/> instance containing the event data.</param>
         void IWebBrowserInternal.OnConsoleMessage(ConsoleMessageEventArgs args)
         {
-            this.ConsoleMessage?.Invoke(this, args);
+            ConsoleMessage?.Invoke(this, args);
         }
 
         /// <summary>
@@ -603,7 +603,7 @@ namespace Chromely.CefSharp.Winapi.Browser
         /// <param name="args">The <see cref="StatusMessageEventArgs"/> instance containing the event data.</param>
         void IWebBrowserInternal.OnStatusMessage(StatusMessageEventArgs args)
         {
-            this.StatusMessage?.Invoke(this, args);
+            StatusMessage?.Invoke(this, args);
         }
 
         /// <summary>
@@ -612,7 +612,7 @@ namespace Chromely.CefSharp.Winapi.Browser
         /// <param name="args">The <see cref="LoadErrorEventArgs"/> instance containing the event data.</param>
         void IWebBrowserInternal.OnLoadError(LoadErrorEventArgs args)
         {
-            this.LoadError?.Invoke(this, args);
+            LoadError?.Invoke(this, args);
         }
 
         /// <summary>
@@ -623,7 +623,7 @@ namespace Chromely.CefSharp.Winapi.Browser
         /// </param>
         void IWebBrowserInternal.SetCanExecuteJavascriptOnMainFrame(bool canExecute)
         {
-            this.CanExecuteJavascriptInMainFrame = canExecute;
+            CanExecuteJavascriptInMainFrame = canExecute;
         }
 
         #endregion  Event Handlers
@@ -634,24 +634,24 @@ namespace Chromely.CefSharp.Winapi.Browser
         /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
         protected override void Dispose(bool disposing)
         {
-            this.IsBrowserInitialized = false;
+            IsBrowserInitialized = false;
             Cef.RemoveDisposable(this);
 
             if (disposing)
             {
-                this.FreeUnmanagedResources();
+                FreeUnmanagedResources();
             }
 
             // Don't maintain a reference to event listeners anylonger:
-            this.LoadError = null;
-            this.FrameLoadStart = null;
-            this.FrameLoadEnd = null;
-            this.LoadingStateChanged = null;
-            this.ConsoleMessage = null;
-            this.StatusMessage = null;
-            this.AddressChanged = null;
-            this.TitleChanged = null;
-            this.IsBrowserInitializedChanged = null;
+            LoadError = null;
+            FrameLoadStart = null;
+            FrameLoadEnd = null;
+            LoadingStateChanged = null;
+            ConsoleMessage = null;
+            StatusMessage = null;
+            AddressChanged = null;
+            TitleChanged = null;
+            IsBrowserInitializedChanged = null;
 
             // Release reference to handlers, make sure this is done after we dispose managedCefBrowserAdapter
             // otherwise the ILifeSpanHandler.DoClose will not be invoked.
@@ -666,27 +666,27 @@ namespace Chromely.CefSharp.Winapi.Browser
         /// </summary>
         private void InitializeFieldsAndCefIfRequired()
         {
-            if (!this.mInitialized)
+            if (!mInitialized)
             {
-                if (!Cef.IsInitialized && !Cef.Initialize(this.mSettings))
+                if (!Cef.IsInitialized && !Cef.Initialize(mSettings))
                 {
                     throw new InvalidOperationException("Cef::Initialize() failed");
                 }
 
                 Cef.AddDisposable(this);
 
-                if (this.ResourceHandlerFactory == null)
+                if (ResourceHandlerFactory == null)
                 {
-                    this.ResourceHandlerFactory = new DefaultResourceHandlerFactory();
+                    ResourceHandlerFactory = new DefaultResourceHandlerFactory();
                 }
 
-                if (this.BrowserSettings == null)
+                if (BrowserSettings == null)
                 {
-                    this.BrowserSettings = new BrowserSettings();
+                    BrowserSettings = new BrowserSettings();
                 }
 
-                this.managedCefBrowserAdapter = new ManagedCefBrowserAdapter(this, false);
-                this.mInitialized = true;
+                managedCefBrowserAdapter = new ManagedCefBrowserAdapter(this, false);
+                mInitialized = true;
             }
         }
 
@@ -701,9 +701,9 @@ namespace Chromely.CefSharp.Winapi.Browser
         /// </param>
         private void ResizeBrowser(int width, int height)
         {
-            if (this.IsBrowserInitialized)
+            if (IsBrowserInitialized)
             {
-                this.managedCefBrowserAdapter.Resize(width, height);
+                managedCefBrowserAdapter.Resize(width, height);
             }
         }
 
@@ -713,18 +713,18 @@ namespace Chromely.CefSharp.Winapi.Browser
         /// </summary>
         private void FreeUnmanagedResources()
         {
-            this.mBrowser = null;
+            mBrowser = null;
 
-            if (this.BrowserSettings != null)
+            if (BrowserSettings != null)
             {
-                this.BrowserSettings.Dispose();
-                this.BrowserSettings = null;
+                BrowserSettings.Dispose();
+                BrowserSettings = null;
             }
 
-            if (this.managedCefBrowserAdapter != null)
+            if (managedCefBrowserAdapter != null)
             {
-                this.managedCefBrowserAdapter.Dispose();
-                this.managedCefBrowserAdapter = null;
+                managedCefBrowserAdapter.Dispose();
+                managedCefBrowserAdapter = null;
             }
         }
     }

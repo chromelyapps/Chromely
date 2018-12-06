@@ -23,7 +23,7 @@ namespace Chromely.Core
         /// </summary>
         public ChromelyMessageRouter()
         {
-            this.Key = Guid.NewGuid().ToString();
+            Key = Guid.NewGuid().ToString();
         }
 
         /// <summary>
@@ -34,8 +34,8 @@ namespace Chromely.Core
         /// </param>
         public ChromelyMessageRouter(object handler)
         {
-            this.Key = Guid.NewGuid().ToString();
-            this.Handler = handler;
+            Key = Guid.NewGuid().ToString();
+            Handler = handler;
         }
 
         /// <summary>

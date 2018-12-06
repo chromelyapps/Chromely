@@ -28,7 +28,7 @@ namespace Chromely.CefGlue.Gtk.Browser.Handlers
         /// </summary>
         public CefGlueLifeSpanHandler()
         {
-            this.mBrowser = CefGlueBrowser.BrowserCore;
+            mBrowser = CefGlueBrowser.BrowserCore;
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace Chromely.CefGlue.Gtk.Browser.Handlers
         {
             base.OnAfterCreated(browser);
 
-            this.mBrowser.OnCreated(browser);
+            mBrowser.OnCreated(browser);
         }
 
         /// <summary>

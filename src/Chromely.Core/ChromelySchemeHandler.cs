@@ -21,7 +21,7 @@ namespace Chromely.Core
         /// </summary>
         public ChromelySchemeHandler()
         {
-            this.Key = Guid.NewGuid().ToString();
+            Key = Guid.NewGuid().ToString();
         }
 
         /// <summary>
@@ -47,14 +47,14 @@ namespace Chromely.Core
         /// </param>
         public ChromelySchemeHandler(string schemeName, string domainName, bool useDefaultResource, bool useDefaultHttp, bool isSecured = false, bool isCorsEnabled = true)
         {
-            this.Key = $"{schemeName}_{domainName}";
-            this.SchemeName = schemeName;
-            this.DomainName = domainName;
-            this.HandlerFactory = null;
-            this.UseDefaultResource = useDefaultResource;
-            this.UseDefaultHttp = useDefaultHttp;
-            this.IsSecure = isSecured;
-            this.IsCorsEnabled = isCorsEnabled;
+            Key = $"{schemeName}_{domainName}";
+            SchemeName = schemeName;
+            DomainName = domainName;
+            HandlerFactory = null;
+            UseDefaultResource = useDefaultResource;
+            UseDefaultHttp = useDefaultHttp;
+            IsSecure = isSecured;
+            IsCorsEnabled = isCorsEnabled;
         }
 
         /// <summary>
@@ -77,14 +77,14 @@ namespace Chromely.Core
         /// </param>
         public ChromelySchemeHandler(string schemeName, string domainName, object handlerFactory, bool isSecured = false, bool isCorsEnabled = true)
         {
-            this.Key = $"{schemeName}_{domainName}";
-            this.SchemeName = schemeName;
-            this.DomainName = domainName;
-            this.HandlerFactory = handlerFactory;
-            this.UseDefaultResource = false;
-            this.UseDefaultHttp = false;
-            this.IsSecure = isSecured;
-            this.IsCorsEnabled = isCorsEnabled;
+            Key = $"{schemeName}_{domainName}";
+            SchemeName = schemeName;
+            DomainName = domainName;
+            HandlerFactory = handlerFactory;
+            UseDefaultResource = false;
+            UseDefaultHttp = false;
+            IsSecure = isSecured;
+            IsCorsEnabled = isCorsEnabled;
         }
 
         /// <summary>

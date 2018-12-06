@@ -37,7 +37,7 @@ namespace Chromely.CefSharp.Winapi.Browser.Handlers
         /// </summary>
         public CefSharpContextMenuHandler()
         {
-            this.debugging = ChromelyConfiguration.Instance.DebuggingMode;
+            debugging = ChromelyConfiguration.Instance.DebuggingMode;
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace Chromely.CefSharp.Winapi.Browser.Handlers
             // Remove "View Source" option
             model.Remove(CefMenuCommand.ViewSource);
 
-            if (this.debugging)
+            if (debugging)
             {
                 // Add new custom menu items
                 model.AddItem((CefMenuCommand)ShowDevTools, "Show DevTools");
@@ -102,7 +102,7 @@ namespace Chromely.CefSharp.Winapi.Browser.Handlers
         bool IContextMenuHandler.OnContextMenuCommand(IWebBrowser browserControl, IBrowser browser, IFrame frame, IContextMenuParams parameters, CefMenuCommand commandId, CefEventFlags eventFlags)
         {
 
-            if (this.debugging)
+            if (debugging)
             {
                 if ((int)commandId == ShowDevTools)
                 {

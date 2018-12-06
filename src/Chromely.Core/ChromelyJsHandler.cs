@@ -23,7 +23,7 @@ namespace Chromely.Core
         /// </summary>
         public ChromelyJsHandler()
         {
-            this.Key = Guid.NewGuid().ToString();
+            Key = Guid.NewGuid().ToString();
         }
 
         /// <summary>
@@ -37,12 +37,12 @@ namespace Chromely.Core
         /// </param>
         public ChromelyJsHandler(string objectNameToBind, bool registerAsync)
         {
-            this.Key = objectNameToBind;
-            this.ObjectNameToBind = objectNameToBind;
-            this.BoundObject = null;
-            this.RegisterAsAsync = registerAsync;
-            this.BindingOptions = null;
-            this.UseDefault = true;
+            Key = objectNameToBind;
+            ObjectNameToBind = objectNameToBind;
+            BoundObject = null;
+            RegisterAsAsync = registerAsync;
+            BindingOptions = null;
+            UseDefault = true;
         }
 
         /// <summary>
@@ -62,12 +62,12 @@ namespace Chromely.Core
         /// </param>
         public ChromelyJsHandler(string objectNameToBind, object boundObject, object bindingOptions, bool registerAsync)
         {
-            this.Key = objectNameToBind;
-            this.ObjectNameToBind = objectNameToBind;
-            this.BoundObject = boundObject;
-            this.RegisterAsAsync = registerAsync;
-            this.BindingOptions = bindingOptions;
-            this.UseDefault = false;
+            Key = objectNameToBind;
+            ObjectNameToBind = objectNameToBind;
+            BoundObject = boundObject;
+            RegisterAsAsync = registerAsync;
+            BindingOptions = bindingOptions;
+            UseDefault = false;
         }
 
         /// <summary>

@@ -24,7 +24,7 @@ namespace Chromely.CefGlue.Gtk.Browser.EventParams
         /// </param>
         public TitleChangedEventArgs(string title)
         {
-            this.Title = title;
+            Title = title;
         }
 
         /// <summary>

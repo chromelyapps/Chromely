@@ -39,8 +39,8 @@ namespace Chromely.Core.Tests.RestfullService
         /// </param>
         public ServiceRouteProviderTest(ITestOutputHelper testOutput)
         {
-            this.mTestOutput = testOutput;
-            this.mTestController = new TestController();
+            mTestOutput = testOutput;
+            mTestController = new TestController();
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace Chromely.Core.Tests.RestfullService
         [Fact]
         public void RouteProviderTest()
         {
-            var routeDict = this.BaseTest();
+            var routeDict = BaseTest();
             Assert.Equal(3, routeDict.Count);
 
             foreach (var item in routeDict)
@@ -73,8 +73,8 @@ namespace Chromely.Core.Tests.RestfullService
         /// </returns>
         private Dictionary<string, Route> BaseTest()
         {
-            Assert.NotNull(this.mTestController);
-            var routeDict = this.mTestController.RouteDictionary;
+            Assert.NotNull(mTestController);
+            var routeDict = mTestController.RouteDictionary;
             Assert.NotNull(routeDict);
 
             return routeDict;
@@ -91,9 +91,9 @@ namespace Chromely.Core.Tests.RestfullService
             /// </summary>
             public TestController()
             {
-                this.RegisterGetRequest("/testcontroller/get1", this.Get1);
-                this.RegisterGetRequest("/testcontroller/get2", this.Get2);
-                this.RegisterPostRequest("/testcontroller/save", this.Save);
+                RegisterGetRequest("/testcontroller/get1", Get1);
+                RegisterGetRequest("/testcontroller/get2", Get2);
+                RegisterPostRequest("/testcontroller/save", Save);
             }
 
             /// <summary>

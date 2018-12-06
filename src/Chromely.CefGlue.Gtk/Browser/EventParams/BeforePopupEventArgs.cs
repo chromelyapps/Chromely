@@ -54,14 +54,14 @@ namespace Chromely.CefGlue.Gtk.Browser.EventParams
             CefBrowserSettings settings,
             bool noJavascriptAccess)
             {
-                this.Frame = frame;
-                this.TargetUrl = targetUrl;
-                this.TargetFrameName = targetFrameName;
-                this.PopupFeatures = popupFeatures;
-                this.WindowInfo = windowInfo;
-                this.Client = client;
-                this.Settings = settings;
-                this.NoJavascriptAccess = noJavascriptAccess;
+                Frame = frame;
+                TargetUrl = targetUrl;
+                TargetFrameName = targetFrameName;
+                PopupFeatures = popupFeatures;
+                WindowInfo = windowInfo;
+                Client = client;
+                Settings = settings;
+                NoJavascriptAccess = noJavascriptAccess;
         }
 
         /// <summary>

@@ -35,7 +35,7 @@ namespace Chromely.Core.RestfulService
         /// </param>
         public RouteScanner(Assembly assembly)
         {
-            this.mAssembly = assembly;
+            mAssembly = assembly;
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace Chromely.Core.RestfulService
 
             try
             {
-                var types = from type in this.mAssembly.GetLoadableTypes()
+                var types = from type in mAssembly.GetLoadableTypes()
                             where Attribute.IsDefined(type, typeof(ControllerPropertyAttribute))
                             select type;
 

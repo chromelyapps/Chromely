@@ -33,7 +33,7 @@ namespace Chromely.CefSharp.Winapi.Browser.FrameHandlers
         /// </param>
         public CefSharpFrameHandler(IBrowser browser)
         {
-            this.browser = browser;
+            browser = browser;
         }
 
         /// <summary>
@@ -43,24 +43,24 @@ namespace Chromely.CefSharp.Winapi.Browser.FrameHandlers
         {
             get
             {
-                if (this.browser == null)
+                if (browser == null)
                 {
                     throw new Exception("Browser object cannot be null.");
                 }
 
-                return this.browser;
+                return browser;
             }
         }
 
         /// <summary>
         /// Gets the get frame identifiers.
         /// </summary>
-        public List<long> GetFrameIdentifiers => this.Browser.GetFrameIdentifiers()?.ToList();
+        public List<long> GetFrameIdentifiers => Browser.GetFrameIdentifiers()?.ToList();
 
         /// <summary>
         /// Gets the get frame names.
         /// </summary>
-        public List<string> GetFrameNames => this.Browser.GetFrameNames();
+        public List<string> GetFrameNames => Browser.GetFrameNames();
 
         /// <summary>
         /// The get main frame.
@@ -73,7 +73,7 @@ namespace Chromely.CefSharp.Winapi.Browser.FrameHandlers
         /// </returns>
         public IFrame GetMainFrame()
         {
-            return this.Browser.MainFrame;
+            return Browser.MainFrame;
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace Chromely.CefSharp.Winapi.Browser.FrameHandlers
         /// </returns>
         public IFrame GetFrame(string frameName)
         {
-            return this.Browser.GetFrame(frameName);
+            return Browser.GetFrame(frameName);
         }
     }
 }

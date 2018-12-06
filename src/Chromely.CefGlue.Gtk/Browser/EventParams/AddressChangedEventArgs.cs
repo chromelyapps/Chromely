@@ -28,8 +28,8 @@ namespace Chromely.CefGlue.Gtk.Browser.EventParams
         /// </param>
         public AddressChangedEventArgs(CefFrame frame, string address)
         {
-            this.Address = address;
-            this.Frame = frame;
+            Address = address;
+            Frame = frame;
         }
 
         /// <summary>

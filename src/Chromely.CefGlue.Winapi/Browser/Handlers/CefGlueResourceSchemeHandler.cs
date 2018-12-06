@@ -59,9 +59,9 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
             var u = new Uri(request.Url);
             var file = u.Authority + u.AbsolutePath;
 
-            this.mTotalBytesRead = 0;
-            this.mFileBytes = null;
-            this.mCompleted = false;
+            mTotalBytesRead = 0;
+            mFileBytes = null;
+            mCompleted = false;
 
             if (File.Exists(file))
             {
@@ -71,10 +71,10 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
                     {
                         try
                         {
-                            this.mFileBytes = File.ReadAllBytes(file);
+                            mFileBytes = File.ReadAllBytes(file);
 
                             string extension = Path.GetExtension(file);
-                            this.mMime = MimeMapper.GetMimeType(extension);
+                            mMime = MimeMapper.GetMimeType(extension);
                         }
                         catch (Exception exception)
                         {
@@ -120,7 +120,7 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
                 response.SetHeaderMap(headers);
 
                 response.Status = (int)HttpStatusCode.OK;
-                response.MimeType = this.mMime;
+                response.MimeType = mMime;
                 response.StatusText = "OK";
             }
             catch (Exception exception)
@@ -157,30 +157,30 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
 
             try
             {
-                if (this.mCompleted)
+                if (mCompleted)
                 {
                     bytesRead = 0;
-                    this.mTotalBytesRead = 0;
-                    this.mFileBytes = null;
+                    mTotalBytesRead = 0;
+                    mFileBytes = null;
                     return false;
                 }
                 else
                 {
-                    if (this.mFileBytes != null)
+                    if (mFileBytes != null)
                     {
-                        currBytesRead = Math.Min(this.mFileBytes.Length - this.mTotalBytesRead, bytesToRead);
-                        response.Write(this.mFileBytes, this.mTotalBytesRead, currBytesRead);
-                        this.mTotalBytesRead += currBytesRead;
+                        currBytesRead = Math.Min(mFileBytes.Length - mTotalBytesRead, bytesToRead);
+                        response.Write(mFileBytes, mTotalBytesRead, currBytesRead);
+                        mTotalBytesRead += currBytesRead;
 
-                        if (this.mTotalBytesRead >= this.mFileBytes.Length)
+                        if (mTotalBytesRead >= mFileBytes.Length)
                         {
-                            this.mCompleted = true;
+                            mCompleted = true;
                         }
                     }
                     else
                     {
                         bytesRead = 0;
-                        this.mCompleted = true;
+                        mCompleted = true;
                     }
                 }
             }

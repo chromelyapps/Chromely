@@ -28,7 +28,7 @@ namespace Chromely.CefGlue.Gtk.Browser.Handlers
         /// </summary>
         public CefGlueDisplayHandler()
         {
-            this.mBrowser = CefGlueBrowser.BrowserCore;
+            mBrowser = CefGlueBrowser.BrowserCore;
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace Chromely.CefGlue.Gtk.Browser.Handlers
         /// </param>
         protected override void OnTitleChange(CefBrowser browser, string title)
         {
-            this.mBrowser.InvokeAsyncIfPossible(() => this.mBrowser.OnTitleChanged(new TitleChangedEventArgs(title)));
+            mBrowser.InvokeAsyncIfPossible(() => mBrowser.OnTitleChanged(new TitleChangedEventArgs(title)));
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace Chromely.CefGlue.Gtk.Browser.Handlers
         {
             if (frame.IsMain)
             {
-                this.mBrowser.InvokeAsyncIfPossible(() => this.mBrowser.OnAddressChanged(new AddressChangedEventArgs(frame, url)));
+                mBrowser.InvokeAsyncIfPossible(() => mBrowser.OnAddressChanged(new AddressChangedEventArgs(frame, url)));
             }
         }
 
@@ -76,7 +76,7 @@ namespace Chromely.CefGlue.Gtk.Browser.Handlers
         /// </param>
         protected override void OnStatusMessage(CefBrowser browser, string value)
         {
-            this.mBrowser.InvokeAsyncIfPossible(() => this.mBrowser.OnStatusMessage(new StatusMessageEventArgs(value)));
+            mBrowser.InvokeAsyncIfPossible(() => mBrowser.OnStatusMessage(new StatusMessageEventArgs(value)));
         }
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace Chromely.CefGlue.Gtk.Browser.Handlers
         protected override bool OnConsoleMessage(CefBrowser browser, CefLogSeverity level, string message, string source, int line)
         {
             var e = new ConsoleMessageEventArgs(message, source, line);
-            this.mBrowser.InvokeAsyncIfPossible(() => this.mBrowser.OnConsoleMessage(e));
+            mBrowser.InvokeAsyncIfPossible(() => mBrowser.OnConsoleMessage(e));
 
             return e.Handled;
         }
@@ -123,7 +123,7 @@ namespace Chromely.CefGlue.Gtk.Browser.Handlers
         protected override bool OnTooltip(CefBrowser browser, string text)
         {
             var e = new TooltipEventArgs(text);
-            this.mBrowser.InvokeAsyncIfPossible(() => this.mBrowser.OnTooltip(e));
+            mBrowser.InvokeAsyncIfPossible(() => mBrowser.OnTooltip(e));
             return e.Handled;
         }
     }

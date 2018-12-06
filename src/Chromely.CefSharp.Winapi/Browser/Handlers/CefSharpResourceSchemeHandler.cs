@@ -64,19 +64,19 @@ namespace Chromely.CefSharp.Winapi.Browser.Handlers
                     {
                         try
                         {
-                            this.mChromelyResponse = new ChromelyResponse { Status = (int)HttpStatusCode.OK, Data = "OK." };
+                            mChromelyResponse = new ChromelyResponse { Status = (int)HttpStatusCode.OK, Data = "OK." };
 
                             byte[] fileBytes = File.ReadAllBytes(file);
-                            this.mStream = new MemoryStream(fileBytes);
+                            mStream = new MemoryStream(fileBytes);
 
                             string extension = Path.GetExtension(file);
-                            this.mMimeType = MimeMapper.GetMimeType(extension);
+                            mMimeType = MimeMapper.GetMimeType(extension);
                         }
                         catch (Exception exception)
                         {
                             Log.Error(exception);
 
-                            this.mChromelyResponse =
+                            mChromelyResponse =
                                 new ChromelyResponse
                                     {
                                         Status = (int)HttpStatusCode.BadRequest,
@@ -115,14 +115,14 @@ namespace Chromely.CefSharp.Winapi.Browser.Handlers
         /// </returns>
         public override Stream GetResponse(IResponse response, out long responseLength, out string redirectUrl)
         {
-            responseLength = this.mStream.Length;
+            responseLength = mStream.Length;
             redirectUrl = null;
 
-            response.StatusCode = this.mChromelyResponse.Status;
-            response.StatusText = this.mChromelyResponse.StatusText;
-            response.MimeType = this.mMimeType;
+            response.StatusCode = mChromelyResponse.Status;
+            response.StatusText = mChromelyResponse.StatusText;
+            response.MimeType = mMimeType;
 
-            return this.mStream;
+            return mStream;
         }
     }
 }

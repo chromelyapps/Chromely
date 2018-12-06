@@ -37,22 +37,22 @@ namespace Chromely.Core
         [SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1201:ElementsMustAppearInTheCorrectOrder", Justification = "Reviewed. Suppression is OK here.")]
         private ChromelyConfiguration()
         {
-            this.PerformDependencyCheck = false;
-            this.ShutdownCefOnExit = true;
-            this.LogSeverity = LogSeverity.Warning;
-            this.LogFile = "logs\\chromely.cef.log";
-            this.HostState = WindowState.Normal;
-            this.HostCenterScreen = true;
-            this.HostWidth = 1200;
-            this.HostHeight = 900;
-            this.Locale = "en-US";
-            this.StartWebSocket = false;
-            this.ServiceAssemblies = new List<ControllerAssemblyInfo>();
-            this.CommandLineArgs = new Dictionary<string, string>();
-            this.CustomSettings = new Dictionary<string, object>();
+            PerformDependencyCheck = false;
+            ShutdownCefOnExit = true;
+            LogSeverity = LogSeverity.Warning;
+            LogFile = "logs\\chromely.cef.log";
+            HostState = WindowState.Normal;
+            HostCenterScreen = true;
+            HostWidth = 1200;
+            HostHeight = 900;
+            Locale = "en-US";
+            StartWebSocket = false;
+            ServiceAssemblies = new List<ControllerAssemblyInfo>();
+            CommandLineArgs = new Dictionary<string, string>();
+            CustomSettings = new Dictionary<string, object>();
 
 #if DEBUG
-            this.DebuggingMode = true;
+            DebuggingMode = true;
 #endif
         }
 
@@ -200,7 +200,7 @@ namespace Chromely.Core
         /// </returns>
         public ChromelyConfiguration WithAppArgs(string[] args)
         {
-            this.AppArgs = args;
+            AppArgs = args;
             return this;
         }
 
@@ -215,7 +215,7 @@ namespace Chromely.Core
         /// </returns>
         public ChromelyConfiguration WithDependencyCheck(bool checkDependencies)
         {
-            this.PerformDependencyCheck = checkDependencies;
+            PerformDependencyCheck = checkDependencies;
             return this;
         }
 
@@ -230,7 +230,7 @@ namespace Chromely.Core
         /// </returns>
         public ChromelyConfiguration WithShutdownCefOnExit(bool shutdownCefOnExitFlag)
         {
-            this.ShutdownCefOnExit = shutdownCefOnExitFlag;
+            ShutdownCefOnExit = shutdownCefOnExitFlag;
             return this;
         }
 
@@ -245,7 +245,7 @@ namespace Chromely.Core
         /// </returns>
         public ChromelyConfiguration WithDebuggingMode(bool debugging)
         {
-            this.DebuggingMode = debugging;
+            DebuggingMode = debugging;
             return this;
         }
 
@@ -260,7 +260,7 @@ namespace Chromely.Core
         /// </returns>
         public ChromelyConfiguration WithStartUrl(string startUrl)
         {
-            this.StartUrl = startUrl;
+            StartUrl = startUrl;
             return this;
         }
 
@@ -278,8 +278,8 @@ namespace Chromely.Core
         /// </returns>
         public ChromelyConfiguration WithHostMode(WindowState windowState, bool centerScreen = true)
         {
-            this.HostState = windowState;
-            this.HostCenterScreen = centerScreen;
+            HostState = windowState;
+            HostCenterScreen = centerScreen;
             return this;
         }
 
@@ -294,7 +294,7 @@ namespace Chromely.Core
         /// </returns>
         public ChromelyConfiguration WithHostTitle(string hostTitle)
         {
-            this.HostTitle = hostTitle;
+            HostTitle = hostTitle;
             return this;
         }
 
@@ -309,7 +309,7 @@ namespace Chromely.Core
         /// </returns>
         public ChromelyConfiguration WithHostIconFile(string hostIconFile)
         {
-            this.HostIconFile = hostIconFile;
+            HostIconFile = hostIconFile;
             return this;
         }
 
@@ -327,8 +327,8 @@ namespace Chromely.Core
         /// </returns>
         public ChromelyConfiguration WithHostSize(int width, int height)
         {
-            this.HostWidth = width;
-            this.HostHeight = height;
+            HostWidth = width;
+            HostHeight = height;
             return this;
         }
 
@@ -343,7 +343,7 @@ namespace Chromely.Core
         /// </returns>
         public ChromelyConfiguration WithLogSeverity(LogSeverity logSeverity)
         {
-            this.LogSeverity = logSeverity;
+            LogSeverity = logSeverity;
             return this;
         }
 
@@ -358,7 +358,7 @@ namespace Chromely.Core
         /// </returns>
         public ChromelyConfiguration WithLogFile(string logFile)
         {
-            this.LogFile = logFile;
+            LogFile = logFile;
             return this;
         }
 
@@ -373,7 +373,7 @@ namespace Chromely.Core
         /// </returns>
         public ChromelyConfiguration WithLocale(string locale)
         {
-            this.Locale = locale;
+            Locale = locale;
             return this;
         }
 
@@ -414,7 +414,7 @@ namespace Chromely.Core
         public ChromelyConfiguration UseDefaultResourceSchemeHandler(string schemeName, string domainName)
         {
             var handler = new ChromelySchemeHandler(schemeName, domainName, true, false);
-            this.RegisterSchemeHandler(handler);
+            RegisterSchemeHandler(handler);
 
             return this;
         }
@@ -434,7 +434,7 @@ namespace Chromely.Core
         public ChromelyConfiguration UseDefaultHttpSchemeHandler(string schemeName, string domainName)
         {
             var handler = new ChromelySchemeHandler(schemeName, domainName, false, true);
-            this.RegisterSchemeHandler(handler);
+            RegisterSchemeHandler(handler);
 
             return this;
         }
@@ -453,7 +453,7 @@ namespace Chromely.Core
         /// </returns>
         public ChromelyConfiguration UseDefautJsHandler(string objectNameToBind, bool registerAsync)
         {
-            return this.RegisterJsHandler(new ChromelyJsHandler(objectNameToBind, registerAsync));
+            return RegisterJsHandler(new ChromelyJsHandler(objectNameToBind, registerAsync));
         }
 
         /// <summary>
@@ -473,9 +473,9 @@ namespace Chromely.Core
         /// </returns>
         public ChromelyConfiguration UseDefaultWebsocketHandler(string address, int port, bool onloadstartserver)
         {
-            this.WebsocketAddress = address;
-            this.WebsocketPort = port;
-            this.StartWebSocket = onloadstartserver;
+            WebsocketAddress = address;
+            WebsocketPort = port;
+            StartWebSocket = onloadstartserver;
             return this;
         }
 
@@ -508,12 +508,12 @@ namespace Chromely.Core
         /// </returns>
         public ChromelyConfiguration WithCommandLineArg(string nameKey, string value)
         {
-            if (this.CommandLineArgs == null)
+            if (CommandLineArgs == null)
             {
-                this.CommandLineArgs = new Dictionary<string, string>();
+                CommandLineArgs = new Dictionary<string, string>();
             }
 
-            this.CommandLineArgs[nameKey] = value;
+            CommandLineArgs[nameKey] = value;
             return this;
         }
 
@@ -531,12 +531,12 @@ namespace Chromely.Core
         /// </returns>
         public ChromelyConfiguration WithCustomSetting(string propertyName, object value)
         {
-            if (this.CustomSettings == null)
+            if (CustomSettings == null)
             {
-                this.CustomSettings = new Dictionary<string, object>();
+                CustomSettings = new Dictionary<string, object>();
             }
 
-            this.CustomSettings[propertyName] = value;
+            CustomSettings[propertyName] = value;
             return this;
         }
 
@@ -552,7 +552,7 @@ namespace Chromely.Core
         /// </returns>
         public ChromelyConfiguration RegisterServiceAssembly(string filename)
         {
-            this.ServiceAssemblies?.RegisterServiceAssembly(Assembly.LoadFile(filename));
+            ServiceAssemblies?.RegisterServiceAssembly(Assembly.LoadFile(filename));
             return this;
         }
 
@@ -567,7 +567,7 @@ namespace Chromely.Core
         /// </returns>
         public ChromelyConfiguration RegisterServiceAssembly(Assembly assembly)
         {
-            this.ServiceAssemblies?.RegisterServiceAssembly(assembly);
+            ServiceAssemblies?.RegisterServiceAssembly(assembly);
             return this;
         }
 
@@ -582,7 +582,7 @@ namespace Chromely.Core
         /// </returns>
         public ChromelyConfiguration RegisterServiceAssemblies(string folder)
         {
-            this.ServiceAssemblies?.RegisterServiceAssemblies(folder);
+            ServiceAssemblies?.RegisterServiceAssemblies(folder);
             return this;
         }
 
@@ -597,7 +597,7 @@ namespace Chromely.Core
         /// </returns>
         public ChromelyConfiguration RegisterServiceAssemblies(List<string> filenames)
         {
-            this.ServiceAssemblies?.RegisterServiceAssemblies(filenames);
+            ServiceAssemblies?.RegisterServiceAssemblies(filenames);
             return this;
         }
 
@@ -692,7 +692,7 @@ namespace Chromely.Core
         /// </returns>
         public virtual ChromelyConfiguration RegisterSchemeHandler(string schemeName, string domainName, object handler)
         {
-            return this.RegisterSchemeHandler(new ChromelySchemeHandler(schemeName, domainName, handler));
+            return RegisterSchemeHandler(new ChromelySchemeHandler(schemeName, domainName, handler));
         }
 
         /// <summary>
@@ -736,7 +736,7 @@ namespace Chromely.Core
         /// </returns>
         public virtual ChromelyConfiguration RegisterJsHandler(string javascriptMethod, object boundObject, object boundingOptions, bool registerAsync)
         {
-            return this.RegisterJsHandler(new ChromelyJsHandler(javascriptMethod, boundObject, boundingOptions, registerAsync));
+            return RegisterJsHandler(new ChromelyJsHandler(javascriptMethod, boundObject, boundingOptions, registerAsync));
         }
 
         /// <summary>
@@ -769,7 +769,7 @@ namespace Chromely.Core
         /// </returns>
         public virtual ChromelyConfiguration RegisterMessageRouterHandler(object messageRouterHandler)
         {
-            return this.RegisterMessageRouterHandler(new ChromelyMessageRouter(messageRouterHandler));
+            return RegisterMessageRouterHandler(new ChromelyMessageRouter(messageRouterHandler));
         }
 
         /// <summary>
@@ -826,9 +826,9 @@ namespace Chromely.Core
 
             IoC.RegisterInstance(typeof(IChromelyWebsocketHandler), typeof(IChromelyWebsocketHandler).FullName, sockeHandler);
 
-            this.WebsocketAddress = address;
-            this.WebsocketPort = port;
-            this.StartWebSocket = onloadstartserver;
+            WebsocketAddress = address;
+            WebsocketPort = port;
+            StartWebSocket = onloadstartserver;
             return this;
         }
     }

@@ -55,10 +55,10 @@ namespace Chromely.CefGlue.Gtk.Browser
         /// </param>
         public CefGlueBrowser(object owner, ChromelyConfiguration hostConfig, CefBrowserSettings settings)
         {
-            this.Owner = owner;
-            this.mHostConfig = hostConfig;
-            this.mSettings = settings;
-            this.StartUrl = hostConfig.StartUrl;
+            Owner = owner;
+            mHostConfig = hostConfig;
+            mSettings = settings;
+            StartUrl = hostConfig.StartUrl;
         }
 
         #region Events Handling Properties
@@ -188,20 +188,20 @@ namespace Chromely.CefGlue.Gtk.Browser
         /// </param>
         public void Create(CefWindowInfo windowInfo)
         {
-            if (this.mClient == null)
+            if (mClient == null)
             {
                 IoC.RegisterInstance(typeof(CefGlueBrowser), typeof(CefGlueBrowser).FullName, this);
-                this.mClient = new CefGlueClient(CefGlueClientParams.Create(this));
+                mClient = new CefGlueClient(CefGlueClientParams.Create(this));
             }
 
-            mSettings = this.mSettings ?? new CefBrowserSettings();
+            mSettings = mSettings ?? new CefBrowserSettings();
 
             mSettings.DefaultEncoding = "UTF-8";
             mSettings.FileAccessFromFileUrls = CefState.Enabled;
             mSettings.UniversalAccessFromFileUrls = CefState.Enabled;
             mSettings.WebSecurity = CefState.Enabled;
 
-            CefBrowserHost.CreateBrowser(windowInfo, this.mClient, this.mSettings, this.StartUrl);
+            CefBrowserHost.CreateBrowser(windowInfo, mClient, mSettings, StartUrl);
         }
 
         /// <summary>
@@ -209,18 +209,18 @@ namespace Chromely.CefGlue.Gtk.Browser
         /// </summary>
         public void Close()
         {
-            if (this.mWebsocketStarted)
+            if (mWebsocketStarted)
             {
                 WebsocketServerRunner.StopServer();
             }
 
-            if (this.CefBrowser != null)
+            if (CefBrowser != null)
             {
-                var host = this.CefBrowser.GetHost();
+                var host = CefBrowser.GetHost();
                 host.CloseBrowser(true);
                 host.Dispose();
-                this.CefBrowser.Dispose();
-                this.CefBrowser = null;
+                CefBrowser.Dispose();
+                CefBrowser = null;
             }
         }
 
@@ -234,14 +234,14 @@ namespace Chromely.CefGlue.Gtk.Browser
         /// </param>
         public virtual void OnCreated(CefBrowser browser)
         {
-            this.CefBrowser = browser;
+            CefBrowser = browser;
 
             // Register browser frame
             CefGlueFrameHandler frameHandler = new CefGlueFrameHandler(browser);
             IoC.RegisterInstance(typeof(CefGlueFrameHandler), typeof(CefGlueFrameHandler).FullName, frameHandler);
 
-            this.StartWebsocket();
-            this.Created?.Invoke(this, EventArgs.Empty);
+            StartWebsocket();
+            Created?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -252,8 +252,8 @@ namespace Chromely.CefGlue.Gtk.Browser
         /// </param>
         public virtual void OnTitleChanged(TitleChangedEventArgs eventArgs)
         {
-            this.Title = eventArgs.Title;
-            this.TitleChanged?.Invoke(this, eventArgs);
+            Title = eventArgs.Title;
+            TitleChanged?.Invoke(this, eventArgs);
         }
 
         /// <summary>
@@ -264,8 +264,8 @@ namespace Chromely.CefGlue.Gtk.Browser
         /// </param>
         public virtual void OnAddressChanged(AddressChangedEventArgs eventArgs)
         {
-            this.Address = eventArgs.Address;
-            this.AddressChanged?.Invoke(this, eventArgs);
+            Address = eventArgs.Address;
+            AddressChanged?.Invoke(this, eventArgs);
         }
 
         /// <summary>
@@ -276,7 +276,7 @@ namespace Chromely.CefGlue.Gtk.Browser
         /// </param>
         public virtual void OnStatusMessage(StatusMessageEventArgs eventArgs)
         {
-            this.StatusMessage?.Invoke(this, eventArgs);
+            StatusMessage?.Invoke(this, eventArgs);
         }
 
         /// <summary>
@@ -287,7 +287,7 @@ namespace Chromely.CefGlue.Gtk.Browser
         /// </param>
         public virtual void OnConsoleMessage(ConsoleMessageEventArgs eventArgs)
         {
-            this.ConsoleMessage?.Invoke(this, eventArgs);
+            ConsoleMessage?.Invoke(this, eventArgs);
         }
 
         /// <summary>
@@ -298,7 +298,7 @@ namespace Chromely.CefGlue.Gtk.Browser
         /// </param>
         public virtual void OnLoadingStateChange(LoadingStateChangeEventArgs eventArgs)
         {
-            this.LoadingStateChange?.Invoke(this, eventArgs);
+            LoadingStateChange?.Invoke(this, eventArgs);
         }
 
         /// <summary>
@@ -309,7 +309,7 @@ namespace Chromely.CefGlue.Gtk.Browser
         /// </param>
         public virtual void OnTooltip(TooltipEventArgs eventArgs)
         {
-            this.Tooltip?.Invoke(this, eventArgs);
+            Tooltip?.Invoke(this, eventArgs);
         }
 
         /// <summary>
@@ -317,7 +317,7 @@ namespace Chromely.CefGlue.Gtk.Browser
         /// </summary>
         public virtual void OnBeforeClose()
         {
-            this.BeforeClose?.Invoke(this, EventArgs.Empty);
+            BeforeClose?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -328,7 +328,7 @@ namespace Chromely.CefGlue.Gtk.Browser
         /// </param>
         public virtual void OnBeforePopup(BeforePopupEventArgs eventArgs)
         {
-            this.BeforePopup?.Invoke(this, eventArgs);
+            BeforePopup?.Invoke(this, eventArgs);
         }
 
         /// <summary>
@@ -339,7 +339,7 @@ namespace Chromely.CefGlue.Gtk.Browser
         /// </param>
         public virtual void OnLoadEnd(LoadEndEventArgs eventArgs)
         {
-            this.LoadEnd?.Invoke(this, eventArgs);
+            LoadEnd?.Invoke(this, eventArgs);
         }
 
         /// <summary>
@@ -350,7 +350,7 @@ namespace Chromely.CefGlue.Gtk.Browser
         /// </param>
         public virtual void OnLoadError(LoadErrorEventArgs eventArgs)
         {
-            this.LoadError?.Invoke(this, eventArgs);
+            LoadError?.Invoke(this, eventArgs);
         }
 
         /// <summary>
@@ -361,7 +361,7 @@ namespace Chromely.CefGlue.Gtk.Browser
         /// </param>
         public virtual void OnLoadStart(LoadStartEventArgs eventArgs)
         {
-            this.LoadStarted?.Invoke(this, eventArgs);
+            LoadStarted?.Invoke(this, eventArgs);
         }
 
         /// <summary>
@@ -372,7 +372,7 @@ namespace Chromely.CefGlue.Gtk.Browser
         /// </param>
         public virtual void OnPluginCrashed(PluginCrashedEventArgs eventArgs)
         {
-            this.PluginCrashed?.Invoke(this, eventArgs);
+            PluginCrashed?.Invoke(this, eventArgs);
         }
 
         /// <summary>
@@ -383,7 +383,7 @@ namespace Chromely.CefGlue.Gtk.Browser
         /// </param>
         public virtual void OnRenderProcessTerminated(RenderProcessTerminatedEventArgs eventArgs)
         {
-            this.RenderProcessTerminated?.Invoke(this, eventArgs);
+            RenderProcessTerminated?.Invoke(this, eventArgs);
         }
 
         #endregion Events Handling
@@ -395,10 +395,10 @@ namespace Chromely.CefGlue.Gtk.Browser
         {
             try
             {
-                if (this.mHostConfig.StartWebSocket)
+                if (mHostConfig.StartWebSocket)
                 {
-                    WebsocketServerRunner.StartServer(this.mHostConfig.WebsocketAddress, this.mHostConfig.WebsocketPort);
-                    this.mWebsocketStarted = true;
+                    WebsocketServerRunner.StartServer(mHostConfig.WebsocketAddress, mHostConfig.WebsocketPort);
+                    mWebsocketStarted = true;
                 }
             }
             catch (Exception exception)

@@ -33,7 +33,7 @@ namespace Chromely.Core.Tests
         /// </param>
         public RouteScannerTest(ITestOutputHelper testOutput)
         {
-            this.mTestOutput = testOutput;
+            mTestOutput = testOutput;
         }
 
         /// <summary>
@@ -64,9 +64,9 @@ namespace Chromely.Core.Tests
             /// </summary>
             public ScannerController()
             {
-                this.RegisterGetRequest("/scannercontroller/get1", this.Get1);
-                this.RegisterGetRequest("/scannercontroller/get2", this.Get2);
-                this.RegisterPostRequest("/scannercontroller/save", this.Save);
+                RegisterGetRequest("/scannercontroller/get1", Get1);
+                RegisterGetRequest("/scannercontroller/get2", Get2);
+                RegisterPostRequest("/scannercontroller/save", Save);
             }
 
             /// <summary>

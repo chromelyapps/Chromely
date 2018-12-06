@@ -24,7 +24,7 @@ namespace Chromely.CefGlue.Gtk.Browser.EventParams
         /// </param>
         public TooltipEventArgs(string text)
         {
-            this.Text = text;
+            Text = text;
         }
 
         /// <summary>
