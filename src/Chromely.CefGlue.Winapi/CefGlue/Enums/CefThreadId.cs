@@ -53,6 +53,11 @@ namespace Xilium.CefGlue
         FileUserBlocking,
 
         /// <summary>
+        /// Used to launch and terminate browser processes.
+        /// </summary>
+        ProcessLauncher,
+
+        /// <summary>
         /// Used to process IPC and network messages. Do not perform blocking tasks on
         /// this thread. All tasks posted after
         /// CefBrowserProcessHandler::OnContextInitialized() and before CefShutdown()

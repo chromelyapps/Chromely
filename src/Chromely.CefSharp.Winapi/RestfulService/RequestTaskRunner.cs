@@ -78,7 +78,7 @@ namespace Chromely.CefSharp.Winapi.RestfulService
         /// </exception>
         public static ChromelyResponse Run(IRequest request)
         {
-            bool isCustomScheme = UrlSchemeProvider.IsUrlOfRegisteredCustomScheme(request.Url);
+            var isCustomScheme = UrlSchemeProvider.IsUrlOfRegisteredCustomScheme(request.Url);
 
             if (!isCustomScheme)
             {
@@ -86,9 +86,9 @@ namespace Chromely.CefSharp.Winapi.RestfulService
             }
 
             var uri = new Uri(request.Url);
-            string path = uri.LocalPath;
+            var path = uri.LocalPath;
             var parameters = request.Url.GetParameters();
-            object postData = GetPostData(request);
+            var postData = GetPostData(request);
 
             var routePath = new RoutePath(request.Method, path);
             return Run(string.Empty, routePath, parameters, postData);
@@ -181,8 +181,7 @@ namespace Chromely.CefSharp.Winapi.RestfulService
             var response = new ChromelyResponse();
 
             var bitness = Environment.Is64BitProcess ? "x64" : "x86";
-            string chromeVersion =
-                $"Chromium: {Cef.ChromiumVersion}, CEF: {Cef.CefVersion}, CefSharp: {Cef.CefSharpVersion}, Environment: {bitness}";
+            var chromeVersion = $"Chromium: {Cef.ChromiumVersion}, CEF: {Cef.CefVersion}, CefSharp: {Cef.CefSharpVersion}, Environment: {bitness}";
 
             var infoItemDic = new Dictionary<string, string>
             {
@@ -217,7 +216,6 @@ namespace Chromely.CefSharp.Winapi.RestfulService
         private static string GetPostData(IRequest request)
         {
             var elements = request?.PostData?.Elements;
-
             if (elements == null || (elements.Count == 0))
             {
                 return string.Empty;

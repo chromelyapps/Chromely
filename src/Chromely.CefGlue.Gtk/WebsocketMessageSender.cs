@@ -82,7 +82,7 @@ namespace Chromely.CefGlue.Gtk
                     return cefserver;
                 }
 
-                CefServer server = IoC.GetInstance<CefServer>(typeof(CefServer).FullName);
+                var server = IoC.GetInstance<CefServer>(typeof(CefServer).FullName);
                 if (server != null)
                 {
                     cefserver = server;
@@ -122,7 +122,7 @@ namespace Chromely.CefGlue.Gtk
                         return;
                     }
 
-                    string jsonResponse = JsonMapper.ToJson(response);
+                    var jsonResponse = JsonMapper.ToJson(response);
                     SendMessage(clientName, jsonResponse);
                 }
                 catch (Exception exception)
@@ -162,7 +162,7 @@ namespace Chromely.CefGlue.Gtk
                         return;
                     }
 
-                    string jsonResponse = JsonMapper.ToJson(response);
+                    var jsonResponse = JsonMapper.ToJson(response);
                     SendMessage(connectionId, jsonResponse);
                 }
                 catch (Exception exception)
@@ -317,7 +317,7 @@ namespace Chromely.CefGlue.Gtk
                         return;
                     }
 
-                    string jsonResponse = JsonMapper.ToJson(response);
+                    var jsonResponse = JsonMapper.ToJson(response);
                     BroadcastMessage(connectionId, jsonResponse);
                 }
                 catch (Exception exception)
@@ -427,8 +427,7 @@ namespace Chromely.CefGlue.Gtk
                         return;
                     }
 
-                    byte[] outputByte = Encoding.UTF8.GetBytes(data);
-
+                    var outputByte = Encoding.UTF8.GetBytes(data);
                     outIntPtr = Marshal.AllocHGlobal(outputByte.Length);
                     Marshal.Copy(outputByte, 0, outIntPtr, outputByte.Length);
 
@@ -473,8 +472,7 @@ namespace Chromely.CefGlue.Gtk
                         return;
                     }
 
-                    byte[] outputByte = Encoding.UTF8.GetBytes(data);
-
+                    var outputByte = Encoding.UTF8.GetBytes(data);
                     outIntPtr = Marshal.AllocHGlobal(outputByte.Length);
                     Marshal.Copy(outputByte, 0, outIntPtr, outputByte.Length);
 
@@ -548,7 +546,6 @@ namespace Chromely.CefGlue.Gtk
                     }
 
                     var connectionIds = ConnectionNameMapper.ConnectionIds;
-
                     if (connectionIds == null)
                     {
                         return;
@@ -569,8 +566,7 @@ namespace Chromely.CefGlue.Gtk
                         return;
                     }
 
-                    byte[] outputByte = Encoding.UTF8.GetBytes(data);
-
+                    var outputByte = Encoding.UTF8.GetBytes(data);
                     outIntPtr = Marshal.AllocHGlobal(outputByte.Length);
                     Marshal.Copy(outputByte, 0, outIntPtr, outputByte.Length);
 
@@ -613,7 +609,6 @@ namespace Chromely.CefGlue.Gtk
                     try
                     {
                         var connectionIds = ConnectionNameMapper.ConnectionIds;
-
                         if (connectionIds == null)
                         {
                             return;

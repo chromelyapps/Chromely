@@ -92,7 +92,7 @@ namespace Chromely.CefGlue.Gtk.Browser.Handlers
                 return true;
             }
 
-            Log.Error(string.Format("Url {0} is not of a registered custom scheme.", request.Url));
+            Log.Error($"Url {request.Url} is not of a registered custom scheme.");
             callback.Dispose();
             return false;
         }

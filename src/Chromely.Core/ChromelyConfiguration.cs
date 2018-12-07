@@ -615,7 +615,7 @@ namespace Chromely.Core
         /// </returns>
         public virtual ChromelyConfiguration RegisterCustomrUrlScheme(string schemeName, string domainName)
         {
-            UrlScheme scheme = new UrlScheme(schemeName, domainName, false);
+            var scheme = new UrlScheme(schemeName, domainName, false);
             UrlSchemeProvider.RegisterScheme(scheme);
             return this;
         }
@@ -818,7 +818,7 @@ namespace Chromely.Core
             }
 
             // Remove handler if exists - only one handler is allowed.
-            bool isHandlerRegistered = IoC.IsRegistered<IChromelyWebsocketHandler>(typeof(IChromelyWebsocketHandler).FullName);
+            var isHandlerRegistered = IoC.IsRegistered<IChromelyWebsocketHandler>(typeof(IChromelyWebsocketHandler).FullName);
             if (isHandlerRegistered)
             {
                 IoC.UnregisterHandler<IChromelyWebsocketHandler>(typeof(IChromelyWebsocketHandler).FullName);

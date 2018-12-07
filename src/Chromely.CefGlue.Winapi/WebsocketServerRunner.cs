@@ -88,7 +88,7 @@ namespace Chromely.CefGlue.Winapi
 
                 if (port < 8000 || port > 65535)
                 {
-                    string errorMessage = $"Invalid port number: {port} specified. Port number must be between 8000 and 65535";
+                    var errorMessage = $"Invalid port number: {port} specified. Port number must be between 8000 and 65535";
                     Log.Error(errorMessage);
                     return;
                 }

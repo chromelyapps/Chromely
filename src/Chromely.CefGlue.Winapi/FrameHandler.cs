@@ -36,7 +36,7 @@ namespace Chromely.CefGlue.Winapi
                     return browser;
                 }
 
-                CefGlueFrameHandler cefGlueFrameHandler = IoC.GetInstance<CefGlueFrameHandler>(typeof(CefGlueFrameHandler).FullName);
+                var cefGlueFrameHandler = IoC.GetInstance<CefGlueFrameHandler>(typeof(CefGlueFrameHandler).FullName);
                 if (cefGlueFrameHandler != null)
                 {
                     browser = cefGlueFrameHandler.Browser;

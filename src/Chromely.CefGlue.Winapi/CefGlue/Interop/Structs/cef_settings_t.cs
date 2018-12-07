@@ -16,7 +16,6 @@ namespace Xilium.CefGlue.Interop
     internal unsafe struct cef_settings_t
     {
         public UIntPtr size;
-        public int single_process;
         public int no_sandbox;
         public cef_string_t browser_subprocess_path;
         public cef_string_t framework_dir_path;

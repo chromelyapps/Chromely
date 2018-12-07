@@ -14,7 +14,6 @@ namespace Chromely.CefGlue.Winapi
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Runtime.InteropServices;
-    using Chromely.Core.Host;
     using WinApi.User32;
 
     /// <summary>

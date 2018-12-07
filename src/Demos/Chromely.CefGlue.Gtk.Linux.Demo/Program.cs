@@ -13,7 +13,7 @@ namespace Chromely.CefGlue.Gtk.Linux.Demo
     using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
 
-    using Chromely.CefGlue.Gtk.BrowserHost;
+    using Chromely.CefGlue.Gtk.BrowserWindow;
     using Chromely.Core;
     using Chromely.Core.Helpers;
     using Chromely.Core.Host;
@@ -28,26 +28,26 @@ namespace Chromely.CefGlue.Gtk.Linux.Demo
             try
             {
                 HostHelpers.SetupDefaultExceptionHandlers();
-                string appDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
 
                 /*
                 * Start url (load html) options:
                 */
 
                 // Options 1 - real standard urls 
-                // string startUrl = "https://google.com";
+                // var startUrl = "https://google.com";
 
                 // Options 2 - using local resource file handling with default/custom local scheme handler 
                 // Requires - (sample) UseDefaultResourceSchemeHandler("local", string.Empty)
                 //            or register new resource scheme handler - RegisterSchemeHandler("local", string.Empty,  new CustomResourceHandler())
-                string startUrl = "local://app/chromely.html";
+                var startUrl = "local://app/chromely.html";
 
                 // Options 3 - using file protocol - using default/custom scheme handler for Ajax/Http requests
                 // Requires - (sample) UseDefaultResourceSchemeHandler("local", string.Empty)
                 //            or register new resource handler - RegisterSchemeHandler("local", string.Empty,  new CustomResourceHandler())
                 // Requires - (sample) UseDefaultHttpSchemeHandler("http", "chromely.com")
                 //            or register new http scheme handler - RegisterSchemeHandler("http", "test.com",  new CustomHttpHandler())
-                // string startUrl = $"file:///{appDirectory}app/chromely.html";
+                // var startUrl = $"file:///{appDirectory}app/chromely.html";
                 var config = ChromelyConfiguration
                                 .Create()
                                 .WithHostMode(WindowState.Normal)
@@ -72,10 +72,10 @@ namespace Chromely.CefGlue.Gtk.Linux.Demo
                                 .WithCommandLineArg("disable-smooth-scrolling", "1")
                                 .WithCommandLineArg("no-sandbox", "1");
 
-                using (var app = new CefGlueBrowserWindow(config))
+                using (var window = new CefGlueBrowserWindow(config))
                 {
                     // Register external url schems
-                    app.RegisterUrlScheme(new UrlScheme("https://github.com/mattkol/Chromely", true));
+                    window.RegisterUrlScheme(new UrlScheme("https://github.com/mattkol/Chromely", true));
 
                     /*
                      * Register service assemblies
@@ -83,11 +83,11 @@ namespace Chromely.CefGlue.Gtk.Linux.Demo
                      */
 
                     // 1. Register current/local assembly:
-                    app.RegisterServiceAssembly(Assembly.GetExecutingAssembly());
+                    window.RegisterServiceAssembly(Assembly.GetExecutingAssembly());
 
                     // 2. Register external assembly with file name:
-                    // string serviceAssemblyFile = @"C:\ChromelyDlls\Chromely.Service.Demo.dll";
-                    // app.RegisterServiceAssembly(serviceAssemblyFile);
+                    var externalAssemblyFile = System.IO.Path.Combine(appDirectory, "Chromely.Service.Demo.dll");
+                    window.RegisterServiceAssembly(externalAssemblyFile);
 
                     // 3. Register external assemblies with list of filenames:
                     // string serviceAssemblyFile1 = @"C:\ChromelyDlls\Chromely.Service.Demo.dll";
@@ -96,13 +96,13 @@ namespace Chromely.CefGlue.Gtk.Linux.Demo
                     // app.RegisterServiceAssemblies(filenames);
 
                     // 4. Register external assemblies directory:
-                    string externalAssembly = System.IO.Path.Combine(appDirectory, "Chromely.Service.Demo.dll");
-                    app.RegisterServiceAssembly(externalAssembly);
+                    // var serviceAssembliesFolder = @"C:\ChromelyDlls";
+                    // window.RegisterServiceAssemblies(serviceAssembliesFolder);
 
                     // Scan assemblies for Controller routes 
-                    app.ScanAssemblies();
+                    window.ScanAssemblies();
 
-                    return app.Run(args);
+                    return window.Run(args);
                 }
             }
             catch (Exception exception)

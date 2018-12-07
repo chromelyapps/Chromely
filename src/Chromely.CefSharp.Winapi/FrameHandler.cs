@@ -35,7 +35,7 @@ namespace Chromely.CefSharp.Winapi
                     return browser;
                 }
 
-                CefSharpFrameHandler cefSharpFrameHandler = IoC.GetInstance<CefSharpFrameHandler>(typeof(CefSharpFrameHandler).FullName);
+                var cefSharpFrameHandler = IoC.GetInstance<CefSharpFrameHandler>(typeof(CefSharpFrameHandler).FullName);
                 if (cefSharpFrameHandler != null)
                 {
                     browser = cefSharpFrameHandler.Browser;

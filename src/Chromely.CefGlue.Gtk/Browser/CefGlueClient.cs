@@ -9,7 +9,7 @@
 
 namespace Chromely.CefGlue.Gtk.Browser
 {
-    using Chromely.CefGlue.Gtk.BrowserHost;
+    using Chromely.CefGlue.Gtk.BrowserWindow;
     using Xilium.CefGlue;
 
     /// <summary>

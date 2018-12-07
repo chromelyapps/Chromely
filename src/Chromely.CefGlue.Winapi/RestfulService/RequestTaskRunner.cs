@@ -37,7 +37,7 @@ namespace Chromely.CefGlue.Winapi.RestfulService
         public static ChromelyResponse Run(CefRequest request)
         {
             var uri = new Uri(request.Url);
-            string path = uri.LocalPath;
+            var path = uri.LocalPath;
 
             var response = new ChromelyResponse();
             if (string.IsNullOrEmpty(path))
@@ -109,7 +109,6 @@ namespace Chromely.CefGlue.Winapi.RestfulService
             }
 
             var route = ServiceRouteProvider.GetRoute(request.RoutePath);
-
             if (route == null)
             {
                 throw new Exception($"Route for path = {request.RoutePath} is null or invalid.");
@@ -161,7 +160,6 @@ namespace Chromely.CefGlue.Winapi.RestfulService
             }
 
             var route = ServiceRouteProvider.GetRoute(routePath);
-
             if (route == null)
             {
                 throw new Exception($"Route for path = {routePath} is null or invalid.");
@@ -251,8 +249,7 @@ namespace Chromely.CefGlue.Winapi.RestfulService
         /// </returns>
         private static string GetPostData(CefRequest request)
         {
-            CefPostDataElement[] postDataElements = request?.PostData?.GetElements();
-
+            var postDataElements = request?.PostData?.GetElements();
             if (postDataElements == null || (postDataElements.Length == 0))
             {
                 return string.Empty;

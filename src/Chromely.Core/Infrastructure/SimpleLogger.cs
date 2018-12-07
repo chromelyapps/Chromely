@@ -242,7 +242,7 @@ namespace Chromely.Core.Infrastructure
         {
             for (var i = 1; i < 999; i++)
             {
-                var possibleFilePath = string.Format("{0}.{1:000}", filePath, i);
+                var possibleFilePath = $"{filePath}.{i:000}";
                 if (!File.Exists(possibleFilePath))
                 {
                     File.Move(filePath, possibleFilePath);
@@ -347,7 +347,7 @@ namespace Chromely.Core.Infrastructure
                 }
 
                 string datetimeFormat = "yyyy-MM-dd HH:mm:ss.fff";
-                return string.Format("{0} {1} {2}", DateTime.Now.ToString(datetimeFormat), levelText, formattedMessage);
+                return $"{DateTime.Now.ToString(datetimeFormat)} {levelText} {formattedMessage}";
             }
         }
 

@@ -3,15 +3,15 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Platforms>AnyCPU</Platforms>
-    <Version>66.0.0.0-beta</Version>
-    <AssemblyVersion>66.0.0.0</AssemblyVersion>
+    <Version>68.0.0.0-beta</Version>
+    <AssemblyVersion>68.0.0.0</AssemblyVersion>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Product>Chromely.CefGlue.Gtk</Product>
     <Authors>Chromely Projects</Authors>
     <Company>Chromely Projects</Company>
     <Copyright>Copyright © 2017-2018 Chromely Projects</Copyright>
-    <PackageLicenseUrl>https://github.com/mattkol/Chromely/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageLicenseUrl>https://github.com/mattkol/Chromely/blob/master/LICENSE.md</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/mattkol/Chromely</PackageProjectUrl>
     <PackageIconUrl>https://github.com/mattkol/Chromely/blob/master/nugets/chromely.ico?raw=true</PackageIconUrl>
     <PackageTags>Cef Chromium HTML5 Desktop Chromely CefGlue  Restful  Ajax HTTP XHR MessageRouter JavascriptIntegration  .NET Core</PackageTags>
@@ -20,7 +20,7 @@
       - Added WindowState options - Normal, Maximize, Fullscreen.
       - Rename CefGlueBrowserHost to ChromelyApplication - breaking changes!
     </PackageReleaseNotes>
-    <FileVersion>66.0.0.0-beta</FileVersion>
+    <FileVersion>68.0.0.0-beta</FileVersion>
     <RepositoryType>Github Repository</RepositoryType>
     <RepositoryUrl>https://github.com/mattkol/Chromely</RepositoryUrl>
   </PropertyGroup>
@@ -31,17 +31,27 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>bin\Debug\netstandard2.0\Chromely.CefGlue.Gtk.xml</DocumentationFile>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DocumentationFile>bin\Release\netstandard2.0\Chromely.CefGlue.Gtk.xml</DocumentationFile>
   </PropertyGroup>
 
+
   <ItemGroup>
-    <ProjectReference Include="..\CefGlue\Chromely.Unofficial.CefGlue.NetStd\Chromely.Unofficial.CefGlue.NetStd.csproj" />
-    <ProjectReference Include="..\Chromely.Core\Chromely.Core.csproj" />
+    <Compile Remove="CefGlue\Interop\Base\cef_string_t.disabled.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="System.Collections.Specialized" Version="4.3.0" />
+    <PackageReference Include="System.IO.UnmanagedMemoryStream" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Chromely.Core\Chromely.Core.csproj" />
+  </ItemGroup>
+  
   <ItemGroup>
     <None Include="build\**" Pack="True" PackagePath="build\" />
   </ItemGroup>

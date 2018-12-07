@@ -307,8 +307,7 @@ namespace Caliburn.Light
             {
                 if (entry.Count != 1)
                 {
-                    throw new InvalidOperationException(
-                        string.Format("Found multiple registrations for type '{0}' and key {1}.", service, key));
+                    throw new InvalidOperationException($"Found multiple registrations for type '{service}' and key {key}.");
                 }
 
                 return entry[0](this);
@@ -329,8 +328,7 @@ namespace Caliburn.Light
             {
                 if (key != null)
                 {
-                    throw new InvalidOperationException(
-                        string.Format("Requesting type '{0}' with key {1} is not supported.", service, key));
+                    throw new InvalidOperationException($"Requesting type '{service}' with key {key} is not supported.");
                 }
 
                 var listType = service.GenericTypeArguments[0];
@@ -409,7 +407,7 @@ namespace Caliburn.Light
 
             if (constructor == null)
             {
-                throw new InvalidOperationException(string.Format("Type '{0}' has no public constructor.", type));
+                throw new InvalidOperationException($"Type '{type}' has no public constructor.");
             }
 
             var args = constructor.GetParameters()

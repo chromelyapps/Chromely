@@ -68,8 +68,8 @@ namespace Chromely.Core.RestfulService
         /// </param>
         public ChromelyRequest(JsonData jsonData)
         {
-            string method = jsonData.Keys.Contains("method") ? jsonData["method"].ToString() : "get";
-            string url = jsonData.Keys.Contains("url") ? jsonData["url"].ToString() : string.Empty;
+            var method = jsonData.Keys.Contains("method") ? jsonData["method"].ToString() : "get";
+            var url = jsonData.Keys.Contains("url") ? jsonData["url"].ToString() : string.Empty;
             RoutePath = new RoutePath(method, url);
 
             Id = jsonData.Keys.Contains("id") ? jsonData["id"].ToString() : Id;

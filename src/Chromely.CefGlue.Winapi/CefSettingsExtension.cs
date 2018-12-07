@@ -29,9 +29,9 @@ namespace Chromely.CefGlue.Winapi
         /// </param>
         public static void Update(this CefSettings cefSettings, Dictionary<string, object> customSettings)
         {
-            if ((cefSettings == null) || 
-                (customSettings == null) ||
-                (customSettings.Count == 0))
+            if (cefSettings == null || 
+                customSettings == null ||
+                customSettings.Count == 0)
             {
                 return;
             }

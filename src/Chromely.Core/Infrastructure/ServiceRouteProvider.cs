@@ -42,7 +42,7 @@ namespace Chromely.Core.Infrastructure
         /// </param>
         public static void MergeRoutes(Dictionary<string, Route> newRouteDictionary)
         {
-            if ((newRouteDictionary != null) && newRouteDictionary.Any())
+            if (newRouteDictionary != null && newRouteDictionary.Any())
             {
                 foreach (var item in newRouteDictionary)
                 {

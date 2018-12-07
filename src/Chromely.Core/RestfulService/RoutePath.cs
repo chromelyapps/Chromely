@@ -26,9 +26,9 @@ namespace Chromely.Core.RestfulService
         public RoutePath(Method method, string path)
         {
             Method = method;
-            string methodString = ConvertMethod(method);
+            var methodString = ConvertMethod(method);
             path = string.IsNullOrEmpty(path) ? string.Empty : path;
-            string routeKey = $"{methodString}_{path}";
+            var routeKey = $"{methodString}_{path}";
             Path = path;
             Key = routeKey.ToLower();
         }
@@ -44,9 +44,9 @@ namespace Chromely.Core.RestfulService
         /// </param>
         public RoutePath(string method, string path)
         {
-            string methodString = string.IsNullOrEmpty(method) ? "get" : method;
+            var methodString = string.IsNullOrEmpty(method) ? "get" : method;
             path = string.IsNullOrEmpty(path) ? string.Empty : path;
-            string routeKey = $"{methodString}_{path}";
+            var routeKey = $"{methodString}_{path}";
             Path = path;
             Key = routeKey.ToLower();
         }
