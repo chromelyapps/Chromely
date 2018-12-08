@@ -7,7 +7,7 @@
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Chromely.CefGlue.Winapi.BrowserWindow
+namespace Chromely.CefSharp.Winapi.BrowserWindow
 {
     using System;
     using System.Runtime.InteropServices;

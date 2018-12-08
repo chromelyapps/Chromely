@@ -43,9 +43,5 @@
   <ItemGroup>
     <Reference Include="System.Web" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="BrowserWindow\" />
-  </ItemGroup>
   
 </Project>

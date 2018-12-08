@@ -12,8 +12,10 @@ namespace Chromely.CefSharp.Winapi.Demo
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
-    using Chromely.CefSharp.Winapi.BrowserHost;
+
+    using Chromely.CefSharp.Winapi.BrowserWindow;
     using Chromely.Core;
+    using Chromely.Core.Host;
     using Chromely.Core.Infrastructure;
     using WinApi.Windows;
 
@@ -59,6 +61,9 @@ namespace Chromely.CefSharp.Winapi.Demo
                 // var startUrl = $"file:///{appDirectory}app/chromely.html";
                 var config = ChromelyConfiguration
                                 .Create()
+                                .WithHostMode(WindowState.Maximize)
+                                .WithHostTitle("chromely")
+                                .WithHostIconFile("chromely.ico")
                                 .WithAppArgs(args)
                                 .WithHostSize(1200, 700)
                                 .WithLogFile("logs\\chromely.cef_new.log")
@@ -69,16 +74,8 @@ namespace Chromely.CefSharp.Winapi.Demo
                                 .UseDefaultHttpSchemeHandler("http", "chromely.com")
                                 .UseDefautJsHandler("boundControllerAsync", true);
 
-                var factory = WinapiHostFactory.Init("chromely.ico");
-                using (var window = factory.CreateWindow(
-                    () => new CefSharpBrowserHost(config),
-                    "chromely",
-                    width: config.HostWidth,
-                    height: config.HostHeight,
-                    constructionParams: WindowState.Normal))
+                using (var window = new CefSharpBrowserWindow(config))
                 {
-                    // Note - ALT + F4 (To terminate fullscreen window).
-
                     // Register external url schems
                     window.RegisterUrlScheme(new UrlScheme("https://github.com/mattkol/Chromely", true));
 
@@ -106,10 +103,7 @@ namespace Chromely.CefSharp.Winapi.Demo
 
                     // Scan assemblies for Controller routes 
                     window.ScanAssemblies();
-
-                    window.CenterToScreen();
-                    window.Show();
-                    return new EventLoop().Run(window);
+                    return window.Run(args);
                 }
             }
             catch (Exception exception)

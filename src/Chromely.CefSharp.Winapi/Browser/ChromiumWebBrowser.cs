@@ -60,9 +60,6 @@ namespace Chromely.CefSharp.Winapi.Browser
         /// <summary>
         /// Initializes a new instance of the <see cref="ChromiumWebBrowser"/> class.
         /// </summary>
-        /// <param name="parent">
-        /// The parent handle.
-        /// </param>
         /// <param name="settings">
         /// The m Settings.
         /// </param>
@@ -72,13 +69,12 @@ namespace Chromely.CefSharp.Winapi.Browser
         /// <param name="useLegacyJavascriptBindingEnabled">
         /// Flag to use whether Javascript binding should be used.
         /// </param>
-        public ChromiumWebBrowser(IntPtr parent, AbstractCefSettings settings, string address,  bool useLegacyJavascriptBindingEnabled = true)
+        public ChromiumWebBrowser(AbstractCefSettings settings, string address,  bool useLegacyJavascriptBindingEnabled = true)
         {
             Address = address;
             mSettings = settings;
             CefSharpSettings.LegacyJavascriptBindingEnabled = useLegacyJavascriptBindingEnabled;
             InitializeFieldsAndCefIfRequired();
-            CreateBrowser(parent);
         }
 
         #region  Event Properties
@@ -168,11 +164,6 @@ namespace Chromely.CefSharp.Winapi.Browser
         public event EventHandler<IsBrowserInitializedChangedEventArgs> IsBrowserInitializedChanged;
 
         #endregion Event Properties
-
-        /// <summary>
-        /// Gets or sets a value indicating whether is activating.
-        /// </summary>
-        public bool IsActivating { get; set; }
 
         /// <summary>
         /// Gets or sets the browser settings.
@@ -357,6 +348,8 @@ namespace Chromely.CefSharp.Winapi.Browser
                     var browserHandle = mBrowser.GetHost().GetWindowHandle();
                     NativeMethodWrapper.SetWindowParent(browserHandle, parent);
                 }
+
+                Log.Info("Cef browser successfully created.");
             }
         }
 
@@ -523,7 +516,7 @@ namespace Chromely.CefSharp.Winapi.Browser
             }
 
             // Register browser 
-            CefSharpFrameHandler frameHandler = new CefSharpFrameHandler(browser);
+            var frameHandler = new CefSharpFrameHandler(browser);
             IoC.RegisterInstance(typeof(CefSharpFrameHandler), typeof(CefSharpFrameHandler).FullName, frameHandler);
 
             IsBrowserInitializedChanged?.Invoke(this, new IsBrowserInitializedChangedEventArgs(IsBrowserInitialized));
