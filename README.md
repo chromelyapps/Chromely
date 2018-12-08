@@ -82,7 +82,7 @@ For more info on demos - [Demos](https://github.com/mattkol/Chromely/wiki/Demos)
 ### References
 * WinApi - https://github.com/prasannavl/WinApi
 * Cef - https://bitbucket.org/chromiumembedded/cef
-* Xilium.CefGlue - https://bitbucket.org/xilium/xilium.cefglue/wiki/Home
+* Xilium.CefGlue - https://gitlab.com/xiliumhq/chromiumembedded/cefglue
 * CefSharp - https://github.com/cefsharp/CefSharp
 * Json Serializer - https://github.com/lbv/litjson
 * Caliburn.Light Container - https://github.com/tibel/Caliburn.Light/blob/master/src/Caliburn.Core/IoC/SimpleContainer.cs
@@ -98,8 +98,9 @@ Author
 License
 ---
 * Chromely is MIT - licensed.
-* CefSharp is [BSD](https://opensource.org/licenses/BSD-3-Clause) licensed, so it can be used in both proprietary and free/open source applications. For the full details, see the [LICENSE](https://github.com/cefsharp/CefSharp/blob/master/LICENSE) file.
-* CefGlue is licensed under MIT License with portions of code licensed under New BSD License. For more info [see](https://bitbucket.org/xilium/xilium.cefglue/wiki/Home).
+* WinApi is licensed under [Apache License, Version 2.0](https://github.com/prasannavl/WinApi/blob/master/LICENSE-APACHE) or [GPL 3.0 license](https://github.com/prasannavl/WinApi/blob/master/LICENSE-GPL). 
+* CefSharp is [BSD](https://opensource.org/licenses/BSD-3-Clause) licensed, so it can be used in both proprietary and free/open source applications. For the full details, see the [CefSharp LICENSE](https://github.com/cefsharp/CefSharp/blob/master/LICENSE) file.
+* CefGlue is licensed under MIT License with portions of code licensed under New BSD License. For more info see [CefGlue License info](https://bitbucket.org/xilium/xilium.cefglue/wiki/Home).
 
 Credits
 ---

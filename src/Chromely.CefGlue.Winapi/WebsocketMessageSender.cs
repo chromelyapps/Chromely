@@ -1,31 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="WebsocketMessageSender.cs" company="Chromely">
-//   Copyright (c) 2017-2018 Kola Oyewumi
+// <copyright file="WebsocketMessageSender.cs" company="Chromely Projects">
+//   Copyright (c) 2017-2018 Chromely Projects
 // </copyright>
 // <license>
-// MIT License
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
+//      See the LICENSE.md file in the project root for more information.
 // </license>
-// <note>
-// Chromely project is licensed under MIT License. CefGlue, CefSharp, Winapi may have additional licensing.
-// </note>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Chromely.CefGlue.Winapi
@@ -103,7 +82,7 @@ namespace Chromely.CefGlue.Winapi
                     return cefserver;
                 }
 
-                CefServer server = IoC.GetInstance<CefServer>(typeof(CefServer).FullName);
+                var server = IoC.GetInstance<CefServer>(typeof(CefServer).FullName);
                 if (server != null)
                 {
                     cefserver = server;
@@ -143,7 +122,7 @@ namespace Chromely.CefGlue.Winapi
                         return;
                     }
 
-                    string jsonResponse = JsonMapper.ToJson(response);
+                    var jsonResponse = JsonMapper.ToJson(response);
                     SendMessage(clientName, jsonResponse);
                 }
                 catch (Exception exception)
@@ -183,7 +162,7 @@ namespace Chromely.CefGlue.Winapi
                         return;
                     }
 
-                    string jsonResponse = JsonMapper.ToJson(response);
+                    var jsonResponse = JsonMapper.ToJson(response);
                     SendMessage(connectionId, jsonResponse);
                 }
                 catch (Exception exception)
@@ -338,7 +317,7 @@ namespace Chromely.CefGlue.Winapi
                         return;
                     }
 
-                    string jsonResponse = JsonMapper.ToJson(response);
+                    var jsonResponse = JsonMapper.ToJson(response);
                     BroadcastMessage(connectionId, jsonResponse);
                 }
                 catch (Exception exception)
@@ -427,7 +406,7 @@ namespace Chromely.CefGlue.Winapi
         {
             Task.Run(() =>
             {
-                IntPtr outIntPtr = IntPtr.Zero;
+                var outIntPtr = IntPtr.Zero;
 
                 try
                 {
@@ -437,7 +416,6 @@ namespace Chromely.CefGlue.Winapi
                     }
 
                     int connectionId = ConnectionNameMapper.GetConnectionId(clientName);
-
                     if (connectionId == 0)
                     {
                         return;
@@ -448,8 +426,7 @@ namespace Chromely.CefGlue.Winapi
                         return;
                     }
 
-                    byte[] outputByte = Encoding.UTF8.GetBytes(data);
-
+                    var outputByte = Encoding.UTF8.GetBytes(data);
                     outIntPtr = Marshal.AllocHGlobal(outputByte.Length);
                     Marshal.Copy(outputByte, 0, outIntPtr, outputByte.Length);
 
@@ -480,7 +457,7 @@ namespace Chromely.CefGlue.Winapi
         {
             Task.Run(() =>
             {
-                IntPtr outIntPtr = IntPtr.Zero;
+                var outIntPtr = IntPtr.Zero;
 
                 try
                 {
@@ -494,8 +471,7 @@ namespace Chromely.CefGlue.Winapi
                         return;
                     }
 
-                    byte[] outputByte = Encoding.UTF8.GetBytes(data);
-
+                    var outputByte = Encoding.UTF8.GetBytes(data);
                     outIntPtr = Marshal.AllocHGlobal(outputByte.Length);
                     Marshal.Copy(outputByte, 0, outIntPtr, outputByte.Length);
 
@@ -559,8 +535,7 @@ namespace Chromely.CefGlue.Winapi
         {
             Task.Run(() =>
             {
-                IntPtr outIntPtr = IntPtr.Zero;
-
+                var outIntPtr = IntPtr.Zero;
                 try
                 {
                     if (string.IsNullOrEmpty(data))
@@ -590,8 +565,7 @@ namespace Chromely.CefGlue.Winapi
                         return;
                     }
 
-                    byte[] outputByte = Encoding.UTF8.GetBytes(data);
-
+                    var outputByte = Encoding.UTF8.GetBytes(data);
                     outIntPtr = Marshal.AllocHGlobal(outputByte.Length);
                     Marshal.Copy(outputByte, 0, outIntPtr, outputByte.Length);
 
@@ -634,7 +608,6 @@ namespace Chromely.CefGlue.Winapi
                     try
                     {
                         var connectionIds = ConnectionNameMapper.ConnectionIds;
-
                         if (connectionIds == null)
                         {
                             return;

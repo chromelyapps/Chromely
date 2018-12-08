@@ -1,31 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ChromelyJsHandler.cs" company="Chromely">
-//   Copyright (c) 2017-2018 Kola Oyewumi
+// <copyright file="ChromelyJsHandler.cs" company="Chromely Projects">
+//   Copyright (c) 2017-2018 Chromely Projects
 // </copyright>
 // <license>
-// MIT License
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
+//      See the LICENSE.md file in the project root for more information.
 // </license>
-// <note>
-// Chromely project is licensed under MIT License. CefGlue, CefSharp, Winapi may have additional licensing.
-// </note>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Chromely.Core
@@ -44,7 +23,7 @@ namespace Chromely.Core
         /// </summary>
         public ChromelyJsHandler()
         {
-            this.Key = Guid.NewGuid().ToString();
+            Key = Guid.NewGuid().ToString();
         }
 
         /// <summary>
@@ -58,12 +37,12 @@ namespace Chromely.Core
         /// </param>
         public ChromelyJsHandler(string objectNameToBind, bool registerAsync)
         {
-            this.Key = Guid.NewGuid().ToString();
-            this.ObjectNameToBind = objectNameToBind;
-            this.BoundObject = null;
-            this.RegisterAsAsync = registerAsync;
-            this.BindingOptions = null;
-            this.UseDefault = true;
+            Key = objectNameToBind;
+            ObjectNameToBind = objectNameToBind;
+            BoundObject = null;
+            RegisterAsAsync = registerAsync;
+            BindingOptions = null;
+            UseDefault = true;
         }
 
         /// <summary>
@@ -83,12 +62,12 @@ namespace Chromely.Core
         /// </param>
         public ChromelyJsHandler(string objectNameToBind, object boundObject, object bindingOptions, bool registerAsync)
         {
-            this.Key = Guid.NewGuid().ToString();
-            this.ObjectNameToBind = objectNameToBind;
-            this.BoundObject = boundObject;
-            this.RegisterAsAsync = registerAsync;
-            this.BindingOptions = bindingOptions;
-            this.UseDefault = false;
+            Key = objectNameToBind;
+            ObjectNameToBind = objectNameToBind;
+            BoundObject = boundObject;
+            RegisterAsAsync = registerAsync;
+            BindingOptions = bindingOptions;
+            UseDefault = false;
         }
 
         /// <summary>

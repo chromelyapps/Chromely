@@ -1,31 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Program.cs" company="Chromely">
-//   Copyright (c) 2017-2018 Kola Oyewumi
+// <copyright file="Program.cs" company="Chromely Projects">
+//   Copyright (c) 2017-2018 Chromely Projects
 // </copyright>
 // <license>
-// MIT License
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
+//      See the LICENSE.md file in the project root for more information.
 // </license>
-// <note>
-// Chromely project is licensed under MIT License. CefGlue, CefSharp, Winapi may have additional licensing.
-// </note>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Chromely.CefGlue.Winapi.Demo
@@ -33,10 +12,11 @@ namespace Chromely.CefGlue.Winapi.Demo
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
-    using Chromely.CefGlue.Winapi.ChromeHost;
+
+    using Chromely.CefGlue.Winapi.BrowserWindow;
     using Chromely.Core;
+    using Chromely.Core.Host;
     using Chromely.Core.Infrastructure;
-    using WinApi.Windows;
 
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1400:AccessModifierMustBeDeclared", Justification = "Reviewed. Suppression is OK here.")]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
@@ -47,42 +27,43 @@ namespace Chromely.CefGlue.Winapi.Demo
             try
             {
                 HostHelpers.SetupDefaultExceptionHandlers();
+                var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
 
                 /*
                 * Start url (load html) options:
                 */
 
                 // Options 1 - real standard urls 
-                // string startUrl = "https://google.com";
+                // var startUrl = "https://google.com";
 
                 // Options 2 - using local resource file handling with default/custom local scheme handler 
                 // Requires - (sample) UseDefaultResourceSchemeHandler("local", string.Empty)
                 //            or register new resource scheme handler - RegisterSchemeHandler("local", string.Empty,  new CustomResourceHandler())
-                string startUrl = "local://app/chromely.html";
+                var startUrl = "local://app/chromely.html";
 
                 // Options 3 - using file protocol - using default/custom scheme handler for Ajax/Http requests
                 // Requires - (sample) UseDefaultResourceSchemeHandler("local", string.Empty)
                 //            or register new resource handler - RegisterSchemeHandler("local", string.Empty,  new CustomResourceHandler())
                 // Requires - (sample) UseDefaultHttpSchemeHandler("http", "chromely.com")
                 //            or register new http scheme handler - RegisterSchemeHandler("http", "test.com",  new CustomHttpHandler())
-                // string appDirectory = AppDomain.CurrentDomain.BaseDirectory;
-                // string startUrl = $"file:///{appDirectory}app/chromely.html";
-                ChromelyConfiguration config = ChromelyConfiguration
-                                              .Create()
-                                              .WithAppArgs(args)
-                                              .WithHostSize(1200, 900)
-                                              .WithLogFile("logs\\chromely.cef_new.log")
-                                              .WithStartUrl(startUrl)
-                                              .WithLogSeverity(LogSeverity.Info)
-                                              .UseDefaultLogger("logs\\chromely_new.log")
-                                              .UseDefaultResourceSchemeHandler("local", string.Empty)
-                                              .UseDefaultHttpSchemeHandler("http", "chromely.com");
+                // var startUrl = $"file:///{appDirectory}app/chromely.html";
+                var config = ChromelyConfiguration
+                                .Create()
+                                .WithHostMode(WindowState.Maximize)
+                                .WithHostTitle("chromely")
+                                .WithHostIconFile("chromely.ico")
+                                .WithAppArgs(args)
+                                .WithHostSize(1200, 700)
+                                .WithAppArgs(args)
+                                .WithHostSize(1200, 700)
+                                .WithLogFile("logs\\chromely.cef_new.log")
+                                .WithStartUrl(startUrl)
+                                .WithLogSeverity(LogSeverity.Info)
+                                .UseDefaultLogger("logs\\chromely_new.log")
+                                .UseDefaultResourceSchemeHandler("local", string.Empty)
+                                .UseDefaultHttpSchemeHandler("http", "chromely.com");
 
-                var factory = WinapiHostFactory.Init("chromely.ico");
-                using (var window = factory.CreateWindow(
-                    () => new CefGlueBrowserHost(config),
-                    "chromely",
-                    constructionParams: new FrameWindowConstructionParams()))
+                using (var window = new CefGlueBrowserWindow(config))
                 {
                     // Register external url schems
                     window.RegisterUrlScheme(new UrlScheme("https://github.com/mattkol/Chromely", true));
@@ -96,26 +77,22 @@ namespace Chromely.CefGlue.Winapi.Demo
                     window.RegisterServiceAssembly(Assembly.GetExecutingAssembly());
 
                     // 2. Register external assembly with file name:
-                    // string serviceAssemblyFile = @"C:\ChromelyDlls\Chromely.Service.Demo.dll";
-                    // window.RegisterServiceAssembly(serviceAssemblyFile);
+                    var externalAssemblyFile = System.IO.Path.Combine(appDirectory, "Chromely.Service.Demo.dll");
+                    window.RegisterServiceAssembly(externalAssemblyFile);
 
                     // 3. Register external assemblies with list of filenames:
                     // string serviceAssemblyFile1 = @"C:\ChromelyDlls\Chromely.Service.Demo.dll";
                     // List<string> filenames = new List<string>();
                     // filenames.Add(serviceAssemblyFile1);
-                    // window.RegisterServiceAssemblies(filenames);
+                    // app.RegisterServiceAssemblies(filenames);
 
                     // 4. Register external assemblies directory:
-                    string serviceAssembliesFolder = @"C:\ChromelyDlls";
-                    window.RegisterServiceAssemblies(serviceAssembliesFolder);
+                    // var serviceAssembliesFolder = @"C:\ChromelyDlls";
+                    // window.RegisterServiceAssemblies(serviceAssembliesFolder);
 
                     // Scan assemblies for Controller routes 
                     window.ScanAssemblies();
-
-                    window.SetSize(config.HostWidth, config.HostHeight);
-                    window.CenterToScreen();
-                    window.Show();
-                    return new EventLoop().Run(window);
+                    return window.Run(args);
                 }
             }
             catch (Exception exception)

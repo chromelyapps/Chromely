@@ -1,31 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ChromelyController.cs" company="Chromely">
-//   Copyright (c) 2017-2018 Kola Oyewumi
+// <copyright file="ChromelyController.cs" company="Chromely Projects">
+//   Copyright (c) 2017-2018 Chromely Projects
 // </copyright>
 // <license>
-// MIT License
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
+//       See the LICENSE.md file in the project root for more information.
 // </license>
-// <note>
-// Chromely project is licensed under MIT License. CefGlue, CefSharp, Winapi may have additional licensing.
-// </note>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Chromely.Core.RestfulService
@@ -33,7 +12,6 @@ namespace Chromely.Core.RestfulService
     using System;
     using System.Collections.Generic;
     using System.Reflection;
-    using System.Threading.Tasks;
 
     using Chromely.Core.Infrastructure;
 
@@ -47,7 +25,7 @@ namespace Chromely.Core.RestfulService
         /// </summary>
         protected ChromelyController()
         {
-            this.RouteDictionary = new Dictionary<string, Route>();
+            RouteDictionary = new Dictionary<string, Route>();
         }
 
         /// <summary>
@@ -62,7 +40,7 @@ namespace Chromely.Core.RestfulService
         {
             get
             {
-                var attributeInfo = this.GetAttributeInfo();
+                var attributeInfo = GetAttributeInfo();
                 if (attributeInfo != null)
                 {
                     return attributeInfo.Item1;
@@ -79,7 +57,7 @@ namespace Chromely.Core.RestfulService
         {
             get
             {
-                var attributeInfo = this.GetAttributeInfo();
+                var attributeInfo = GetAttributeInfo();
                 if (attributeInfo != null)
                 {
                     return attributeInfo.Item2;
@@ -100,7 +78,7 @@ namespace Chromely.Core.RestfulService
         /// </param>
         protected void RegisterGetRequest(string path, Func<ChromelyRequest, ChromelyResponse> action)
         {
-            this.AddRoute(Method.GET, path, new Route(Method.GET, path, action));
+            AddRoute(Method.GET, path, new Route(Method.GET, path, action));
         }
 
         /// <summary>
@@ -114,7 +92,7 @@ namespace Chromely.Core.RestfulService
         /// </param>
         protected void RegisterPostRequest(string path, Func<ChromelyRequest, ChromelyResponse> action)
         {
-            this.AddRoute(Method.POST, path, new Route(Method.POST, path, action));
+            AddRoute(Method.POST, path, new Route(Method.POST, path, action));
         }
 
         /// <summary>
@@ -128,7 +106,7 @@ namespace Chromely.Core.RestfulService
         /// </param>
         protected void RegisterPutRequest(string path, Func<ChromelyRequest, ChromelyResponse> action)
         {
-            this.AddRoute(Method.PUT, path, new Route(Method.PUT, path, action));
+            AddRoute(Method.PUT, path, new Route(Method.PUT, path, action));
         }
 
         /// <summary>
@@ -142,7 +120,7 @@ namespace Chromely.Core.RestfulService
         /// </param>
         protected void RegisterDeleteRequest(string path, Func<ChromelyRequest, ChromelyResponse> action)
         {
-            this.AddRoute(Method.DELETE, path, new Route(Method.DELETE, path, action));
+            AddRoute(Method.DELETE, path, new Route(Method.DELETE, path, action));
         }
 
         /// <summary>
@@ -156,7 +134,7 @@ namespace Chromely.Core.RestfulService
         /// </param>
         protected void RegisterHeadRequest(string path, Func<ChromelyRequest, ChromelyResponse> action)
         {
-            this.AddRoute(Method.HEAD, path, new Route(Method.HEAD, path, action));
+            AddRoute(Method.HEAD, path, new Route(Method.HEAD, path, action));
         }
 
         /// <summary>
@@ -170,7 +148,7 @@ namespace Chromely.Core.RestfulService
         /// </param>
         protected void RegisterOptionsRequest(string path, Func<ChromelyRequest, ChromelyResponse> action)
         {
-            this.AddRoute(Method.OPTIONS, path, new Route(Method.OPTIONS, path, action));
+            AddRoute(Method.OPTIONS, path, new Route(Method.OPTIONS, path, action));
         }
 
         /// <summary>
@@ -184,7 +162,7 @@ namespace Chromely.Core.RestfulService
         /// </param>
         protected void RegisterPatchRequest(string path, Func<ChromelyRequest, ChromelyResponse> action)
         {
-            this.AddRoute(Method.PATCH, path, new Route(Method.PATCH, path, action));
+            AddRoute(Method.PATCH, path, new Route(Method.PATCH, path, action));
         }
 
         /// <summary>
@@ -198,7 +176,7 @@ namespace Chromely.Core.RestfulService
         /// </param>
         protected void RegisterMergeRequest(string path, Func<ChromelyRequest, ChromelyResponse> action)
         {
-            this.AddRoute(Method.MERGE, path, new Route(Method.MERGE, path, action));
+            AddRoute(Method.MERGE, path, new Route(Method.MERGE, path, action));
         }
 
         /// <summary>
@@ -216,7 +194,7 @@ namespace Chromely.Core.RestfulService
         protected void AddRoute(Method method, string path, Route route)
         {
             var routhPath = new RoutePath(method, path);
-            this.RouteDictionary[routhPath.Key] = route;
+            RouteDictionary[routhPath.Key] = route;
         }
 
         /// <summary>
@@ -234,7 +212,7 @@ namespace Chromely.Core.RestfulService
         protected void AddRoute(string method, string path, Route route)
         {
             var routhPath = new RoutePath(method, path);
-            this.RouteDictionary[routhPath.Key] = route;
+            RouteDictionary[routhPath.Key] = route;
         }
 
         /// <summary>
@@ -247,7 +225,7 @@ namespace Chromely.Core.RestfulService
         {
             try
             {
-                var attribute = this.GetType().GetCustomAttribute<ControllerPropertyAttribute>(true);
+                var attribute = GetType().GetCustomAttribute<ControllerPropertyAttribute>(true);
                 if (attribute != null)
                 {
                     return new Tuple<string, string>(attribute.Name, attribute.Route);

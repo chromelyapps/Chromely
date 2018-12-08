@@ -1,0 +1,815 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chromely</title>
+    <link rel="stylesheet" href="../Content/css/bootstrap.min.css">
+    <script src="../Content/js/jquery.min.js"></script>
+    <script src="../Content/js/tether.min.js"></script>
+    <script src="../Content/js/popper.min.js"></script>
+    <script src="../Content/js/bootstrap.min.js"></script>
+    <style type="text/css">
+        .show {
+            display: block !important;
+        }
+
+        .hidden {
+            display: none !important;
+            visibility: hidden !important;
+        }
+
+        .invisible {
+            visibility: hidden;
+        }
+
+        .modal-dialog {
+            width: 80%;
+        }
+    </style>
+</head>
+<body>
+    <div class="col-12">
+        <ul class="nav justify-content-end">
+            <li class="nav-item">
+                <a class="nav-link disabled" id="navrequests" data-toggle="tab" href="#requestsTab">Requests</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" id="navrealtime" data-toggle="tab" href="#realtimeTab">Realtime</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" id="navcheckstatus" data-toggle="tab" href="#checkStatusTab">Check Status</a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+
+            <div id="requestsTab" class="tab-pane">
+
+                <!-- Requests Content -->
+                <button id="requestsConnStart" class="btn btn-link" onclick="requestsConn()" style="margin: 5px;">Start Connection</button>
+ 
+                <div class="row" style="height:10px;"></div>
+
+                <div id="requestsTabItems">
+
+                    <!-- Nav pills -->
+                    <ul class="nav nav-pills" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="pill" href="#sectionA">Get 1</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="pill" href="#sectionB">Get 2</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="pill" href="#sectionC">Post</a>
+                        </li>
+                    </ul>
+                    <div class="row" style="height: 25px;"></div>
+
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div id="sectionA" class="container tab-pane active">
+                            <br>
+                            <div class="row">
+                                <div class="col-12">
+                                    Route Path:&ensp;/democontroller/movies &ensp; (Restful Service in Local Assembly)&ensp;<button id="buttonMessageRouterGet1" type="button" class="btn btn-primary btn-sm">Run</button>
+                                </div>
+                                <div style="height: 100px;"></div>
+                                <div class="col-12">
+                                    <div class='table-responsive'>
+                                        <table id="messageRouterResultGet1" class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Id</th>
+                                                    <th>Title</th>
+                                                    <th>Year</th>
+                                                    <th>Votes</th>
+                                                    <th>Rating</th>
+                                                    <th>Date</th>
+                                                    <th>RestfulAssembly</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="sectionB" class="container tab-pane fade">
+                            <br>
+                            <div class="row">
+                                <div class="col-12">
+                                    Route Path:&ensp;/externalcontroller/movies &ensp;(Restful Service in External Assembly)&ensp;<button id="buttonMessageRouterGet2" type="button" class="btn btn-primary btn-sm">Run</button>
+                                </div>
+                                <div style="height: 100px;"></div>
+                                <div class="col-12">
+                                    <div class='table-responsive'>
+                                        <table id="messageRouterResultGet2" class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Id</th>
+                                                    <th>Title</th>
+                                                    <th>Year</th>
+                                                    <th>Votes</th>
+                                                    <th>Rating</th>
+                                                    <th>Date</th>
+                                                    <th>RestfulAssembly</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="sectionC" class="container tab-pane fade">
+                            <br>
+                            <div class="row">
+                                <div class="col-12">
+                                    Route Path:&ensp;/democontroller/movies&ensp;(Restful Service in Local Assembly)&ensp;<button id="buttonMessageRouterPost" type="button" class="btn btn-primary btn-sm">Run</button>
+                                </div>
+                                <div style="height: 100px;"></div>
+                                <div class="col-12">
+                                    <div id="messageRouterResultPost"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Tab panes -->
+
+                </div>
+
+            </div>
+            <!-- End Requests Content -->
+            <!-- Realtime Content -->
+            <div id="realtimeTab" class="tab-pane">
+
+                <button id="realtimeConnStart" class="btn btn-link" onclick="realtimeConns()" style="margin: 5px;">Start Connections</button>
+
+                <div class="row" style="height:10px;"></div>
+
+                <div id="realtimeTabItems">
+
+                    <div class="row col-12">
+
+                        <div class="card col-12">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div style="margin: 5px;">Receive from server</div>
+                                </div>
+                                <div class="col-md-5">
+                                </div>
+                                <div class="col-md-1">
+                                    <button class="btn btn-primary btn-sm" onclick="runServerCommands('receivefromserver', '/receivefromserver/start')" style="margin: 5px;">Start</button>
+                                </div>
+                                <div class="col-md-1">
+                                    <button class="btn btn-primary btn-sm" onclick="runServerCommands('stopreceivefromserver', '/receivefromserver/stop')" style="margin: 5px;">Stop</button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <textarea class="col-12" id="fromservertextarea" rows="2" readonly>
+                                         </textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="row col-12">
+
+                        <div class="card col-12">
+                            <div style="margin: 5px;">Chat 1</div>
+                            <div class="card-body">
+
+                                <div class="row">
+                                    <div class="col-12">
+                                        <textarea class="col-12" id="chat1textarea" rows="2" readonly>
+                                           </textarea>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-7">
+                                        <input id="chat1text" type="text" class="form-control">
+                                    </div>
+                                    <div>
+                                        <label>To</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <select id="chat1sendoption"class="form-control">
+                                            <option value="echo">Echo</option>
+                                            <option value="broadcast">Broadcast</option>
+                                            <option value="chat2conn">Chat2</option>
+                                            <option value="chat3conn">Chat3</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <button id="buttonChat1Send" class="btn btn-primary btn-sm">Send</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row col-12">
+
+                        <div class="card col-12">
+                            <div style="margin: 5px;">Chat 2</div>
+                            <div class="card-body">
+
+                                <div class="row">
+                                    <div class="col-12">
+                                        <textarea class="col-12" id="chat2textarea" rows="2" readonly>
+                                           </textarea>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-7">
+                                        <input id="chat2text" type="text" class="form-control">
+                                    </div>
+                                    <div>
+                                        <label>To</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <select id="chat2sendoption" class="form-control">
+                                            <option value="echo">Echo</option>
+                                            <option value="broadcast">Broadcast</option>
+                                            <option value="chat1conn">Chat1</option>
+                                            <option value="chat3conn">Chat3</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <button id="buttonChat2Send" class="btn btn-primary btn-sm">Send</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row col-12">
+
+                        <div class="card col-12">
+                            <div style="margin: 5px;">Chat 2</div>
+                            <div class="card-body">
+
+                                <div class="row">
+                                    <div class="col-12">
+                                        <textarea class="col-12" id="chat3textarea" rows="2" readonly>
+                                           </textarea>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-7">
+                                        <input  id="chat3text" type="text" class="form-control">
+                                    </div>
+                                    <div>
+                                        <label>To</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <select id="chat3sendoption" class="form-control">
+                                            <option value="echo">Echo</option>
+                                            <option value="broadcast">Broadcast</option>
+                                            <option value="chat1conn">Chat1</option>
+                                            <option value="chat2conn">Chat2</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <button id="buttonChat3Send" class="btn btn-primary btn-sm">Send</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+           <!-- End Realtime Content -->
+
+          <!-- Check Status Content -->
+          <div id="checkStatusTab" class="tab-pane active">
+                <div class="row col-12">
+                    <button id="serverstatus" type="button" class="btn btn-primary btn-sm" onclick="runServerCommands('status', '/websocketmanager/status')" style="margin: 5px;">Check Server Status</button>
+                </div>
+                <div class="row col-12">
+                    <textarea class="col-11" id="eventstextarea" rows="20" readonly style="margin-top: 10px; text-align:left;">
+                    </textarea>
+                </div>
+            </div>
+            <!-- End Check Status Content -->
+
+        </div>
+
+    </div>
+
+<script type="text/javascript">
+    var firstload = false;
+    var requestWs;
+    var sockets = [];
+    var fromserverlogcount = 0;
+    var chat1logcount = 0;
+    var chat2logcount = 0;
+    var chat3logcount = 0;
+    var eventlogcount = 0;
+
+    function requestsConn() {
+        // create a new websocket and connect
+        requestWs = new window.WebSocket('ws://localhost:8181/?name=requestsconn');
+
+        // when data is comming from the server, this method is called
+        requestWs.onmessage = function (evt) {
+            var jsonData = JSON.parse(evt.data);
+            switch (jsonData.RequestId) {
+            case "requestget1": {
+                    $('#messageRouterResultGet1 tbody').empty();
+                    if (jsonData.ReadyState == 4 && jsonData.Status == 200) {
+                        for (var i = 0; i < jsonData.Data.length; i++) {
+                            var row = '<tr>';
+
+                            row += '<td>' + jsonData.Data[i].Id + '</td>';
+                            row += '<td>' + jsonData.Data[i].Title + '</td>';
+                            row += '<td>' + jsonData.Data[i].Year + '</td>';
+                            row += '<td>' + jsonData.Data[i].Votes + '</td>';
+                            row += '<td>' + jsonData.Data[i].Rating + '</td>';
+                            row += '<td>' + jsonData.Data[i].Date + '</td>';
+                            row += '<td>' + jsonData.Data[i].RestfulAssembly + '</td>';
+
+                            row += '</tr>';
+                            $('#messageRouterResultGet1 tbody').append(row);
+                        }
+                    }
+                }
+                break;
+            case "requestget2": {
+                    $('#messageRouterResultGet2 tbody').empty();
+                    if (jsonData.ReadyState == 4 && jsonData.Status == 200) {
+                        for (var i = 0; i < jsonData.Data.length; i++) {
+                            var row = '<tr>';
+
+                            row += '<td>' + jsonData.Data[i].Id + '</td>';
+                            row += '<td>' + jsonData.Data[i].Title + '</td>';
+                            row += '<td>' + jsonData.Data[i].Year + '</td>';
+                            row += '<td>' + jsonData.Data[i].Votes + '</td>';
+                            row += '<td>' + jsonData.Data[i].Rating + '</td>';
+                            row += '<td>' + jsonData.Data[i].Date + '</td>';
+                            row += '<td>' + jsonData.Data[i].RestfulAssembly + '</td>';
+
+                            row += '</tr>';
+                            $('#messageRouterResultGet2 tbody').append(row);
+                        }
+                    }
+                }
+                break;
+            case "requestpost": {
+                    if (jsonData.ReadyState == 4 && jsonData.Status == 200) {
+                        $('#messageRouterResultPost').html(jsonData.Data);
+                    }
+                }
+                break;
+            default: {
+            }
+            }
+        };
+
+        // when the connection is established, this method is called
+        requestWs.onopen = function () {
+            $("#requestsTabItems").removeClass('hidden');
+            $("#requestsConnStart").addClass('disabled');
+
+            $('#messageRouterResultGet1 tbody').empty();
+            $('#messageRouterResultGet2 tbody').empty();
+            $('#messageRouterResultPost tbody').empty();
+
+            var row = currentDayTime() + ' - ';
+            row += 'requestsconn' + ' - ';
+            row += 'connection opened';
+            row += '\n';
+            $('#eventstextarea').append(row);
+        };
+
+        // when the connection is closed, this method is called
+        requestWs.onclose = function () {
+            $("#requestsConnStart").removeClass('disabled');
+
+            var row = currentDayTime() + ' - ';
+            row += 'requestsconn' + ' - ';
+            row += 'connection closed';
+            row += '\n';
+            $('#eventstextarea').append(row);
+        };
+
+        document.getElementById("buttonMessageRouterGet1").addEventListener("click",
+            function () {
+                var requestId = "requestget1";
+                var request = {
+                    "id": requestId,
+                    "method": "GET",
+                    "url": "/democontroller/movies",
+                    "parameters": null,
+                    "postData": null
+                };
+
+                requestWs.send(JSON.stringify(request));
+            });
+
+        document.getElementById("buttonMessageRouterGet2").addEventListener("click",
+            function () {
+                var requestId = "requestget2";
+                var request = {
+                    "id": requestId,
+                    "method": "GET",
+                    "url": "/externalcontroller/movies",
+                    "parameters": null,
+                    "postData": null
+                };
+
+                requestWs.send(JSON.stringify(request));
+            });
+
+        document.getElementById("buttonMessageRouterPost").addEventListener("click",
+            function () {
+                var moviesJson = [
+                    { Id: 1, Title: "The Shawshank Redemption", Year: 1994, Votes: 678790, Rating: 9.2 },
+                    { Id: 2, Title: "The Godfather", Year: 1972, votes: 511495, Rating: 9.2 },
+                    { Id: 3, Title: "The Godfather: Part II", Year: 1974, Votes: 319352, Rating: 9.0 },
+                    { Id: 4, Title: "The Good, the Bad and the Ugly", Year: 1966, Votes: 213030, Rating: 8.9 },
+                    { Id: 5, Title: "My Fair Lady", Year: 1964, Votes: 533848, Rating: 8.9 },
+                    { Id: 6, Title: "12 Angry Men", Year: 1957, Votes: 164558, Rating: 8.9 }
+                ];
+
+                var requestId = "requestpost";
+                var request = {
+                    "id": requestId,
+                    "method": "POST",
+                    "url": "/democontroller/movies",
+                    "parameters": null,
+                    "postData": moviesJson,
+                };
+
+                requestWs.send(JSON.stringify(request));
+            });
+
+    }
+
+    function currentDayTime() {
+        var currentdate = new Date();
+        return currentdate.getDate() + "/"
+            + (currentdate.getMonth() + 1) + "/"
+            + currentdate.getFullYear() + " @ "
+            + currentdate.getHours() + ":"
+            + currentdate.getMinutes() + ":"
+            + currentdate.getSeconds();
+    }
+
+    function closeSockets () {
+        if (typeof requestWs != 'undefined') {
+            requestWs.close();
+        }
+
+        for (var s in this.sockets) {
+            this.sockets[s].close();
+        }
+
+        this.requestWs = 'undefined';
+        this.sockets = [];
+    }
+
+    var start = function () {
+        $("#requestsTabItems").addClass('hidden');
+        $("#requestsConnStart").removeClass('disabled');
+
+        $("#realtimeTabItems").addClass('hidden');
+        $("#realtimeConnStart").removeClass('disabled');
+
+        $('#eventstable tbody').empty();
+
+        runServerCommands("status", "/websocketmanager/status");
+    }
+
+    var close = function () {
+        closeSockets();
+    }
+
+    window.onload = start;
+    window.onbeforeunload = close;
+</script>
+
+<script type="text/javascript">
+    function receiveFromServerConn() {
+        // create a new websocket and connect
+        var receiveFromServerWs = new window.WebSocket('ws://localhost:8181/?name=receivefromserverconn');
+
+        // when data is comming from the server, this method is called
+        receiveFromServerWs.onmessage = function (evt) {
+            if (fromserverlogcount >= 20) {
+                $('#fromservertextarea').val('');
+                fromserverlogcount = 0;
+            }
+
+            var row = evt.data;
+            row += '\n';
+            $('#fromservertextarea').append(row);
+            fromserverlogcount += 1;
+        };
+
+        // when the connection is established, this method is called
+        receiveFromServerWs.onopen = function () {
+            $("#realtimeTabItems").removeClass('hidden');
+            $("#realtimeConnStart").addClass('disabled');
+
+            var row = currentDayTime() + ' - ';
+            row += 'receivefromserverconn' + ' - ';
+            row += 'connection opened';
+            row += '\n';
+            $('#eventstextarea').append(row);
+        };
+
+        // when the connection is closed, this method is called
+        receiveFromServerWs.onclose = function () {
+
+            var row = currentDayTime() + ' - ';
+            row += 'receivefromserverconn' + ' - ';
+            row += 'connection closed';
+            row += '\n';
+            $('#eventstextarea').append(row);
+        };
+
+        this.sockets.push(receiveFromServerWs);
+    }
+
+    function chat1Conn() {
+        // create a new websocket and connect
+        var chat1Ws = new window.WebSocket('ws://localhost:8181/?name=chat1conn');
+
+        // when data is comming from the server, this method is called
+        chat1Ws.onmessage = function (evt) {
+            if (chat1logcount >= 20) {
+                $('#chat1textarea').val('');
+                chat1logcount = 0;
+            }
+
+            var row = currentDayTime() + ' - ';
+            row += evt.data;
+            row += '\n';
+            $('#chat1textarea').append(row);
+
+            chat1logcount += 1;
+        };
+
+        // when the connection is established, this method is called
+        chat1Ws.onopen = function () {
+            var row = currentDayTime() + ' - ';
+            row += 'chat1conn' + ' - ';
+            row += 'connection opened';
+            row += '\n';
+            $('#eventstextarea').append(row);
+        };
+
+        // when the connection is closed, this method is called
+        chat1Ws.onclose = function () {
+            var row = currentDayTime() + ' - ';
+            row += 'chat1conn' + ' - ';
+            row += 'connection closed';
+            row += '\n';
+            $('#eventstextarea').append(row);
+        };
+
+        document.getElementById("buttonChat1Send").addEventListener("click",
+            function () {
+                var request = formatRequest("chat1", "chat1text", "chat1sendoption");
+                chat1Ws.send(JSON.stringify(request));
+            });
+
+        this.sockets.push(chat1Ws);
+    }
+
+    function chat2Conn() {
+        // create a new websocket and connect
+        var chat2Ws = new window.WebSocket('ws://localhost:8181/?name=chat2conn');
+
+        // when data is comming from the server, this method is called
+        chat2Ws.onmessage = function (evt) {
+            if (chat2logcount >= 20) {
+                $('#chat2textarea').val('');
+                chat2logcount = 0;
+            }
+
+            var row = currentDayTime() + ' - ';
+            row += evt.data;
+            row += '\n';
+            $('#chat2textarea').append(row);
+
+            chat2logcount += 1;
+        };
+
+        // when the connection is established, this method is called
+        chat2Ws.onopen = function () {
+            var row = currentDayTime() + ' - ';
+            row += 'chat2conn' + ' - ';
+            row += 'connection opened';
+            row += '\n';
+            $('#eventstextarea').append(row);
+        };
+
+        // when the connection is closed, this method is called
+        chat2Ws.onclose = function () {
+            var row = currentDayTime() + ' - ';
+            row += 'chat2conn' + ' - ';
+            row += 'connection closed';
+            row += '\n';
+            $('#eventstextarea').append(row);
+        };
+
+        document.getElementById("buttonChat2Send").addEventListener("click",
+            function () {
+                var request = formatRequest("chat2", "chat2text", "chat2sendoption");
+                chat2Ws.send(JSON.stringify(request));
+            });
+
+        this.sockets.push(chat2Ws);
+    }
+
+    function chat3Conn() {
+        // create a new websocket and connect
+        var chat3Ws = new window.WebSocket('ws://localhost:8181/?name=chat3conn');
+
+        // when data is comming from the server, this method is called
+        chat3Ws.onmessage = function (evt) {
+            if (chat3logcount >= 20) {
+                $('#chat3textarea').val('');
+                chat3logcount = 0;
+            }
+
+            var row = currentDayTime() + ' - ';
+            row += evt.data;
+            row += '\n';
+            $('#chat3textarea').append(row);
+
+            chat3logcount += 1;
+        };
+
+        // when the connection is established, this method is called
+        chat3Ws.onopen = function () {
+            var row = currentDayTime() + ' - ';
+            row += 'chat3conn' + ' - ';
+            row += 'connection opened';
+            row += '\n';
+            $('#eventstextarea').append(row);
+        };
+
+        // when the connection is closed, this method is called
+        chat3Ws.onclose = function () {
+            var row = currentDayTime() + ' - ';
+            row += 'chat3conn' + ' - ';
+            row += 'connection closed';
+            row += '\n';
+            $('#eventstextarea').append(row);
+        };
+
+        document.getElementById("buttonChat3Send").addEventListener("click",
+            function () {
+                var request = formatRequest("chat3", "chat3text", "chat3sendoption");
+                chat3Ws.send(JSON.stringify(request));
+            });
+
+        this.sockets.push(chat3Ws);
+    }
+
+    function formatRequest(conn, textelementid, selectoptionId) {
+        var broadcast = false;
+        var sel = document.getElementById(selectoptionId);
+        var targetname = sel.options[sel.selectedIndex].value;
+        if (targetname == "broadcast") {
+            targetname = "";
+            broadcast = true;
+        } else if (targetname == "echo") {
+            targetname = "";
+            broadcast = false;
+        } 
+
+        var text = document.getElementById(textelementid).value;
+        var request = {
+            "targetname": targetname,
+            "broadcast": broadcast,
+            "data": "From " + conn + ": " + text
+        };
+
+        return request;
+    }
+
+    function realtimeConns() {
+        receiveFromServerConn();
+        chat1Conn();
+        chat2Conn();
+        chat3Conn();
+    }
+</script>
+
+<script type="text/javascript">
+    function runServerResult(res) {
+        var jsonData = JSON.parse(res);
+        if (jsonData.ReadyState == 4 && jsonData.Status == 200) {
+            switch (jsonData.RequestId) {
+            case "start": 
+                break;
+            case "stop": 
+                break;
+            case "status": {
+                    if (jsonData.Data == true) {
+                        if (eventlogcount >= 10) {
+                            $('#eventstextarea').val('');
+                            eventlogcount = 0;
+                        }
+
+                        var row = currentDayTime() + ' - ';
+                        row += 'server currently running.';
+                        row += '\n';
+                        $('#eventstextarea').append(row);
+
+                        eventlogcount += 1;
+
+                          if (!this.firstload) {
+
+                            $("#navrequests").removeClass('disabled');
+                            $("#navrequests").addClass('active');
+
+                            $("#navrealtime").removeClass('disabled');
+                            $("#navrealtime").removeClass('active');
+                            $("#navcheckstatus").removeClass('active');
+
+                            $("#requestsTab").addClass('active');
+                            $("#realtimeTab").removeClass('active');
+                            $("#checkStatusTab").removeClass('active');
+                            this.firstload = true;
+                        }
+
+                    } else {
+
+                        var row = currentDayTime() + ' - ';
+                        row += 'server not currently running.';
+                        row += 'For Websocket setup please see - https://github.com/mattkol/Chromely/wiki/Real-time-with-Websocket';
+                        row += '\n';
+                        $('#eventstextarea').append(row);
+                    }
+
+                }
+                break;
+            default: {
+                console.log(jsonData.Data);
+            }
+            }
+        }
+    }
+
+    function runServerCommands(requestId, url) {
+
+        var method = "GET";
+        var postData = null;
+        if (requestId == "receivefromserver") {
+            method = "POST";
+            postData = "receivefromserverconn";
+        }
+        if (requestId == "stopreceivefromserver") {
+            method = "POST";
+        }
+
+        var request = {
+            "id": requestId,
+            "method": method,
+            "url": url,
+            "parameters": null,
+            "postData": postData
+        };
+
+        window.cefQuery({
+            request: JSON.stringify(request),
+            onSuccess: function (response) {
+                runServerResult(response);
+            }, onFailure: function (err, msg) {
+                console.log(err, msg);
+            }
+        });
+    }
+</script>
+</body >
+</html >
+
+
+
+
+
+
+
+
+
+
+

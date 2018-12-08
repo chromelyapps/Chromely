@@ -1,33 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CefGlueLoadHandler.cs" company="Chromely">
-//   Copyright (c) 2017-2018 Kola Oyewumi
+// <copyright file="CefGlueLoadHandler.cs" company="Chromely Projects">
+//   Copyright (c) 2017-2018 Chromely Projects
 // </copyright>
 // <license>
-// MIT License
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
+//      See the LICENSE.md file in the project root for more information.
 // </license>
-// <note>
-// Chromely project is licensed under MIT License. CefGlue, CefSharp, Winapi may have additional licensing.
-// This is a port from CefGlue.WindowsForms sample of CefGlue. Mostly provided as-is. 
-// For more info: https://bitbucket.org/xilium/xilium.cefglue/wiki/Home
-// </note>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Chromely.CefGlue.Winapi.Browser.Handlers
@@ -51,7 +28,7 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
         /// </summary>
         public CefGlueLoadHandler()
         {
-            this.mBrowser = CefGlueBrowser.BrowserCore;
+            mBrowser = CefGlueBrowser.BrowserCore;
         }
 
         /// <summary>
@@ -68,7 +45,7 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
         /// </param>
         protected override void OnLoadEnd(CefBrowser browser, CefFrame frame, int httpStatusCode)
         {
-            this.mBrowser.InvokeAsyncIfPossible(() => this.mBrowser.OnLoadEnd(new LoadEndEventArgs(frame, httpStatusCode)));
+            mBrowser.InvokeAsyncIfPossible(() => mBrowser.OnLoadEnd(new LoadEndEventArgs(frame, httpStatusCode)));
         }
 
         /// <summary>
@@ -91,7 +68,7 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
         /// </param>
         protected override void OnLoadError(CefBrowser browser, CefFrame frame, CefErrorCode errorCode, string errorText, string failedUrl)
         {
-            this.mBrowser.InvokeAsyncIfPossible(() => this.mBrowser.OnLoadError(new LoadErrorEventArgs(frame, errorCode, errorText, failedUrl)));
+            mBrowser.InvokeAsyncIfPossible(() => mBrowser.OnLoadError(new LoadErrorEventArgs(frame, errorCode, errorText, failedUrl)));
         }
 
         /// <summary>
@@ -108,7 +85,7 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
         /// </param>
         protected override void OnLoadStart(CefBrowser browser, CefFrame frame, CefTransitionType transitionType)
         {
-            this.mBrowser.InvokeAsyncIfPossible(() => this.mBrowser.OnLoadStart(new LoadStartEventArgs(frame)));
+            mBrowser.InvokeAsyncIfPossible(() => mBrowser.OnLoadStart(new LoadStartEventArgs(frame)));
         }
 
         /// <summary>
@@ -128,7 +105,7 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
         /// </param>
         protected override void OnLoadingStateChange(CefBrowser browser, bool isLoading, bool canGoBack, bool canGoForward)
         {
-            this.mBrowser.InvokeAsyncIfPossible(() => this.mBrowser.OnLoadingStateChange(new LoadingStateChangeEventArgs(isLoading, canGoBack, canGoForward)));
+            mBrowser.InvokeAsyncIfPossible(() => mBrowser.OnLoadingStateChange(new LoadingStateChangeEventArgs(isLoading, canGoBack, canGoForward)));
         }
     }
 }

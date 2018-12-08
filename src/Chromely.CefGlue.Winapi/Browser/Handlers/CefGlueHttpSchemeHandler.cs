@@ -1,31 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CefGlueHttpSchemeHandler.cs" company="Chromely">
-//   Copyright (c) 2017-2018 Kola Oyewumi
+// <copyright file="CefGlueHttpSchemeHandler.cs" company="Chromely Projects">
+//   Copyright (c) 2017-2018 Chromely Projects
 // </copyright>
 // <license>
-// MIT License
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
+//      See the LICENSE.md file in the project root for more information.
 // </license>
-// <note>
-// Chromely project is licensed under MIT License. CefGlue, CefSharp, Winapi may have additional licensing.
-// </note>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Chromely.CefGlue.Winapi.Browser.Handlers
@@ -88,15 +67,15 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
                     {
                         try
                         {
-                            this.mChromelyResponse = RequestTaskRunner.Run(request);
-                            string jsonData = this.mChromelyResponse.Data.EnsureResponseIsJsonFormat();
-                            this.mResponseBytes = Encoding.UTF8.GetBytes(jsonData);
+                            mChromelyResponse = RequestTaskRunner.Run(request);
+                            string jsonData = mChromelyResponse.Data.EnsureResponseIsJsonFormat();
+                            mResponseBytes = Encoding.UTF8.GetBytes(jsonData);
                         }
                         catch (Exception exception)
                         {
                             Log.Error(exception);
 
-                            this.mChromelyResponse =
+                            mChromelyResponse =
                                 new ChromelyResponse
                                     {
                                         Status = (int)HttpStatusCode.BadRequest,
@@ -139,8 +118,8 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
 
             try
             {
-                HttpStatusCode status = (this.mChromelyResponse != null) ? (HttpStatusCode)this.mChromelyResponse.Status : HttpStatusCode.BadRequest;
-                string errorStatus = (this.mChromelyResponse != null) ? this.mChromelyResponse.Data.ToString() : "Not Found";
+                HttpStatusCode status = (mChromelyResponse != null) ? (HttpStatusCode)mChromelyResponse.Status : HttpStatusCode.BadRequest;
+                string errorStatus = (mChromelyResponse != null) ? mChromelyResponse.Data.ToString() : "Not Found";
 
                 var headers = response.GetHeaderMap();
                 headers.Add("Cache-Control", "private");
@@ -184,30 +163,30 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
 
             try
             {
-                if (this.mCompleted)
+                if (mCompleted)
                 {
                     bytesRead = 0;
-                    this.mTotalBytesRead = 0;
-                    this.mResponseBytes = null;
+                    mTotalBytesRead = 0;
+                    mResponseBytes = null;
                     return false;
                 }
                 else
                 {
-                    if (this.mResponseBytes != null)
+                    if (mResponseBytes != null)
                     {
-                        currBytesRead = Math.Min(this.mResponseBytes.Length - this.mTotalBytesRead, bytesToRead);
-                        response.Write(this.mResponseBytes, this.mTotalBytesRead, currBytesRead);
-                        this.mTotalBytesRead += currBytesRead;
+                        currBytesRead = Math.Min(mResponseBytes.Length - mTotalBytesRead, bytesToRead);
+                        response.Write(mResponseBytes, mTotalBytesRead, currBytesRead);
+                        mTotalBytesRead += currBytesRead;
 
-                        if (this.mTotalBytesRead >= this.mResponseBytes.Length)
+                        if (mTotalBytesRead >= mResponseBytes.Length)
                         {
-                            this.mCompleted = true;
+                            mCompleted = true;
                         }
                     }
                     else
                     {
                         bytesRead = 0;
-                        this.mCompleted = true;
+                        mCompleted = true;
                     }
                 }
             }

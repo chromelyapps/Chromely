@@ -11,7 +11,4 @@
     <ProjectReference Include="..\..\Chromely.CefGlue.Winapi\Chromely.CefGlue.Winapi.csproj" />
     <ProjectReference Include="..\..\Chromely.Core\Chromely.Core.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
 </Project>

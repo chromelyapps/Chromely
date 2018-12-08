@@ -1,31 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CefGlueResourceSchemeHandler.cs" company="Chromely">
-//   Copyright (c) 2017-2018 Kola Oyewumi
+// <copyright file="CefGlueResourceSchemeHandler.cs" company="Chromely Projects">
+//   Copyright (c) 2017-2018 Chromely Projects
 // </copyright>
 // <license>
-// MIT License
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
+//      See the LICENSE.md file in the project root for more information.
 // </license>
-// <note>
-// Chromely project is licensed under MIT License. CefGlue, CefSharp, Winapi may have additional licensing.
-// </note>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Chromely.CefGlue.Winapi.Browser.Handlers
@@ -80,9 +59,9 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
             var u = new Uri(request.Url);
             var file = u.Authority + u.AbsolutePath;
 
-            this.mTotalBytesRead = 0;
-            this.mFileBytes = null;
-            this.mCompleted = false;
+            mTotalBytesRead = 0;
+            mFileBytes = null;
+            mCompleted = false;
 
             if (File.Exists(file))
             {
@@ -92,10 +71,10 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
                     {
                         try
                         {
-                            this.mFileBytes = File.ReadAllBytes(file);
+                            mFileBytes = File.ReadAllBytes(file);
 
                             string extension = Path.GetExtension(file);
-                            this.mMime = MimeMapper.GetMimeType(extension);
+                            mMime = MimeMapper.GetMimeType(extension);
                         }
                         catch (Exception exception)
                         {
@@ -141,7 +120,7 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
                 response.SetHeaderMap(headers);
 
                 response.Status = (int)HttpStatusCode.OK;
-                response.MimeType = this.mMime;
+                response.MimeType = mMime;
                 response.StatusText = "OK";
             }
             catch (Exception exception)
@@ -178,30 +157,30 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
 
             try
             {
-                if (this.mCompleted)
+                if (mCompleted)
                 {
                     bytesRead = 0;
-                    this.mTotalBytesRead = 0;
-                    this.mFileBytes = null;
+                    mTotalBytesRead = 0;
+                    mFileBytes = null;
                     return false;
                 }
                 else
                 {
-                    if (this.mFileBytes != null)
+                    if (mFileBytes != null)
                     {
-                        currBytesRead = Math.Min(this.mFileBytes.Length - this.mTotalBytesRead, bytesToRead);
-                        response.Write(this.mFileBytes, this.mTotalBytesRead, currBytesRead);
-                        this.mTotalBytesRead += currBytesRead;
+                        currBytesRead = Math.Min(mFileBytes.Length - mTotalBytesRead, bytesToRead);
+                        response.Write(mFileBytes, mTotalBytesRead, currBytesRead);
+                        mTotalBytesRead += currBytesRead;
 
-                        if (this.mTotalBytesRead >= this.mFileBytes.Length)
+                        if (mTotalBytesRead >= mFileBytes.Length)
                         {
-                            this.mCompleted = true;
+                            mCompleted = true;
                         }
                     }
                     else
                     {
                         bytesRead = 0;
-                        this.mCompleted = true;
+                        mCompleted = true;
                     }
                 }
             }

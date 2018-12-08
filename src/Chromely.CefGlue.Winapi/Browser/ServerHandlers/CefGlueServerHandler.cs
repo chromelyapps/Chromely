@@ -1,31 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CefGlueServerHandler.cs" company="Chromely">
-//   Copyright (c) 2017-2018 Kola Oyewumi
+// <copyright file="CefGlueServerHandler.cs" company="Chromely Projects">
+//   Copyright (c) 2017-2018 Chromely Projects
 // </copyright>
 // <license>
-// MIT License
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
+//      See the LICENSE.md file in the project root for more information.
 // </license>
-// <note>
-// Chromely project is licensed under MIT License. CefGlue, CefSharp, Winapi may have additional licensing.
-// </note>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Chromely.CefGlue.Winapi.Browser.ServerHandlers
@@ -78,7 +57,7 @@ namespace Chromely.CefGlue.Winapi.Browser.ServerHandlers
         /// </param>
         public CefGlueServerHandler(IChromelyWebsocketHandler websocketHandler)
         {
-            this.mWebsocketHandler = websocketHandler;
+            mWebsocketHandler = websocketHandler;
         }
 
         /// <summary>
@@ -114,26 +93,26 @@ namespace Chromely.CefGlue.Winapi.Browser.ServerHandlers
             if (!CefRuntime.CurrentlyOn(CefThreadId.UI))
             {
                 Action<string, int, Action> startServer =
-                    (a, p, c) => this.StartServer(a, p, c);
+                    (a, p, c) => StartServer(a, p, c);
 
-                this.PostTask(CefThreadId.UI, startServer, address, port, completecallback);
+                PostTask(CefThreadId.UI, startServer, address, port, completecallback);
 
                 return;
             }
 
-            if (this.mServer == null)
+            if (mServer == null)
             {
                 if (!(port >= 1025 && port <= 65535))
                 {
                     return;
                 }
 
-                this.Address = string.IsNullOrWhiteSpace(address) ? DefaultServerAddress : address;
-                this.Port = port;
-                this.mCompleteCallback = completecallback;
+                Address = string.IsNullOrWhiteSpace(address) ? DefaultServerAddress : address;
+                Port = port;
+                mCompleteCallback = completecallback;
 
 
-                CefServer.Create(this.Address, (ushort)this.Port, DefaultServerBacklog, this);
+                CefServer.Create(Address, (ushort)Port, DefaultServerBacklog, this);
             }
         }
 
@@ -152,25 +131,25 @@ namespace Chromely.CefGlue.Winapi.Browser.ServerHandlers
             if (!CefRuntime.CurrentlyOn(CefThreadId.UI))
             {
                 Action<int, Action> startServer =
-                    (p, c) => this.StartServer(p, c);
+                    (p, c) => StartServer(p, c);
 
-                this.PostTask(CefThreadId.UI, startServer, port, completecallback);
+                PostTask(CefThreadId.UI, startServer, port, completecallback);
 
                 return;
             }
 
-            if (this.mServer == null)
+            if (mServer == null)
             {
                 if (!(port >= 1025 && port <= 65535))
                 {
                     return;
                 }
 
-                this.Address = DefaultServerAddress;
-                this.Port = port;
-                this.mCompleteCallback = completecallback;
+                Address = DefaultServerAddress;
+                Port = port;
+                mCompleteCallback = completecallback;
 
-                CefServer.Create(this.Address, (ushort)this.Port, DefaultServerBacklog, this);
+                CefServer.Create(Address, (ushort)Port, DefaultServerBacklog, this);
             }
         }
 
@@ -185,17 +164,17 @@ namespace Chromely.CefGlue.Winapi.Browser.ServerHandlers
             if (!CefRuntime.CurrentlyOn(CefThreadId.UI))
             {
                 Action<Action> stopServer =
-                    (c) => this.StopServer(c);
+                    (c) => StopServer(c);
 
-                this.PostTask(CefThreadId.UI, stopServer, completecallback);
+                PostTask(CefThreadId.UI, stopServer, completecallback);
 
                 return;
             }
 
-            if (this.mServer != null)
+            if (mServer != null)
             {
-                this.mCompleteCallback = completecallback;
-                this.mServer.Shutdown();
+                mCompleteCallback = completecallback;
+                mServer.Shutdown();
             }
         }
 
@@ -204,11 +183,11 @@ namespace Chromely.CefGlue.Winapi.Browser.ServerHandlers
         /// </summary>
         public void DisposeServer()
         {
-            if (this.mServer != null)
+            if (mServer != null)
             {
-                this.mServer.Dispose();
-                this.IsServerRunning = false;
-                this.mServer = null;
+                mServer.Dispose();
+                IsServerRunning = false;
+                mServer = null;
             }
         }
 
@@ -220,13 +199,13 @@ namespace Chromely.CefGlue.Winapi.Browser.ServerHandlers
         /// </param>
         protected override void OnServerCreated(CefServer server)
         {
-            if (this.mServer == null)
+            if (mServer == null)
             {
                 ConnectionNameMapper.Clear();
-                this.mServer = server;
-                IoC.RegisterInstance(typeof(CefServer), typeof(CefServer).FullName, this.mServer);
-                this.IsServerRunning = server.IsRunning;
-                this.RunCompleteCallback(server.IsRunning);
+                mServer = server;
+                IoC.RegisterInstance(typeof(CefServer), typeof(CefServer).FullName, mServer);
+                IsServerRunning = server.IsRunning;
+                RunCompleteCallback(server.IsRunning);
             }
         }
 
@@ -238,11 +217,11 @@ namespace Chromely.CefGlue.Winapi.Browser.ServerHandlers
         /// </param>
         protected override void OnServerDestroyed(CefServer server)
         {
-            if (this.mServer != null)
+            if (mServer != null)
             {
-                this.mServer = null;
-                this.IsServerRunning = false;
-                this.RunCompleteCallback(true);
+                mServer = null;
+                IsServerRunning = false;
+                RunCompleteCallback(true);
             }
         }
 
@@ -353,9 +332,9 @@ namespace Chromely.CefGlue.Winapi.Browser.ServerHandlers
         /// </param>
         protected override void OnWebSocketMessage(CefServer server, int connectionId, IntPtr data, long dataSize)
         {
-            lock (this.mlockObj)
+            lock (mlockObj)
             {
-                this.mWebsocketHandler?.OnMessage(connectionId, data, dataSize);
+                mWebsocketHandler?.OnMessage(connectionId, data, dataSize);
             }
         }
 
@@ -370,16 +349,16 @@ namespace Chromely.CefGlue.Winapi.Browser.ServerHandlers
             if (!CefRuntime.CurrentlyOn(CefThreadId.UI))
             {
                 Action<bool> run =
-                    (f) => this.RunCompleteCallback(f);
+                    (f) => RunCompleteCallback(f);
 
-                this.PostTask(CefThreadId.UI, run, isRunning);
+                PostTask(CefThreadId.UI, run, isRunning);
 
                 return;
             }
 
-            if (this.mCompleteCallback != null)
+            if (mCompleteCallback != null)
             {
-                this.mCompleteCallback.Invoke();
+                mCompleteCallback.Invoke();
             }
         }
 
@@ -502,10 +481,10 @@ namespace Chromely.CefGlue.Winapi.Browser.ServerHandlers
             /// </param>
             public ActionTask1(Action<string, int, Action> action, string address, int port, Action completionCallback)
             {
-                this.mAddress = address;
-                this.mAction = action;
-                this.mPort = port;
-                this.mCompletionCallback = completionCallback;
+                mAddress = address;
+                mAction = action;
+                mPort = port;
+                mCompletionCallback = completionCallback;
             }
 
             /// <summary>
@@ -513,8 +492,8 @@ namespace Chromely.CefGlue.Winapi.Browser.ServerHandlers
             /// </summary>
             protected override void Execute()
             {
-                this.mAction(this.mAddress, this.mPort, this.mCompletionCallback);
-                this.mAction = null;
+                mAction(mAddress, mPort, mCompletionCallback);
+                mAction = null;
             }
         }
 
@@ -552,9 +531,9 @@ namespace Chromely.CefGlue.Winapi.Browser.ServerHandlers
             /// </param>
             public ActionTask2(Action<int, Action> action, int port, Action completionCallback)
             {
-                this.mAction = action;
-                this.mPort = port;
-                this.mCompletionCallback = completionCallback;
+                mAction = action;
+                mPort = port;
+                mCompletionCallback = completionCallback;
             }
 
             /// <summary>
@@ -562,8 +541,8 @@ namespace Chromely.CefGlue.Winapi.Browser.ServerHandlers
             /// </summary>
             protected override void Execute()
             {
-                this.mAction(this.mPort, this.mCompletionCallback);
-                this.mAction = null;
+                mAction(mPort, mCompletionCallback);
+                mAction = null;
             }
         }
 
@@ -593,8 +572,8 @@ namespace Chromely.CefGlue.Winapi.Browser.ServerHandlers
             /// </param>
             public ActionTask3(Action<Action> action, Action completionCallback)
             {
-                this.mAction = action;
-                this.mCompletionCallback = completionCallback;
+                mAction = action;
+                mCompletionCallback = completionCallback;
             }
 
             /// <summary>
@@ -602,8 +581,8 @@ namespace Chromely.CefGlue.Winapi.Browser.ServerHandlers
             /// </summary>
             protected override void Execute()
             {
-                this.mAction(this.mCompletionCallback);
-                this.mAction = null;
+                mAction(mCompletionCallback);
+                mAction = null;
             }
         }
 
@@ -633,8 +612,8 @@ namespace Chromely.CefGlue.Winapi.Browser.ServerHandlers
             /// </param>
             public ActionTask4(Action<bool> action, bool flag)
             {
-                this.mAction = action;
-                this.mFlag = flag;
+                mAction = action;
+                mFlag = flag;
             }
 
             /// <summary>
@@ -642,8 +621,8 @@ namespace Chromely.CefGlue.Winapi.Browser.ServerHandlers
             /// </summary>
             protected override void Execute()
             {
-                this.mAction(this.mFlag);
-                this.mAction = null;
+                mAction(mFlag);
+                mAction = null;
             }
         }
     }
