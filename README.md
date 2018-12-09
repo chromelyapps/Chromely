@@ -39,8 +39,7 @@ Get started with the [demos](https://github.com/mattkol/Chromely/tree/master/src
 ### Creating a Simple App (Using CefGlue with Winapi host)
 For more info see - [Getting Started](https://github.com/mattkol/Chromely/wiki/Getting-Started)
 
-##### Notes on Upgrade to CefGlue version 68 and CefSharp version 67 
-Please [see](https://github.com/mattkol/Chromely/wiki/Upgrade-to-CefGlue-v68-and-CefSharp-v67).
+**Notes on Upgrade to CefGlue version 68 and CefSharp version 67** - Please [see](https://github.com/mattkol/Chromely/wiki/Upgrade-to-CefGlue-v68-and-CefSharp-v67).
 ````csharp
 class Program
 {
