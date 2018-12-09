@@ -38,6 +38,9 @@ Get started with the [demos](https://github.com/mattkol/Chromely/tree/master/src
 
 ### Creating a Simple App (Using CefGlue with Winapi host)
 For more info see - [Getting Started](https://github.com/mattkol/Chromely/wiki/Getting-Started)
+
+##### Notes on Upgrade to CefGlue version 68 and CefSharp version 67 
+Please [see](https://github.com/mattkol/Chromely/wiki/Upgrade-to-CefGlue-v68-and-CefSharp-v67).
 ````csharp
 class Program
 {
@@ -47,19 +50,17 @@ class Program
 
       ChromelyConfiguration config = ChromelyConfiguration
                                     .Create()
-                                    .WithAppArgs(args)
+                                    .WithHostMode(WindowState.Normal, true)
+                                    .WithHostTitle("chromely")
+                                    .WithHostIconFile("chromely.ico")
+                                    .WitAppArgs(args)
                                     .WithHostSize(1000, 600)
                                     .WithStartUrl(startUrl);
 
-     var factory = WinapiHostFactory.Init();
-     using (var window = factory.CreateWindow(() => new CefGlueBrowserHost(config),
-           "chromely", constructionParams: new FrameWindowConstructionParams()))
+      using (var window = new CefGlueBrowserWindow(config))
       {
-         window.SetSize(config.HostWidth, config.HostHeight);
-         window.CenterToScreen();
-         window.Show();
-         return new EventLoop().Run(window);
-     }
+         return window.Run(args);
+      }
   }
 }
 ````
