@@ -9,6 +9,7 @@
 
 namespace Chromely.CefGlue.Winapi.Browser.Handlers
 {
+    using Chromely.CefGlue.Winapi.Browser.EventParams;
     using Chromely.Core.Host;
     using Chromely.Core.Infrastructure;
 
@@ -67,7 +68,7 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
         /// </param>
         protected override void OnBeforeClose(CefBrowser browser)
         {
-            mBrowser.InvokeAsyncIfPossible(mBrowser.OnBeforeClose);
+            mBrowser.InvokeAsyncIfPossible(() => mBrowser.OnBeforeClose(new BeforeCloseEventArgs()));
         }
 
         /// <summary>

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CefHandlerFakeTypes.cs" company="Chromely Projects">
+// <copyright file="CefCustomHandlerFakeTypes.cs" company="Chromely Projects">
 //   Copyright (c) 2017-2018 Chromely Projects
 // </copyright>
 // <license>
@@ -22,7 +22,7 @@ namespace Chromely.Core.Helpers
     [SuppressMessage("StyleCop.CSharp.SpacingRules", "SA1012:OpeningCurlyBracketsMustBeSpacedCorrectly", Justification = "Reviewed. Suppression is OK here.")]
     [SuppressMessage("StyleCop.CSharp.SpacingRules", "SA1013:ClosingCurlyBracketsMustBeSpacedCorrectly", Justification = "Reviewed. Suppression is OK here.")]
     [SuppressMessage("StyleCop.CSharp.LayoutRules", "SA1502:ElementMustNotBeOnSingleLine", Justification = "Reviewed. Suppression is OK here.")]
-    public static class CefHandlerFakeTypes
+    public static class CefCustomHandlerFakeTypes
     {
         /// <summary>
         /// The LifeSpanHandler interface.
@@ -85,7 +85,7 @@ namespace Chromely.Core.Helpers
         public interface IFindHandler {}
 
         /// <summary>
-        /// The get handler type.
+        /// The get custom handler type.
         /// </summary>
         /// <param name="key">
         /// The key.
@@ -137,13 +137,14 @@ namespace Chromely.Core.Helpers
             return null;
         }
 
+
         /// <summary>
         /// The get all handler keys.
         /// </summary>
         /// <returns>
         /// The <see cref="IList"/>.
         /// </returns>
-        public static List<CefHandlerKey> GetAllHandlerKeys()
+        public static List<CefHandlerKey> GetAllCustomHandlerKeys()
         {
             var types = new List<CefHandlerKey>
                             {

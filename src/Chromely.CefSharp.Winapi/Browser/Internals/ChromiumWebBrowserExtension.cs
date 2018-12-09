@@ -12,6 +12,7 @@ namespace Chromely.CefSharp.Winapi.Browser.Internals
 {
     using System;
     using Chromely.CefSharp.Winapi.Browser.Handlers;
+    using Chromely.Core;
     using Chromely.Core.Helpers;
     using Chromely.Core.Infrastructure;
     using global::CefSharp;
@@ -22,20 +23,125 @@ namespace Chromely.CefSharp.Winapi.Browser.Internals
     public static class ChromiumWebBrowserExtension
     {
         /// <summary>
-        /// The set handlers.
+        /// The set event handlers.
         /// </summary>
         /// <param name="browser">
         /// The browser.
         /// </param>
-        public static void SetHandlers(this ChromiumWebBrowser browser)
+        public static void SetEventHandlers(this ChromiumWebBrowser browser)
         {
             try
             {
-                foreach (var enumKey in CefHandlerFakeTypes.GetAllHandlerKeys())
+                foreach (var enumKey in CefEventHandlerFakeTypes.GetAllEventHandlerKeys())
                 {
                     object instance = null;
 
-                    var service = CefHandlerFakeTypes.GetHandlerType(enumKey);
+                    var service = CefEventHandlerFakeTypes.GetHandlerType(enumKey);
+                    var keyStr = enumKey.EnumToString();
+                    try
+                    {
+                        if (IoC.IsRegistered(service, keyStr))
+                        {
+                            instance = IoC.GetInstance(service, keyStr);
+                        }
+                    }
+                    catch (Exception exception)
+                    {
+                        Log.Error(exception);
+                    }
+
+                    switch (enumKey)
+                    {
+                        case CefEventKey.None:
+                            break;
+
+                        case CefEventKey.FrameLoadStart:
+                            if (instance is ChromelyEventHandler<FrameLoadStartEventArgs> frameLoadStart)
+                            {
+                                browser.FrameLoadStart += frameLoadStart.Handler;
+                            }
+
+                            break;
+
+                        case CefEventKey.AddressChanged:
+                            if (instance is ChromelyEventHandler<AddressChangedEventArgs> addressChanged)
+                            {
+                                browser.AddressChanged += addressChanged.Handler;
+                            }
+
+                            break;
+
+                        case CefEventKey.TitleChanged:
+                            if (instance is ChromelyEventHandler<TitleChangedEventArgs> titleChanged)
+                            {
+                                browser.TitleChanged += titleChanged.Handler;
+                            }
+
+                            break;
+
+                        case CefEventKey.FrameLoadEnd:
+                            if (instance is ChromelyEventHandler<FrameLoadEndEventArgs> frameLoadEnd)
+                            {
+                                browser.FrameLoadEnd += frameLoadEnd.Handler;
+                            }
+
+                            break;
+
+                        case CefEventKey.LoadingStateChanged:
+                            if (instance is ChromelyEventHandler<LoadingStateChangedEventArgs> loadingStateChanged)
+                            {
+                                browser.LoadingStateChanged += loadingStateChanged.Handler;
+                            }
+
+                            break;
+
+                        case CefEventKey.ConsoleMessage:
+                            if (instance is ChromelyEventHandler<ConsoleMessageEventArgs> consoleMessage)
+                            {
+                                browser.ConsoleMessage += consoleMessage.Handler;
+                            }
+
+                            break;
+
+                        case CefEventKey.StatusMessage:
+                            if (instance is ChromelyEventHandler<StatusMessageEventArgs> statusMessage)
+                            {
+                                browser.StatusMessage += statusMessage.Handler;
+                            }
+
+                            break;
+
+                        case CefEventKey.LoadError:
+                            if (instance is ChromelyEventHandler<LoadErrorEventArgs> loadError)
+                            {
+                                browser.LoadError += loadError.Handler;
+                            }
+
+                            break;
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                Log.Error(exception);
+            }
+        }
+
+        /// <summary>
+        /// The set custom handlers.
+        /// </summary>
+        /// <param name="browser">
+        /// The browser.
+        /// </param>
+        public static void SetCustomHandlers(this ChromiumWebBrowser browser)
+        {
+            try
+            {
+                foreach (var enumKey in CefCustomHandlerFakeTypes.GetAllCustomHandlerKeys())
+                {
+                    object instance = null;
+
+                    var service = CefCustomHandlerFakeTypes.GetHandlerType(enumKey);
                     var keyStr = enumKey.EnumToString();
                     try
                     {

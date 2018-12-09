@@ -17,6 +17,8 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
     using Chromely.CefGlue.Gtk.Browser;
     using Chromely.CefGlue.Gtk.Browser.Handlers;
     using Chromely.Core;
+    using Chromely.Core.Helpers;
+    using Chromely.Core.Host;
     using Chromely.Core.Infrastructure;
     using Chromely.Core.RestfulService;
     using Xilium.CefGlue;
@@ -25,8 +27,18 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
     /// <summary>
     /// The host base.
     /// </summary>
-    public abstract class HostBase : IChromelyServiceProvider, IDisposable
+    public abstract class HostBase : IChromelyWindow, IChromelyServiceProvider, IDisposable
     {
+        /// <summary>
+        /// The m main view.
+        /// </summary>
+        private Window mMainView;
+
+        /// <summary>
+        /// The Wwindow created.
+        /// </summary>
+        private bool mWindowCreated;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="HostBase"/> class.
         /// </summary>
@@ -55,15 +67,17 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         /// </summary>
         public static CefMessageRouterBrowserSide BrowserMessageRouter { get; private set; }
 
+        #region IChromelyWindow implementations
+
         /// <summary>
         /// Gets the host config.
         /// </summary>
         public ChromelyConfiguration HostConfig { get; }
 
         /// <summary>
-        /// Gets or sets the main view.
+        /// Gets the browser.
         /// </summary>
-        public Window MainView { get; set; }
+        public object Browser => mMainView?.Browser;
 
         /// <summary>
         /// The run.
@@ -88,12 +102,107 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         }
 
         /// <summary>
+        /// The register event handler.
+        /// The event handler must be registered before calling "Run".
+        /// Alternatively this can be done before window is created during ChromelyConfiguration instantiation.
+        /// Only one type of event handler can be registered. The first one is valid, consequent registrations will be ignored.
+        /// </summary>
+        /// <param name="key">
+        /// The key.
+        /// </param>
+        /// <param name="handler">
+        /// The handler.
+        /// </param>
+        /// <typeparam name="T">
+        /// This is the event argument classe - e,g - LoadErrorEventArgs, FrameLoadStartEventArgs. 
+        /// </typeparam>
+        public void RegisterEventHandler<T>(CefEventKey key, EventHandler<T> handler)
+        {
+            if (mWindowCreated)
+            {
+                throw new Exception("\"RegisterEventHandler\" method must be called before \"Run\" method.");
+            }
+
+            HostConfig?.RegisterEventHandler(key, handler);
+        }
+
+        /// <summary>
+        /// The register event handler.
+        /// </summary>
+        /// <param name="key">
+        /// The key.
+        /// </param>
+        /// <param name="handler">
+        /// The handler.
+        /// </param>
+        /// <typeparam name="T">
+        /// This is the event argument classe - e,g - LoadErrorEventArgs, FrameLoadStartEventArgs. 
+        /// </typeparam>
+        public void RegisterEventHandler<T>(CefEventKey key, ChromelyEventHandler<T> handler)
+        {
+            if (mWindowCreated)
+            {
+                throw new Exception("\"RegisterEventHandler\" method must be called before \"Run\" method.");
+            }
+
+            HostConfig?.RegisterEventHandler(key, handler);
+        }
+
+        /// <summary>
+        /// The register custom handler. 
+        /// The custom handler must be registered before calling "Run".
+        /// Alternatively this can be done before window is created during ChromelyConfiguration instantiation.
+        /// Only one type of custom handler can be registered. The first one is valid, consequent registrations will be ignored.
+        /// </summary>
+        /// <param name="key">
+        /// The key.
+        /// </param>
+        /// <param name="implementation">
+        /// The implementation.
+        /// </param>
+        public void RegisterCustomHandler(CefHandlerKey key, Type implementation)
+        {
+            if (mWindowCreated)
+            {
+                throw new Exception("\"RegisterCustomHandler\" method must be called before \"Run\" method.");
+            }
+
+            HostConfig?.RegisterCustomHandler(key, implementation);
+        }
+
+        #endregion
+
+        #region Quit/IDisposable
+
+        /// <summary>
         /// The quit.
         /// </summary>
-        public void Quit()
+        public virtual void Quit()
         {
             PlatformQuitMessageLoop();
         }
+
+        /// <summary>
+        /// The dispose.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// The dispose.
+        /// </summary>
+        /// <param name="disposing">
+        /// The disposing.
+        /// </param>
+        public virtual void Dispose(bool disposing)
+        {
+            mMainView?.Dispose();
+        }
+
+        #endregion
 
         /// <summary>
         /// The register url scheme.
@@ -172,29 +281,6 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
                 }
             }
         }
-
-        #region IDisposable
-
-        /// <summary>
-        /// The dispose.
-        /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// The dispose.
-        /// </summary>
-        /// <param name="disposing">
-        /// The disposing.
-        /// </param>
-        public virtual void Dispose(bool disposing)
-        {
-        }
-
-        #endregion
 
         #region Abstract Methods
 
@@ -308,12 +394,14 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
 
             PlatformInitialize();
 
-            MainView = CreateMainView();
+            mMainView = CreateMainView();
+
+            mWindowCreated = true;
 
             PlatformRunMessageLoop();
 
-            MainView.Dispose();
-            MainView = null;
+            mMainView.Dispose();
+            mMainView = null;
 
             CefRuntime.Shutdown();
 

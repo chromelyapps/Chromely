@@ -91,17 +91,17 @@ namespace Chromely.CefGlue.Gtk.Browser
         /// <summary>
         /// The loading state change.
         /// </summary>
-        public event EventHandler<LoadingStateChangeEventArgs> LoadingStateChange;
+        public event EventHandler<LoadingStateChangeEventArgs> LoadingStateChanged;
 
         /// <summary>
         /// The tooltip.
         /// </summary>
-        public event EventHandler<TooltipEventArgs> Tooltip;
+        public event EventHandler<TooltipEventArgs> TooltipChanged;
 
         /// <summary>
         /// The before close.
         /// </summary>
-        public event EventHandler BeforeClose;
+        public event EventHandler<BeforeCloseEventArgs> BeforeClose;
 
         /// <summary>
         /// The before popup.
@@ -109,19 +109,19 @@ namespace Chromely.CefGlue.Gtk.Browser
         public event EventHandler<BeforePopupEventArgs> BeforePopup;
 
         /// <summary>
-        /// The load end.
+        /// The frame load started.
         /// </summary>
-        public event EventHandler<LoadEndEventArgs> LoadEnd;
+        public event EventHandler<FrameLoadStartEventArgs> FrameLoadStart;
+
+        /// <summary>
+        /// The frame load end.
+        /// </summary>
+        public event EventHandler<FrameLoadEndEventArgs> FrameLoadEnd;
 
         /// <summary>
         /// The load error.
         /// </summary>
         public event EventHandler<LoadErrorEventArgs> LoadError;
-
-        /// <summary>
-        /// The load started.
-        /// </summary>
-        public event EventHandler<LoadStartEventArgs> LoadStarted;
 
         /// <summary>
         /// The plugin crashed.
@@ -298,7 +298,7 @@ namespace Chromely.CefGlue.Gtk.Browser
         /// </param>
         public virtual void OnLoadingStateChange(LoadingStateChangeEventArgs eventArgs)
         {
-            LoadingStateChange?.Invoke(this, eventArgs);
+            LoadingStateChanged?.Invoke(this, eventArgs);
         }
 
         /// <summary>
@@ -309,15 +309,18 @@ namespace Chromely.CefGlue.Gtk.Browser
         /// </param>
         public virtual void OnTooltip(TooltipEventArgs eventArgs)
         {
-            Tooltip?.Invoke(this, eventArgs);
+            TooltipChanged?.Invoke(this, eventArgs);
         }
 
         /// <summary>
         /// The on before close.
         /// </summary>
-        public virtual void OnBeforeClose()
+        /// <param name="eventArgs">
+        /// The event args.
+        /// </param>
+        public virtual void OnBeforeClose(BeforeCloseEventArgs eventArgs)
         {
-            BeforeClose?.Invoke(this, EventArgs.Empty);
+            BeforeClose?.Invoke(this, eventArgs);
         }
 
         /// <summary>
@@ -332,14 +335,25 @@ namespace Chromely.CefGlue.Gtk.Browser
         }
 
         /// <summary>
+        /// The on frame load start.
+        /// </summary>
+        /// <param name="eventArgs">
+        /// The event args.
+        /// </param>
+        public virtual void OnFrameLoadStart(FrameLoadStartEventArgs eventArgs)
+        {
+            FrameLoadStart?.Invoke(this, eventArgs);
+        }
+
+        /// <summary>
         /// The on load end.
         /// </summary>
         /// <param name="eventArgs">
         /// The event args.
         /// </param>
-        public virtual void OnLoadEnd(LoadEndEventArgs eventArgs)
+        public virtual void OnFrameLoadEnd(FrameLoadEndEventArgs eventArgs)
         {
-            LoadEnd?.Invoke(this, eventArgs);
+            FrameLoadEnd?.Invoke(this, eventArgs);
         }
 
         /// <summary>
@@ -359,9 +373,9 @@ namespace Chromely.CefGlue.Gtk.Browser
         /// <param name="eventArgs">
         /// The event args.
         /// </param>
-        public virtual void OnLoadStart(LoadStartEventArgs eventArgs)
+        public virtual void OnLoadStart(FrameLoadStartEventArgs eventArgs)
         {
-            LoadStarted?.Invoke(this, eventArgs);
+            FrameLoadStart?.Invoke(this, eventArgs);
         }
 
         /// <summary>

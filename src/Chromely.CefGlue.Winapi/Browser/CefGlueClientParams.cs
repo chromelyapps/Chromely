@@ -100,11 +100,11 @@ namespace Chromely.CefGlue.Winapi.Browser
 
             try
             {
-                foreach (var enumKey in CefHandlerFakeTypes.GetAllHandlerKeys())
+                foreach (var enumKey in CefCustomHandlerFakeTypes.GetAllCustomHandlerKeys())
                 {
                     object instance = null;
 
-                    var service = CefHandlerFakeTypes.GetHandlerType(enumKey);
+                    var service = CefCustomHandlerFakeTypes.GetHandlerType(enumKey);
                     var keyStr = enumKey.EnumToString();
                     try
                     {

@@ -23,7 +23,7 @@ namespace Chromely.CefSharp.Winapi.Browser
     /// <summary>
     /// The chromium web browser.
     /// </summary>
-    public class ChromiumWebBrowser : WebBrowserBase, IWebBrowserInternal
+    public class ChromiumWebBrowser : IWebBrowserInternal
     {
         /// <summary>
         /// The m settings.
@@ -50,6 +50,8 @@ namespace Chromely.CefSharp.Winapi.Browser
         /// the browser is initialized in an async fashion)
         /// </summary>
         private bool mBrowserCreated;
+
+        private bool mDisposed;
 
         /// <summary>
         /// The request context (we deliberately use a private variable so we can throw an exception if
@@ -622,11 +624,25 @@ namespace Chromely.CefSharp.Winapi.Browser
         #endregion  Event Handlers
 
         /// <summary>
+        /// The dispose.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
         /// Releases the unmanaged resources used by the <see cref="T:System.Windows.Forms.Control" /> and its child controls and optionally releases the managed resources.
         /// </summary>
         /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
-        protected override void Dispose(bool disposing)
+        protected virtual void Dispose(bool disposing)
         {
+            if (mDisposed)
+            {
+                return;
+            }
+
             IsBrowserInitialized = false;
             Cef.RemoveDisposable(this);
 
@@ -635,7 +651,7 @@ namespace Chromely.CefSharp.Winapi.Browser
                 FreeUnmanagedResources();
             }
 
-            // Don't maintain a reference to event listeners anylonger:
+            // Don't maintain a reference to event listeners any longer:
             LoadError = null;
             FrameLoadStart = null;
             FrameLoadEnd = null;
@@ -650,7 +666,7 @@ namespace Chromely.CefSharp.Winapi.Browser
             // otherwise the ILifeSpanHandler.DoClose will not be invoked.
             this.SetHandlersToNull();
 
-            base.Dispose(disposing);
+            mDisposed = true;
         }
 
         /// <summary>

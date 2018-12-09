@@ -107,7 +107,7 @@ namespace Caliburn.Light
             }
 
             object singleton = null;
-            GetOrCreateEntry(service, key).Add(c => singleton ?? (singleton = c.BuildInstance(implementation)));
+            GetOrCreateEntry(service, key)?.Add(c => singleton ?? (singleton = c.BuildInstance(implementation)));
         }
 
         /// <summary>
@@ -146,7 +146,7 @@ namespace Caliburn.Light
             }
 
             object singleton = null;
-            GetOrCreateEntry(typeof(TService), key).Add(c => singleton ?? (singleton = handler(c)));
+            GetOrCreateEntry(typeof(TService), key)?.Add(c => singleton ?? (singleton = handler(c)));
         }
 
         /// <summary>
@@ -162,7 +162,7 @@ namespace Caliburn.Light
                 throw new ArgumentNullException(nameof(service));
             }
 
-            GetOrCreateEntry(service, key).Add(c => instance);
+            GetOrCreateEntry(service, key)?.Add(c => instance);
         }
 
         /// <summary>
@@ -194,7 +194,7 @@ namespace Caliburn.Light
                 throw new ArgumentNullException(nameof(implementation));
             }
 
-            GetOrCreateEntry(service, key).Add(c => c.BuildInstance(implementation));
+            GetOrCreateEntry(service, key)?.Add(c => c.BuildInstance(implementation));
         }
 
         /// <summary>
@@ -237,7 +237,7 @@ namespace Caliburn.Light
                 throw new ArgumentNullException(nameof(handler));
             }
 
-            GetOrCreateEntry(service, key).Add(handler);
+            GetOrCreateEntry(service, key)?.Add(handler);
         }
 
         /// <summary>
@@ -253,7 +253,7 @@ namespace Caliburn.Light
                 throw new ArgumentNullException(nameof(handler));
             }
 
-            GetOrCreateEntry(typeof(TService), key).Add(c => handler(c));
+            GetOrCreateEntry(typeof(TService), key)?.Add(c => handler(c));
         }
 
         /// <summary>
@@ -447,9 +447,10 @@ namespace Caliburn.Light
             {
                 entry = new ContainerEntry { Service = service, Key = key };
                 mEntries.Add(entry);
+                return entry;
             }
 
-            return entry;
+            return null;
         }
 
         /// <summary>

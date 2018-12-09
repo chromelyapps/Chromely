@@ -32,7 +32,7 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         /// <summary>
         /// The CefGlueBrowser object.
         /// </summary>
-        private readonly CefGlueBrowser mCore;
+        private readonly CefGlueBrowser mBrowser;
 
         /// <summary>
         /// The browser window handle.
@@ -52,17 +52,20 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
             : base(hostConfig.HostTitle, hostConfig.HostWidth, hostConfig.HostHeight, hostConfig.HostIconFile)
         {
             mHostConfig = hostConfig;
-            mCore = new CefGlueBrowser(this, hostConfig, new CefBrowserSettings());
-            mCore.Created += OnBrowserCreated;
+            mBrowser = new CefGlueBrowser(this, hostConfig, new CefBrowserSettings());
+            mBrowser.Created += OnBrowserCreated;
             mApplication = application;
+
+            // Set event handler
+            mBrowser.SetEventHandlers();
 
             ShowWindow();
         }
 
         /// <summary>
-        /// The web browser.
+        /// The browser.
         /// </summary>
-        public CefGlueBrowser WebBrowser => mCore;
+        public CefGlueBrowser Browser => mBrowser;
 
         #region Close/Dispose
 
@@ -79,9 +82,9 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         /// </summary>
         public void Dispose()
         {
-            if (mCore != null)
+            if (mBrowser != null)
             {
-                var browser = mCore.CefBrowser;
+                var browser = mBrowser.CefBrowser;
                 var host = browser.GetHost();
                 host.CloseBrowser();
                 host.Dispose();
@@ -125,7 +128,7 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
                     throw new NotSupportedException();
             }
 
-            mCore.Create(windowInfo);
+            mBrowser.Create(windowInfo);
         }
 
         /// <summary>
@@ -183,7 +186,7 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         /// </param>
         private void OnBrowserCreated(object sender, EventArgs e)
         {
-            mBrowserWindowHandle = mCore.CefBrowser.GetHost().GetWindowHandle();
+            mBrowserWindowHandle = mBrowser.CefBrowser.GetHost().GetWindowHandle();
         }
     }
 }

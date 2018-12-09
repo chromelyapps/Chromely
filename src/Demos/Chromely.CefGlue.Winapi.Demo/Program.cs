@@ -12,9 +12,10 @@ namespace Chromely.CefGlue.Winapi.Demo
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
-
+    using Chromely.CefGlue.Winapi.Browser.EventParams;
     using Chromely.CefGlue.Winapi.BrowserWindow;
     using Chromely.Core;
+    using Chromely.Core.Helpers;
     using Chromely.Core.Host;
     using Chromely.Core.Infrastructure;
 

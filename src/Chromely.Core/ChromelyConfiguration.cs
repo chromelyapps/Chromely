@@ -655,6 +655,46 @@ namespace Chromely.Core
         }
 
         /// <summary>
+        /// The register event handler.
+        /// </summary>
+        /// <param name="key">
+        /// The key.
+        /// </param>
+        /// <param name="handler">
+        /// The handler.
+        /// </param>
+        /// <typeparam name="T">
+        /// </typeparam>
+        /// <returns>
+        /// The <see cref="ChromelyConfiguration"/>.
+        /// </returns>
+        public virtual ChromelyConfiguration RegisterEventHandler<T>(CefEventKey key, EventHandler<T> handler)
+        {
+            return RegisterEventHandler<T>(key, new ChromelyEventHandler<T>(key, handler));
+        }
+
+        /// <summary>
+        /// The register event handler.
+        /// </summary>
+        /// <param name="key">
+        /// The key.
+        /// </param>
+        /// <param name="handler">
+        /// The handler.
+        /// </param>
+        /// <typeparam name="T">
+        /// </typeparam>
+        /// <returns>
+        /// The <see cref="ChromelyConfiguration"/>.
+        /// </returns>
+        public virtual ChromelyConfiguration RegisterEventHandler<T>(CefEventKey key, ChromelyEventHandler<T> handler)
+        {
+            var service = CefEventHandlerFakeTypes.GetHandlerType(key);
+            IoC.RegisterInstance(service, handler.Key, handler);
+            return this;
+        }
+
+        /// <summary>
         /// Registers custom handler.
         /// </summary>
         /// <param name="key">
@@ -668,7 +708,7 @@ namespace Chromely.Core
         /// </returns>
         public virtual ChromelyConfiguration RegisterCustomHandler(CefHandlerKey key, Type implementation)
         {
-            var service = CefHandlerFakeTypes.GetHandlerType(key);
+            var service = CefCustomHandlerFakeTypes.GetHandlerType(key);
             var keyStr = key.EnumToString();
             IoC.RegisterPerRequest(service, keyStr, implementation);
 

@@ -9,6 +9,8 @@
 
 namespace Chromely.CefGlue.Gtk.Browser.Handlers
 {
+    using Chromely.CefGlue.Gtk.Browser.EventParams;
+    using Chromely.Core.Host;
     using Chromely.Core.Infrastructure;
 
     using Xilium.CefGlue;
@@ -40,8 +42,7 @@ namespace Chromely.CefGlue.Gtk.Browser.Handlers
         protected override void OnAfterCreated(CefBrowser browser)
         {
             base.OnAfterCreated(browser);
-
-            mBrowser.OnCreated(browser);
+            mBrowser.InvokeAsyncIfPossible(() => mBrowser.OnCreated(browser));
         }
 
         /// <summary>
@@ -66,6 +67,7 @@ namespace Chromely.CefGlue.Gtk.Browser.Handlers
         /// </param>
         protected override void OnBeforeClose(CefBrowser browser)
         {
+            mBrowser.InvokeAsyncIfPossible(() => mBrowser.OnBeforeClose(new BeforeCloseEventArgs()));
         }
 
         /// <summary>

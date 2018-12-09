@@ -34,7 +34,7 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
         /// <summary>
         /// The ChromiumWebBrowser object.
         /// </summary>
-        private readonly ChromiumWebBrowser mBrowser;
+        private ChromiumWebBrowser mBrowser;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Window"/> class.
@@ -55,7 +55,8 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
             mBrowser.IsBrowserInitializedChanged += IsBrowserInitializedChanged;
 
             // Set handlers
-            mBrowser.SetHandlers();
+            mBrowser.SetEventHandlers();
+            mBrowser.SetCustomHandlers();
 
             RegisterJsHandlers();
             mApplication = application;
@@ -63,15 +64,12 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
             ShowWindow();
         }
 
-        #region Close/Dispose
-
         /// <summary>
-        /// The close.
+        /// The browser.
         /// </summary>
-        public void Close()
-        {
-            Dispose();
-        }
+        public ChromiumWebBrowser Browser => mBrowser;
+
+        #region Dispose
 
         /// <summary>
         /// The dispose.
@@ -80,15 +78,12 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
         {
             if (mBrowser != null)
             {
-                var browser = mBrowser.GetBrowser();
-                var host = browser.GetHost();
-                host.CloseBrowser(true);
-                host.Dispose();
-                browser.Dispose();
+                mBrowser.Dispose();
+                mBrowser = null;
             }
         }
 
-        #endregion Close/Dispose
+        #endregion Dispose
 
         /// <summary>
         /// The on realized.

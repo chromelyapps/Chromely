@@ -58,23 +58,18 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
             mBrowser.Created += OnBrowserCreated;
             mApplication = application;
 
+            // Set event handler
+            mBrowser.SetEventHandlers();
+
             ShowWindow();
         }
 
         /// <summary>
-        /// The web browser.
+        /// The browser.
         /// </summary>
-        public CefGlueBrowser WebBrowser => mBrowser;
+        public CefGlueBrowser Browser => mBrowser;
 
-        #region Close/Dispose
-
-        /// <summary>
-        /// The close.
-        /// </summary>
-        public void Close()
-        {
-            Dispose();
-        }
+        #region Dispose
 
         /// <summary>
         /// The dispose.
@@ -92,7 +87,7 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
             }
         }
 
-        #endregion Close/Dispose
+        #endregion Dispose
 
         /// <summary>
         /// The on realized.

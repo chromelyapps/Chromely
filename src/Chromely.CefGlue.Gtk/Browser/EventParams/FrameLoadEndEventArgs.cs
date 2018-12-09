@@ -7,7 +7,7 @@
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Chromely.CefGlue.Winapi.Browser.EventParams
+namespace Chromely.CefGlue.Gtk.Browser.EventParams
 {
     using System;
     using Xilium.CefGlue;
@@ -15,10 +15,10 @@ namespace Chromely.CefGlue.Winapi.Browser.EventParams
     /// <summary>
     /// The load end event args.
     /// </summary>
-    public class LoadEndEventArgs : EventArgs
+    public class FrameLoadEndEventArgs : EventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="LoadEndEventArgs"/> class.
+        /// Initializes a new instance of the <see cref="FrameLoadEndEventArgs"/> class.
         /// </summary>
         /// <param name="frame">
         /// The frame.
@@ -26,7 +26,7 @@ namespace Chromely.CefGlue.Winapi.Browser.EventParams
         /// <param name="httpStatusCode">
         /// The http status code.
         /// </param>
-        public LoadEndEventArgs(CefFrame frame, int httpStatusCode)
+        public FrameLoadEndEventArgs(CefFrame frame, int httpStatusCode)
         {
             Frame = frame;
             HttpStatusCode = httpStatusCode;
@@ -35,11 +35,11 @@ namespace Chromely.CefGlue.Winapi.Browser.EventParams
         /// <summary>
         /// Gets the http status code.
         /// </summary>
-        public int HttpStatusCode { get; private set; }
+        public int HttpStatusCode { get; }
 
         /// <summary>
         /// Gets the frame.
         /// </summary>
-        public CefFrame Frame { get; private set; }
+        public CefFrame Frame { get; }
     }
 }

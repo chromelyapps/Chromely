@@ -15,9 +15,11 @@ namespace Chromely.CefSharp.Winapi.Demo
 
     using Chromely.CefSharp.Winapi.BrowserWindow;
     using Chromely.Core;
+    using Chromely.Core.Helpers;
     using Chromely.Core.Host;
     using Chromely.Core.Infrastructure;
-    using WinApi.Windows;
+
+    using global::CefSharp;
 
     /// <summary>
     /// The program.
@@ -68,7 +70,7 @@ namespace Chromely.CefSharp.Winapi.Demo
                                 .WithHostSize(1200, 700)
                                 .WithLogFile("logs\\chromely.cef_new.log")
                                 .WithStartUrl(startUrl)
-                                .WithLogSeverity(LogSeverity.Info)
+                                .WithLogSeverity(Core.Infrastructure.LogSeverity.Info)
                                 .UseDefaultLogger()
                                 .UseDefaultResourceSchemeHandler("local", string.Empty)
                                 .UseDefaultHttpSchemeHandler("http", "chromely.com")

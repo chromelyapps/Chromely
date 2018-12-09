@@ -144,6 +144,20 @@ namespace Chromely.Core.Helpers
         }
 
         /// <summary>
+        /// The enum to string.
+        /// </summary>
+        /// <param name="key">
+        /// The key.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
+        public static string EnumToString(this CefEventKey key)
+        {
+            return Enum.GetName(key.GetType(), key);
+        }
+
+        /// <summary>
         /// The to enum.
         /// </summary>
         /// <param name="enumValue">

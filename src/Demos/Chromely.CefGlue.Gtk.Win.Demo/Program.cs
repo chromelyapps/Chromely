@@ -13,8 +13,10 @@ namespace Chromely.CefGlue.Gtk.Win.Demo
     using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
 
+    using Chromely.CefGlue.Gtk.Browser.EventParams;
     using Chromely.CefGlue.Gtk.BrowserWindow;
     using Chromely.Core;
+    using Chromely.Core.Helpers;
     using Chromely.Core.Host;
     using Chromely.Core.Infrastructure;
 
@@ -60,7 +62,7 @@ namespace Chromely.CefGlue.Gtk.Win.Demo
                                 .UseDefaultLogger("logs\\chromely_new.log")
                                 .UseDefaultResourceSchemeHandler("local", string.Empty)
                                 .UseDefaultHttpSchemeHandler("http", "chromely.com");
-                                //.UseDefaultWebsocketHandler(string.Empty, 8181, true);
+                                 //.UseDefaultWebsocketHandler(string.Empty, 8181, true);
 
                 using (var window = new CefGlueBrowserWindow(config))
                 {

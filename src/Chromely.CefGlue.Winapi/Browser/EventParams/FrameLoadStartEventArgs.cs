@@ -1,5 +1,6 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LoadStartEventArgs.cs" company="Chromely Projects">
+﻿
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="FrameLoadEndEventArgs.cs" company="Chromely Projects">
 //   Copyright (c) 2017-2018 Chromely Projects
 // </copyright>
 // <license>
@@ -15,15 +16,15 @@ namespace Chromely.CefGlue.Winapi.Browser.EventParams
     /// <summary>
     /// The load start event args.
     /// </summary>
-    public class LoadStartEventArgs : EventArgs
+    public class FrameLoadStartEventArgs : EventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="LoadStartEventArgs"/> class.
+        /// Initializes a new instance of the <see cref="FrameLoadStartEventArgs"/> class.
         /// </summary>
         /// <param name="frame">
         /// The frame.
         /// </param>
-        public LoadStartEventArgs(CefFrame frame)
+        public FrameLoadStartEventArgs(CefFrame frame)
         {
             Frame = frame;
         }

@@ -17,131 +17,131 @@ namespace Chromely.Core.Helpers
         /// <summary>
         /// The single process.
         /// </summary>
-        public const string SingleProcess = "SingleProcess";
+        public const string SingleProcess = nameof(SingleProcess);
 
         /// <summary>
         /// The no sandbox.
         /// </summary>
-        public const string NoSandbox = "NoSandbox";
+        public const string NoSandbox = nameof(NoSandbox);
 
         /// <summary>
         /// The browser subprocess path.
         /// </summary>
-        public const string BrowserSubprocessPath = "BrowserSubprocessPath";
+        public const string BrowserSubprocessPath = nameof(BrowserSubprocessPath);
 
         /// <summary>
         /// The multi threaded message loop.
         /// </summary>
-        public const string MultiThreadedMessageLoop = "MultiThreadedMessageLoop";
+        public const string MultiThreadedMessageLoop = nameof(MultiThreadedMessageLoop);
 
         /// <summary>
         /// The external message pump.
         /// </summary>
-        public const string ExternalMessagePump = "ExternalMessagePump";
+        public const string ExternalMessagePump = nameof(ExternalMessagePump);
 
         /// <summary>
         /// The windowless rendering enabled.
         /// </summary>
-        public const string WindowlessRenderingEnabled = "WindowlessRenderingEnabled";
+        public const string WindowlessRenderingEnabled = nameof(WindowlessRenderingEnabled);
 
         /// <summary>
         /// The command line args disabled.
         /// </summary>
-        public const string CommandLineArgsDisabled = "CommandLineArgsDisabled";
+        public const string CommandLineArgsDisabled = nameof(CommandLineArgsDisabled);
 
         /// <summary>
         /// The cache path.
         /// </summary>
-        public const string CachePath = "CachePath";
+        public const string CachePath = nameof(CachePath);
 
         /// <summary>
         /// The user data path.
         /// </summary>
-        public const string UserDataPath = "UserDataPath";
+        public const string UserDataPath = nameof(UserDataPath);
 
         /// <summary>
         /// The persist session cookies.
         /// </summary>
-        public const string PersistSessionCookies = "PersistSessionCookies";
+        public const string PersistSessionCookies = nameof(PersistSessionCookies);
 
         /// <summary>
         /// The persist user preferences.
         /// </summary>
-        public const string PersistUserPreferences = "PersistUserPreferences";
+        public const string PersistUserPreferences = nameof(PersistUserPreferences);
 
         /// <summary>
         /// The user agent.
         /// </summary>
-        public const string UserAgent = "UserAgent";
+        public const string UserAgent = nameof(UserAgent);
 
         /// <summary>
         /// The product version.
         /// </summary>
-        public const string ProductVersion = "ProductVersion";
+        public const string ProductVersion = nameof(ProductVersion);
 
         /// <summary>
         /// The locale.
         /// </summary>
-        public const string Locale = "Locale";
+        public const string Locale = nameof(Locale);
 
         /// <summary>
         /// The log file.
         /// </summary>
-        public const string LogFile = "LogFile";
+        public const string LogFile = nameof(LogFile);
 
         /// <summary>
         /// The log severity.
         /// </summary>
-        public const string LogSeverity = "LogSeverity";
+        public const string LogSeverity = nameof(LogSeverity);
 
         /// <summary>
         /// The java script flags.
         /// </summary>
-        public const string JavaScriptFlags = "JavaScriptFlags";
+        public const string JavaScriptFlags = nameof(JavaScriptFlags);
 
         /// <summary>
         /// The resources dir path.
         /// </summary>
-        public const string ResourcesDirPath = "ResourcesDirPath";
+        public const string ResourcesDirPath = nameof(ResourcesDirPath);
 
         /// <summary>
         /// The locales dir path.
         /// </summary>
-        public const string LocalesDirPath = "LocalesDirPath";
+        public const string LocalesDirPath = nameof(LocalesDirPath);
 
         /// <summary>
         /// The pack loading disabled.
         /// </summary>
-        public const string PackLoadingDisabled = "PackLoadingDisabled";
+        public const string PackLoadingDisabled = nameof(PackLoadingDisabled);
 
         /// <summary>
         /// The remote debugging port.
         /// </summary>
-        public const string RemoteDebuggingPort = "RemoteDebuggingPort";
+        public const string RemoteDebuggingPort = nameof(RemoteDebuggingPort);
 
         /// <summary>
         /// The uncaught exception stack size.
         /// </summary>
-        public const string UncaughtExceptionStackSize = "UncaughtExceptionStackSize";
+        public const string UncaughtExceptionStackSize = nameof(UncaughtExceptionStackSize);
 
         /// <summary>
         /// The ignore certificate errors.
         /// </summary>
-        public const string IgnoreCertificateErrors = "IgnoreCertificateErrors";
+        public const string IgnoreCertificateErrors = nameof(IgnoreCertificateErrors);
 
         /// <summary>
         /// The enable net security expiration.
         /// </summary>
-        public const string EnableNetSecurityExpiration = "EnableNetSecurityExpiration";
+        public const string EnableNetSecurityExpiration = nameof(EnableNetSecurityExpiration);
 
         /// <summary>
         /// The accept language list.
         /// </summary>
-        public const string AcceptLanguageList = "AcceptLanguageList";
+        public const string AcceptLanguageList = nameof(AcceptLanguageList);
 
         /// <summary>
         /// The focused node changed enabled.
         /// </summary>
-        public const string FocusedNodeChangedEnabled = "FocusedNodeChangedEnabled";
+        public const string FocusedNodeChangedEnabled = nameof(FocusedNodeChangedEnabled);
     }
 }

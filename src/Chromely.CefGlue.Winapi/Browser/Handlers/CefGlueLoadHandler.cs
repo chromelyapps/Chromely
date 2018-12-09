@@ -45,7 +45,7 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
         /// </param>
         protected override void OnLoadEnd(CefBrowser browser, CefFrame frame, int httpStatusCode)
         {
-            mBrowser.InvokeAsyncIfPossible(() => mBrowser.OnLoadEnd(new LoadEndEventArgs(frame, httpStatusCode)));
+            mBrowser.InvokeAsyncIfPossible(() => mBrowser.OnFrameLoadEnd(new FrameLoadEndEventArgs(frame, httpStatusCode)));
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
         /// </param>
         protected override void OnLoadStart(CefBrowser browser, CefFrame frame, CefTransitionType transitionType)
         {
-            mBrowser.InvokeAsyncIfPossible(() => mBrowser.OnLoadStart(new LoadStartEventArgs(frame)));
+            mBrowser.InvokeAsyncIfPossible(() => mBrowser.OnFrameLoadStart(new FrameLoadStartEventArgs(frame)));
         }
 
         /// <summary>
