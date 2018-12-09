@@ -1,0 +1,3942 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Chromely.CefGlue.Gtk</name>
+    </assembly>
+    <members>
+        <member name="T:Chromely.CefGlue.Gtk.BrowserHost.Application">
+            <summary>
+            The application.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.Application.Init">
+            <summary>
+            The init.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.Application.Run">
+            <summary>
+            The run.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.Application.Quit">
+            <summary>
+            The quit.
+            </summary>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.BrowserHost.CefGlueBrowserWindow">
+            <summary>
+            The CefGlue browser host/window/app.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.CefGlueBrowserWindow.#ctor(Chromely.Core.ChromelyConfiguration)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.BrowserHost.CefGlueBrowserWindow"/> class.
+            </summary>
+            <param name="hostConfig">
+            The host config.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.CefGlueBrowserWindow.PlatformInitialize">
+            <summary>
+            The platform initialize.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.CefGlueBrowserWindow.PlatformShutdown">
+            <summary>
+            The platform shutdown.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.CefGlueBrowserWindow.PlatformRunMessageLoop">
+            <summary>
+            The platform run message loop.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.CefGlueBrowserWindow.PlatformQuitMessageLoop">
+            <summary>
+            The platform quit message loop.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.CefGlueBrowserWindow.CreateMainView">
+            <summary>
+            The create main view.
+            </summary>
+            <returns>
+            The <see cref="T:Chromely.CefGlue.Gtk.BrowserHost.Window"/>.
+            </returns>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.BrowserHost.HostBase">
+            <summary>
+            The host base.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.HostBase.#ctor(Chromely.Core.ChromelyConfiguration)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.BrowserHost.HostBase"/> class.
+            </summary>
+            <param name="hostConfig">
+            The host config.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.HostBase.Finalize">
+            <summary>
+            Finalizes an instance of the <see cref="T:Chromely.CefGlue.Gtk.BrowserHost.HostBase"/> class. 
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.BrowserHost.HostBase.BrowserMessageRouter">
+            <summary>
+            Gets the browser message router.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.BrowserHost.HostBase.HostConfig">
+            <summary>
+            Gets the host config.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.BrowserHost.HostBase.MainView">
+            <summary>
+            Gets or sets the main view.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.HostBase.Run(System.String[])">
+            <summary>
+            The run.
+            </summary>
+            <param name="args">
+            The args.
+            </param>
+            <returns>
+            The <see cref="T:System.Int32"/>.
+            </returns>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.HostBase.Quit">
+            <summary>
+            The quit.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.HostBase.RegisterUrlScheme(Chromely.Core.Infrastructure.UrlScheme)">
+            <summary>
+            The register url scheme.
+            </summary>
+            <param name="scheme">
+            The scheme.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.HostBase.RegisterServiceAssembly(System.String)">
+            <summary>
+            The register service assembly.
+            </summary>
+            <param name="filename">
+            The filename.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.HostBase.RegisterServiceAssembly(System.Reflection.Assembly)">
+            <summary>
+            The register service assembly.
+            </summary>
+            <param name="assembly">
+            The assembly.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.HostBase.RegisterServiceAssemblies(System.String)">
+            <summary>
+            The register service assemblies.
+            </summary>
+            <param name="folder">
+            The folder.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.HostBase.RegisterServiceAssemblies(System.Collections.Generic.List{System.String})">
+            <summary>
+            The register service assemblies.
+            </summary>
+            <param name="filenames">
+            The filenames.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.HostBase.ScanAssemblies">
+            <summary>
+            The scan assemblies.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.HostBase.Dispose">
+            <summary>
+            The dispose.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.HostBase.Dispose(System.Boolean)">
+            <summary>
+            The dispose.
+            </summary>
+            <param name="disposing">
+            The disposing.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.HostBase.PlatformInitialize">
+            <summary>
+            The platform initialize.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.HostBase.PlatformShutdown">
+            <summary>
+            The platform shutdown.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.HostBase.PlatformRunMessageLoop">
+            <summary>
+            The platform run message loop.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.HostBase.PlatformQuitMessageLoop">
+            <summary>
+            The platform quit message loop.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.HostBase.CreateMainView">
+            <summary>
+            The create main view.
+            </summary>
+            <returns>
+            The <see cref="T:Chromely.CefGlue.Gtk.BrowserHost.Window"/>.
+            </returns>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.HostBase.PostTask(Xilium.CefGlue.CefThreadId,System.Action)">
+            <summary>
+            The post task.
+            </summary>
+            <param name="threadId">
+            The thread id.
+            </param>
+            <param name="action">
+            The action.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.HostBase.RunInternal(System.String[])">
+            <summary>
+            The run internal.
+            </summary>
+            <param name="args">
+            The args.
+            </param>
+            <returns>
+            The <see cref="T:System.Int32"/>.
+            </returns>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.HostBase.RegisterSchemeHandlers">
+            <summary>
+            The register scheme handlers.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.HostBase.RegisterMessageRouters">
+            <summary>
+            The register message routers.
+            </summary>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.BrowserHost.HostBase.ActionTask">
+            <summary>
+            The action task.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.HostBase.ActionTask.#ctor(System.Action)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.BrowserHost.HostBase.ActionTask"/> class.
+            </summary>
+            <param name="action">
+            The action.
+            </param>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.BrowserHost.HostBase.ActionTask.Action">
+            <summary>
+            Gets or sets the action.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.HostBase.ActionTask.Execute">
+            <summary>
+            The execute.
+            </summary>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods">
+            <summary>
+            The native methods.
+            </summary>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.EventHandler">
+            <summary>
+            The event handler.
+            </summary>
+            <param name="eventArgs">
+            The event args.
+            </param>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.GtkWindowType">
+            <summary>
+            The gtk window type.
+            </summary>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.GtkEvent">
+            <summary>
+            The gtk event.
+            </summary>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.GtkWindowPosition">
+            <summary>
+            The gtk window position.
+            </summary>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.GConnectFlags">
+            <summary>
+            The g connect flags.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.GConnectFlags.GConnectAfter">
+            <summary>
+            whether the handler should be called before or after the default handler of the signal.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.GConnectFlags.GConnectSwapped">
+            <summary>
+            whether the instance and data should be swapped when calling the handler; see g_signal_connect_swapped() for an example.
+            </summary>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.SetWindowPosFlags">
+            <summary>
+            The set window pos flags.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.SetWindowPosFlags.AsyncWindowPosition">
+            <summary>
+            If the calling thread and the thread that owns the window are attached to different input queues, 
+            the system posts the request to the thread that owns the window. This prevents the calling thread from 
+            blocking its execution while other threads process the request.
+            </summary>
+            <remarks>SWP_ASYNCWINDOWPOS</remarks>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.SetWindowPosFlags.DeferErase">
+            <summary>
+            Prevents generation of the WM_SYNCPAINT message.
+            </summary>
+            <remarks>SWP_DEFERERASE</remarks>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.SetWindowPosFlags.DrawFrame">
+            <summary>
+            Draws a frame (defined in the window's class description) around the window.
+            </summary>
+            <remarks>SWP_DRAWFRAME</remarks>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.SetWindowPosFlags.FrameChanged">
+            <summary>
+            Applies new frame styles set using the SetWindowLong function. Sends a WM_NCCALCSIZE message to 
+            the window, even if the window's size is not being changed. If this flag is not specified, WM_NCCALCSIZE 
+            is sent only when the window's size is being changed.
+            </summary>
+            <remarks>SWP_FRAMECHANGED</remarks>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.SetWindowPosFlags.HideWindow">
+            <summary>
+            Hides the window.
+            </summary>
+            <remarks>SWP_HIDEWINDOW</remarks>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.SetWindowPosFlags.NoActivate">
+            <summary>
+            Does not activate the window. If this flag is not set, the window is activated and moved to the 
+            top of either the topmost or non-topmost group (depending on the setting of the hWndInsertAfter parameter).
+            </summary>
+            <remarks>SWP_NOACTIVATE</remarks>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.SetWindowPosFlags.NoCopyBits">
+            <summary>
+            Discards the entire contents of the client area. If this flag is not specified, the valid contents 
+            of the client area are saved and copied back into the client area after the window is sized or repositioned.
+            </summary>
+            <remarks>SWP_NOCOPYBITS</remarks>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.SetWindowPosFlags.NoMove">
+            <summary>
+            Retains the current position (ignores X and Y parameters).
+            </summary>
+            <remarks>SWP_NOMOVE</remarks>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.SetWindowPosFlags.NoOwnerZOrder">
+            <summary>
+            Does not change the owner window's position in the Z order.
+            </summary>
+            <remarks>SWP_NOOWNERZORDER</remarks>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.SetWindowPosFlags.NoRedraw">
+            <summary>
+            Does not redraw changes. If this flag is set, no repainting of any kind occurs. This applies to 
+            the client area, the nonclient area (including the title bar and scroll bars), and any part of the parent 
+            window uncovered as a result of the window being moved. When this flag is set, the application must 
+            explicitly invalidate or redraw any parts of the window and parent window that need redrawing.
+            </summary>
+            <remarks>SWP_NOREDRAW</remarks>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.SetWindowPosFlags.NoReposition">
+            <summary>
+            Same as the SWP_NOOWNERZORDER flag.
+            </summary>
+            <remarks>SWP_NOREPOSITION</remarks>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.SetWindowPosFlags.NoSendChanging">
+            <summary>
+            Prevents the window from receiving the WM_WINDOWPOSCHANGING message.
+            </summary>
+            <remarks>SWP_NOSENDCHANGING</remarks>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.SetWindowPosFlags.NoSize">
+            <summary>
+            Retains the current size (ignores the cx and cy parameters).
+            </summary>
+            <remarks>SWP_NOSIZE</remarks>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.SetWindowPosFlags.NoZOrder">
+            <summary>
+            Retains the current Z order (ignores the hWndInsertAfter parameter).
+            </summary>
+            <remarks>SWP_NOZORDER</remarks>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.SetWindowPosFlags.ShowWindow">
+            <summary>
+            Displays the window.
+            </summary>
+            <remarks>SWP_SHOWWINDOW</remarks>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.InitWindow(System.Int32,System.String[])">
+            <summary>
+            The init window.
+            </summary>
+            <param name="argc">
+            The argc.
+            </param>
+            <param name="argv">
+            The argv.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.GetWindowXid(System.IntPtr)">
+            <summary>
+            The get window xid.
+            </summary>
+            <param name="handle">
+            The handle.
+            </param>
+            <returns>
+            The <see cref="T:System.IntPtr"/>.
+            </returns>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.ShowAll(System.IntPtr)">
+            <summary>
+            The show all.
+            </summary>
+            <param name="window">
+            The window.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.Run">
+            <summary>
+            The run.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.Quit">
+            <summary>
+            The quit.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.NewWindow(Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.GtkWindowType)">
+            <summary>
+            The new window.
+            </summary>
+            <param name="type">
+            The type.
+            </param>
+            <returns>
+            The <see cref="T:System.IntPtr"/>.
+            </returns>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.CreateCefHost(System.IntPtr)">
+            <summary>
+            The create cef host.
+            </summary>
+            <param name="window">
+            The window.
+            </param>
+            <returns>
+            The <see cref="T:System.IntPtr"/>.
+            </returns>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.SetTitle(System.IntPtr,System.String)">
+            <summary>
+            The set title.
+            </summary>
+            <param name="window">
+            The window.
+            </param>
+            <param name="title">
+            The title.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.SetWindowSize(System.IntPtr,System.Int32,System.Int32)">
+            <summary>
+            The set window size.
+            </summary>
+            <param name="window">
+            The window.
+            </param>
+            <param name="width">
+            The width.
+            </param>
+            <param name="height">
+            The height.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.SetSizeRequest(System.IntPtr,System.Int32,System.Int32)">
+            <summary>
+            The set size request.
+            </summary>
+            <param name="window">
+            The window.
+            </param>
+            <param name="width">
+            The width.
+            </param>
+            <param name="height">
+            The height.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.SetWindowResizable(System.IntPtr,System.Boolean)">
+            <summary>
+            The set window resizable.
+            </summary>
+            <param name="window">
+            The window.
+            </param>
+            <param name="resizable">
+            The resizable.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.SetWindowPos(System.IntPtr,System.IntPtr,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            The set window pos.
+            </summary>
+            <param name="hWnd">
+            The h wnd.
+            </param>
+            <param name="hWndInsertAfter">
+            The h wnd insert after.
+            </param>
+            <param name="x">
+            The x.
+            </param>
+            <param name="y">
+            The y.
+            </param>
+            <param name="cx">
+            The cx.
+            </param>
+            <param name="cy">
+            The cy.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.SetWindowPosition(System.IntPtr,Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.GtkWindowPosition)">
+            <summary>
+            The set window position.
+            </summary>
+            <param name="window">
+            The window.
+            </param>
+            <param name="position">
+            The position.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.AddConfigureEvent(System.IntPtr)">
+            <summary>
+            The add configure event.
+            </summary>
+            <param name="window">
+            The window.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.GetWindowSize(System.IntPtr,System.Int32@,System.Int32@)">
+            <summary>
+            The get window size.
+            </summary>
+            <param name="window">
+            The window.
+            </param>
+            <param name="width">
+            The width.
+            </param>
+            <param name="height">
+            The height.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.ConnectSignal(System.IntPtr,System.String,System.Delegate,System.Int32,System.IntPtr,System.Int32)">
+            <summary>
+            The connect signal.
+            </summary>
+            <param name="window">
+            The window.
+            </param>
+            <param name="name">
+            The name.
+            </param>
+            <param name="callback">
+            The callback.
+            </param>
+            <param name="key">
+            The key.
+            </param>
+            <param name="data">
+            The data.
+            </param>
+            <param name="flags">
+            The flags.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.SetIconFromFile(System.IntPtr,System.String)">
+            <summary>
+            The set icon from file.
+            </summary>
+            <param name="handle">
+            The handle.
+            </param>
+            <param name="filename">
+            The filename.
+            </param>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.StructEventArgs">
+            <summary>
+            The struct event args.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.StructEventArgs.Handle">
+            <summary>
+            The handle.
+            </summary>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.Win">
+            <summary>
+            The win.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.Win.GtkLib">
+            <summary>
+            The gtk lib.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.Win.GObjLib">
+            <summary>
+            The g obj lib.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.Win.GdkLib">
+            <summary>
+            The gdk lib.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.Win.GlibLib">
+            <summary>
+            The glib lib.
+            </summary>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.Linux">
+            <summary>
+            The linux.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.Linux.GtkLib">
+            <summary>
+            The gtk lib.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.Linux.GObjLib">
+            <summary>
+            The g obj lib.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.Linux.GdkLib">
+            <summary>
+            The gdk lib.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.Linux.GlibLib">
+            <summary>
+            The glib lib.
+            </summary>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow">
+            <summary>
+            The native window.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.mEventLock">
+            <summary>
+            The event lock object.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.mTitle">
+            <summary>
+            The host/app/window title.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.mIconFile">
+            <summary>
+            The host/app/window icon file.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.mWidth">
+            <summary>
+            The host/app/window width.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.mHeight">
+            <summary>
+            The host/app/window height.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.mMainWindow">
+            <summary>
+            The main window.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.mRealizeEvent">
+            <summary>
+            The realize event.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.mConfigureEvent">
+            <summary>
+            The configure event.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.mDestroyEvent">
+            <summary>
+            The destroy event.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow"/> class.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.#ctor(System.String,System.Int32,System.Int32,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow"/> class.
+            </summary>
+            <param name="title">
+            The title.
+            </param>
+            <param name="width">
+            The width.
+            </param>
+            <param name="height">
+            The height.
+            </param>
+            <param name="iconFile">
+            The icon file.
+            </param>
+        </member>
+        <member name="E:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.Realized">
+            <summary>
+            The realized.
+            </summary>
+        </member>
+        <member name="E:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.Resized">
+            <summary>
+            The resized.
+            </summary>
+        </member>
+        <member name="E:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.Exited">
+            <summary>
+            The exited.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.Handle">
+            <summary>
+            Gets the handle.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.Host">
+            <summary>
+            The host.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.HostXid">
+            <summary>
+            The host xid.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.ShowWindow">
+            <summary>
+            The show window.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.ResizeHost(System.IntPtr,System.Int32,System.Int32)">
+            <summary>
+            The resize host.
+            </summary>
+            <param name="host">
+            The host.
+            </param>
+            <param name="width">
+            The width.
+            </param>
+            <param name="height">
+            The height.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.GetSize(System.Int32@,System.Int32@)">
+            <summary>
+            The get size.
+            </summary>
+            <param name="width">
+            The width.
+            </param>
+            <param name="height">
+            The height.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.OnRealized(System.Object,System.EventArgs)">
+            <summary>
+            The on realized.
+            </summary>
+            <param name="sender">
+            The sender.
+            </param>
+            <param name="e">
+            The e.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.OnResize(System.Object,System.EventArgs)">
+            <summary>
+            The on resize.
+            </summary>
+            <param name="sender">
+            The sender.
+            </param>
+            <param name="e">
+            The e.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.OnExit(System.Object,System.EventArgs)">
+            <summary>
+            The on exit.
+            </summary>
+            <param name="sender">
+            The sender.
+            </param>
+            <param name="e">
+            The e.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.CreateWindow">
+            <summary>
+            The create window.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.LocalRealized(Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.StructEventArgs)">
+            <summary>
+            The local realized.
+            </summary>
+            <param name="eventArgs">
+            The event args.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.LocalConfigured(Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.StructEventArgs)">
+            <summary>
+            The local configured.
+            </summary>
+            <param name="eventArgs">
+            The event args.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.NativeWindow.LocalDestroyed(Chromely.CefGlue.Gtk.BrowserHost.NativeMethods.StructEventArgs)">
+            <summary>
+            The local destroyed.
+            </summary>
+            <param name="eventArgs">
+            The event args.
+            </param>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.BrowserHost.Window">
+            <summary>
+            The window.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.Window.mApplication">
+            <summary>
+            The host/app/window application.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.Window.mHostConfig">
+            <summary>
+            The host config.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.Window.mCore">
+            <summary>
+            The CefGlueBrowser object.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.BrowserHost.Window.mBrowserWindowHandle">
+            <summary>
+            The browser window handle.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.Window.#ctor(Chromely.CefGlue.Gtk.BrowserHost.HostBase,Chromely.Core.ChromelyConfiguration)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.BrowserHost.Window"/> class.
+            </summary>
+            <param name="application">
+            The application.
+            </param>
+            <param name="hostConfig">
+            The host config.
+            </param>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.BrowserHost.Window.WebBrowser">
+            <summary>
+            The web browser.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.Window.Close">
+            <summary>
+            The close.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.Window.Dispose">
+            <summary>
+            The dispose.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.Window.OnRealized(System.Object,System.EventArgs)">
+            <summary>
+            The on realized.
+            </summary>
+            <param name="sender">
+            The sender.
+            </param>
+            <param name="e">
+            The e.
+            </param>
+            <exception cref="T:System.NotSupportedException">
+            Exception returned for MacOS not supported.
+            </exception>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.Window.OnResize(System.Object,System.EventArgs)">
+            <summary>
+            The on resize.
+            </summary>
+            <param name="sender">
+            The sender.
+            </param>
+            <param name="e">
+            The e.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.Window.OnExit(System.Object,System.EventArgs)">
+            <summary>
+            The on exit.
+            </summary>
+            <param name="sender">
+            The sender.
+            </param>
+            <param name="e">
+            The e.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserHost.Window.OnBrowserCreated(System.Object,System.EventArgs)">
+            <summary>
+            The on browser created.
+            </summary>
+            <param name="sender">
+            The sender.
+            </param>
+            <param name="e">
+            The e.
+            </param>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.CefBrowserConfig">
+            <summary>
+            The cef browser config.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.CefBrowserConfig.ParentHandle">
+            <summary>
+            Gets or sets the parent handle.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.CefBrowserConfig.CefRectangle">
+            <summary>
+            Gets or sets the cef rectangle.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.CefBrowserConfig.AppArgs">
+            <summary>
+            Gets or sets the app args.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.CefBrowserConfig.StartUrl">
+            <summary>
+            Gets or sets the start url.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.CefBrowserConfig.StartWebSocket">
+            <summary>
+            Gets or sets a value indicating whether start web socket.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.CefBrowserConfig.WebsocketAddress">
+            <summary>
+            Gets or sets the websocket address.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.CefBrowserConfig.WebsocketPort">
+            <summary>
+            Gets or sets the websocket port.
+            </summary>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.CefGlueApp">
+            <summary>
+            The CefGlue app.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.CefGlueApp.mRenderProcessHandler">
+            <summary>
+            The render process handler.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.CefGlueApp.#ctor(Chromely.Core.ChromelyConfiguration)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.Browser.CefGlueApp"/> class.
+            </summary>
+            <param name="hostConfig">
+            The host config.
+            </param>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.CefGlueApp.HostConfig">
+            <summary>
+            Gets or sets the host config.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.CefGlueApp.OnRegisterCustomSchemes(Xilium.CefGlue.CefSchemeRegistrar)">
+            <summary>
+            The on register custom schemes.
+            </summary>
+            <param name="registrar">
+            The registrar.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.CefGlueApp.OnBeforeCommandLineProcessing(System.String,Xilium.CefGlue.CefCommandLine)">
+            <summary>
+            The on before command line processing.
+            </summary>
+            <param name="processType">
+            The process type.
+            </param>
+            <param name="commandLine">
+            The command line.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.CefGlueApp.GetRenderProcessHandler">
+            <summary>
+            The get render process handler.
+            </summary>
+            <returns>
+            The <see cref="T:Xilium.CefGlue.CefRenderProcessHandler"/>.
+            </returns>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser">
+            <summary>
+            The CefGlue browser.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser.mHostConfig">
+            <summary>
+            The host config.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser.mSettings">
+            <summary>
+            The CefBrowserSettings object.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser.mClient">
+            <summary>
+            The CefGlueClient object.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser.mWebsocketStarted">
+            <summary>
+            The m websocket started.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser.#ctor(System.Object,Chromely.Core.ChromelyConfiguration,Xilium.CefGlue.CefBrowserSettings)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser"/> class.
+            </summary>
+            <param name="owner">
+            The owner.
+            </param>
+            <param name="hostConfig">
+            The host config.
+            </param>
+            <param name="settings">
+            The settings.
+            </param>
+        </member>
+        <member name="E:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser.Created">
+            <summary>
+            The created.
+            </summary>
+        </member>
+        <member name="E:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser.TitleChanged">
+            <summary>
+            The title changed.
+            </summary>
+        </member>
+        <member name="E:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser.AddressChanged">
+            <summary>
+            The address changed.
+            </summary>
+        </member>
+        <member name="E:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser.StatusMessage">
+            <summary>
+            The status message.
+            </summary>
+        </member>
+        <member name="E:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser.ConsoleMessage">
+            <summary>
+            The console message.
+            </summary>
+        </member>
+        <member name="E:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser.LoadingStateChange">
+            <summary>
+            The loading state change.
+            </summary>
+        </member>
+        <member name="E:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser.Tooltip">
+            <summary>
+            The tooltip.
+            </summary>
+        </member>
+        <member name="E:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser.BeforeClose">
+            <summary>
+            The before close.
+            </summary>
+        </member>
+        <member name="E:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser.BeforePopup">
+            <summary>
+            The before popup.
+            </summary>
+        </member>
+        <member name="E:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser.LoadEnd">
+            <summary>
+            The load end.
+            </summary>
+        </member>
+        <member name="E:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser.LoadError">
+            <summary>
+            The load error.
+            </summary>
+        </member>
+        <member name="E:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser.LoadStarted">
+            <summary>
+            The load started.
+            </summary>
+        </member>
+        <member name="E:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser.PluginCrashed">
+            <summary>
+            The plugin crashed.
+            </summary>
+        </member>
+        <member name="E:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser.RenderProcessTerminated">
+            <summary>
+            The render process terminated.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser.BrowserCore">
+            <summary>
+            Gets the browser core.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser.Owner">
+            <summary>
+            Gets the owner.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser.StartUrl">
+            <summary>
+            Gets or sets the start url.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser.Title">
+            <summary>
+            Gets the title.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser.Address">
+            <summary>
+            Gets the address.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser.CefBrowser">
+            <summary>
+            Gets the cef browser.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser.Create(Xilium.CefGlue.CefWindowInfo)">
+            <summary>
+            The create.
+            </summary>
+            <param name="windowInfo">
+            The window info.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser.Close">
+            <summary>
+            The close.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser.OnCreated(Xilium.CefGlue.CefBrowser)">
+            <summary>
+            The on created.
+            </summary>
+            <param name="browser">
+            The browser.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser.OnTitleChanged(Chromely.CefGlue.Gtk.Browser.EventParams.TitleChangedEventArgs)">
+            <summary>
+            The on title changed.
+            </summary>
+            <param name="eventArgs">
+            The event args.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser.OnAddressChanged(Chromely.CefGlue.Gtk.Browser.EventParams.AddressChangedEventArgs)">
+            <summary>
+            The on address changed.
+            </summary>
+            <param name="eventArgs">
+            The event args.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser.OnStatusMessage(Chromely.CefGlue.Gtk.Browser.EventParams.StatusMessageEventArgs)">
+            <summary>
+            The on status message.
+            </summary>
+            <param name="eventArgs">
+            The event args.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser.OnConsoleMessage(Chromely.CefGlue.Gtk.Browser.EventParams.ConsoleMessageEventArgs)">
+            <summary>
+            The on console message.
+            </summary>
+            <param name="eventArgs">
+            The event args.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser.OnLoadingStateChange(Chromely.CefGlue.Gtk.Browser.EventParams.LoadingStateChangeEventArgs)">
+            <summary>
+            The on loading state change.
+            </summary>
+            <param name="eventArgs">
+            The event args.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser.OnTooltip(Chromely.CefGlue.Gtk.Browser.EventParams.TooltipEventArgs)">
+            <summary>
+            The on tooltip.
+            </summary>
+            <param name="eventArgs">
+            The event args.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser.OnBeforeClose">
+            <summary>
+            The on before close.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser.OnBeforePopup(Chromely.CefGlue.Gtk.Browser.EventParams.BeforePopupEventArgs)">
+            <summary>
+            The on before popup.
+            </summary>
+            <param name="eventArgs">
+            The event args.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser.OnLoadEnd(Chromely.CefGlue.Gtk.Browser.EventParams.LoadEndEventArgs)">
+            <summary>
+            The on load end.
+            </summary>
+            <param name="eventArgs">
+            The event args.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser.OnLoadError(Chromely.CefGlue.Gtk.Browser.EventParams.LoadErrorEventArgs)">
+            <summary>
+            The on load error.
+            </summary>
+            <param name="eventArgs">
+            The event args.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser.OnLoadStart(Chromely.CefGlue.Gtk.Browser.EventParams.LoadStartEventArgs)">
+            <summary>
+            The on load start.
+            </summary>
+            <param name="eventArgs">
+            The event args.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser.OnPluginCrashed(Chromely.CefGlue.Gtk.Browser.EventParams.PluginCrashedEventArgs)">
+            <summary>
+            The on plugin crashed.
+            </summary>
+            <param name="eventArgs">
+            The event args.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser.OnRenderProcessTerminated(Chromely.CefGlue.Gtk.Browser.EventParams.RenderProcessTerminatedEventArgs)">
+            <summary>
+            The on render process terminated.
+            </summary>
+            <param name="eventArgs">
+            The event args.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.CefGlueBrowser.StartWebsocket">
+            <summary>
+            The start websocket.
+            </summary>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.CefGlueClient">
+            <summary>
+            The CefGlue client.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.CefGlueClient.mLifeSpanHandler">
+            <summary>
+            The life span handler.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.CefGlueClient.mLoadHandler">
+            <summary>
+            The load handler.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.CefGlueClient.mRequestHandler">
+            <summary>
+            The request handler.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.CefGlueClient.mDisplayHandler">
+            <summary>
+            The display handler.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.CefGlueClient.mContextMenuHandler">
+            <summary>
+            The context menu handler.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.CefGlueClient.mFocusHandler">
+            <summary>
+            The focus handler.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.CefGlueClient.mKeyboardHandler">
+            <summary>
+            The keyboard handler.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.CefGlueClient.mJsDialogHandler">
+            <summary>
+            The Javascript dialog handler.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.CefGlueClient.mDialogHandler">
+            <summary>
+            The dialog handler.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.CefGlueClient.mDragHandler">
+            <summary>
+            The drag handler.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.CefGlueClient.mDownloadHandler">
+            <summary>
+            The download handler.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.CefGlueClient.mFindHandler">
+            <summary>
+            The find handler.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.CefGlueClient.#ctor(Chromely.CefGlue.Gtk.Browser.CefGlueClientParams)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.Browser.CefGlueClient"/> class.
+            </summary>
+            <param name="clientParams">
+            The client params.
+            </param>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.CefGlueClient.CoreBrowser">
+            <summary>
+            Gets the core browser.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.CefGlueClient.GetLifeSpanHandler">
+            <summary>
+            The get life span handler.
+            </summary>
+            <returns>
+            The <see cref="T:Xilium.CefGlue.CefLifeSpanHandler"/>.
+            </returns>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.CefGlueClient.GetLoadHandler">
+            <summary>
+            The get load handler.
+            </summary>
+            <returns>
+            The <see cref="T:Xilium.CefGlue.CefLoadHandler"/>.
+            </returns>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.CefGlueClient.GetRequestHandler">
+            <summary>
+            The get request handler.
+            </summary>
+            <returns>
+            The <see cref="T:Xilium.CefGlue.CefRequestHandler"/>.
+            </returns>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.CefGlueClient.GetDisplayHandler">
+            <summary>
+            The get display handler.
+            </summary>
+            <returns>
+            The <see cref="T:Xilium.CefGlue.CefDisplayHandler"/>.
+            </returns>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.CefGlueClient.GetContextMenuHandler">
+            <summary>
+            The get context menu handler.
+            </summary>
+            <returns>
+            The <see cref="T:Xilium.CefGlue.CefContextMenuHandler"/>.
+            </returns>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.CefGlueClient.GetFocusHandler">
+            <summary>
+            The get focus handler.
+            </summary>
+            <returns>
+            The <see cref="T:Xilium.CefGlue.CefFocusHandler"/>.
+            </returns>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.CefGlueClient.GetKeyboardHandler">
+            <summary>
+            The get keyboard handler.
+            </summary>
+            <returns>
+            The <see cref="T:Xilium.CefGlue.CefKeyboardHandler"/>.
+            </returns>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.CefGlueClient.GetJSDialogHandler">
+            <summary>
+            The get js dialog handler.
+            </summary>
+            <returns>
+            The <see cref="T:Xilium.CefGlue.CefJSDialogHandler"/>.
+            </returns>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.CefGlueClient.GetDialogHandler">
+            <summary>
+            The get dialog handler.
+            </summary>
+            <returns>
+            The <see cref="T:Xilium.CefGlue.CefDialogHandler"/>.
+            </returns>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.CefGlueClient.GetDragHandler">
+            <summary>
+            The get drag handler.
+            </summary>
+            <returns>
+            The <see cref="T:Xilium.CefGlue.CefDragHandler"/>.
+            </returns>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.CefGlueClient.GetDownloadHandler">
+            <summary>
+            The get download handler.
+            </summary>
+            <returns>
+            The <see cref="T:Xilium.CefGlue.CefDownloadHandler"/>.
+            </returns>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.CefGlueClient.GetFindHandler">
+            <summary>
+            The get find handler.
+            </summary>
+            <returns>
+            The <see cref="T:Xilium.CefGlue.CefFindHandler"/>.
+            </returns>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.CefGlueClient.OnProcessMessageReceived(Xilium.CefGlue.CefBrowser,Xilium.CefGlue.CefProcessId,Xilium.CefGlue.CefProcessMessage)">
+            <summary>
+            The on process message received.
+            </summary>
+            <param name="browser">
+            The browser.
+            </param>
+            <param name="sourceProcess">
+            The source process.
+            </param>
+            <param name="message">
+            The message.
+            </param>
+            <returns>
+            The <see cref="T:System.Boolean"/>.
+            </returns>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.CefGlueClientParams">
+            <summary>
+            The CefGlue client params.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.CefGlueClientParams.Browser">
+            <summary>
+            Gets or sets the browser.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.CefGlueClientParams.LifeSpanHandler">
+            <summary>
+            Gets or sets the life span handler.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.CefGlueClientParams.LoadHandler">
+            <summary>
+            Gets or sets the load handler.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.CefGlueClientParams.RequestHandler">
+            <summary>
+            Gets or sets the request handler.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.CefGlueClientParams.DisplayHandler">
+            <summary>
+            Gets or sets the display handler.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.CefGlueClientParams.ContextMenuHandler">
+            <summary>
+            Gets or sets the context menu handler.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.CefGlueClientParams.FocusHandler">
+            <summary>
+            Gets or sets the focus handler.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.CefGlueClientParams.KeyboardHandler">
+            <summary>
+            Gets or sets the keyboard handler.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.CefGlueClientParams.JsDialogHandler">
+            <summary>
+            Gets or sets the js dialog handler.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.CefGlueClientParams.DialogHandler">
+            <summary>
+            Gets or sets the dialog handler.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.CefGlueClientParams.DragHandler">
+            <summary>
+            Gets or sets the drag handler.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.CefGlueClientParams.DownloadHandler">
+            <summary>
+            Gets or sets the download handler.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.CefGlueClientParams.FindHandler">
+            <summary>
+            Gets or sets the find handler.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.CefGlueClientParams.Create(Chromely.CefGlue.Gtk.Browser.CefGlueBrowser)">
+            <summary>
+            The create.
+            </summary>
+            <param name="browser">
+            The browser.
+            </param>
+            <returns>
+            The <see cref="T:Chromely.CefGlue.Gtk.Browser.CefGlueClientParams"/>.
+            </returns>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.EventParams.AddressChangedEventArgs">
+            <summary>
+            The address changed event args.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.EventParams.AddressChangedEventArgs.#ctor(Xilium.CefGlue.CefFrame,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.Browser.EventParams.AddressChangedEventArgs"/> class.
+            </summary>
+            <param name="frame">
+            The frame.
+            </param>
+            <param name="address">
+            The address.
+            </param>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.EventParams.AddressChangedEventArgs.Address">
+            <summary>
+            Gets the address.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.EventParams.AddressChangedEventArgs.Frame">
+            <summary>
+            Gets the frame.
+            </summary>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.EventParams.BeforePopupEventArgs">
+            <summary>
+            The before popup event args.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.EventParams.BeforePopupEventArgs.#ctor(Xilium.CefGlue.CefFrame,System.String,System.String,Xilium.CefGlue.CefPopupFeatures,Xilium.CefGlue.CefWindowInfo,Xilium.CefGlue.CefClient,Xilium.CefGlue.CefBrowserSettings,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.Browser.EventParams.BeforePopupEventArgs"/> class.
+            </summary>
+            <param name="frame">
+            The frame.
+            </param>
+            <param name="targetUrl">
+            The target url.
+            </param>
+            <param name="targetFrameName">
+            The target frame name.
+            </param>
+            <param name="popupFeatures">
+            The popup features.
+            </param>
+            <param name="windowInfo">
+            The window info.
+            </param>
+            <param name="client">
+            The client.
+            </param>
+            <param name="settings">
+            The settings.
+            </param>
+            <param name="noJavascriptAccess">
+            The no javascript access.
+            </param>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.EventParams.BeforePopupEventArgs.NoJavascriptAccess">
+            <summary>
+            Gets or sets a value indicating whether no javascript access.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.EventParams.BeforePopupEventArgs.Settings">
+            <summary>
+            Gets the settings.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.EventParams.BeforePopupEventArgs.Client">
+            <summary>
+            Gets or sets the client.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.EventParams.BeforePopupEventArgs.WindowInfo">
+            <summary>
+            Gets the window info.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.EventParams.BeforePopupEventArgs.PopupFeatures">
+            <summary>
+            Gets the popup features.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.EventParams.BeforePopupEventArgs.TargetFrameName">
+            <summary>
+            Gets the target frame name.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.EventParams.BeforePopupEventArgs.TargetUrl">
+            <summary>
+            Gets the target url.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.EventParams.BeforePopupEventArgs.Frame">
+            <summary>
+            Gets the frame.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.EventParams.BeforePopupEventArgs.Handled">
+            <summary>
+            Gets or sets a value indicating whether handled.
+            </summary>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.EventParams.ConsoleMessageEventArgs">
+            <summary>
+            The console message event args.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.EventParams.ConsoleMessageEventArgs.#ctor(System.String,System.String,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.Browser.EventParams.ConsoleMessageEventArgs"/> class.
+            </summary>
+            <param name="message">
+            The message.
+            </param>
+            <param name="source">
+            The source.
+            </param>
+            <param name="line">
+            The line.
+            </param>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.EventParams.ConsoleMessageEventArgs.Message">
+            <summary>
+            Gets the message.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.EventParams.ConsoleMessageEventArgs.Source">
+            <summary>
+            Gets the source.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.EventParams.ConsoleMessageEventArgs.Line">
+            <summary>
+            Gets the line.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.EventParams.ConsoleMessageEventArgs.Handled">
+            <summary>
+            Gets or sets a value indicating whether handled.
+            </summary>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.EventParams.LoadEndEventArgs">
+            <summary>
+            The load end event args.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.EventParams.LoadEndEventArgs.#ctor(Xilium.CefGlue.CefFrame,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.Browser.EventParams.LoadEndEventArgs"/> class.
+            </summary>
+            <param name="frame">
+            The frame.
+            </param>
+            <param name="httpStatusCode">
+            The http status code.
+            </param>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.EventParams.LoadEndEventArgs.HttpStatusCode">
+            <summary>
+            Gets the http status code.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.EventParams.LoadEndEventArgs.Frame">
+            <summary>
+            Gets the frame.
+            </summary>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.EventParams.LoadErrorEventArgs">
+            <summary>
+            The load error event args.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.EventParams.LoadErrorEventArgs.#ctor(Xilium.CefGlue.CefFrame,Xilium.CefGlue.CefErrorCode,System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.Browser.EventParams.LoadErrorEventArgs"/> class.
+            </summary>
+            <param name="frame">
+            The frame.
+            </param>
+            <param name="errorCode">
+            The error code.
+            </param>
+            <param name="errorText">
+            The error text.
+            </param>
+            <param name="failedUrl">
+            The failed url.
+            </param>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.EventParams.LoadErrorEventArgs.FailedUrl">
+            <summary>
+            Gets the failed url.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.EventParams.LoadErrorEventArgs.ErrorText">
+            <summary>
+            Gets the error text.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.EventParams.LoadErrorEventArgs.ErrorCode">
+            <summary>
+            Gets the error code.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.EventParams.LoadErrorEventArgs.Frame">
+            <summary>
+            Gets the frame.
+            </summary>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.EventParams.LoadingStateChangedEventArgs">
+            <summary>
+            The loading state changed event args.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.EventParams.LoadingStateChangedEventArgs.#ctor(System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.Browser.EventParams.LoadingStateChangedEventArgs"/> class.
+            </summary>
+            <param name="isLoading">
+            The is loading.
+            </param>
+            <param name="canGoBack">
+            The can go back.
+            </param>
+            <param name="canGoForward">
+            The can go forward.
+            </param>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.EventParams.LoadingStateChangedEventArgs.Loading">
+            <summary>
+            Gets a value indicating whether loading.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.EventParams.LoadingStateChangedEventArgs.CanGoBack">
+            <summary>
+            Gets a value indicating whether can go back.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.EventParams.LoadingStateChangedEventArgs.CanGoForward">
+            <summary>
+            Gets a value indicating whether can go forward.
+            </summary>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.EventParams.LoadingStateChangeEventArgs">
+            <summary>
+            The loading state change event args.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.EventParams.LoadingStateChangeEventArgs.#ctor(System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.Browser.EventParams.LoadingStateChangeEventArgs"/> class.
+            </summary>
+            <param name="isLoading">
+            The is loading.
+            </param>
+            <param name="canGoBack">
+            The can go back.
+            </param>
+            <param name="canGoForward">
+            The can go forward.
+            </param>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.EventParams.LoadingStateChangeEventArgs.IsLoading">
+            <summary>
+            Gets a value indicating whether is loading.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.EventParams.LoadingStateChangeEventArgs.CanGoBack">
+            <summary>
+            Gets a value indicating whether can go back.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.EventParams.LoadingStateChangeEventArgs.CanGoForward">
+            <summary>
+            Gets a value indicating whether can go forward.
+            </summary>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.EventParams.LoadStartEventArgs">
+            <summary>
+            The load start event args.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.EventParams.LoadStartEventArgs.#ctor(Xilium.CefGlue.CefFrame)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.Browser.EventParams.LoadStartEventArgs"/> class.
+            </summary>
+            <param name="frame">
+            The frame.
+            </param>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.EventParams.LoadStartEventArgs.Frame">
+            <summary>
+            Gets the frame.
+            </summary>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.EventParams.PluginCrashedEventArgs">
+            <summary>
+            The plugin crashed event args.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.EventParams.PluginCrashedEventArgs.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.Browser.EventParams.PluginCrashedEventArgs"/> class.
+            </summary>
+            <param name="pluginPath">
+            The plugin path.
+            </param>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.EventParams.PluginCrashedEventArgs.PluginPath">
+            <summary>
+            Gets the plugin path.
+            </summary>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.EventParams.RenderProcessTerminatedEventArgs">
+            <summary>
+            The render process terminated event args.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.EventParams.RenderProcessTerminatedEventArgs.#ctor(Xilium.CefGlue.CefTerminationStatus)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.Browser.EventParams.RenderProcessTerminatedEventArgs"/> class.
+            </summary>
+            <param name="status">
+            The status.
+            </param>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.EventParams.RenderProcessTerminatedEventArgs.Status">
+            <summary>
+            Gets the status.
+            </summary>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.EventParams.StatusMessageEventArgs">
+            <summary>
+            The status message event args.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.EventParams.StatusMessageEventArgs.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.Browser.EventParams.StatusMessageEventArgs"/> class.
+            </summary>
+            <param name="value">
+            The value.
+            </param>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.EventParams.StatusMessageEventArgs.Value">
+            <summary>
+            Gets the value.
+            </summary>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.EventParams.TargetUrlChangedEventArgs">
+            <summary>
+            The target url changed event args.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.EventParams.TargetUrlChangedEventArgs.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.Browser.EventParams.TargetUrlChangedEventArgs"/> class.
+            </summary>
+            <param name="targetUrl">
+            The target url.
+            </param>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.EventParams.TargetUrlChangedEventArgs.TargetUrl">
+            <summary>
+            Gets the target url.
+            </summary>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.EventParams.TitleChangedEventArgs">
+            <summary>
+            The title changed event args.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.EventParams.TitleChangedEventArgs.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.Browser.EventParams.TitleChangedEventArgs"/> class.
+            </summary>
+            <param name="title">
+            The title.
+            </param>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.EventParams.TitleChangedEventArgs.Title">
+            <summary>
+            Gets the title.
+            </summary>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.EventParams.TooltipEventArgs">
+            <summary>
+            The tooltip event args.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.EventParams.TooltipEventArgs.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.Browser.EventParams.TooltipEventArgs"/> class.
+            </summary>
+            <param name="text">
+            The text.
+            </param>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.EventParams.TooltipEventArgs.Text">
+            <summary>
+            Gets the text.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.EventParams.TooltipEventArgs.Handled">
+            <summary>
+            Gets or sets a value indicating whether handled.
+            </summary>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.FrameHandlers.CefGlueFrameHandler">
+            <summary>
+            The CefGlue frame handler.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.FrameHandlers.CefGlueFrameHandler.browser">
+            <summary>
+            The browser.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.FrameHandlers.CefGlueFrameHandler.#ctor(Xilium.CefGlue.CefBrowser)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.Browser.FrameHandlers.CefGlueFrameHandler"/> class.
+            </summary>
+            <param name="browser">
+            The browser.
+            </param>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.FrameHandlers.CefGlueFrameHandler.Browser">
+            <summary>
+            Gets the browser.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.FrameHandlers.CefGlueFrameHandler.GetFrameIdentifiers">
+            <summary>
+            Gets the get frame identifiers.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.FrameHandlers.CefGlueFrameHandler.GetFrameNames">
+            <summary>
+            Gets the get frame names.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.FrameHandlers.CefGlueFrameHandler.GetMainFrame">
+            <summary>
+            The get main frame.
+            </summary>
+            <returns>
+            The <see>
+                    <cref>CefFrame</cref>
+                </see>
+                .
+            </returns>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.FrameHandlers.CefGlueFrameHandler.GetFrame(System.String)">
+            <summary>
+            The get frame.
+            </summary>
+            <param name="frameName">
+            The frame name.
+            </param>
+            <returns>
+            The <see>
+                    <cref>IFrame</cref>
+                </see>
+                .
+            </returns>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueContextMenuHandler">
+            <summary>
+            The CefGlue context menu handler.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueContextMenuHandler.ShowDevTools">
+            <summary>
+            The show dev tools.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueContextMenuHandler.CloseDevTools">
+            <summary>
+            The close dev tools.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueContextMenuHandler.debugging">
+            <summary>
+            The debugging.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueContextMenuHandler.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueContextMenuHandler"/> class.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueContextMenuHandler.OnBeforeContextMenu(Xilium.CefGlue.CefBrowser,Xilium.CefGlue.CefFrame,Xilium.CefGlue.CefContextMenuParams,Xilium.CefGlue.CefMenuModel)">
+            <summary>
+            The on before context menu.
+            </summary>
+            <param name="browser">
+            The browser.
+            </param>
+            <param name="frame">
+            The frame.
+            </param>
+            <param name="state">
+            The state.
+            </param>
+            <param name="model">
+            The model.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueContextMenuHandler.RunContextMenu(Xilium.CefGlue.CefBrowser,Xilium.CefGlue.CefFrame,Xilium.CefGlue.CefContextMenuParams,Xilium.CefGlue.CefMenuModel,Xilium.CefGlue.CefRunContextMenuCallback)">
+            <summary>
+            The run context menu.
+            </summary>
+            <param name="browser">
+            The browser.
+            </param>
+            <param name="frame">
+            The frame.
+            </param>
+            <param name="parameters">
+            The parameters.
+            </param>
+            <param name="model">
+            The model.
+            </param>
+            <param name="callback">
+            The callback.
+            </param>
+            <returns>
+            The <see cref="T:System.Boolean"/>.
+            </returns>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueContextMenuHandler.OnContextMenuCommand(Xilium.CefGlue.CefBrowser,Xilium.CefGlue.CefFrame,Xilium.CefGlue.CefContextMenuParams,System.Int32,Xilium.CefGlue.CefEventFlags)">
+            <summary>
+            The on context menu command.
+            </summary>
+            <param name="browser">
+            The browser.
+            </param>
+            <param name="frame">
+            The frame.
+            </param>
+            <param name="state">
+            The state.
+            </param>
+            <param name="commandId">
+            The command id.
+            </param>
+            <param name="eventFlags">
+            The event flags.
+            </param>
+            <returns>
+            The <see cref="T:System.Boolean"/>.
+            </returns>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueContextMenuHandler.OnContextMenuDismissed(Xilium.CefGlue.CefBrowser,Xilium.CefGlue.CefFrame)">
+            <summary>
+            The on context menu dismissed.
+            </summary>
+            <param name="browser">
+            The browser.
+            </param>
+            <param name="frame">
+            The frame.
+            </param>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueContextMenuHandler.DevToolsWebClient">
+            <summary>
+            The dev tools web client.
+            </summary>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueDisplayHandler">
+            <summary>
+            The CefGlue display handler.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueDisplayHandler.mBrowser">
+            <summary>
+            The m_browser.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueDisplayHandler.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueDisplayHandler"/> class.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueDisplayHandler.OnTitleChange(Xilium.CefGlue.CefBrowser,System.String)">
+            <summary>
+            The on title change.
+            </summary>
+            <param name="browser">
+            The browser.
+            </param>
+            <param name="title">
+            The title.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueDisplayHandler.OnAddressChange(Xilium.CefGlue.CefBrowser,Xilium.CefGlue.CefFrame,System.String)">
+            <summary>
+            The on address change.
+            </summary>
+            <param name="browser">
+            The browser.
+            </param>
+            <param name="frame">
+            The frame.
+            </param>
+            <param name="url">
+            The url.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueDisplayHandler.OnStatusMessage(Xilium.CefGlue.CefBrowser,System.String)">
+            <summary>
+            The on status message.
+            </summary>
+            <param name="browser">
+            The browser.
+            </param>
+            <param name="value">
+            The value.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueDisplayHandler.OnConsoleMessage(Xilium.CefGlue.CefBrowser,Xilium.CefGlue.CefLogSeverity,System.String,System.String,System.Int32)">
+            <summary>
+            The on console message.
+            </summary>
+            <param name="browser">
+            The browser.
+            </param>
+            <param name="level">
+            The level.
+            </param>
+            <param name="message">
+            The message.
+            </param>
+            <param name="source">
+            The source.
+            </param>
+            <param name="line">
+            The line.
+            </param>
+            <returns>
+            The <see cref="T:System.Boolean"/>.
+            </returns>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueDisplayHandler.OnTooltip(Xilium.CefGlue.CefBrowser,System.String)">
+            <summary>
+            The on tooltip.
+            </summary>
+            <param name="browser">
+            The browser.
+            </param>
+            <param name="text">
+            The text.
+            </param>
+            <returns>
+            The <see cref="T:System.Boolean"/>.
+            </returns>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueHttpSchemeHandler">
+            <summary>
+            The CefGlue http scheme handler.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueHttpSchemeHandler.mChromelyResponse">
+            <summary>
+            The ChromelyResponse response.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueHttpSchemeHandler.mResponseBytes">
+            <summary>
+            The response in bytes.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueHttpSchemeHandler.mCompleted">
+            <summary>
+            The completed flag.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueHttpSchemeHandler.mTotalBytesRead">
+            <summary>
+            The total bytes read.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueHttpSchemeHandler.ProcessRequest(Xilium.CefGlue.CefRequest,Xilium.CefGlue.CefCallback)">
+            <summary>
+            The process request.
+            </summary>
+            <param name="request">
+            The request.
+            </param>
+            <param name="callback">
+            The callback.
+            </param>
+            <returns>
+            The <see cref="T:System.Boolean"/>.
+            </returns>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueHttpSchemeHandler.GetResponseHeaders(Xilium.CefGlue.CefResponse,System.Int64@,System.String@)">
+            <summary>
+            The get response headers.
+            </summary>
+            <param name="response">
+            The response.
+            </param>
+            <param name="responseLength">
+            The response length.
+            </param>
+            <param name="redirectUrl">
+            The redirect url.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueHttpSchemeHandler.ReadResponse(System.IO.Stream,System.Int32,System.Int32@,Xilium.CefGlue.CefCallback)">
+            <summary>
+            The read response.
+            </summary>
+            <param name="response">
+            The response.
+            </param>
+            <param name="bytesToRead">
+            The bytes to read.
+            </param>
+            <param name="bytesRead">
+            The bytes read.
+            </param>
+            <param name="callback">
+            The callback.
+            </param>
+            <returns>
+            The <see cref="T:System.Boolean"/>.
+            </returns>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueHttpSchemeHandler.CanGetCookie(Xilium.CefGlue.CefCookie)">
+            <summary>
+            The can get cookie.
+            </summary>
+            <param name="cookie">
+            The cookie.
+            </param>
+            <returns>
+            The <see cref="T:System.Boolean"/>.
+            </returns>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueHttpSchemeHandler.CanSetCookie(Xilium.CefGlue.CefCookie)">
+            <summary>
+            The can set cookie.
+            </summary>
+            <param name="cookie">
+            The cookie.
+            </param>
+            <returns>
+            The <see cref="T:System.Boolean"/>.
+            </returns>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueHttpSchemeHandler.Cancel">
+            <summary>
+            The cancel.
+            </summary>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueHttpSchemeHandlerFactory">
+            <summary>
+            The CefGlue http scheme handler factory.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueHttpSchemeHandlerFactory.Create(Xilium.CefGlue.CefBrowser,Xilium.CefGlue.CefFrame,System.String,Xilium.CefGlue.CefRequest)">
+            <summary>
+            The create.
+            </summary>
+            <param name="browser">
+            The browser.
+            </param>
+            <param name="frame">
+            The frame.
+            </param>
+            <param name="schemeName">
+            The scheme name.
+            </param>
+            <param name="request">
+            The request.
+            </param>
+            <returns>
+            The <see cref="T:Xilium.CefGlue.CefResourceHandler"/>.
+            </returns>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueLifeSpanHandler">
+            <summary>
+            The CefGlue life span handler.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueLifeSpanHandler.mBrowser">
+            <summary>
+            The CefGlueBrowser object.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueLifeSpanHandler.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueLifeSpanHandler"/> class.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueLifeSpanHandler.OnAfterCreated(Xilium.CefGlue.CefBrowser)">
+            <summary>
+            The on after created.
+            </summary>
+            <param name="browser">
+            The browser.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueLifeSpanHandler.DoClose(Xilium.CefGlue.CefBrowser)">
+            <summary>
+            The do close.
+            </summary>
+            <param name="browser">
+            The browser.
+            </param>
+            <returns>
+            The <see cref="T:System.Boolean"/>.
+            </returns>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueLifeSpanHandler.OnBeforeClose(Xilium.CefGlue.CefBrowser)">
+            <summary>
+            The on before close.
+            </summary>
+            <param name="browser">
+            The browser.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueLifeSpanHandler.OnBeforePopup(Xilium.CefGlue.CefBrowser,Xilium.CefGlue.CefFrame,System.String,System.String,Xilium.CefGlue.CefWindowOpenDisposition,System.Boolean,Xilium.CefGlue.CefPopupFeatures,Xilium.CefGlue.CefWindowInfo,Xilium.CefGlue.CefClient@,Xilium.CefGlue.CefBrowserSettings,System.Boolean@)">
+            <summary>
+            The on before popup.
+            </summary>
+            <param name="browser">
+            The browser.
+            </param>
+            <param name="frame">
+            The frame.
+            </param>
+            <param name="targetUrl">
+            The target url.
+            </param>
+            <param name="targetFrameName">
+            The target frame name.
+            </param>
+            <param name="targetDisposition">
+            The target disposition.
+            </param>
+            <param name="userGesture">
+            The user gesture.
+            </param>
+            <param name="popupFeatures">
+            The popup features.
+            </param>
+            <param name="windowInfo">
+            The window info.
+            </param>
+            <param name="client">
+            The client.
+            </param>
+            <param name="settings">
+            The settings.
+            </param>
+            <param name="noJavascriptAccess">
+            The no javascript access.
+            </param>
+            <returns>
+            The <see cref="T:System.Boolean"/>.
+            </returns>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueLoadHandler">
+            <summary>
+            The CefGlue load handler.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueLoadHandler.mBrowser">
+            <summary>
+            The CefGlueBrowser object.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueLoadHandler.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueLoadHandler"/> class.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueLoadHandler.OnLoadEnd(Xilium.CefGlue.CefBrowser,Xilium.CefGlue.CefFrame,System.Int32)">
+            <summary>
+            The on load end.
+            </summary>
+            <param name="browser">
+            The browser.
+            </param>
+            <param name="frame">
+            The frame.
+            </param>
+            <param name="httpStatusCode">
+            The http status code.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueLoadHandler.OnLoadError(Xilium.CefGlue.CefBrowser,Xilium.CefGlue.CefFrame,Xilium.CefGlue.CefErrorCode,System.String,System.String)">
+            <summary>
+            The on load error.
+            </summary>
+            <param name="browser">
+            The browser.
+            </param>
+            <param name="frame">
+            The frame.
+            </param>
+            <param name="errorCode">
+            The error code.
+            </param>
+            <param name="errorText">
+            The error text.
+            </param>
+            <param name="failedUrl">
+            The failed url.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueLoadHandler.OnLoadStart(Xilium.CefGlue.CefBrowser,Xilium.CefGlue.CefFrame,Xilium.CefGlue.CefTransitionType)">
+            <summary>
+            The on load start.
+            </summary>
+            <param name="browser">
+            The browser.
+            </param>
+            <param name="frame">
+            The frame.
+            </param>
+            <param name="transitionType">
+            The transition type.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueLoadHandler.OnLoadingStateChange(Xilium.CefGlue.CefBrowser,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            The on loading state change.
+            </summary>
+            <param name="browser">
+            The browser.
+            </param>
+            <param name="isLoading">
+            The is loading.
+            </param>
+            <param name="canGoBack">
+            The can go back.
+            </param>
+            <param name="canGoForward">
+            The can go forward.
+            </param>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueMessageRouterHandler">
+            <summary>
+            The CefGlue message router handler.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueMessageRouterHandler.OnQuery(Xilium.CefGlue.CefBrowser,Xilium.CefGlue.CefFrame,System.Int64,System.String,System.Boolean,Xilium.CefGlue.Wrapper.CefMessageRouterBrowserSide.Callback)">
+            <summary>
+            The on query.
+            </summary>
+            <param name="browser">
+            The browser.
+            </param>
+            <param name="frame">
+            The frame.
+            </param>
+            <param name="queryId">
+            The query id.
+            </param>
+            <param name="request">
+            The request.
+            </param>
+            <param name="persistent">
+            The persistent.
+            </param>
+            <param name="callback">
+            The callback.
+            </param>
+            <returns>
+            The <see cref="T:System.Boolean"/>.
+            </returns>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueMessageRouterHandler.OnQueryCanceled(Xilium.CefGlue.CefBrowser,Xilium.CefGlue.CefFrame,System.Int64)">
+            <summary>
+            The on query canceled.
+            </summary>
+            <param name="browser">
+            The browser.
+            </param>
+            <param name="frame">
+            The frame.
+            </param>
+            <param name="queryId">
+            The query id.
+            </param>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueRenderProcessHandler">
+            <summary>
+            The CefGlue render process handler.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueRenderProcessHandler.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueRenderProcessHandler"/> class.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueRenderProcessHandler.MessageRouter">
+            <summary>
+            Gets the message router.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueRenderProcessHandler.OnContextCreated(Xilium.CefGlue.CefBrowser,Xilium.CefGlue.CefFrame,Xilium.CefGlue.CefV8Context)">
+            <summary>
+            The on context created.
+            </summary>
+            <param name="browser">
+            The browser.
+            </param>
+            <param name="frame">
+            The frame.
+            </param>
+            <param name="context">
+            The context.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueRenderProcessHandler.OnContextReleased(Xilium.CefGlue.CefBrowser,Xilium.CefGlue.CefFrame,Xilium.CefGlue.CefV8Context)">
+            <summary>
+            The on context released.
+            </summary>
+            <param name="browser">
+            The browser.
+            </param>
+            <param name="frame">
+            The frame.
+            </param>
+            <param name="context">
+            The context.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueRenderProcessHandler.OnProcessMessageReceived(Xilium.CefGlue.CefBrowser,Xilium.CefGlue.CefProcessId,Xilium.CefGlue.CefProcessMessage)">
+            <summary>
+            The on process message received.
+            </summary>
+            <param name="browser">
+            The browser.
+            </param>
+            <param name="sourceProcess">
+            The source process.
+            </param>
+            <param name="message">
+            The message.
+            </param>
+            <returns>
+            The <see cref="T:System.Boolean"/>.
+            </returns>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueRequestHandler">
+            <summary>
+            The CefGlue request handler.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueRequestHandler.mBrowser">
+            <summary>
+            The CefGlueBrowser object.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueRequestHandler.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueRequestHandler"/> class.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueRequestHandler.OnBeforeBrowse(Xilium.CefGlue.CefBrowser,Xilium.CefGlue.CefFrame,Xilium.CefGlue.CefRequest,System.Boolean,System.Boolean)">
+            <summary>
+            The on before browse.
+            </summary>
+            <param name="browser">
+            The browser.
+            </param>
+            <param name="frame">
+            The frame.
+            </param>
+            <param name="request">
+            The request.
+            </param>
+            <param name="userGesture">
+            The user gesture.
+            </param>
+            <param name="isRedirect">
+            The is redirect.
+            </param>
+            <returns>
+            The <see cref="T:System.Boolean"/>.
+            </returns>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueRequestHandler.OnPluginCrashed(Xilium.CefGlue.CefBrowser,System.String)">
+            <summary>
+            The on plugin crashed.
+            </summary>
+            <param name="browser">
+            The browser.
+            </param>
+            <param name="pluginPath">
+            The plugin path.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueRequestHandler.OnRenderProcessTerminated(Xilium.CefGlue.CefBrowser,Xilium.CefGlue.CefTerminationStatus)">
+            <summary>
+            The on render process terminated.
+            </summary>
+            <param name="browser">
+            The browser.
+            </param>
+            <param name="status">
+            The status.
+            </param>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueResourceSchemeHandler">
+            <summary>
+            The CefGlue resource scheme handler.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueResourceSchemeHandler.mFileBytes">
+            <summary>
+            The file bytes.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueResourceSchemeHandler.mMime">
+            <summary>
+            The mime type.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueResourceSchemeHandler.mCompleted">
+            <summary>
+            The completed flag.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueResourceSchemeHandler.mTotalBytesRead">
+            <summary>
+            The total bytes read.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueResourceSchemeHandler.ProcessRequest(Xilium.CefGlue.CefRequest,Xilium.CefGlue.CefCallback)">
+            <summary>
+            The process request.
+            </summary>
+            <param name="request">
+            The request.
+            </param>
+            <param name="callback">
+            The callback.
+            </param>
+            <returns>
+            The <see cref="T:System.Boolean"/>.
+            </returns>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueResourceSchemeHandler.GetResponseHeaders(Xilium.CefGlue.CefResponse,System.Int64@,System.String@)">
+            <summary>
+            The get response headers.
+            </summary>
+            <param name="response">
+            The response.
+            </param>
+            <param name="responseLength">
+            The response length.
+            </param>
+            <param name="redirectUrl">
+            The redirect url.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueResourceSchemeHandler.ReadResponse(System.IO.Stream,System.Int32,System.Int32@,Xilium.CefGlue.CefCallback)">
+            <summary>
+            The read response.
+            </summary>
+            <param name="response">
+            The response.
+            </param>
+            <param name="bytesToRead">
+            The bytes to read.
+            </param>
+            <param name="bytesRead">
+            The bytes read.
+            </param>
+            <param name="callback">
+            The callback.
+            </param>
+            <returns>
+            The <see cref="T:System.Boolean"/>.
+            </returns>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueResourceSchemeHandler.CanGetCookie(Xilium.CefGlue.CefCookie)">
+            <summary>
+            The can get cookie.
+            </summary>
+            <param name="cookie">
+            The cookie.
+            </param>
+            <returns>
+            The <see cref="T:System.Boolean"/>.
+            </returns>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueResourceSchemeHandler.CanSetCookie(Xilium.CefGlue.CefCookie)">
+            <summary>
+            The can set cookie.
+            </summary>
+            <param name="cookie">
+            The cookie.
+            </param>
+            <returns>
+            The <see cref="T:System.Boolean"/>.
+            </returns>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueResourceSchemeHandler.Cancel">
+            <summary>
+            The cancel.
+            </summary>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueResourceSchemeHandlerFactory">
+            <summary>
+            The CefGlue resource scheme handler factory.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.Handlers.CefGlueResourceSchemeHandlerFactory.Create(Xilium.CefGlue.CefBrowser,Xilium.CefGlue.CefFrame,System.String,Xilium.CefGlue.CefRequest)">
+            <summary>
+            The create.
+            </summary>
+            <param name="browser">
+            The browser.
+            </param>
+            <param name="frame">
+            The frame.
+            </param>
+            <param name="schemeName">
+            The scheme name.
+            </param>
+            <param name="request">
+            The request.
+            </param>
+            <returns>
+            The <see cref="T:Xilium.CefGlue.CefResourceHandler"/>.
+            </returns>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler">
+            <summary>
+            The CefGlue server handler.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.DefaultServerAddress">
+            <summary>
+            The default server address.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.DefaultServerBacklog">
+            <summary>
+            The default server backlog.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.mlockObj">
+            <summary>
+            The lock obj.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.mWebsocketHandler">
+            <summary>
+            The m websocket handler.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.mCompleteCallback">
+            <summary>
+            The m complete callback.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.mServer">
+            <summary>
+            The m server.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.#ctor(Chromely.Core.IChromelyWebsocketHandler)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler"/> class.
+            </summary>
+            <param name="websocketHandler">
+            The websocket handler.
+            </param>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.Address">
+            <summary>
+            Gets the address.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.Port">
+            <summary>
+            Gets the port.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.IsServerRunning">
+            <summary>
+            Gets a value indicating whether is server running.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.StartServer(System.String,System.Int32,System.Action)">
+            <summary>
+            The start server.
+            </summary>
+            <param name="address">
+            The address.
+            </param>
+            <param name="port">
+            The port.
+            </param>
+            <param name="completecallback">
+            The completecallback.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.StartServer(System.Int32,System.Action)">
+            <summary>
+            The start server.
+            </summary>
+            <param name="port">
+            The port.
+            </param>
+            <param name="completecallback">
+            The completecallback.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.StopServer(System.Action)">
+            <summary>
+            The stop server.
+            </summary>
+            <param name="completecallback">
+            The completecallback.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.DisposeServer">
+            <summary>
+            The dispose server.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.OnServerCreated(Xilium.CefGlue.CefServer)">
+            <summary>
+            The on server created.
+            </summary>
+            <param name="server">
+            The server.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.OnServerDestroyed(Xilium.CefGlue.CefServer)">
+            <summary>
+            The on server destroyed.
+            </summary>
+            <param name="server">
+            The server.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.OnClientConnected(Xilium.CefGlue.CefServer,System.Int32)">
+            <summary>
+            The on client connected.
+            </summary>
+            <param name="server">
+            The server.
+            </param>
+            <param name="connectionId">
+            The connection id.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.OnClientDisconnected(Xilium.CefGlue.CefServer,System.Int32)">
+            <summary>
+            The on client disconnected.
+            </summary>
+            <param name="server">
+            The server.
+            </param>
+            <param name="connectionId">
+            The connection id.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.OnHttpRequest(Xilium.CefGlue.CefServer,System.Int32,System.String,Xilium.CefGlue.CefRequest)">
+            <summary>
+            The on http request.
+            </summary>
+            <param name="server">
+            The server.
+            </param>
+            <param name="connectionId">
+            The connection id.
+            </param>
+            <param name="clientAddress">
+            The client address.
+            </param>
+            <param name="request">
+            The request.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.OnWebSocketConnected(Xilium.CefGlue.CefServer,System.Int32)">
+            <summary>
+            The on web socket connected.
+            </summary>
+            <param name="server">
+            The server.
+            </param>
+            <param name="connectionId">
+            The connection id.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.OnWebSocketRequest(Xilium.CefGlue.CefServer,System.Int32,System.String,Xilium.CefGlue.CefRequest,Xilium.CefGlue.CefCallback)">
+            <summary>
+            The on web socket request.
+            </summary>
+            <param name="server">
+            The server.
+            </param>
+            <param name="connectionId">
+            The connection id.
+            </param>
+            <param name="clientAddress">
+            The client address.
+            </param>
+            <param name="request">
+            The request.
+            </param>
+            <param name="callback">
+            The callback.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.OnWebSocketMessage(Xilium.CefGlue.CefServer,System.Int32,System.IntPtr,System.Int64)">
+            <summary>
+            The on web socket message.
+            </summary>
+            <param name="server">
+            The server.
+            </param>
+            <param name="connectionId">
+            The connection id.
+            </param>
+            <param name="data">
+            The data.
+            </param>
+            <param name="dataSize">
+            The data size.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.RunCompleteCallback(System.Boolean)">
+            <summary>
+            The run complete callback.
+            </summary>
+            <param name="isRunning">
+            The is running.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.PostTask(Xilium.CefGlue.CefThreadId,System.Action{System.String,System.Int32,System.Action},System.String,System.Int32,System.Action)">
+            <summary>
+            The post task.
+            </summary>
+            <param name="threadId">
+            The thread id.
+            </param>
+            <param name="action">
+            The action.
+            </param>
+            <param name="address">
+            The address.
+            </param>
+            <param name="port">
+            The port.
+            </param>
+            <param name="completionCallback">
+            The completion callback.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.PostTask(Xilium.CefGlue.CefThreadId,System.Action{System.Int32,System.Action},System.Int32,System.Action)">
+            <summary>
+            The post task.
+            </summary>
+            <param name="threadId">
+            The thread id.
+            </param>
+            <param name="action">
+            The action.
+            </param>
+            <param name="port">
+            The port.
+            </param>
+            <param name="completionCallback">
+            The completion callback.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.PostTask(Xilium.CefGlue.CefThreadId,System.Action{System.Action},System.Action)">
+            <summary>
+            The post task.
+            </summary>
+            <param name="threadId">
+            The thread id.
+            </param>
+            <param name="action">
+            The action.
+            </param>
+            <param name="completionCallback">
+            The completion callback.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.PostTask(Xilium.CefGlue.CefThreadId,System.Action{System.Boolean},System.Boolean)">
+            <summary>
+            The post task.
+            </summary>
+            <param name="threadId">
+            The thread id.
+            </param>
+            <param name="action">
+            The action.
+            </param>
+            <param name="flag">
+            The flag.
+            </param>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask1">
+            <summary>
+            The action task.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask1.mAddress">
+            <summary>
+            The m address.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask1.mPort">
+            <summary>
+            The m port.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask1.mCompletionCallback">
+            <summary>
+            The m completion callback.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask1.mAction">
+            <summary>
+            The action.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask1.#ctor(System.Action{System.String,System.Int32,System.Action},System.String,System.Int32,System.Action)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask1"/> class.
+            </summary>
+            <param name="action">
+            The action.
+            </param>
+            <param name="address">
+            The address.
+            </param>
+            <param name="port">
+            The port.
+            </param>
+            <param name="completionCallback">
+            The completion callback.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask1.Execute">
+            <summary>
+            The execute.
+            </summary>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask2">
+            <summary>
+            The action task.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask2.mPort">
+            <summary>
+            The m port.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask2.mCompletionCallback">
+            <summary>
+            The m completion callback.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask2.mAction">
+            <summary>
+            The action.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask2.#ctor(System.Action{System.Int32,System.Action},System.Int32,System.Action)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask2"/> class.
+            </summary>
+            <param name="action">
+            The action.
+            </param>
+            <param name="port">
+            The port.
+            </param>
+            <param name="completionCallback">
+            The completion callback.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask2.Execute">
+            <summary>
+            The execute.
+            </summary>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask3">
+            <summary>
+            The action task.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask3.mCompletionCallback">
+            <summary>
+            The m completion callback.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask3.mAction">
+            <summary>
+            The action.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask3.#ctor(System.Action{System.Action},System.Action)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask3"/> class.
+            </summary>
+            <param name="action">
+            The action.
+            </param>
+            <param name="completionCallback">
+            The completion callback.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask3.Execute">
+            <summary>
+            The execute.
+            </summary>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask4">
+            <summary>
+            The action task.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask4.mFlag">
+            <summary>
+            The m flag.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask4.mAction">
+            <summary>
+            The action.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask4.#ctor(System.Action{System.Boolean},System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask4"/> class.
+            </summary>
+            <param name="action">
+            The action.
+            </param>
+            <param name="flag">
+            The flag.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueServerHandler.ActionTask4.Execute">
+            <summary>
+            The execute.
+            </summary>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueWebsocketHandler">
+            <summary>
+            The CefGlue websocket handler.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueWebsocketHandler.OnMessage(System.Int32,System.IntPtr,System.Int64)">
+            <summary>
+            The on message.
+            </summary>
+            <param name="connectionId">
+            The connection id.
+            </param>
+            <param name="data">
+            The data.
+            </param>
+            <param name="dataSize">
+            The data size.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueWebsocketHandler.Send(System.Int32,System.IntPtr,System.Int64)">
+            <summary>
+            The send.
+            </summary>
+            <param name="connectionId">
+            The connection id.
+            </param>
+            <param name="data">
+            The data.
+            </param>
+            <param name="dataSize">
+            The data size.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueWebsocketHandler.Send(System.Int32,System.String)">
+            <summary>
+            The send.
+            </summary>
+            <param name="connectionId">
+            The connection id.
+            </param>
+            <param name="data">
+            The data.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueWebsocketHandler.Send(System.Int32,Chromely.Core.RestfulService.ChromelyResponse)">
+            <summary>
+            The send.
+            </summary>
+            <param name="connectionId">
+            The connection id.
+            </param>
+            <param name="response">
+            The response.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueWebsocketHandler.Broadcast(System.Int32,System.IntPtr,System.Int64)">
+            <summary>
+            The broadcast.
+            </summary>
+            <param name="connectionId">
+            The connection id.
+            </param>
+            <param name="data">
+            The data.
+            </param>
+            <param name="dataSize">
+            The data size.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueWebsocketHandler.Broadcast(System.Int32,System.String)">
+            <summary>
+            The broadcast.
+            </summary>
+            <param name="connectionId">
+            The connection id.
+            </param>
+            <param name="data">
+            The data.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.CefGlueWebsocketHandler.Broadcast(System.Int32,Chromely.Core.RestfulService.ChromelyResponse)">
+            <summary>
+            The broadcast.
+            </summary>
+            <param name="connectionId">
+            The connection id.
+            </param>
+            <param name="response">
+            The response.
+            </param>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.ServerHandlers.ConnectionNameMapper">
+            <summary>
+            The socket connection name mapper.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.ConnectionNameMapper.ConnectionName">
+            <summary>
+            The connection name.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.ConnectionNameMapper.ObjLock">
+            <summary>
+            The lock object.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.ConnectionNameMapper.ConnNameDict">
+            <summary>
+            The conn name dict.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.ServerHandlers.ConnectionNameMapper.ConnectionIds">
+            <summary>
+            Gets the connection ids.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.ConnectionNameMapper.Add(System.String,System.Int32)">
+            <summary>
+            The add.
+            </summary>
+            <param name="url">
+            The name.
+            </param>
+            <param name="connectionId">
+            The connection id.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.ConnectionNameMapper.GetName(System.Int32)">
+            <summary>
+            The get name.
+            </summary>
+            <param name="connectionId">
+            The connection id.
+            </param>
+            <returns>
+            The <see cref="T:System.String"/>.
+            </returns>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.ConnectionNameMapper.GetConnectionId(System.String)">
+            <summary>
+            The get connection id.
+            </summary>
+            <param name="name">
+            The name.
+            </param>
+            <returns>
+            The <see cref="T:System.Int32"/>.
+            </returns>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.ConnectionNameMapper.Clear">
+            <summary>
+            The clear.
+            </summary>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.ServerHandlers.MessageType">
+            <summary>
+            The message type.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.MessageType.None">
+            <summary>
+            The none.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.MessageType.Echo">
+            <summary>
+            The echo.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.MessageType.TargetRecepient">
+            <summary>
+            The target recepient.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.MessageType.Broadcast">
+            <summary>
+            The broadcast.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.MessageType.ControllerAction">
+            <summary>
+            The controller action.
+            </summary>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.Browser.ServerHandlers.RequestInfo">
+            <summary>
+            The request info.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.Browser.ServerHandlers.RequestInfo.mMessageType">
+            <summary>
+            The m message type.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.Browser.ServerHandlers.RequestInfo.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.Browser.ServerHandlers.RequestInfo"/> class.
+            </summary>
+            <param name="requestString">
+            The request string.
+            </param>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.ServerHandlers.RequestInfo.Type">
+            <summary>
+            Gets the type.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.ServerHandlers.RequestInfo.TargetConnectionId">
+            <summary>
+            Gets the target connection id.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.ServerHandlers.RequestInfo.TargetName">
+            <summary>
+            Gets the target name.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.ServerHandlers.RequestInfo.Url">
+            <summary>
+            Gets the url.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.ServerHandlers.RequestInfo.Broadcast">
+            <summary>
+            Gets a value indicating whether broadcast.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.Browser.ServerHandlers.RequestInfo.Data">
+            <summary>
+            Gets the data.
+            </summary>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.CefSettingsExtension">
+            <summary>
+            The cef settings extension.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.CefSettingsExtension.Update(Xilium.CefGlue.CefSettings,System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            The update.
+            </summary>
+            <param name="cefSettings">
+            The cef settings.
+            </param>
+            <param name="customSettings">
+            The custom settings.
+            </param>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.FrameHandler">
+            <summary>
+            The frame handler extension.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.FrameHandler.browser">
+            <summary>
+            The browser.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.FrameHandler.Browser">
+            <summary>
+            Gets the browser.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.FrameHandler.GetMainFrame">
+            <summary>
+            The get main frame.
+            </summary>
+            <returns>
+            The <see cref="T:Xilium.CefGlue.CefFrame"/>.
+            </returns>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.FrameHandler.GetFrame(System.String)">
+            <summary>
+            The get frame.
+            </summary>
+            <param name="name">
+            The name.
+            </param>
+            <returns>
+            The <see cref="T:Xilium.CefGlue.CefFrame"/>.
+            </returns>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.FrameHandler.GetBrowser">
+            <summary>
+            The get browser.
+            </summary>
+            <returns>
+            The <see cref="T:Xilium.CefGlue.CefBrowser"/>.
+            </returns>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.HostHelpers">
+            <summary>
+            The host helpers.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.HostHelpers.#cctor">
+            <summary>
+            Initializes static members of the <see cref="T:Chromely.CefGlue.Gtk.HostHelpers"/> class.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.HostHelpers.DefaultUnhandledExceptionHandler">
+            <summary>
+            Gets the default unhandled exception handler.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.HostHelpers.SetupDefaultExceptionHandlers">
+            <summary>
+            The setup default exception handlers.
+            </summary>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.RegisteredExternalUrl">
+            <summary>
+            The registered external url.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.RegisteredExternalUrl.Launch(System.String)">
+            <summary>
+            The launch.
+            </summary>
+            <param name="requestUrl">
+            The request url.
+            </param>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.RestfulService.RequestTaskRunner">
+            <summary>
+            The request task runner.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.RestfulService.RequestTaskRunner.Run(Xilium.CefGlue.CefRequest)">
+            <summary>
+            The run.
+            </summary>
+            <param name="request">
+            The request.
+            </param>
+            <returns>
+            The <see cref="T:Chromely.Core.RestfulService.ChromelyResponse"/>.
+            </returns>
+            <exception cref="T:System.Exception">
+            Generic exception - Route path not valid.
+            </exception>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.RestfulService.RequestTaskRunner.Run(Chromely.Core.RestfulService.ChromelyRequest)">
+            <summary>
+            The run.
+            </summary>
+            <param name="request">
+            The request.
+            </param>
+            <returns>
+            The <see cref="T:Chromely.Core.RestfulService.ChromelyResponse"/>.
+            </returns>
+            <exception cref="T:System.Exception">
+            Generic exception - Route path not valid.
+            </exception>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.RestfulService.RequestTaskRunner.Run(System.String,Chromely.Core.RestfulService.RoutePath,System.Object,System.Object)">
+            <summary>
+            The run.
+            </summary>
+            <param name="requestId">
+            The request identifier.
+            </param>
+            <param name="routePath">
+            The route path.
+            </param>
+            <param name="parameters">
+            The parameters.
+            </param>
+            <param name="postData">
+            The post data.
+            </param>
+            <returns>
+            The <see cref="T:Chromely.Core.RestfulService.ChromelyResponse"/>.
+            </returns>
+            <exception cref="T:System.Exception">
+            Generic exception - Route path not valid.
+            </exception>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.RestfulService.RequestTaskRunner.ExcuteRoute(System.String,Chromely.Core.RestfulService.RoutePath,System.Object,System.Object)">
+            <summary>
+            The excute route.
+            </summary>
+            <param name="requestId">
+            The request identifier.
+            </param>
+            <param name="routePath">
+            The route path.
+            </param>
+            <param name="parameters">
+            The parameters.
+            </param>
+            <param name="postData">
+            The post data.
+            </param>
+            <returns>
+            The <see cref="T:Chromely.Core.RestfulService.ChromelyResponse"/>.
+            </returns>
+            <exception cref="T:System.Exception">
+            Generic exception - Route path not valid.
+            </exception>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.RestfulService.RequestTaskRunner.GetInfo">
+            <summary>
+            The get info.
+            </summary>
+            <returns>
+            The <see cref="T:Chromely.Core.RestfulService.ChromelyResponse"/>.
+            </returns>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.RestfulService.RequestTaskRunner.GetPostData(Xilium.CefGlue.CefRequest)">
+            <summary>
+            The get post data.
+            </summary>
+            <param name="request">
+            The request.
+            </param>
+            <returns>
+            The <see cref="T:System.String"/>.
+            </returns>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.WebsocketMessageSender">
+            <summary>
+            The frame handler extension.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.WebsocketMessageSender.ObjLock1">
+            <summary>
+            The lock obejct 1.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.WebsocketMessageSender.ObjLock2">
+            <summary>
+            The lock obejct 2.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.WebsocketMessageSender.ObjLock3">
+            <summary>
+            The lock obejct 3.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.WebsocketMessageSender.ObjLock4">
+            <summary>
+            The lock obejct 4.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.WebsocketMessageSender.ObjLock5">
+            <summary>
+            The lock obejct 5.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.WebsocketMessageSender.ObjLock6">
+            <summary>
+            The lock obejct 6.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.WebsocketMessageSender.ObjLock7">
+            <summary>
+            The lock obejct 7.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.WebsocketMessageSender.ObjLock8">
+            <summary>
+            The lock obejct 8.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.WebsocketMessageSender.cefserver">
+            <summary>
+            The cefserver.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.WebsocketMessageSender.Server">
+            <summary>
+            Gets the browser.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.WebsocketMessageSender.Send(System.String,Chromely.Core.RestfulService.ChromelyResponse)">
+            <summary>
+            The send.
+            </summary>
+            <param name="clientName">
+            The client name.
+            </param>
+            <param name="response">
+            The response.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.WebsocketMessageSender.Send(System.Int32,Chromely.Core.RestfulService.ChromelyResponse)">
+            <summary>
+            The send.
+            </summary>
+            <param name="connectionId">
+            The connection id.
+            </param>
+            <param name="response">
+            The response.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.WebsocketMessageSender.Send(System.String,System.String)">
+            <summary>
+            The send.
+            </summary>
+            <param name="clientName">
+            The client name.
+            </param>
+            <param name="data">
+            The data.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.WebsocketMessageSender.Send(System.Int32,System.String)">
+            <summary>
+            The send.
+            </summary>
+            <param name="connectionId">
+            The connection id.
+            </param>
+            <param name="data">
+            The data.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.WebsocketMessageSender.Send(System.Int32,System.IntPtr,System.Int64)">
+            <summary>
+            The send.
+            </summary>
+            <param name="connectionId">
+            The connection id.
+            </param>
+            <param name="data">
+            The data.
+            </param>
+            <param name="dataSize">
+            The data size.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.WebsocketMessageSender.Broadcast(System.Int32,Chromely.Core.RestfulService.ChromelyResponse)">
+            <summary>
+            The broadcast.
+            </summary>
+            <param name="connectionId">
+            The connection id.
+            </param>
+            <param name="response">
+            The response.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.WebsocketMessageSender.Broadcast(System.Int32,System.String)">
+            <summary>
+            The broadcast.
+            </summary>
+            <param name="connectionId">
+            The connection id.
+            </param>
+            <param name="data">
+            The data.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.WebsocketMessageSender.Broadcast(System.Int32,System.IntPtr,System.Int64)">
+            <summary>
+            The broadcast.
+            </summary>
+            <param name="connectionId">
+            The connection id.
+            </param>
+            <param name="data">
+            The data.
+            </param>
+            <param name="dataSize">
+            The data size.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.WebsocketMessageSender.SendMessage(System.String,System.String)">
+            <summary>
+            The send message.
+            </summary>
+            <param name="clientName">
+            The client name.
+            </param>
+            <param name="data">
+            The data.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.WebsocketMessageSender.SendMessage(System.Int32,System.String)">
+            <summary>
+            The send message.
+            </summary>
+            <param name="connectionId">
+            The connection id.
+            </param>
+            <param name="data">
+            The data.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.WebsocketMessageSender.SendMessage(System.Int32,System.IntPtr,System.Int64)">
+            <summary>
+            The send message.
+            </summary>
+            <param name="connectionId">
+            The connection id.
+            </param>
+            <param name="data">
+            The data.
+            </param>
+            <param name="dataSize">
+            The data size.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.WebsocketMessageSender.BroadcastMessage(System.Int32,System.String)">
+            <summary>
+            The broadcast message.
+            </summary>
+            <param name="connectionId">
+            The connection id.
+            </param>
+            <param name="data">
+            The data.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.WebsocketMessageSender.BroadcastMessage(System.Int32,System.IntPtr,System.Int64)">
+            <summary>
+            The broadcast message.
+            </summary>
+            <param name="connectionId">
+            The connection id.
+            </param>
+            <param name="data">
+            The data.
+            </param>
+            <param name="dataSize">
+            The data size.
+            </param>
+        </member>
+        <member name="T:Chromely.CefGlue.Gtk.WebsocketServerRunner">
+            <summary>
+            The websocket server runner.
+            </summary>
+        </member>
+        <member name="F:Chromely.CefGlue.Gtk.WebsocketServerRunner.mServerHandler">
+            <summary>
+            The m server handler.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.WebsocketServerRunner.Address">
+            <summary>
+            Gets the server address.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.WebsocketServerRunner.Port">
+            <summary>
+            Gets the port.
+            </summary>
+        </member>
+        <member name="P:Chromely.CefGlue.Gtk.WebsocketServerRunner.IsServerRunning">
+            <summary>
+            Gets a value indicating whether is server running.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.WebsocketServerRunner.StartServer">
+            <summary>
+            The start server.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.WebsocketServerRunner.StartServer(System.Int32)">
+            <summary>
+            The start server.
+            </summary>
+            <param name="port">
+            The port.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.WebsocketServerRunner.StartServer(System.String,System.Int32)">
+            <summary>
+            The start server.
+            </summary>
+            <param name="address">
+            The address.
+            </param>
+            <param name="port">
+            The port.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.WebsocketServerRunner.StopServer">
+            <summary>
+            The stop server.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.WebsocketServerRunner.OnStartServerComplete">
+            <summary>
+            The on start server complete.
+            </summary>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.WebsocketServerRunner.OnStopServerComplete">
+            <summary>
+            The on stop server complete.
+            </summary>
+        </member>
+    </members>
+</doc>
