@@ -45,16 +45,16 @@ class Program
 {
    static int Main(string[] args)
    {
-      string startUrl = "https://google.com";
+      var startUrl = "https://google.com";
 
-      ChromelyConfiguration config = ChromelyConfiguration
-                                    .Create()
-                                    .WithHostMode(WindowState.Normal, true)
-                                    .WithHostTitle("chromely")
-                                    .WithHostIconFile("chromely.ico")
-                                    .WitAppArgs(args)
-                                    .WithHostSize(1000, 600)
-                                    .WithStartUrl(startUrl);
+      var config = ChromelyConfiguration
+                     .Create()
+                     .WithHostMode(WindowState.Normal, true)
+                     .WithHostTitle("chromely")
+                     .WithHostIconFile("chromely.ico")
+                     .WitAppArgs(args)
+                     .WithHostSize(1000, 600)
+                     .WithStartUrl(startUrl);
 
       using (var window = new CefGlueBrowserWindow(config))
       {
