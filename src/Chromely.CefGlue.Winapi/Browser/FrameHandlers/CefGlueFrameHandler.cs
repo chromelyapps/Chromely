@@ -23,7 +23,7 @@ namespace Chromely.CefGlue.Winapi.Browser.FrameHandlers
         /// <summary>
         /// The browser.
         /// </summary>
-        private readonly CefBrowser browser;
+        private readonly CefBrowser mBrowser;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CefGlueFrameHandler"/> class.
@@ -33,7 +33,7 @@ namespace Chromely.CefGlue.Winapi.Browser.FrameHandlers
         /// </param>
         public CefGlueFrameHandler(CefBrowser browser)
         {
-            browser = browser;
+            mBrowser = browser;
         }
 
         /// <summary>
@@ -43,12 +43,12 @@ namespace Chromely.CefGlue.Winapi.Browser.FrameHandlers
         {
             get
             {
-                if (browser == null)
+                if (mBrowser == null)
                 {
                     throw new Exception("Browser object cannot be null.");
                 }
 
-                return browser;
+                return mBrowser;
             }
         }
 

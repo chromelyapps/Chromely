@@ -14,8 +14,6 @@ namespace Chromely.CefGlue.Gtk.Win.Demo.Controllers
     using Chromely.Core.RestfulService;
     using LitJson;
 
-    using Xilium.CefGlue;
-
     /// <summary>
     /// The demo controller.
     /// </summary>
@@ -39,18 +37,20 @@ namespace Chromely.CefGlue.Gtk.Win.Demo.Controllers
         /// <returns>
         /// The <see cref="ChromelyResponse"/>.
         /// </returns>
-        private  ChromelyResponse Execute(ChromelyRequest request)
+        private ChromelyResponse Execute(ChromelyRequest request)
         {
-            var response = new ChromelyResponse(request.Id);
-            response.ReadyState = (int)ReadyState.ResponseIsReady;
-            response.Status = (int)System.Net.HttpStatusCode.OK;
-            response.StatusText = "OK";
-            response.Data = DateTime.Now.ToLongDateString();
+            var response = new ChromelyResponse(request.Id)
+            {
+                ReadyState = (int)ReadyState.ResponseIsReady,
+                Status = (int)System.Net.HttpStatusCode.OK,
+                StatusText = "OK",
+                Data = DateTime.Now.ToLongDateString()
+            };
 
             try
             {
-                ScriptInfo scriptInfo = new ScriptInfo(request.PostData);
-                CefFrame frame = FrameHandler.GetFrame(scriptInfo.FrameName);
+                var scriptInfo = new ScriptInfo(request.PostData);
+                var frame = FrameHandler.GetFrame(scriptInfo.FrameName);
                 if (frame == null)
                 {
                     response.Data = $"Frame {scriptInfo.FrameName} does not exist.";
@@ -63,6 +63,7 @@ namespace Chromely.CefGlue.Gtk.Win.Demo.Controllers
             }
             catch (Exception e)
             {
+                response.Data = e.Message;
                 response.ReadyState = (int)ReadyState.RequestReceived;
                 response.Status = (int)System.Net.HttpStatusCode.BadRequest;
                 response.StatusText = "Error";
@@ -88,7 +89,7 @@ namespace Chromely.CefGlue.Gtk.Win.Demo.Controllers
                 Script = string.Empty;
                 if (postData != null)
                 {
-                    JsonData jsonData = JsonMapper.ToObject(postData.ToString());
+                    var jsonData = JsonMapper.ToObject(postData.ToString());
                     FrameName = jsonData.Keys.Contains("framename") ? jsonData["framename"].ToString() : string.Empty;
                     Script = jsonData.Keys.Contains("script") ? jsonData["script"].ToString() : string.Empty;
                 }

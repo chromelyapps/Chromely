@@ -34,7 +34,7 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
         /// <summary>
         /// The CefGlueBrowser object.
         /// </summary>
-        private readonly CefGlueBrowser mBrowser;
+        private CefGlueBrowser mBrowser;
 
         /// <summary>
         /// The browser window handle.
@@ -78,11 +78,8 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
         {
             if (mBrowser != null)
             {
-                var browser = mBrowser.CefBrowser;
-                var host = browser.GetHost();
-                host.CloseBrowser();
-                host.Dispose();
-                browser.Dispose();
+                mBrowser.Dispose();
+                mBrowser = null;
                 mBrowserWindowHandle = IntPtr.Zero;
             }
         }

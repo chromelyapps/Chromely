@@ -204,10 +204,12 @@ namespace Chromely.CefGlue.Gtk.Browser
             CefBrowserHost.CreateBrowser(windowInfo, mClient, mSettings, StartUrl);
         }
 
+        #region Dispose
+
         /// <summary>
-        /// The close.
+        /// The dispose.
         /// </summary>
-        public void Close()
+        public void Dispose()
         {
             if (mWebsocketStarted)
             {
@@ -223,6 +225,8 @@ namespace Chromely.CefGlue.Gtk.Browser
                 CefBrowser = null;
             }
         }
+
+        #endregion
 
         #region Events Handling
 

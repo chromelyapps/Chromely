@@ -32,7 +32,7 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         /// <summary>
         /// The CefGlueBrowser object.
         /// </summary>
-        private readonly CefGlueBrowser mBrowser;
+        private CefGlueBrowser mBrowser;
 
         /// <summary>
         /// The browser window handle.
@@ -67,15 +67,7 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         /// </summary>
         public CefGlueBrowser Browser => mBrowser;
 
-        #region Close/Dispose
-
-        /// <summary>
-        /// The close.
-        /// </summary>
-        public void Close()
-        {
-            Dispose();
-        }
+        #region Dispose
 
         /// <summary>
         /// The dispose.
@@ -84,16 +76,13 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         {
             if (mBrowser != null)
             {
-                var browser = mBrowser.CefBrowser;
-                var host = browser.GetHost();
-                host.CloseBrowser();
-                host.Dispose();
-                browser.Dispose();
+                mBrowser.Dispose();
+                mBrowser = null;
                 mBrowserWindowHandle = IntPtr.Zero;
             }
         }
 
-        #endregion Close/Dispose
+        #endregion Dispose
 
         /// <summary>
         /// The on realized.

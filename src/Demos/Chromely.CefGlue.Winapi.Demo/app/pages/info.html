@@ -10,30 +10,30 @@
     <script src="../Content/js/tether.min.js"></script>
     <script src="../Content/js/bootstrap.min.js"></script>
     <script>
-	$(document).ready(function(){
-			var request = {
-				"method": "GET",
-				"url": "/info",
-				"parameters": null,
-				"postData": null,
-			};
+        $(document).ready(function(){
+            var request = {
+                "method": "GET",
+                "url": "/info",
+                "parameters": null,
+                "postData": null
+            };
 
-			window.cefQuery({
-				request: JSON.stringify(request),
-				onSuccess: function (response) {
-					var jsonData = JSON.parse(response);
-					if (jsonData.ReadyState == 4 && jsonData.Status == 200) {
-						$('#divObjective').html(jsonData.Data.divObjective);
-						$('#divPlatform').html(jsonData.Data.divPlatform);
-						$('#divVersion').html(jsonData.Data.divVersion);
-					}
-				}, onFailure: function (err, msg) {
-					console.log(err, msg);
-				}
-			});
-		});
+            window.cefQuery({
+                request: JSON.stringify(request),
+                onSuccess: function (response) {
+                    var jsonData = JSON.parse(response);
+                    if (jsonData.ReadyState == 4 && jsonData.Status == 200) {
+                        $('#divObjective').html(jsonData.Data.divObjective);
+                        $('#divPlatform').html(jsonData.Data.divPlatform);
+                        $('#divVersion').html(jsonData.Data.divVersion);
+                    }
+                }, onFailure: function (err, msg) {
+                    console.log(err, msg);
+                }
+            });
+        });
 			
-	</script
+    </script>
 </head>
 <body>
 <div class="col-9 centerBlock">

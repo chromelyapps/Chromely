@@ -356,10 +356,7 @@ namespace Chromely.CefGlue.Winapi.Browser.ServerHandlers
                 return;
             }
 
-            if (mCompleteCallback != null)
-            {
-                mCompleteCallback.Invoke();
-            }
+            mCompleteCallback?.Invoke();
         }
 
         /// <summary>

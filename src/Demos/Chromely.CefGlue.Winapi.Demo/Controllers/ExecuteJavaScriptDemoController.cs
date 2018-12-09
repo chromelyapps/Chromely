@@ -39,13 +39,15 @@ namespace Chromely.CefGlue.Winapi.Demo.Controllers
         /// <returns>
         /// The <see cref="ChromelyResponse"/>.
         /// </returns>
-        private  ChromelyResponse Execute(ChromelyRequest request)
+        private ChromelyResponse Execute(ChromelyRequest request)
         {
-            var response = new ChromelyResponse(request.Id);
-            response.ReadyState = (int)ReadyState.ResponseIsReady;
-            response.Status = (int)System.Net.HttpStatusCode.OK;
-            response.StatusText = "OK";
-            response.Data = DateTime.Now.ToLongDateString();
+            var response = new ChromelyResponse(request.Id)
+            {
+                ReadyState = (int)ReadyState.ResponseIsReady,
+                Status = (int)System.Net.HttpStatusCode.OK,
+                StatusText = "OK",
+                Data = DateTime.Now.ToLongDateString()
+            };
 
             try
             {
@@ -63,6 +65,7 @@ namespace Chromely.CefGlue.Winapi.Demo.Controllers
             }
             catch (Exception e)
             {
+                response.Data = e.Message;
                 response.ReadyState = (int)ReadyState.RequestReceived;
                 response.Status = (int)System.Net.HttpStatusCode.BadRequest;
                 response.StatusText = "Error";
@@ -88,7 +91,7 @@ namespace Chromely.CefGlue.Winapi.Demo.Controllers
                 Script = string.Empty;
                 if (postData != null)
                 {
-                    JsonData jsonData = JsonMapper.ToObject(postData.ToString());
+                    var jsonData = JsonMapper.ToObject(postData.ToString());
                     FrameName = jsonData.Keys.Contains("framename") ? jsonData["framename"].ToString() : string.Empty;
                     Script = jsonData.Keys.Contains("script") ? jsonData["script"].ToString() : string.Empty;
                 }

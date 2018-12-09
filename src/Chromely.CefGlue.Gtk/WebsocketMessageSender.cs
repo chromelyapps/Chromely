@@ -458,7 +458,7 @@ namespace Chromely.CefGlue.Gtk
         {
             Task.Run(() =>
             {
-                IntPtr outIntPtr = IntPtr.Zero;
+                var outIntPtr = IntPtr.Zero;
 
                 try
                 {
@@ -508,7 +508,6 @@ namespace Chromely.CefGlue.Gtk
                 {
                     try
                     {
-
                         if (Server == null)
                         {
                             return;
@@ -536,7 +535,7 @@ namespace Chromely.CefGlue.Gtk
         {
             Task.Run(() =>
             {
-                IntPtr outIntPtr = IntPtr.Zero;
+                var outIntPtr = IntPtr.Zero;
 
                 try
                 {

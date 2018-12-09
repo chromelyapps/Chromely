@@ -8,7 +8,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 // ReSharper disable once StyleCop.SA1300
-namespace Chromely.CefGlue.Winapi.netCoreDemo.Controllers
+namespace Chromely.CefGlue.Gtk.Linux.Demo.Controllers
 {
     using System;
     using Chromely.Core.RestfulService;
@@ -37,7 +37,7 @@ namespace Chromely.CefGlue.Winapi.netCoreDemo.Controllers
         /// <returns>
         /// The <see cref="ChromelyResponse"/>.
         /// </returns>
-        private  ChromelyResponse Execute(ChromelyRequest request)
+        private ChromelyResponse Execute(ChromelyRequest request)
         {
             var response = new ChromelyResponse(request.Id)
             {
@@ -61,9 +61,9 @@ namespace Chromely.CefGlue.Winapi.netCoreDemo.Controllers
                 response.Data = "Executed script :" + scriptInfo.Script;
                 return response;
             }
-            catch (Exception exception)
+            catch (Exception e)
             {
-                response.Data = exception.Message;
+                response.Data = e.Message;
                 response.ReadyState = (int)ReadyState.RequestReceived;
                 response.Status = (int)System.Net.HttpStatusCode.BadRequest;
                 response.StatusText = "Error";

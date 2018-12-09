@@ -8,7 +8,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 // ReSharper disable once StyleCop.SA1300
-namespace Chromely.CefGlue.Gtk.Win.Demo.Controllers
+namespace Chromely.CefGlue.Gtk.Linux.Demo.Controllers
 {
     using System;
     using System.Collections.Generic;

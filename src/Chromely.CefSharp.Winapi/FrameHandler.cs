@@ -21,7 +21,7 @@ namespace Chromely.CefSharp.Winapi
         /// <summary>
         /// The browser.
         /// </summary>
-        private static IBrowser browser;
+        private static IBrowser mBrowser;
 
         /// <summary>
         /// Gets the browser.
@@ -30,18 +30,18 @@ namespace Chromely.CefSharp.Winapi
         {
             get
             {
-                if (browser != null)
+                if (mBrowser != null)
                 {
-                    return browser;
+                    return mBrowser;
                 }
 
                 var cefSharpFrameHandler = IoC.GetInstance<CefSharpFrameHandler>(typeof(CefSharpFrameHandler).FullName);
                 if (cefSharpFrameHandler != null)
                 {
-                    browser = cefSharpFrameHandler.Browser;
+                    mBrowser = cefSharpFrameHandler.Browser;
                 }
 
-                return browser;
+                return mBrowser;
             }
         }
 

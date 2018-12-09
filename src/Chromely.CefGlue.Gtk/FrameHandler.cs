@@ -22,7 +22,7 @@ namespace Chromely.CefGlue.Gtk
         /// <summary>
         /// The browser.
         /// </summary>
-        private static CefBrowser browser;
+        private static CefBrowser mBrowser;
 
         /// <summary>
         /// Gets the browser.
@@ -31,18 +31,18 @@ namespace Chromely.CefGlue.Gtk
         {
             get
             {
-                if (browser != null)
+                if (mBrowser != null)
                 {
-                    return browser;
+                    return mBrowser;
                 }
 
                 CefGlueFrameHandler cefGlueFrameHandler = IoC.GetInstance<CefGlueFrameHandler>(typeof(CefGlueFrameHandler).FullName);
                 if (cefGlueFrameHandler != null)
                 {
-                    browser = cefGlueFrameHandler.Browser;
+                    mBrowser = cefGlueFrameHandler.Browser;
                 }
 
-                return browser;
+                return mBrowser;
             }
         }
 

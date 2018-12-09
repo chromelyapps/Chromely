@@ -23,7 +23,7 @@ namespace Chromely.CefSharp.Winapi.Browser.FrameHandlers
         /// <summary>
         /// The browser.
         /// </summary>
-        private readonly IBrowser browser;
+        private readonly IBrowser mBrowser;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CefSharpFrameHandler"/> class.
@@ -33,7 +33,7 @@ namespace Chromely.CefSharp.Winapi.Browser.FrameHandlers
         /// </param>
         public CefSharpFrameHandler(IBrowser browser)
         {
-            browser = browser;
+            mBrowser = browser;
         }
 
         /// <summary>
@@ -43,12 +43,12 @@ namespace Chromely.CefSharp.Winapi.Browser.FrameHandlers
         {
             get
             {
-                if (browser == null)
+                if (mBrowser == null)
                 {
                     throw new Exception("Browser object cannot be null.");
                 }
 
-                return browser;
+                return mBrowser;
             }
         }
 

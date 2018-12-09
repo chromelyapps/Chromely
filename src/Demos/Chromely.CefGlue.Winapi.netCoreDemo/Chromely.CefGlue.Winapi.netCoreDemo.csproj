@@ -39,12 +39,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Chromely.CefGlue.Winapi" Version="66.0.0" />
+    <PackageReference Include="Chromely.CefGlue.Winapi" Version="68.0.0-pre01" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Chromely.CefGlue.Winapi\Chromely.CefGlue.Winapi.csproj" />
-  </ItemGroup>
   <ItemGroup>
     <None Update="app\chromely.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -62,9 +59,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="app\pages\ajaxdemo.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="app\pages\boundobject.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="app\pages\info.html">

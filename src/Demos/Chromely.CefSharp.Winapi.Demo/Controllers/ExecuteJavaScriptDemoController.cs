@@ -42,16 +42,18 @@ namespace Chromely.CefSharp.Winapi.Demo.Controllers
         /// </returns>
         private  ChromelyResponse Execute(ChromelyRequest request)
         {
-            var response = new ChromelyResponse(request.Id);
-            response.ReadyState = (int)ReadyState.ResponseIsReady;
-            response.Status = (int)System.Net.HttpStatusCode.OK;
-            response.StatusText = "OK";
-            response.Data = DateTime.Now.ToLongDateString();
+            var response = new ChromelyResponse(request.Id)
+            {
+                ReadyState = (int)ReadyState.ResponseIsReady,
+                Status = (int)System.Net.HttpStatusCode.OK,
+                StatusText = "OK",
+                Data = DateTime.Now.ToLongDateString()
+            };
 
             try
             {
-                ScriptInfo scriptInfo = new ScriptInfo(request.PostData);
-                IFrame frame = FrameHandler.GetFrame(scriptInfo.FrameName);
+                var scriptInfo = new ScriptInfo(request.PostData);
+                var frame = FrameHandler.GetFrame(scriptInfo.FrameName);
                 if (frame == null)
                 {
                     response.Data = $"Frame {scriptInfo.FrameName} does not exist.";
@@ -83,25 +85,27 @@ namespace Chromely.CefSharp.Winapi.Demo.Controllers
         /// </returns>
         private ChromelyResponse Evaluate(ChromelyRequest request)
         {
-            var response = new ChromelyResponse(request.Id);
-            response.ReadyState = (int)ReadyState.ResponseIsReady;
-            response.Status = (int)System.Net.HttpStatusCode.OK;
-            response.StatusText = "OK";
-            response.Data = DateTime.Now.ToLongDateString();
+            var response = new ChromelyResponse(request.Id)
+            {
+                ReadyState = (int)ReadyState.ResponseIsReady,
+                Status = (int)System.Net.HttpStatusCode.OK,
+                StatusText = "OK",
+                Data = DateTime.Now.ToLongDateString()
+            };
 
             try
             {
-                ScriptInfo scriptInfo = new ScriptInfo(request.PostData);
-                IFrame frame = FrameHandler.GetFrame(scriptInfo.FrameName);
+                var scriptInfo = new ScriptInfo(request.PostData);
+                var frame = FrameHandler.GetFrame(scriptInfo.FrameName);
                 if (frame == null)
                 {
                     response.Data = $"Frame {scriptInfo.FrameName} does not exist.";
                     return response;
                 }
 
-                Task<JavascriptResponse> javascriptResponse = frame.EvaluateScriptAsync(scriptInfo.Script);
+                var javascriptResponse = frame.EvaluateScriptAsync(scriptInfo.Script);
                 javascriptResponse.Wait();
-                string status = javascriptResponse.Result.Success
+                var status = javascriptResponse.Result.Success
                                     ? "Successfully executed :"
                                     : "Error in executing :";
 
@@ -110,8 +114,9 @@ namespace Chromely.CefSharp.Winapi.Demo.Controllers
                                     : javascriptResponse.Result?.Result?.ToString();
                 return response;
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
+                response.Data = exception.Message;
                 response.ReadyState = (int)ReadyState.RequestReceived;
                 response.Status = (int)System.Net.HttpStatusCode.BadRequest;
                 response.StatusText = "Error";
