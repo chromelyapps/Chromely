@@ -3,8 +3,10 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Platforms>AnyCPU</Platforms>
-    <Version>68.0.0.0-pre01</Version>
+    <ProductVersion>68.0.0.0-pre01</ProductVersion>
     <AssemblyVersion>68.0.0.0</AssemblyVersion>
+    <FileVersion>68.0.0.0-pre01</FileVersion>
+    <Version>68.0.0.0-pre01</Version>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Product>Chromely.CefGlue.Winapi</Product>
@@ -22,7 +24,6 @@
       - Allows for event registration
       - Added option for Maximize and Fullscreen/Kiosk mode Window states.
     </PackageReleaseNotes>
-    <FileVersion>68.0.0.0</FileVersion>
     <RepositoryType>Github Repository</RepositoryType>
     <RepositoryUrl>https://github.com/mattkol/Chromely</RepositoryUrl>
   </PropertyGroup>

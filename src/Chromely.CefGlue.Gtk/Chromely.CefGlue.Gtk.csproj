@@ -3,8 +3,10 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Platforms>AnyCPU</Platforms>
+    <ProductVersion>68.0.0.0-beta01</ProductVersion>
     <Version>68.0.0.0-beta01</Version>
     <AssemblyVersion>68.0.0.0</AssemblyVersion>
+    <FileVersion>68.0.0.0-beta01</FileVersion>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Product>Chromely.CefGlue.Gtk</Product>
@@ -19,7 +21,6 @@
     <PackageReleaseNotes>
     - First nuget package.
     </PackageReleaseNotes>
-    <FileVersion>68.0.0.0-beta</FileVersion>
     <RepositoryType>Github Repository</RepositoryType>
     <RepositoryUrl>https://github.com/mattkol/Chromely</RepositoryUrl>
   </PropertyGroup>
@@ -37,7 +38,6 @@
     <DocumentationFile>bin\Release\netstandard2.0\Chromely.CefGlue.Gtk.xml</DocumentationFile>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
-
 
   <ItemGroup>
     <Compile Remove="CefGlue\Interop\Base\cef_string_t.disabled.cs" />
