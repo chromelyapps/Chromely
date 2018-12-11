@@ -61,27 +61,32 @@ namespace Chromely.Core.Helpers
 
         /// <summary>
         /// The tooltip changed.
+        /// For CefGlue apps only.
         /// </summary>
         TooltipChanged,
 
         /// <summary>
         /// The before close.
+        /// For CefGlue apps only.
         /// </summary>
         BeforeClose,
 
         /// <summary>
         /// The before popup.
+        /// For CefGlue apps only.
         /// </summary>
         BeforePopup,
 
         /// <summary>
         /// The plugin crashed.
+        /// For CefGlue apps only.
         /// </summary>
         PluginCrashed,
 
         /// <summary>
         /// The render process terminated.
+        /// For CefGlue apps only.
         /// </summary>
         RenderProcessTerminated
-   }
+    }
 }

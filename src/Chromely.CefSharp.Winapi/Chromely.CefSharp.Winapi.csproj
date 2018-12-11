@@ -17,7 +17,12 @@
     <FileVersion>67.0.0.0</FileVersion>
     <PackageTags>Cef Chromium HTML5 Desktop Chromely CefSharp Restful Ajax HTTP XHR JavascriptIntegration</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageReleaseNotes></PackageReleaseNotes>
+    <PackageReleaseNotes>
+      - Breaking changes! - More info - https://github.com/mattkol/Chromely/wiki/Upgrade-to-CefGlue-v68-and-CefSharp-v67
+      - ChromelyConfiguration is now Singleton - only one instance per Chromely app.
+      - Allows for event registration
+      - Added option for Maximize and Fullscreen/Kiosk mode Window states.
+    </PackageReleaseNotes>
     <RepositoryType>Github Repository</RepositoryType>
     <RepositoryUrl>https://github.com/mattkol/Chromely</RepositoryUrl>
   </PropertyGroup>

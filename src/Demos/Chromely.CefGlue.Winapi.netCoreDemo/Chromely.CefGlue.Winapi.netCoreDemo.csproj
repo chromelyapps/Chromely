@@ -13,14 +13,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="chromely.ico" />
-    <None Remove="app\Content\css\bootstrap.min.css" />
-    <None Remove="app\Content\js\bootstrap.min.js" />
-    <None Remove="app\Content\js\jquery.min.js" />
-    <None Remove="app\Content\js\tether.min.js" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Include="chromely.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
