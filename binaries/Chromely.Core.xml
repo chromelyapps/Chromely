@@ -1152,26 +1152,31 @@
         <member name="F:Chromely.Core.Helpers.CefEventKey.TooltipChanged">
             <summary>
             The tooltip changed.
+            For CefGlue apps only.
             </summary>
         </member>
         <member name="F:Chromely.Core.Helpers.CefEventKey.BeforeClose">
             <summary>
             The before close.
+            For CefGlue apps only.
             </summary>
         </member>
         <member name="F:Chromely.Core.Helpers.CefEventKey.BeforePopup">
             <summary>
             The before popup.
+            For CefGlue apps only.
             </summary>
         </member>
         <member name="F:Chromely.Core.Helpers.CefEventKey.PluginCrashed">
             <summary>
             The plugin crashed.
+            For CefGlue apps only.
             </summary>
         </member>
         <member name="F:Chromely.Core.Helpers.CefEventKey.RenderProcessTerminated">
             <summary>
             The render process terminated.
+            For CefGlue apps only.
             </summary>
         </member>
         <member name="T:Chromely.Core.Helpers.CefHandlerKey">
