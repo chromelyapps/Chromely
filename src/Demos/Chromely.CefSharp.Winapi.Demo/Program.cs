@@ -63,7 +63,7 @@ namespace Chromely.CefSharp.Winapi.Demo
                 // var startUrl = $"file:///{appDirectory}app/chromely.html";
                 var config = ChromelyConfiguration
                                 .Create()
-                                .WithHostMode(WindowState.Maximize)
+                                .WithHostMode(WindowState.Normal)
                                 .WithHostTitle("chromely")
                                 .WithHostIconFile("chromely.ico")
                                 .WithAppArgs(args)
