@@ -56,10 +56,10 @@ namespace Chromely.Core.Infrastructure
         {
             if (string.IsNullOrEmpty(fullFilePath))
             {
-                string exeLocation = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-                string appendDay = DateTime.Now.ToString("yyyyMMdd");
+                var exeLocation = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+                var fileName = DateTime.Now.ToString("yyyyMMdd") + ".log";
 
-                fullFilePath = Path.Combine(exeLocation, "Logs", "chromely_" + appendDay + ".log");
+                fullFilePath = exeLocation != null ? Path.Combine(exeLocation, "Logs", "chromely_" + fileName) : fileName;
             }
 
             mFilename = fullFilePath;
