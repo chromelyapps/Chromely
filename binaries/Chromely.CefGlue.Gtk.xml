@@ -603,6 +603,22 @@
             The position.
             </param>
         </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserWindow.NativeMethods.SetWindowMaximize(System.IntPtr)">
+            <summary>
+            The set window maximize.
+            </summary>
+            <param name="window">
+            The window.
+            </param>
+        </member>
+        <member name="M:Chromely.CefGlue.Gtk.BrowserWindow.NativeMethods.SetFullscreen(System.IntPtr)">
+            <summary>
+            The set fullscreen.
+            </summary>
+            <param name="window">
+            The window.
+            </param>
+        </member>
         <member name="M:Chromely.CefGlue.Gtk.BrowserWindow.NativeMethods.AddConfigureEvent(System.IntPtr)">
             <summary>
             The add configure event.
@@ -729,24 +745,9 @@
             The event lock object.
             </summary>
         </member>
-        <member name="F:Chromely.CefGlue.Gtk.BrowserWindow.NativeWindow.mTitle">
+        <member name="F:Chromely.CefGlue.Gtk.BrowserWindow.NativeWindow.mHostConfig">
             <summary>
-            The host/app/window title.
-            </summary>
-        </member>
-        <member name="F:Chromely.CefGlue.Gtk.BrowserWindow.NativeWindow.mIconFile">
-            <summary>
-            The host/app/window icon file.
-            </summary>
-        </member>
-        <member name="F:Chromely.CefGlue.Gtk.BrowserWindow.NativeWindow.mWidth">
-            <summary>
-            The host/app/window width.
-            </summary>
-        </member>
-        <member name="F:Chromely.CefGlue.Gtk.BrowserWindow.NativeWindow.mHeight">
-            <summary>
-            The host/app/window height.
+            The m host config.
             </summary>
         </member>
         <member name="F:Chromely.CefGlue.Gtk.BrowserWindow.NativeWindow.mMainWindow">
@@ -774,21 +775,12 @@
             Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.BrowserWindow.NativeWindow"/> class.
             </summary>
         </member>
-        <member name="M:Chromely.CefGlue.Gtk.BrowserWindow.NativeWindow.#ctor(System.String,System.Int32,System.Int32,System.String)">
+        <member name="M:Chromely.CefGlue.Gtk.BrowserWindow.NativeWindow.#ctor(Chromely.Core.ChromelyConfiguration)">
             <summary>
             Initializes a new instance of the <see cref="T:Chromely.CefGlue.Gtk.BrowserWindow.NativeWindow"/> class.
             </summary>
-            <param name="title">
-            The title.
-            </param>
-            <param name="width">
-            The width.
-            </param>
-            <param name="height">
-            The height.
-            </param>
-            <param name="iconFile">
-            The icon file.
+            <param name="hostConfig">
+            The host config.
             </param>
         </member>
         <member name="E:Chromely.CefGlue.Gtk.BrowserWindow.NativeWindow.Realized">

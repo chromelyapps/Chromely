@@ -500,6 +500,44 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         }
 
         /// <summary>
+        /// The set window maximize.
+        /// </summary>
+        /// <param name="window">
+        /// The window.
+        /// </param>
+        internal static void SetWindowMaximize(IntPtr window)
+        {
+            if (CefRuntime.Platform == CefRuntimePlatform.Windows)
+            {
+                Win.gtk_window_maximize(window);
+            }
+
+            if (CefRuntime.Platform == CefRuntimePlatform.Linux)
+            {
+                Linux.gtk_window_maximize(window);
+            }
+        }
+
+        /// <summary>
+        /// The set fullscreen.
+        /// </summary>
+        /// <param name="window">
+        /// The window.
+        /// </param>
+        internal static void SetFullscreen(IntPtr window)
+        {
+            if (CefRuntime.Platform == CefRuntimePlatform.Windows)
+            {
+                Win.gtk_window_fullscreen(window);
+            }
+
+            if (CefRuntime.Platform == CefRuntimePlatform.Linux)
+            {
+                Linux.gtk_window_fullscreen(window);
+            }
+        }
+
+        /// <summary>
         /// The add configure event.
         /// </summary>
         /// <param name="window">
@@ -699,6 +737,12 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
             [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, ExactSpelling = false)]
             internal static extern void gtk_widget_add_events(IntPtr window, GtkEvent eventType);
 
+            [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, ExactSpelling = false)]
+            internal static extern bool gtk_window_maximize(IntPtr window);
+
+            [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, ExactSpelling = false)]
+            internal static extern bool gtk_window_fullscreen(IntPtr window);
+
             [DllImport("user32.dll")]
             [return: MarshalAs(UnmanagedType.Bool)]
             internal static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, SetWindowPosFlags uFlags);
@@ -798,6 +842,12 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
 
             [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, ExactSpelling = false)]
             internal static extern bool gtk_window_set_position(IntPtr window, GtkWindowPosition position);
+
+            [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, ExactSpelling = false)]
+            internal static extern bool gtk_window_maximize(IntPtr window);
+
+            [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, ExactSpelling = false)]
+            internal static extern bool gtk_window_fullscreen(IntPtr window);
 
             [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, ExactSpelling = false)]
             internal static extern void gtk_widget_add_events(IntPtr window, GtkEvent eventType);

@@ -68,7 +68,7 @@ namespace Chromely.CefSharp.Winapi.Demo
                                 .WithHostIconFile("chromely.ico")
                                 .WithAppArgs(args)
                                 .WithHostSize(1200, 700)
-                                .WithLogFile("logs\\chromely.cef_new.log")
+                              //  .WithLogFile("logs\\chromely.cef_new.log")
                                 .WithStartUrl(startUrl)
                                 .WithLogSeverity(Core.Infrastructure.LogSeverity.Info)
                                 .UseDefaultLogger()

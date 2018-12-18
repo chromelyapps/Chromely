@@ -51,7 +51,7 @@ namespace Chromely.CefGlue.Gtk.Win.Demo
                 // var startUrl = $"file:///{appDirectory}app/chromely.html";
                 var config = ChromelyConfiguration
                                 .Create()
-                                .WithHostMode(WindowState.Fullscreen)
+                                .WithHostMode(WindowState.Maximize)
                                 .WithHostTitle("chromely")
                                 .WithHostIconFile("chromely.ico")
                                 .WithAppArgs(args)

@@ -9,6 +9,8 @@
 
 namespace Chromely.CefGlue.Gtk.BrowserWindow
 {
+    using Chromely.Core;
+    using Chromely.Core.Host;
     using System;
 
     /// <summary>
@@ -22,24 +24,9 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         private readonly object mEventLock = new object();
 
         /// <summary>
-        /// The host/app/window title.
+        /// The m host config.
         /// </summary>
-        private readonly string mTitle;
-
-        /// <summary>
-        /// The host/app/window icon file.
-        /// </summary>
-        private readonly string mIconFile;
-
-        /// <summary>
-        /// The host/app/window width.
-        /// </summary>
-        private readonly int mWidth;
-
-        /// <summary>
-        /// The host/app/window height.
-        /// </summary>
-        private readonly int mHeight;
+        private readonly ChromelyConfiguration mHostConfig;
 
         /// <summary>
         /// The main window.
@@ -66,33 +53,20 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         /// </summary>
         public NativeWindow()
         {
-            mTitle = "chromely";
-            mIconFile = null;
-            mWidth = 1200;
-            mHeight = 800;
+            this.mMainWindow = IntPtr.Zero;
+            this.mHostConfig = ChromelyConfiguration.Create();
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NativeWindow"/> class.
         /// </summary>
-        /// <param name="title">
-        /// The title.
+        /// <param name="hostConfig">
+        /// The host config.
         /// </param>
-        /// <param name="width">
-        /// The width.
-        /// </param>
-        /// <param name="height">
-        /// The height.
-        /// </param>
-        /// <param name="iconFile">
-        /// The icon file.
-        /// </param>
-        public NativeWindow(string title, int width, int height, string iconFile = null)
+        public NativeWindow(ChromelyConfiguration hostConfig)
         {
-            mTitle = title;
-            mWidth = width;
-            mHeight = height;
-            mIconFile = iconFile;
+            this.mMainWindow = IntPtr.Zero;
+            this.mHostConfig = hostConfig;
         }
 
         #region Events
@@ -283,21 +257,39 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         /// </summary>
         private void CreateWindow()
         {
-            mMainWindow = NativeMethods.NewWindow(NativeMethods.GtkWindowType.GtkWindowToplevel);
-            NativeMethods.SetTitle(mMainWindow, mTitle);
+            this.mMainWindow = NativeMethods.NewWindow(NativeMethods.GtkWindowType.GtkWindowToplevel);
+            NativeMethods.SetTitle(this.mMainWindow, this.mHostConfig.HostTitle);
 
-            NativeMethods.SetIconFromFile(mMainWindow, mIconFile);
+            NativeMethods.SetIconFromFile(this.mMainWindow, this.mHostConfig.HostIconFile);
 
-            NativeMethods.SetSizeRequest(mMainWindow, mWidth, mHeight);
-            NativeMethods.SetWindowPosition(mMainWindow, NativeMethods.GtkWindowPosition.GtkWinPosCenter);
+            NativeMethods.SetSizeRequest(this.mMainWindow, this.mHostConfig.HostWidth, this.mHostConfig.HostHeight);
 
-            NativeMethods.AddConfigureEvent(mMainWindow);
+            if (this.mHostConfig.HostCenterScreen)
+            {
+                NativeMethods.SetWindowPosition(this.mMainWindow, NativeMethods.GtkWindowPosition.GtkWinPosCenter);
+            }
 
-            Realized += OnRealized;
-            Resized += OnResize;
-            Exited += OnExit;
+            switch (this.mHostConfig.HostState)
+            {
+                case WindowState.Normal:
+                    break;
 
-            NativeMethods.ShowAll(mMainWindow);
+                case WindowState.Maximize:
+                    NativeMethods.SetWindowMaximize(this.mMainWindow);
+                    break;
+
+                case WindowState.Fullscreen:
+                    NativeMethods.SetFullscreen(this.mMainWindow);
+                    break;
+            }
+
+            NativeMethods.AddConfigureEvent(this.mMainWindow);
+
+            this.Realized += this.OnRealized;
+            this.Resized += this.OnResize;
+            this.Exited += this.OnExit;
+
+            NativeMethods.ShowAll(this.mMainWindow);
         }
 
         /// <summary>

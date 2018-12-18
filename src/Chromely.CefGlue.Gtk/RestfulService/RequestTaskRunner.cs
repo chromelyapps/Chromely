@@ -118,7 +118,7 @@ namespace Chromely.CefGlue.Gtk.RestfulService
             var parameters = request.Parameters ?? request.RoutePath.Path.GetParameters()?.ToObjectDictionary();
             var postData = request.PostData;
 
-            return ExcuteRoute(string.Empty, request.RoutePath, parameters, postData);
+            return ExcuteRoute(request.Id, request.RoutePath, parameters, postData);
         }
 
         /// <summary>

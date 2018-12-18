@@ -49,7 +49,7 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         /// The host config.
         /// </param>
         public Window(HostBase application, ChromelyConfiguration hostConfig)
-            : base(hostConfig.HostTitle, hostConfig.HostWidth, hostConfig.HostHeight, hostConfig.HostIconFile)
+            : base(hostConfig)
         {
             mHostConfig = hostConfig;
             mBrowser = new CefGlueBrowser(this, hostConfig, new CefBrowserSettings());
@@ -176,6 +176,19 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         private void OnBrowserCreated(object sender, EventArgs e)
         {
             mBrowserWindowHandle = mBrowser.CefBrowser.GetHost().GetWindowHandle();
+            if (CefRuntime.Platform == CefRuntimePlatform.Windows)
+            {
+                if (mBrowserWindowHandle != IntPtr.Zero)
+                {
+                    // ReSharper disable once InlineOutVariableDeclaration
+                    int width;
+                    // ReSharper disable once InlineOutVariableDeclaration
+                    int height;
+                    GetSize(out width, out height);
+
+                    NativeMethods.SetWindowPos(mBrowserWindowHandle, IntPtr.Zero, 0, 0, width, height);
+                }
+            }
         }
     }
 }
