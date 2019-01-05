@@ -3,10 +3,10 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Platforms>AnyCPU</Platforms>
-    <ProductVersion>68.0.0.0-pre01</ProductVersion>
+    <ProductVersion>68.0.0.0</ProductVersion>
     <AssemblyVersion>68.0.0.0</AssemblyVersion>
-    <FileVersion>68.0.0.0-pre01</FileVersion>
-    <Version>68.0.0.0-pre01</Version>
+    <FileVersion>68.0.0.0</FileVersion>
+    <Version>68.0.0.0</Version>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Product>Chromely.CefGlue.Winapi</Product>

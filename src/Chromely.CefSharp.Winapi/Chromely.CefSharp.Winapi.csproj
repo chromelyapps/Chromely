@@ -5,10 +5,10 @@
     <CefSharpAnyCpuSupport>true</CefSharpAnyCpuSupport>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
-    <ProductVersion>67.0.0.0-pre01</ProductVersion>
+    <ProductVersion>67.0.0.0</ProductVersion>
     <AssemblyVersion>67.0.0.0</AssemblyVersion>
-    <FileVersion>67.0.0.0-pre01</FileVersion>
-    <Version>67.0.0.0-pre01</Version>
+    <FileVersion>67.0.0.0</FileVersion>
+    <Version>67.0.0.0</Version>
     <Authors>Chromely Projects</Authors>
     <Company>Chromely Projects</Company>
     <Description>Chromely CefSharp Winapi implementation. Chromely.CefSharp.Winapi version naming is based on CefSharp.Common version referenced.</Description>
