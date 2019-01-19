@@ -93,10 +93,6 @@ Contributing
 ---
 Contributions are always welcome, via PRs, issues raised, or any other means.
 
-Author
----
-[Kola Matthew Oyewumi](https://www.linkedin.com/in/kola-oyewumi-630b1520) 
-
 License
 ---
 * Chromely is MIT - licensed.
