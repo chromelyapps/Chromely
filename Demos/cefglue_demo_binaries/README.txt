@@ -17,4 +17,4 @@ For more help on how to run the tool:
 chromelycef.exe download -h
 
 For more info:
-https://github.com/mattkol/Chromely
+https://github.com/chromelyapps/Chromely

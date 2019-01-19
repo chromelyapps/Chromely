@@ -54,11 +54,11 @@ namespace Chromely.CefGlue.Winapi.Demo.Controllers
 
             mServerSentMessages = new List<string>
             {
-                "https://github.com/mattkol/Chromely",
+                "https://github.com/chromelyapps/Chromely",
                 "Chromely Webscocket demo",
                 "Build HTML5 desktop apps with Chromely",
                 "Real-time app dev with Chromely",
-                "For more info see - https://github.com/mattkol/Chromely/wiki/Real-time-with-Websocket"
+                "For more info see - https://github.com/chromelyapps/Chromely/wiki/Real-time-with-Websocket"
             };
 
             RegisterGetRequest("/websocketmanager/start", StartServer);

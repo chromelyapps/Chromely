@@ -13,19 +13,19 @@
     <Company>Chromely Projects</Company>
     <Description>Chromely CefSharp Winapi implementation. Chromely.CefSharp.Winapi version naming is based on CefSharp.Common version referenced.</Description>
     <Copyright>Copyright © 2017-2018 Chromely Projects</Copyright>
-    <PackageLicenseUrl>https://github.com/mattkol/Chromely/blob/master/LICENSE.md</PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/mattkol/Chromely</PackageProjectUrl>
-    <PackageIconUrl>https://github.com/mattkol/Chromely/blob/master/nugets/chromely.ico?raw=true</PackageIconUrl>
+    <PackageLicenseUrl>https://github.com/chromelyapps/Chromely/blob/master/LICENSE.md</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/chromelyapps/Chromely</PackageProjectUrl>
+    <PackageIconUrl>https://github.com/chromelyapps/Chromely/blob/master/nugets/chromely.ico?raw=true</PackageIconUrl>
     <PackageTags>Cef Chromium HTML5 Desktop Chromely CefSharp Restful Ajax HTTP XHR JavascriptIntegration</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageReleaseNotes>
-      - Breaking changes! - More info - https://github.com/mattkol/Chromely/wiki/Upgrade-to-CefGlue-v68-and-CefSharp-v67
+      - Breaking changes! - More info - https://github.com/chromelyapps/Chromely/wiki/Upgrade-to-CefGlue-v68-and-CefSharp-v67
       - ChromelyConfiguration is now Singleton - only one instance per Chromely app.
       - Allows for event registration
       - Added option for Maximize and Fullscreen/Kiosk mode Window states.
     </PackageReleaseNotes>
     <RepositoryType>Github Repository</RepositoryType>
-    <RepositoryUrl>https://github.com/mattkol/Chromely</RepositoryUrl>
+    <RepositoryUrl>https://github.com/chromelyapps/Chromely</RepositoryUrl>
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

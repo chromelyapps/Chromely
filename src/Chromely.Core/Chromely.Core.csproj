@@ -12,15 +12,15 @@
     <PackageTags>Cef Chromium HTML5 Desktop Chromely CefGlue CefSharp Restful  Ajax HTTP XHR MessageRouter JavascriptIntegration NetStandard .NET Core</PackageTags>
     <Description>This is a .NET Standard library. It is the base/core library required to build either Chromely CefSharp or Chromely CefGlue apps. It has all the common features and functionalities for both types of apps on either Windows or Linux.</Description>
     <Copyright>Copyright © 2017-2018 Chromely Projects</Copyright>
-    <PackageLicenseUrl>https://github.com/mattkol/Chromely/blob/master/LICENSE.md</PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/mattkol/Chromely</PackageProjectUrl>
-    <PackageIconUrl>https://github.com/mattkol/Chromely/blob/master/nugets/chromely.ico?raw=true</PackageIconUrl>
+    <PackageLicenseUrl>https://github.com/chromelyapps/Chromely/blob/master/LICENSE.md</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/chromelyapps/Chromely</PackageProjectUrl>
+    <PackageIconUrl>https://github.com/chromelyapps/Chromely/blob/master/nugets/chromely.ico?raw=true</PackageIconUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageReleaseNotes>
       - ChromelyConfiguration is now Singleton - only one instance per Chromely app.
     </PackageReleaseNotes>
-    <RepositoryUrl>https://github.com/mattkol/Chromely</RepositoryUrl>
+    <RepositoryUrl>https://github.com/chromelyapps/Chromely</RepositoryUrl>
     <RepositoryType>Github Repository</RepositoryType>
   </PropertyGroup>
 

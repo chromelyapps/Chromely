@@ -67,7 +67,7 @@ namespace Chromely.CefGlue.Gtk.Win.Demo
                 using (var window = new CefGlueBrowserWindow(config))
                 {
                     // Register external url schemes
-                    window.RegisterUrlScheme(new UrlScheme("https://github.com/mattkol/Chromely", true));
+                    window.RegisterUrlScheme(new UrlScheme("https://github.com/chromelyapps/Chromely", true));
 
                     /*
                      * Register service assemblies
