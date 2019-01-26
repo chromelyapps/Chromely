@@ -10,11 +10,8 @@
     <StartupObject />
     <AssemblyName>cefglue_winapi_netcoredemo</AssemblyName>
     <NoWarn>NU1605</NoWarn>
-    <TrimUnusedDependencies>true</TrimUnusedDependencies> 
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
     <WarningsAsErrors />
+    <TrimUnusedDependencies>true</TrimUnusedDependencies> 
   </PropertyGroup>
 
   <ItemGroup>
