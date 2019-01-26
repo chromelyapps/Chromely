@@ -9,6 +9,7 @@
     <ApplicationIcon>chromely.ico</ApplicationIcon>
     <StartupObject />
     <AssemblyName>cefglue_gtk_linux_demo</AssemblyName>
+    <NoWarn>NU1605</NoWarn>
     <TrimUnusedDependencies>true</TrimUnusedDependencies>
   </PropertyGroup>
 
