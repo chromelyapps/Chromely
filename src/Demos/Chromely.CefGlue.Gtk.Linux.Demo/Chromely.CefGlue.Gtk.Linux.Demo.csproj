@@ -13,6 +13,10 @@
     <TrimUnusedDependencies>true</TrimUnusedDependencies>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <WarningsAsErrors />
+  </PropertyGroup>
+
   <ItemGroup>
     <None Remove="chromely.ico" />
   </ItemGroup>

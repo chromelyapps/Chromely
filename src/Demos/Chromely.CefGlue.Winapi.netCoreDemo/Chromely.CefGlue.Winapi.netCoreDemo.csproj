@@ -13,6 +13,10 @@
     <TrimUnusedDependencies>true</TrimUnusedDependencies> 
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <WarningsAsErrors />
+  </PropertyGroup>
+
   <ItemGroup>
     <Content Include="chromely.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
