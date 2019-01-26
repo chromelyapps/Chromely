@@ -3,10 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2020
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CefGlue", "CefGlue", "{A6B2DE5A-07ED-40D2-9D99-215B48C8D1AF}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chromely.Unofficial.CefGlue.NetStd", "CefGlue\Chromely.Unofficial.CefGlue.NetStd\Chromely.Unofficial.CefGlue.NetStd.csproj", "{BAAC94B2-88C6-405B-A8F1-C130464405FA}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demos", "Demos", "{D56CCFF2-71C9-406D-9E5B-F09949FA6775}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chromely.Core", "Chromely.Core\Chromely.Core.csproj", "{5EDBC83F-2229-4BD4-8E18-82B736A47119}"
@@ -49,18 +45,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{BAAC94B2-88C6-405B-A8F1-C130464405FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BAAC94B2-88C6-405B-A8F1-C130464405FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BAAC94B2-88C6-405B-A8F1-C130464405FA}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{BAAC94B2-88C6-405B-A8F1-C130464405FA}.Debug|x64.Build.0 = Debug|Any CPU
-		{BAAC94B2-88C6-405B-A8F1-C130464405FA}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{BAAC94B2-88C6-405B-A8F1-C130464405FA}.Debug|x86.Build.0 = Debug|Any CPU
-		{BAAC94B2-88C6-405B-A8F1-C130464405FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BAAC94B2-88C6-405B-A8F1-C130464405FA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BAAC94B2-88C6-405B-A8F1-C130464405FA}.Release|x64.ActiveCfg = Release|Any CPU
-		{BAAC94B2-88C6-405B-A8F1-C130464405FA}.Release|x64.Build.0 = Release|Any CPU
-		{BAAC94B2-88C6-405B-A8F1-C130464405FA}.Release|x86.ActiveCfg = Release|Any CPU
-		{BAAC94B2-88C6-405B-A8F1-C130464405FA}.Release|x86.Build.0 = Release|Any CPU
 		{5EDBC83F-2229-4BD4-8E18-82B736A47119}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5EDBC83F-2229-4BD4-8E18-82B736A47119}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5EDBC83F-2229-4BD4-8E18-82B736A47119}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -218,7 +202,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{BAAC94B2-88C6-405B-A8F1-C130464405FA} = {A6B2DE5A-07ED-40D2-9D99-215B48C8D1AF}
 		{4A11C5FA-0D83-44AE-8645-F6DF41CADE25} = {25C4FBF4-EF53-4E55-97E1-55587A5228CA}
 		{DCEBB01A-6C4A-4793-8449-F0C96E6C53C2} = {D56CCFF2-71C9-406D-9E5B-F09949FA6775}
 		{077D98E9-BBF8-465A-A61C-CDD5B0EB6D2F} = {D56CCFF2-71C9-406D-9E5B-F09949FA6775}
