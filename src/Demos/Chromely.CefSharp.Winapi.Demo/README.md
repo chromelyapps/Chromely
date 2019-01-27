@@ -2,7 +2,7 @@
 
 ##### Table of Contents  
 [Simple Usage](#simple)  
-[With Events](#withevents)  
+[With Events Handling](#withevents)  
 [With Custom Handlers](#customhandlers)  
 
 <a name="simple"/>
@@ -40,7 +40,7 @@ class Program
 
 <a name="withevents"/>
 
-## With Events
+## With Events Handling
 
 #### Option 1
 ````csharp
