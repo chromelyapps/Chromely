@@ -91,7 +91,7 @@ For more info on demos - [Demos](https://github.com/chromelyapps/Chromely/wiki/D
 
 Contributing
 ---
-Contributions are always welcome, via PRs, issues raised, or any other means.
+Contributions are always welcome, via PRs, issues raised, or any other means. To become a dedicated contributor, please [contact the Chromely team](https://github.com/orgs/chromelyapps/people) or [raise an issue](https://github.com/chromelyapps/Chromely/issues) mentioning your intent.
 
 License
 ---
