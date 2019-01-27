@@ -53,24 +53,7 @@ class Program
                 HostHelpers.SetupDefaultExceptionHandlers();
                 var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
 
-                /*
-                * Start url (load html) options:
-                */
-
-                // Options 1 - real standard urls 
-                // string startUrl = "https://google.com";
-
-                // Options 2 - using local resource file handling with default/custom local scheme handler 
-                // Requires - (sample) UseDefaultResourceSchemeHandler("local", string.Empty)
-                //            or register new resource scheme handler - RegisterSchemeHandler("local", string.Empty,  new CustomResourceHandler())
                 var startUrl = "local://app/chromely.html";
-
-                // Options 3 - using file protocol - using default/custom scheme handler for Ajax/Http requests
-                // Requires - (sample) UseDefaultResourceSchemeHandler("local", string.Empty)
-                //            or register new resource handler - RegisterSchemeHandler("local", string.Empty,  new CustomResourceHandler())
-                // Requires - (sample) UseDefaultHttpSchemeHandler("http", "chromely.com")
-                //            or register new http scheme handler - RegisterSchemeHandler("http", "test.com",  new CustomHttpHandler())
-                // var startUrl = $"file:///{appDirectory}app/chromely.html";
                 var config = ChromelyConfiguration
                                 .Create()
                                 .WithHostMode(WindowState.Fullscreen)
@@ -161,24 +144,7 @@ class Program
                 HostHelpers.SetupDefaultExceptionHandlers();
                 var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
 
-                /*
-                * Start url (load html) options:
-                */
-
-                // Options 1 - real standard urls 
-                // string startUrl = "https://google.com";
-
-                // Options 2 - using local resource file handling with default/custom local scheme handler 
-                // Requires - (sample) UseDefaultResourceSchemeHandler("local", string.Empty)
-                //            or register new resource scheme handler - RegisterSchemeHandler("local", string.Empty,  new CustomResourceHandler())
                 var startUrl = "local://app/chromely.html";
-
-                // Options 3 - using file protocol - using default/custom scheme handler for Ajax/Http requests
-                // Requires - (sample) UseDefaultResourceSchemeHandler("local", string.Empty)
-                //            or register new resource handler - RegisterSchemeHandler("local", string.Empty,  new CustomResourceHandler())
-                // Requires - (sample) UseDefaultHttpSchemeHandler("http", "chromely.com")
-                //            or register new http scheme handler - RegisterSchemeHandler("http", "test.com",  new CustomHttpHandler())
-                // var startUrl = $"file:///{appDirectory}app/chromely.html";
                 var config = ChromelyConfiguration
                                 .Create()
                                 .WithHostMode(WindowState.Fullscreen)
