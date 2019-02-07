@@ -55,7 +55,7 @@ class Program
                      .WithHostMode(WindowState.Normal, true)
                      .WithHostTitle("chromely")
                      .WithHostIconFile("chromely.ico")
-                     .WitAppArgs(args)
+                     .WithAppArgs(args)
                      .WithHostSize(1000, 600)
                      .WithStartUrl(startUrl);
 
