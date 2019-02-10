@@ -24,10 +24,8 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Chromely.CefGlue.Winapi" Version="68.0.0" />
     <PackageReference Include="Microsoft.Packaging.Tools.Trimming" Version="1.1.0-preview1-26619-01" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Chromely.CefGlue.Winapi\Chromely.CefGlue.Winapi.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="app\chromely.html">
@@ -70,6 +68,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Chromely.Service.Demo.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="widevinecdmadapter.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
