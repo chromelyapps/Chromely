@@ -80,13 +80,18 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         public object Browser => mMainView?.Browser;
 
         /// <summary>
-        /// The run.
+        /// Runs the application.
+        /// This call does not return until the application terminates
+        /// or an error is occured.
         /// </summary>
         /// <param name="args">
         /// The args.
         /// </param>
         /// <returns>
-        /// The <see cref="int"/>.
+        ///  0 successfully run application - now terminated
+        ///  1 on internal exception (see log for more information).
+        /// -2 if something wrong !? TODO: @mattkol clarify this result code 
+        ///  n CefRuntime.ExecuteProcess result 
         /// </returns>
         public int Run(string[] args)
         {

@@ -25,13 +25,14 @@ Have an app/project/tool using Chromely -[please share!](https://github.com/chro
 ### Platforms
 Cross-platform - Windows, Linux. Built on CefGlue, CefSharp, NET Standard 2.0, .NET Core 2.0, .NET Framework 4.61 and above.
 
+For more info/documentation, please check [Chromely wiki](https://github.com/chromelyapps/Chromely/wiki). 
+
 [![Chromely.Core](http://img.shields.io/nuget/vpre/Chromely.Core.svg?style=flat&label=Chromely.Core)](https://www.nuget.org/packages/Chromely.Core)
 [![Chromely.CefGlue.Winapi](http://img.shields.io/nuget/vpre/Chromely.CefGlue.Winapi.svg?style=flat&label=Chromely.CefGlue.Winapi)](https://www.nuget.org/packages/Chromely.CefGlue.Winapi)
 [![Chromely.CefSharp.Winapi](http://img.shields.io/nuget/vpre/Chromely.CefSharp.Winapi.svg?style=flat&label=Chromely.CefSharp.Winapi)](https://www.nuget.org/packages/Chromely.CefSharp.Winapi)
 [![Chromely.Unofficial.CefGlue.NetStd](http://img.shields.io/nuget/v/Chromely.Unofficial.CefGlue.NetStd.svg?style=flat&label=Chromely.Unofficial.CefGlue.NetStd)](https://www.nuget.org/packages/Chromely.Unofficial.CefGlue.NetStd/)
 
-For more info/documentation, please check [Chromely wiki](https://github.com/chromelyapps/Chromely/wiki). 
-<br>[![Chromely + Angular](https://img.shields.io/badge/Chromely%20Apps-Built%20with%20Angular%202%2B-green.svg)](https://github.com/chromelyapps/Chromely/wiki/Chromely-Apps)
+[![Chromely + Angular](https://img.shields.io/badge/Chromely%20Apps-Built%20with%20Angular%202%2B-green.svg)](https://github.com/chromelyapps/Chromely/wiki/Chromely-Apps)
 <br>[![Chromely + React](https://img.shields.io/badge/Chromely%20Apps-Built%20with%20React-green.svg)](https://github.com/chromelyapps/Chromely/wiki/Chromely-Apps)
 <br>[![Chromely + Vue](https://img.shields.io/badge/Chromely%20Apps-Built%20with%20Vue-green.svg)](https://github.com/chromelyapps/Chromely/wiki/Chromely-Apps) 
 
@@ -54,7 +55,7 @@ class Program
                      .WithHostMode(WindowState.Normal, true)
                      .WithHostTitle("chromely")
                      .WithHostIconFile("chromely.ico")
-                     .WitAppArgs(args)
+                     .WithAppArgs(args)
                      .WithHostSize(1000, 600)
                      .WithStartUrl(startUrl);
 
@@ -91,14 +92,11 @@ For more info on demos - [Demos](https://github.com/chromelyapps/Chromely/wiki/D
 
 Contributing
 ---
-Contributions are always welcome, via PRs, issues raised, or any other means.
+Contributions are always welcome, via PRs, issues raised, or any other means. To become a dedicated contributor, please [contact the Chromely team](https://github.com/orgs/chromelyapps/people) or [raise an issue](https://github.com/chromelyapps/Chromely/issues) mentioning your intent.
 
 License
 ---
-* Chromely is MIT - licensed.
-* WinApi is licensed under [Apache License, Version 2.0](https://github.com/prasannavl/WinApi/blob/master/LICENSE-APACHE) or [GPL 3.0 license](https://github.com/prasannavl/WinApi/blob/master/LICENSE-GPL). 
-* CefSharp is [BSD](https://opensource.org/licenses/BSD-3-Clause) licensed, so it can be used in both proprietary and free/open source applications. For the full details, see the [CefSharp LICENSE](https://github.com/cefsharp/CefSharp/blob/master/LICENSE) file.
-* CefGlue is licensed under MIT License with portions of code licensed under New BSD License. For more info see [CefGlue License info](https://bitbucket.org/xilium/xilium.cefglue/wiki/Home).
+Chromely is MIT licensed. For dependency licenses [please see](https://github.com/chromelyapps/Chromely/blob/master/LICENSE.md).
 
 Credits
 ---
