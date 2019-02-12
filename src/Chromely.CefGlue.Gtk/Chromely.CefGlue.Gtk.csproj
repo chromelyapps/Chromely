@@ -3,10 +3,10 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Platforms>AnyCPU</Platforms>
-    <ProductVersion>68.0.0.0-beta02</ProductVersion>
-    <Version>68.0.0.0-beta02</Version>
+    <ProductVersion>68.0.0.0-beta03</ProductVersion>
+    <Version>68.0.0.0-beta03</Version>
     <AssemblyVersion>68.0.0.0</AssemblyVersion>
-    <FileVersion>68.0.0.0-beta02</FileVersion>
+    <FileVersion>68.0.0.0-beta03</FileVersion>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Product>Chromely.CefGlue.Gtk</Product>
@@ -19,7 +19,7 @@
     <PackageTags>Cef Chromium HTML5 Desktop Chromely CefGlue  Restful  Ajax HTTP XHR MessageRouter JavascriptIntegration  .NET Core</PackageTags>
     <Description>Chromely CefGlue Gtk implementation library - this is in .NET Standard 2.0 as it can be used in both .NET (Windows) and .NET Core (Windows, Linux).  Chromely.CefGlue.Gtk version naming is based on CefGlue Cef version implemented.</Description>
     <PackageReleaseNotes>
-    - Added Maximize/Fullscreen functionalities.
+      - Bug fix - CEF binaries download on every build using Nuget CefGlue packages - https://github.com/chromelyapps/Chromely/issues/72
     </PackageReleaseNotes>
     <RepositoryType>Github Repository</RepositoryType>
     <RepositoryUrl>https://github.com/chromelyapps/Chromely</RepositoryUrl>

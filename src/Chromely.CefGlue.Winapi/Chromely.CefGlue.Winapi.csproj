@@ -3,10 +3,10 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Platforms>AnyCPU</Platforms>
-    <ProductVersion>68.0.0.0</ProductVersion>
-    <AssemblyVersion>68.0.0.0</AssemblyVersion>
-    <FileVersion>68.0.0.0</FileVersion>
-    <Version>68.0.0.0</Version>
+    <ProductVersion>68.0.0.1</ProductVersion>
+    <AssemblyVersion>68.0.0.1</AssemblyVersion>
+    <FileVersion>68.0.0.1</FileVersion>
+    <Version>68.0.0.1</Version>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Product>Chromely.CefGlue.Winapi</Product>
@@ -19,10 +19,7 @@
     <PackageTags>Cef Chromium HTML5 Desktop Chromely CefGlue  Restful  Ajax HTTP XHR MessageRouter JavascriptIntegration  .NET Core</PackageTags>
     <Description>Chromely CefGlue Winapi implementation library - this is in .NET Standard 2.0 as it can be used in both .NET (Windows) and .NET Core (Windows, Linux).  Chromely.CefGlue.Winapi version naming is based on CefGlue Cef version implemented.</Description>
     <PackageReleaseNotes>
-      - Breaking changes! - More info - https://github.com/chromelyapps/Chromely/wiki/Upgrade-to-CefGlue-v68-and-CefSharp-v67
-      - ChromelyConfiguration is now Singleton - only one instance per Chromely app.
-      - Allows for event registration
-      - Added option for Maximize and Fullscreen/Kiosk mode Window states.
+      - Bug fix - CEF binaries download on every build using Nuget CefGlue packages - https://github.com/chromelyapps/Chromely/issues/72
     </PackageReleaseNotes>
     <RepositoryType>Github Repository</RepositoryType>
     <RepositoryUrl>https://github.com/chromelyapps/Chromely</RepositoryUrl>
