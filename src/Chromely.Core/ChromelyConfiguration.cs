@@ -14,10 +14,10 @@ namespace Chromely.Core
     using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
 
-    using Chromely.Core.Helpers;
-    using Chromely.Core.Host;
-    using Chromely.Core.Infrastructure;
-    using Chromely.Core.RestfulService;
+    using Helpers;
+    using Host;
+    using Infrastructure;
+    using RestfulService;
 
     /// <summary>
     /// The Chromely configuration.
@@ -186,7 +186,35 @@ namespace Chromely.Core
                 IoC.Container = container;
             }
 
-            return Instance;
+            //TODO: Use CefRuntime.Platform if available x-platform with a single reference
+            switch (Environment.OSVersion.Platform)
+            {
+                case PlatformID.MacOSX:
+                //TODO: check requirements for Mac OS - for now use linux settings
+                case PlatformID.Unix:
+                case (PlatformID)128:   // Framework (1.0 and 1.1) didn't include any PlatformID value for Unix, so Mono used the value 128.
+                    return Instance
+                        .WithCustomSetting(CefSettingKeys.MultiThreadedMessageLoop, false)
+                        .WithCustomSetting(CefSettingKeys.SingleProcess, true)
+                        .WithCustomSetting(CefSettingKeys.NoSandbox, true)
+
+                        .WithCommandLineArg("disable-extensions", "1")
+                        .WithCommandLineArg("disable-gpu", "1")
+                        .WithCommandLineArg("disable-gpu-compositing", "1")
+                        .WithCommandLineArg("disable-smooth-scrolling", "1")
+                        .WithCommandLineArg("no-sandbox", "1")
+                        .WithCommandLineArg("no-zygote", "1");
+
+                case PlatformID.Win32NT:
+                case PlatformID.Win32S:
+                case PlatformID.Win32Windows:
+                case PlatformID.WinCE:
+                case PlatformID.Xbox:
+                    return Instance;
+
+                default:
+                    throw new PlatformNotSupportedException();
+            }
         }
 
         /// <summary>
@@ -238,7 +266,7 @@ namespace Chromely.Core
         /// The with is debugging.
         /// </summary>
         /// <param name="debugging">
-        /// The isdebugging.
+        /// The is debugging.
         /// </param>
         /// <returns>
         /// The <see cref="ChromelyConfiguration"/>.
@@ -440,7 +468,7 @@ namespace Chromely.Core
         }
 
         /// <summary>
-        /// Sets use defaut Javascript object handler flag.
+        /// Sets use default Javascript object handler flag.
         /// </summary>
         /// <param name="objectNameToBind">
         /// The object name to bind.
@@ -465,17 +493,17 @@ namespace Chromely.Core
         /// <param name="port">
         /// The port.
         /// </param>
-        /// <param name="onloadstartserver">
-        /// The onloadstartserver.
+        /// <param name="onLoadStartServer">
+        /// The onLoadStartServer.
         /// </param>
         /// <returns>
         /// The <see cref="ChromelyConfiguration"/>.
         /// </returns>
-        public ChromelyConfiguration UseDefaultWebsocketHandler(string address, int port, bool onloadstartserver)
+        public ChromelyConfiguration UseDefaultWebsocketHandler(string address, int port, bool onLoadStartServer)
         {
             WebsocketAddress = address;
             WebsocketPort = port;
-            StartWebSocket = onloadstartserver;
+            StartWebSocket = onLoadStartServer;
             return this;
         }
 
@@ -589,20 +617,20 @@ namespace Chromely.Core
         /// <summary>
         /// Registers service assemblies.
         /// </summary>
-        /// <param name="filenames">
-        /// The filenames.
+        /// <param name="fileNames">
+        /// The file names.
         /// </param>
         /// <returns>
         /// The <see cref="ChromelyConfiguration"/> object.
         /// </returns>
-        public ChromelyConfiguration RegisterServiceAssemblies(List<string> filenames)
+        public ChromelyConfiguration RegisterServiceAssemblies(List<string> fileNames)
         {
-            ServiceAssemblies?.RegisterServiceAssemblies(filenames);
+            ServiceAssemblies?.RegisterServiceAssemblies(fileNames);
             return this;
         }
 
         /// <summary>
-        /// Registers customr url scheme.
+        /// Registers customer url scheme.
         /// </summary>
         /// <param name="schemeName">
         /// The scheme name.
@@ -621,7 +649,7 @@ namespace Chromely.Core
         }
 
         /// <summary>
-        /// Registers customr url scheme.
+        /// Registers customer url scheme.
         /// </summary>
         /// <param name="urlScheme">
         /// The url scheme object.
@@ -670,7 +698,7 @@ namespace Chromely.Core
         /// </returns>
         public virtual ChromelyConfiguration RegisterEventHandler<T>(CefEventKey key, EventHandler<T> handler)
         {
-            return RegisterEventHandler<T>(key, new ChromelyEventHandler<T>(key, handler));
+            return RegisterEventHandler(key, new ChromelyEventHandler<T>(key, handler));
         }
 
         /// <summary>
@@ -760,7 +788,7 @@ namespace Chromely.Core
         /// Registers Javascript object handler.
         /// </summary>
         /// <param name="javascriptMethod">
-        /// The javascrpt method.
+        /// The javascript method.
         /// </param>
         /// <param name="boundObject">
         /// The bound object.
@@ -844,13 +872,13 @@ namespace Chromely.Core
         /// <param name="port">
         /// The port.
         /// </param>
-        /// <param name="onloadstartserver">
-        /// The onloadstartserver.
+        /// <param name="onLoadStartServer">
+        /// The onLoadStartServer.
         /// </param>
         /// <returns>
         /// The <see cref="ChromelyConfiguration"/>.
         /// </returns>
-        public ChromelyConfiguration RegisterWebsocketHandler(IChromelyWebsocketHandler sockeHandler, string address, int port, bool onloadstartserver)
+        public ChromelyConfiguration RegisterWebsocketHandler(IChromelyWebsocketHandler sockeHandler, string address, int port, bool onLoadStartServer)
         {
             if (sockeHandler == null)
             {
@@ -868,7 +896,7 @@ namespace Chromely.Core
 
             WebsocketAddress = address;
             WebsocketPort = port;
-            StartWebSocket = onloadstartserver;
+            StartWebSocket = onLoadStartServer;
             return this;
         }
     }
