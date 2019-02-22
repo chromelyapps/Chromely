@@ -6,6 +6,7 @@
     <AssemblyName>cefsharp_winapi_demo</AssemblyName>
     <ApplicationIcon>chromely.ico</ApplicationIcon>
     <TrimUnusedDependencies>true</TrimUnusedDependencies>
+    <RuntimeIdentifiers>win7-x64</RuntimeIdentifiers>
     <StartupObject />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
