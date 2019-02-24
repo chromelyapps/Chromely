@@ -7,6 +7,8 @@
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+
 namespace Chromely.CefSharp.Winapi.Tests.ChromeHost
 {
     using System.Linq;
@@ -50,6 +52,8 @@ namespace Chromely.CefSharp.Winapi.Tests.ChromeHost
         [Fact]
         public void CustomSchemerTests()
         {
+            if (Environment.OSVersion.Platform != PlatformID.Win32NT) return;
+            
             var config = GetBaseConfig()
                 .RegisterSchemeHandler("http", "cefsharp1.com", new CustomSchemeHandlerFactory());
 
@@ -76,6 +80,8 @@ namespace Chromely.CefSharp.Winapi.Tests.ChromeHost
         [Fact]
         public void SettingsUpdateTest()
         {
+            if (Environment.OSVersion.Platform != PlatformID.Win32NT) return;
+            
             var hostConfig = GetConfigWithDefaultValues();
             var settings = new CefSettings
             {
