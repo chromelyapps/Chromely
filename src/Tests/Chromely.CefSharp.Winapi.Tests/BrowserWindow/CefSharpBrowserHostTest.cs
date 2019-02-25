@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CefSharpBrowserHostTest.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
 //      See the LICENSE.md file in the project root for more information.
@@ -8,20 +8,19 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using System.Linq;
+using Chromely.CefSharp.Winapi.Browser;
+using Chromely.CefSharp.Winapi.Tests.Models;
+using Chromely.Core;
+using Chromely.Core.Helpers;
+using Chromely.Core.Infrastructure;
+using Xunit;
+using Xunit.Abstractions;
+using LogSeverity = Chromely.Core.Infrastructure.LogSeverity;
+// ReSharper disable InconsistentNaming
 
-namespace Chromely.CefSharp.Winapi.Tests.ChromeHost
+namespace Chromely.CefSharp.Winapi.Tests.BrowserWindow
 {
-    using System.Linq;
-
-    using Chromely.CefSharp.Winapi.Browser;
-    using Chromely.CefSharp.Winapi.Tests.Models;
-    using Chromely.Core;
-    using Chromely.Core.Helpers;
-    using Chromely.Core.Infrastructure;
-
-    using Xunit;
-    using Xunit.Abstractions;
-
     using CefSharpGlobal = global::CefSharp;
 
     /// <summary>
@@ -54,16 +53,17 @@ namespace Chromely.CefSharp.Winapi.Tests.ChromeHost
         {
             if (Environment.OSVersion.Platform != PlatformID.Win32NT) return;
             
-            var config = GetBaseConfig()
+            GetBaseConfig()
                 .RegisterSchemeHandler("http", "cefsharp1.com", new CustomSchemeHandlerFactory());
 
-            var schemeHandlerObjs = IoC.GetAllInstances(typeof(ChromelySchemeHandler));
+            var schemeHandlerInstances = IoC.GetAllInstances(typeof(ChromelySchemeHandler));
 
-            Assert.NotNull(schemeHandlerObjs);
+            Assert.NotNull(schemeHandlerInstances);
 
-            var schemeHandlers = schemeHandlerObjs.ToList();
-            int count = schemeHandlers.Count;
-            Assert.Equal(1, count);
+            var schemeHandlers = schemeHandlerInstances.ToList();
+            // use type names to see why that failed
+            var schemeHandlerTypes = schemeHandlers.Select(h => h.GetType().Name);
+            Assert.Equal(nameof(ChromelySchemeHandler), string.Join(";", schemeHandlerTypes));
 
             Assert.True(schemeHandlers[0] is ChromelySchemeHandler);
 
