@@ -9,6 +9,7 @@
 
 namespace Chromely.CefSharp.Winapi
 {
+    using System;
     using System.Collections.Generic;
     using Chromely.CefSharp.Winapi.Browser;
     using Chromely.Core.Helpers;
@@ -250,7 +251,7 @@ namespace Chromely.CefSharp.Winapi
         /// <param name="commandLineArgs">
         /// The command line args.
         /// </param>
-        public static void UpdateCommandLineArgs(this CefSettings cefSettings, Dictionary<string, string> commandLineArgs)
+        public static void UpdateCommandLineArgs(this CefSettings cefSettings, List<Tuple<string, string, bool>> commandLineArgs)
         {
             if ((cefSettings == null) || 
                 (commandLineArgs == null) ||
@@ -261,7 +262,10 @@ namespace Chromely.CefSharp.Winapi
 
             foreach (var commandArg in commandLineArgs)
             {
-                cefSettings.CefCommandLineArgs.Add(commandArg.Key, commandArg.Value);
+                if (commandArg.Item3)
+                {
+                    cefSettings.CefCommandLineArgs.Add(commandArg.Item1 ?? string.Empty, commandArg.Item2);
+                }
             }
         }
     }

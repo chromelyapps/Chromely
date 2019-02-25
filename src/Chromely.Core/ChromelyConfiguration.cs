@@ -48,7 +48,7 @@ namespace Chromely.Core
             Locale = "en-US";
             StartWebSocket = false;
             ServiceAssemblies = new List<ControllerAssemblyInfo>();
-            CommandLineArgs = new Dictionary<string, string>();
+            CommandLineArgs = new List<Tuple<string, string, bool>>();
             CustomSettings = new Dictionary<string, object>();
 
 #if DEBUG
@@ -162,8 +162,10 @@ namespace Chromely.Core
 
         /// <summary>
         /// Gets or sets the command line args.
+        /// Tuple data:
+        /// Key = Item1; Value/Option=Item2; IsKeyValuePair = Item3.
         /// </summary>
-        public Dictionary<string, string> CommandLineArgs { get; set; }
+        public List<Tuple<string, string, bool>> CommandLineArgs { get; set; }
 
         /// <summary>
         /// Gets or sets the custom settings.
@@ -525,11 +527,38 @@ namespace Chromely.Core
         /// <summary>
         /// Registers a new command line argument.
         /// </summary>
+        /// <param name="option">
+        /// The command line option. Examples:
+        ///     .WithCommandLineArg("no-sandbox")
+        ///     .WithCommandLineArg("no-zygote")
+        /// Note that "--" is not required. 
+        /// This option to add command line switch is not implemented for CefSharp and will be ignored.
+        /// </param>
+        /// <returns>
+        /// The <see cref="ChromelyConfiguration"/> object.
+        /// </returns>
+        public ChromelyConfiguration WithCommandLineArg(string option)
+        {
+            if (CommandLineArgs == null)
+            {
+                CommandLineArgs = new List<Tuple<string, string, bool>>();
+            }
+
+            CommandLineArgs.Add(new Tuple<string, string, bool>(null, option, false));
+            return this;
+        }
+
+        /// <summary>
+        /// Registers a new command line argument.
+        /// </summary>
         /// <param name="nameKey">
         /// The key/name of argument.
         /// </param>
         /// <param name="value">
-        /// The value.
+        /// The command line option value. Examples:
+        ///     .WithCommandLineArg("no-sandbox", 1)
+        ///     .WithCommandLineArg("no-zygote", 1)
+        /// Note that "--" is not required.
         /// </param>
         /// <returns>
         /// The <see cref="ChromelyConfiguration"/> object.
@@ -538,10 +567,10 @@ namespace Chromely.Core
         {
             if (CommandLineArgs == null)
             {
-                CommandLineArgs = new Dictionary<string, string>();
+                CommandLineArgs = new List<Tuple<string, string, bool>>();
             }
 
-            CommandLineArgs[nameKey] = value;
+            CommandLineArgs.Add(new Tuple<string, string, bool>(nameKey, value, true));
             return this;
         }
 

@@ -91,7 +91,14 @@ namespace Chromely.CefGlue.Gtk.Browser
             {
                 foreach (var commandArg in HostConfig.CommandLineArgs)
                 {
-                    commandLine.AppendSwitch(commandArg.Key, commandArg.Value);
+                    if (commandArg.Item3)
+                    {
+                        commandLine.AppendSwitch(commandArg.Item1 ?? string.Empty, commandArg.Item2);
+                    }
+                    else
+                    {
+                        commandLine.AppendSwitch(commandArg.Item2 ?? string.Empty);
+                    }
                 }
             }
 

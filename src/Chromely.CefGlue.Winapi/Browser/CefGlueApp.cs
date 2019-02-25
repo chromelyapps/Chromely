@@ -87,7 +87,14 @@ namespace Chromely.CefGlue.Winapi.Browser
             {
                 foreach (var commandArg in mHostConfig.CommandLineArgs)
                 {
-                    commandLine.AppendSwitch(commandArg.Key, commandArg.Value);
+                    if (commandArg.Item3)
+                    {
+                        commandLine.AppendSwitch(commandArg.Item1 ?? string.Empty, commandArg.Item2);
+                    }
+                    else
+                    {
+                        commandLine.AppendSwitch(commandArg.Item2 ?? string.Empty);
+                    }
                 }
             }
 
