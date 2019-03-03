@@ -40,15 +40,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="CefGlue\Interop\Base\cef_string_t.disabled.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="System.Collections.Specialized" Version="4.3.0" />
     <PackageReference Include="System.IO.UnmanagedMemoryStream" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Chromely.CefGlue\Chromely.CefGlue.csproj" />
     <ProjectReference Include="..\Chromely.Core\Chromely.Core.csproj" />
   </ItemGroup>
   
