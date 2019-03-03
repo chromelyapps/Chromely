@@ -37,7 +37,7 @@ For more info/documentation, please check [Chromely wiki](https://github.com/chr
 <br>[![Chromely + Vue](https://img.shields.io/badge/Chromely%20Apps-Built%20with%20Vue-green.svg)](https://github.com/chromelyapps/Chromely/wiki/Chromely-Apps) 
 
 ### Demo Code
-Get started with the [demos](https://github.com/chromelyapps/Chromely/tree/master/src/Demos). 
+Get started with the [demos](https://github.com/chromelyapps/demo-projects). 
 
 ### Creating a Simple App (Using CefGlue with Winapi host)
 For more info see - [Getting Started](https://github.com/chromelyapps/Chromely/wiki/Getting-Started)
