@@ -11,7 +11,7 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
 {
     using System;
 
-    using Chromely.CefGlue.Winapi.Browser;
+    using Chromely.CefGlue.Browser;
     using Chromely.Core;
     using WinApi.User32;
     using Xilium.CefGlue;

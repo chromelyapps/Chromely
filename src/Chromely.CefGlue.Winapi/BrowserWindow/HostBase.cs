@@ -15,8 +15,8 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
     using System.Linq;
     using System.Reflection;
 
-    using Chromely.CefGlue.Winapi.Browser;
-    using Chromely.CefGlue.Winapi.Browser.Handlers;
+    using Chromely.CefGlue.Browser;
+    using Chromely.CefGlue.Browser.Handlers;
     using Chromely.Core;
     using Chromely.Core.Helpers;
     using Chromely.Core.Host;

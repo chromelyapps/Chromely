@@ -13,8 +13,8 @@ namespace Chromely.CefGlue.Gtk.Linux.Demo.Controllers
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Chromely.CefGlue.Gtk.Browser.ServerHandlers;
-    using Chromely.Core.Infrastructure;
+    using Browser.ServerHandlers;
+    using Core.Infrastructure;
     using Chromely.Core.RestfulService;
 
     /// <summary>

@@ -7,6 +7,8 @@
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace Chromely.CefGlue.Gtk.Tests.BrowserHost
 {
     using Chromely.Core;
