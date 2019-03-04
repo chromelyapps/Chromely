@@ -65,7 +65,7 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         /// <summary>
         /// Gets the browser message router.
         /// </summary>
-        public static CefMessageRouterBrowserSide BrowserMessageRouter { get; private set; }
+        public CefMessageRouterBrowserSide BrowserMessageRouter { get; private set; }
 
         #region IChromelyWindow implementations
 
@@ -463,10 +463,11 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
             }
 
             BrowserMessageRouter = new CefMessageRouterBrowserSide(new CefMessageRouterConfig());
+            IoC.RegisterInstance<CefMessageRouterBrowserSide>(typeof(CefMessageRouterBrowserSide).FullName, BrowserMessageRouter);
 
             // Register message router handlers
-            List<object> messageRouterHandlers = IoC.GetAllInstances(typeof(ChromelyMessageRouter)).ToList();
-            if ((messageRouterHandlers != null) && (messageRouterHandlers.Count > 0))
+            var messageRouterHandlers = IoC.GetAllInstances(typeof(ChromelyMessageRouter)).ToList();
+            if ((messageRouterHandlers.Count > 0))
             {
                 var routerHandlers = messageRouterHandlers.ToList();
 

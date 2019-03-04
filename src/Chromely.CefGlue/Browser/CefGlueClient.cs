@@ -7,7 +7,9 @@
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Chromely.Core.Infrastructure;
 using Xilium.CefGlue;
+using Xilium.CefGlue.Wrapper;
 
 namespace Chromely.CefGlue.Browser
 {
@@ -253,9 +255,8 @@ namespace Chromely.CefGlue.Browser
         /// </returns>
         protected override bool OnProcessMessageReceived(CefBrowser browser, CefProcessId sourceProcess, CefProcessMessage message)
         {
-            return false;
-            //TODO - where comes HostBase from
-            //return HostBase.BrowserMessageRouter.OnProcessMessageReceived(browser, sourceProcess, message);
+            var browserMessageRouter = IoC.GetInstance<CefMessageRouterBrowserSide>(typeof(CefMessageRouterBrowserSide).FullName);
+            return browserMessageRouter?.OnProcessMessageReceived(browser, sourceProcess, message) ?? false;
         }
     }
 }
