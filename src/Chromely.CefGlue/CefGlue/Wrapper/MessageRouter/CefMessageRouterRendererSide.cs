@@ -219,16 +219,10 @@
 
                 return count;
             }
-            else if (browser != null)
-            {
-                return _browserRequestInfoMap.Count(browser.Identifier);
-            }
-            else
-            {
-                return _browserRequestInfoMap.Count();
-            }
 
-            return 0;
+            return browser != null 
+                ? _browserRequestInfoMap.Count(browser.Identifier) 
+                : _browserRequestInfoMap.Count();
         }
 
         #region The below methods should be called from other CEF handlers. They must be called exactly as documented for the router to function correctly.
