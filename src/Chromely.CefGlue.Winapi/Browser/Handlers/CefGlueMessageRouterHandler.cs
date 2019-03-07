@@ -61,7 +61,7 @@ namespace Chromely.CefGlue.Winapi.Browser.Handlers
                     var postData = requestData.Keys.Contains("postData") ? requestData["postData"] : null;
 
                     var routePath = new RoutePath(method, path);
-                    var response = RequestTaskRunner.Run(id, routePath, parameters, postData);
+                    var response = RequestTaskRunner.Run(id, routePath, parameters, postData, request);
                     var jsonResponse = response.EnsureJson();
 
                     callback.Success(jsonResponse);

@@ -61,7 +61,7 @@ namespace Chromely.CefGlue.Gtk.Browser.Handlers
                     var postData = requestData.Keys.Contains("postData") ? requestData["postData"] : null;
 
                     var routePath = new RoutePath(method, path);
-                    var response = RequestTaskRunner.Run(id, routePath, parameters, postData);
+                    var response = RequestTaskRunner.Run(id, routePath, parameters, postData, request);
                     string jsonResponse = response.EnsureJson();
 
                     callback.Success(jsonResponse);

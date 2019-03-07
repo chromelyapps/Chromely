@@ -145,6 +145,20 @@ namespace Chromely.Core.RestfulService
                     return dict.ToDictionary<KeyValuePair<string, string>, string, object>(item => item.Key, item => item.Value);
                 }
 
+                if (obj is JsonData jsonDataObj)
+                {
+                    if (jsonDataObj.IsObject)
+                    {
+                        var objDic = new Dictionary<string, object>();
+                        foreach (var key in jsonDataObj.Keys)
+                        {
+                            objDic[key] = jsonDataObj[key];
+                        }
+
+                        return objDic;
+                    }
+                }
+
                 // If json
                 if (obj is string)
                 {

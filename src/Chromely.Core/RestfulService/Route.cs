@@ -72,12 +72,15 @@ namespace Chromely.Core.RestfulService
         /// <param name="postData">
         /// The post data.
         /// </param>
+        /// <param name="rawJson">
+        /// Raw json request data.
+        /// </param>
         /// <returns>
         /// The <see cref="ChromelyResponse"/>.
         /// </returns>
-        public ChromelyResponse Invoke(string requestId, RoutePath routePath, IDictionary<string, object> parameters, object postData)
+        public ChromelyResponse Invoke(string requestId, RoutePath routePath, IDictionary<string, object> parameters, object postData, string rawJson = null)
         {
-            ChromelyRequest request = new ChromelyRequest(requestId, routePath, parameters, postData);
+            ChromelyRequest request = new ChromelyRequest(requestId, routePath, parameters, postData, rawJson);
             return Action.Invoke(request);
         }
 
