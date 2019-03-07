@@ -8,6 +8,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using System.Linq;
 using Chromely.Core.Helpers;
 
 namespace Chromely.Core.Tests
@@ -133,9 +134,13 @@ namespace Chromely.Core.Tests
                 Assert.True(config.CustomSettings.ContainsKey(CefSettingKeys.SingleProcess));
                 Assert.True(config.CustomSettings.ContainsKey(CefSettingKeys.NoSandbox));
 
-                Assert.Equal(false, config.CustomSettings[CefSettingKeys.MultiThreadedMessageLoop]);
-                Assert.Equal(true, config.CustomSettings[CefSettingKeys.SingleProcess]);
-                Assert.Equal(true, config.CustomSettings[CefSettingKeys.NoSandbox]);
+                Assert.False((bool) config.CustomSettings[CefSettingKeys.MultiThreadedMessageLoop]);
+                Assert.True((bool) config.CustomSettings[CefSettingKeys.SingleProcess]);
+                Assert.True((bool) config.CustomSettings[CefSettingKeys.NoSandbox]);
+            }
+            else if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+            {
+                Assert.False(config.CustomSettings.Any());
             }
         }
     }
