@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="NativeMethods.cs" company="Chromely Projects">
+// <copyright file="GtkNativeMethods.cs" company="Chromely Projects">
 //   Copyright (c) 2017-2018 Chromely Projects
 // </copyright>
 // <license>
@@ -19,7 +19,7 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
     /// <summary>
     /// The native methods.
     /// </summary>
-    internal static class NativeMethods
+    internal static class GtkNativeMethods
     {
         /// <summary>
         /// The event handler.

@@ -1,11 +1,13 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CefGlueBrowserWindow.cs" company="Chromely Projects">
+// <copyright file="GtkCefGlueBrowserWindow.cs" company="Chromely Projects">
 //   Copyright (c) 2017-2018 Chromely Projects
 // </copyright>
 // <license>
 // See the LICENSE.md file in the project root for more information.
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
+
+using Chromely.CefGlue.BrowserWindow;
 
 namespace Chromely.CefGlue.Gtk.BrowserWindow
 {
@@ -15,15 +17,15 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
     /// <summary>
     /// The CefGlue browser host/window/app.
     /// </summary>
-    public class CefGlueBrowserWindow : HostBase
+    public class GtkCefGlueBrowserWindow : HostBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CefGlueBrowserWindow"/> class.
+        /// Initializes a new instance of the <see cref="GtkCefGlueBrowserWindow"/> class.
         /// </summary>
         /// <param name="hostConfig">
         /// The host config.
         /// </param>
-        public CefGlueBrowserWindow(ChromelyConfiguration hostConfig) 
+        public GtkCefGlueBrowserWindow(ChromelyConfiguration hostConfig) 
             : base(hostConfig)
         {
         }
@@ -31,26 +33,27 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         /// <summary>
         /// The platform initialize.
         /// </summary>
-        protected override void PlatformInitialize()
+        protected override void Initialize()
         {
-            Application.Init();
+            GtkNativeMethods.InitWindow(0, null);
         }
 
         /// <summary>
         /// The platform shutdown.
         /// </summary>
-        protected override void PlatformShutdown()
+        protected override void Shutdown()
         {
         }
 
         /// <summary>
         /// The platform run message loop.
         /// </summary>
-        protected override void PlatformRunMessageLoop()
+        protected override void RunMessageLoop()
         {
             if (CefRuntime.Platform == CefRuntimePlatform.Windows)
             {
-                Application.Run();
+                /* run the GTK+ main loop */
+                GtkNativeMethods.Run();
             }
             else
             {
@@ -61,11 +64,11 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         /// <summary>
         /// The platform quit message loop.
         /// </summary>
-        protected override void PlatformQuitMessageLoop()
+        protected override void QuitMessageLoop()
         {
             if (CefRuntime.Platform == CefRuntimePlatform.Windows)
             {
-                Application.Quit();
+                GtkNativeMethods.Quit();
             }
             else
             {
@@ -77,11 +80,11 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         /// The create main view.
         /// </summary>
         /// <returns>
-        /// The <see cref="Window"/>.
+        /// The <see cref="GtkWindow"/>.
         /// </returns>
-        protected override Window CreateMainView()
+        protected override IWindow CreateMainView()
         {
-            return new Window(this, HostConfig);
+            return new GtkWindow(this, HostConfig);
         }
     }
 }

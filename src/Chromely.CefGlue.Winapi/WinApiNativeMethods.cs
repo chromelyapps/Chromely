@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="NativeMethods.cs" company="Chromely Projects">
+// <copyright file="WinApiNativeMethods.cs" company="Chromely Projects">
 //   Copyright (c) 2017-2018 Chromely Projects
 // </copyright>
 // <license>
@@ -7,9 +7,8 @@
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
-
 // ReSharper disable InconsistentNaming
-namespace Chromely.CefGlue.Winapi.BrowserWindow
+namespace Chromely.CefGlue.Winapi
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
@@ -20,7 +19,7 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
     /// <summary>
     /// The native methods.
     /// </summary>
-    public static class NativeMethods
+    public static class WinApiNativeMethods
     {
         /// <summary>
         /// The dll name.
@@ -167,25 +166,25 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
             /// The left.
             /// // x position of upper-left corner
             /// </summary>
-            public int Left;
+            public int Left; 
 
             /// <summary>
             /// The top.
             /// // y position of upper-left corner
             /// </summary>
-            public int Top;
+            public int Top; 
 
             /// <summary>
             /// The right.
             /// // x position of lower-right corner
             /// </summary>
-            public int Right;
+            public int Right; 
 
             /// <summary>
             /// The bottom.
             /// y position of lower-right corner
             /// </summary>
-            public int Bottom;
+            public int Bottom; 
         }
     }
 }

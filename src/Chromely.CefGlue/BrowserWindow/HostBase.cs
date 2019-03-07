@@ -3,27 +3,27 @@
 //   Copyright (c) 2017-2018 Chromely Projects
 // </copyright>
 // <license>
-// See the LICENSE.md file in the project root for more information.
+//      See the LICENSE.md file in the project root for more information.
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Chromely.CefGlue.Gtk.BrowserWindow
-{
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Reflection;
-    using Chromely.CefGlue.Browser;
-    using Chromely.CefGlue.Browser.Handlers;
-    using Chromely.Core;
-    using Chromely.Core.Helpers;
-    using Chromely.Core.Host;
-    using Chromely.Core.Infrastructure;
-    using Chromely.Core.RestfulService;
-    using Xilium.CefGlue;
-    using Xilium.CefGlue.Wrapper;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using Chromely.CefGlue.Browser;
+using Chromely.CefGlue.Browser.Handlers;
+using Chromely.Core;
+using Chromely.Core.Helpers;
+using Chromely.Core.Host;
+using Chromely.Core.Infrastructure;
+using Chromely.Core.RestfulService;
+using Xilium.CefGlue;
+using Xilium.CefGlue.Wrapper;
 
+namespace Chromely.CefGlue.BrowserWindow
+{
     /// <summary>
     /// The host base.
     /// </summary>
@@ -32,7 +32,7 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         /// <summary>
         /// The m main view.
         /// </summary>
-        private Window mMainView;
+        private IWindow mMainView;
 
         /// <summary>
         /// The Wwindow created.
@@ -177,37 +177,7 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
 
         #endregion
 
-        #region Quit/IDisposable
-
-        /// <summary>
-        /// The quit.
-        /// </summary>
-        public virtual void Quit()
-        {
-            PlatformQuitMessageLoop();
-        }
-
-        /// <summary>
-        /// The dispose.
-        /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// The dispose.
-        /// </summary>
-        /// <param name="disposing">
-        /// The disposing.
-        /// </param>
-        public virtual void Dispose(bool disposing)
-        {
-            mMainView?.Dispose();
-        }
-
-        #endregion
+        #region IChromelyServiceProvider implementations
 
         /// <summary>
         /// The register url scheme.
@@ -278,36 +248,69 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
             {
                 if (!assembly.IsScanned)
                 {
-                    RouteScanner scanner = new RouteScanner(assembly.Assembly);
-                    Dictionary<string, Route> currentRouteDictionary = scanner.Scan();
+                    var scanner = new RouteScanner(assembly.Assembly);
+                    var currentRouteDictionary = scanner.Scan();
                     ServiceRouteProvider.MergeRoutes(currentRouteDictionary);
 
                     assembly.IsScanned = true;
                 }
             }
         }
+        #endregion
+
+        #region Quit/IDisposable
+
+        /// <summary>
+        /// The quit.
+        /// </summary>
+        public virtual void Quit()
+        {
+            QuitMessageLoop();
+        }
+
+        /// <summary>
+        /// The dispose.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// The dispose.
+        /// </summary>
+        /// <param name="disposing">
+        /// The disposing.
+        /// </param>
+        public virtual void Dispose(bool disposing)
+        {
+            mMainView?.Dispose();
+        }
+
+        #endregion
 
         #region Abstract Methods
 
         /// <summary>
         /// The platform initialize.
         /// </summary>
-        protected abstract void PlatformInitialize();
+        protected abstract void Initialize();
 
         /// <summary>
         /// The platform shutdown.
         /// </summary>
-        protected abstract void PlatformShutdown();
+        protected abstract void Shutdown();
 
         /// <summary>
         /// The platform run message loop.
         /// </summary>
-        protected abstract void PlatformRunMessageLoop();
+        protected abstract void RunMessageLoop();
 
         /// <summary>
         /// The platform quit message loop.
         /// </summary>
-        protected abstract void PlatformQuitMessageLoop();
+        protected abstract void QuitMessageLoop();
 
         /// <summary>
         /// The create main view.
@@ -315,7 +318,7 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         /// <returns>
         /// The <see cref="Window"/>.
         /// </returns>
-        protected abstract Window CreateMainView();
+        protected abstract IWindow CreateMainView();
 
         #endregion Abstract Methods
 
@@ -397,20 +400,25 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
             RegisterSchemeHandlers();
             RegisterMessageRouters();
 
-            PlatformInitialize();
+            Initialize();
 
             mMainView = CreateMainView();
 
+            if (HostConfig.HostCenterScreen)
+            {
+                mMainView.CenterToScreen();
+            }
+
             mWindowCreated = true;
 
-            PlatformRunMessageLoop();
+            RunMessageLoop();
 
             mMainView.Dispose();
             mMainView = null;
 
             CefRuntime.Shutdown();
 
-            PlatformShutdown();
+            Shutdown();
 
             return 0;
         }
@@ -425,7 +433,6 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
             if (schemeHandlerObjs != null)
             {
                 var schemeHandlers = schemeHandlerObjs.ToList();
-
                 foreach (var item in schemeHandlers)
                 {
                     if (item is ChromelySchemeHandler handler)
@@ -467,7 +474,7 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
 
             // Register message router handlers
             var messageRouterHandlers = IoC.GetAllInstances(typeof(ChromelyMessageRouter)).ToList();
-            if ((messageRouterHandlers.Count > 0))
+            if (messageRouterHandlers.Any())
             {
                 var routerHandlers = messageRouterHandlers.ToList();
 

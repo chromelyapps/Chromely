@@ -1,25 +1,27 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Window.cs" company="Chromely Projects">
+// <copyright file="WinApiWindow.cs" company="Chromely Projects">
 //   Copyright (c) 2017-2018 Chromely Projects
 // </copyright>
 // <license>
-// See the LICENSE.md file in the project root for more information.
+//      See the LICENSE.md file in the project root for more information.
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Chromely.CefGlue.Browser;
+using Chromely.CefGlue.BrowserWindow;
 
-namespace Chromely.CefGlue.Gtk.BrowserWindow
+namespace Chromely.CefGlue.Winapi.BrowserWindow
 {
     using System;
+
     using Chromely.CefGlue.Browser;
     using Chromely.Core;
+    using WinApi.User32;
     using Xilium.CefGlue;
 
     /// <summary>
     /// The window.
     /// </summary>
-    public class Window : NativeWindow
+    public class WinApiWindow : WinApiNativeWindow, IWindow
     {
         /// <summary>
         /// The host/app/window application.
@@ -42,7 +44,7 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         private IntPtr mBrowserWindowHandle;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Window"/> class.
+        /// Initializes a new instance of the <see cref="WinApiWindow"/> class.
         /// </summary>
         /// <param name="application">
         /// The application.
@@ -50,7 +52,7 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         /// <param name="hostConfig">
         /// The host config.
         /// </param>
-        public Window(HostBase application, ChromelyConfiguration hostConfig)
+        public WinApiWindow(HostBase application, ChromelyConfiguration hostConfig)
             : base(hostConfig)
         {
             mHostConfig = hostConfig;
@@ -68,6 +70,11 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         /// The browser.
         /// </summary>
         public CefGlueBrowser Browser => mBrowser;
+
+        public void CenterToScreen()
+        {
+            base.CenterToScreen();
+        }
 
         #region Dispose
 
@@ -89,85 +96,61 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         /// <summary>
         /// The on realized.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
+        /// <param name="hwnd">
+        /// The hwnd.
         /// </param>
-        /// <param name="e">
-        /// The e.
+        /// <param name="width">
+        /// The width.
+        /// </param>
+        /// <param name="height">
+        /// The height.
         /// </param>
         /// <exception cref="NotSupportedException">
         /// Exception returned for MacOS not supported.
         /// </exception>
-        protected override void OnRealized(object sender, EventArgs e)
+        protected override void OnCreate(IntPtr hwnd, int width, int height)
         {
             var windowInfo = CefWindowInfo.Create();
-            switch (CefRuntime.Platform)
-            {
-                case CefRuntimePlatform.Windows:
-                    var parentHandle = HostXid;
-                    windowInfo.SetAsChild(parentHandle, new CefRectangle(0, 0, mHostConfig.HostWidth, mHostConfig.HostHeight)); 
-                    break;
-
-                case CefRuntimePlatform.Linux:
-                    windowInfo.SetAsChild(HostXid, new CefRectangle(0, 0, mHostConfig.HostWidth, mHostConfig.HostHeight));
-                    break;
-
-                case CefRuntimePlatform.MacOSX:
-                    throw new NotSupportedException();
-
-                default:
-                    throw new NotSupportedException();
-            }
-
+            windowInfo.SetAsChild(hwnd, new CefRectangle(0, 0, mHostConfig.HostWidth, mHostConfig.HostHeight));
             mBrowser.Create(windowInfo);
         }
 
         /// <summary>
-        /// The on resize.
+        /// The on size.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
+        /// <param name="width">
+        /// The width.
         /// </param>
-        /// <param name="e">
-        /// The e.
+        /// <param name="height">
+        /// The height.
         /// </param>
-        protected override void OnResize(object sender, EventArgs e)
+        protected override void OnSize(int width, int height)
         {
-            if (CefRuntime.Platform == CefRuntimePlatform.Windows)
+            if (mBrowserWindowHandle != IntPtr.Zero)
             {
-                if (mBrowserWindowHandle != IntPtr.Zero)
+                if (width == 0 && height == 0)
                 {
-                    // ReSharper disable once InlineOutVariableDeclaration
-                    int width;
-                    // ReSharper disable once InlineOutVariableDeclaration
-                    int height;
-                    GetSize(out width, out height);
-
-                    NativeMethods.SetWindowPos(mBrowserWindowHandle, IntPtr.Zero, 0, 0, width, height);
+                    // For windowed browsers when the frame window is minimized set the
+                    // browser window size to 0x0 to reduce resource usage.
+                    WinApiNativeMethods.SetWindowPos(mBrowserWindowHandle, IntPtr.Zero, 0, 0, 0, 0, WindowPositionFlags.SWP_NOZORDER | WindowPositionFlags.SWP_NOMOVE | WindowPositionFlags.SWP_NOACTIVATE);
                 }
-            }
-            else
-            {
-                base.OnResize(sender, e);
+                else
+                {
+                    WinApiNativeMethods.SetWindowPos(mBrowserWindowHandle, IntPtr.Zero, 0, 0, width, height, WindowPositionFlags.SWP_NOZORDER);
+                }
             }
         }
 
         /// <summary>
         /// The on exit.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
-        protected override void OnExit(object sender, EventArgs e)
+        protected override void OnExit()
         {
             mApplication.Quit();
         }
 
         /// <summary>
-        /// The on browser created.
+        /// The browser created.
         /// </summary>
         /// <param name="sender">
         /// The sender.
@@ -178,18 +161,10 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         private void OnBrowserCreated(object sender, EventArgs e)
         {
             mBrowserWindowHandle = mBrowser.CefBrowser.GetHost().GetWindowHandle();
-            if (CefRuntime.Platform == CefRuntimePlatform.Windows)
+            if (mBrowserWindowHandle != IntPtr.Zero)
             {
-                if (mBrowserWindowHandle != IntPtr.Zero)
-                {
-                    // ReSharper disable once InlineOutVariableDeclaration
-                    int width;
-                    // ReSharper disable once InlineOutVariableDeclaration
-                    int height;
-                    GetSize(out width, out height);
-
-                    NativeMethods.SetWindowPos(mBrowserWindowHandle, IntPtr.Zero, 0, 0, width, height);
-                }
+                var size = GetClientSize();
+                WinApiNativeMethods.SetWindowPos(mBrowserWindowHandle, IntPtr.Zero, 0, 0, size.Width, size.Height, WindowPositionFlags.SWP_NOZORDER);
             }
         }
     }

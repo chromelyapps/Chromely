@@ -1,11 +1,13 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CefGlueBrowserWindow.cs" company="Chromely Projects">
+// <copyright file="WinApiCefGlueBrowserWindow.cs" company="Chromely Projects">
 //   Copyright (c) 2017-2018 Chromely Projects
 // </copyright>
 // <license>
 //      See the LICENSE.md file in the project root for more information.
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
+
+using Chromely.CefGlue.BrowserWindow;
 
 namespace Chromely.CefGlue.Winapi.BrowserWindow
 {
@@ -14,15 +16,15 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
     /// <summary>
     /// The cef glue chromium window.
     /// </summary>
-    public class CefGlueBrowserWindow : HostBase
+    public class WinApiCefGlueBrowserWindow : HostBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CefGlueBrowserWindow"/> class.
+        /// Initializes a new instance of the <see cref="WinApiCefGlueBrowserWindow"/> class.
         /// </summary>
         /// <param name="hostConfig">
         /// The host config.
         /// </param>
-        public CefGlueBrowserWindow(ChromelyConfiguration hostConfig) 
+        public WinApiCefGlueBrowserWindow(ChromelyConfiguration hostConfig) 
             : base(hostConfig)
         {
         }
@@ -46,7 +48,7 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
         /// </summary>
         protected override void RunMessageLoop()
         {
-            NativeWindow.RunMessageLoop();
+            WinApiNativeWindow.RunMessageLoop();
         }
 
         /// <summary>
@@ -54,18 +56,18 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
         /// </summary>
         protected override void QuitMessageLoop()
         {
-            NativeWindow.Exit();
+            WinApiNativeWindow.Exit();
         }
 
         /// <summary>
         /// The create main view.
         /// </summary>
         /// <returns>
-        /// The <see cref="Window"/>.
+        /// The <see cref="WinApiWindow"/>.
         /// </returns>
-        protected override Window CreateMainView()
+        protected override IWindow CreateMainView()
         {
-            return new Window(this, HostConfig);
+            return new WinApiWindow(this, HostConfig);
         }
     }
 }

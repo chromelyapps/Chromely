@@ -1,11 +1,13 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="NativeWindow.cs" company="Chromely Projects">
+// <copyright file="WinApiNativeWindow.cs" company="Chromely Projects">
 //   Copyright (c) 2017-2018 Chromely Projects
 // </copyright>
 // <license>
 //      See the LICENSE.md file in the project root for more information.
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
+
+using Chromely.CefGlue.BrowserWindow;
 
 namespace Chromely.CefGlue.Winapi.BrowserWindow
 {
@@ -23,7 +25,7 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
     /// <summary>
     /// The native window.
     /// </summary>
-    public class NativeWindow
+    public class WinApiNativeWindow
     {
         /// <summary>
         /// The m host config.
@@ -31,20 +33,20 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
         private readonly ChromelyConfiguration mHostConfig;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NativeWindow"/> class.
+        /// Initializes a new instance of the <see cref="WinApiNativeWindow"/> class.
         /// </summary>
-        public NativeWindow()
+        public WinApiNativeWindow()
         {
             Handle = IntPtr.Zero;
          }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NativeWindow"/> class.
+        /// Initializes a new instance of the <see cref="WinApiNativeWindow"/> class.
         /// </summary>
         /// <param name="hostConfig">
         /// Chromely configuration.
         /// </param>
-        public NativeWindow(ChromelyConfiguration hostConfig)
+        public WinApiNativeWindow(ChromelyConfiguration hostConfig)
         {
             Handle = IntPtr.Zero;
             mHostConfig = hostConfig;
@@ -333,7 +335,7 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
         /// </returns>
         private IntPtr GetIconHandle()
         {
-            IntPtr? hIcon = NativeMethods.LoadIconFromFile(this.mHostConfig.HostIconFile);
+            IntPtr? hIcon = WinApiNativeMethods.LoadIconFromFile(this.mHostConfig.HostIconFile);
             if (hIcon == null)
             {
                 return User32Helpers.LoadIcon(IntPtr.Zero, SystemIcon.IDI_APPLICATION);

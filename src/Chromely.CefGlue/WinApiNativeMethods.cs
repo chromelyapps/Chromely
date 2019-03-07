@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="NativeMethods.cs" company="Chromely Projects">
+// <copyright file="WinApiNativeMethods.cs" company="Chromely Projects">
 //   Copyright (c) 2017-2018 Chromely Projects
 // </copyright>
 // <license>
@@ -19,7 +19,7 @@ namespace Chromely.CefGlue.Winapi
     /// <summary>
     /// The native methods.
     /// </summary>
-    public static class NativeMethods
+    public static class WinApiNativeMethods
     {
         /// <summary>
         /// The dll name.

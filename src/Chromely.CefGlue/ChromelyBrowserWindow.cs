@@ -7,14 +7,14 @@ using Xilium.CefGlue;
 
 namespace Chromely.CefGlue
 {
-    public class BrowserWindow
+    public class ChromelyBrowserWindow
     {
         public static IDisposable Create(ChromelyConfiguration config)
         {
             switch (CefRuntime.Platform)
             {
                 case CefRuntimePlatform.Windows:
-                    return CreateFromAssembly("Winapi", config);
+                    return CreateFromAssembly("WinApi", config);
                 case CefRuntimePlatform.Linux:
                     return CreateFromAssembly("Gtk", config);
             }
@@ -24,10 +24,7 @@ namespace Chromely.CefGlue
 
         private static IDisposable CreateFromAssembly(string platform, ChromelyConfiguration config)
         {
-            var path = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) ?? ".";
-            var dllName = Path.Combine(path, $"Chromely.CefGlue.{platform}.dll");
-            var assembly = System.Reflection.Assembly.LoadFile(dllName);
-            var type = assembly.GetTypes().First(t => t.Name == "CefGlueBrowserWindow");
+            var type = typeof(ChromelyBrowserWindow).Assembly.GetTypes().First(t => t.Name == $"{platform}CefGlueBrowserWindow");
             return Activator.CreateInstance(type, new object[] { config }) as IDisposable;
         }
         
