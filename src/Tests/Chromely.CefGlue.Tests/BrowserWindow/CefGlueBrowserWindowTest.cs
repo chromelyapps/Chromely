@@ -7,15 +7,15 @@
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Chromely.CefGlue.Winapi.Tests.ChromeHost
-{
-    using Chromely.Core;
-    using Chromely.Core.Helpers;
-    using Chromely.Core.Infrastructure;
-    using Xilium.CefGlue;
-    using Xunit;
-    using Xunit.Abstractions;
+using Chromely.Core;
+using Chromely.Core.Helpers;
+using Chromely.Core.Infrastructure;
+using Xilium.CefGlue;
+using Xunit;
+using Xunit.Abstractions;
 
+namespace Chromely.CefGlue.Tests.BrowserWindow
+{
     /// <summary>
     /// The chromely configuration test.
     /// </summary>

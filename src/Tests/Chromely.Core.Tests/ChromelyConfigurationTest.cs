@@ -7,6 +7,9 @@
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using Chromely.Core.Helpers;
+
 namespace Chromely.Core.Tests
 {
     using Chromely.Core.Infrastructure;
@@ -77,6 +80,7 @@ namespace Chromely.Core.Tests
 
         /// <summary>
         /// The basic config test.
+        /// TODO: Rename test to express what is the intention instead of what it is doing
         /// </summary>
         [Fact]
         public void BasicConfigTest()
@@ -113,6 +117,26 @@ namespace Chromely.Core.Tests
                 .UseDefaultLogger(DefaultLogFile);
 
             return config;
+        }
+
+        /// <summary>
+        /// Ensure platform specific default settings.
+        /// </summary>
+        [Fact]
+        public void ConfigurationShouldSetPlatformSpecificDefaults()
+        {
+            var config = ChromelyConfiguration.Create();
+
+            if (Environment.OSVersion.Platform == PlatformID.Unix)
+            {
+                Assert.True(config.CustomSettings.ContainsKey(CefSettingKeys.MultiThreadedMessageLoop));
+                Assert.True(config.CustomSettings.ContainsKey(CefSettingKeys.SingleProcess));
+                Assert.True(config.CustomSettings.ContainsKey(CefSettingKeys.NoSandbox));
+
+                Assert.Equal(false, config.CustomSettings[CefSettingKeys.MultiThreadedMessageLoop]);
+                Assert.Equal(true, config.CustomSettings[CefSettingKeys.SingleProcess]);
+                Assert.Equal(true, config.CustomSettings[CefSettingKeys.NoSandbox]);
+            }
         }
     }
 }
