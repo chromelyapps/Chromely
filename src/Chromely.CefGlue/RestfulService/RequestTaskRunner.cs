@@ -65,7 +65,7 @@ namespace Chromely.CefGlue.RestfulService
             var parameters = request.Url.GetParameters();
             var postData = GetPostData(request);
 
-            return ExcuteRoute(string.Empty, routePath, parameters, postData);
+            return ExcuteRoute(string.Empty, routePath, parameters, postData, string.Empty);
         }
 
         /// <summary>
@@ -116,7 +116,7 @@ namespace Chromely.CefGlue.RestfulService
             var parameters = request.Parameters ?? request.RoutePath.Path.GetParameters()?.ToObjectDictionary();
             var postData = request.PostData;
 
-            return ExcuteRoute(request.Id, request.RoutePath, parameters, postData);
+            return ExcuteRoute(request.Id, request.RoutePath, parameters, postData, request.RawJson);
         }
 
         /// <summary>
@@ -134,13 +134,16 @@ namespace Chromely.CefGlue.RestfulService
         /// <param name="postData">
         /// The post data.
         /// </param>
+        /// <param name="requestData">
+        /// Raw json request data.
+        /// </param>
         /// <returns>
         /// The <see cref="ChromelyResponse"/>.
         /// </returns>
         /// <exception cref="Exception">
         /// Generic exception - Route path not valid.
         /// </exception>
-        public static ChromelyResponse Run(string requestId, RoutePath routePath, object parameters, object postData)
+        public static ChromelyResponse Run(string requestId, RoutePath routePath, object parameters, object postData, string requestData)
         {
             var response = new ChromelyResponse(requestId);
             if (string.IsNullOrEmpty(routePath.Path))
@@ -164,7 +167,7 @@ namespace Chromely.CefGlue.RestfulService
                 throw new Exception($"Route for path = {routePath} is null or invalid.");
             }
 
-            return ExcuteRoute(requestId, routePath, parameters, postData);
+            return ExcuteRoute(requestId, routePath, parameters, postData, requestData);
         }
 
         /// <summary>
@@ -182,13 +185,16 @@ namespace Chromely.CefGlue.RestfulService
         /// <param name="postData">
         /// The post data.
         /// </param>
+        /// <param name="requestData">
+        /// Raw json request data.
+        /// </param>
         /// <returns>
         /// The <see cref="ChromelyResponse"/>.
         /// </returns>
         /// <exception cref="Exception">
         /// Generic exception - Route path not valid.
         /// </exception>
-        private static ChromelyResponse ExcuteRoute(string requestId, RoutePath routePath, object parameters, object postData)
+        private static ChromelyResponse ExcuteRoute(string requestId, RoutePath routePath, object parameters, object postData, string requestData)
         {
             var route = ServiceRouteProvider.GetRoute(routePath);
 
@@ -197,7 +203,7 @@ namespace Chromely.CefGlue.RestfulService
                 throw new Exception($"Route for path = {routePath} is null or invalid.");
             }
 
-            var response = route.Invoke(requestId: requestId, routePath: routePath, parameters: parameters?.ToObjectDictionary(), postData: postData);
+            var response = route.Invoke(requestId: requestId, routePath: routePath, parameters: parameters?.ToObjectDictionary(), postData: postData, rawJson: requestData);
             response.ReadyState = (int)ReadyState.ResponseIsReady;
             response.Status = (int)System.Net.HttpStatusCode.OK;
             response.StatusText = "OK";

@@ -63,6 +63,33 @@ namespace Chromely.Core.RestfulService
         /// <summary>
         /// Initializes a new instance of the <see cref="ChromelyRequest"/> class.
         /// </summary>
+        /// <param name="id">
+        /// The id.
+        /// </param>
+        /// <param name="routePath">
+        /// The route path.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <param name="postData">
+        /// The post data.
+        /// </param>
+        /// <param name="rawJson">
+        /// The raw json.
+        /// </param>
+        public ChromelyRequest(string id, RoutePath routePath, IDictionary<string, object> parameters, object postData, string rawJson)
+        {
+            Id = id;
+            RoutePath = routePath;
+            Parameters = parameters;
+            PostData = postData;
+            RawJson = rawJson;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ChromelyRequest"/> class.
+        /// </summary>
         /// <param name="jsonData">
         /// The json data.
         /// </param>
@@ -96,5 +123,11 @@ namespace Chromely.Core.RestfulService
         /// Gets or sets the post data.
         /// </summary>
         public object PostData { get; set; }
+
+        /// <summary>
+        /// Gets or sets the raw json.
+        /// Only used for CefGlue Generic Message Routing requests.
+        /// </summary>
+        public string RawJson { get; set; }
     }
 }
