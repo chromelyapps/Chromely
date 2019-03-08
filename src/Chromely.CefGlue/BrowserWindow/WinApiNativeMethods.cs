@@ -9,14 +9,15 @@
 
 
 // ReSharper disable InconsistentNaming
-namespace Chromely.CefGlue.Winapi.BrowserWindow
-{
-    using System;
-    using System.Diagnostics.CodeAnalysis;
-    using System.IO;
-    using System.Runtime.InteropServices;
-    using WinApi.User32;
 
+using System;
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Runtime.InteropServices;
+using WinApi.User32;
+
+namespace Chromely.CefGlue.BrowserWindow
+{
     /// <summary>
     /// The native methods.
     /// </summary>

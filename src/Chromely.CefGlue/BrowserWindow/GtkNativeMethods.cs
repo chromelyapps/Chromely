@@ -7,15 +7,15 @@
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Chromely.CefGlue.Gtk.BrowserWindow
-{
-    using System;
-    using System.Diagnostics.CodeAnalysis;
-    using System.IO;
-    using System.Runtime.InteropServices;
-    using Chromely.Core.Infrastructure;
-    using Xilium.CefGlue;
+using System;
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Runtime.InteropServices;
+using Chromely.Core.Infrastructure;
+using Xilium.CefGlue;
 
+namespace Chromely.CefGlue.BrowserWindow
+{
     /// <summary>
     /// The native methods.
     /// </summary>

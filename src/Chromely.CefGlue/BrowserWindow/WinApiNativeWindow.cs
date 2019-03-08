@@ -7,21 +7,18 @@
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Chromely.CefGlue.BrowserWindow;
+using System;
+using System.Runtime.InteropServices;
+using Chromely.Core;
+using Chromely.Core.Host;
+using Chromely.Core.Infrastructure;
+using NetCoreEx.Geometry;
+using WinApi.Gdi32;
+using WinApi.Kernel32;
+using WinApi.User32;
 
-namespace Chromely.CefGlue.Winapi.BrowserWindow
+namespace Chromely.CefGlue.BrowserWindow
 {
-    using System;
-    using System.Runtime.InteropServices;
-
-    using Chromely.Core;
-    using Chromely.Core.Host;
-    using Chromely.Core.Infrastructure;
-    using NetCoreEx.Geometry;
-    using WinApi.Gdi32;
-    using WinApi.Kernel32;
-    using WinApi.User32;
-
     /// <summary>
     /// The native window.
     /// </summary>
@@ -335,7 +332,7 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
         /// </returns>
         private IntPtr GetIconHandle()
         {
-            IntPtr? hIcon = WinApiNativeMethods.LoadIconFromFile(this.mHostConfig.HostIconFile);
+            IntPtr? hIcon = CefGlue.BrowserWindow.WinApiNativeMethods.LoadIconFromFile(this.mHostConfig.HostIconFile);
             if (hIcon == null)
             {
                 return User32Helpers.LoadIcon(IntPtr.Zero, SystemIcon.IDI_APPLICATION);

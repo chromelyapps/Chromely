@@ -7,13 +7,11 @@
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Chromely.CefGlue.BrowserWindow;
+using Chromely.Core;
+using Xilium.CefGlue;
 
-namespace Chromely.CefGlue.Gtk.BrowserWindow
+namespace Chromely.CefGlue.BrowserWindow
 {
-    using Chromely.Core;
-    using Xilium.CefGlue;
-
     /// <summary>
     /// The CefGlue browser host/window/app.
     /// </summary>

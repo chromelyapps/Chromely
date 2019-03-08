@@ -7,12 +7,10 @@
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Chromely.CefGlue.BrowserWindow;
+using Chromely.Core;
 
-namespace Chromely.CefGlue.Winapi.BrowserWindow
+namespace Chromely.CefGlue.BrowserWindow
 {
-    using Chromely.Core;
-
     /// <summary>
     /// The cef glue chromium window.
     /// </summary>

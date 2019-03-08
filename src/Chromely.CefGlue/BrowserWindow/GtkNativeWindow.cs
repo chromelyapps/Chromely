@@ -7,12 +7,12 @@
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Chromely.CefGlue.Gtk.BrowserWindow
-{
-    using Chromely.Core;
-    using Chromely.Core.Host;
-    using System;
+using System;
+using Chromely.Core;
+using Chromely.Core.Host;
 
+namespace Chromely.CefGlue.BrowserWindow
+{
     /// <summary>
     /// The native window.
     /// </summary>
