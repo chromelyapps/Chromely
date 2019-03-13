@@ -22,7 +22,7 @@ namespace Chromely.CefGlue.BrowserWindow
     /// <summary>
     /// The native window.
     /// </summary>
-    public class WinApiNativeWindow
+    public class WinapiNativeWindow
     {
         /// <summary>
         /// The m host config.
@@ -30,20 +30,20 @@ namespace Chromely.CefGlue.BrowserWindow
         private readonly ChromelyConfiguration mHostConfig;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WinApiNativeWindow"/> class.
+        /// Initializes a new instance of the <see cref="WinapiNativeWindow"/> class.
         /// </summary>
-        public WinApiNativeWindow()
+        public WinapiNativeWindow()
         {
             Handle = IntPtr.Zero;
          }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WinApiNativeWindow"/> class.
+        /// Initializes a new instance of the <see cref="WinapiNativeWindow"/> class.
         /// </summary>
         /// <param name="hostConfig">
         /// Chromely configuration.
         /// </param>
-        public WinApiNativeWindow(ChromelyConfiguration hostConfig)
+        public WinapiNativeWindow(ChromelyConfiguration hostConfig)
         {
             Handle = IntPtr.Zero;
             mHostConfig = hostConfig;
@@ -332,7 +332,7 @@ namespace Chromely.CefGlue.BrowserWindow
         /// </returns>
         private IntPtr GetIconHandle()
         {
-            IntPtr? hIcon = CefGlue.BrowserWindow.WinApiNativeMethods.LoadIconFromFile(this.mHostConfig.HostIconFile);
+            IntPtr? hIcon = CefGlue.BrowserWindow.WinapiNativeMethods.LoadIconFromFile(this.mHostConfig.HostIconFile);
             if (hIcon == null)
             {
                 return User32Helpers.LoadIcon(IntPtr.Zero, SystemIcon.IDI_APPLICATION);

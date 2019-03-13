@@ -14,15 +14,15 @@ namespace Chromely.CefGlue.BrowserWindow
     /// <summary>
     /// The cef glue chromium window.
     /// </summary>
-    public class WinApiCefGlueBrowserWindow : HostBase
+    public class WinapiCefGlueBrowserWindow : HostBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="WinApiCefGlueBrowserWindow"/> class.
+        /// Initializes a new instance of the <see cref="WinapiCefGlueBrowserWindow"/> class.
         /// </summary>
         /// <param name="hostConfig">
         /// The host config.
         /// </param>
-        public WinApiCefGlueBrowserWindow(ChromelyConfiguration hostConfig) 
+        public WinapiCefGlueBrowserWindow(ChromelyConfiguration hostConfig) 
             : base(hostConfig)
         {
         }
@@ -46,7 +46,7 @@ namespace Chromely.CefGlue.BrowserWindow
         /// </summary>
         protected override void RunMessageLoop()
         {
-            WinApiNativeWindow.RunMessageLoop();
+            WinapiNativeWindow.RunMessageLoop();
         }
 
         /// <summary>
@@ -54,18 +54,18 @@ namespace Chromely.CefGlue.BrowserWindow
         /// </summary>
         protected override void QuitMessageLoop()
         {
-            WinApiNativeWindow.Exit();
+            WinapiNativeWindow.Exit();
         }
 
         /// <summary>
         /// The create main view.
         /// </summary>
         /// <returns>
-        /// The <see cref="WinApiWindow"/>.
+        /// The <see cref="WinapiWindow"/>.
         /// </returns>
         protected override IWindow CreateMainView()
         {
-            return new WinApiWindow(this, HostConfig);
+            return new WinapiWindow(this, HostConfig);
         }
     }
 }

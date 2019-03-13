@@ -18,7 +18,7 @@ namespace Chromely.CefGlue.BrowserWindow
     /// <summary>
     /// The window.
     /// </summary>
-    public class WinApiWindow : WinApiNativeWindow, IWindow
+    public class WinapiWindow : WinapiNativeWindow, IWindow
     {
         /// <summary>
         /// The host/app/window application.
@@ -41,7 +41,7 @@ namespace Chromely.CefGlue.BrowserWindow
         private IntPtr mBrowserWindowHandle;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WinApiWindow"/> class.
+        /// Initializes a new instance of the <see cref="WinapiWindow"/> class.
         /// </summary>
         /// <param name="application">
         /// The application.
@@ -49,7 +49,7 @@ namespace Chromely.CefGlue.BrowserWindow
         /// <param name="hostConfig">
         /// The host config.
         /// </param>
-        public WinApiWindow(HostBase application, ChromelyConfiguration hostConfig)
+        public WinapiWindow(HostBase application, ChromelyConfiguration hostConfig)
             : base(hostConfig)
         {
             mHostConfig = hostConfig;
@@ -129,11 +129,11 @@ namespace Chromely.CefGlue.BrowserWindow
                 {
                     // For windowed browsers when the frame window is minimized set the
                     // browser window size to 0x0 to reduce resource usage.
-                    CefGlue.BrowserWindow.WinApiNativeMethods.SetWindowPos(mBrowserWindowHandle, IntPtr.Zero, 0, 0, 0, 0, WindowPositionFlags.SWP_NOZORDER | WindowPositionFlags.SWP_NOMOVE | WindowPositionFlags.SWP_NOACTIVATE);
+                    CefGlue.BrowserWindow.WinapiNativeMethods.SetWindowPos(mBrowserWindowHandle, IntPtr.Zero, 0, 0, 0, 0, WindowPositionFlags.SWP_NOZORDER | WindowPositionFlags.SWP_NOMOVE | WindowPositionFlags.SWP_NOACTIVATE);
                 }
                 else
                 {
-                    CefGlue.BrowserWindow.WinApiNativeMethods.SetWindowPos(mBrowserWindowHandle, IntPtr.Zero, 0, 0, width, height, WindowPositionFlags.SWP_NOZORDER);
+                    CefGlue.BrowserWindow.WinapiNativeMethods.SetWindowPos(mBrowserWindowHandle, IntPtr.Zero, 0, 0, width, height, WindowPositionFlags.SWP_NOZORDER);
                 }
             }
         }
@@ -161,7 +161,7 @@ namespace Chromely.CefGlue.BrowserWindow
             if (mBrowserWindowHandle != IntPtr.Zero)
             {
                 var size = GetClientSize();
-                CefGlue.BrowserWindow.WinApiNativeMethods.SetWindowPos(mBrowserWindowHandle, IntPtr.Zero, 0, 0, size.Width, size.Height, WindowPositionFlags.SWP_NOZORDER);
+                CefGlue.BrowserWindow.WinapiNativeMethods.SetWindowPos(mBrowserWindowHandle, IntPtr.Zero, 0, 0, size.Width, size.Height, WindowPositionFlags.SWP_NOZORDER);
             }
         }
     }

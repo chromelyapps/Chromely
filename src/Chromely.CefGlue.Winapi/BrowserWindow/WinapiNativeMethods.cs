@@ -21,7 +21,7 @@ namespace Chromely.CefGlue.BrowserWindow
     /// <summary>
     /// The native methods.
     /// </summary>
-    public static class WinApiNativeMethods
+    public static class WinapiNativeMethods
     {
         /// <summary>
         /// The dll name.
