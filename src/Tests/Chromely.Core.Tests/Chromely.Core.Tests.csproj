@@ -1,5 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <RuntimeFrameworkVersion>2.1.1</RuntimeFrameworkVersion>
     <TargetFrameworks>net461;netcoreapp2.1</TargetFrameworks>
     <RuntimeIdentifiers>win7-x64;linux-x64</RuntimeIdentifiers>
   </PropertyGroup>
