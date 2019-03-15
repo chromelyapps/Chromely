@@ -22,8 +22,9 @@ namespace Xilium.CefGlue
         private cef_response_filter_t.add_ref_delegate _ds0;
         private cef_response_filter_t.release_delegate _ds1;
         private cef_response_filter_t.has_one_ref_delegate _ds2;
-        private cef_response_filter_t.init_filter_delegate _ds3;
-        private cef_response_filter_t.filter_delegate _ds4;
+        private cef_response_filter_t.has_at_least_one_ref_delegate _ds3;
+        private cef_response_filter_t.init_filter_delegate _ds4;
+        private cef_response_filter_t.filter_delegate _ds5;
         
         protected CefResponseFilter()
         {
@@ -35,10 +36,12 @@ namespace Xilium.CefGlue
             _self->_base._release = Marshal.GetFunctionPointerForDelegate(_ds1);
             _ds2 = new cef_response_filter_t.has_one_ref_delegate(has_one_ref);
             _self->_base._has_one_ref = Marshal.GetFunctionPointerForDelegate(_ds2);
-            _ds3 = new cef_response_filter_t.init_filter_delegate(init_filter);
-            _self->_init_filter = Marshal.GetFunctionPointerForDelegate(_ds3);
-            _ds4 = new cef_response_filter_t.filter_delegate(filter);
-            _self->_filter = Marshal.GetFunctionPointerForDelegate(_ds4);
+            _ds3 = new cef_response_filter_t.has_at_least_one_ref_delegate(has_at_least_one_ref);
+            _self->_base._has_at_least_one_ref = Marshal.GetFunctionPointerForDelegate(_ds3);
+            _ds4 = new cef_response_filter_t.init_filter_delegate(init_filter);
+            _self->_init_filter = Marshal.GetFunctionPointerForDelegate(_ds4);
+            _ds5 = new cef_response_filter_t.filter_delegate(filter);
+            _self->_filter = Marshal.GetFunctionPointerForDelegate(_ds5);
         }
         
         ~CefResponseFilter()
@@ -91,6 +94,11 @@ namespace Xilium.CefGlue
         private int has_one_ref(cef_response_filter_t* self)
         {
             lock (SyncRoot) { return _refct == 1 ? 1 : 0; }
+        }
+        
+        private int has_at_least_one_ref(cef_response_filter_t* self)
+        {
+            lock (SyncRoot) { return _refct != 0 ? 1 : 0; }
         }
         
         internal cef_response_filter_t* ToNative()

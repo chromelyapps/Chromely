@@ -38,6 +38,12 @@ namespace Xilium.CefGlue.Interop
         #if !DEBUG
         [SuppressUnmanagedCodeSecurity]
         #endif
+        private delegate int has_at_least_one_ref_delegate(cef_sslinfo_t* self);
+        
+        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
+        #if !DEBUG
+        [SuppressUnmanagedCodeSecurity]
+        #endif
         private delegate CefCertStatus get_cert_status_delegate(cef_sslinfo_t* self);
         
         [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
@@ -97,36 +103,53 @@ namespace Xilium.CefGlue.Interop
             return d(self);
         }
         
-        // GetCertStatus
+        // HasAtLeastOneRef
         private static IntPtr _p3;
-        private static get_cert_status_delegate _d3;
+        private static has_at_least_one_ref_delegate _d3;
         
-        public static CefCertStatus get_cert_status(cef_sslinfo_t* self)
+        public static int has_at_least_one_ref(cef_sslinfo_t* self)
         {
-            get_cert_status_delegate d;
-            var p = self->_get_cert_status;
+            has_at_least_one_ref_delegate d;
+            var p = self->_base._has_at_least_one_ref;
             if (p == _p3) { d = _d3; }
             else
             {
-                d = (get_cert_status_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_cert_status_delegate));
+                d = (has_at_least_one_ref_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(has_at_least_one_ref_delegate));
                 if (_p3 == IntPtr.Zero) { _d3 = d; _p3 = p; }
             }
             return d(self);
         }
         
-        // GetX509Certificate
+        // GetCertStatus
         private static IntPtr _p4;
-        private static get_x509certificate_delegate _d4;
+        private static get_cert_status_delegate _d4;
+        
+        public static CefCertStatus get_cert_status(cef_sslinfo_t* self)
+        {
+            get_cert_status_delegate d;
+            var p = self->_get_cert_status;
+            if (p == _p4) { d = _d4; }
+            else
+            {
+                d = (get_cert_status_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_cert_status_delegate));
+                if (_p4 == IntPtr.Zero) { _d4 = d; _p4 = p; }
+            }
+            return d(self);
+        }
+        
+        // GetX509Certificate
+        private static IntPtr _p5;
+        private static get_x509certificate_delegate _d5;
         
         public static cef_x509certificate_t* get_x509certificate(cef_sslinfo_t* self)
         {
             get_x509certificate_delegate d;
             var p = self->_get_x509certificate;
-            if (p == _p4) { d = _d4; }
+            if (p == _p5) { d = _d5; }
             else
             {
                 d = (get_x509certificate_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_x509certificate_delegate));
-                if (_p4 == IntPtr.Zero) { _d4 = d; _p4 = p; }
+                if (_p5 == IntPtr.Zero) { _d5 = d; _p5 = p; }
             }
             return d(self);
         }

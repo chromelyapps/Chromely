@@ -22,12 +22,13 @@ namespace Xilium.CefGlue
         private cef_print_handler_t.add_ref_delegate _ds0;
         private cef_print_handler_t.release_delegate _ds1;
         private cef_print_handler_t.has_one_ref_delegate _ds2;
-        private cef_print_handler_t.on_print_start_delegate _ds3;
-        private cef_print_handler_t.on_print_settings_delegate _ds4;
-        private cef_print_handler_t.on_print_dialog_delegate _ds5;
-        private cef_print_handler_t.on_print_job_delegate _ds6;
-        private cef_print_handler_t.on_print_reset_delegate _ds7;
-        private cef_print_handler_t.get_pdf_paper_size_delegate _ds8;
+        private cef_print_handler_t.has_at_least_one_ref_delegate _ds3;
+        private cef_print_handler_t.on_print_start_delegate _ds4;
+        private cef_print_handler_t.on_print_settings_delegate _ds5;
+        private cef_print_handler_t.on_print_dialog_delegate _ds6;
+        private cef_print_handler_t.on_print_job_delegate _ds7;
+        private cef_print_handler_t.on_print_reset_delegate _ds8;
+        private cef_print_handler_t.get_pdf_paper_size_delegate _ds9;
         
         protected CefPrintHandler()
         {
@@ -39,18 +40,20 @@ namespace Xilium.CefGlue
             _self->_base._release = Marshal.GetFunctionPointerForDelegate(_ds1);
             _ds2 = new cef_print_handler_t.has_one_ref_delegate(has_one_ref);
             _self->_base._has_one_ref = Marshal.GetFunctionPointerForDelegate(_ds2);
-            _ds3 = new cef_print_handler_t.on_print_start_delegate(on_print_start);
-            _self->_on_print_start = Marshal.GetFunctionPointerForDelegate(_ds3);
-            _ds4 = new cef_print_handler_t.on_print_settings_delegate(on_print_settings);
-            _self->_on_print_settings = Marshal.GetFunctionPointerForDelegate(_ds4);
-            _ds5 = new cef_print_handler_t.on_print_dialog_delegate(on_print_dialog);
-            _self->_on_print_dialog = Marshal.GetFunctionPointerForDelegate(_ds5);
-            _ds6 = new cef_print_handler_t.on_print_job_delegate(on_print_job);
-            _self->_on_print_job = Marshal.GetFunctionPointerForDelegate(_ds6);
-            _ds7 = new cef_print_handler_t.on_print_reset_delegate(on_print_reset);
-            _self->_on_print_reset = Marshal.GetFunctionPointerForDelegate(_ds7);
-            _ds8 = new cef_print_handler_t.get_pdf_paper_size_delegate(get_pdf_paper_size);
-            _self->_get_pdf_paper_size = Marshal.GetFunctionPointerForDelegate(_ds8);
+            _ds3 = new cef_print_handler_t.has_at_least_one_ref_delegate(has_at_least_one_ref);
+            _self->_base._has_at_least_one_ref = Marshal.GetFunctionPointerForDelegate(_ds3);
+            _ds4 = new cef_print_handler_t.on_print_start_delegate(on_print_start);
+            _self->_on_print_start = Marshal.GetFunctionPointerForDelegate(_ds4);
+            _ds5 = new cef_print_handler_t.on_print_settings_delegate(on_print_settings);
+            _self->_on_print_settings = Marshal.GetFunctionPointerForDelegate(_ds5);
+            _ds6 = new cef_print_handler_t.on_print_dialog_delegate(on_print_dialog);
+            _self->_on_print_dialog = Marshal.GetFunctionPointerForDelegate(_ds6);
+            _ds7 = new cef_print_handler_t.on_print_job_delegate(on_print_job);
+            _self->_on_print_job = Marshal.GetFunctionPointerForDelegate(_ds7);
+            _ds8 = new cef_print_handler_t.on_print_reset_delegate(on_print_reset);
+            _self->_on_print_reset = Marshal.GetFunctionPointerForDelegate(_ds8);
+            _ds9 = new cef_print_handler_t.get_pdf_paper_size_delegate(get_pdf_paper_size);
+            _self->_get_pdf_paper_size = Marshal.GetFunctionPointerForDelegate(_ds9);
         }
         
         ~CefPrintHandler()
@@ -96,6 +99,11 @@ namespace Xilium.CefGlue
         private int has_one_ref(cef_print_handler_t* self)
         {
             lock (SyncRoot) { return _refct == 1 ? 1 : 0; }
+        }
+        
+        private int has_at_least_one_ref(cef_print_handler_t* self)
+        {
+            lock (SyncRoot) { return _refct != 0 ? 1 : 0; }
         }
         
         internal cef_print_handler_t* ToNative()

@@ -53,6 +53,12 @@ namespace Xilium.CefGlue.Interop
         #if !DEBUG
         [SuppressUnmanagedCodeSecurity]
         #endif
+        private delegate int has_at_least_one_ref_delegate(cef_image_t* self);
+        
+        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
+        #if !DEBUG
+        [SuppressUnmanagedCodeSecurity]
+        #endif
         private delegate int is_empty_delegate(cef_image_t* self);
         
         [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
@@ -178,223 +184,240 @@ namespace Xilium.CefGlue.Interop
             return d(self);
         }
         
-        // IsEmpty
+        // HasAtLeastOneRef
         private static IntPtr _p3;
-        private static is_empty_delegate _d3;
+        private static has_at_least_one_ref_delegate _d3;
         
-        public static int is_empty(cef_image_t* self)
+        public static int has_at_least_one_ref(cef_image_t* self)
         {
-            is_empty_delegate d;
-            var p = self->_is_empty;
+            has_at_least_one_ref_delegate d;
+            var p = self->_base._has_at_least_one_ref;
             if (p == _p3) { d = _d3; }
             else
             {
-                d = (is_empty_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(is_empty_delegate));
+                d = (has_at_least_one_ref_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(has_at_least_one_ref_delegate));
                 if (_p3 == IntPtr.Zero) { _d3 = d; _p3 = p; }
             }
             return d(self);
         }
         
-        // IsSame
+        // IsEmpty
         private static IntPtr _p4;
-        private static is_same_delegate _d4;
+        private static is_empty_delegate _d4;
+        
+        public static int is_empty(cef_image_t* self)
+        {
+            is_empty_delegate d;
+            var p = self->_is_empty;
+            if (p == _p4) { d = _d4; }
+            else
+            {
+                d = (is_empty_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(is_empty_delegate));
+                if (_p4 == IntPtr.Zero) { _d4 = d; _p4 = p; }
+            }
+            return d(self);
+        }
+        
+        // IsSame
+        private static IntPtr _p5;
+        private static is_same_delegate _d5;
         
         public static int is_same(cef_image_t* self, cef_image_t* that)
         {
             is_same_delegate d;
             var p = self->_is_same;
-            if (p == _p4) { d = _d4; }
+            if (p == _p5) { d = _d5; }
             else
             {
                 d = (is_same_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(is_same_delegate));
-                if (_p4 == IntPtr.Zero) { _d4 = d; _p4 = p; }
+                if (_p5 == IntPtr.Zero) { _d5 = d; _p5 = p; }
             }
             return d(self, that);
         }
         
         // AddBitmap
-        private static IntPtr _p5;
-        private static add_bitmap_delegate _d5;
+        private static IntPtr _p6;
+        private static add_bitmap_delegate _d6;
         
         public static int add_bitmap(cef_image_t* self, float scale_factor, int pixel_width, int pixel_height, CefColorType color_type, CefAlphaType alpha_type, void* pixel_data, UIntPtr pixel_data_size)
         {
             add_bitmap_delegate d;
             var p = self->_add_bitmap;
-            if (p == _p5) { d = _d5; }
+            if (p == _p6) { d = _d6; }
             else
             {
                 d = (add_bitmap_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(add_bitmap_delegate));
-                if (_p5 == IntPtr.Zero) { _d5 = d; _p5 = p; }
+                if (_p6 == IntPtr.Zero) { _d6 = d; _p6 = p; }
             }
             return d(self, scale_factor, pixel_width, pixel_height, color_type, alpha_type, pixel_data, pixel_data_size);
         }
         
         // AddPNG
-        private static IntPtr _p6;
-        private static add_png_delegate _d6;
+        private static IntPtr _p7;
+        private static add_png_delegate _d7;
         
         public static int add_png(cef_image_t* self, float scale_factor, void* png_data, UIntPtr png_data_size)
         {
             add_png_delegate d;
             var p = self->_add_png;
-            if (p == _p6) { d = _d6; }
+            if (p == _p7) { d = _d7; }
             else
             {
                 d = (add_png_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(add_png_delegate));
-                if (_p6 == IntPtr.Zero) { _d6 = d; _p6 = p; }
+                if (_p7 == IntPtr.Zero) { _d7 = d; _p7 = p; }
             }
             return d(self, scale_factor, png_data, png_data_size);
         }
         
         // AddJPEG
-        private static IntPtr _p7;
-        private static add_jpeg_delegate _d7;
+        private static IntPtr _p8;
+        private static add_jpeg_delegate _d8;
         
         public static int add_jpeg(cef_image_t* self, float scale_factor, void* jpeg_data, UIntPtr jpeg_data_size)
         {
             add_jpeg_delegate d;
             var p = self->_add_jpeg;
-            if (p == _p7) { d = _d7; }
+            if (p == _p8) { d = _d8; }
             else
             {
                 d = (add_jpeg_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(add_jpeg_delegate));
-                if (_p7 == IntPtr.Zero) { _d7 = d; _p7 = p; }
+                if (_p8 == IntPtr.Zero) { _d8 = d; _p8 = p; }
             }
             return d(self, scale_factor, jpeg_data, jpeg_data_size);
         }
         
         // GetWidth
-        private static IntPtr _p8;
-        private static get_width_delegate _d8;
+        private static IntPtr _p9;
+        private static get_width_delegate _d9;
         
         public static UIntPtr get_width(cef_image_t* self)
         {
             get_width_delegate d;
             var p = self->_get_width;
-            if (p == _p8) { d = _d8; }
-            else
-            {
-                d = (get_width_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_width_delegate));
-                if (_p8 == IntPtr.Zero) { _d8 = d; _p8 = p; }
-            }
-            return d(self);
-        }
-        
-        // GetHeight
-        private static IntPtr _p9;
-        private static get_height_delegate _d9;
-        
-        public static UIntPtr get_height(cef_image_t* self)
-        {
-            get_height_delegate d;
-            var p = self->_get_height;
             if (p == _p9) { d = _d9; }
             else
             {
-                d = (get_height_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_height_delegate));
+                d = (get_width_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_width_delegate));
                 if (_p9 == IntPtr.Zero) { _d9 = d; _p9 = p; }
             }
             return d(self);
         }
         
-        // HasRepresentation
+        // GetHeight
         private static IntPtr _pa;
-        private static has_representation_delegate _da;
+        private static get_height_delegate _da;
+        
+        public static UIntPtr get_height(cef_image_t* self)
+        {
+            get_height_delegate d;
+            var p = self->_get_height;
+            if (p == _pa) { d = _da; }
+            else
+            {
+                d = (get_height_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_height_delegate));
+                if (_pa == IntPtr.Zero) { _da = d; _pa = p; }
+            }
+            return d(self);
+        }
+        
+        // HasRepresentation
+        private static IntPtr _pb;
+        private static has_representation_delegate _db;
         
         public static int has_representation(cef_image_t* self, float scale_factor)
         {
             has_representation_delegate d;
             var p = self->_has_representation;
-            if (p == _pa) { d = _da; }
-            else
-            {
-                d = (has_representation_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(has_representation_delegate));
-                if (_pa == IntPtr.Zero) { _da = d; _pa = p; }
-            }
-            return d(self, scale_factor);
-        }
-        
-        // RemoveRepresentation
-        private static IntPtr _pb;
-        private static remove_representation_delegate _db;
-        
-        public static int remove_representation(cef_image_t* self, float scale_factor)
-        {
-            remove_representation_delegate d;
-            var p = self->_remove_representation;
             if (p == _pb) { d = _db; }
             else
             {
-                d = (remove_representation_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(remove_representation_delegate));
+                d = (has_representation_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(has_representation_delegate));
                 if (_pb == IntPtr.Zero) { _db = d; _pb = p; }
             }
             return d(self, scale_factor);
         }
         
-        // GetRepresentationInfo
+        // RemoveRepresentation
         private static IntPtr _pc;
-        private static get_representation_info_delegate _dc;
+        private static remove_representation_delegate _dc;
+        
+        public static int remove_representation(cef_image_t* self, float scale_factor)
+        {
+            remove_representation_delegate d;
+            var p = self->_remove_representation;
+            if (p == _pc) { d = _dc; }
+            else
+            {
+                d = (remove_representation_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(remove_representation_delegate));
+                if (_pc == IntPtr.Zero) { _dc = d; _pc = p; }
+            }
+            return d(self, scale_factor);
+        }
+        
+        // GetRepresentationInfo
+        private static IntPtr _pd;
+        private static get_representation_info_delegate _dd;
         
         public static int get_representation_info(cef_image_t* self, float scale_factor, float* actual_scale_factor, int* pixel_width, int* pixel_height)
         {
             get_representation_info_delegate d;
             var p = self->_get_representation_info;
-            if (p == _pc) { d = _dc; }
+            if (p == _pd) { d = _dd; }
             else
             {
                 d = (get_representation_info_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_representation_info_delegate));
-                if (_pc == IntPtr.Zero) { _dc = d; _pc = p; }
+                if (_pd == IntPtr.Zero) { _dd = d; _pd = p; }
             }
             return d(self, scale_factor, actual_scale_factor, pixel_width, pixel_height);
         }
         
         // GetAsBitmap
-        private static IntPtr _pd;
-        private static get_as_bitmap_delegate _dd;
+        private static IntPtr _pe;
+        private static get_as_bitmap_delegate _de;
         
         public static cef_binary_value_t* get_as_bitmap(cef_image_t* self, float scale_factor, CefColorType color_type, CefAlphaType alpha_type, int* pixel_width, int* pixel_height)
         {
             get_as_bitmap_delegate d;
             var p = self->_get_as_bitmap;
-            if (p == _pd) { d = _dd; }
+            if (p == _pe) { d = _de; }
             else
             {
                 d = (get_as_bitmap_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_as_bitmap_delegate));
-                if (_pd == IntPtr.Zero) { _dd = d; _pd = p; }
+                if (_pe == IntPtr.Zero) { _de = d; _pe = p; }
             }
             return d(self, scale_factor, color_type, alpha_type, pixel_width, pixel_height);
         }
         
         // GetAsPNG
-        private static IntPtr _pe;
-        private static get_as_png_delegate _de;
+        private static IntPtr _pf;
+        private static get_as_png_delegate _df;
         
         public static cef_binary_value_t* get_as_png(cef_image_t* self, float scale_factor, int with_transparency, int* pixel_width, int* pixel_height)
         {
             get_as_png_delegate d;
             var p = self->_get_as_png;
-            if (p == _pe) { d = _de; }
+            if (p == _pf) { d = _df; }
             else
             {
                 d = (get_as_png_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_as_png_delegate));
-                if (_pe == IntPtr.Zero) { _de = d; _pe = p; }
+                if (_pf == IntPtr.Zero) { _df = d; _pf = p; }
             }
             return d(self, scale_factor, with_transparency, pixel_width, pixel_height);
         }
         
         // GetAsJPEG
-        private static IntPtr _pf;
-        private static get_as_jpeg_delegate _df;
+        private static IntPtr _p10;
+        private static get_as_jpeg_delegate _d10;
         
         public static cef_binary_value_t* get_as_jpeg(cef_image_t* self, float scale_factor, int quality, int* pixel_width, int* pixel_height)
         {
             get_as_jpeg_delegate d;
             var p = self->_get_as_jpeg;
-            if (p == _pf) { d = _df; }
+            if (p == _p10) { d = _d10; }
             else
             {
                 d = (get_as_jpeg_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_as_jpeg_delegate));
-                if (_pf == IntPtr.Zero) { _df = d; _pf = p; }
+                if (_p10 == IntPtr.Zero) { _d10 = d; _p10 = p; }
             }
             return d(self, scale_factor, quality, pixel_width, pixel_height);
         }

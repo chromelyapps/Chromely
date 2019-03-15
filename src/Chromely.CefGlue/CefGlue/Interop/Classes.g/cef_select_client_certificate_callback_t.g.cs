@@ -37,6 +37,12 @@ namespace Xilium.CefGlue.Interop
         #if !DEBUG
         [SuppressUnmanagedCodeSecurity]
         #endif
+        private delegate int has_at_least_one_ref_delegate(cef_select_client_certificate_callback_t* self);
+        
+        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
+        #if !DEBUG
+        [SuppressUnmanagedCodeSecurity]
+        #endif
         private delegate void select_delegate(cef_select_client_certificate_callback_t* self, cef_x509certificate_t* cert);
         
         // AddRef
@@ -90,19 +96,36 @@ namespace Xilium.CefGlue.Interop
             return d(self);
         }
         
-        // Select
+        // HasAtLeastOneRef
         private static IntPtr _p3;
-        private static select_delegate _d3;
+        private static has_at_least_one_ref_delegate _d3;
+        
+        public static int has_at_least_one_ref(cef_select_client_certificate_callback_t* self)
+        {
+            has_at_least_one_ref_delegate d;
+            var p = self->_base._has_at_least_one_ref;
+            if (p == _p3) { d = _d3; }
+            else
+            {
+                d = (has_at_least_one_ref_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(has_at_least_one_ref_delegate));
+                if (_p3 == IntPtr.Zero) { _d3 = d; _p3 = p; }
+            }
+            return d(self);
+        }
+        
+        // Select
+        private static IntPtr _p4;
+        private static select_delegate _d4;
         
         public static void select(cef_select_client_certificate_callback_t* self, cef_x509certificate_t* cert)
         {
             select_delegate d;
             var p = self->_select;
-            if (p == _p3) { d = _d3; }
+            if (p == _p4) { d = _d4; }
             else
             {
                 d = (select_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(select_delegate));
-                if (_p3 == IntPtr.Zero) { _d3 = d; _p3 = p; }
+                if (_p4 == IntPtr.Zero) { _d4 = d; _p4 = p; }
             }
             d(self, cert);
         }

@@ -22,9 +22,10 @@ namespace Xilium.CefGlue
         private cef_focus_handler_t.add_ref_delegate _ds0;
         private cef_focus_handler_t.release_delegate _ds1;
         private cef_focus_handler_t.has_one_ref_delegate _ds2;
-        private cef_focus_handler_t.on_take_focus_delegate _ds3;
-        private cef_focus_handler_t.on_set_focus_delegate _ds4;
-        private cef_focus_handler_t.on_got_focus_delegate _ds5;
+        private cef_focus_handler_t.has_at_least_one_ref_delegate _ds3;
+        private cef_focus_handler_t.on_take_focus_delegate _ds4;
+        private cef_focus_handler_t.on_set_focus_delegate _ds5;
+        private cef_focus_handler_t.on_got_focus_delegate _ds6;
         
         protected CefFocusHandler()
         {
@@ -36,12 +37,14 @@ namespace Xilium.CefGlue
             _self->_base._release = Marshal.GetFunctionPointerForDelegate(_ds1);
             _ds2 = new cef_focus_handler_t.has_one_ref_delegate(has_one_ref);
             _self->_base._has_one_ref = Marshal.GetFunctionPointerForDelegate(_ds2);
-            _ds3 = new cef_focus_handler_t.on_take_focus_delegate(on_take_focus);
-            _self->_on_take_focus = Marshal.GetFunctionPointerForDelegate(_ds3);
-            _ds4 = new cef_focus_handler_t.on_set_focus_delegate(on_set_focus);
-            _self->_on_set_focus = Marshal.GetFunctionPointerForDelegate(_ds4);
-            _ds5 = new cef_focus_handler_t.on_got_focus_delegate(on_got_focus);
-            _self->_on_got_focus = Marshal.GetFunctionPointerForDelegate(_ds5);
+            _ds3 = new cef_focus_handler_t.has_at_least_one_ref_delegate(has_at_least_one_ref);
+            _self->_base._has_at_least_one_ref = Marshal.GetFunctionPointerForDelegate(_ds3);
+            _ds4 = new cef_focus_handler_t.on_take_focus_delegate(on_take_focus);
+            _self->_on_take_focus = Marshal.GetFunctionPointerForDelegate(_ds4);
+            _ds5 = new cef_focus_handler_t.on_set_focus_delegate(on_set_focus);
+            _self->_on_set_focus = Marshal.GetFunctionPointerForDelegate(_ds5);
+            _ds6 = new cef_focus_handler_t.on_got_focus_delegate(on_got_focus);
+            _self->_on_got_focus = Marshal.GetFunctionPointerForDelegate(_ds6);
         }
         
         ~CefFocusHandler()
@@ -87,6 +90,11 @@ namespace Xilium.CefGlue
         private int has_one_ref(cef_focus_handler_t* self)
         {
             lock (SyncRoot) { return _refct == 1 ? 1 : 0; }
+        }
+        
+        private int has_at_least_one_ref(cef_focus_handler_t* self)
+        {
+            lock (SyncRoot) { return _refct != 0 ? 1 : 0; }
         }
         
         internal cef_focus_handler_t* ToNative()

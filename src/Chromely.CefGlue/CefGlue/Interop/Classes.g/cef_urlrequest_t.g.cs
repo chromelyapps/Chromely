@@ -47,6 +47,12 @@ namespace Xilium.CefGlue.Interop
         #if !DEBUG
         [SuppressUnmanagedCodeSecurity]
         #endif
+        private delegate int has_at_least_one_ref_delegate(cef_urlrequest_t* self);
+        
+        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
+        #if !DEBUG
+        [SuppressUnmanagedCodeSecurity]
+        #endif
         private delegate cef_request_t* get_request_delegate(cef_urlrequest_t* self);
         
         [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
@@ -136,121 +142,138 @@ namespace Xilium.CefGlue.Interop
             return d(self);
         }
         
-        // GetRequest
+        // HasAtLeastOneRef
         private static IntPtr _p3;
-        private static get_request_delegate _d3;
+        private static has_at_least_one_ref_delegate _d3;
         
-        public static cef_request_t* get_request(cef_urlrequest_t* self)
+        public static int has_at_least_one_ref(cef_urlrequest_t* self)
         {
-            get_request_delegate d;
-            var p = self->_get_request;
+            has_at_least_one_ref_delegate d;
+            var p = self->_base._has_at_least_one_ref;
             if (p == _p3) { d = _d3; }
             else
             {
-                d = (get_request_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_request_delegate));
+                d = (has_at_least_one_ref_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(has_at_least_one_ref_delegate));
                 if (_p3 == IntPtr.Zero) { _d3 = d; _p3 = p; }
             }
             return d(self);
         }
         
-        // GetClient
+        // GetRequest
         private static IntPtr _p4;
-        private static get_client_delegate _d4;
+        private static get_request_delegate _d4;
         
-        public static cef_urlrequest_client_t* get_client(cef_urlrequest_t* self)
+        public static cef_request_t* get_request(cef_urlrequest_t* self)
         {
-            get_client_delegate d;
-            var p = self->_get_client;
+            get_request_delegate d;
+            var p = self->_get_request;
             if (p == _p4) { d = _d4; }
             else
             {
-                d = (get_client_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_client_delegate));
+                d = (get_request_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_request_delegate));
                 if (_p4 == IntPtr.Zero) { _d4 = d; _p4 = p; }
             }
             return d(self);
         }
         
-        // GetRequestStatus
+        // GetClient
         private static IntPtr _p5;
-        private static get_request_status_delegate _d5;
+        private static get_client_delegate _d5;
         
-        public static CefUrlRequestStatus get_request_status(cef_urlrequest_t* self)
+        public static cef_urlrequest_client_t* get_client(cef_urlrequest_t* self)
         {
-            get_request_status_delegate d;
-            var p = self->_get_request_status;
+            get_client_delegate d;
+            var p = self->_get_client;
             if (p == _p5) { d = _d5; }
             else
             {
-                d = (get_request_status_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_request_status_delegate));
+                d = (get_client_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_client_delegate));
                 if (_p5 == IntPtr.Zero) { _d5 = d; _p5 = p; }
             }
             return d(self);
         }
         
-        // GetRequestError
+        // GetRequestStatus
         private static IntPtr _p6;
-        private static get_request_error_delegate _d6;
+        private static get_request_status_delegate _d6;
         
-        public static CefErrorCode get_request_error(cef_urlrequest_t* self)
+        public static CefUrlRequestStatus get_request_status(cef_urlrequest_t* self)
         {
-            get_request_error_delegate d;
-            var p = self->_get_request_error;
+            get_request_status_delegate d;
+            var p = self->_get_request_status;
             if (p == _p6) { d = _d6; }
             else
             {
-                d = (get_request_error_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_request_error_delegate));
+                d = (get_request_status_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_request_status_delegate));
                 if (_p6 == IntPtr.Zero) { _d6 = d; _p6 = p; }
             }
             return d(self);
         }
         
-        // GetResponse
+        // GetRequestError
         private static IntPtr _p7;
-        private static get_response_delegate _d7;
+        private static get_request_error_delegate _d7;
         
-        public static cef_response_t* get_response(cef_urlrequest_t* self)
+        public static CefErrorCode get_request_error(cef_urlrequest_t* self)
         {
-            get_response_delegate d;
-            var p = self->_get_response;
+            get_request_error_delegate d;
+            var p = self->_get_request_error;
             if (p == _p7) { d = _d7; }
             else
             {
-                d = (get_response_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_response_delegate));
+                d = (get_request_error_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_request_error_delegate));
                 if (_p7 == IntPtr.Zero) { _d7 = d; _p7 = p; }
             }
             return d(self);
         }
         
-        // ResponseWasCached
+        // GetResponse
         private static IntPtr _p8;
-        private static response_was_cached_delegate _d8;
+        private static get_response_delegate _d8;
         
-        public static int response_was_cached(cef_urlrequest_t* self)
+        public static cef_response_t* get_response(cef_urlrequest_t* self)
         {
-            response_was_cached_delegate d;
-            var p = self->_response_was_cached;
+            get_response_delegate d;
+            var p = self->_get_response;
             if (p == _p8) { d = _d8; }
             else
             {
-                d = (response_was_cached_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(response_was_cached_delegate));
+                d = (get_response_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_response_delegate));
                 if (_p8 == IntPtr.Zero) { _d8 = d; _p8 = p; }
             }
             return d(self);
         }
         
-        // Cancel
+        // ResponseWasCached
         private static IntPtr _p9;
-        private static cancel_delegate _d9;
+        private static response_was_cached_delegate _d9;
+        
+        public static int response_was_cached(cef_urlrequest_t* self)
+        {
+            response_was_cached_delegate d;
+            var p = self->_response_was_cached;
+            if (p == _p9) { d = _d9; }
+            else
+            {
+                d = (response_was_cached_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(response_was_cached_delegate));
+                if (_p9 == IntPtr.Zero) { _d9 = d; _p9 = p; }
+            }
+            return d(self);
+        }
+        
+        // Cancel
+        private static IntPtr _pa;
+        private static cancel_delegate _da;
         
         public static void cancel(cef_urlrequest_t* self)
         {
             cancel_delegate d;
             var p = self->_cancel;
-            if (p == _p9) { d = _d9; }
+            if (p == _pa) { d = _da; }
             else
             {
                 d = (cancel_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(cancel_delegate));
-                if (_p9 == IntPtr.Zero) { _d9 = d; _p9 = p; }
+                if (_pa == IntPtr.Zero) { _da = d; _pa = p; }
             }
             d(self);
         }

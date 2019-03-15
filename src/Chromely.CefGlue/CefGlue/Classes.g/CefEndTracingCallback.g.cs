@@ -22,7 +22,8 @@ namespace Xilium.CefGlue
         private cef_end_tracing_callback_t.add_ref_delegate _ds0;
         private cef_end_tracing_callback_t.release_delegate _ds1;
         private cef_end_tracing_callback_t.has_one_ref_delegate _ds2;
-        private cef_end_tracing_callback_t.on_end_tracing_complete_delegate _ds3;
+        private cef_end_tracing_callback_t.has_at_least_one_ref_delegate _ds3;
+        private cef_end_tracing_callback_t.on_end_tracing_complete_delegate _ds4;
         
         protected CefEndTracingCallback()
         {
@@ -34,8 +35,10 @@ namespace Xilium.CefGlue
             _self->_base._release = Marshal.GetFunctionPointerForDelegate(_ds1);
             _ds2 = new cef_end_tracing_callback_t.has_one_ref_delegate(has_one_ref);
             _self->_base._has_one_ref = Marshal.GetFunctionPointerForDelegate(_ds2);
-            _ds3 = new cef_end_tracing_callback_t.on_end_tracing_complete_delegate(on_end_tracing_complete);
-            _self->_on_end_tracing_complete = Marshal.GetFunctionPointerForDelegate(_ds3);
+            _ds3 = new cef_end_tracing_callback_t.has_at_least_one_ref_delegate(has_at_least_one_ref);
+            _self->_base._has_at_least_one_ref = Marshal.GetFunctionPointerForDelegate(_ds3);
+            _ds4 = new cef_end_tracing_callback_t.on_end_tracing_complete_delegate(on_end_tracing_complete);
+            _self->_on_end_tracing_complete = Marshal.GetFunctionPointerForDelegate(_ds4);
         }
         
         ~CefEndTracingCallback()
@@ -81,6 +84,11 @@ namespace Xilium.CefGlue
         private int has_one_ref(cef_end_tracing_callback_t* self)
         {
             lock (SyncRoot) { return _refct == 1 ? 1 : 0; }
+        }
+        
+        private int has_at_least_one_ref(cef_end_tracing_callback_t* self)
+        {
+            lock (SyncRoot) { return _refct != 0 ? 1 : 0; }
         }
         
         internal cef_end_tracing_callback_t* ToNative()

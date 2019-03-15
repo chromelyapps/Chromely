@@ -39,6 +39,12 @@ namespace Xilium.CefGlue.Interop
         #if !DEBUG
         [SuppressUnmanagedCodeSecurity]
         #endif
+        private delegate int has_at_least_one_ref_delegate(cef_download_item_callback_t* self);
+        
+        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
+        #if !DEBUG
+        [SuppressUnmanagedCodeSecurity]
+        #endif
         private delegate void cancel_delegate(cef_download_item_callback_t* self);
         
         [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
@@ -104,53 +110,70 @@ namespace Xilium.CefGlue.Interop
             return d(self);
         }
         
-        // Cancel
+        // HasAtLeastOneRef
         private static IntPtr _p3;
-        private static cancel_delegate _d3;
+        private static has_at_least_one_ref_delegate _d3;
+        
+        public static int has_at_least_one_ref(cef_download_item_callback_t* self)
+        {
+            has_at_least_one_ref_delegate d;
+            var p = self->_base._has_at_least_one_ref;
+            if (p == _p3) { d = _d3; }
+            else
+            {
+                d = (has_at_least_one_ref_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(has_at_least_one_ref_delegate));
+                if (_p3 == IntPtr.Zero) { _d3 = d; _p3 = p; }
+            }
+            return d(self);
+        }
+        
+        // Cancel
+        private static IntPtr _p4;
+        private static cancel_delegate _d4;
         
         public static void cancel(cef_download_item_callback_t* self)
         {
             cancel_delegate d;
             var p = self->_cancel;
-            if (p == _p3) { d = _d3; }
-            else
-            {
-                d = (cancel_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(cancel_delegate));
-                if (_p3 == IntPtr.Zero) { _d3 = d; _p3 = p; }
-            }
-            d(self);
-        }
-        
-        // Pause
-        private static IntPtr _p4;
-        private static pause_delegate _d4;
-        
-        public static void pause(cef_download_item_callback_t* self)
-        {
-            pause_delegate d;
-            var p = self->_pause;
             if (p == _p4) { d = _d4; }
             else
             {
-                d = (pause_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(pause_delegate));
+                d = (cancel_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(cancel_delegate));
                 if (_p4 == IntPtr.Zero) { _d4 = d; _p4 = p; }
             }
             d(self);
         }
         
-        // Resume
+        // Pause
         private static IntPtr _p5;
-        private static resume_delegate _d5;
+        private static pause_delegate _d5;
+        
+        public static void pause(cef_download_item_callback_t* self)
+        {
+            pause_delegate d;
+            var p = self->_pause;
+            if (p == _p5) { d = _d5; }
+            else
+            {
+                d = (pause_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(pause_delegate));
+                if (_p5 == IntPtr.Zero) { _d5 = d; _p5 = p; }
+            }
+            d(self);
+        }
+        
+        // Resume
+        private static IntPtr _p6;
+        private static resume_delegate _d6;
         
         public static void resume(cef_download_item_callback_t* self)
         {
             resume_delegate d;
             var p = self->_resume;
-            if (p == _p5) { d = _d5; }
+            if (p == _p6) { d = _d6; }
             else
             {
                 d = (resume_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(resume_delegate));
-                if (_p5 == IntPtr.Zero) { _d5 = d; _p5 = p; }
+                if (_p6 == IntPtr.Zero) { _d6 = d; _p6 = p; }
             }
             d(self);
         }

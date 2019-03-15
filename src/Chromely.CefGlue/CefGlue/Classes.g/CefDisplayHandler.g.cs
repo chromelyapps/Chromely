@@ -22,15 +22,16 @@ namespace Xilium.CefGlue
         private cef_display_handler_t.add_ref_delegate _ds0;
         private cef_display_handler_t.release_delegate _ds1;
         private cef_display_handler_t.has_one_ref_delegate _ds2;
-        private cef_display_handler_t.on_address_change_delegate _ds3;
-        private cef_display_handler_t.on_title_change_delegate _ds4;
-        private cef_display_handler_t.on_favicon_urlchange_delegate _ds5;
-        private cef_display_handler_t.on_fullscreen_mode_change_delegate _ds6;
-        private cef_display_handler_t.on_tooltip_delegate _ds7;
-        private cef_display_handler_t.on_status_message_delegate _ds8;
-        private cef_display_handler_t.on_console_message_delegate _ds9;
-        private cef_display_handler_t.on_auto_resize_delegate _dsa;
-        private cef_display_handler_t.on_loading_progress_change_delegate _dsb;
+        private cef_display_handler_t.has_at_least_one_ref_delegate _ds3;
+        private cef_display_handler_t.on_address_change_delegate _ds4;
+        private cef_display_handler_t.on_title_change_delegate _ds5;
+        private cef_display_handler_t.on_favicon_urlchange_delegate _ds6;
+        private cef_display_handler_t.on_fullscreen_mode_change_delegate _ds7;
+        private cef_display_handler_t.on_tooltip_delegate _ds8;
+        private cef_display_handler_t.on_status_message_delegate _ds9;
+        private cef_display_handler_t.on_console_message_delegate _dsa;
+        private cef_display_handler_t.on_auto_resize_delegate _dsb;
+        private cef_display_handler_t.on_loading_progress_change_delegate _dsc;
         
         protected CefDisplayHandler()
         {
@@ -42,24 +43,26 @@ namespace Xilium.CefGlue
             _self->_base._release = Marshal.GetFunctionPointerForDelegate(_ds1);
             _ds2 = new cef_display_handler_t.has_one_ref_delegate(has_one_ref);
             _self->_base._has_one_ref = Marshal.GetFunctionPointerForDelegate(_ds2);
-            _ds3 = new cef_display_handler_t.on_address_change_delegate(on_address_change);
-            _self->_on_address_change = Marshal.GetFunctionPointerForDelegate(_ds3);
-            _ds4 = new cef_display_handler_t.on_title_change_delegate(on_title_change);
-            _self->_on_title_change = Marshal.GetFunctionPointerForDelegate(_ds4);
-            _ds5 = new cef_display_handler_t.on_favicon_urlchange_delegate(on_favicon_urlchange);
-            _self->_on_favicon_urlchange = Marshal.GetFunctionPointerForDelegate(_ds5);
-            _ds6 = new cef_display_handler_t.on_fullscreen_mode_change_delegate(on_fullscreen_mode_change);
-            _self->_on_fullscreen_mode_change = Marshal.GetFunctionPointerForDelegate(_ds6);
-            _ds7 = new cef_display_handler_t.on_tooltip_delegate(on_tooltip);
-            _self->_on_tooltip = Marshal.GetFunctionPointerForDelegate(_ds7);
-            _ds8 = new cef_display_handler_t.on_status_message_delegate(on_status_message);
-            _self->_on_status_message = Marshal.GetFunctionPointerForDelegate(_ds8);
-            _ds9 = new cef_display_handler_t.on_console_message_delegate(on_console_message);
-            _self->_on_console_message = Marshal.GetFunctionPointerForDelegate(_ds9);
-            _dsa = new cef_display_handler_t.on_auto_resize_delegate(on_auto_resize);
-            _self->_on_auto_resize = Marshal.GetFunctionPointerForDelegate(_dsa);
-            _dsb = new cef_display_handler_t.on_loading_progress_change_delegate(on_loading_progress_change);
-            _self->_on_loading_progress_change = Marshal.GetFunctionPointerForDelegate(_dsb);
+            _ds3 = new cef_display_handler_t.has_at_least_one_ref_delegate(has_at_least_one_ref);
+            _self->_base._has_at_least_one_ref = Marshal.GetFunctionPointerForDelegate(_ds3);
+            _ds4 = new cef_display_handler_t.on_address_change_delegate(on_address_change);
+            _self->_on_address_change = Marshal.GetFunctionPointerForDelegate(_ds4);
+            _ds5 = new cef_display_handler_t.on_title_change_delegate(on_title_change);
+            _self->_on_title_change = Marshal.GetFunctionPointerForDelegate(_ds5);
+            _ds6 = new cef_display_handler_t.on_favicon_urlchange_delegate(on_favicon_urlchange);
+            _self->_on_favicon_urlchange = Marshal.GetFunctionPointerForDelegate(_ds6);
+            _ds7 = new cef_display_handler_t.on_fullscreen_mode_change_delegate(on_fullscreen_mode_change);
+            _self->_on_fullscreen_mode_change = Marshal.GetFunctionPointerForDelegate(_ds7);
+            _ds8 = new cef_display_handler_t.on_tooltip_delegate(on_tooltip);
+            _self->_on_tooltip = Marshal.GetFunctionPointerForDelegate(_ds8);
+            _ds9 = new cef_display_handler_t.on_status_message_delegate(on_status_message);
+            _self->_on_status_message = Marshal.GetFunctionPointerForDelegate(_ds9);
+            _dsa = new cef_display_handler_t.on_console_message_delegate(on_console_message);
+            _self->_on_console_message = Marshal.GetFunctionPointerForDelegate(_dsa);
+            _dsb = new cef_display_handler_t.on_auto_resize_delegate(on_auto_resize);
+            _self->_on_auto_resize = Marshal.GetFunctionPointerForDelegate(_dsb);
+            _dsc = new cef_display_handler_t.on_loading_progress_change_delegate(on_loading_progress_change);
+            _self->_on_loading_progress_change = Marshal.GetFunctionPointerForDelegate(_dsc);
         }
         
         ~CefDisplayHandler()
@@ -105,6 +108,11 @@ namespace Xilium.CefGlue
         private int has_one_ref(cef_display_handler_t* self)
         {
             lock (SyncRoot) { return _refct == 1 ? 1 : 0; }
+        }
+        
+        private int has_at_least_one_ref(cef_display_handler_t* self)
+        {
+            lock (SyncRoot) { return _refct != 0 ? 1 : 0; }
         }
         
         internal cef_display_handler_t* ToNative()

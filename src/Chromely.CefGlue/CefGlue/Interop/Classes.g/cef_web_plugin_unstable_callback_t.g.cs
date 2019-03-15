@@ -37,6 +37,12 @@ namespace Xilium.CefGlue.Interop
         #if !DEBUG
         [SuppressUnmanagedCodeSecurity]
         #endif
+        internal delegate int has_at_least_one_ref_delegate(cef_web_plugin_unstable_callback_t* self);
+        
+        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
+        #if !DEBUG
+        [SuppressUnmanagedCodeSecurity]
+        #endif
         internal delegate void is_unstable_delegate(cef_web_plugin_unstable_callback_t* self, cef_string_t* path, int unstable);
         
         private static int _sizeof;

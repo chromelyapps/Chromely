@@ -52,6 +52,12 @@ namespace Xilium.CefGlue.Interop
         #if !DEBUG
         [SuppressUnmanagedCodeSecurity]
         #endif
+        private delegate int has_at_least_one_ref_delegate(cef_zip_reader_t* self);
+        
+        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
+        #if !DEBUG
+        [SuppressUnmanagedCodeSecurity]
+        #endif
         private delegate int move_to_first_file_delegate(cef_zip_reader_t* self);
         
         [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
@@ -171,206 +177,223 @@ namespace Xilium.CefGlue.Interop
             return d(self);
         }
         
-        // MoveToFirstFile
+        // HasAtLeastOneRef
         private static IntPtr _p3;
-        private static move_to_first_file_delegate _d3;
+        private static has_at_least_one_ref_delegate _d3;
         
-        public static int move_to_first_file(cef_zip_reader_t* self)
+        public static int has_at_least_one_ref(cef_zip_reader_t* self)
         {
-            move_to_first_file_delegate d;
-            var p = self->_move_to_first_file;
+            has_at_least_one_ref_delegate d;
+            var p = self->_base._has_at_least_one_ref;
             if (p == _p3) { d = _d3; }
             else
             {
-                d = (move_to_first_file_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(move_to_first_file_delegate));
+                d = (has_at_least_one_ref_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(has_at_least_one_ref_delegate));
                 if (_p3 == IntPtr.Zero) { _d3 = d; _p3 = p; }
             }
             return d(self);
         }
         
-        // MoveToNextFile
+        // MoveToFirstFile
         private static IntPtr _p4;
-        private static move_to_next_file_delegate _d4;
+        private static move_to_first_file_delegate _d4;
         
-        public static int move_to_next_file(cef_zip_reader_t* self)
+        public static int move_to_first_file(cef_zip_reader_t* self)
         {
-            move_to_next_file_delegate d;
-            var p = self->_move_to_next_file;
+            move_to_first_file_delegate d;
+            var p = self->_move_to_first_file;
             if (p == _p4) { d = _d4; }
             else
             {
-                d = (move_to_next_file_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(move_to_next_file_delegate));
+                d = (move_to_first_file_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(move_to_first_file_delegate));
                 if (_p4 == IntPtr.Zero) { _d4 = d; _p4 = p; }
             }
             return d(self);
         }
         
-        // MoveToFile
+        // MoveToNextFile
         private static IntPtr _p5;
-        private static move_to_file_delegate _d5;
+        private static move_to_next_file_delegate _d5;
+        
+        public static int move_to_next_file(cef_zip_reader_t* self)
+        {
+            move_to_next_file_delegate d;
+            var p = self->_move_to_next_file;
+            if (p == _p5) { d = _d5; }
+            else
+            {
+                d = (move_to_next_file_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(move_to_next_file_delegate));
+                if (_p5 == IntPtr.Zero) { _d5 = d; _p5 = p; }
+            }
+            return d(self);
+        }
+        
+        // MoveToFile
+        private static IntPtr _p6;
+        private static move_to_file_delegate _d6;
         
         public static int move_to_file(cef_zip_reader_t* self, cef_string_t* fileName, int caseSensitive)
         {
             move_to_file_delegate d;
             var p = self->_move_to_file;
-            if (p == _p5) { d = _d5; }
+            if (p == _p6) { d = _d6; }
             else
             {
                 d = (move_to_file_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(move_to_file_delegate));
-                if (_p5 == IntPtr.Zero) { _d5 = d; _p5 = p; }
+                if (_p6 == IntPtr.Zero) { _d6 = d; _p6 = p; }
             }
             return d(self, fileName, caseSensitive);
         }
         
         // Close
-        private static IntPtr _p6;
-        private static close_delegate _d6;
+        private static IntPtr _p7;
+        private static close_delegate _d7;
         
         public static int close(cef_zip_reader_t* self)
         {
             close_delegate d;
             var p = self->_close;
-            if (p == _p6) { d = _d6; }
-            else
-            {
-                d = (close_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(close_delegate));
-                if (_p6 == IntPtr.Zero) { _d6 = d; _p6 = p; }
-            }
-            return d(self);
-        }
-        
-        // GetFileName
-        private static IntPtr _p7;
-        private static get_file_name_delegate _d7;
-        
-        public static cef_string_userfree* get_file_name(cef_zip_reader_t* self)
-        {
-            get_file_name_delegate d;
-            var p = self->_get_file_name;
             if (p == _p7) { d = _d7; }
             else
             {
-                d = (get_file_name_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_file_name_delegate));
+                d = (close_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(close_delegate));
                 if (_p7 == IntPtr.Zero) { _d7 = d; _p7 = p; }
             }
             return d(self);
         }
         
-        // GetFileSize
+        // GetFileName
         private static IntPtr _p8;
-        private static get_file_size_delegate _d8;
+        private static get_file_name_delegate _d8;
         
-        public static long get_file_size(cef_zip_reader_t* self)
+        public static cef_string_userfree* get_file_name(cef_zip_reader_t* self)
         {
-            get_file_size_delegate d;
-            var p = self->_get_file_size;
+            get_file_name_delegate d;
+            var p = self->_get_file_name;
             if (p == _p8) { d = _d8; }
             else
             {
-                d = (get_file_size_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_file_size_delegate));
+                d = (get_file_name_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_file_name_delegate));
                 if (_p8 == IntPtr.Zero) { _d8 = d; _p8 = p; }
             }
             return d(self);
         }
         
-        // GetFileLastModified
+        // GetFileSize
         private static IntPtr _p9;
-        private static get_file_last_modified_delegate _d9;
+        private static get_file_size_delegate _d9;
         
-        public static cef_time_t get_file_last_modified(cef_zip_reader_t* self)
+        public static long get_file_size(cef_zip_reader_t* self)
         {
-            get_file_last_modified_delegate d;
-            var p = self->_get_file_last_modified;
+            get_file_size_delegate d;
+            var p = self->_get_file_size;
             if (p == _p9) { d = _d9; }
             else
             {
-                d = (get_file_last_modified_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_file_last_modified_delegate));
+                d = (get_file_size_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_file_size_delegate));
                 if (_p9 == IntPtr.Zero) { _d9 = d; _p9 = p; }
             }
             return d(self);
         }
         
-        // OpenFile
+        // GetFileLastModified
         private static IntPtr _pa;
-        private static open_file_delegate _da;
+        private static get_file_last_modified_delegate _da;
+        
+        public static cef_time_t get_file_last_modified(cef_zip_reader_t* self)
+        {
+            get_file_last_modified_delegate d;
+            var p = self->_get_file_last_modified;
+            if (p == _pa) { d = _da; }
+            else
+            {
+                d = (get_file_last_modified_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_file_last_modified_delegate));
+                if (_pa == IntPtr.Zero) { _da = d; _pa = p; }
+            }
+            return d(self);
+        }
+        
+        // OpenFile
+        private static IntPtr _pb;
+        private static open_file_delegate _db;
         
         public static int open_file(cef_zip_reader_t* self, cef_string_t* password)
         {
             open_file_delegate d;
             var p = self->_open_file;
-            if (p == _pa) { d = _da; }
+            if (p == _pb) { d = _db; }
             else
             {
                 d = (open_file_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(open_file_delegate));
-                if (_pa == IntPtr.Zero) { _da = d; _pa = p; }
+                if (_pb == IntPtr.Zero) { _db = d; _pb = p; }
             }
             return d(self, password);
         }
         
         // CloseFile
-        private static IntPtr _pb;
-        private static close_file_delegate _db;
+        private static IntPtr _pc;
+        private static close_file_delegate _dc;
         
         public static int close_file(cef_zip_reader_t* self)
         {
             close_file_delegate d;
             var p = self->_close_file;
-            if (p == _pb) { d = _db; }
+            if (p == _pc) { d = _dc; }
             else
             {
                 d = (close_file_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(close_file_delegate));
-                if (_pb == IntPtr.Zero) { _db = d; _pb = p; }
+                if (_pc == IntPtr.Zero) { _dc = d; _pc = p; }
             }
             return d(self);
         }
         
         // ReadFile
-        private static IntPtr _pc;
-        private static read_file_delegate _dc;
+        private static IntPtr _pd;
+        private static read_file_delegate _dd;
         
         public static int read_file(cef_zip_reader_t* self, void* buffer, UIntPtr bufferSize)
         {
             read_file_delegate d;
             var p = self->_read_file;
-            if (p == _pc) { d = _dc; }
+            if (p == _pd) { d = _dd; }
             else
             {
                 d = (read_file_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(read_file_delegate));
-                if (_pc == IntPtr.Zero) { _dc = d; _pc = p; }
+                if (_pd == IntPtr.Zero) { _dd = d; _pd = p; }
             }
             return d(self, buffer, bufferSize);
         }
         
         // Tell
-        private static IntPtr _pd;
-        private static tell_delegate _dd;
+        private static IntPtr _pe;
+        private static tell_delegate _de;
         
         public static long tell(cef_zip_reader_t* self)
         {
             tell_delegate d;
             var p = self->_tell;
-            if (p == _pd) { d = _dd; }
+            if (p == _pe) { d = _de; }
             else
             {
                 d = (tell_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(tell_delegate));
-                if (_pd == IntPtr.Zero) { _dd = d; _pd = p; }
+                if (_pe == IntPtr.Zero) { _de = d; _pe = p; }
             }
             return d(self);
         }
         
         // Eof
-        private static IntPtr _pe;
-        private static eof_delegate _de;
+        private static IntPtr _pf;
+        private static eof_delegate _df;
         
         public static int eof(cef_zip_reader_t* self)
         {
             eof_delegate d;
             var p = self->_eof;
-            if (p == _pe) { d = _de; }
+            if (p == _pf) { d = _df; }
             else
             {
                 d = (eof_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(eof_delegate));
-                if (_pe == IntPtr.Zero) { _de = d; _pe = p; }
+                if (_pf == IntPtr.Zero) { _df = d; _pf = p; }
             }
             return d(self);
         }

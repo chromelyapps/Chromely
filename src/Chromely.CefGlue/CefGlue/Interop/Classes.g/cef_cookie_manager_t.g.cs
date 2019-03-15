@@ -55,6 +55,12 @@ namespace Xilium.CefGlue.Interop
         #if !DEBUG
         [SuppressUnmanagedCodeSecurity]
         #endif
+        private delegate int has_at_least_one_ref_delegate(cef_cookie_manager_t* self);
+        
+        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
+        #if !DEBUG
+        [SuppressUnmanagedCodeSecurity]
+        #endif
         private delegate void set_supported_schemes_delegate(cef_cookie_manager_t* self, cef_string_list* schemes, cef_completion_callback_t* callback);
         
         [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
@@ -144,121 +150,138 @@ namespace Xilium.CefGlue.Interop
             return d(self);
         }
         
-        // SetSupportedSchemes
+        // HasAtLeastOneRef
         private static IntPtr _p3;
-        private static set_supported_schemes_delegate _d3;
+        private static has_at_least_one_ref_delegate _d3;
+        
+        public static int has_at_least_one_ref(cef_cookie_manager_t* self)
+        {
+            has_at_least_one_ref_delegate d;
+            var p = self->_base._has_at_least_one_ref;
+            if (p == _p3) { d = _d3; }
+            else
+            {
+                d = (has_at_least_one_ref_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(has_at_least_one_ref_delegate));
+                if (_p3 == IntPtr.Zero) { _d3 = d; _p3 = p; }
+            }
+            return d(self);
+        }
+        
+        // SetSupportedSchemes
+        private static IntPtr _p4;
+        private static set_supported_schemes_delegate _d4;
         
         public static void set_supported_schemes(cef_cookie_manager_t* self, cef_string_list* schemes, cef_completion_callback_t* callback)
         {
             set_supported_schemes_delegate d;
             var p = self->_set_supported_schemes;
-            if (p == _p3) { d = _d3; }
+            if (p == _p4) { d = _d4; }
             else
             {
                 d = (set_supported_schemes_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(set_supported_schemes_delegate));
-                if (_p3 == IntPtr.Zero) { _d3 = d; _p3 = p; }
+                if (_p4 == IntPtr.Zero) { _d4 = d; _p4 = p; }
             }
             d(self, schemes, callback);
         }
         
         // VisitAllCookies
-        private static IntPtr _p4;
-        private static visit_all_cookies_delegate _d4;
+        private static IntPtr _p5;
+        private static visit_all_cookies_delegate _d5;
         
         public static int visit_all_cookies(cef_cookie_manager_t* self, cef_cookie_visitor_t* visitor)
         {
             visit_all_cookies_delegate d;
             var p = self->_visit_all_cookies;
-            if (p == _p4) { d = _d4; }
+            if (p == _p5) { d = _d5; }
             else
             {
                 d = (visit_all_cookies_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(visit_all_cookies_delegate));
-                if (_p4 == IntPtr.Zero) { _d4 = d; _p4 = p; }
+                if (_p5 == IntPtr.Zero) { _d5 = d; _p5 = p; }
             }
             return d(self, visitor);
         }
         
         // VisitUrlCookies
-        private static IntPtr _p5;
-        private static visit_url_cookies_delegate _d5;
+        private static IntPtr _p6;
+        private static visit_url_cookies_delegate _d6;
         
         public static int visit_url_cookies(cef_cookie_manager_t* self, cef_string_t* url, int includeHttpOnly, cef_cookie_visitor_t* visitor)
         {
             visit_url_cookies_delegate d;
             var p = self->_visit_url_cookies;
-            if (p == _p5) { d = _d5; }
+            if (p == _p6) { d = _d6; }
             else
             {
                 d = (visit_url_cookies_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(visit_url_cookies_delegate));
-                if (_p5 == IntPtr.Zero) { _d5 = d; _p5 = p; }
+                if (_p6 == IntPtr.Zero) { _d6 = d; _p6 = p; }
             }
             return d(self, url, includeHttpOnly, visitor);
         }
         
         // SetCookie
-        private static IntPtr _p6;
-        private static set_cookie_delegate _d6;
+        private static IntPtr _p7;
+        private static set_cookie_delegate _d7;
         
         public static int set_cookie(cef_cookie_manager_t* self, cef_string_t* url, cef_cookie_t* cookie, cef_set_cookie_callback_t* callback)
         {
             set_cookie_delegate d;
             var p = self->_set_cookie;
-            if (p == _p6) { d = _d6; }
+            if (p == _p7) { d = _d7; }
             else
             {
                 d = (set_cookie_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(set_cookie_delegate));
-                if (_p6 == IntPtr.Zero) { _d6 = d; _p6 = p; }
+                if (_p7 == IntPtr.Zero) { _d7 = d; _p7 = p; }
             }
             return d(self, url, cookie, callback);
         }
         
         // DeleteCookies
-        private static IntPtr _p7;
-        private static delete_cookies_delegate _d7;
+        private static IntPtr _p8;
+        private static delete_cookies_delegate _d8;
         
         public static int delete_cookies(cef_cookie_manager_t* self, cef_string_t* url, cef_string_t* cookie_name, cef_delete_cookies_callback_t* callback)
         {
             delete_cookies_delegate d;
             var p = self->_delete_cookies;
-            if (p == _p7) { d = _d7; }
+            if (p == _p8) { d = _d8; }
             else
             {
                 d = (delete_cookies_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(delete_cookies_delegate));
-                if (_p7 == IntPtr.Zero) { _d7 = d; _p7 = p; }
+                if (_p8 == IntPtr.Zero) { _d8 = d; _p8 = p; }
             }
             return d(self, url, cookie_name, callback);
         }
         
         // SetStoragePath
-        private static IntPtr _p8;
-        private static set_storage_path_delegate _d8;
+        private static IntPtr _p9;
+        private static set_storage_path_delegate _d9;
         
         public static int set_storage_path(cef_cookie_manager_t* self, cef_string_t* path, int persist_session_cookies, cef_completion_callback_t* callback)
         {
             set_storage_path_delegate d;
             var p = self->_set_storage_path;
-            if (p == _p8) { d = _d8; }
+            if (p == _p9) { d = _d9; }
             else
             {
                 d = (set_storage_path_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(set_storage_path_delegate));
-                if (_p8 == IntPtr.Zero) { _d8 = d; _p8 = p; }
+                if (_p9 == IntPtr.Zero) { _d9 = d; _p9 = p; }
             }
             return d(self, path, persist_session_cookies, callback);
         }
         
         // FlushStore
-        private static IntPtr _p9;
-        private static flush_store_delegate _d9;
+        private static IntPtr _pa;
+        private static flush_store_delegate _da;
         
         public static int flush_store(cef_cookie_manager_t* self, cef_completion_callback_t* callback)
         {
             flush_store_delegate d;
             var p = self->_flush_store;
-            if (p == _p9) { d = _d9; }
+            if (p == _pa) { d = _da; }
             else
             {
                 d = (flush_store_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(flush_store_delegate));
-                if (_p9 == IntPtr.Zero) { _d9 = d; _p9 = p; }
+                if (_pa == IntPtr.Zero) { _da = d; _pa = p; }
             }
             return d(self, callback);
         }

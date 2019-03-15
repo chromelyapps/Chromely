@@ -40,9 +40,10 @@ namespace Xilium.CefGlue
         private cef_request_context_handler_t.add_ref_delegate _ds0;
         private cef_request_context_handler_t.release_delegate _ds1;
         private cef_request_context_handler_t.has_one_ref_delegate _ds2;
-        private cef_request_context_handler_t.on_request_context_initialized_delegate _ds3;
-        private cef_request_context_handler_t.get_cookie_manager_delegate _ds4;
-        private cef_request_context_handler_t.on_before_plugin_load_delegate _ds5;
+        private cef_request_context_handler_t.has_at_least_one_ref_delegate _ds3;
+        private cef_request_context_handler_t.on_request_context_initialized_delegate _ds4;
+        private cef_request_context_handler_t.get_cookie_manager_delegate _ds5;
+        private cef_request_context_handler_t.on_before_plugin_load_delegate _ds6;
         
         protected CefRequestContextHandler()
         {
@@ -54,12 +55,14 @@ namespace Xilium.CefGlue
             _self->_base._release = Marshal.GetFunctionPointerForDelegate(_ds1);
             _ds2 = new cef_request_context_handler_t.has_one_ref_delegate(has_one_ref);
             _self->_base._has_one_ref = Marshal.GetFunctionPointerForDelegate(_ds2);
-            _ds3 = new cef_request_context_handler_t.on_request_context_initialized_delegate(on_request_context_initialized);
-            _self->_on_request_context_initialized = Marshal.GetFunctionPointerForDelegate(_ds3);
-            _ds4 = new cef_request_context_handler_t.get_cookie_manager_delegate(get_cookie_manager);
-            _self->_get_cookie_manager = Marshal.GetFunctionPointerForDelegate(_ds4);
-            _ds5 = new cef_request_context_handler_t.on_before_plugin_load_delegate(on_before_plugin_load);
-            _self->_on_before_plugin_load = Marshal.GetFunctionPointerForDelegate(_ds5);
+            _ds3 = new cef_request_context_handler_t.has_at_least_one_ref_delegate(has_at_least_one_ref);
+            _self->_base._has_at_least_one_ref = Marshal.GetFunctionPointerForDelegate(_ds3);
+            _ds4 = new cef_request_context_handler_t.on_request_context_initialized_delegate(on_request_context_initialized);
+            _self->_on_request_context_initialized = Marshal.GetFunctionPointerForDelegate(_ds4);
+            _ds5 = new cef_request_context_handler_t.get_cookie_manager_delegate(get_cookie_manager);
+            _self->_get_cookie_manager = Marshal.GetFunctionPointerForDelegate(_ds5);
+            _ds6 = new cef_request_context_handler_t.on_before_plugin_load_delegate(on_before_plugin_load);
+            _self->_on_before_plugin_load = Marshal.GetFunctionPointerForDelegate(_ds6);
         }
         
         ~CefRequestContextHandler()
@@ -105,6 +108,11 @@ namespace Xilium.CefGlue
         private int has_one_ref(cef_request_context_handler_t* self)
         {
             lock (SyncRoot) { return _refct == 1 ? 1 : 0; }
+        }
+        
+        private int has_at_least_one_ref(cef_request_context_handler_t* self)
+        {
+            lock (SyncRoot) { return _refct != 0 ? 1 : 0; }
         }
         
         internal cef_request_context_handler_t* ToNative()

@@ -22,9 +22,10 @@ namespace Xilium.CefGlue
         private cef_resource_bundle_handler_t.add_ref_delegate _ds0;
         private cef_resource_bundle_handler_t.release_delegate _ds1;
         private cef_resource_bundle_handler_t.has_one_ref_delegate _ds2;
-        private cef_resource_bundle_handler_t.get_localized_string_delegate _ds3;
-        private cef_resource_bundle_handler_t.get_data_resource_delegate _ds4;
-        private cef_resource_bundle_handler_t.get_data_resource_for_scale_delegate _ds5;
+        private cef_resource_bundle_handler_t.has_at_least_one_ref_delegate _ds3;
+        private cef_resource_bundle_handler_t.get_localized_string_delegate _ds4;
+        private cef_resource_bundle_handler_t.get_data_resource_delegate _ds5;
+        private cef_resource_bundle_handler_t.get_data_resource_for_scale_delegate _ds6;
         
         protected CefResourceBundleHandler()
         {
@@ -36,12 +37,14 @@ namespace Xilium.CefGlue
             _self->_base._release = Marshal.GetFunctionPointerForDelegate(_ds1);
             _ds2 = new cef_resource_bundle_handler_t.has_one_ref_delegate(has_one_ref);
             _self->_base._has_one_ref = Marshal.GetFunctionPointerForDelegate(_ds2);
-            _ds3 = new cef_resource_bundle_handler_t.get_localized_string_delegate(get_localized_string);
-            _self->_get_localized_string = Marshal.GetFunctionPointerForDelegate(_ds3);
-            _ds4 = new cef_resource_bundle_handler_t.get_data_resource_delegate(get_data_resource);
-            _self->_get_data_resource = Marshal.GetFunctionPointerForDelegate(_ds4);
-            _ds5 = new cef_resource_bundle_handler_t.get_data_resource_for_scale_delegate(get_data_resource_for_scale);
-            _self->_get_data_resource_for_scale = Marshal.GetFunctionPointerForDelegate(_ds5);
+            _ds3 = new cef_resource_bundle_handler_t.has_at_least_one_ref_delegate(has_at_least_one_ref);
+            _self->_base._has_at_least_one_ref = Marshal.GetFunctionPointerForDelegate(_ds3);
+            _ds4 = new cef_resource_bundle_handler_t.get_localized_string_delegate(get_localized_string);
+            _self->_get_localized_string = Marshal.GetFunctionPointerForDelegate(_ds4);
+            _ds5 = new cef_resource_bundle_handler_t.get_data_resource_delegate(get_data_resource);
+            _self->_get_data_resource = Marshal.GetFunctionPointerForDelegate(_ds5);
+            _ds6 = new cef_resource_bundle_handler_t.get_data_resource_for_scale_delegate(get_data_resource_for_scale);
+            _self->_get_data_resource_for_scale = Marshal.GetFunctionPointerForDelegate(_ds6);
         }
         
         ~CefResourceBundleHandler()
@@ -87,6 +90,11 @@ namespace Xilium.CefGlue
         private int has_one_ref(cef_resource_bundle_handler_t* self)
         {
             lock (SyncRoot) { return _refct == 1 ? 1 : 0; }
+        }
+        
+        private int has_at_least_one_ref(cef_resource_bundle_handler_t* self)
+        {
+            lock (SyncRoot) { return _refct != 0 ? 1 : 0; }
         }
         
         internal cef_resource_bundle_handler_t* ToNative()

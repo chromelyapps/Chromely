@@ -32,6 +32,12 @@ namespace Xilium.CefGlue.Interop
         #endif
         internal delegate int has_one_ref_delegate(cef_user_data_t* self);
         
+        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
+        #if !DEBUG
+        [SuppressUnmanagedCodeSecurity]
+        #endif
+        internal delegate int has_at_least_one_ref_delegate(cef_user_data_t* self);
+        
         private static int _sizeof;
         
         static cef_user_data_t()

@@ -22,11 +22,12 @@ namespace Xilium.CefGlue
         private cef_write_handler_t.add_ref_delegate _ds0;
         private cef_write_handler_t.release_delegate _ds1;
         private cef_write_handler_t.has_one_ref_delegate _ds2;
-        private cef_write_handler_t.write_delegate _ds3;
-        private cef_write_handler_t.seek_delegate _ds4;
-        private cef_write_handler_t.tell_delegate _ds5;
-        private cef_write_handler_t.flush_delegate _ds6;
-        private cef_write_handler_t.may_block_delegate _ds7;
+        private cef_write_handler_t.has_at_least_one_ref_delegate _ds3;
+        private cef_write_handler_t.write_delegate _ds4;
+        private cef_write_handler_t.seek_delegate _ds5;
+        private cef_write_handler_t.tell_delegate _ds6;
+        private cef_write_handler_t.flush_delegate _ds7;
+        private cef_write_handler_t.may_block_delegate _ds8;
         
         protected CefWriteHandler()
         {
@@ -38,16 +39,18 @@ namespace Xilium.CefGlue
             _self->_base._release = Marshal.GetFunctionPointerForDelegate(_ds1);
             _ds2 = new cef_write_handler_t.has_one_ref_delegate(has_one_ref);
             _self->_base._has_one_ref = Marshal.GetFunctionPointerForDelegate(_ds2);
-            _ds3 = new cef_write_handler_t.write_delegate(write);
-            _self->_write = Marshal.GetFunctionPointerForDelegate(_ds3);
-            _ds4 = new cef_write_handler_t.seek_delegate(seek);
-            _self->_seek = Marshal.GetFunctionPointerForDelegate(_ds4);
-            _ds5 = new cef_write_handler_t.tell_delegate(tell);
-            _self->_tell = Marshal.GetFunctionPointerForDelegate(_ds5);
-            _ds6 = new cef_write_handler_t.flush_delegate(flush);
-            _self->_flush = Marshal.GetFunctionPointerForDelegate(_ds6);
-            _ds7 = new cef_write_handler_t.may_block_delegate(may_block);
-            _self->_may_block = Marshal.GetFunctionPointerForDelegate(_ds7);
+            _ds3 = new cef_write_handler_t.has_at_least_one_ref_delegate(has_at_least_one_ref);
+            _self->_base._has_at_least_one_ref = Marshal.GetFunctionPointerForDelegate(_ds3);
+            _ds4 = new cef_write_handler_t.write_delegate(write);
+            _self->_write = Marshal.GetFunctionPointerForDelegate(_ds4);
+            _ds5 = new cef_write_handler_t.seek_delegate(seek);
+            _self->_seek = Marshal.GetFunctionPointerForDelegate(_ds5);
+            _ds6 = new cef_write_handler_t.tell_delegate(tell);
+            _self->_tell = Marshal.GetFunctionPointerForDelegate(_ds6);
+            _ds7 = new cef_write_handler_t.flush_delegate(flush);
+            _self->_flush = Marshal.GetFunctionPointerForDelegate(_ds7);
+            _ds8 = new cef_write_handler_t.may_block_delegate(may_block);
+            _self->_may_block = Marshal.GetFunctionPointerForDelegate(_ds8);
         }
         
         ~CefWriteHandler()
@@ -93,6 +96,11 @@ namespace Xilium.CefGlue
         private int has_one_ref(cef_write_handler_t* self)
         {
             lock (SyncRoot) { return _refct == 1 ? 1 : 0; }
+        }
+        
+        private int has_at_least_one_ref(cef_write_handler_t* self)
+        {
+            lock (SyncRoot) { return _refct != 0 ? 1 : 0; }
         }
         
         internal cef_write_handler_t* ToNative()

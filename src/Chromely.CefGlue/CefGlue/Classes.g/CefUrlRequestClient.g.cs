@@ -40,11 +40,12 @@ namespace Xilium.CefGlue
         private cef_urlrequest_client_t.add_ref_delegate _ds0;
         private cef_urlrequest_client_t.release_delegate _ds1;
         private cef_urlrequest_client_t.has_one_ref_delegate _ds2;
-        private cef_urlrequest_client_t.on_request_complete_delegate _ds3;
-        private cef_urlrequest_client_t.on_upload_progress_delegate _ds4;
-        private cef_urlrequest_client_t.on_download_progress_delegate _ds5;
-        private cef_urlrequest_client_t.on_download_data_delegate _ds6;
-        private cef_urlrequest_client_t.get_auth_credentials_delegate _ds7;
+        private cef_urlrequest_client_t.has_at_least_one_ref_delegate _ds3;
+        private cef_urlrequest_client_t.on_request_complete_delegate _ds4;
+        private cef_urlrequest_client_t.on_upload_progress_delegate _ds5;
+        private cef_urlrequest_client_t.on_download_progress_delegate _ds6;
+        private cef_urlrequest_client_t.on_download_data_delegate _ds7;
+        private cef_urlrequest_client_t.get_auth_credentials_delegate _ds8;
         
         protected CefUrlRequestClient()
         {
@@ -56,16 +57,18 @@ namespace Xilium.CefGlue
             _self->_base._release = Marshal.GetFunctionPointerForDelegate(_ds1);
             _ds2 = new cef_urlrequest_client_t.has_one_ref_delegate(has_one_ref);
             _self->_base._has_one_ref = Marshal.GetFunctionPointerForDelegate(_ds2);
-            _ds3 = new cef_urlrequest_client_t.on_request_complete_delegate(on_request_complete);
-            _self->_on_request_complete = Marshal.GetFunctionPointerForDelegate(_ds3);
-            _ds4 = new cef_urlrequest_client_t.on_upload_progress_delegate(on_upload_progress);
-            _self->_on_upload_progress = Marshal.GetFunctionPointerForDelegate(_ds4);
-            _ds5 = new cef_urlrequest_client_t.on_download_progress_delegate(on_download_progress);
-            _self->_on_download_progress = Marshal.GetFunctionPointerForDelegate(_ds5);
-            _ds6 = new cef_urlrequest_client_t.on_download_data_delegate(on_download_data);
-            _self->_on_download_data = Marshal.GetFunctionPointerForDelegate(_ds6);
-            _ds7 = new cef_urlrequest_client_t.get_auth_credentials_delegate(get_auth_credentials);
-            _self->_get_auth_credentials = Marshal.GetFunctionPointerForDelegate(_ds7);
+            _ds3 = new cef_urlrequest_client_t.has_at_least_one_ref_delegate(has_at_least_one_ref);
+            _self->_base._has_at_least_one_ref = Marshal.GetFunctionPointerForDelegate(_ds3);
+            _ds4 = new cef_urlrequest_client_t.on_request_complete_delegate(on_request_complete);
+            _self->_on_request_complete = Marshal.GetFunctionPointerForDelegate(_ds4);
+            _ds5 = new cef_urlrequest_client_t.on_upload_progress_delegate(on_upload_progress);
+            _self->_on_upload_progress = Marshal.GetFunctionPointerForDelegate(_ds5);
+            _ds6 = new cef_urlrequest_client_t.on_download_progress_delegate(on_download_progress);
+            _self->_on_download_progress = Marshal.GetFunctionPointerForDelegate(_ds6);
+            _ds7 = new cef_urlrequest_client_t.on_download_data_delegate(on_download_data);
+            _self->_on_download_data = Marshal.GetFunctionPointerForDelegate(_ds7);
+            _ds8 = new cef_urlrequest_client_t.get_auth_credentials_delegate(get_auth_credentials);
+            _self->_get_auth_credentials = Marshal.GetFunctionPointerForDelegate(_ds8);
         }
         
         ~CefUrlRequestClient()
@@ -111,6 +114,11 @@ namespace Xilium.CefGlue
         private int has_one_ref(cef_urlrequest_client_t* self)
         {
             lock (SyncRoot) { return _refct == 1 ? 1 : 0; }
+        }
+        
+        private int has_at_least_one_ref(cef_urlrequest_client_t* self)
+        {
+            lock (SyncRoot) { return _refct != 0 ? 1 : 0; }
         }
         
         internal cef_urlrequest_client_t* ToNative()

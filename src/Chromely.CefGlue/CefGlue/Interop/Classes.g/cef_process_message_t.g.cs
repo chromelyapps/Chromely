@@ -45,6 +45,12 @@ namespace Xilium.CefGlue.Interop
         #if !DEBUG
         [SuppressUnmanagedCodeSecurity]
         #endif
+        private delegate int has_at_least_one_ref_delegate(cef_process_message_t* self);
+        
+        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
+        #if !DEBUG
+        [SuppressUnmanagedCodeSecurity]
+        #endif
         private delegate int is_valid_delegate(cef_process_message_t* self);
         
         [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
@@ -122,87 +128,104 @@ namespace Xilium.CefGlue.Interop
             return d(self);
         }
         
-        // IsValid
+        // HasAtLeastOneRef
         private static IntPtr _p3;
-        private static is_valid_delegate _d3;
+        private static has_at_least_one_ref_delegate _d3;
         
-        public static int is_valid(cef_process_message_t* self)
+        public static int has_at_least_one_ref(cef_process_message_t* self)
         {
-            is_valid_delegate d;
-            var p = self->_is_valid;
+            has_at_least_one_ref_delegate d;
+            var p = self->_base._has_at_least_one_ref;
             if (p == _p3) { d = _d3; }
             else
             {
-                d = (is_valid_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(is_valid_delegate));
+                d = (has_at_least_one_ref_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(has_at_least_one_ref_delegate));
                 if (_p3 == IntPtr.Zero) { _d3 = d; _p3 = p; }
             }
             return d(self);
         }
         
-        // IsReadOnly
+        // IsValid
         private static IntPtr _p4;
-        private static is_read_only_delegate _d4;
+        private static is_valid_delegate _d4;
         
-        public static int is_read_only(cef_process_message_t* self)
+        public static int is_valid(cef_process_message_t* self)
         {
-            is_read_only_delegate d;
-            var p = self->_is_read_only;
+            is_valid_delegate d;
+            var p = self->_is_valid;
             if (p == _p4) { d = _d4; }
             else
             {
-                d = (is_read_only_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(is_read_only_delegate));
+                d = (is_valid_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(is_valid_delegate));
                 if (_p4 == IntPtr.Zero) { _d4 = d; _p4 = p; }
             }
             return d(self);
         }
         
-        // Copy
+        // IsReadOnly
         private static IntPtr _p5;
-        private static copy_delegate _d5;
+        private static is_read_only_delegate _d5;
         
-        public static cef_process_message_t* copy(cef_process_message_t* self)
+        public static int is_read_only(cef_process_message_t* self)
         {
-            copy_delegate d;
-            var p = self->_copy;
+            is_read_only_delegate d;
+            var p = self->_is_read_only;
             if (p == _p5) { d = _d5; }
             else
             {
-                d = (copy_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(copy_delegate));
+                d = (is_read_only_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(is_read_only_delegate));
                 if (_p5 == IntPtr.Zero) { _d5 = d; _p5 = p; }
             }
             return d(self);
         }
         
-        // GetName
+        // Copy
         private static IntPtr _p6;
-        private static get_name_delegate _d6;
+        private static copy_delegate _d6;
         
-        public static cef_string_userfree* get_name(cef_process_message_t* self)
+        public static cef_process_message_t* copy(cef_process_message_t* self)
         {
-            get_name_delegate d;
-            var p = self->_get_name;
+            copy_delegate d;
+            var p = self->_copy;
             if (p == _p6) { d = _d6; }
             else
             {
-                d = (get_name_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_name_delegate));
+                d = (copy_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(copy_delegate));
                 if (_p6 == IntPtr.Zero) { _d6 = d; _p6 = p; }
             }
             return d(self);
         }
         
-        // GetArgumentList
+        // GetName
         private static IntPtr _p7;
-        private static get_argument_list_delegate _d7;
+        private static get_name_delegate _d7;
+        
+        public static cef_string_userfree* get_name(cef_process_message_t* self)
+        {
+            get_name_delegate d;
+            var p = self->_get_name;
+            if (p == _p7) { d = _d7; }
+            else
+            {
+                d = (get_name_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_name_delegate));
+                if (_p7 == IntPtr.Zero) { _d7 = d; _p7 = p; }
+            }
+            return d(self);
+        }
+        
+        // GetArgumentList
+        private static IntPtr _p8;
+        private static get_argument_list_delegate _d8;
         
         public static cef_list_value_t* get_argument_list(cef_process_message_t* self)
         {
             get_argument_list_delegate d;
             var p = self->_get_argument_list;
-            if (p == _p7) { d = _d7; }
+            if (p == _p8) { d = _d8; }
             else
             {
                 d = (get_argument_list_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_argument_list_delegate));
-                if (_p7 == IntPtr.Zero) { _d7 = d; _p7 = p; }
+                if (_p8 == IntPtr.Zero) { _d8 = d; _p8 = p; }
             }
             return d(self);
         }

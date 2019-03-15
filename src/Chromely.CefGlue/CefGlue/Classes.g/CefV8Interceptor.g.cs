@@ -22,10 +22,11 @@ namespace Xilium.CefGlue
         private cef_v8interceptor_t.add_ref_delegate _ds0;
         private cef_v8interceptor_t.release_delegate _ds1;
         private cef_v8interceptor_t.has_one_ref_delegate _ds2;
-        private cef_v8interceptor_t.get_byname_delegate _ds3;
-        private cef_v8interceptor_t.get_byindex_delegate _ds4;
-        private cef_v8interceptor_t.set_byname_delegate _ds5;
-        private cef_v8interceptor_t.set_byindex_delegate _ds6;
+        private cef_v8interceptor_t.has_at_least_one_ref_delegate _ds3;
+        private cef_v8interceptor_t.get_byname_delegate _ds4;
+        private cef_v8interceptor_t.get_byindex_delegate _ds5;
+        private cef_v8interceptor_t.set_byname_delegate _ds6;
+        private cef_v8interceptor_t.set_byindex_delegate _ds7;
         
         protected CefV8Interceptor()
         {
@@ -37,14 +38,16 @@ namespace Xilium.CefGlue
             _self->_base._release = Marshal.GetFunctionPointerForDelegate(_ds1);
             _ds2 = new cef_v8interceptor_t.has_one_ref_delegate(has_one_ref);
             _self->_base._has_one_ref = Marshal.GetFunctionPointerForDelegate(_ds2);
-            _ds3 = new cef_v8interceptor_t.get_byname_delegate(get_byname);
-            _self->_get_byname = Marshal.GetFunctionPointerForDelegate(_ds3);
-            _ds4 = new cef_v8interceptor_t.get_byindex_delegate(get_byindex);
-            _self->_get_byindex = Marshal.GetFunctionPointerForDelegate(_ds4);
-            _ds5 = new cef_v8interceptor_t.set_byname_delegate(set_byname);
-            _self->_set_byname = Marshal.GetFunctionPointerForDelegate(_ds5);
-            _ds6 = new cef_v8interceptor_t.set_byindex_delegate(set_byindex);
-            _self->_set_byindex = Marshal.GetFunctionPointerForDelegate(_ds6);
+            _ds3 = new cef_v8interceptor_t.has_at_least_one_ref_delegate(has_at_least_one_ref);
+            _self->_base._has_at_least_one_ref = Marshal.GetFunctionPointerForDelegate(_ds3);
+            _ds4 = new cef_v8interceptor_t.get_byname_delegate(get_byname);
+            _self->_get_byname = Marshal.GetFunctionPointerForDelegate(_ds4);
+            _ds5 = new cef_v8interceptor_t.get_byindex_delegate(get_byindex);
+            _self->_get_byindex = Marshal.GetFunctionPointerForDelegate(_ds5);
+            _ds6 = new cef_v8interceptor_t.set_byname_delegate(set_byname);
+            _self->_set_byname = Marshal.GetFunctionPointerForDelegate(_ds6);
+            _ds7 = new cef_v8interceptor_t.set_byindex_delegate(set_byindex);
+            _self->_set_byindex = Marshal.GetFunctionPointerForDelegate(_ds7);
         }
         
         ~CefV8Interceptor()
@@ -90,6 +93,11 @@ namespace Xilium.CefGlue
         private int has_one_ref(cef_v8interceptor_t* self)
         {
             lock (SyncRoot) { return _refct == 1 ? 1 : 0; }
+        }
+        
+        private int has_at_least_one_ref(cef_v8interceptor_t* self)
+        {
+            lock (SyncRoot) { return _refct != 0 ? 1 : 0; }
         }
         
         internal cef_v8interceptor_t* ToNative()

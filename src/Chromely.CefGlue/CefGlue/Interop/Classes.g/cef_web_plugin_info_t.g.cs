@@ -40,6 +40,12 @@ namespace Xilium.CefGlue.Interop
         #if !DEBUG
         [SuppressUnmanagedCodeSecurity]
         #endif
+        private delegate int has_at_least_one_ref_delegate(cef_web_plugin_info_t* self);
+        
+        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
+        #if !DEBUG
+        [SuppressUnmanagedCodeSecurity]
+        #endif
         private delegate cef_string_userfree* get_name_delegate(cef_web_plugin_info_t* self);
         
         [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
@@ -111,70 +117,87 @@ namespace Xilium.CefGlue.Interop
             return d(self);
         }
         
-        // GetName
+        // HasAtLeastOneRef
         private static IntPtr _p3;
-        private static get_name_delegate _d3;
+        private static has_at_least_one_ref_delegate _d3;
         
-        public static cef_string_userfree* get_name(cef_web_plugin_info_t* self)
+        public static int has_at_least_one_ref(cef_web_plugin_info_t* self)
         {
-            get_name_delegate d;
-            var p = self->_get_name;
+            has_at_least_one_ref_delegate d;
+            var p = self->_base._has_at_least_one_ref;
             if (p == _p3) { d = _d3; }
             else
             {
-                d = (get_name_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_name_delegate));
+                d = (has_at_least_one_ref_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(has_at_least_one_ref_delegate));
                 if (_p3 == IntPtr.Zero) { _d3 = d; _p3 = p; }
             }
             return d(self);
         }
         
-        // GetPath
+        // GetName
         private static IntPtr _p4;
-        private static get_path_delegate _d4;
+        private static get_name_delegate _d4;
         
-        public static cef_string_userfree* get_path(cef_web_plugin_info_t* self)
+        public static cef_string_userfree* get_name(cef_web_plugin_info_t* self)
         {
-            get_path_delegate d;
-            var p = self->_get_path;
+            get_name_delegate d;
+            var p = self->_get_name;
             if (p == _p4) { d = _d4; }
             else
             {
-                d = (get_path_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_path_delegate));
+                d = (get_name_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_name_delegate));
                 if (_p4 == IntPtr.Zero) { _d4 = d; _p4 = p; }
             }
             return d(self);
         }
         
-        // GetVersion
+        // GetPath
         private static IntPtr _p5;
-        private static get_version_delegate _d5;
+        private static get_path_delegate _d5;
         
-        public static cef_string_userfree* get_version(cef_web_plugin_info_t* self)
+        public static cef_string_userfree* get_path(cef_web_plugin_info_t* self)
         {
-            get_version_delegate d;
-            var p = self->_get_version;
+            get_path_delegate d;
+            var p = self->_get_path;
             if (p == _p5) { d = _d5; }
             else
             {
-                d = (get_version_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_version_delegate));
+                d = (get_path_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_path_delegate));
                 if (_p5 == IntPtr.Zero) { _d5 = d; _p5 = p; }
             }
             return d(self);
         }
         
-        // GetDescription
+        // GetVersion
         private static IntPtr _p6;
-        private static get_description_delegate _d6;
+        private static get_version_delegate _d6;
+        
+        public static cef_string_userfree* get_version(cef_web_plugin_info_t* self)
+        {
+            get_version_delegate d;
+            var p = self->_get_version;
+            if (p == _p6) { d = _d6; }
+            else
+            {
+                d = (get_version_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_version_delegate));
+                if (_p6 == IntPtr.Zero) { _d6 = d; _p6 = p; }
+            }
+            return d(self);
+        }
+        
+        // GetDescription
+        private static IntPtr _p7;
+        private static get_description_delegate _d7;
         
         public static cef_string_userfree* get_description(cef_web_plugin_info_t* self)
         {
             get_description_delegate d;
             var p = self->_get_description;
-            if (p == _p6) { d = _d6; }
+            if (p == _p7) { d = _d7; }
             else
             {
                 d = (get_description_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_description_delegate));
-                if (_p6 == IntPtr.Zero) { _d6 = d; _p6 = p; }
+                if (_p7 == IntPtr.Zero) { _d7 = d; _p7 = p; }
             }
             return d(self);
         }

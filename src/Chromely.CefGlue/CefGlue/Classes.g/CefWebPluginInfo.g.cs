@@ -65,6 +65,11 @@ namespace Xilium.CefGlue
             get { return cef_web_plugin_info_t.has_one_ref(_self) != 0; }
         }
         
+        internal bool HasAtLeastOneRef
+        {
+            get { return cef_web_plugin_info_t.has_at_least_one_ref(_self) != 0; }
+        }
+        
         internal cef_web_plugin_info_t* ToNative()
         {
             AddRef();

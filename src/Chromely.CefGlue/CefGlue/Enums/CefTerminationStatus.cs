@@ -23,5 +23,10 @@ namespace Xilium.CefGlue
         /// Segmentation fault.
         /// </summary>
         ProcessCrashed,
+
+        /// <summary>
+        /// Out of memory. Some platforms may use TS_PROCESS_CRASHED instead.
+        /// </summary>
+        OutOfMemory,
     }
 }

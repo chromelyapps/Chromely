@@ -41,6 +41,12 @@ namespace Xilium.CefGlue.Interop
         #if !DEBUG
         [SuppressUnmanagedCodeSecurity]
         #endif
+        internal delegate int has_at_least_one_ref_delegate(cef_read_handler_t* self);
+        
+        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
+        #if !DEBUG
+        [SuppressUnmanagedCodeSecurity]
+        #endif
         internal delegate UIntPtr read_delegate(cef_read_handler_t* self, void* ptr, UIntPtr size, UIntPtr n);
         
         [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]

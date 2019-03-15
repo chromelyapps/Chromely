@@ -38,6 +38,12 @@ namespace Xilium.CefGlue.Interop
         #if !DEBUG
         [SuppressUnmanagedCodeSecurity]
         #endif
+        private delegate int has_at_least_one_ref_delegate(cef_auth_callback_t* self);
+        
+        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
+        #if !DEBUG
+        [SuppressUnmanagedCodeSecurity]
+        #endif
         private delegate void cont_delegate(cef_auth_callback_t* self, cef_string_t* username, cef_string_t* password);
         
         [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
@@ -97,36 +103,53 @@ namespace Xilium.CefGlue.Interop
             return d(self);
         }
         
-        // Continue
+        // HasAtLeastOneRef
         private static IntPtr _p3;
-        private static cont_delegate _d3;
+        private static has_at_least_one_ref_delegate _d3;
+        
+        public static int has_at_least_one_ref(cef_auth_callback_t* self)
+        {
+            has_at_least_one_ref_delegate d;
+            var p = self->_base._has_at_least_one_ref;
+            if (p == _p3) { d = _d3; }
+            else
+            {
+                d = (has_at_least_one_ref_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(has_at_least_one_ref_delegate));
+                if (_p3 == IntPtr.Zero) { _d3 = d; _p3 = p; }
+            }
+            return d(self);
+        }
+        
+        // Continue
+        private static IntPtr _p4;
+        private static cont_delegate _d4;
         
         public static void cont(cef_auth_callback_t* self, cef_string_t* username, cef_string_t* password)
         {
             cont_delegate d;
             var p = self->_cont;
-            if (p == _p3) { d = _d3; }
+            if (p == _p4) { d = _d4; }
             else
             {
                 d = (cont_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(cont_delegate));
-                if (_p3 == IntPtr.Zero) { _d3 = d; _p3 = p; }
+                if (_p4 == IntPtr.Zero) { _d4 = d; _p4 = p; }
             }
             d(self, username, password);
         }
         
         // Cancel
-        private static IntPtr _p4;
-        private static cancel_delegate _d4;
+        private static IntPtr _p5;
+        private static cancel_delegate _d5;
         
         public static void cancel(cef_auth_callback_t* self)
         {
             cancel_delegate d;
             var p = self->_cancel;
-            if (p == _p4) { d = _d4; }
+            if (p == _p5) { d = _d5; }
             else
             {
                 d = (cancel_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(cancel_delegate));
-                if (_p4 == IntPtr.Zero) { _d4 = d; _p4 = p; }
+                if (_p5 == IntPtr.Zero) { _d5 = d; _p5 = p; }
             }
             d(self);
         }

@@ -68,6 +68,12 @@ namespace Xilium.CefGlue.Interop
         #if !DEBUG
         [SuppressUnmanagedCodeSecurity]
         #endif
+        private delegate int has_at_least_one_ref_delegate(cef_list_value_t* self);
+        
+        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
+        #if !DEBUG
+        [SuppressUnmanagedCodeSecurity]
+        #endif
         private delegate int is_valid_delegate(cef_list_value_t* self);
         
         [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
@@ -283,478 +289,495 @@ namespace Xilium.CefGlue.Interop
             return d(self);
         }
         
-        // IsValid
+        // HasAtLeastOneRef
         private static IntPtr _p3;
-        private static is_valid_delegate _d3;
+        private static has_at_least_one_ref_delegate _d3;
         
-        public static int is_valid(cef_list_value_t* self)
+        public static int has_at_least_one_ref(cef_list_value_t* self)
         {
-            is_valid_delegate d;
-            var p = self->_is_valid;
+            has_at_least_one_ref_delegate d;
+            var p = self->_base._has_at_least_one_ref;
             if (p == _p3) { d = _d3; }
             else
             {
-                d = (is_valid_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(is_valid_delegate));
+                d = (has_at_least_one_ref_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(has_at_least_one_ref_delegate));
                 if (_p3 == IntPtr.Zero) { _d3 = d; _p3 = p; }
             }
             return d(self);
         }
         
-        // IsOwned
+        // IsValid
         private static IntPtr _p4;
-        private static is_owned_delegate _d4;
+        private static is_valid_delegate _d4;
         
-        public static int is_owned(cef_list_value_t* self)
+        public static int is_valid(cef_list_value_t* self)
         {
-            is_owned_delegate d;
-            var p = self->_is_owned;
+            is_valid_delegate d;
+            var p = self->_is_valid;
             if (p == _p4) { d = _d4; }
             else
             {
-                d = (is_owned_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(is_owned_delegate));
+                d = (is_valid_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(is_valid_delegate));
                 if (_p4 == IntPtr.Zero) { _d4 = d; _p4 = p; }
             }
             return d(self);
         }
         
-        // IsReadOnly
+        // IsOwned
         private static IntPtr _p5;
-        private static is_read_only_delegate _d5;
+        private static is_owned_delegate _d5;
         
-        public static int is_read_only(cef_list_value_t* self)
+        public static int is_owned(cef_list_value_t* self)
         {
-            is_read_only_delegate d;
-            var p = self->_is_read_only;
+            is_owned_delegate d;
+            var p = self->_is_owned;
             if (p == _p5) { d = _d5; }
             else
             {
-                d = (is_read_only_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(is_read_only_delegate));
+                d = (is_owned_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(is_owned_delegate));
                 if (_p5 == IntPtr.Zero) { _d5 = d; _p5 = p; }
             }
             return d(self);
         }
         
-        // IsSame
+        // IsReadOnly
         private static IntPtr _p6;
-        private static is_same_delegate _d6;
+        private static is_read_only_delegate _d6;
+        
+        public static int is_read_only(cef_list_value_t* self)
+        {
+            is_read_only_delegate d;
+            var p = self->_is_read_only;
+            if (p == _p6) { d = _d6; }
+            else
+            {
+                d = (is_read_only_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(is_read_only_delegate));
+                if (_p6 == IntPtr.Zero) { _d6 = d; _p6 = p; }
+            }
+            return d(self);
+        }
+        
+        // IsSame
+        private static IntPtr _p7;
+        private static is_same_delegate _d7;
         
         public static int is_same(cef_list_value_t* self, cef_list_value_t* that)
         {
             is_same_delegate d;
             var p = self->_is_same;
-            if (p == _p6) { d = _d6; }
-            else
-            {
-                d = (is_same_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(is_same_delegate));
-                if (_p6 == IntPtr.Zero) { _d6 = d; _p6 = p; }
-            }
-            return d(self, that);
-        }
-        
-        // IsEqual
-        private static IntPtr _p7;
-        private static is_equal_delegate _d7;
-        
-        public static int is_equal(cef_list_value_t* self, cef_list_value_t* that)
-        {
-            is_equal_delegate d;
-            var p = self->_is_equal;
             if (p == _p7) { d = _d7; }
             else
             {
-                d = (is_equal_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(is_equal_delegate));
+                d = (is_same_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(is_same_delegate));
                 if (_p7 == IntPtr.Zero) { _d7 = d; _p7 = p; }
             }
             return d(self, that);
         }
         
-        // Copy
+        // IsEqual
         private static IntPtr _p8;
-        private static copy_delegate _d8;
+        private static is_equal_delegate _d8;
+        
+        public static int is_equal(cef_list_value_t* self, cef_list_value_t* that)
+        {
+            is_equal_delegate d;
+            var p = self->_is_equal;
+            if (p == _p8) { d = _d8; }
+            else
+            {
+                d = (is_equal_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(is_equal_delegate));
+                if (_p8 == IntPtr.Zero) { _d8 = d; _p8 = p; }
+            }
+            return d(self, that);
+        }
+        
+        // Copy
+        private static IntPtr _p9;
+        private static copy_delegate _d9;
         
         public static cef_list_value_t* copy(cef_list_value_t* self)
         {
             copy_delegate d;
             var p = self->_copy;
-            if (p == _p8) { d = _d8; }
+            if (p == _p9) { d = _d9; }
             else
             {
                 d = (copy_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(copy_delegate));
-                if (_p8 == IntPtr.Zero) { _d8 = d; _p8 = p; }
+                if (_p9 == IntPtr.Zero) { _d9 = d; _p9 = p; }
             }
             return d(self);
         }
         
         // SetSize
-        private static IntPtr _p9;
-        private static set_size_delegate _d9;
+        private static IntPtr _pa;
+        private static set_size_delegate _da;
         
         public static int set_size(cef_list_value_t* self, UIntPtr size)
         {
             set_size_delegate d;
             var p = self->_set_size;
-            if (p == _p9) { d = _d9; }
+            if (p == _pa) { d = _da; }
             else
             {
                 d = (set_size_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(set_size_delegate));
-                if (_p9 == IntPtr.Zero) { _d9 = d; _p9 = p; }
+                if (_pa == IntPtr.Zero) { _da = d; _pa = p; }
             }
             return d(self, size);
         }
         
         // GetSize
-        private static IntPtr _pa;
-        private static get_size_delegate _da;
+        private static IntPtr _pb;
+        private static get_size_delegate _db;
         
         public static UIntPtr get_size(cef_list_value_t* self)
         {
             get_size_delegate d;
             var p = self->_get_size;
-            if (p == _pa) { d = _da; }
-            else
-            {
-                d = (get_size_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_size_delegate));
-                if (_pa == IntPtr.Zero) { _da = d; _pa = p; }
-            }
-            return d(self);
-        }
-        
-        // Clear
-        private static IntPtr _pb;
-        private static clear_delegate _db;
-        
-        public static int clear(cef_list_value_t* self)
-        {
-            clear_delegate d;
-            var p = self->_clear;
             if (p == _pb) { d = _db; }
             else
             {
-                d = (clear_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(clear_delegate));
+                d = (get_size_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_size_delegate));
                 if (_pb == IntPtr.Zero) { _db = d; _pb = p; }
             }
             return d(self);
         }
         
-        // Remove
+        // Clear
         private static IntPtr _pc;
-        private static remove_delegate _dc;
+        private static clear_delegate _dc;
+        
+        public static int clear(cef_list_value_t* self)
+        {
+            clear_delegate d;
+            var p = self->_clear;
+            if (p == _pc) { d = _dc; }
+            else
+            {
+                d = (clear_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(clear_delegate));
+                if (_pc == IntPtr.Zero) { _dc = d; _pc = p; }
+            }
+            return d(self);
+        }
+        
+        // Remove
+        private static IntPtr _pd;
+        private static remove_delegate _dd;
         
         public static int remove(cef_list_value_t* self, UIntPtr index)
         {
             remove_delegate d;
             var p = self->_remove;
-            if (p == _pc) { d = _dc; }
-            else
-            {
-                d = (remove_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(remove_delegate));
-                if (_pc == IntPtr.Zero) { _dc = d; _pc = p; }
-            }
-            return d(self, index);
-        }
-        
-        // GetType
-        private static IntPtr _pd;
-        private static get_type_delegate _dd;
-        
-        public static CefValueType get_type(cef_list_value_t* self, UIntPtr index)
-        {
-            get_type_delegate d;
-            var p = self->_get_type;
             if (p == _pd) { d = _dd; }
             else
             {
-                d = (get_type_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_type_delegate));
+                d = (remove_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(remove_delegate));
                 if (_pd == IntPtr.Zero) { _dd = d; _pd = p; }
             }
             return d(self, index);
         }
         
-        // GetValue
+        // GetType
         private static IntPtr _pe;
-        private static get_value_delegate _de;
+        private static get_type_delegate _de;
         
-        public static cef_value_t* get_value(cef_list_value_t* self, UIntPtr index)
+        public static CefValueType get_type(cef_list_value_t* self, UIntPtr index)
         {
-            get_value_delegate d;
-            var p = self->_get_value;
+            get_type_delegate d;
+            var p = self->_get_type;
             if (p == _pe) { d = _de; }
             else
             {
-                d = (get_value_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_value_delegate));
+                d = (get_type_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_type_delegate));
                 if (_pe == IntPtr.Zero) { _de = d; _pe = p; }
             }
             return d(self, index);
         }
         
-        // GetBool
+        // GetValue
         private static IntPtr _pf;
-        private static get_bool_delegate _df;
+        private static get_value_delegate _df;
         
-        public static int get_bool(cef_list_value_t* self, UIntPtr index)
+        public static cef_value_t* get_value(cef_list_value_t* self, UIntPtr index)
         {
-            get_bool_delegate d;
-            var p = self->_get_bool;
+            get_value_delegate d;
+            var p = self->_get_value;
             if (p == _pf) { d = _df; }
             else
             {
-                d = (get_bool_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_bool_delegate));
+                d = (get_value_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_value_delegate));
                 if (_pf == IntPtr.Zero) { _df = d; _pf = p; }
             }
             return d(self, index);
         }
         
-        // GetInt
+        // GetBool
         private static IntPtr _p10;
-        private static get_int_delegate _d10;
+        private static get_bool_delegate _d10;
         
-        public static int get_int(cef_list_value_t* self, UIntPtr index)
+        public static int get_bool(cef_list_value_t* self, UIntPtr index)
         {
-            get_int_delegate d;
-            var p = self->_get_int;
+            get_bool_delegate d;
+            var p = self->_get_bool;
             if (p == _p10) { d = _d10; }
             else
             {
-                d = (get_int_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_int_delegate));
+                d = (get_bool_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_bool_delegate));
                 if (_p10 == IntPtr.Zero) { _d10 = d; _p10 = p; }
             }
             return d(self, index);
         }
         
-        // GetDouble
+        // GetInt
         private static IntPtr _p11;
-        private static get_double_delegate _d11;
+        private static get_int_delegate _d11;
         
-        public static double get_double(cef_list_value_t* self, UIntPtr index)
+        public static int get_int(cef_list_value_t* self, UIntPtr index)
         {
-            get_double_delegate d;
-            var p = self->_get_double;
+            get_int_delegate d;
+            var p = self->_get_int;
             if (p == _p11) { d = _d11; }
             else
             {
-                d = (get_double_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_double_delegate));
+                d = (get_int_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_int_delegate));
                 if (_p11 == IntPtr.Zero) { _d11 = d; _p11 = p; }
             }
             return d(self, index);
         }
         
-        // GetString
+        // GetDouble
         private static IntPtr _p12;
-        private static get_string_delegate _d12;
+        private static get_double_delegate _d12;
         
-        public static cef_string_userfree* get_string(cef_list_value_t* self, UIntPtr index)
+        public static double get_double(cef_list_value_t* self, UIntPtr index)
         {
-            get_string_delegate d;
-            var p = self->_get_string;
+            get_double_delegate d;
+            var p = self->_get_double;
             if (p == _p12) { d = _d12; }
             else
             {
-                d = (get_string_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_string_delegate));
+                d = (get_double_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_double_delegate));
                 if (_p12 == IntPtr.Zero) { _d12 = d; _p12 = p; }
             }
             return d(self, index);
         }
         
-        // GetBinary
+        // GetString
         private static IntPtr _p13;
-        private static get_binary_delegate _d13;
+        private static get_string_delegate _d13;
         
-        public static cef_binary_value_t* get_binary(cef_list_value_t* self, UIntPtr index)
+        public static cef_string_userfree* get_string(cef_list_value_t* self, UIntPtr index)
         {
-            get_binary_delegate d;
-            var p = self->_get_binary;
+            get_string_delegate d;
+            var p = self->_get_string;
             if (p == _p13) { d = _d13; }
             else
             {
-                d = (get_binary_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_binary_delegate));
+                d = (get_string_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_string_delegate));
                 if (_p13 == IntPtr.Zero) { _d13 = d; _p13 = p; }
             }
             return d(self, index);
         }
         
-        // GetDictionary
+        // GetBinary
         private static IntPtr _p14;
-        private static get_dictionary_delegate _d14;
+        private static get_binary_delegate _d14;
         
-        public static cef_dictionary_value_t* get_dictionary(cef_list_value_t* self, UIntPtr index)
+        public static cef_binary_value_t* get_binary(cef_list_value_t* self, UIntPtr index)
         {
-            get_dictionary_delegate d;
-            var p = self->_get_dictionary;
+            get_binary_delegate d;
+            var p = self->_get_binary;
             if (p == _p14) { d = _d14; }
             else
             {
-                d = (get_dictionary_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_dictionary_delegate));
+                d = (get_binary_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_binary_delegate));
                 if (_p14 == IntPtr.Zero) { _d14 = d; _p14 = p; }
             }
             return d(self, index);
         }
         
-        // GetList
+        // GetDictionary
         private static IntPtr _p15;
-        private static get_list_delegate _d15;
+        private static get_dictionary_delegate _d15;
         
-        public static cef_list_value_t* get_list(cef_list_value_t* self, UIntPtr index)
+        public static cef_dictionary_value_t* get_dictionary(cef_list_value_t* self, UIntPtr index)
         {
-            get_list_delegate d;
-            var p = self->_get_list;
+            get_dictionary_delegate d;
+            var p = self->_get_dictionary;
             if (p == _p15) { d = _d15; }
             else
             {
-                d = (get_list_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_list_delegate));
+                d = (get_dictionary_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_dictionary_delegate));
                 if (_p15 == IntPtr.Zero) { _d15 = d; _p15 = p; }
             }
             return d(self, index);
         }
         
-        // SetValue
+        // GetList
         private static IntPtr _p16;
-        private static set_value_delegate _d16;
+        private static get_list_delegate _d16;
+        
+        public static cef_list_value_t* get_list(cef_list_value_t* self, UIntPtr index)
+        {
+            get_list_delegate d;
+            var p = self->_get_list;
+            if (p == _p16) { d = _d16; }
+            else
+            {
+                d = (get_list_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_list_delegate));
+                if (_p16 == IntPtr.Zero) { _d16 = d; _p16 = p; }
+            }
+            return d(self, index);
+        }
+        
+        // SetValue
+        private static IntPtr _p17;
+        private static set_value_delegate _d17;
         
         public static int set_value(cef_list_value_t* self, UIntPtr index, cef_value_t* value)
         {
             set_value_delegate d;
             var p = self->_set_value;
-            if (p == _p16) { d = _d16; }
+            if (p == _p17) { d = _d17; }
             else
             {
                 d = (set_value_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(set_value_delegate));
-                if (_p16 == IntPtr.Zero) { _d16 = d; _p16 = p; }
+                if (_p17 == IntPtr.Zero) { _d17 = d; _p17 = p; }
             }
             return d(self, index, value);
         }
         
         // SetNull
-        private static IntPtr _p17;
-        private static set_null_delegate _d17;
+        private static IntPtr _p18;
+        private static set_null_delegate _d18;
         
         public static int set_null(cef_list_value_t* self, UIntPtr index)
         {
             set_null_delegate d;
             var p = self->_set_null;
-            if (p == _p17) { d = _d17; }
+            if (p == _p18) { d = _d18; }
             else
             {
                 d = (set_null_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(set_null_delegate));
-                if (_p17 == IntPtr.Zero) { _d17 = d; _p17 = p; }
+                if (_p18 == IntPtr.Zero) { _d18 = d; _p18 = p; }
             }
             return d(self, index);
         }
         
         // SetBool
-        private static IntPtr _p18;
-        private static set_bool_delegate _d18;
+        private static IntPtr _p19;
+        private static set_bool_delegate _d19;
         
         public static int set_bool(cef_list_value_t* self, UIntPtr index, int value)
         {
             set_bool_delegate d;
             var p = self->_set_bool;
-            if (p == _p18) { d = _d18; }
-            else
-            {
-                d = (set_bool_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(set_bool_delegate));
-                if (_p18 == IntPtr.Zero) { _d18 = d; _p18 = p; }
-            }
-            return d(self, index, value);
-        }
-        
-        // SetInt
-        private static IntPtr _p19;
-        private static set_int_delegate _d19;
-        
-        public static int set_int(cef_list_value_t* self, UIntPtr index, int value)
-        {
-            set_int_delegate d;
-            var p = self->_set_int;
             if (p == _p19) { d = _d19; }
             else
             {
-                d = (set_int_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(set_int_delegate));
+                d = (set_bool_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(set_bool_delegate));
                 if (_p19 == IntPtr.Zero) { _d19 = d; _p19 = p; }
             }
             return d(self, index, value);
         }
         
-        // SetDouble
+        // SetInt
         private static IntPtr _p1a;
-        private static set_double_delegate _d1a;
+        private static set_int_delegate _d1a;
         
-        public static int set_double(cef_list_value_t* self, UIntPtr index, double value)
+        public static int set_int(cef_list_value_t* self, UIntPtr index, int value)
         {
-            set_double_delegate d;
-            var p = self->_set_double;
+            set_int_delegate d;
+            var p = self->_set_int;
             if (p == _p1a) { d = _d1a; }
             else
             {
-                d = (set_double_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(set_double_delegate));
+                d = (set_int_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(set_int_delegate));
                 if (_p1a == IntPtr.Zero) { _d1a = d; _p1a = p; }
             }
             return d(self, index, value);
         }
         
-        // SetString
+        // SetDouble
         private static IntPtr _p1b;
-        private static set_string_delegate _d1b;
+        private static set_double_delegate _d1b;
         
-        public static int set_string(cef_list_value_t* self, UIntPtr index, cef_string_t* value)
+        public static int set_double(cef_list_value_t* self, UIntPtr index, double value)
         {
-            set_string_delegate d;
-            var p = self->_set_string;
+            set_double_delegate d;
+            var p = self->_set_double;
             if (p == _p1b) { d = _d1b; }
             else
             {
-                d = (set_string_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(set_string_delegate));
+                d = (set_double_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(set_double_delegate));
                 if (_p1b == IntPtr.Zero) { _d1b = d; _p1b = p; }
             }
             return d(self, index, value);
         }
         
-        // SetBinary
+        // SetString
         private static IntPtr _p1c;
-        private static set_binary_delegate _d1c;
+        private static set_string_delegate _d1c;
         
-        public static int set_binary(cef_list_value_t* self, UIntPtr index, cef_binary_value_t* value)
+        public static int set_string(cef_list_value_t* self, UIntPtr index, cef_string_t* value)
         {
-            set_binary_delegate d;
-            var p = self->_set_binary;
+            set_string_delegate d;
+            var p = self->_set_string;
             if (p == _p1c) { d = _d1c; }
             else
             {
-                d = (set_binary_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(set_binary_delegate));
+                d = (set_string_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(set_string_delegate));
                 if (_p1c == IntPtr.Zero) { _d1c = d; _p1c = p; }
             }
             return d(self, index, value);
         }
         
-        // SetDictionary
+        // SetBinary
         private static IntPtr _p1d;
-        private static set_dictionary_delegate _d1d;
+        private static set_binary_delegate _d1d;
         
-        public static int set_dictionary(cef_list_value_t* self, UIntPtr index, cef_dictionary_value_t* value)
+        public static int set_binary(cef_list_value_t* self, UIntPtr index, cef_binary_value_t* value)
         {
-            set_dictionary_delegate d;
-            var p = self->_set_dictionary;
+            set_binary_delegate d;
+            var p = self->_set_binary;
             if (p == _p1d) { d = _d1d; }
             else
             {
-                d = (set_dictionary_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(set_dictionary_delegate));
+                d = (set_binary_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(set_binary_delegate));
                 if (_p1d == IntPtr.Zero) { _d1d = d; _p1d = p; }
             }
             return d(self, index, value);
         }
         
-        // SetList
+        // SetDictionary
         private static IntPtr _p1e;
-        private static set_list_delegate _d1e;
+        private static set_dictionary_delegate _d1e;
+        
+        public static int set_dictionary(cef_list_value_t* self, UIntPtr index, cef_dictionary_value_t* value)
+        {
+            set_dictionary_delegate d;
+            var p = self->_set_dictionary;
+            if (p == _p1e) { d = _d1e; }
+            else
+            {
+                d = (set_dictionary_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(set_dictionary_delegate));
+                if (_p1e == IntPtr.Zero) { _d1e = d; _p1e = p; }
+            }
+            return d(self, index, value);
+        }
+        
+        // SetList
+        private static IntPtr _p1f;
+        private static set_list_delegate _d1f;
         
         public static int set_list(cef_list_value_t* self, UIntPtr index, cef_list_value_t* value)
         {
             set_list_delegate d;
             var p = self->_set_list;
-            if (p == _p1e) { d = _d1e; }
+            if (p == _p1f) { d = _d1f; }
             else
             {
                 d = (set_list_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(set_list_delegate));
-                if (_p1e == IntPtr.Zero) { _d1e = d; _p1e = p; }
+                if (_p1f == IntPtr.Zero) { _d1f = d; _p1f = p; }
             }
             return d(self, index, value);
         }

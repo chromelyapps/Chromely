@@ -38,6 +38,12 @@ namespace Xilium.CefGlue.Interop
         #if !DEBUG
         [SuppressUnmanagedCodeSecurity]
         #endif
+        internal delegate int has_at_least_one_ref_delegate(cef_keyboard_handler_t* self);
+        
+        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
+        #if !DEBUG
+        [SuppressUnmanagedCodeSecurity]
+        #endif
         internal delegate int on_pre_key_event_delegate(cef_keyboard_handler_t* self, cef_browser_t* browser, cef_key_event_t* @event, IntPtr os_event, int* is_keyboard_shortcut);
         
         [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]

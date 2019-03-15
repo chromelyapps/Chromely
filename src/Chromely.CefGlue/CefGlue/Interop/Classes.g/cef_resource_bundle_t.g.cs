@@ -43,6 +43,12 @@ namespace Xilium.CefGlue.Interop
         #if !DEBUG
         [SuppressUnmanagedCodeSecurity]
         #endif
+        private delegate int has_at_least_one_ref_delegate(cef_resource_bundle_t* self);
+        
+        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
+        #if !DEBUG
+        [SuppressUnmanagedCodeSecurity]
+        #endif
         private delegate cef_string_userfree* get_localized_string_delegate(cef_resource_bundle_t* self, int string_id);
         
         [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
@@ -108,53 +114,70 @@ namespace Xilium.CefGlue.Interop
             return d(self);
         }
         
-        // GetLocalizedString
+        // HasAtLeastOneRef
         private static IntPtr _p3;
-        private static get_localized_string_delegate _d3;
+        private static has_at_least_one_ref_delegate _d3;
+        
+        public static int has_at_least_one_ref(cef_resource_bundle_t* self)
+        {
+            has_at_least_one_ref_delegate d;
+            var p = self->_base._has_at_least_one_ref;
+            if (p == _p3) { d = _d3; }
+            else
+            {
+                d = (has_at_least_one_ref_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(has_at_least_one_ref_delegate));
+                if (_p3 == IntPtr.Zero) { _d3 = d; _p3 = p; }
+            }
+            return d(self);
+        }
+        
+        // GetLocalizedString
+        private static IntPtr _p4;
+        private static get_localized_string_delegate _d4;
         
         public static cef_string_userfree* get_localized_string(cef_resource_bundle_t* self, int string_id)
         {
             get_localized_string_delegate d;
             var p = self->_get_localized_string;
-            if (p == _p3) { d = _d3; }
+            if (p == _p4) { d = _d4; }
             else
             {
                 d = (get_localized_string_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_localized_string_delegate));
-                if (_p3 == IntPtr.Zero) { _d3 = d; _p3 = p; }
+                if (_p4 == IntPtr.Zero) { _d4 = d; _p4 = p; }
             }
             return d(self, string_id);
         }
         
         // GetDataResource
-        private static IntPtr _p4;
-        private static get_data_resource_delegate _d4;
+        private static IntPtr _p5;
+        private static get_data_resource_delegate _d5;
         
         public static int get_data_resource(cef_resource_bundle_t* self, int resource_id, void** data, UIntPtr* data_size)
         {
             get_data_resource_delegate d;
             var p = self->_get_data_resource;
-            if (p == _p4) { d = _d4; }
+            if (p == _p5) { d = _d5; }
             else
             {
                 d = (get_data_resource_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_data_resource_delegate));
-                if (_p4 == IntPtr.Zero) { _d4 = d; _p4 = p; }
+                if (_p5 == IntPtr.Zero) { _d5 = d; _p5 = p; }
             }
             return d(self, resource_id, data, data_size);
         }
         
         // GetDataResourceForScale
-        private static IntPtr _p5;
-        private static get_data_resource_for_scale_delegate _d5;
+        private static IntPtr _p6;
+        private static get_data_resource_for_scale_delegate _d6;
         
         public static int get_data_resource_for_scale(cef_resource_bundle_t* self, int resource_id, CefScaleFactor scale_factor, void** data, UIntPtr* data_size)
         {
             get_data_resource_for_scale_delegate d;
             var p = self->_get_data_resource_for_scale;
-            if (p == _p5) { d = _d5; }
+            if (p == _p6) { d = _d6; }
             else
             {
                 d = (get_data_resource_for_scale_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_data_resource_for_scale_delegate));
-                if (_p5 == IntPtr.Zero) { _d5 = d; _p5 = p; }
+                if (_p6 == IntPtr.Zero) { _d6 = d; _p6 = p; }
             }
             return d(self, resource_id, scale_factor, data, data_size);
         }

@@ -39,6 +39,12 @@ namespace Xilium.CefGlue.Interop
         #if !DEBUG
         [SuppressUnmanagedCodeSecurity]
         #endif
+        internal delegate int has_at_least_one_ref_delegate(cef_request_context_handler_t* self);
+        
+        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
+        #if !DEBUG
+        [SuppressUnmanagedCodeSecurity]
+        #endif
         internal delegate void on_request_context_initialized_delegate(cef_request_context_handler_t* self, cef_request_context_t* request_context);
         
         [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]

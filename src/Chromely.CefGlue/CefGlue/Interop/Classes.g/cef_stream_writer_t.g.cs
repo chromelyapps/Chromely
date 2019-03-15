@@ -49,6 +49,12 @@ namespace Xilium.CefGlue.Interop
         #if !DEBUG
         [SuppressUnmanagedCodeSecurity]
         #endif
+        private delegate int has_at_least_one_ref_delegate(cef_stream_writer_t* self);
+        
+        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
+        #if !DEBUG
+        [SuppressUnmanagedCodeSecurity]
+        #endif
         private delegate UIntPtr write_delegate(cef_stream_writer_t* self, void* ptr, UIntPtr size, UIntPtr n);
         
         [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
@@ -126,87 +132,104 @@ namespace Xilium.CefGlue.Interop
             return d(self);
         }
         
-        // Write
+        // HasAtLeastOneRef
         private static IntPtr _p3;
-        private static write_delegate _d3;
+        private static has_at_least_one_ref_delegate _d3;
+        
+        public static int has_at_least_one_ref(cef_stream_writer_t* self)
+        {
+            has_at_least_one_ref_delegate d;
+            var p = self->_base._has_at_least_one_ref;
+            if (p == _p3) { d = _d3; }
+            else
+            {
+                d = (has_at_least_one_ref_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(has_at_least_one_ref_delegate));
+                if (_p3 == IntPtr.Zero) { _d3 = d; _p3 = p; }
+            }
+            return d(self);
+        }
+        
+        // Write
+        private static IntPtr _p4;
+        private static write_delegate _d4;
         
         public static UIntPtr write(cef_stream_writer_t* self, void* ptr, UIntPtr size, UIntPtr n)
         {
             write_delegate d;
             var p = self->_write;
-            if (p == _p3) { d = _d3; }
+            if (p == _p4) { d = _d4; }
             else
             {
                 d = (write_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(write_delegate));
-                if (_p3 == IntPtr.Zero) { _d3 = d; _p3 = p; }
+                if (_p4 == IntPtr.Zero) { _d4 = d; _p4 = p; }
             }
             return d(self, ptr, size, n);
         }
         
         // Seek
-        private static IntPtr _p4;
-        private static seek_delegate _d4;
+        private static IntPtr _p5;
+        private static seek_delegate _d5;
         
         public static int seek(cef_stream_writer_t* self, long offset, int whence)
         {
             seek_delegate d;
             var p = self->_seek;
-            if (p == _p4) { d = _d4; }
+            if (p == _p5) { d = _d5; }
             else
             {
                 d = (seek_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(seek_delegate));
-                if (_p4 == IntPtr.Zero) { _d4 = d; _p4 = p; }
+                if (_p5 == IntPtr.Zero) { _d5 = d; _p5 = p; }
             }
             return d(self, offset, whence);
         }
         
         // Tell
-        private static IntPtr _p5;
-        private static tell_delegate _d5;
+        private static IntPtr _p6;
+        private static tell_delegate _d6;
         
         public static long tell(cef_stream_writer_t* self)
         {
             tell_delegate d;
             var p = self->_tell;
-            if (p == _p5) { d = _d5; }
-            else
-            {
-                d = (tell_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(tell_delegate));
-                if (_p5 == IntPtr.Zero) { _d5 = d; _p5 = p; }
-            }
-            return d(self);
-        }
-        
-        // Flush
-        private static IntPtr _p6;
-        private static flush_delegate _d6;
-        
-        public static int flush(cef_stream_writer_t* self)
-        {
-            flush_delegate d;
-            var p = self->_flush;
             if (p == _p6) { d = _d6; }
             else
             {
-                d = (flush_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(flush_delegate));
+                d = (tell_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(tell_delegate));
                 if (_p6 == IntPtr.Zero) { _d6 = d; _p6 = p; }
             }
             return d(self);
         }
         
-        // MayBlock
+        // Flush
         private static IntPtr _p7;
-        private static may_block_delegate _d7;
+        private static flush_delegate _d7;
+        
+        public static int flush(cef_stream_writer_t* self)
+        {
+            flush_delegate d;
+            var p = self->_flush;
+            if (p == _p7) { d = _d7; }
+            else
+            {
+                d = (flush_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(flush_delegate));
+                if (_p7 == IntPtr.Zero) { _d7 = d; _p7 = p; }
+            }
+            return d(self);
+        }
+        
+        // MayBlock
+        private static IntPtr _p8;
+        private static may_block_delegate _d8;
         
         public static int may_block(cef_stream_writer_t* self)
         {
             may_block_delegate d;
             var p = self->_may_block;
-            if (p == _p7) { d = _d7; }
+            if (p == _p8) { d = _d8; }
             else
             {
                 d = (may_block_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(may_block_delegate));
-                if (_p7 == IntPtr.Zero) { _d7 = d; _p7 = p; }
+                if (_p8 == IntPtr.Zero) { _d8 = d; _p8 = p; }
             }
             return d(self);
         }

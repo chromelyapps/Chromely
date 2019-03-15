@@ -46,6 +46,12 @@ namespace Xilium.CefGlue.Interop
         #if !DEBUG
         [SuppressUnmanagedCodeSecurity]
         #endif
+        private delegate int has_at_least_one_ref_delegate(cef_navigation_entry_t* self);
+        
+        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
+        #if !DEBUG
+        [SuppressUnmanagedCodeSecurity]
+        #endif
         private delegate int is_valid_delegate(cef_navigation_entry_t* self);
         
         [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
@@ -153,172 +159,189 @@ namespace Xilium.CefGlue.Interop
             return d(self);
         }
         
-        // IsValid
+        // HasAtLeastOneRef
         private static IntPtr _p3;
-        private static is_valid_delegate _d3;
+        private static has_at_least_one_ref_delegate _d3;
         
-        public static int is_valid(cef_navigation_entry_t* self)
+        public static int has_at_least_one_ref(cef_navigation_entry_t* self)
         {
-            is_valid_delegate d;
-            var p = self->_is_valid;
+            has_at_least_one_ref_delegate d;
+            var p = self->_base._has_at_least_one_ref;
             if (p == _p3) { d = _d3; }
             else
             {
-                d = (is_valid_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(is_valid_delegate));
+                d = (has_at_least_one_ref_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(has_at_least_one_ref_delegate));
                 if (_p3 == IntPtr.Zero) { _d3 = d; _p3 = p; }
             }
             return d(self);
         }
         
-        // GetURL
+        // IsValid
         private static IntPtr _p4;
-        private static get_url_delegate _d4;
+        private static is_valid_delegate _d4;
         
-        public static cef_string_userfree* get_url(cef_navigation_entry_t* self)
+        public static int is_valid(cef_navigation_entry_t* self)
         {
-            get_url_delegate d;
-            var p = self->_get_url;
+            is_valid_delegate d;
+            var p = self->_is_valid;
             if (p == _p4) { d = _d4; }
             else
             {
-                d = (get_url_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_url_delegate));
+                d = (is_valid_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(is_valid_delegate));
                 if (_p4 == IntPtr.Zero) { _d4 = d; _p4 = p; }
             }
             return d(self);
         }
         
-        // GetDisplayURL
+        // GetURL
         private static IntPtr _p5;
-        private static get_display_url_delegate _d5;
+        private static get_url_delegate _d5;
         
-        public static cef_string_userfree* get_display_url(cef_navigation_entry_t* self)
+        public static cef_string_userfree* get_url(cef_navigation_entry_t* self)
         {
-            get_display_url_delegate d;
-            var p = self->_get_display_url;
+            get_url_delegate d;
+            var p = self->_get_url;
             if (p == _p5) { d = _d5; }
             else
             {
-                d = (get_display_url_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_display_url_delegate));
+                d = (get_url_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_url_delegate));
                 if (_p5 == IntPtr.Zero) { _d5 = d; _p5 = p; }
             }
             return d(self);
         }
         
-        // GetOriginalURL
+        // GetDisplayURL
         private static IntPtr _p6;
-        private static get_original_url_delegate _d6;
+        private static get_display_url_delegate _d6;
         
-        public static cef_string_userfree* get_original_url(cef_navigation_entry_t* self)
+        public static cef_string_userfree* get_display_url(cef_navigation_entry_t* self)
         {
-            get_original_url_delegate d;
-            var p = self->_get_original_url;
+            get_display_url_delegate d;
+            var p = self->_get_display_url;
             if (p == _p6) { d = _d6; }
             else
             {
-                d = (get_original_url_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_original_url_delegate));
+                d = (get_display_url_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_display_url_delegate));
                 if (_p6 == IntPtr.Zero) { _d6 = d; _p6 = p; }
             }
             return d(self);
         }
         
-        // GetTitle
+        // GetOriginalURL
         private static IntPtr _p7;
-        private static get_title_delegate _d7;
+        private static get_original_url_delegate _d7;
         
-        public static cef_string_userfree* get_title(cef_navigation_entry_t* self)
+        public static cef_string_userfree* get_original_url(cef_navigation_entry_t* self)
         {
-            get_title_delegate d;
-            var p = self->_get_title;
+            get_original_url_delegate d;
+            var p = self->_get_original_url;
             if (p == _p7) { d = _d7; }
             else
             {
-                d = (get_title_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_title_delegate));
+                d = (get_original_url_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_original_url_delegate));
                 if (_p7 == IntPtr.Zero) { _d7 = d; _p7 = p; }
             }
             return d(self);
         }
         
-        // GetTransitionType
+        // GetTitle
         private static IntPtr _p8;
-        private static get_transition_type_delegate _d8;
+        private static get_title_delegate _d8;
         
-        public static CefTransitionType get_transition_type(cef_navigation_entry_t* self)
+        public static cef_string_userfree* get_title(cef_navigation_entry_t* self)
         {
-            get_transition_type_delegate d;
-            var p = self->_get_transition_type;
+            get_title_delegate d;
+            var p = self->_get_title;
             if (p == _p8) { d = _d8; }
             else
             {
-                d = (get_transition_type_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_transition_type_delegate));
+                d = (get_title_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_title_delegate));
                 if (_p8 == IntPtr.Zero) { _d8 = d; _p8 = p; }
             }
             return d(self);
         }
         
-        // HasPostData
+        // GetTransitionType
         private static IntPtr _p9;
-        private static has_post_data_delegate _d9;
+        private static get_transition_type_delegate _d9;
         
-        public static int has_post_data(cef_navigation_entry_t* self)
+        public static CefTransitionType get_transition_type(cef_navigation_entry_t* self)
         {
-            has_post_data_delegate d;
-            var p = self->_has_post_data;
+            get_transition_type_delegate d;
+            var p = self->_get_transition_type;
             if (p == _p9) { d = _d9; }
             else
             {
-                d = (has_post_data_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(has_post_data_delegate));
+                d = (get_transition_type_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_transition_type_delegate));
                 if (_p9 == IntPtr.Zero) { _d9 = d; _p9 = p; }
             }
             return d(self);
         }
         
-        // GetCompletionTime
+        // HasPostData
         private static IntPtr _pa;
-        private static get_completion_time_delegate _da;
+        private static has_post_data_delegate _da;
         
-        public static cef_time_t get_completion_time(cef_navigation_entry_t* self)
+        public static int has_post_data(cef_navigation_entry_t* self)
         {
-            get_completion_time_delegate d;
-            var p = self->_get_completion_time;
+            has_post_data_delegate d;
+            var p = self->_has_post_data;
             if (p == _pa) { d = _da; }
             else
             {
-                d = (get_completion_time_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_completion_time_delegate));
+                d = (has_post_data_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(has_post_data_delegate));
                 if (_pa == IntPtr.Zero) { _da = d; _pa = p; }
             }
             return d(self);
         }
         
-        // GetHttpStatusCode
+        // GetCompletionTime
         private static IntPtr _pb;
-        private static get_http_status_code_delegate _db;
+        private static get_completion_time_delegate _db;
         
-        public static int get_http_status_code(cef_navigation_entry_t* self)
+        public static cef_time_t get_completion_time(cef_navigation_entry_t* self)
         {
-            get_http_status_code_delegate d;
-            var p = self->_get_http_status_code;
+            get_completion_time_delegate d;
+            var p = self->_get_completion_time;
             if (p == _pb) { d = _db; }
             else
             {
-                d = (get_http_status_code_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_http_status_code_delegate));
+                d = (get_completion_time_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_completion_time_delegate));
                 if (_pb == IntPtr.Zero) { _db = d; _pb = p; }
             }
             return d(self);
         }
         
-        // GetSSLStatus
+        // GetHttpStatusCode
         private static IntPtr _pc;
-        private static get_sslstatus_delegate _dc;
+        private static get_http_status_code_delegate _dc;
+        
+        public static int get_http_status_code(cef_navigation_entry_t* self)
+        {
+            get_http_status_code_delegate d;
+            var p = self->_get_http_status_code;
+            if (p == _pc) { d = _dc; }
+            else
+            {
+                d = (get_http_status_code_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_http_status_code_delegate));
+                if (_pc == IntPtr.Zero) { _dc = d; _pc = p; }
+            }
+            return d(self);
+        }
+        
+        // GetSSLStatus
+        private static IntPtr _pd;
+        private static get_sslstatus_delegate _dd;
         
         public static cef_sslstatus_t* get_sslstatus(cef_navigation_entry_t* self)
         {
             get_sslstatus_delegate d;
             var p = self->_get_sslstatus;
-            if (p == _pc) { d = _dc; }
+            if (p == _pd) { d = _dd; }
             else
             {
                 d = (get_sslstatus_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_sslstatus_delegate));
-                if (_pc == IntPtr.Zero) { _dc = d; _pc = p; }
+                if (_pd == IntPtr.Zero) { _dd = d; _pd = p; }
             }
             return d(self);
         }

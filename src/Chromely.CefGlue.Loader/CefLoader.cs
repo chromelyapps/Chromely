@@ -24,7 +24,6 @@ namespace Chromely.CefGlue.Loader
         private static string CefBuildsDownloadIndex(string platform) => $"http://opensource.spotify.com/cefbuilds/index.html#{platform}_builds";
         private static string CefDownloadUrl(string name) => $"http://opensource.spotify.com/cefbuilds/{name}";
 
-        
         // http://opensource.spotify.com/cefbuilds/cef_binary_3.3440.1805.gbe070f9_linux64_minimal.tar.bz2
 
         /// <summary>

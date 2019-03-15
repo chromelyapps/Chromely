@@ -14,6 +14,7 @@ using System.Linq;
 using System.Reflection;
 using Chromely.CefGlue.Browser;
 using Chromely.CefGlue.Browser.Handlers;
+using Chromely.CefGlue.Loader;
 using Chromely.Core;
 using Chromely.Core.Helpers;
 using Chromely.Core.Host;
@@ -347,7 +348,27 @@ namespace Chromely.CefGlue.BrowserWindow
         /// </returns>
         private int RunInternal(string[] args)
         {
-            CefRuntime.Load();
+            try
+            {
+                var platform = CefRuntime.Platform;
+                var version = CefRuntime.ChromeVersion;
+                Log.Info($"Running {platform} chromium {version}");
+
+                try
+                {
+                    CefRuntime.Load();
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex);
+                    CefLoader.Load();
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex);
+                Environment.Exit(0);
+            }
 
             var settings = new CefSettings
             {

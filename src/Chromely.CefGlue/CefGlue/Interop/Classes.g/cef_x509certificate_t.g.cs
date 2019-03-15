@@ -46,6 +46,12 @@ namespace Xilium.CefGlue.Interop
         #if !DEBUG
         [SuppressUnmanagedCodeSecurity]
         #endif
+        private delegate int has_at_least_one_ref_delegate(cef_x509certificate_t* self);
+        
+        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
+        #if !DEBUG
+        [SuppressUnmanagedCodeSecurity]
+        #endif
         private delegate cef_x509cert_principal_t* get_subject_delegate(cef_x509certificate_t* self);
         
         [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
@@ -153,172 +159,189 @@ namespace Xilium.CefGlue.Interop
             return d(self);
         }
         
-        // GetSubject
+        // HasAtLeastOneRef
         private static IntPtr _p3;
-        private static get_subject_delegate _d3;
+        private static has_at_least_one_ref_delegate _d3;
         
-        public static cef_x509cert_principal_t* get_subject(cef_x509certificate_t* self)
+        public static int has_at_least_one_ref(cef_x509certificate_t* self)
         {
-            get_subject_delegate d;
-            var p = self->_get_subject;
+            has_at_least_one_ref_delegate d;
+            var p = self->_base._has_at_least_one_ref;
             if (p == _p3) { d = _d3; }
             else
             {
-                d = (get_subject_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_subject_delegate));
+                d = (has_at_least_one_ref_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(has_at_least_one_ref_delegate));
                 if (_p3 == IntPtr.Zero) { _d3 = d; _p3 = p; }
             }
             return d(self);
         }
         
-        // GetIssuer
+        // GetSubject
         private static IntPtr _p4;
-        private static get_issuer_delegate _d4;
+        private static get_subject_delegate _d4;
         
-        public static cef_x509cert_principal_t* get_issuer(cef_x509certificate_t* self)
+        public static cef_x509cert_principal_t* get_subject(cef_x509certificate_t* self)
         {
-            get_issuer_delegate d;
-            var p = self->_get_issuer;
+            get_subject_delegate d;
+            var p = self->_get_subject;
             if (p == _p4) { d = _d4; }
             else
             {
-                d = (get_issuer_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_issuer_delegate));
+                d = (get_subject_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_subject_delegate));
                 if (_p4 == IntPtr.Zero) { _d4 = d; _p4 = p; }
             }
             return d(self);
         }
         
-        // GetSerialNumber
+        // GetIssuer
         private static IntPtr _p5;
-        private static get_serial_number_delegate _d5;
+        private static get_issuer_delegate _d5;
         
-        public static cef_binary_value_t* get_serial_number(cef_x509certificate_t* self)
+        public static cef_x509cert_principal_t* get_issuer(cef_x509certificate_t* self)
         {
-            get_serial_number_delegate d;
-            var p = self->_get_serial_number;
+            get_issuer_delegate d;
+            var p = self->_get_issuer;
             if (p == _p5) { d = _d5; }
             else
             {
-                d = (get_serial_number_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_serial_number_delegate));
+                d = (get_issuer_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_issuer_delegate));
                 if (_p5 == IntPtr.Zero) { _d5 = d; _p5 = p; }
             }
             return d(self);
         }
         
-        // GetValidStart
+        // GetSerialNumber
         private static IntPtr _p6;
-        private static get_valid_start_delegate _d6;
+        private static get_serial_number_delegate _d6;
         
-        public static cef_time_t get_valid_start(cef_x509certificate_t* self)
+        public static cef_binary_value_t* get_serial_number(cef_x509certificate_t* self)
         {
-            get_valid_start_delegate d;
-            var p = self->_get_valid_start;
+            get_serial_number_delegate d;
+            var p = self->_get_serial_number;
             if (p == _p6) { d = _d6; }
             else
             {
-                d = (get_valid_start_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_valid_start_delegate));
+                d = (get_serial_number_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_serial_number_delegate));
                 if (_p6 == IntPtr.Zero) { _d6 = d; _p6 = p; }
             }
             return d(self);
         }
         
-        // GetValidExpiry
+        // GetValidStart
         private static IntPtr _p7;
-        private static get_valid_expiry_delegate _d7;
+        private static get_valid_start_delegate _d7;
         
-        public static cef_time_t get_valid_expiry(cef_x509certificate_t* self)
+        public static cef_time_t get_valid_start(cef_x509certificate_t* self)
         {
-            get_valid_expiry_delegate d;
-            var p = self->_get_valid_expiry;
+            get_valid_start_delegate d;
+            var p = self->_get_valid_start;
             if (p == _p7) { d = _d7; }
             else
             {
-                d = (get_valid_expiry_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_valid_expiry_delegate));
+                d = (get_valid_start_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_valid_start_delegate));
                 if (_p7 == IntPtr.Zero) { _d7 = d; _p7 = p; }
             }
             return d(self);
         }
         
-        // GetDEREncoded
+        // GetValidExpiry
         private static IntPtr _p8;
-        private static get_derencoded_delegate _d8;
+        private static get_valid_expiry_delegate _d8;
         
-        public static cef_binary_value_t* get_derencoded(cef_x509certificate_t* self)
+        public static cef_time_t get_valid_expiry(cef_x509certificate_t* self)
         {
-            get_derencoded_delegate d;
-            var p = self->_get_derencoded;
+            get_valid_expiry_delegate d;
+            var p = self->_get_valid_expiry;
             if (p == _p8) { d = _d8; }
             else
             {
-                d = (get_derencoded_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_derencoded_delegate));
+                d = (get_valid_expiry_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_valid_expiry_delegate));
                 if (_p8 == IntPtr.Zero) { _d8 = d; _p8 = p; }
             }
             return d(self);
         }
         
-        // GetPEMEncoded
+        // GetDEREncoded
         private static IntPtr _p9;
-        private static get_pemencoded_delegate _d9;
+        private static get_derencoded_delegate _d9;
         
-        public static cef_binary_value_t* get_pemencoded(cef_x509certificate_t* self)
+        public static cef_binary_value_t* get_derencoded(cef_x509certificate_t* self)
         {
-            get_pemencoded_delegate d;
-            var p = self->_get_pemencoded;
+            get_derencoded_delegate d;
+            var p = self->_get_derencoded;
             if (p == _p9) { d = _d9; }
             else
             {
-                d = (get_pemencoded_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_pemencoded_delegate));
+                d = (get_derencoded_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_derencoded_delegate));
                 if (_p9 == IntPtr.Zero) { _d9 = d; _p9 = p; }
             }
             return d(self);
         }
         
-        // GetIssuerChainSize
+        // GetPEMEncoded
         private static IntPtr _pa;
-        private static get_issuer_chain_size_delegate _da;
+        private static get_pemencoded_delegate _da;
         
-        public static UIntPtr get_issuer_chain_size(cef_x509certificate_t* self)
+        public static cef_binary_value_t* get_pemencoded(cef_x509certificate_t* self)
         {
-            get_issuer_chain_size_delegate d;
-            var p = self->_get_issuer_chain_size;
+            get_pemencoded_delegate d;
+            var p = self->_get_pemencoded;
             if (p == _pa) { d = _da; }
             else
             {
-                d = (get_issuer_chain_size_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_issuer_chain_size_delegate));
+                d = (get_pemencoded_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_pemencoded_delegate));
                 if (_pa == IntPtr.Zero) { _da = d; _pa = p; }
             }
             return d(self);
         }
         
-        // GetDEREncodedIssuerChain
+        // GetIssuerChainSize
         private static IntPtr _pb;
-        private static get_derencoded_issuer_chain_delegate _db;
+        private static get_issuer_chain_size_delegate _db;
+        
+        public static UIntPtr get_issuer_chain_size(cef_x509certificate_t* self)
+        {
+            get_issuer_chain_size_delegate d;
+            var p = self->_get_issuer_chain_size;
+            if (p == _pb) { d = _db; }
+            else
+            {
+                d = (get_issuer_chain_size_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_issuer_chain_size_delegate));
+                if (_pb == IntPtr.Zero) { _db = d; _pb = p; }
+            }
+            return d(self);
+        }
+        
+        // GetDEREncodedIssuerChain
+        private static IntPtr _pc;
+        private static get_derencoded_issuer_chain_delegate _dc;
         
         public static void get_derencoded_issuer_chain(cef_x509certificate_t* self, UIntPtr* chainCount, cef_binary_value_t** chain)
         {
             get_derencoded_issuer_chain_delegate d;
             var p = self->_get_derencoded_issuer_chain;
-            if (p == _pb) { d = _db; }
+            if (p == _pc) { d = _dc; }
             else
             {
                 d = (get_derencoded_issuer_chain_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_derencoded_issuer_chain_delegate));
-                if (_pb == IntPtr.Zero) { _db = d; _pb = p; }
+                if (_pc == IntPtr.Zero) { _dc = d; _pc = p; }
             }
             d(self, chainCount, chain);
         }
         
         // GetPEMEncodedIssuerChain
-        private static IntPtr _pc;
-        private static get_pemencoded_issuer_chain_delegate _dc;
+        private static IntPtr _pd;
+        private static get_pemencoded_issuer_chain_delegate _dd;
         
         public static void get_pemencoded_issuer_chain(cef_x509certificate_t* self, UIntPtr* chainCount, cef_binary_value_t** chain)
         {
             get_pemencoded_issuer_chain_delegate d;
             var p = self->_get_pemencoded_issuer_chain;
-            if (p == _pc) { d = _dc; }
+            if (p == _pd) { d = _dd; }
             else
             {
                 d = (get_pemencoded_issuer_chain_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_pemencoded_issuer_chain_delegate));
-                if (_pc == IntPtr.Zero) { _dc = d; _pc = p; }
+                if (_pd == IntPtr.Zero) { _dd = d; _pd = p; }
             }
             d(self, chainCount, chain);
         }
