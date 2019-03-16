@@ -1,8 +1,19 @@
-﻿
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="CefBinariesLoader.cs" company="Chromely Projects">
+//   Copyright (c) 2017-2018 Chromely Projects
+// </copyright>
+// <license>
+//      See the LICENSE.md file in the project root for more information.
+// </license>
+// --------------------------------------------------------------------------------------------------------------------
+
 namespace Chromely.CefGlue.BrowserWindow
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
+    using System.IO;
+    using System.Linq;
     using System.Xml;
     using System.Xml.Linq;
 
@@ -27,7 +38,10 @@ namespace Chromely.CefGlue.BrowserWindow
         /// <param name="config">
         /// The config.
         /// </param>
-        public static void Load(ChromelyConfiguration config)
+        /// <returns>
+        /// The list of temporary files generated
+        /// </returns>
+        public static List<string> Load(ChromelyConfiguration config)
         {
             try
             {
@@ -42,11 +56,7 @@ namespace Chromely.CefGlue.BrowserWindow
                 catch (Exception ex)
                 {
                     Log.Error(ex);
-                    if (!config.LoadCefBinariesIfNotFound)
-                    {
-                        Environment.Exit(0);
-                    }
-                    else
+                    if (config.LoadCefBinariesIfNotFound)
                     {
                         if (config.SilentCefBinariesLoading)
                         {
@@ -54,8 +64,12 @@ namespace Chromely.CefGlue.BrowserWindow
                         }
                         else
                         {
-                            WarnUserOnLoad();
+                            return WarnUserOnLoad();
                         }
+                    }
+                    else
+                    {
+                        Environment.Exit(0);
                     }
                 }
             }
@@ -64,43 +78,86 @@ namespace Chromely.CefGlue.BrowserWindow
                 Log.Error(ex);
                 Environment.Exit(0);
             }
+
+            return null;
         }
 
         /// <summary>
-        /// The warn user loader.
+        /// The delete temp files.
         /// </summary>
-        private static void WarnUserOnLoad()
+        /// <param name="tempFiles">
+        /// The temp files.
+        /// </param>
+        public static void DeleteTempFiles(List<string> tempFiles)
         {
+            if (tempFiles == null || !tempFiles.Any())
+            {
+                return;
+            }
+
+            foreach (var file in tempFiles)
+            {
+                try
+                {
+                    File.Delete(file);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
+            }
+        }
+
+        /// <summary>
+        /// The warn user on load.
+        /// </summary>
+        /// <returns>
+        /// The list of temporary files generated
+        /// </returns>
+        private static List<string> WarnUserOnLoad()
+        {
+            var tempFiles = new List<string>();
+
             try
             {
                 var stopwatch = new Stopwatch();
                 stopwatch.Start();
 
-                LaunchStartPage();
+                var startTempFile = LaunchStartPage();
+                tempFiles.Add(startTempFile);
+
                 CefLoader.Load();
 
                 stopwatch.Stop();
-                LaunchCompletedPage($"Time elapsed: {stopwatch.Elapsed}.");
+                var competedTempFile = LaunchCompletedPage($"Time elapsed: {stopwatch.Elapsed}.");
+                tempFiles.Add(competedTempFile);
             }
             catch (Exception ex)
             {
                 Log.Error(ex);
-                LaunchErrorPage(ex);
+                var onErrorTempFile = LaunchErrorPage(ex);
+                tempFiles.Add(onErrorTempFile);
                 Environment.Exit(0);
             }
+
+            return tempFiles;
         }
 
         /// <summary>
         /// The launch start page.
         /// </summary>
-        private static void LaunchStartPage()
+        /// <returns>
+        /// The temporary file created.
+        /// </returns>
+        private static string LaunchStartPage()
         {
             var message = new Tuple<string, string, string>(
                 "CEF binaries download started.",
                 "Note that depending on your network, this might take up to 4 minutes to complete.",
                 "Please wait...");
 
-            LaunchHtmlWarningPage(message);
+            return LaunchHtmlWarningPage(message);
         }
 
         /// <summary>
@@ -109,30 +166,36 @@ namespace Chromely.CefGlue.BrowserWindow
         /// <param name="durationInfo">
         /// The duration info.
         /// </param>
-        private static void LaunchCompletedPage(string durationInfo)
+        /// <returns>
+        /// The temporary file created.
+        /// </returns>
+        private static string LaunchCompletedPage(string durationInfo)
         {
             var message = new Tuple<string, string, string>(
                 "CEF binaries download completed successfully.",
                 durationInfo,
                 "Please close.");
 
-            LaunchHtmlWarningPage(message);
+            return LaunchHtmlWarningPage(message);
         }
 
         /// <summary>
         /// The launch error page.
         /// </summary>
         /// <param name="ex">
-        /// The ex.
+        /// The exception.
         /// </param>
-        private static void LaunchErrorPage(Exception ex)
+        /// <returns>
+        /// The temporary file created.
+        /// </returns>
+        private static string LaunchErrorPage(Exception ex)
         {
             var message = new Tuple<string, string, string>(
                 "CEF binaries download completed with error.",
                 "Error message: " + ex.Message,
                 "Please close.");
 
-            LaunchHtmlWarningPage(message);
+            return LaunchHtmlWarningPage(message);
         }
 
         /// <summary>
@@ -141,7 +204,10 @@ namespace Chromely.CefGlue.BrowserWindow
         /// <param name="message">
         /// The message.
         /// </param>
-        private static void LaunchHtmlWarningPage(Tuple<string, string, string> message)
+        /// <returns>
+        /// The temporary file created.
+        /// </returns>
+        private static string LaunchHtmlWarningPage(Tuple<string, string, string> message)
         {
             var xDocument = new XDocument(
                 new XDocumentType("html", null, null, null),
@@ -171,17 +237,11 @@ namespace Chromely.CefGlue.BrowserWindow
                             "img",
                             new XAttribute("src", ChromelyImgBase6Encoded)),
                         new XElement("h1", "chromely"),
-                        new XElement(
-                            "p",
-                            new XElement(
-                                "br",
-                                message.Item1),
-                            new XElement(
-                                "br",
-                                message.Item2),
-                            new XElement(
-                                "br",
-                                message.Item3)),
+                        new XElement("div", message.Item1),
+                        new XElement("div", message.Item2),
+                        new XElement("div", message.Item3),
+                        new XElement("p", string.Empty),
+                        new XElement("div", "For more info - ", new XElement("a", "Chromely Apps", new XAttribute("href", "https://github.com/chromelyapps/Chromely"))),
                         new XElement("p", string.Empty),
                         new XElement(
                             "input",
@@ -204,6 +264,8 @@ namespace Chromely.CefGlue.BrowserWindow
             }
 
             Process.Start(htmlFileName);
+
+            return htmlFileName;
         }
     }
 }

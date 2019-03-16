@@ -348,7 +348,7 @@ namespace Chromely.CefGlue.BrowserWindow
         /// </returns>
         private int RunInternal(string[] args)
         {
-            CefBinariesLoader.Load(HostConfig);
+            var tempFiles = CefBinariesLoader.Load(HostConfig);
 
             var settings = new CefSettings
             {
@@ -384,6 +384,7 @@ namespace Chromely.CefGlue.BrowserWindow
             if (exitCode != -1)
             {
                 // An error has occured.
+                CefBinariesLoader.DeleteTempFiles(tempFiles);
                 return exitCode;
             }
 
@@ -411,6 +412,8 @@ namespace Chromely.CefGlue.BrowserWindow
             }
 
             mWindowCreated = true;
+
+            CefBinariesLoader.DeleteTempFiles(tempFiles);
 
             RunMessageLoop();
 
