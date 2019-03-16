@@ -348,27 +348,7 @@ namespace Chromely.CefGlue.BrowserWindow
         /// </returns>
         private int RunInternal(string[] args)
         {
-            try
-            {
-                var platform = CefRuntime.Platform;
-                var version = CefRuntime.ChromeVersion;
-                Log.Info($"Running {platform} chromium {version}");
-
-                try
-                {
-                    CefRuntime.Load();
-                }
-                catch (Exception ex)
-                {
-                    Log.Error(ex);
-                    CefLoader.Load();
-                }
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex);
-                Environment.Exit(0);
-            }
+            CefBinariesLoader.Load(HostConfig);
 
             var settings = new CefSettings
             {

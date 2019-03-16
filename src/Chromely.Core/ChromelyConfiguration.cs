@@ -37,6 +37,8 @@ namespace Chromely.Core
         [SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1201:ElementsMustAppearInTheCorrectOrder", Justification = "Reviewed. Suppression is OK here.")]
         private ChromelyConfiguration()
         {
+            LoadCefBinariesIfNotFound = true;
+            SilentCefBinariesLoading = false;
             PerformDependencyCheck = false;
             ShutdownCefOnExit = true;
             LogSeverity = LogSeverity.Warning;
@@ -68,6 +70,16 @@ namespace Chromely.Core
                 return instance;
             }
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether load cef binaries if not found.
+        /// </summary>
+        public bool LoadCefBinariesIfNotFound { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether silent cef binaries loading.
+        /// </summary>
+        public bool SilentCefBinariesLoading { get; set; }
 
         /// <summary>
         /// Gets or sets the host state.
@@ -231,6 +243,36 @@ namespace Chromely.Core
         public ChromelyConfiguration WithAppArgs(string[] args)
         {
             AppArgs = args;
+            return this;
+        }
+
+        /// <summary>
+        /// The with loading cef binaries if not found.
+        /// </summary>
+        /// <param name="loadIfNotFound">
+        /// The load if not found.
+        /// </param>
+        /// <returns>
+        /// The <see cref="ChromelyConfiguration"/>.
+        /// </returns>
+        public ChromelyConfiguration WithLoadingCefBinariesIfNotFound(bool loadIfNotFound)
+        {
+            LoadCefBinariesIfNotFound = loadIfNotFound;
+            return this;
+        }
+
+        /// <summary>
+        /// The with silent cef binaries loading.
+        /// </summary>
+        /// <param name="silentLoading">
+        /// The silent loading.
+        /// </param>
+        /// <returns>
+        /// The <see cref="ChromelyConfiguration"/>.
+        /// </returns>
+        public ChromelyConfiguration WithSilentCefBinariesLoading(bool silentLoading)
+        {
+            SilentCefBinariesLoading = silentLoading;
             return this;
         }
 
