@@ -208,7 +208,7 @@ namespace Chromely.CefGlue.Loader
             Log.Info("CefLoader: Decompressing BZ2 archive");
             using (var tarStream = new MemoryStream())
             {
-                using (var inStream = new FileStream(_tempBz2File, FileMode.Open))
+                using (var inStream = new FileStream(_tempBz2File, FileMode.Open, FileAccess.Read, FileShare.None))
                 {
                     BZip2.Decompress(inStream, tarStream, false, null);//DecompressProgressChanged);
                 }
@@ -216,7 +216,7 @@ namespace Chromely.CefGlue.Loader
                 Log.Info("CefLoader: Decompressing TAR archive");
                 tarStream.Seek(0, SeekOrigin.Begin);
                 var tar = TarArchive.CreateInputTarArchive(tarStream);
-                tar.ProgressMessageEvent += (archive, entry, message) => Log.Info("CefLoader: Extracting " + entry.Name);
+                //tar.ProgressMessageEvent += (archive, entry, message) => Log.Info("CefLoader: Extracting " + entry.Name);
                     
                 Directory.CreateDirectory(_tempDirectory);
                 tar.ExtractContents(_tempDirectory);

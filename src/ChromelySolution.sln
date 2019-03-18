@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chromely.CefGlue.Gtk", "Chr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chromely.CefGlue.Winapi", "Chromely.CefGlue.Winapi\Chromely.CefGlue.Winapi.csproj", "{B54E5806-3A8D-4F37-9AA4-2962AD9FE033}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nugets", "nugets", "{0CDBDDCA-3A3F-4690-A01A-0D3E689618A1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
