@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>Chromely.CefGlue.Gtk</id>
-    <version>68.0.0-beta03</version>
+    <version>{version}</version>
     <authors>Chromely Projects</authors>
     <owners>Chromely Projects</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -10,8 +10,8 @@
     <projectUrl>https://github.com/chromelyapps/Chromely</projectUrl>
     <iconUrl>https://github.com/chromelyapps/Chromely/blob/master/nugets/chromely.ico?raw=true</iconUrl>
     <description>Chromely CefGlue Gtk implementation library - this is in .NET Standard 2.0 as it can be used in both .NET (Windows) and .NET Core (Windows, Linux).  Chromely.CefGlue.Gtk version naming is based on CefGlue Cef version implemented.</description>
-    <releaseNotes>- Bug fix - CEF binaries download on every build using Nuget CefGlue packages - https://github.com/chromelyapps/Chromely/issues/72</releaseNotes>
-    <copyright>Copyright © 2017-2018 Chromely Projects</copyright>
+    <releaseNotes>{releaseNotes}</releaseNotes>
+    <copyright>Copyright © 2017-2019 Chromely Projects</copyright>
     <tags>Cef Chromium HTML5 Desktop Chromely CefGlue  Restful  Ajax HTTP XHR MessageRouter JavascriptIntegration  .NET Core</tags>
     <repository type="Github Repository" url="https://github.com/chromelyapps/Chromely" />
     <dependencies>
@@ -21,5 +21,9 @@
         <dependency id="System.IO.UnmanagedMemoryStream" version="4.3.0" exclude="Build,Analyzers" />
       </group>
     </dependencies>
+    <files>
+      <file src="Chromely-Win\Assemblies\Chromely.CefGlue.Gtk.dll" target="lib\netstandard2.0" />
+      <file src="Chromely-Win\Assemblies\Chromely.CefGlue.Gtk.pdb" target="lib\netstandard2.0" />
+    </files>
   </metadata>
 </package>

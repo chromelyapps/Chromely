@@ -21,6 +21,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chromely.CefSharp.Winapi.Te
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chromely.CefGlue.Winapi.Tests", "Tests\Chromely.CefGlue.Winapi.Tests\Chromely.CefGlue.Winapi.Tests.csproj", "{A94A1FB5-DBCE-4A39-8C90-CAE93B5CB675}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nugets", "nugets", "{90E2A00C-504F-4F8A-9B7F-2E2395F07BBD}"
+ProjectSection(SolutionItems) = preProject
+	..\nugets\chromely.cefglue.gtk.nuspec = ..\nugets\chromely.cefglue.gtk.nuspec
+	..\nugets\chromely.cefglue.winapi.nuspec = ..\nugets\chromely.cefglue.winapi.nuspec
+	..\nugets\chromely.core.nuspec = ..\nugets\chromely.core.nuspec
+	..\nugets\chromely.cefsharp.winapi.nuspec = ..\nugets\chromely.cefsharp.winapi.nuspec
+EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8A99EE71-AB29-489D-8180-CB2311DA1298}"
+ProjectSection(SolutionItems) = preProject
+	..\ReleaseNotes.md = ..\ReleaseNotes.md
+EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

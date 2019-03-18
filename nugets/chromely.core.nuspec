@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>Chromely.Core</id>
-    <version>0.9.2</version>
+    <version>{version}</version>
     <authors>Chromely Projects</authors>
     <owners>Chromely Projects</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -10,13 +10,16 @@
     <projectUrl>https://github.com/chromelyapps/Chromely</projectUrl>
     <iconUrl>https://github.com/chromelyapps/Chromely/blob/master/nugets/chromely.ico?raw=true</iconUrl>
     <description>This is a .NET Standard library. It is the base/core library required to build either Chromely CefSharp or Chromely CefGlue apps. It has all the common features and functionalities for both types of apps on either Windows or Linux.</description>
-    <releaseNotes>- ChromelyConfiguration is now Singleton - only one instance per Chromely app.</releaseNotes>
+    <releaseNotes>{releaseNotes}</releaseNotes>
     <copyright>Copyright © 2017-2019 Chromely Projects</copyright>
     <tags>Cef Chromium HTML5 Desktop Chromely CefGlue CefSharp Restful  Ajax HTTP XHR MessageRouter JavascriptIntegration NetStandard .NET Core</tags>
     <repository type="Github Repository" url="https://github.com/chromelyapps/Chromely" />
     <dependencies>
       <group targetFramework=".NETStandard2.0" />
     </dependencies>
+    <files>
+      <file src="Chromely-Win\Assemblies\Chromely.Core.dll" target="lib\netstandard2.0" />
+      <file src="Chromely-Win\Assemblies\Chromely.Core.pdb" target="lib\netstandard2.0" />
+    </files>
   </metadata>
 </package>
-
