@@ -1,8 +1,12 @@
 using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Chromely.Core.Infrastructure;
 using ICSharpCode.SharpZipLib.BZip2;
 using ICSharpCode.SharpZipLib.Tar;
@@ -82,7 +86,9 @@ namespace Chromely.CefGlue.Loader
         private string _archiveName;
         private string _folderName;
         private string _downloadUrl;
-        
+        private long _downloadLength;
+
+        private readonly int _numberOfParallelDownloads;
         private int _lastPercent;
 
         private CefLoader()
@@ -96,6 +102,8 @@ namespace Chromely.CefGlue.Loader
             Log.Info($"CefLoader: Load CEF for {_platform}, version {version}");
 
             _lastPercent = 0;
+            _numberOfParallelDownloads = Environment.ProcessorCount;
+            
             _indexUrl = CefBuildsDownloadIndex(_platform);
             version = version.Replace(".", @"\.");
             _binaryNamePattern = $@"""((cef_binary_[0-9]+\.{version}\.[0-9]+\.(.*)_{_platform}_minimal).tar.bz2)""";
@@ -106,13 +114,18 @@ namespace Chromely.CefGlue.Loader
         }
         
         
-
+        private class Range  
+        {  
+            public long Start { get; set; }  
+            public long End { get; set; }  
+        }  
         private void Download()
         {
+          
             using (var client = new WebClient())
             {
-                var index = client.DownloadString(_indexUrl);
-                var found = new Regex(_binaryNamePattern).Match(index);
+                var cefIndex = client.DownloadString(_indexUrl);
+                var found = new Regex(_binaryNamePattern).Match(cefIndex);
                 if (!found.Success)
                 {
                     var message = $"CEF for chrome version {CefRuntime.ChromeVersion} platform {_platform} not found.";
@@ -124,26 +137,87 @@ namespace Chromely.CefGlue.Loader
                 _folderName = found.Groups[2].Value;
                 _downloadUrl = CefDownloadUrl(_archiveName);
 
-                Log.Info($"CefLoader: Loading {_archiveName}");
+                var webRequest = WebRequest.Create(_downloadUrl);  
+                webRequest.Method = "HEAD";  
+                using (var webResponse = webRequest.GetResponse())  
+                {  
+                    _downloadLength = long.Parse(webResponse.Headers.Get("Content-Length"));  
+                }  
+                
+                Log.Info($"CefLoader: Loading {_archiveName}, {_downloadLength / (1024 * 1024)}MB");
                 client.DownloadProgressChanged += Client_DownloadProgressChanged;
-                client.DownloadFileTaskAsync(_downloadUrl, _tempBz2File).Wait();
+                //client.DownloadFileTaskAsync(_downloadUrl, _tempBz2File).Wait();
+
+                // Calculate ranges  
+                var readRanges = new List<Range>();  
+                for (var chunk = 0; chunk < _numberOfParallelDownloads - 1; chunk++)  
+                {  
+                    var range = new Range()  
+                    {  
+                        Start = chunk * (_downloadLength / _numberOfParallelDownloads),  
+                        End = ((chunk + 1) * (_downloadLength / _numberOfParallelDownloads)) - 1  
+                    };  
+                    readRanges.Add(range);  
+                }  
+                readRanges.Add(new Range()  
+                {  
+                    Start = readRanges.Any() ? readRanges.Last().End + 1 : 0,  
+                    End = _downloadLength - 1  
+                });  
+
+                // Parallel download
+                var tempFilesDictionary = new ConcurrentDictionary<long, string>();  
+                
+                Parallel.ForEach(readRanges, new ParallelOptions() { MaxDegreeOfParallelism = _numberOfParallelDownloads }, readRange =>  
+                {  
+                    var httpWebRequest = WebRequest.Create(_downloadUrl) as HttpWebRequest;  
+                    // ReSharper disable once PossibleNullReferenceException
+                    httpWebRequest.Method = "GET";  
+                    httpWebRequest.AddRange(readRange.Start, readRange.End);  
+                    using (var httpWebResponse = httpWebRequest.GetResponse() as HttpWebResponse)  
+                    {  
+                        var tempFilePath = Path.GetTempFileName();  
+                        Log.Info($"CefLoader: Load {tempFilePath} ({readRange.Start}..{readRange.End})");
+                        using (var fileStream = new FileStream(tempFilePath, FileMode.Create, FileAccess.Write, FileShare.Write))  
+                        {  
+                            httpWebResponse?.GetResponseStream()?.CopyTo(fileStream);  
+                            tempFilesDictionary.TryAdd(readRange.Start, tempFilePath);  
+                        }  
+                    }  
+                });  
+
+                // Merge to single file
+                if (File.Exists(_tempBz2File))  
+                {  
+                    File.Delete(_tempBz2File);  
+                }  
+                using (var destinationStream = new FileStream(_tempBz2File, FileMode.Append))  
+                {
+                    foreach (var tempFile in tempFilesDictionary.OrderBy(b => b.Key))  
+                    {  
+                        var tempFileBytes = File.ReadAllBytes(tempFile.Value);  
+                        destinationStream.Write(tempFileBytes, 0, tempFileBytes.Length);  
+                        File.Delete(tempFile.Value);  
+                    }
+                }  
             }
         }
 
         private void DecompressArchive()
         {
             Log.Info("CefLoader: Decompressing BZ2 archive");
-            using (var inStream = new FileStream(_tempBz2File, FileMode.Open))
-            using (var outStream = new FileStream(_tempTarFile, FileMode.Create))
+            using (var tarStream = new MemoryStream())
             {
-                BZip2.Decompress(inStream, outStream, true, DecompressProgressChanged);
-            }
-            Log.Info("CefLoader: Decompressing TAR archive");
-            using (var tarStream = new FileStream(_tempTarFile, FileMode.Open))
-            {
+                using (var inStream = new FileStream(_tempBz2File, FileMode.Open))
+                {
+                    BZip2.Decompress(inStream, tarStream, false, null);//DecompressProgressChanged);
+                }
+                
+                Log.Info("CefLoader: Decompressing TAR archive");
+                tarStream.Seek(0, SeekOrigin.Begin);
                 var tar = TarArchive.CreateInputTarArchive(tarStream);
                 tar.ProgressMessageEvent += (archive, entry, message) => Log.Info("CefLoader: Extracting " + entry.Name);
-                        
+                    
                 Directory.CreateDirectory(_tempDirectory);
                 tar.ExtractContents(_tempDirectory);
             }
