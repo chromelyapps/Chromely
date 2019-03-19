@@ -26,8 +26,8 @@
     </frameworkAssemblies>
   </metadata>
   <files>
-    <file src="Chromely-Win\Assemblies\Chromely.CefSharp.Winapi.dll" target="lib\net461" />
-    <file src="Chromely-Win\Assemblies\Chromely.CefSharp.Winapi.pdb" target="lib\net461" />
+    <file src="Chromely-Win\Artifacts\Chromely.CefSharp.Winapi.dll" target="lib\net461" />
+    <file src="Chromely-Win\Artifacts\Chromely.CefSharp.Winapi.pdb" target="lib\net461" />
   </files>
 </package>
 
