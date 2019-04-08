@@ -72,7 +72,7 @@ namespace Chromely.CefGlue.Browser.Handlers
                         // hack because of this: https://github.com/dotnet/corefx/issues/10361
                         if (CefRuntime.Platform == CefRuntimePlatform.Windows)
                         {
-                            string url = request.Url.Replace("&", "^&");
+                            var url = request.Url.Replace("&", "^&");
                             Process.Start(new ProcessStartInfo("cmd", $"/c start {url}") { CreateNoWindow = true });
                         }
                         else if (CefRuntime.Platform == CefRuntimePlatform.Linux)

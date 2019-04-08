@@ -17,9 +17,9 @@ namespace Chromely.CefGlue.BrowserWindow
     using System.Xml;
     using System.Xml.Linq;
 
-    using Chromely.CefGlue.Loader;
-    using Chromely.Core;
-    using Chromely.Core.Infrastructure;
+    using Loader;
+    using Core;
+    using Core.Infrastructure;
     using Xilium.CefGlue;
 
     /// <summary>
@@ -263,7 +263,14 @@ namespace Chromely.CefGlue.BrowserWindow
                 xDocument.WriteTo(writer);
             }
 
-            Process.Start(htmlFileName);
+            if (CefRuntime.Platform == CefRuntimePlatform.Linux)
+            {
+                Process.Start("xdg-open", htmlFileName);
+            }
+            else
+            {
+                Process.Start(htmlFileName);
+            }
 
             return htmlFileName;
         }
