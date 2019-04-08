@@ -13,8 +13,9 @@ using System.IO;
 using System.Runtime.InteropServices;
 using Chromely.Core.Infrastructure;
 using Xilium.CefGlue;
+// ReSharper disable UnusedMember.Global
 
-namespace Chromely.CefGlue.BrowserWindow
+namespace Chromely.CefGlue.Gtk.BrowserWindow
 {
     /// <summary>
     /// The native methods.
@@ -674,7 +675,7 @@ namespace Chromely.CefGlue.BrowserWindow
             /// The handle.
             /// </summary>
             [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1400:AccessModifierMustBeDeclared", Justification = "Reviewed. Suppression is OK here.")]
-            IntPtr Handle;
+            private readonly IntPtr Handle;
         }
 
         /// <summary>

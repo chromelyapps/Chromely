@@ -1,4 +1,5 @@
 
+* 0.9.4 CEF loader included, ChromelyConfiguration options WithLoadingCefBinariesIfNotFound and WithFramelessHost. 
 * 0.9.3 ChromelyConfiguration.Create() now returns platform specific preconfigured instance.
 * 0.9.2 ChromelyConfiguration is now Singleton, Breaking changes!
 * 0.9.1 Websocket handler interface added.Changed menu context handler.

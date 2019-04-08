@@ -10,8 +10,9 @@
 using System;
 using Chromely.Core.Infrastructure;
 using WinApi.Windows;
+// ReSharper disable UnusedMember.Global
 
-namespace Chromely.CefGlue
+namespace Chromely.CefGlue.Winapi
 {
     /// <summary>
     /// The host helpers.

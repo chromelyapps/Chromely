@@ -9,10 +9,11 @@
 
 using System;
 using Chromely.CefGlue.Browser;
+using Chromely.CefGlue.BrowserWindow;
 using Chromely.Core;
 using Xilium.CefGlue;
 
-namespace Chromely.CefGlue.BrowserWindow
+namespace Chromely.CefGlue.Gtk.BrowserWindow
 {
     /// <summary>
     /// The window.

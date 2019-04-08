@@ -15,8 +15,9 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.InteropServices;
 using WinApi.User32;
+// ReSharper disable UnusedMember.Global
 
-namespace Chromely.CefGlue.BrowserWindow
+namespace Chromely.CefGlue.Winapi.BrowserWindow
 {
     /// <summary>
     /// The native methods.

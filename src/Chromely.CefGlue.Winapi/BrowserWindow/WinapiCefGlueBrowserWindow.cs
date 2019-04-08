@@ -7,9 +7,11 @@
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Chromely.CefGlue.BrowserWindow;
 using Chromely.Core;
+// ReSharper disable UnusedMember.Global
 
-namespace Chromely.CefGlue.BrowserWindow
+namespace Chromely.CefGlue.Winapi.BrowserWindow
 {
     /// <summary>
     /// The cef glue chromium window.

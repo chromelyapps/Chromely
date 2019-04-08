@@ -10,8 +10,9 @@
 using System;
 using Chromely.Core;
 using Chromely.Core.Host;
+// ReSharper disable UnusedMember.Global
 
-namespace Chromely.CefGlue.BrowserWindow
+namespace Chromely.CefGlue.Gtk.BrowserWindow
 {
     /// <summary>
     /// The native window.
@@ -53,8 +54,8 @@ namespace Chromely.CefGlue.BrowserWindow
         /// </summary>
         public GtkNativeWindow()
         {
-            this.mMainWindow = IntPtr.Zero;
-            this.mHostConfig = ChromelyConfiguration.Create();
+            mMainWindow = IntPtr.Zero;
+            mHostConfig = ChromelyConfiguration.Create();
         }
 
         /// <summary>
@@ -65,8 +66,8 @@ namespace Chromely.CefGlue.BrowserWindow
         /// </param>
         public GtkNativeWindow(ChromelyConfiguration hostConfig)
         {
-            this.mMainWindow = IntPtr.Zero;
-            this.mHostConfig = hostConfig;
+            mMainWindow = IntPtr.Zero;
+            mHostConfig = hostConfig;
         }
 
         #region Events
@@ -257,39 +258,42 @@ namespace Chromely.CefGlue.BrowserWindow
         /// </summary>
         private void CreateWindow()
         {
-            this.mMainWindow = GtkNativeMethods.NewWindow(GtkNativeMethods.GtkWindowType.GtkWindowToplevel);
-            GtkNativeMethods.SetTitle(this.mMainWindow, this.mHostConfig.HostTitle);
+            var wndType = mHostConfig.HostFrameless
+                ? GtkNativeMethods.GtkWindowType.GtkWindowPopup
+                : GtkNativeMethods.GtkWindowType.GtkWindowToplevel;
+            mMainWindow = GtkNativeMethods.NewWindow(wndType);
+            GtkNativeMethods.SetTitle(mMainWindow, mHostConfig.HostTitle);
 
-            GtkNativeMethods.SetIconFromFile(this.mMainWindow, this.mHostConfig.HostIconFile);
+            GtkNativeMethods.SetIconFromFile(mMainWindow, mHostConfig.HostIconFile);
 
-            GtkNativeMethods.SetSizeRequest(this.mMainWindow, this.mHostConfig.HostWidth, this.mHostConfig.HostHeight);
+            GtkNativeMethods.SetSizeRequest(mMainWindow, mHostConfig.HostWidth, mHostConfig.HostHeight);
 
-            if (this.mHostConfig.HostCenterScreen)
+            if (mHostConfig.HostCenterScreen)
             {
-                GtkNativeMethods.SetWindowPosition(this.mMainWindow, GtkNativeMethods.GtkWindowPosition.GtkWinPosCenter);
+                GtkNativeMethods.SetWindowPosition(mMainWindow, GtkNativeMethods.GtkWindowPosition.GtkWinPosCenter);
             }
 
-            switch (this.mHostConfig.HostState)
+            switch (mHostConfig.HostState)
             {
                 case WindowState.Normal:
                     break;
 
                 case WindowState.Maximize:
-                    GtkNativeMethods.SetWindowMaximize(this.mMainWindow);
+                    GtkNativeMethods.SetWindowMaximize(mMainWindow);
                     break;
 
                 case WindowState.Fullscreen:
-                    GtkNativeMethods.SetFullscreen(this.mMainWindow);
+                    GtkNativeMethods.SetFullscreen(mMainWindow);
                     break;
             }
 
-            GtkNativeMethods.AddConfigureEvent(this.mMainWindow);
+            GtkNativeMethods.AddConfigureEvent(mMainWindow);
 
-            this.Realized += this.OnRealized;
-            this.Resized += this.OnResize;
-            this.Exited += this.OnExit;
+            Realized += OnRealized;
+            Resized += OnResize;
+            Exited += OnExit;
 
-            GtkNativeMethods.ShowAll(this.mMainWindow);
+            GtkNativeMethods.ShowAll(mMainWindow);
         }
 
         /// <summary>

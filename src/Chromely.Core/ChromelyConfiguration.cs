@@ -7,6 +7,7 @@
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
+// ReSharper disable UnusedMember.Global
 namespace Chromely.Core
 {
     using System;
@@ -90,6 +91,11 @@ namespace Chromely.Core
         /// Gets or sets a value indicating whether host center screen.
         /// </summary>
         public bool HostCenterScreen { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether host to not display borders, minimize, maximize and close.
+        /// </summary>
+        public bool HostFrameless { get; set; }
 
         /// <summary>
         /// Gets or sets the host/window/app title.
@@ -354,6 +360,18 @@ namespace Chromely.Core
             HostCenterScreen = centerScreen;
             return this;
         }
+
+        /// <summary>
+        /// Set frameless host mode.
+        /// </summary>
+        /// <param name="frameless"></param>
+        /// The <see cref="ChromelyConfiguration"/>.
+        public ChromelyConfiguration WithFramelessHost(bool frameless = true)
+        {
+            HostFrameless = frameless;
+            return this;
+        }
+        
 
         /// <summary>
         /// Sets host/window/app title.

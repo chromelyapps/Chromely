@@ -16,8 +16,9 @@ using NetCoreEx.Geometry;
 using WinApi.Gdi32;
 using WinApi.Kernel32;
 using WinApi.User32;
+// ReSharper disable UnusedMember.Global
 
-namespace Chromely.CefGlue.BrowserWindow
+namespace Chromely.CefGlue.Winapi.BrowserWindow
 {
     /// <summary>
     /// The native window.
@@ -35,7 +36,7 @@ namespace Chromely.CefGlue.BrowserWindow
         public WinapiNativeWindow()
         {
             Handle = IntPtr.Zero;
-         }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WinapiNativeWindow"/> class.
@@ -298,8 +299,14 @@ namespace Chromely.CefGlue.BrowserWindow
         /// </returns>
         private Tuple<WindowStyles, WindowExStyles, ShowWindowCommands> GetWindowStyles(WindowState state)
         {
-            WindowStyles styles = WindowStyles.WS_OVERLAPPEDWINDOW | WindowStyles.WS_CLIPCHILDREN | WindowStyles.WS_CLIPSIBLINGS;
-            WindowExStyles exStyles = WindowExStyles.WS_EX_APPWINDOW | WindowExStyles.WS_EX_WINDOWEDGE;
+            var styles = WindowStyles.WS_OVERLAPPEDWINDOW | WindowStyles.WS_CLIPCHILDREN | WindowStyles.WS_CLIPSIBLINGS;
+            var exStyles = WindowExStyles.WS_EX_APPWINDOW | WindowExStyles.WS_EX_WINDOWEDGE;
+
+            if (mHostConfig.HostFrameless)
+            {
+                styles = WindowStyles.WS_POPUPWINDOW | WindowStyles.WS_CLIPCHILDREN | WindowStyles.WS_CLIPSIBLINGS;
+                exStyles = WindowExStyles.WS_EX_TOOLWINDOW;
+            }
 
             switch (state)
             {
@@ -308,14 +315,13 @@ namespace Chromely.CefGlue.BrowserWindow
 
                 case WindowState.Maximize:
                 {
-                    styles = WindowStyles.WS_OVERLAPPEDWINDOW | WindowStyles.WS_CLIPCHILDREN | WindowStyles.WS_CLIPSIBLINGS | WindowStyles.WS_MAXIMIZE;
-                    exStyles = WindowExStyles.WS_EX_APPWINDOW | WindowExStyles.WS_EX_WINDOWEDGE;
+                    styles |= WindowStyles.WS_MAXIMIZE;
                     return new Tuple<WindowStyles, WindowExStyles, ShowWindowCommands>(styles, exStyles, ShowWindowCommands.SW_SHOWMAXIMIZED);
                 }
 
                 case WindowState.Fullscreen:
                 {
-                    styles = WindowStyles.WS_CLIPCHILDREN | WindowStyles.WS_CLIPSIBLINGS | WindowStyles.WS_MAXIMIZE;
+                    styles |= WindowStyles.WS_MAXIMIZE;
                     exStyles = WindowExStyles.WS_EX_TOOLWINDOW;
                     return new Tuple<WindowStyles, WindowExStyles, ShowWindowCommands>(styles, exStyles, ShowWindowCommands.SW_SHOWMAXIMIZED);
                 }
@@ -332,13 +338,8 @@ namespace Chromely.CefGlue.BrowserWindow
         /// </returns>
         private IntPtr GetIconHandle()
         {
-            IntPtr? hIcon = CefGlue.BrowserWindow.WinapiNativeMethods.LoadIconFromFile(this.mHostConfig.HostIconFile);
-            if (hIcon == null)
-            {
-                return User32Helpers.LoadIcon(IntPtr.Zero, SystemIcon.IDI_APPLICATION);
-            }
-
-            return hIcon.Value;
+            var hIcon = WinapiNativeMethods.LoadIconFromFile(mHostConfig.HostIconFile);
+            return hIcon ?? User32Helpers.LoadIcon(IntPtr.Zero, SystemIcon.IDI_APPLICATION);
         }
     }
 }
