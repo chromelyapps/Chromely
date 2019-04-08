@@ -7,12 +7,12 @@
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Chromely.CefGlue.Winapi
-{
-    using System;
-    using Chromely.Core.Infrastructure;
-    using WinApi.Windows;
+using System;
+using Chromely.Core.Infrastructure;
+using WinApi.Windows;
 
+namespace Chromely.CefGlue
+{
     /// <summary>
     /// The host helpers.
     /// </summary>

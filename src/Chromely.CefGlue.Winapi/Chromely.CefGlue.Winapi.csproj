@@ -1,68 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <Platforms>AnyCPU</Platforms>
-    <ProductVersion>68.0.0.1</ProductVersion>
-    <AssemblyVersion>68.0.0.1</AssemblyVersion>
-    <FileVersion>68.0.0.1</FileVersion>
-    <Version>68.0.0.1</Version>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Product>Chromely.CefGlue.Winapi</Product>
-    <Authors>Chromely Projects</Authors>
-    <Company>Chromely Projects</Company>
-    <Copyright>Copyright © 2017-2018 Chromely Projects</Copyright>
-    <PackageLicenseUrl>https://github.com/chromelyapps/Chromely/blob/master/LICENSE.md</PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/chromelyapps/Chromely</PackageProjectUrl>
-    <PackageIconUrl>https://github.com/chromelyapps/Chromely/blob/master/nugets/chromely.ico?raw=true</PackageIconUrl>
-    <PackageTags>Cef Chromium HTML5 Desktop Chromely CefGlue  Restful  Ajax HTTP XHR MessageRouter JavascriptIntegration  .NET Core</PackageTags>
-    <Description>Chromely CefGlue Winapi implementation library - this is in .NET Standard 2.0 as it can be used in both .NET (Windows) and .NET Core (Windows, Linux).  Chromely.CefGlue.Winapi version naming is based on CefGlue Cef version implemented.</Description>
-    <PackageReleaseNotes>
-      - Bug fix - CEF binaries download on every build using Nuget CefGlue packages - https://github.com/chromelyapps/Chromely/issues/72
-    </PackageReleaseNotes>
-    <RepositoryType>Github Repository</RepositoryType>
-    <RepositoryUrl>https://github.com/chromelyapps/Chromely</RepositoryUrl>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DocumentationFile>bin\Debug\netstandard2.0\Chromely.CefGlue.Winapi.xml</DocumentationFile>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\netstandard2.0\Chromely.CefGlue.Winapi.xml</DocumentationFile>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="CefGlue\Interop\Base\cef_string_t.disabled.cs" />
-  </ItemGroup>
+    <ItemGroup>
+      <PackageReference Include="WinApi" Version="4.0.0" />
+    </ItemGroup>
   
-  <ItemGroup>
-    <PackageReference Include="System.Collections.Specialized" Version="4.3.0" />
-    <PackageReference Include="System.IO.UnmanagedMemoryStream" Version="4.3.0" />
-    <PackageReference Include="WinApi" Version="4.0.0" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <ProjectReference Include="..\Chromely.Core\Chromely.Core.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\Chromely.CefGlue\Chromely.CefGlue.csproj" />
+      <ProjectReference Include="..\Chromely.Core\Chromely.Core.csproj" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <None Include="build\**" Pack="True" PackagePath="build\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="build\Chromely.CefGlue.Winapi.props">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="build\chromelycef.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="build\chromelycef.exe.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  
 </Project>
