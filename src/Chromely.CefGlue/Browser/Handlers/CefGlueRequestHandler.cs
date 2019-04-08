@@ -24,14 +24,14 @@ namespace Chromely.CefGlue.Browser.Handlers
         /// <summary>
         /// The m_browser.
         /// </summary>
-        private readonly CefGlueBrowser mBrowser;
+        private readonly CefGlueBrowser _browser;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CefGlueRequestHandler"/> class.
         /// </summary>
         public CefGlueRequestHandler()
         {
-            mBrowser = CefGlueBrowser.BrowserCore;
+            _browser = CefGlueBrowser.BrowserCore;
         }
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace Chromely.CefGlue.Browser.Handlers
         /// </param>
         protected override void OnPluginCrashed(CefBrowser browser, string pluginPath)
         {
-            mBrowser.InvokeAsyncIfPossible(() => mBrowser.OnPluginCrashed(new PluginCrashedEventArgs(pluginPath)));
+            _browser.InvokeAsyncIfPossible(() => _browser.OnPluginCrashed(new PluginCrashedEventArgs(pluginPath)));
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace Chromely.CefGlue.Browser.Handlers
         /// </param>
         protected override void OnRenderProcessTerminated(CefBrowser browser, CefTerminationStatus status)
         {
-            mBrowser.InvokeAsyncIfPossible(() => mBrowser.OnRenderProcessTerminated(new RenderProcessTerminatedEventArgs(status)));
+            _browser.InvokeAsyncIfPossible(() => _browser.OnRenderProcessTerminated(new RenderProcessTerminatedEventArgs(status)));
         }
     }
 }

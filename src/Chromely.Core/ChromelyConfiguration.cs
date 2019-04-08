@@ -8,6 +8,10 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 // ReSharper disable UnusedMember.Global
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable UnusedMethodReturnValue.Global
+// ReSharper disable MemberCanBeProtected.Global
 namespace Chromely.Core
 {
     using System;
@@ -23,6 +27,7 @@ namespace Chromely.Core
     /// <summary>
     /// The Chromely configuration.
     /// </summary>
+    // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
     public class ChromelyConfiguration
     {
         /// <summary>
@@ -541,7 +546,7 @@ namespace Chromely.Core
         /// <returns>
         /// The <see cref="ChromelyConfiguration"/> object.
         /// </returns>
-        public ChromelyConfiguration UseDefautJsHandler(string objectNameToBind, bool registerAsync)
+        public ChromelyConfiguration UseDefaultJsHandler(string objectNameToBind, bool registerAsync)
         {
             return RegisterJsHandler(new ChromelyJsHandler(objectNameToBind, registerAsync));
         }
@@ -730,7 +735,7 @@ namespace Chromely.Core
         /// <returns>
         /// The <see cref="ChromelyConfiguration"/> object.
         /// </returns>
-        public virtual ChromelyConfiguration RegisterCustomrUrlScheme(string schemeName, string domainName)
+        public virtual ChromelyConfiguration RegisterCustomerUrlScheme(string schemeName, string domainName)
         {
             var scheme = new UrlScheme(schemeName, domainName, false);
             UrlSchemeProvider.RegisterScheme(scheme);
@@ -746,7 +751,7 @@ namespace Chromely.Core
         /// <returns>
         /// The <see cref="ChromelyConfiguration"/> object.
         /// </returns>
-        public virtual ChromelyConfiguration RegisterCustomrUrlScheme(UrlScheme urlScheme)
+        public virtual ChromelyConfiguration RegisterCustomerUrlScheme(UrlScheme urlScheme)
         {
             UrlSchemeProvider.RegisterScheme(urlScheme);
             return this;
@@ -919,7 +924,7 @@ namespace Chromely.Core
         /// Registers message router handler.
         /// </summary>
         /// <param name="messageRouterHandler">
-        /// The chromely messsage router handler.
+        /// The chromely message router handler.
         /// </param>
         /// <returns>
         /// The <see cref="ChromelyConfiguration"/> object.
@@ -933,7 +938,7 @@ namespace Chromely.Core
         /// Registers message router handler.
         /// </summary>
         /// <param name="messageRouterHandler">
-        /// The chromely messsage router.
+        /// The chromely message router.
         /// </param>
         /// <returns>
         /// The <see cref="ChromelyConfiguration"/> object.
@@ -952,8 +957,8 @@ namespace Chromely.Core
         /// <summary>
         /// The register websocket handler.
         /// </summary>
-        /// <param name="sockeHandler">
-        /// The socke handler.
+        /// <param name="socketHandler">
+        /// The socket handler.
         /// </param>
         /// <param name="address">
         /// The address.
@@ -967,9 +972,9 @@ namespace Chromely.Core
         /// <returns>
         /// The <see cref="ChromelyConfiguration"/>.
         /// </returns>
-        public ChromelyConfiguration RegisterWebsocketHandler(IChromelyWebsocketHandler sockeHandler, string address, int port, bool onLoadStartServer)
+        public ChromelyConfiguration RegisterWebsocketHandler(IChromelyWebsocketHandler socketHandler, string address, int port, bool onLoadStartServer)
         {
-            if (sockeHandler == null)
+            if (socketHandler == null)
             {
                 return this;
             }
@@ -981,7 +986,7 @@ namespace Chromely.Core
                 IoC.UnregisterHandler<IChromelyWebsocketHandler>(typeof(IChromelyWebsocketHandler).FullName);
             }
 
-            IoC.RegisterInstance(typeof(IChromelyWebsocketHandler), typeof(IChromelyWebsocketHandler).FullName, sockeHandler);
+            IoC.RegisterInstance(typeof(IChromelyWebsocketHandler), typeof(IChromelyWebsocketHandler).FullName, socketHandler);
 
             WebsocketAddress = address;
             WebsocketPort = port;

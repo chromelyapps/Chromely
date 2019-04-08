@@ -7,6 +7,8 @@
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Threading;
+
 namespace Chromely.CefGlue.BrowserWindow
 {
     using System;
@@ -132,6 +134,8 @@ namespace Chromely.CefGlue.BrowserWindow
                 stopwatch.Stop();
                 var competedTempFile = LaunchCompletedPage($"Time elapsed: {stopwatch.Elapsed}.");
                 tempFiles.Add(competedTempFile);
+                
+                Thread.Sleep(TimeSpan.FromSeconds(2));
             }
             catch (Exception ex)
             {
