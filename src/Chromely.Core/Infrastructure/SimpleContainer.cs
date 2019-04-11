@@ -312,7 +312,7 @@ namespace Caliburn.Light
 
             lock (_entries)
             {
-                var entry = _entries.FirstOrDefault(x => x.Service == service && x.Key == key) ?? _entries.FirstOrDefault(x => x.Service == service);
+                var entry = _entries.FirstOrDefault(x => x.Service == service && x.Key == key);
                 if (entry != null)
                 {
                     if (entry.Count != 1)
