@@ -350,6 +350,8 @@ namespace Chromely.CefGlue.BrowserWindow
         {
             var tempFiles = CefBinariesLoader.Load(HostConfig);
 
+            CefRuntime.EnableHighDpiSupport();
+            
             var settings = new CefSettings
             {
                 MultiThreadedMessageLoop = true,
