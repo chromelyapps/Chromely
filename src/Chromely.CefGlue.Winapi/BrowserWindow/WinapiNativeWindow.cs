@@ -29,7 +29,12 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
         /// The m host config.
         /// </summary>
         private readonly ChromelyConfiguration mHostConfig;
-
+        
+        /// <summary>
+        /// WindowProc ref : prevent GC Collect
+        /// </summary>
+        private WindowProc mWindowProc;
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="WinapiNativeWindow"/> class.
         /// </summary>
@@ -191,6 +196,8 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
         {
             var instanceHandle = Kernel32Methods.GetModuleHandle(IntPtr.Zero);
 
+            mWindowProc = WindowProc;
+            
             var wc = new WindowClassEx
             {
                 Size = (uint)Marshal.SizeOf<WindowClassEx>(),
@@ -199,7 +206,7 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
                 IconHandle = GetIconHandle(),
                 Styles = WindowClassStyles.CS_HREDRAW | WindowClassStyles.CS_VREDRAW,
                 BackgroundBrushHandle = new IntPtr((int)StockObject.WHITE_BRUSH),
-                WindowProc = WindowProc,
+                WindowProc = mWindowProc,
                 InstanceHandle = instanceHandle
             };
 
