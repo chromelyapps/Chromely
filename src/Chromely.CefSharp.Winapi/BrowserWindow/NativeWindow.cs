@@ -311,11 +311,7 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
                     {
                         if (mHostConfig.HostFrameless)
                         {
-                            // Reasoning for checking wParam is listed here https://docs.microsoft.com/en-us/windows/desktop/winmsg/wm-nccalcsize
-                            if (wParam.ToInt32() > 0)
-                            {
-                                return IntPtr.Zero;
-                            }
+                            return IntPtr.Zero;
                         }
                         break;
                     }
