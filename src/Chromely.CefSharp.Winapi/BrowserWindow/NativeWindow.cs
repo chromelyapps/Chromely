@@ -331,7 +331,7 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
         internal static IntPtr HitTestNCA(IntPtr hWnd, IntPtr wParam, IntPtr lParam)
         {
             // Get the point coordinates for the hit test.
-            Point mousePoint = new Point(lParam.ToInt32() >> 16, lParam.ToInt32() & 0xFFFF);
+            Point mousePoint = new Point(lParam.ToInt32() & 0xFFFF, lParam.ToInt32() >> 16);
 
             // Get the window rectangle.
             Rectangle rectWindow;
