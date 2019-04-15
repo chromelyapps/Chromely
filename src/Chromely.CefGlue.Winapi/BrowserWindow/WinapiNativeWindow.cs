@@ -17,6 +17,7 @@ using WinApi.DwmApi;
 using WinApi.Gdi32;
 using WinApi.Kernel32;
 using WinApi.User32;
+using Xilium.CefGlue;
 // ReSharper disable UnusedMember.Global
 
 namespace Chromely.CefGlue.Winapi.BrowserWindow
@@ -68,6 +69,8 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
         {
             while (User32Methods.GetMessage(out Message msg, IntPtr.Zero, 0, 0) != 0)
             {
+                CefRuntime.DoMessageLoopWork();
+
                 User32Methods.TranslateMessage(ref msg);
                 User32Methods.DispatchMessage(ref msg);
             }
@@ -327,7 +330,7 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
         internal static IntPtr HitTestNCA(IntPtr hWnd, IntPtr wParam, IntPtr lParam)
         {
             // Get the point coordinates for the hit test.
-            Point mousePoint = new Point(lParam.ToInt32() >> 16, lParam.ToInt32() & 0xFFFF);
+            Point mousePoint = new Point(lParam.ToInt32() & 0xFFFF, lParam.ToInt32() >> 16);
 
             // Get the window rectangle.
             Rectangle rectWindow;
