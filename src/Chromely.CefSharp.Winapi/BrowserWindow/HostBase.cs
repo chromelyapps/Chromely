@@ -344,7 +344,7 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
                             {
                                 LocalesDirPath = localesDirPath,
                                 Locale = HostConfig.Locale,
-                                MultiThreadedMessageLoop = true,
+                                MultiThreadedMessageLoop = false, // MultiThreadedMessageLoop is not allowed to be used as it will break frameless mode
                                 CachePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "CefSharp\\Cache"),
                                 LogSeverity = (CefSharpGlobal.LogSeverity)HostConfig.LogSeverity,
                                 LogFile = HostConfig.LogFile
