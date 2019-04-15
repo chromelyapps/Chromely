@@ -354,7 +354,7 @@ namespace Chromely.CefGlue.BrowserWindow
             
             var settings = new CefSettings
             {
-                MultiThreadedMessageLoop = true,
+                MultiThreadedMessageLoop = false, // MultiThreadedMessageLoop is not allowed to be used as it will break frameless mode
                 LogSeverity = (CefLogSeverity)HostConfig.LogSeverity,
                 LogFile = HostConfig.LogFile,
                 ResourcesDirPath = Path.GetDirectoryName(

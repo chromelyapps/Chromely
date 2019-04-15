@@ -8,6 +8,9 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using System.Text;
 using Chromely.CefGlue.Browser;
 using Chromely.CefGlue.BrowserWindow;
 using Chromely.Core;
@@ -40,6 +43,11 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
         /// The browser window handle.
         /// </summary>
         private IntPtr mBrowserWindowHandle;
+        private IntPtr mBrowserWndProc;
+        private IntPtr mBrowserRenderWidgetHandle;
+        private IntPtr mBrowserRenderWidgetWndProc;
+        private List<ChildWindow> childWindows;
+        private List<WndProcOverride> wndProcOverrides = new List<WndProcOverride>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WinapiWindow"/> class.
@@ -147,6 +155,59 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
             mApplication.Quit();
         }
 
+        private delegate bool EnumWindowProc(IntPtr hWnd, IntPtr lParam);
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool EnumChildWindows(IntPtr window, EnumWindowProc callback, IntPtr lParam);
+
+        private struct ChildWindow
+        {
+            public IntPtr Handle;
+            public string ClassName;
+        }
+
+        private class EnumChildWindowsDetails
+        {
+            public List<ChildWindow> Windows = new List<ChildWindow>();
+        }
+
+        private class WndProcOverride
+        {
+            private IntPtr handle;
+            private IntPtr originalWndProc;
+            private string className;
+            private WindowProc newWndProc;
+
+            public WndProcOverride(IntPtr wndHandle, string wndClassName)
+            {
+                handle = wndHandle;
+                className = wndClassName;
+                newWndProc = new WindowProc(OverridenWndProc);
+                originalWndProc = User32Methods.SetWindowLongPtr(handle, -4, Marshal.GetFunctionPointerForDelegate(newWndProc));
+            }
+
+            private IntPtr OverridenWndProc(IntPtr hWnd, uint uMsg, IntPtr wParam, IntPtr lParam)
+            {
+                var msg = (WM)uMsg;
+                var originalRet = User32Methods.CallWindowProc(originalWndProc, hWnd, uMsg, wParam, lParam);
+                switch (msg)
+                {
+                    case WM.NCHITTEST:
+                        {
+                            // If we hit a non client area (our overlapped frame) then we'll force an NCHITTEST to bubble back up to the main process
+                            IntPtr hitTest = HitTestNCA(hWnd, wParam, lParam);
+                            if (hitTest != IntPtr.Zero)
+                            {
+                                return new IntPtr(-1);
+                            }
+                            break;
+                        }
+                }
+                return originalRet;
+            }
+        }
+
         /// <summary>
         /// The browser created.
         /// </summary>
@@ -163,7 +224,39 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
             {
                 var size = GetClientSize();
                 WinapiNativeMethods.SetWindowPos(mBrowserWindowHandle, IntPtr.Zero, 0, 0, size.Width, size.Height, WindowPositionFlags.SWP_NOZORDER);
+
+                var childWindowsDetails = new EnumChildWindowsDetails();
+                var gcHandle = GCHandle.Alloc(childWindowsDetails);
+                EnumChildWindows(Handle, new EnumWindowProc(EnumWindow), GCHandle.ToIntPtr(gcHandle));
+
+                foreach (ChildWindow childWindow in childWindowsDetails.Windows)
+                {
+                    var wndProcOverride = new WndProcOverride(childWindow.Handle, childWindow.ClassName);
+                    wndProcOverrides.Add(wndProcOverride);
+                }
+
+                childWindows = childWindowsDetails.Windows;
+
+                gcHandle.Free();
             }
+        }
+
+        private bool EnumWindow(IntPtr hWnd, IntPtr lParam)
+        {
+            var buffer = new StringBuilder(128);
+            User32Methods.GetClassName(hWnd, buffer, buffer.Capacity);
+
+            var childWindow = new ChildWindow()
+            {
+                Handle = hWnd,
+                ClassName = buffer.ToString()
+            };
+
+            var gcHandleDetails = GCHandle.FromIntPtr(lParam);
+            var details = (EnumChildWindowsDetails)gcHandleDetails.Target;
+            details.Windows.Add(childWindow);
+
+            return true;
         }
     }
 }
