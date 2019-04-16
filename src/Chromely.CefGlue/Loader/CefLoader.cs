@@ -29,6 +29,9 @@ namespace Chromely.CefGlue.Loader
         private static string CefBuildsDownloadIndex(string platform) => $"http://opensource.spotify.com/cefbuilds/index.html#{platform}_builds";
         private static string CefDownloadUrl(string name) => $"http://opensource.spotify.com/cefbuilds/{name}";
 
+        public int DownloadTimeoutMinutes { get; set; } = 10;
+
+
         /// <summary>
         /// Load CEF runtime files.
         /// </summary>
@@ -146,7 +149,6 @@ namespace Chromely.CefGlue.Loader
                 
                 Log.Info($"CefLoader: Loading {_archiveName}, {_downloadLength / (1024 * 1024)}MB");
                 client.DownloadProgressChanged += Client_DownloadProgressChanged;
-                //client.DownloadFileTaskAsync(_downloadUrl, _tempBz2File).Wait();
 
                 // Calculate ranges  
                 var readRanges = new List<Range>();  
@@ -172,7 +174,8 @@ namespace Chromely.CefGlue.Loader
                 {  
                     var httpWebRequest = WebRequest.Create(_downloadUrl) as HttpWebRequest;  
                     // ReSharper disable once PossibleNullReferenceException
-                    httpWebRequest.Method = "GET";  
+                    httpWebRequest.Method = "GET";
+                    httpWebRequest.Timeout = (int)TimeSpan.FromMinutes(DownloadTimeoutMinutes).TotalMilliseconds;
                     httpWebRequest.AddRange(readRange.Start, readRange.End);  
                     using (var httpWebResponse = httpWebRequest.GetResponse() as HttpWebResponse)  
                     {  
@@ -210,13 +213,13 @@ namespace Chromely.CefGlue.Loader
             {
                 using (var inStream = new FileStream(_tempBz2File, FileMode.Open, FileAccess.Read, FileShare.None))
                 {
-                    BZip2.Decompress(inStream, tarStream, false, null);//DecompressProgressChanged);
+                    BZip2.Decompress(inStream, tarStream, false, DecompressProgressChanged);
                 }
                 
                 Log.Info("CefLoader: Decompressing TAR archive");
                 tarStream.Seek(0, SeekOrigin.Begin);
                 var tar = TarArchive.CreateInputTarArchive(tarStream);
-                //tar.ProgressMessageEvent += (archive, entry, message) => Log.Info("CefLoader: Extracting " + entry.Name);
+                tar.ProgressMessageEvent += (archive, entry, message) => Log.Info("CefLoader: Extracting " + entry.Name);
                     
                 Directory.CreateDirectory(_tempDirectory);
                 tar.ExtractContents(_tempDirectory);
