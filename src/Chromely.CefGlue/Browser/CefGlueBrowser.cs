@@ -211,17 +211,27 @@ namespace Chromely.CefGlue.Browser
         /// </summary>
         public void Dispose()
         {
-            if (mWebsocketStarted)
+            try
             {
-                WebsocketServerRunner.StopServer();
-            }
+                if (mWebsocketStarted)
+                {
+                    WebsocketServerRunner.StopServer();
+                }
 
-            if (CefBrowser != null)
+                if (CefBrowser != null)
+                {
+                    var host = CefBrowser.GetHost();
+                    host.CloseBrowser(true);
+                    host.Dispose();
+                    CefBrowser.Dispose();
+                }
+            }
+            catch
             {
-                var host = CefBrowser.GetHost();
-                host.CloseBrowser(true);
-                host.Dispose();
-                CefBrowser.Dispose();
+                // ignore exceptions here
+            }
+            finally
+            {
                 CefBrowser = null;
             }
         }

@@ -109,7 +109,7 @@ namespace Chromely.CefGlue.Loader
             
             _indexUrl = CefBuildsDownloadIndex(_platform);
             version = version.Replace(".", @"\.");
-            _binaryNamePattern = $@"""((cef_binary_[0-9]+\.{version}\.[0-9]+\.(.*)_{_platform}_minimal).tar.bz2)""";
+            _binaryNamePattern = $@"""((cef_binary_[0-9]+\.{version}\.[0-9]+\.(.*)_{_platform}_client).tar.bz2)""";
     
             _tempBz2File = Path.GetTempFileName();
             _tempTarFile = Path.GetTempFileName();
@@ -230,13 +230,10 @@ namespace Chromely.CefGlue.Loader
         {
             Log.Info("CefLoader: Copy files to application directory");
             // now we have all files in the temporary directory
-            // we have to copy the 'Release' and 'Resources' folder to the application directory
+            // we have to copy the 'Release' folder to the application directory
             var srcPathRelease = Path.Combine(_tempDirectory, _folderName, "Release");
-            var srcPathResources = Path.Combine(_tempDirectory, _folderName, "Resources");
             var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
-                    
             CopyDirectory(srcPathRelease, appDirectory);
-            CopyDirectory(srcPathResources, appDirectory);
         }
         
         
