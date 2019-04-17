@@ -66,6 +66,7 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
         {
             mBrowser = new ChromiumWebBrowser(settings, hostConfig.StartUrl);
             mBrowser.IsBrowserInitializedChanged += IsBrowserInitializedChanged;
+            mBrowser.DragHandler = new CefSharpDragHandler();
 
             // Set handlers
             mBrowser.SetEventHandlers();
@@ -159,13 +160,17 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
 
         private class WndProcOverride
         {
+            private ChromiumWebBrowser browser;
+            private IntPtr mainHandle;
             private IntPtr handle;
             private IntPtr originalWndProc;
             private string className;
             private WindowProc newWndProc;
 
-            public WndProcOverride(IntPtr wndHandle, string wndClassName)
+            public WndProcOverride(IntPtr wndHandle, string wndClassName, ChromiumWebBrowser mBrowser, IntPtr parentHandle)
             {
+                browser = mBrowser;
+                mainHandle = parentHandle;
                 handle = wndHandle;
                 className = wndClassName;
                 newWndProc = new WindowProc(OverridenWndProc);
@@ -178,6 +183,18 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
                 var originalRet = User32Methods.CallWindowProc(originalWndProc, hWnd, uMsg, wParam, lParam);
                 switch (msg)
                 {
+                    case WM.LBUTTONDOWN:
+                        {
+                            var mousePoint = new System.Drawing.Point(lParam.ToInt32());
+                            var dragHandler = browser.DragHandler as CefSharpDragHandler;
+                            if (dragHandler.DragRegion.IsVisible(mousePoint)) {
+                                // Release the capture of browser window and send a caption drag to the main window
+                                User32Methods.ReleaseCapture();
+                                User32Methods.SendMessage(mainHandle, (uint)WM.NCLBUTTONDOWN, new IntPtr(2), IntPtr.Zero);
+                            }
+                            break;
+                        }
+
                     case WM.NCHITTEST:
                         {
                             // If we hit a non client area (our overlapped frame) then we'll force an NCHITTEST to bubble back up to the main process
@@ -217,7 +234,7 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
 
                 foreach(ChildWindow childWindow in childWindowsDetails.Windows)
                 {
-                    var wndProcOverride = new WndProcOverride(childWindow.Handle, childWindow.ClassName);
+                    var wndProcOverride = new WndProcOverride(childWindow.Handle, childWindow.ClassName, mBrowser, Handle);
                     wndProcOverrides.Add(wndProcOverride);
                 }
 
