@@ -17,7 +17,7 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
     /// <summary>
     /// The native window.
     /// </summary>
-    public class GtkNativeWindow
+    public class NativeWindow
     {
         /// <summary>
         /// The event lock object.
@@ -50,21 +50,21 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         private EventHandler<EventArgs> mDestroyEvent;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GtkNativeWindow"/> class.
+        /// Initializes a new instance of the <see cref="NativeWindow"/> class.
         /// </summary>
-        public GtkNativeWindow()
+        public NativeWindow()
         {
             mMainWindow = IntPtr.Zero;
             mHostConfig = ChromelyConfiguration.Create();
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GtkNativeWindow"/> class.
+        /// Initializes a new instance of the <see cref="NativeWindow"/> class.
         /// </summary>
         /// <param name="hostConfig">
         /// The host config.
         /// </param>
-        public GtkNativeWindow(ChromelyConfiguration hostConfig)
+        public NativeWindow(ChromelyConfiguration hostConfig)
         {
             mMainWindow = IntPtr.Zero;
             mHostConfig = hostConfig;
@@ -82,8 +82,8 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
                 lock (mEventLock)
                 {
                     mRealizeEvent += value;
-                    GtkNativeMethods.EventHandler onRealizedHandler = LocalRealized;
-                    GtkNativeMethods.ConnectSignal(mMainWindow, "realize", onRealizedHandler, 0, IntPtr.Zero, (int)GtkNativeMethods.GConnectFlags.GConnectAfter);
+                    NativeMethods.EventHandler onRealizedHandler = LocalRealized;
+                    NativeMethods.ConnectSignal(mMainWindow, "realize", onRealizedHandler, 0, IntPtr.Zero, (int)NativeMethods.GConnectFlags.GConnectAfter);
                 }
             }
 
@@ -107,8 +107,8 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
                 lock (mEventLock)
                 {
                     mConfigureEvent += value;
-                    GtkNativeMethods.EventHandler onConfiguredHandler = LocalConfigured;
-                    GtkNativeMethods.ConnectSignal(mMainWindow, "configure-event", onConfiguredHandler, 0, IntPtr.Zero, (int)GtkNativeMethods.GConnectFlags.GConnectAfter);
+                    NativeMethods.EventHandler onConfiguredHandler = LocalConfigured;
+                    NativeMethods.ConnectSignal(mMainWindow, "configure-event", onConfiguredHandler, 0, IntPtr.Zero, (int)NativeMethods.GConnectFlags.GConnectAfter);
                 }
             }
 
@@ -132,8 +132,8 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
                 lock (mEventLock)
                 {
                     mDestroyEvent += value;
-                    GtkNativeMethods.EventHandler onDestroyedHandler = LocalDestroyed;
-                    GtkNativeMethods.ConnectSignal(mMainWindow, "destroy", onDestroyedHandler, 0, IntPtr.Zero, (int)GtkNativeMethods.GConnectFlags.GConnectAfter);
+                    NativeMethods.EventHandler onDestroyedHandler = LocalDestroyed;
+                    NativeMethods.ConnectSignal(mMainWindow, "destroy", onDestroyedHandler, 0, IntPtr.Zero, (int)NativeMethods.GConnectFlags.GConnectAfter);
                 }
             }
 
@@ -162,7 +162,7 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         /// <summary>
         /// The host xid.
         /// </summary>
-        public IntPtr HostXid => GtkNativeMethods.GetWindowXid(mMainWindow);
+        public IntPtr HostXid => NativeMethods.GetWindowXid(mMainWindow);
 
         /// <summary>
         /// The show window.
@@ -186,7 +186,7 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         /// </param>
         public virtual void ResizeHost(IntPtr host, int width, int height)
         {
-            GtkNativeMethods.SetWindowSize(host, width, height);
+            NativeMethods.SetWindowSize(host, width, height);
         }
 
         /// <summary>
@@ -208,7 +208,7 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
                 return;
             }
 
-            GtkNativeMethods.GetWindowSize(Host, out width, out height);
+            NativeMethods.GetWindowSize(Host, out width, out height);
         }
 
         /// <summary>
@@ -236,7 +236,7 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         protected virtual void OnResize(object sender, EventArgs e)
         {
             GetSize(out var width, out var height);
-            GtkNativeMethods.SetWindowSize(Host, width, height);
+            NativeMethods.SetWindowSize(Host, width, height);
         }
 
         /// <summary>
@@ -250,7 +250,7 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         /// </param>
         protected virtual void OnExit(object sender, EventArgs e)
         {
-            GtkNativeMethods.Quit();
+            NativeMethods.Quit();
         }
 
         /// <summary>
@@ -259,18 +259,18 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         private void CreateWindow()
         {
             var wndType = mHostConfig.HostFrameless
-                ? GtkNativeMethods.GtkWindowType.GtkWindowPopup
-                : GtkNativeMethods.GtkWindowType.GtkWindowToplevel;
-            mMainWindow = GtkNativeMethods.NewWindow(wndType);
-            GtkNativeMethods.SetTitle(mMainWindow, mHostConfig.HostTitle);
+                ? NativeMethods.GtkWindowType.GtkWindowPopup
+                : NativeMethods.GtkWindowType.GtkWindowToplevel;
+            mMainWindow = NativeMethods.NewWindow(wndType);
+            NativeMethods.SetTitle(mMainWindow, mHostConfig.HostTitle);
 
-            GtkNativeMethods.SetIconFromFile(mMainWindow, mHostConfig.HostIconFile);
+            NativeMethods.SetIconFromFile(mMainWindow, mHostConfig.HostIconFile);
 
-            GtkNativeMethods.SetSizeRequest(mMainWindow, mHostConfig.HostWidth, mHostConfig.HostHeight);
+            NativeMethods.SetSizeRequest(mMainWindow, mHostConfig.HostWidth, mHostConfig.HostHeight);
 
             if (mHostConfig.HostCenterScreen)
             {
-                GtkNativeMethods.SetWindowPosition(mMainWindow, GtkNativeMethods.GtkWindowPosition.GtkWinPosCenter);
+                NativeMethods.SetWindowPosition(mMainWindow, NativeMethods.GtkWindowPosition.GtkWinPosCenter);
             }
 
             switch (mHostConfig.HostState)
@@ -279,21 +279,21 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
                     break;
 
                 case WindowState.Maximize:
-                    GtkNativeMethods.SetWindowMaximize(mMainWindow);
+                    NativeMethods.SetWindowMaximize(mMainWindow);
                     break;
 
                 case WindowState.Fullscreen:
-                    GtkNativeMethods.SetFullscreen(mMainWindow);
+                    NativeMethods.SetFullscreen(mMainWindow);
                     break;
             }
 
-            GtkNativeMethods.AddConfigureEvent(mMainWindow);
+            NativeMethods.AddConfigureEvent(mMainWindow);
 
             Realized += OnRealized;
             Resized += OnResize;
             Exited += OnExit;
 
-            GtkNativeMethods.ShowAll(mMainWindow);
+            NativeMethods.ShowAll(mMainWindow);
         }
 
         /// <summary>
@@ -302,7 +302,7 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         /// <param name="eventArgs">
         /// The event args.
         /// </param>
-        private void LocalRealized(GtkNativeMethods.StructEventArgs eventArgs)
+        private void LocalRealized(NativeMethods.StructEventArgs eventArgs)
         {
             mRealizeEvent(this, new EventArgs());
         }
@@ -313,7 +313,7 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         /// <param name="eventArgs">
         /// The event args.
         /// </param>
-        private void LocalConfigured(GtkNativeMethods.StructEventArgs eventArgs)
+        private void LocalConfigured(NativeMethods.StructEventArgs eventArgs)
         {
             mConfigureEvent(this, new EventArgs());
         }
@@ -324,7 +324,7 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         /// <param name="eventArgs">
         /// The event args.
         /// </param>
-        private void LocalDestroyed(GtkNativeMethods.StructEventArgs eventArgs)
+        private void LocalDestroyed(NativeMethods.StructEventArgs eventArgs)
         {
             mDestroyEvent(this, new EventArgs());
         }

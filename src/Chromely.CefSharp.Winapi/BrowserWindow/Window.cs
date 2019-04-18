@@ -24,7 +24,7 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
     /// <summary>
     /// The window.
     /// </summary>
-    public class Window : NativeWindow
+    internal class Window : NativeWindow
     {
         /// <summary>
         /// The host/app/window application.
@@ -102,7 +102,7 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
         /// </exception>
         protected override void OnCreate(IntPtr hwnd, int width, int height)
         {
-            mBrowser?.CreateBrowser(hwnd);
+            mBrowser?.CreateBrowser(hwnd, HostConfig.StartUrl);
         }
 
         /// <summary>

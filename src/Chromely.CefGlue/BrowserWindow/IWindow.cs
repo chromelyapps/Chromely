@@ -7,5 +7,6 @@ namespace Chromely.CefGlue.BrowserWindow
     {
         CefGlueBrowser Browser { get; }
         void CenterToScreen();
+        void Exit();
     }
 }

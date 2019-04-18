@@ -14,7 +14,6 @@ using System.Linq;
 using System.Reflection;
 using Chromely.CefGlue.Browser;
 using Chromely.CefGlue.Browser.Handlers;
-using Chromely.CefGlue.Loader;
 using Chromely.Core;
 using Chromely.Core.Helpers;
 using Chromely.Core.Host;
@@ -28,7 +27,7 @@ namespace Chromely.CefGlue.BrowserWindow
     /// <summary>
     /// The host base.
     /// </summary>
-    public abstract class HostBase : IChromelyWindow, IChromelyServiceProvider, IDisposable
+    public abstract class HostBase : IChromelyWindow
     {
         /// <summary>
         /// The m main view.
@@ -176,6 +175,21 @@ namespace Chromely.CefGlue.BrowserWindow
             HostConfig?.RegisterCustomHandler(key, implementation);
         }
 
+        /// <summary>
+        /// The close - closing window externally/programatically.
+        /// </summary>
+        public void Close()
+        {
+        }
+
+        /// <summary>
+        /// The Exit - closing window externally/programatically.
+        /// </summary>
+        public void Exit()
+        {
+            mMainView?.Exit();
+        }
+
         #endregion
 
         #region IChromelyServiceProvider implementations
@@ -299,11 +313,6 @@ namespace Chromely.CefGlue.BrowserWindow
         protected abstract void Initialize();
 
         /// <summary>
-        /// The platform shutdown.
-        /// </summary>
-        protected abstract void Shutdown();
-
-        /// <summary>
         /// The platform run message loop.
         /// </summary>
         protected abstract void RunMessageLoop();
@@ -351,7 +360,7 @@ namespace Chromely.CefGlue.BrowserWindow
             var tempFiles = CefBinariesLoader.Load(HostConfig);
 
             CefRuntime.EnableHighDpiSupport();
-            
+
             var settings = new CefSettings
             {
                 MultiThreadedMessageLoop = true,
@@ -497,6 +506,14 @@ namespace Chromely.CefGlue.BrowserWindow
             {
                 BrowserMessageRouter.AddHandler(new CefGlueMessageRouterHandler());
             }
+        }
+
+        /// <summary>
+        /// The shutdown.
+        /// </summary>
+        private void Shutdown()
+        {
+            QuitMessageLoop();
         }
 
         /// <summary>

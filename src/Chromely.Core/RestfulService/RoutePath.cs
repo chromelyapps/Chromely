@@ -9,6 +9,8 @@
 
 namespace Chromely.Core.RestfulService
 {
+    using System;
+
     /// <summary>
     /// The route path.
     /// </summary>
@@ -25,12 +27,10 @@ namespace Chromely.Core.RestfulService
         /// </param>
         public RoutePath(Method method, string path)
         {
+            Path = string.IsNullOrEmpty(path) ? string.Empty : path;
             Method = method;
             var methodString = ConvertMethod(method);
-            path = string.IsNullOrEmpty(path) ? string.Empty : path;
-            var routeKey = $"{methodString}_{path}";
-            Path = path;
-            Key = routeKey.ToLower();
+            Key = GetKey(methodString, path);
         }
 
         /// <summary>
@@ -44,11 +44,13 @@ namespace Chromely.Core.RestfulService
         /// </param>
         public RoutePath(string method, string path)
         {
-            var methodString = string.IsNullOrEmpty(method) ? "get" : method;
-            path = string.IsNullOrEmpty(path) ? string.Empty : path;
-            var routeKey = $"{methodString}_{path}";
-            Path = path;
-            Key = routeKey.ToLower();
+            Path = string.IsNullOrEmpty(path) ? string.Empty : path;
+            if (Enum.TryParse(method, out Method parsedMethod))
+            {
+                Method = parsedMethod;
+            }
+
+            Key = GetKey(method, path);
         }
 
         /// <summary>
@@ -123,6 +125,25 @@ namespace Chromely.Core.RestfulService
                 default:
                     return false;
             }
+        }
+
+        /// <summary>
+        /// The get key.
+        /// </summary>
+        /// <param name="method">
+        /// The method.
+        /// </param>
+        /// <param name="path">
+        /// The path.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
+        private string GetKey(string method, string path)
+        {
+            var methodString = string.IsNullOrEmpty(method) ? "get" : method;
+            var routeKey = $"{methodString}_{path}".Replace("/", "_").Replace("\\", "_");
+            return routeKey.ToLower();
         }
 
         /// <summary>

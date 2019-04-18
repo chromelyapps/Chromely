@@ -14,7 +14,6 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
     using System.IO;
     using System.Linq;
     using System.Reflection;
-
     using Chromely.CefSharp.Winapi.Browser;
     using Chromely.CefSharp.Winapi.Browser.Handlers;
     using Chromely.Core;
@@ -28,7 +27,7 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
     /// <summary>
     /// The host base.
     /// </summary>
-    public abstract class HostBase : IChromelyWindow, IChromelyServiceProvider, IDisposable
+    internal abstract class HostBase : IChromelyWindow
     {
         /// <summary>
         /// The m main view.
@@ -79,6 +78,13 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
         /// Gets the browser.
         /// </summary>
         public object Browser => mMainView?.Browser;
+
+        /// <summary>
+        /// The initialize.
+        /// </summary>
+        public void Initialize()
+        {
+        }
 
         /// <summary>
         /// The run.
@@ -169,6 +175,22 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
             }
 
             HostConfig?.RegisterCustomHandler(key, implementation);
+        }
+
+        /// <summary>
+        /// The close.
+        /// </summary>
+        public void Close()
+        {
+            mMainView?.CloseWindowExternally();
+        }
+
+        /// <summary>
+        /// The Exit.
+        /// </summary>
+        public void Exit()
+        {
+            mMainView?.CloseWindowExternally();
         }
 
         #endregion
@@ -287,41 +309,6 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
 
         #endregion
 
-        #region Abstract Methods
-
-        /// <summary>
-        /// The platform initialize.
-        /// </summary>
-        protected abstract void Initialize();
-
-        /// <summary>
-        /// The platform shutdown.
-        /// </summary>
-        protected abstract void Shutdown();
-
-        /// <summary>
-        /// The platform run message loop.
-        /// </summary>
-        protected abstract void RunMessageLoop();
-
-        /// <summary>
-        /// The platform quit message loop.
-        /// </summary>
-        protected abstract void QuitMessageLoop();
-
-        /// <summary>
-        /// The create main view.
-        /// </summary>
-        /// <param name="settings">
-        /// The settings.
-        /// </param>
-        /// <returns>
-        /// The <see cref="Window"/>.
-        /// </returns>
-        protected abstract Window CreateMainView(CefSettings settings);
-
-        #endregion Abstract Methods
-
         /// <summary>
         /// The run internal.
         /// </summary>
@@ -357,8 +344,8 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
             RegisterSchemeHandlers();
 
             // Perform dependency check to make sure all relevant resources are in our output directory.
-            CefSharpGlobal.Cef.Initialize(mSettings, HostConfig.PerformDependencyCheck, null);
-
+            CefSharpGlobal.Cef.Initialize(mSettings, performDependencyCheck: true, browserProcessHandler: null);
+       
             Initialize();
 
             mMainView = CreateMainView(mSettings);
@@ -380,6 +367,44 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
             Shutdown();
 
             return 0;
+        }
+
+        /// <summary>
+        /// The platform run message loop.
+        /// </summary>
+        private void RunMessageLoop()
+        {
+            NativeWindow.RunMessageLoop();
+        }
+
+        /// <summary>
+        /// The platform quit message loop.
+        /// </summary>
+        private void QuitMessageLoop()
+        {
+            NativeWindow.Exit();
+        }
+
+        /// <summary>
+        /// The shutdown.
+        /// </summary>
+        private void Shutdown()
+        {
+            QuitMessageLoop();
+        }
+
+        /// <summary>
+        /// The create main view.
+        /// </summary>
+        /// <param name="settings">
+        /// The settings.
+        /// </param>
+        /// <returns>
+        /// The <see cref="Window"/>.
+        /// </returns>
+        private Window CreateMainView(CefSettings settings)
+        {
+            return new Window(this, HostConfig, settings);
         }
 
         /// <summary>

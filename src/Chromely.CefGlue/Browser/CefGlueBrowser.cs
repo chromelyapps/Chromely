@@ -199,7 +199,7 @@ namespace Chromely.CefGlue.Browser
             mSettings.DefaultEncoding = "UTF-8";
             mSettings.FileAccessFromFileUrls = CefState.Enabled;
             mSettings.UniversalAccessFromFileUrls = CefState.Enabled;
-            mSettings.WebSecurity = CefState.Enabled;
+            mSettings.WebSecurity = CefState.Disabled;
 
             CefBrowserHost.CreateBrowser(windowInfo, mClient, mSettings, StartUrl);
         }

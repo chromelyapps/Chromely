@@ -23,7 +23,7 @@ namespace Chromely.CefSharp.Winapi.Browser
     /// <summary>
     /// The chromium web browser.
     /// </summary>
-    public class ChromiumWebBrowser : IWebBrowserInternal
+    internal class ChromiumWebBrowser : IWebBrowserInternal
     {
         /// <summary>
         /// The m settings.
@@ -334,7 +334,8 @@ namespace Chromely.CefSharp.Winapi.Browser
         /// Initializes a new instance of the <see cref="ChromiumWebBrowser"/> class.
         /// </summary>
         /// <param name="parent">The parent handle.</param>
-        public void CreateBrowser(IntPtr parent)
+        /// <param name="address">Start address.</param>
+        public void CreateBrowser(IntPtr parent, string address)
         {
             if (((IWebBrowserInternal)this).HasParent == false)
             {
@@ -342,7 +343,10 @@ namespace Chromely.CefSharp.Winapi.Browser
                 {
                     RequestContext = Cef.GetGlobalRequestContext();
                     mBrowserCreated = true;
-                    managedCefBrowserAdapter.CreateBrowser(BrowserSettings, (RequestContext)RequestContext, parent, null);
+                    var windowInfo = new WindowInfo();
+                    windowInfo.SetAsChild(parent);
+                    BrowserSettings.WebSecurity = CefState.Disabled;
+                    managedCefBrowserAdapter.CreateBrowser(windowInfo, BrowserSettings, (RequestContext)RequestContext, address);
                 }
                 else
                 {

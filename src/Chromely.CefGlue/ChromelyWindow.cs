@@ -8,9 +8,11 @@ using Xilium.CefGlue;
 
 namespace Chromely.CefGlue
 {
-    public class ChromelyBrowserWindow
+    using Chromely.Core.Host;
+
+    public class ChromelyWindow
     {
-        public static HostBase Create(ChromelyConfiguration config)
+        public static IChromelyWindow Create(ChromelyConfiguration config)
         {
             switch (CefRuntime.Platform)
             {
@@ -23,13 +25,13 @@ namespace Chromely.CefGlue
             throw new PlatformNotSupportedException($"Chromely.CefGlue does not support {CefRuntime.Platform}");
         }
         
-        private static HostBase CreateFromAssembly(string platform, ChromelyConfiguration config)
+        private static IChromelyWindow CreateFromAssembly(string platform, ChromelyConfiguration config)
         {
             var path = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) ?? ".";
             var dllName = Path.Combine(path, $"Chromely.CefGlue.{platform}.dll");
             var assembly = System.Reflection.Assembly.LoadFile(dllName);
     
-            var type = assembly.GetTypes().First(t => t.Name == $"{platform}CefGlueBrowserWindow");
+            var type = assembly.GetTypes().First(t => t.Name == "CefGlueWindow");
             return Activator.CreateInstance(type, new object[] { config }) as HostBase;
         }
 

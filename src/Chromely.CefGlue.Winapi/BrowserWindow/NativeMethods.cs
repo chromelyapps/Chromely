@@ -22,7 +22,7 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
     /// <summary>
     /// The native methods.
     /// </summary>
-    public static class WinapiNativeMethods
+    internal static class NativeMethods
     {
         /// <summary>
         /// The dll name.
@@ -120,6 +120,31 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool GetWindowRect(IntPtr hwnd, out RECT lpRect);
+
+        /// <summary>
+        /// The adjust window rect ex.
+        /// </summary>
+        /// <param name="lpRect">
+        /// The lp rect.
+        /// </param>
+        /// <param name="dwStyle">
+        /// The dw style.
+        /// </param>
+        /// <param name="hasMenu">
+        /// The has menu.
+        /// </param>
+        /// <param name="dwExStyle">
+        /// The dw ex style.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        [DllImport(DllName, CharSet = CharSet.Unicode)]
+        public static extern bool AdjustWindowRectEx(
+            [In] [Out] ref RECT lpRect,
+            WindowStyles dwStyle,
+            bool hasMenu,
+            WindowExStyles dwExStyle);
 
         /// <summary>
         /// The load icon from file.

@@ -57,12 +57,10 @@ namespace Chromely.Core.Tests.RestfullService
                 ServiceRouteProvider.AddRoute(item.Key, item.Value);
             }
 
-            foreach (var item in routeDict)
-            {
-                var getRoute = ServiceRouteProvider.GetRoute(new RoutePath(Method.GET, item.Key));
-                var postRoute = ServiceRouteProvider.GetRoute(new RoutePath(Method.GET, item.Key));
-                Assert.True((getRoute != null) || (postRoute != null));
-            }
+            var getRoute1 = ServiceRouteProvider.GetRoute(new RoutePath(Method.GET, "/testcontroller/get1"));
+            var getRoute2 = ServiceRouteProvider.GetRoute(new RoutePath(Method.GET, "/testcontroller/get2"));
+            var postRoute = ServiceRouteProvider.GetRoute(new RoutePath(Method.POST, "/testcontroller/save"));
+            Assert.True((getRoute1 != null) || (getRoute2 != null) || (postRoute != null));
         }
 
         /// <summary>

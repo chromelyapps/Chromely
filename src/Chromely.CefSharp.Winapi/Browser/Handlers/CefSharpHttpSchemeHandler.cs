@@ -116,13 +116,13 @@ namespace Chromely.CefSharp.Winapi.Browser.Handlers
             responseLength = mStream.Length;
             redirectUrl = null;
 
-            var headers = response.ResponseHeaders;
+            var headers = response.Headers;
             headers.Add("Cache-Control", "private");
             headers.Add("Access-Control-Allow-Origin", "*");
             headers.Add("Access-Control-Allow-Methods", "GET,POST");
             headers.Add("Access-Control-Allow-Headers", "Content-Type");
             headers.Add("Content-Type", "application/json; charset=utf-8");
-            response.ResponseHeaders = headers;
+            response.Headers = headers;
 
             response.StatusCode = mChromelyResponse.Status;
             response.StatusText = mChromelyResponse.StatusText;

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CefSharpBrowserWindow.cs" company="Chromely Projects">
+// <copyright file="WinApiCefGlueBrowserWindow.cs" company="Chromely Projects">
 //   Copyright (c) 2017-2018 Chromely Projects
 // </copyright>
 // <license>
@@ -7,38 +7,50 @@
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Chromely.CefSharp.Winapi.BrowserWindow
-{
-    using Chromely.CefSharp.Winapi.Browser;
-    using Chromely.Core;
+using Chromely.CefGlue.BrowserWindow;
+using Chromely.Core;
+// ReSharper disable UnusedMember.Global
 
+namespace Chromely.CefGlue.Winapi.BrowserWindow
+{
     /// <summary>
     /// The cef glue chromium window.
     /// </summary>
-    public class CefSharpBrowserWindow : HostBase
+    internal class CefGlueWindow : HostBase
     {
+        private IWindow mMaWindow;
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="CefSharpBrowserWindow"/> class.
+        /// Initializes a new instance of the <see cref="CefGlueWindow"/> class.
         /// </summary>
         /// <param name="hostConfig">
         /// The host config.
         /// </param>
-        public CefSharpBrowserWindow(ChromelyConfiguration hostConfig) 
+        public CefGlueWindow(ChromelyConfiguration hostConfig) 
             : base(hostConfig)
         {
+        }
+
+        /// <summary>
+        /// The close.
+        /// </summary>
+        public new void Close()
+        {
+            mMaWindow?.Exit();
+        }
+
+        /// <summary>
+        /// The exit.
+        /// </summary>
+        public new void Exit()
+        {
+            mMaWindow?.Exit();
         }
 
         /// <summary>
         /// The platform initialize.
         /// </summary>
         protected override void Initialize()
-        {
-        }
-
-        /// <summary>
-        /// The platform shutdown.
-        /// </summary>
-        protected override void Shutdown()
         {
         }
 
@@ -61,15 +73,13 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
         /// <summary>
         /// The create main view.
         /// </summary>
-        /// <param name="settings">
-        /// The settings.
-        /// </param>
         /// <returns>
         /// The <see cref="Window"/>.
         /// </returns>
-        protected override Window CreateMainView(CefSettings settings)
+        protected override IWindow CreateMainView()
         {
-            return new Window(this, HostConfig, settings);
+            mMaWindow = new Window(this, HostConfig);
+            return mMaWindow;
         }
     }
 }

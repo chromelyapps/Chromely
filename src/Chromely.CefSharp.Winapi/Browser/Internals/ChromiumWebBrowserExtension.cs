@@ -20,7 +20,7 @@ namespace Chromely.CefSharp.Winapi.Browser.Internals
     /// <summary>
     /// The chromium web browser extension.
     /// </summary>
-    public static class ChromiumWebBrowserExtension
+    internal static class ChromiumWebBrowserExtension
     {
         /// <summary>
         /// The set event handlers.
@@ -28,7 +28,7 @@ namespace Chromely.CefSharp.Winapi.Browser.Internals
         /// <param name="browser">
         /// The browser.
         /// </param>
-        public static void SetEventHandlers(this ChromiumWebBrowser browser)
+        internal static void SetEventHandlers(this ChromiumWebBrowser browser)
         {
             try
             {
@@ -133,7 +133,7 @@ namespace Chromely.CefSharp.Winapi.Browser.Internals
         /// <param name="browser">
         /// The browser.
         /// </param>
-        public static void SetCustomHandlers(this ChromiumWebBrowser browser)
+        internal static void SetCustomHandlers(this ChromiumWebBrowser browser)
         {
             try
             {

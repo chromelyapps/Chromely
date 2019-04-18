@@ -20,7 +20,7 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
     /// <summary>
     /// The native methods.
     /// </summary>
-    internal static class GtkNativeMethods
+    internal static class NativeMethods
     {
         /// <summary>
         /// The event handler.
