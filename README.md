@@ -59,7 +59,7 @@ class Program
                      .WithHostSize(1000, 600)
                      .WithStartUrl(startUrl);
 
-      using (var window = new CefGlueBrowserWindow(config))
+      using (var window = ChromelyWindow.Create(config))
       {
          return window.Run(args);
       }
