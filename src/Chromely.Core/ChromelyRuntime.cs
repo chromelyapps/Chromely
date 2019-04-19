@@ -26,8 +26,8 @@ namespace Chromely.Core
         {
             try
             {
-                var dllName = GetWrapperAssemblyName(wrapper).Replace(".CefGlue.Gtk.", ".CefGlue.");
-                var assembly = System.Reflection.Assembly.LoadFile(dllName);
+                var dllName = GetWrapperAssemblyName(wrapper);
+                var assembly = Assembly.LoadFrom(dllName);
                 var types = assembly?.GetTypes();
                 Type type;
                 PropertyInfo versionProperty;
@@ -149,7 +149,10 @@ namespace Chromely.Core
                 ? "Winapi"
                 : DefaultWrapperApi;
             
-            var dllName = Path.Combine(path, $"Chromely.{wrapper}.{wrapperApi}.dll");
+            var dllName = Path.Combine(path, $"Chromely.{wrapper}.{wrapperApi}.dll")
+                .Replace(".CefGlue.Gtk.", ".CefGlue.")      // for CefGlue use common assembly
+                .Replace(".CefGlue.Winapi.", ".CefGlue.");
+
             return dllName;
         }
         
