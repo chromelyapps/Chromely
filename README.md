@@ -66,6 +66,8 @@ class Program
   }
 }
 ````
+ - [CefGlue Usage Readme](https://github.com/chromelyapps/demo-projects/blob/master/regular-chromely/Chromely.CefGlue.Winapi.Demo/README.md) 
+ - [CefSharp Usage Readme](https://github.com/chromelyapps/demo-projects/blob/master/regular-chromely/Chromely.CefSharp.Winapi.Demo/README.md)
 
 #### Run Starter Template (Using dotnet core cli). For more info, please see - [dotnet cli demo template install](https://github.com/chromelyapps/Chromely/wiki/dotnet-cli-Starter-Template)
 
