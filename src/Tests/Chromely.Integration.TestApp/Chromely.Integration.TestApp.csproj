@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <RuntimeFrameworkVersion>2.1.1</RuntimeFrameworkVersion>
+        <RuntimeIdentifiers>win7-x64;linux-x64</RuntimeIdentifiers>
+        <TargetFrameworks>net461;netcoreapp2.1</TargetFrameworks>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+      <PlatformTarget>AnyCPU</PlatformTarget>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="SharpZipLib" Version="1.1.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Chromely.CefGlue.Gtk\Chromely.CefGlue.Gtk.csproj" />
+      <ProjectReference Include="..\..\Chromely.CefGlue.Winapi\Chromely.CefGlue.Winapi.csproj" />
+      <ProjectReference Include="..\..\Chromely.CefGlue\Chromely.CefGlue.csproj" />
+      <ProjectReference Include="..\..\Chromely.Core\Chromely.Core.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="index.html">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
+</Project>
