@@ -5,10 +5,10 @@
     <CefSharpAnyCpuSupport>true</CefSharpAnyCpuSupport>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
-    <ProductVersion>1.0.71.0</ProductVersion>
-    <AssemblyVersion>1.0.71.0</AssemblyVersion>
-    <FileVersion>1.0.71.0</FileVersion>
-    <Version>1.0.71.0</Version>
+    <ProductVersion>4.0.71.0</ProductVersion>
+    <AssemblyVersion>4.0.71.0</AssemblyVersion>
+    <FileVersion>4.0.71.0</FileVersion>
+    <Version>4.0.71.0</Version>
     <Authors>Chromely Projects</Authors>
     <Company>Chromely Projects</Company>
     <Description>Chromely CefSharp Winapi implementation. Chromely.CefSharp.Winapi version naming is based Chromely and Chromium versions implemented- major.minor.chromuim version.patch e.g 1.0.71.0.</Description>
