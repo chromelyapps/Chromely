@@ -13,10 +13,6 @@ namespace Chromely.Core
     /// </summary>
     public static class ChromelyRuntime
     {
-        [DllImport("libcef", EntryPoint = "cef_build_revision", CallingConvention = CallingConvention.Cdecl)]
-        private static extern int build_revision();
-        
-
         /// <summary>
         /// 
         /// </summary>
@@ -26,36 +22,13 @@ namespace Chromely.Core
         {
             try
             {
-                var dllName = GetWrapperAssemblyName(wrapper);
-                var assembly = Assembly.LoadFrom(dllName);
-                var types = assembly?.GetTypes();
-                Type type;
-                PropertyInfo versionProperty;
-                string version;
-                int build;
                 switch (wrapper)
                 {
                     case ChromelyCefWrapper.CefGlue:
-                        type = types?.FirstOrDefault(t => t.Name == "CefRuntime"); 
-                        versionProperty = type?.GetProperty("ChromeVersion");
-                        version = versionProperty?.GetValue(null).ToString();
-                        if (!string.IsNullOrEmpty(version) 
-                            && int.TryParse(version.Split('.')[2], out build))
-                        {
-                            return build;
-                        }
-                        break;
+                        return GetExpectedChromiumBuildNumberCefGlue(GetWrapperAssemblyName(wrapper));
                 
                     case ChromelyCefWrapper.CefSharp:
-                        type = types?.FirstOrDefault(t => t.Name == "Cef"); 
-                        versionProperty = type?.GetProperty("ChromeVersion");
-                        version = versionProperty?.GetValue(null).ToString();
-                        if (!string.IsNullOrEmpty(version) 
-                            && int.TryParse(version.Split('.')[2], out build))
-                        {
-                            return build;
-                        }
-                        break;
+                        return GetExpectedChromiumBuildNumberCefSharp(GetWrapperAssemblyName(wrapper));
                 }
             }
             catch(Exception ex)
@@ -64,25 +37,47 @@ namespace Chromely.Core
                 // ignore
             }
             return 0;
-        } 
+        }
 
-        public static int InstalledCefChromiumBuildNumber
+        private static int GetExpectedChromiumBuildNumberCefGlue(string dllName)
         {
-            get
+            // for CefGlue use common assembly
+            dllName = dllName
+                .Replace(".CefGlue.Gtk.", ".CefGlue.")      
+                .Replace(".CefGlue.Winapi.", ".CefGlue.");
+
+            var assembly = Assembly.LoadFrom(dllName);
+            var types = assembly.GetTypes();
+            var type = types.FirstOrDefault(t => t.Name == "CefRuntime");
+            var versionProperty = type?.GetProperty("ChromeVersion");
+            var version = versionProperty?.GetValue(null).ToString();
+            if (!string.IsNullOrEmpty(version)
+                && int.TryParse(version.Split('.')[2], out var build))
             {
-                var build = 0;
-                try
-                {
-                    build = build_revision();
-                }
-                catch
-                {
-                    // ignore
-                }
                 return build;
             }
-        } 
-        
+            return 0;
+        }
+
+        private static int GetExpectedChromiumBuildNumberCefSharp(string dllName)
+        {
+            var arch = RuntimeInformation.ProcessArchitecture.ToString();
+            dllName = dllName
+                .Replace("Chromely.CefSharp.Winapi", Path.Combine(arch, "CefSharp.Core"));
+
+            var assembly = Assembly.LoadFrom(dllName);
+            var types = assembly.GetTypes();
+            var type = types.FirstOrDefault(t => t.Name == "Cef");
+            var versionProperty = type?.GetProperty("CefVersion");
+            var version = versionProperty?.GetValue(null).ToString();
+            if (!string.IsNullOrEmpty(version)
+                && int.TryParse(version.Split('.')[1], out var build))
+            {
+                return build;
+            }
+            return 0;
+        }
+
         /// <summary>
         /// Gets the runtime the application is running on.
         /// </summary>
@@ -140,6 +135,13 @@ namespace Chromely.Core
             }
         }
 
+        /// <summary>
+        /// Returns the name of the assembly dll
+        /// containing wrapper specific implementation
+        /// of 
+        /// </summary>
+        /// <param name="wrapper"></param>
+        /// <returns></returns>
         public static string GetWrapperAssemblyName(ChromelyCefWrapper wrapper)
         {
             var coreAssembly = typeof(ChromelyRuntime).Assembly;
@@ -149,10 +151,7 @@ namespace Chromely.Core
                 ? "Winapi"
                 : DefaultWrapperApi;
             
-            var dllName = Path.Combine(path, $"Chromely.{wrapper}.{wrapperApi}.dll")
-                .Replace(".CefGlue.Gtk.", ".CefGlue.")      // for CefGlue use common assembly
-                .Replace(".CefGlue.Winapi.", ".CefGlue.");
-
+            var dllName = Path.Combine(path, $"Chromely.{wrapper}.{wrapperApi}.dll");
             return dllName;
         }
         

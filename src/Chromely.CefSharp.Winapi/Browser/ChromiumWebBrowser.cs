@@ -191,7 +191,7 @@ namespace Chromely.CefSharp.Winapi.Browser
 
                 if (value != null && value.GetType() != typeof(RequestContext))
                 {
-                    throw new Exception($"RequestContxt can only be of type {typeof(RequestContext)} or null");
+                    throw new Exception($"RequestContext can only be of type {typeof(RequestContext)} or null");
                 }
 
                 mRequestContext = value;

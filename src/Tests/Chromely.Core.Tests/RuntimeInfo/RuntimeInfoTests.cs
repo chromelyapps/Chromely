@@ -9,7 +9,7 @@ namespace Chromely.Core.Tests.RuntimeInfo
         public void ExpectedCefGlueBuildNumberShouldNotBeZero()
         {
             var buildNumber = ChromelyRuntime.GetExpectedChromiumBuildNumber(ChromelyCefWrapper.CefGlue);
-            Assert.NotEqual(0, buildNumber);
+            Assert.True(buildNumber > 3300);
         }
         
         [Fact]
@@ -18,7 +18,7 @@ namespace Chromely.Core.Tests.RuntimeInfo
             if (ChromelyRuntime.Platform != ChromelyPlatform.Windows) return;
             
             var buildNumber = ChromelyRuntime.GetExpectedChromiumBuildNumber(ChromelyCefWrapper.CefSharp);
-            Assert.NotEqual(0, buildNumber);
+            Assert.True(buildNumber > 3300);
         }
         
     }
