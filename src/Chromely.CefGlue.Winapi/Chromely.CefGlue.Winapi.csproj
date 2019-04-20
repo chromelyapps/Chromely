@@ -1,9 +1,42 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
-        <Version>0.9.3</Version>
-    </PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Platforms>AnyCPU</Platforms>
+    <ProductVersion>1.0.70.0</ProductVersion>
+    <AssemblyVersion>1.0.70.0</AssemblyVersion>
+    <FileVersion>1.0.70.0</FileVersion>
+    <Version>1.0.70.0</Version>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Product>Chromely.CefGlue.Winapi</Product>
+    <Authors>Chromely Projects</Authors>
+    <Company>Chromely Projects</Company>
+    <Copyright>Copyright © 2017-2019 Chromely Projects</Copyright>
+    <PackageLicenseUrl>https://github.com/chromelyapps/Chromely/blob/master/LICENSE.md</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/chromelyapps/Chromely</PackageProjectUrl>
+    <PackageIconUrl>https://github.com/chromelyapps/Chromely/blob/master/nugets/chromely.ico?raw=true</PackageIconUrl>
+    <PackageTags>Cef Chromium HTML5 Desktop Chromely CefGlue  Restful  Ajax HTTP XHR MessageRouter JavascriptIntegration  .NET Core</PackageTags>
+    <Description>Chromely CefGlue Winapi implementation library - this is in .NET Standard 2.0 as it can be used in both .NET (Windows) and .NET Core (Windows, Linux). Chromely.CefGlue.Winapi version naming is based Chromely and Chromium versions implemented- major.minor.chromuim version.patch e.g 1.0.70.0.</Description>
+    <PackageReleaseNotes>
+      - Breaking changes! - ChromelyConfiguration.Create() browser window creation - https://github.com/chromelyapps/Chromely#creating-a-simple-app-using-cefglue-with-winapi-host.
+      - Added ChromelyConfiguration options - WithLoadingCefBinariesIfNotFound, WithFramelessHost.
+      - Added configurable Runtime CEF binaries downloader with WithLoadingCefBinariesIfNotFound.
+      - Added frameless window configurable with WithFramelessHost.
+    </PackageReleaseNotes>
+    <RepositoryType>Github Repository</RepositoryType>
+    <RepositoryUrl>https://github.com/chromelyapps/Chromely</RepositoryUrl>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>bin\Debug\netstandard2.0\Chromely.CefGlue.Winapi.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard2.0\Chromely.CefGlue.Winapi.xml</DocumentationFile>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
 
     <ItemGroup>
       <PackageReference Include="WinApi" Version="4.0.0" />
@@ -13,5 +46,21 @@
       <ProjectReference Include="..\Chromely.CefGlue\Chromely.CefGlue.csproj" />
       <ProjectReference Include="..\Chromely.Core\Chromely.Core.csproj" />
     </ItemGroup>
+
+  <ItemGroup>
+    <None Include="build\**" Pack="True" PackagePath="build\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="build\Chromely.CefGlue.Winapi.props">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="build\chromelycef.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="build\chromelycef.exe.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 
 </Project>

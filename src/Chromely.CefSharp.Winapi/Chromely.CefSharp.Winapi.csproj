@@ -5,13 +5,13 @@
     <CefSharpAnyCpuSupport>true</CefSharpAnyCpuSupport>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
-    <ProductVersion>67.0.0.0</ProductVersion>
-    <AssemblyVersion>0.9.3.0</AssemblyVersion>
-    <FileVersion>0.9.3.0</FileVersion>
-    <Version>0.9.3</Version>
+    <ProductVersion>1.0.71.0</ProductVersion>
+    <AssemblyVersion>1.0.71.0</AssemblyVersion>
+    <FileVersion>1.0.71.0</FileVersion>
+    <Version>1.0.71.0</Version>
     <Authors>Chromely Projects</Authors>
     <Company>Chromely Projects</Company>
-    <Description>Chromely CefSharp Winapi implementation. Chromely.CefSharp.Winapi version naming is based on CefSharp.Common version referenced.</Description>
+    <Description>Chromely CefSharp Winapi implementation. Chromely.CefSharp.Winapi version naming is based Chromely and Chromium versions implemented- major.minor.chromuim version.patch e.g 1.0.71.0.</Description>
     <Copyright>Copyright © 2017-2019 Chromely Projects</Copyright>
     <PackageLicenseUrl>https://github.com/chromelyapps/Chromely/blob/master/LICENSE.md</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/chromelyapps/Chromely</PackageProjectUrl>
@@ -19,10 +19,10 @@
     <PackageTags>Cef Chromium HTML5 Desktop Chromely CefSharp Restful Ajax HTTP XHR JavascriptIntegration</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageReleaseNotes>
-      - Breaking changes! - More info - https://github.com/chromelyapps/Chromely/wiki/Upgrade-to-CefGlue-v68-and-CefSharp-v67
-      - ChromelyConfiguration is now Singleton - only one instance per Chromely app.
-      - Allows for event registration
-      - Added option for Maximize and Fullscreen/Kiosk mode Window states.
+      - Breaking changes! - ChromelyConfiguration.Create() browser window creation - https://github.com/chromelyapps/Chromely#creating-a-simple-app-using-cefglue-with-winapi-host.
+      - Added ChromelyConfiguration options - WithLoadingCefBinariesIfNotFound, WithFramelessHost.
+      - Added configurable Runtime CEF binaries downloader with WithLoadingCefBinariesIfNotFound.
+      - Added frameless window configurable with WithFramelessHost.
     </PackageReleaseNotes>
     <RepositoryType>Github Repository</RepositoryType>
     <RepositoryUrl>https://github.com/chromelyapps/Chromely</RepositoryUrl>
