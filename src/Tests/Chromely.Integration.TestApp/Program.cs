@@ -11,9 +11,13 @@ namespace Chromely.Integration.TestApp
     /// <summary>
     /// This is a minimal chromely application
     /// to be used during integration tests.
+    ///
+    /// Due it is cross platform it MUST NOT
+    /// reference platform specific assemblies.
+    ///  
     /// It will emit console outputs starting
     /// with "CI-TRACE:" which are checked
-    /// in the test run - so don't remove them.
+    /// in the test run - so DON'T REMOVE them.
     /// </summary>
     internal static class Program
     {

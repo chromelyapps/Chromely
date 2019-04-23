@@ -3,7 +3,7 @@
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <RuntimeFrameworkVersion>2.1.1</RuntimeFrameworkVersion>
-        <RuntimeIdentifiers>win7-x64;linux-x64</RuntimeIdentifiers>
+        <RuntimeIdentifiers>win7-x86;win7-x64;linux-x64</RuntimeIdentifiers>
         <TargetFrameworks>net461;netcoreapp2.1</TargetFrameworks>
     </PropertyGroup>
 

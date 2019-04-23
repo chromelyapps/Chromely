@@ -211,13 +211,12 @@ namespace Chromely.Core
                 IoC.Container = container;
             }
 
-            //TODO: Use CefRuntime.Platform if available x-platform with a single reference
-            switch (Environment.OSVersion.Platform)
+            switch (ChromelyRuntime.Platform)
             {
-                case PlatformID.MacOSX:
-                //TODO: check requirements for Mac OS - for now use linux settings
-                case PlatformID.Unix:
-                case (PlatformID)128:   // Framework (1.0 and 1.1) didn't include any PlatformID value for Unix, so Mono used the value 128.
+                case ChromelyPlatform.MacOSX:
+                    //TODO: check and define requirements for Mac OS - for now use linux settings
+                
+                case ChromelyPlatform.Linux:
                     return Instance
                         .WithCustomSetting(CefSettingKeys.MultiThreadedMessageLoop, false)
                         .WithCustomSetting(CefSettingKeys.SingleProcess, true)
@@ -230,11 +229,7 @@ namespace Chromely.Core
                         .WithCommandLineArg("no-sandbox", "1")
                         .WithCommandLineArg("no-zygote", "1");
 
-                case PlatformID.Win32NT:
-                case PlatformID.Win32S:
-                case PlatformID.Win32Windows:
-                case PlatformID.WinCE:
-                case PlatformID.Xbox:
+                case ChromelyPlatform.Windows:
                     return Instance;
 
                 default:
