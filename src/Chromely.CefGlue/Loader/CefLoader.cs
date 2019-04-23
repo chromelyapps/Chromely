@@ -29,6 +29,9 @@ namespace Chromely.CefGlue.Loader
         private static string CefBuildsDownloadIndex(string platform) => $"http://opensource.spotify.com/cefbuilds/index.html#{platform}_builds";
         private static string CefDownloadUrl(string name) => $"http://opensource.spotify.com/cefbuilds/{name}";
 
+        /// <summary>
+        /// Gets or sets the timeout for the CEF download in minutes.
+        /// </summary>
         public int DownloadTimeoutMinutes { get; set; } = 10;
 
 

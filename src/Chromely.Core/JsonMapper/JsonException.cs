@@ -13,6 +13,7 @@
 
 // ReSharper disable All
 using System;
+#pragma warning disable 1591
 
 
 namespace LitJson

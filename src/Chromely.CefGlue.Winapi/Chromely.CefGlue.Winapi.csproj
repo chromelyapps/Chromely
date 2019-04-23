@@ -31,11 +31,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DocumentationFile>bin\Debug\netstandard2.0\Chromely.CefGlue.Winapi.xml</DocumentationFile>
+    <NoWarn>1701;1702; NU5125;7035</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DocumentationFile>bin\Release\netstandard2.0\Chromely.CefGlue.Winapi.xml</DocumentationFile>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <NoWarn>1701;1702; NU5125;7035</NoWarn>
   </PropertyGroup>
 
     <ItemGroup>

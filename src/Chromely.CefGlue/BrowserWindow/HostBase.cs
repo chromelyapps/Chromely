@@ -326,7 +326,7 @@ namespace Chromely.CefGlue.BrowserWindow
         /// The create main view.
         /// </summary>
         /// <returns>
-        /// The <see cref="Window"/>.
+        /// The <see cref="IWindow"/>.
         /// </returns>
         protected abstract IWindow CreateMainView();
 

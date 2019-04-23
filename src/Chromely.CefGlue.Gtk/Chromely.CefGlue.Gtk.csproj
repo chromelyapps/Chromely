@@ -28,6 +28,14 @@
     <RepositoryUrl>https://github.com/chromelyapps/Chromely</RepositoryUrl>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>1701;1702; NU5125;7035</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <NoWarn>1701;1702; NU5125;7035</NoWarn>
+  </PropertyGroup>
+
     <ItemGroup>
       <ProjectReference Include="..\Chromely.CefGlue\Chromely.CefGlue.csproj" />
       <ProjectReference Include="..\Chromely.Core\Chromely.Core.csproj" />

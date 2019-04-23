@@ -74,10 +74,8 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
             base.CenterToScreen();
         }
 
-        /// <summary>
-        /// The exit.
-        /// </summary>
-        public void Exit()
+        /// <inheritdoc />
+        public new void Exit()
         {
             base.CloseWindowExternally();
         }

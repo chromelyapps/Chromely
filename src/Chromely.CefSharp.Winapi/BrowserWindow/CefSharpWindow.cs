@@ -28,17 +28,17 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
         {
         }
 
-        public void Initialize()
+        public new void Initialize()
         {
             base.Initialize();
         }
 
-        public void Close()
+        public new void Close()
         {
             base.Close();
         }
 
-        public void Exit()
+        public new void Exit()
         {
             base.Exit();
         }

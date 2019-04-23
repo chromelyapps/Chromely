@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
+#pragma warning disable 1591
 
 
 namespace LitJson
