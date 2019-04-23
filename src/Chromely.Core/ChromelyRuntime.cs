@@ -117,18 +117,21 @@ namespace Chromely.Core
             return osName.ToLower().Contains("darwin");
         }
 
-        private static string DefaultWrapperApi
+        /// <summary>
+        /// Returns the current platform's default api to use.
+        /// </summary>
+        public static ChromelyHostApi DefaultHostApi
         {
             get
             {
                 switch (Platform)
                 {
                     case ChromelyPlatform.Windows:
-                        return "Winapi";
+                        return ChromelyHostApi.Winapi;
                     case ChromelyPlatform.Linux:
-                        return "Gtk";
+                        return ChromelyHostApi.Gtk;
                     case ChromelyPlatform.MacOSX:
-                        return "Libui";
+                        return ChromelyHostApi.Libui;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
@@ -148,8 +151,8 @@ namespace Chromely.Core
             var path = Path.GetDirectoryName(coreAssembly.Location) ?? ".";
 
             var wrapperApi = (wrapper == ChromelyCefWrapper.CefSharp)
-                ? "Winapi"
-                : DefaultWrapperApi;
+                ? ChromelyHostApi.Winapi.ToString()
+                : DefaultHostApi.ToString();
             
             var dllName = Path.Combine(path, $"Chromely.{wrapper}.{wrapperApi}.dll");
             return dllName;

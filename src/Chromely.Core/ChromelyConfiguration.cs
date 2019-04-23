@@ -43,6 +43,7 @@ namespace Chromely.Core
         [SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1201:ElementsMustAppearInTheCorrectOrder", Justification = "Reviewed. Suppression is OK here.")]
         private ChromelyConfiguration()
         {
+            HostApi = ChromelyRuntime.DefaultHostApi;
             LoadCefBinariesIfNotFound = true;
             SilentCefBinariesLoading = false;
             PerformDependencyCheck = false;
@@ -76,6 +77,11 @@ namespace Chromely.Core
                 return instance;
             }
         }
+
+        /// <summary>
+        /// Gets or sets the desired host interface technology.
+        /// </summary>
+        public ChromelyHostApi HostApi { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether load cef binaries if not found.
@@ -371,7 +377,28 @@ namespace Chromely.Core
             HostFrameless = frameless;
             return this;
         }
-        
+
+        /// <summary>
+        /// Sets the hosting api to use to GTK
+        /// </summary>
+        /// <returns></returns>
+        public ChromelyConfiguration WithGtkHostApi()
+        {
+            HostApi = ChromelyHostApi.Gtk;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the hosting api to use to Libui
+        /// </summary>
+        /// <returns></returns>
+        public ChromelyConfiguration WithLibuiHostApi()
+        {
+            HostApi = ChromelyHostApi.Libui;
+            return this;
+        }
+
+
 
         /// <summary>
         /// Sets host/window/app title.

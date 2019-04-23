@@ -5,7 +5,6 @@ using System.Reflection;
 using Chromely.CefGlue.BrowserWindow;
 using Chromely.Core;
 using Chromely.Core.Host;
-using Xilium.CefGlue;
 
 namespace Chromely.CefGlue
 {
@@ -22,19 +21,7 @@ namespace Chromely.CefGlue
         /// <returns>Interface to the main window</returns>
         public static IChromelyWindow Create(ChromelyConfiguration config)
         {
-            switch (CefRuntime.Platform)
-            {
-                case CefRuntimePlatform.Windows:
-                    return CreateFromAssembly("Winapi", config);
-                case CefRuntimePlatform.Linux:
-                    return CreateFromAssembly("Gtk", config);
-            }
-
-            throw new PlatformNotSupportedException($"Chromely.CefGlue does not support {CefRuntime.Platform}");
-        }
-        
-        private static IChromelyWindow CreateFromAssembly(string platform, ChromelyConfiguration config)
-        {
+            var platform = config.HostApi.ToString();
             var path = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) ?? ".";
             var dllName = Path.Combine(path, $"Chromely.CefGlue.{platform}.dll");
             var assembly = Assembly.LoadFile(dllName);
