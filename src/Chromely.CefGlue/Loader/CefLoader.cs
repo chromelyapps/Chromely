@@ -5,8 +5,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Chromely.Core;
 using Chromely.Core.Infrastructure;
 using ICSharpCode.SharpZipLib.BZip2;
 using ICSharpCode.SharpZipLib.Tar;
@@ -32,6 +34,8 @@ namespace Chromely.CefGlue.Loader
         /// <summary>
         /// Gets or sets the timeout for the CEF download in minutes.
         /// </summary>
+        // ReSharper disable once MemberCanBePrivate.Global
+        // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Global
         public int DownloadTimeoutMinutes { get; set; } = 10;
 
 
@@ -80,10 +84,10 @@ namespace Chromely.CefGlue.Loader
             }
         }
 
-        
-        private readonly string _platform;
-        private readonly string _indexUrl;
-        private readonly string _binaryNamePattern;
+
+        private readonly ChromelyPlatform _platform;
+        private readonly Architecture _architecture;
+        private readonly int _build;
 
         private readonly string _tempBz2File;
         private readonly string _tempTarFile;
@@ -99,26 +103,62 @@ namespace Chromely.CefGlue.Loader
 
         private CefLoader()
         {
-            // Do NOT use OSArchitecture but current process bitness instead
-            var arch = System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture
-                .ToString().ToLower().Replace("x", "");
-            _platform = CefRuntime.Platform.ToString().ToLower() + arch;
-            var version = string.Join(".", CefRuntime.ChromeVersion.Split('.')[2]);
-            
-            Log.Info($"CefLoader: Load CEF for {_platform}, version {version}");
+            _platform = ChromelyRuntime.Platform;
+            _architecture = RuntimeInformation.ProcessArchitecture;
+            _build = ChromelyRuntime.GetExpectedChromiumBuildNumber(ChromelyCefWrapper.CefGlue);
+            Log.Info($"CefLoader: Load CEF for {_platform} {_architecture}, version {_build}");
 
             _lastPercent = 0;
             _numberOfParallelDownloads = Environment.ProcessorCount;
             
-            _indexUrl = CefBuildsDownloadIndex(_platform);
-            version = version.Replace(".", @"\.");
-            _binaryNamePattern = $@"""((cef_binary_[0-9]+\.{version}\.[0-9]+\.(.*)_{_platform}_client).tar.bz2)""";
-    
             _tempBz2File = Path.GetTempFileName();
             _tempTarFile = Path.GetTempFileName();
             _tempDirectory = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
         }
-        
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="platform"></param>
+        /// <param name="processArchitecture"></param>
+        /// <param name="build"></param>
+        /// <returns></returns>
+        public static string FindCefArchiveName(ChromelyPlatform platform, Architecture processArchitecture, int build)
+        {
+            var arch = processArchitecture.ToString()
+                .Replace("X64", "64")
+                .Replace("X86", "32");
+            var platformIdentifier = platform.ToString().ToLower() + arch;
+            var indexUrl = CefBuildsDownloadIndex(platformIdentifier);
+            
+            // cef_binary_3.3626.1895.g7001d56_windows64_client.tar.bz2
+            var binaryNamePattern1 = $@"""(cef_binary_[0-9]+\.{build}\.[0-9]+\.(.*)_{platformIdentifier}_client.tar.bz2)""";
+            
+            // cef_binary_73.1.5+g4a68f1d+chromium-73.0.3683.75_windows64_client.tar.bz2
+            var binaryNamePattern2 = $@"""(cef_binary_.*\+chromium\-[0-9]+\.[0-9]+\.{build}\.[0-9]_{platformIdentifier}_client.tar.bz2)""";
+            
+            using (var client = new WebClient())
+            {
+                var cefIndex = client.DownloadString(indexUrl);
+                // up to Chromium version 72
+                var found = new Regex(binaryNamePattern1).Match(cefIndex);
+                if (found.Success)
+                {
+                    return found.Groups[1].Value;
+                }
+                // from Chromium version 73 up
+                found = new Regex(binaryNamePattern2).Match(cefIndex);
+                if (found.Success)
+                {
+                    return found.Groups[1].Value;
+                }
+                    
+                var message = $"CEF for chrome version {CefRuntime.ChromeVersion} platform {platformIdentifier} not found.";
+                Log.Fatal("CefLoader: " + message);
+            }
+            
+            return "";
+        }
         
         private class Range  
         {  
@@ -130,17 +170,8 @@ namespace Chromely.CefGlue.Loader
           
             using (var client = new WebClient())
             {
-                var cefIndex = client.DownloadString(_indexUrl);
-                var found = new Regex(_binaryNamePattern).Match(cefIndex);
-                if (!found.Success)
-                {
-                    var message = $"CEF for chrome version {CefRuntime.ChromeVersion} platform {_platform} not found.";
-                    Log.Fatal("CefLoader: " + message);
-                    throw new Exception(message);
-                }
-
-                _archiveName = found.Groups[1].Value;
-                _folderName = found.Groups[2].Value;
+                _archiveName = FindCefArchiveName(_platform, _architecture, _build);  
+                _folderName = _archiveName.Replace(".tar.bz2", "");
                 _downloadUrl = CefDownloadUrl(_archiveName);
 
                 var webRequest = WebRequest.Create(_downloadUrl);  
