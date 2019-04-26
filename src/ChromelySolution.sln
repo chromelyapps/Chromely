@@ -38,6 +38,7 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
+		ReleaseLinux|Any CPU = ReleaseLinux|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{5EDBC83F-2229-4BD4-8E18-82B736A47119}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -52,6 +53,8 @@ Global
 		{5EDBC83F-2229-4BD4-8E18-82B736A47119}.Release|x64.Build.0 = Release|Any CPU
 		{5EDBC83F-2229-4BD4-8E18-82B736A47119}.Release|x86.ActiveCfg = Release|Any CPU
 		{5EDBC83F-2229-4BD4-8E18-82B736A47119}.Release|x86.Build.0 = Release|Any CPU
+		{5EDBC83F-2229-4BD4-8E18-82B736A47119}.ReleaseLinux|Any CPU.ActiveCfg = ReleaseLinux|Any CPU
+		{5EDBC83F-2229-4BD4-8E18-82B736A47119}.ReleaseLinux|Any CPU.Build.0 = ReleaseLinux|Any CPU
 		{39B1A312-ED2D-4868-8BBF-B8B4CD574922}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{39B1A312-ED2D-4868-8BBF-B8B4CD574922}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39B1A312-ED2D-4868-8BBF-B8B4CD574922}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -64,6 +67,8 @@ Global
 		{39B1A312-ED2D-4868-8BBF-B8B4CD574922}.Release|x64.Build.0 = Release|Any CPU
 		{39B1A312-ED2D-4868-8BBF-B8B4CD574922}.Release|x86.ActiveCfg = Release|Any CPU
 		{39B1A312-ED2D-4868-8BBF-B8B4CD574922}.Release|x86.Build.0 = Release|Any CPU
+		{39B1A312-ED2D-4868-8BBF-B8B4CD574922}.ReleaseLinux|Any CPU.ActiveCfg = ReleaseLinux|Any CPU
+		{39B1A312-ED2D-4868-8BBF-B8B4CD574922}.ReleaseLinux|Any CPU.Build.0 = ReleaseLinux|Any CPU
 		{482ED0C7-EB04-4A6A-A130-959717C22556}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{482ED0C7-EB04-4A6A-A130-959717C22556}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{482ED0C7-EB04-4A6A-A130-959717C22556}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -76,6 +81,8 @@ Global
 		{482ED0C7-EB04-4A6A-A130-959717C22556}.Release|x64.Build.0 = Release|Any CPU
 		{482ED0C7-EB04-4A6A-A130-959717C22556}.Release|x86.ActiveCfg = Release|Any CPU
 		{482ED0C7-EB04-4A6A-A130-959717C22556}.Release|x86.Build.0 = Release|Any CPU
+		{482ED0C7-EB04-4A6A-A130-959717C22556}.ReleaseLinux|Any CPU.ActiveCfg = ReleaseLinux|Any CPU
+		{482ED0C7-EB04-4A6A-A130-959717C22556}.ReleaseLinux|Any CPU.Build.0 = ReleaseLinux|Any CPU
 		{03952732-BC74-45E4-9DE0-C59BC437C49B}.Debug|Any CPU.ActiveCfg = Debug|x64
 		{03952732-BC74-45E4-9DE0-C59BC437C49B}.Debug|Any CPU.Build.0 = Debug|x64
 		{03952732-BC74-45E4-9DE0-C59BC437C49B}.Debug|x64.ActiveCfg = Debug|x86
@@ -86,6 +93,8 @@ Global
 		{03952732-BC74-45E4-9DE0-C59BC437C49B}.Release|x64.ActiveCfg = Release|x64
 		{03952732-BC74-45E4-9DE0-C59BC437C49B}.Release|x64.Build.0 = Release|x64
 		{03952732-BC74-45E4-9DE0-C59BC437C49B}.Release|x86.ActiveCfg = Release|x64
+		{03952732-BC74-45E4-9DE0-C59BC437C49B}.ReleaseLinux|Any CPU.ActiveCfg = ReleaseLinux|Any CPU
+		{03952732-BC74-45E4-9DE0-C59BC437C49B}.ReleaseLinux|Any CPU.Build.0 = ReleaseLinux|Any CPU
 		{A94A1FB5-DBCE-4A39-8C90-CAE93B5CB675}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A94A1FB5-DBCE-4A39-8C90-CAE93B5CB675}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A94A1FB5-DBCE-4A39-8C90-CAE93B5CB675}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -98,6 +107,8 @@ Global
 		{A94A1FB5-DBCE-4A39-8C90-CAE93B5CB675}.Release|x64.Build.0 = Release|Any CPU
 		{A94A1FB5-DBCE-4A39-8C90-CAE93B5CB675}.Release|x86.ActiveCfg = Release|Any CPU
 		{A94A1FB5-DBCE-4A39-8C90-CAE93B5CB675}.Release|x86.Build.0 = Release|Any CPU
+		{A94A1FB5-DBCE-4A39-8C90-CAE93B5CB675}.ReleaseLinux|Any CPU.ActiveCfg = ReleaseLinux|Any CPU
+		{A94A1FB5-DBCE-4A39-8C90-CAE93B5CB675}.ReleaseLinux|Any CPU.Build.0 = ReleaseLinux|Any CPU
 		{6EA9A40F-EC11-4F9E-B74E-4B4E6EA0DFFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6EA9A40F-EC11-4F9E-B74E-4B4E6EA0DFFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6EA9A40F-EC11-4F9E-B74E-4B4E6EA0DFFB}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -110,6 +121,8 @@ Global
 		{6EA9A40F-EC11-4F9E-B74E-4B4E6EA0DFFB}.Release|x64.Build.0 = Release|Any CPU
 		{6EA9A40F-EC11-4F9E-B74E-4B4E6EA0DFFB}.Release|x86.ActiveCfg = Release|Any CPU
 		{6EA9A40F-EC11-4F9E-B74E-4B4E6EA0DFFB}.Release|x86.Build.0 = Release|Any CPU
+		{6EA9A40F-EC11-4F9E-B74E-4B4E6EA0DFFB}.ReleaseLinux|Any CPU.ActiveCfg = ReleaseLinux|Any CPU
+		{6EA9A40F-EC11-4F9E-B74E-4B4E6EA0DFFB}.ReleaseLinux|Any CPU.Build.0 = ReleaseLinux|Any CPU
 		{3A898E21-7D41-4775-9D00-7902D8B7C9C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3A898E21-7D41-4775-9D00-7902D8B7C9C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A898E21-7D41-4775-9D00-7902D8B7C9C5}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -122,6 +135,8 @@ Global
 		{3A898E21-7D41-4775-9D00-7902D8B7C9C5}.Release|x64.Build.0 = Release|Any CPU
 		{3A898E21-7D41-4775-9D00-7902D8B7C9C5}.Release|x86.ActiveCfg = Release|Any CPU
 		{3A898E21-7D41-4775-9D00-7902D8B7C9C5}.Release|x86.Build.0 = Release|Any CPU
+		{3A898E21-7D41-4775-9D00-7902D8B7C9C5}.ReleaseLinux|Any CPU.ActiveCfg = ReleaseLinux|Any CPU
+		{3A898E21-7D41-4775-9D00-7902D8B7C9C5}.ReleaseLinux|Any CPU.Build.0 = ReleaseLinux|Any CPU
 		{B54E5806-3A8D-4F37-9AA4-2962AD9FE033}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B54E5806-3A8D-4F37-9AA4-2962AD9FE033}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B54E5806-3A8D-4F37-9AA4-2962AD9FE033}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -134,6 +149,8 @@ Global
 		{B54E5806-3A8D-4F37-9AA4-2962AD9FE033}.Release|x64.Build.0 = Release|Any CPU
 		{B54E5806-3A8D-4F37-9AA4-2962AD9FE033}.Release|x86.ActiveCfg = Release|Any CPU
 		{B54E5806-3A8D-4F37-9AA4-2962AD9FE033}.Release|x86.Build.0 = Release|Any CPU
+		{B54E5806-3A8D-4F37-9AA4-2962AD9FE033}.ReleaseLinux|Any CPU.ActiveCfg = ReleaseLinux|Any CPU
+		{B54E5806-3A8D-4F37-9AA4-2962AD9FE033}.ReleaseLinux|Any CPU.Build.0 = ReleaseLinux|Any CPU
 		{3FE7BAED-812E-4B45-9019-978E4F2F037B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3FE7BAED-812E-4B45-9019-978E4F2F037B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3FE7BAED-812E-4B45-9019-978E4F2F037B}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -146,6 +163,8 @@ Global
 		{3FE7BAED-812E-4B45-9019-978E4F2F037B}.Release|x64.Build.0 = Release|Any CPU
 		{3FE7BAED-812E-4B45-9019-978E4F2F037B}.Release|x86.ActiveCfg = Release|Any CPU
 		{3FE7BAED-812E-4B45-9019-978E4F2F037B}.Release|x86.Build.0 = Release|Any CPU
+		{3FE7BAED-812E-4B45-9019-978E4F2F037B}.ReleaseLinux|Any CPU.ActiveCfg = ReleaseLinux|Any CPU
+		{3FE7BAED-812E-4B45-9019-978E4F2F037B}.ReleaseLinux|Any CPU.Build.0 = ReleaseLinux|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

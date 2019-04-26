@@ -25,6 +25,7 @@
     </PackageReleaseNotes>
     <RepositoryUrl>https://github.com/chromelyapps/Chromely</RepositoryUrl>
     <RepositoryType>Github Repository</RepositoryType>
+    <Configurations>Debug;Release;ReleaseLinux</Configurations>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -36,6 +37,11 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DocumentationFile>bin\Release\netstandard2.0\Chromely.Core.xml</DocumentationFile>
+    <NoWarn>1701;1702; NU5125;7035</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'ReleaseLinux' ">
+    <Optimize>true</Optimize>
     <NoWarn>1701;1702; NU5125;7035</NoWarn>
   </PropertyGroup>
  

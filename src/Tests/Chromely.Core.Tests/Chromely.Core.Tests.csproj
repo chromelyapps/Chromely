@@ -3,9 +3,14 @@
     <RuntimeFrameworkVersion>2.1.1</RuntimeFrameworkVersion>
     <RuntimeIdentifiers>win7-x64;linux-x64</RuntimeIdentifiers>
     <TargetFrameworks>net461;netcoreapp2.1</TargetFrameworks>
+    <Configurations>Debug;Release;ReleaseLinux</Configurations>
+    <Platforms>AnyCPU</Platforms>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'ReleaseLinux' ">
+    <Optimize>true</Optimize>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="xunit.runner.json" />
@@ -29,9 +34,6 @@
       <Private>true</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\Chromely.CefGlue\Chromely.CefGlue.csproj">
-      <Private>true</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Chromely.CefSharp.Winapi\Chromely.CefSharp.Winapi.csproj">
       <Private>true</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\Chromely.Core\Chromely.Core.csproj">
