@@ -25,9 +25,9 @@
     </PackageReleaseNotes>
     <RepositoryType>Github Repository</RepositoryType>
     <RepositoryUrl>https://github.com/chromelyapps/Chromely</RepositoryUrl>
-    <TargetFrameworks>net461;netcoreapp2.1</TargetFrameworks>
     <Configurations>Debug;Release;ReleaseLinux</Configurations>
     <Platforms>AnyCPU</Platforms>
+    <TargetFramework>net461</TargetFramework>
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
