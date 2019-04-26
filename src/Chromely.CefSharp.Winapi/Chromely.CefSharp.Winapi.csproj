@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   
   <PropertyGroup>
-    <TargetFramework>net461</TargetFramework>
     <CefSharpAnyCpuSupport>true</CefSharpAnyCpuSupport>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
@@ -26,6 +25,7 @@
     </PackageReleaseNotes>
     <RepositoryType>Github Repository</RepositoryType>
     <RepositoryUrl>https://github.com/chromelyapps/Chromely</RepositoryUrl>
+    <TargetFrameworks>net461;netcoreapp2.1</TargetFrameworks>
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
