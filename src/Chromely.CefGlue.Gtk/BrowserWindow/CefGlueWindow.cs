@@ -18,7 +18,7 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
     /// </summary>
     public class CefGlueWindow : HostBase
     {
-        private IWindow mMaWindow;
+        private IWindow _mainWindow;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CefGlueWindow"/> class.
@@ -36,7 +36,7 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         /// </summary>
         public new void Close()
         {
-            mMaWindow?.Exit();
+            _mainWindow?.Exit();
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         /// </summary>
         public new void Exit()
         {
-            mMaWindow?.Exit();
+            _mainWindow?.Exit();
         }
 
         /// <summary>
@@ -94,8 +94,8 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         /// </returns>
         protected override IWindow CreateMainView()
         {
-            mMaWindow =  new Window(this, HostConfig);
-            return mMaWindow;
+            _mainWindow =  new Window(this, HostConfig);
+            return _mainWindow;
         }
     }
 }

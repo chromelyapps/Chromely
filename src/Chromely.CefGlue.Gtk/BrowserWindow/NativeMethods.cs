@@ -606,19 +606,34 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         /// <param name="flags">
         /// The flags.
         /// </param>
-        internal static void ConnectSignal(IntPtr window, string name, Delegate callback, int key, IntPtr data, int flags)
+        internal static uint ConnectSignal(IntPtr window, string name, Delegate callback, int key, IntPtr data, int flags)
         {
-            if (CefRuntime.Platform == CefRuntimePlatform.Windows)
+            switch (CefRuntime.Platform)
             {
-                Win.g_signal_connect_data(window, name, callback, key, data, flags);
-            }
-
-            if (CefRuntime.Platform == CefRuntimePlatform.Linux)
-            {
-                Linux.g_signal_connect_data(window, name, callback, key, data, flags);
+                case CefRuntimePlatform.Windows:
+                    return Win.g_signal_connect_data(window, name, callback, key, data, flags);
+                case CefRuntimePlatform.Linux:
+                    return Linux.g_signal_connect_data(window, name, callback, key, data, flags);
+                case CefRuntimePlatform.MacOSX:
+                default:
+                    return 0;
             }
         }
 
+        internal static uint DisconnectSignal(IntPtr window, uint handler)
+        {
+            switch (CefRuntime.Platform)
+            {
+                case CefRuntimePlatform.Windows:
+                    return Win.g_signal_handler_disconnect(window, handler);
+                case CefRuntimePlatform.Linux:
+                    return Linux.g_signal_handler_disconnect(window, handler);
+                case CefRuntimePlatform.MacOSX:
+                default:
+                    return 0;
+            }
+        }
+        
         /// <summary>
         /// The set icon from file.
         /// </summary>
