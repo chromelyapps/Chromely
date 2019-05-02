@@ -48,7 +48,7 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
         /// </summary>
         protected override void RunMessageLoop()
         {
-            WinapiNativeWindow.RunMessageLoop();
+            NativeWindow.RunMessageLoop();
         }
 
         /// <summary>
@@ -56,18 +56,18 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
         /// </summary>
         protected override void QuitMessageLoop()
         {
-            WinapiNativeWindow.Exit();
+            NativeWindow.Exit();
         }
 
         /// <summary>
         /// The create main view.
         /// </summary>
         /// <returns>
-        /// The <see cref="WinapiWindow"/>.
+        /// The <see cref="Window"/>.
         /// </returns>
         protected override IWindow CreateMainView()
         {
-            return new WinapiWindow(this, HostConfig);
+            return new Window(this, HostConfig);
         }
     }
 }

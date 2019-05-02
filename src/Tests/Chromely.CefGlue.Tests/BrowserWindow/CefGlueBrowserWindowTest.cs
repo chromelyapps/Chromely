@@ -97,7 +97,7 @@ namespace Chromely.CefGlue.Tests.BrowserWindow
                 .UseDefaultLogger(defaultLogFile)
                 .UseDefaultResourceSchemeHandler("local", string.Empty)
                 .UseDefaultHttpSchemeHandler("http", "chromely.com")
-                .UseDefautJsHandler("boundedObject", true)
+                .UseDefaultJsHandler("boundedObject", true)
                 .WithCustomSetting(CefSettingKeys.NoSandbox, true)
                 .WithCustomSetting(CefSettingKeys.SingleProcess, true)
                 .WithCustomSetting(CefSettingKeys.BrowserSubprocessPath, nameof(CefSettingKeys.BrowserSubprocessPath))

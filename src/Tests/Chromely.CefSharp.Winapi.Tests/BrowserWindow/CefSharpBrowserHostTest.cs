@@ -127,7 +127,7 @@ namespace Chromely.CefSharp.Winapi.Tests.BrowserWindow
             var config = GetBaseConfig()
                 .UseDefaultResourceSchemeHandler("local", string.Empty)
                 .UseDefaultHttpSchemeHandler("http", "chromely.com")
-                .UseDefautJsHandler("boundedObject", true)
+                .UseDefaultJsHandler("boundedObject", true)
                 .WithCustomSetting(CefSettingKeys.NoSandbox, true)
                 .WithCustomSetting(CefSettingKeys.SingleProcess, true)
                 .WithCustomSetting(CefSettingKeys.BrowserSubprocessPath, nameof(CefSettingKeys.BrowserSubprocessPath))
