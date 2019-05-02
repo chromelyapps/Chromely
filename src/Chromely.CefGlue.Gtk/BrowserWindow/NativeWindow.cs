@@ -288,8 +288,11 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
             Realized += OnRealized;
             
             // A callback was made on a garbage collected delegate of type 'Chromely.CefGlue.Gtk!Chromely.CefGlue.Gtk.BrowserWindow.NativeMethods+EventHandler::Invoke'.
-            // TODO: Find the reason - AND remove handlers at correct time 
-            Resized += OnResize;    
+            // TODO: Find the reason - AND remove handlers at correct time
+            if (ChromelyRuntime.Platform != ChromelyPlatform.Linux)
+            {
+                Resized += OnResize;
+            }    
 
             Exited += OnExit;
 
