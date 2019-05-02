@@ -31,7 +31,6 @@ namespace Chromely.CefSharp.Winapi.Browser.Internals
             browser.LifeSpanHandler = null;
             browser.KeyboardHandler = null;
             browser.JsDialogHandler = null;
-            browser.DragHandler = null;
             browser.DownloadHandler = null;
             browser.MenuHandler = null;
             browser.FocusHandler = null;
