@@ -47,7 +47,7 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
         private IntPtr mBrowserRenderWidgetHandle;
         private IntPtr mBrowserRenderWidgetWndProc;
         private List<ChildWindow> childWindows;
-        private List<WndProcOverride> wndProcOverrides = new List<WndProcOverride>();
+        private readonly List<WndProcOverride> wndProcOverrides = new List<WndProcOverride>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Window"/> class.

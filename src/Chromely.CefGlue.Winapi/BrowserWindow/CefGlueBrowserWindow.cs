@@ -16,15 +16,15 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
     /// <summary>
     /// The cef glue chromium window.
     /// </summary>
-    public class WinapiCefGlueBrowserWindow : HostBase
+    public class CefGlueWindow : HostBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="WinapiCefGlueBrowserWindow"/> class.
+        /// Initializes a new instance of the <see cref="CefGlueWindow"/> class.
         /// </summary>
         /// <param name="hostConfig">
         /// The host config.
         /// </param>
-        public WinapiCefGlueBrowserWindow(ChromelyConfiguration hostConfig) 
+        public CefGlueWindow(ChromelyConfiguration hostConfig) 
             : base(hostConfig)
         {
         }
