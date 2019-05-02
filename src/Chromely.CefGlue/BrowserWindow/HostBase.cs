@@ -361,14 +361,24 @@ namespace Chromely.CefGlue.BrowserWindow
 
             CefRuntime.EnableHighDpiSupport();
 
+            var assembly = Assembly.GetEntryAssembly() ?? typeof(ChromelyConfiguration).Assembly;
             var settings = new CefSettings
             {
-                MultiThreadedMessageLoop = false, // MultiThreadedMessageLoop is not allowed to be used as it will break frameless mode
+                MultiThreadedMessageLoop = true,
                 LogSeverity = (CefLogSeverity)HostConfig.LogSeverity,
                 LogFile = HostConfig.LogFile,
-                ResourcesDirPath = Path.GetDirectoryName(
-                    new Uri(Assembly.GetEntryAssembly().CodeBase).LocalPath)
+                ResourcesDirPath = Path.GetDirectoryName(new Uri(assembly.CodeBase).LocalPath)
             };
+
+            if (HostConfig.HostFrameless)
+            {
+                if (HostConfig.HostApi == ChromelyHostApi.Gtk)
+                {
+                    throw new NotSupportedException("Chromely currently does not support frameless windows using GTK.");
+                }
+                // MultiThreadedMessageLoop is not allowed to be used as it will break frameless mode
+                settings.MultiThreadedMessageLoop = false;
+            }
 
             settings.LocalesDirPath = Path.Combine(settings.ResourcesDirPath, "locales");
             settings.RemoteDebuggingPort = 20480;

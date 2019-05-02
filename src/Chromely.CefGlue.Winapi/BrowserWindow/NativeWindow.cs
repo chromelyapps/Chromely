@@ -318,6 +318,7 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
                     {
                         OnExit();
                         Exit();
+                        Environment.Exit(0);
                         break;
                     }
 
