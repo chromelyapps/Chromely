@@ -29,11 +29,6 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
     internal class NativeWindow
     {
         /// <summary>
-        /// The m host config.
-        /// </summary>
-        private readonly ChromelyConfiguration mHostConfig;
-
-        /// <summary>
         /// WindowProc ref : prevent GC Collect
         /// </summary>
         private WindowProc mWindowProc;
@@ -52,7 +47,7 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
         public NativeWindow(ChromelyConfiguration hostConfig)
         {
             Handle = IntPtr.Zero;
-            mHostConfig = hostConfig;
+            HostConfig = hostConfig;
         }
 
         /// <summary>
@@ -285,7 +280,7 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
             {
                 case WM.ACTIVATE:
                     {
-                        if (mHostConfig.HostFrameless)
+                        if (HostConfig.HostFrameless)
                         {
                             Margins frameMargins = new Margins(4, 4, 4, 4);
                             DwmApiMethods.DwmExtendFrameIntoClientArea(Handle, ref frameMargins);
@@ -321,7 +316,7 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
 
                 case WM.NCCALCSIZE:
                     {
-                        if (mHostConfig.HostFrameless)
+                        if (HostConfig.HostFrameless)
                         {
                             return IntPtr.Zero;
                         }
