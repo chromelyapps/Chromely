@@ -37,6 +37,19 @@ namespace Chromely.Core.RestfulService
             Action = action;
         }
 
+        public Route(Method method, string path, Func<ChromelyRequest, Task<ChromelyResponse>> action)
+        {
+            Method = method;
+            Path = path;
+            ActionAsync = action;
+            IsAsync = true;
+        }
+
+        /// <summary>
+        /// Gets if the action for this route is asynchronous
+        /// </summary>
+        public bool IsAsync { get; private set; }
+
         /// <summary>
         /// Gets or sets the method.
         /// </summary>
@@ -97,5 +110,47 @@ namespace Chromely.Core.RestfulService
         {
             return Action.Invoke(request);
         }
+
+        /// <summary>
+        /// Invokes the registered async action.
+        /// </summary>
+        /// <param name="requestId">
+        /// The request identifier.
+        /// </param>
+        /// <param name="routePath">
+        /// The route path.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <param name="postData">
+        /// The post data.
+        /// </param>
+        /// <param name="rawJson">
+        /// Raw json request data.
+        /// </param>
+        /// <returns>
+        /// The <see cref="ChromelyResponse"/>.
+        /// </returns>
+        public Task<ChromelyResponse> InvokeAsync(string requestId, RoutePath routePath, IDictionary<string, object> parameters, object postData, string rawJson = null)
+        {
+            ChromelyRequest request = new ChromelyRequest(requestId, routePath, parameters, postData, rawJson);
+            return ActionAsync.Invoke(request);
+        }
+
+        /// <summary>
+        /// Invokes the registered async action.
+        /// </summary>
+        /// <param name="request">
+        /// The request.
+        /// </param>
+        /// <returns>
+        /// The <see cref="ChromelyResponse"/>.
+        /// </returns>
+        public Task<ChromelyResponse> InvokeAsync(ChromelyRequest request)
+        {
+            return ActionAsync.Invoke(request);
+        }
+
     }
 }
