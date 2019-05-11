@@ -42,6 +42,11 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
         /// </summary>
         private ChromiumWebBrowser mBrowser;
 
+        /// <summary>
+        /// The host config.
+        /// </summary>
+        private readonly ChromelyConfiguration mHostConfig;
+
         private IntPtr mBrowserHandle;
         private IntPtr mBrowserWndProc;
         private IntPtr mBrowserRenderWidgetHandle;
@@ -64,9 +69,9 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
         public Window(HostBase application, ChromelyConfiguration hostConfig, CefSettings settings)
             : base(hostConfig)
         {
-            mBrowser = new ChromiumWebBrowser(settings, hostConfig.StartUrl);
+            mHostConfig = hostConfig;
+            mBrowser = new ChromiumWebBrowser(settings, mHostConfig.StartUrl);
             mBrowser.IsBrowserInitializedChanged += IsBrowserInitializedChanged;
-            mBrowser.DragHandler = new CefSharpDragHandler();
 
             // Set handlers
             mBrowser.SetEventHandlers();
@@ -116,7 +121,7 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
         /// </exception>
         protected override void OnCreate(IntPtr hwnd, int width, int height)
         {
-            mBrowser?.CreateBrowser(hwnd, HostConfig.StartUrl);
+            mBrowser?.CreateBrowser(hwnd, mHostConfig.StartUrl);
         }
 
         /// <summary>
@@ -160,17 +165,13 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
 
         private class WndProcOverride
         {
-            private ChromiumWebBrowser browser;
-            private IntPtr mainHandle;
             private IntPtr handle;
             private IntPtr originalWndProc;
             private string className;
             private WindowProc newWndProc;
 
-            public WndProcOverride(IntPtr wndHandle, string wndClassName, ChromiumWebBrowser mBrowser, IntPtr parentHandle)
+            public WndProcOverride(IntPtr wndHandle, string wndClassName)
             {
-                browser = mBrowser;
-                mainHandle = parentHandle;
                 handle = wndHandle;
                 className = wndClassName;
                 newWndProc = new WindowProc(OverridenWndProc);
@@ -183,23 +184,12 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
                 var originalRet = User32Methods.CallWindowProc(originalWndProc, hWnd, uMsg, wParam, lParam);
                 switch (msg)
                 {
-                    case WM.LBUTTONDOWN:
-                        {
-                            var mousePoint = new System.Drawing.Point(lParam.ToInt32());
-                            var dragHandler = browser.DragHandler as CefSharpDragHandler;
-                            if (dragHandler.DragRegion.IsVisible(mousePoint)) {
-                                // Release the capture of browser window and send a caption drag to the main window
-                                User32Methods.ReleaseCapture();
-                                User32Methods.SendMessage(mainHandle, (uint)WM.NCLBUTTONDOWN, new IntPtr(2), IntPtr.Zero);
-                            }
-                            break;
-                        }
-
                     case WM.NCHITTEST:
                         {
                             // If we hit a non client area (our overlapped frame) then we'll force an NCHITTEST to bubble back up to the main process
                             IntPtr hitTest = HitTestNCA(hWnd, wParam, lParam);
-                            if (hitTest != IntPtr.Zero) {
+                            if (hitTest != IntPtr.Zero)
+                            {
                                 return new IntPtr(-1);
                             }
                             break;
@@ -225,22 +215,24 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
                 var size = GetClientSize();
                 mBrowser.SetSize(size.Width, size.Height);
                 mBrowser.IsBrowserInitializedChanged -= IsBrowserInitializedChanged;
-
                 mBrowserHandle = mBrowser.GetBrowserHost().GetWindowHandle();
 
-                var childWindowsDetails = new EnumChildWindowsDetails();
-                var gcHandle = GCHandle.Alloc(childWindowsDetails);
-                EnumChildWindows(Handle, new EnumWindowProc(EnumWindow), GCHandle.ToIntPtr(gcHandle));
-
-                foreach(ChildWindow childWindow in childWindowsDetails.Windows)
+                if (mHostConfig.HostFrameless)
                 {
-                    var wndProcOverride = new WndProcOverride(childWindow.Handle, childWindow.ClassName, mBrowser, Handle);
-                    wndProcOverrides.Add(wndProcOverride);
+                    var childWindowsDetails = new EnumChildWindowsDetails();
+                    var gcHandle = GCHandle.Alloc(childWindowsDetails);
+                    EnumChildWindows(Handle, new EnumWindowProc(EnumWindow), GCHandle.ToIntPtr(gcHandle));
+
+                    foreach (ChildWindow childWindow in childWindowsDetails.Windows)
+                    {
+                        var wndProcOverride = new WndProcOverride(childWindow.Handle, childWindow.ClassName);
+                        wndProcOverrides.Add(wndProcOverride);
+                    }
+
+                    childWindows = childWindowsDetails.Windows;
+
+                    gcHandle.Free();
                 }
-
-                childWindows = childWindowsDetails.Windows;
-
-                gcHandle.Free();
             }
         }
 

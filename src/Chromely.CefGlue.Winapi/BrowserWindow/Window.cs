@@ -231,19 +231,22 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
                 var size = GetClientSize();
                 NativeMethods.SetWindowPos(mBrowserWindowHandle, IntPtr.Zero, 0, 0, size.Width, size.Height, WindowPositionFlags.SWP_NOZORDER);
 
-                var childWindowsDetails = new EnumChildWindowsDetails();
-                var gcHandle = GCHandle.Alloc(childWindowsDetails);
-                EnumChildWindows(Handle, new EnumWindowProc(EnumWindow), GCHandle.ToIntPtr(gcHandle));
-
-                foreach (ChildWindow childWindow in childWindowsDetails.Windows)
+                if (mHostConfig.HostFrameless)
                 {
-                    var wndProcOverride = new WndProcOverride(childWindow.Handle, childWindow.ClassName);
-                    wndProcOverrides.Add(wndProcOverride);
+                    var childWindowsDetails = new EnumChildWindowsDetails();
+                    var gcHandle = GCHandle.Alloc(childWindowsDetails);
+                    EnumChildWindows(Handle, new EnumWindowProc(EnumWindow), GCHandle.ToIntPtr(gcHandle));
+
+                    foreach (ChildWindow childWindow in childWindowsDetails.Windows)
+                    {
+                        var wndProcOverride = new WndProcOverride(childWindow.Handle, childWindow.ClassName);
+                        wndProcOverrides.Add(wndProcOverride);
+                    }
+
+                    childWindows = childWindowsDetails.Windows;
+
+                    gcHandle.Free();
                 }
-
-                childWindows = childWindowsDetails.Windows;
-
-                gcHandle.Free();
             }
         }
 
