@@ -328,14 +328,17 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
             var localesDirPath = Path.Combine(localFolder ?? throw new InvalidOperationException(), "locales");
 
             mSettings = new CefSettings
-                            {
-                                LocalesDirPath = localesDirPath,
-                                Locale = HostConfig.Locale,
-                                MultiThreadedMessageLoop = false, // MultiThreadedMessageLoop is not allowed to be used as it will break frameless mode
-                                CachePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "CefSharp\\Cache"),
-                                LogSeverity = (CefSharpGlobal.LogSeverity)HostConfig.LogSeverity,
-                                LogFile = HostConfig.LogFile
-                            };
+            {
+                LocalesDirPath = localesDirPath,
+                Locale = HostConfig.Locale,
+
+                // MultiThreadedMessageLoop is not allowed to be used as it will break frameless mode
+                MultiThreadedMessageLoop = !HostConfig.HostFrameless,
+
+                CachePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "CefSharp\\Cache"),
+                LogSeverity = (CefSharpGlobal.LogSeverity)HostConfig.LogSeverity,
+                LogFile = HostConfig.LogFile
+            };
 
             // Update configuration settings
             mSettings.Update(HostConfig.CustomSettings);

@@ -92,7 +92,7 @@ namespace Chromely.Core.RestfulService
         /// <param name="action">
         /// The action.
         /// </param>
-        protected void RegisterGetRequest(string path, Func<ChromelyRequest, Task<ChromelyResponse>> action)
+        protected void RegisterGetRequestAsync(string path, Func<ChromelyRequest, Task<ChromelyResponse>> action)
         {
             AddRoute(Method.GET, path, new Route(Method.GET, path, action));
         }
@@ -120,7 +120,7 @@ namespace Chromely.Core.RestfulService
         /// <param name="action">
         /// The action.
         /// </param>
-        protected void RegisterPostRequest(string path, Func<ChromelyRequest, Task<ChromelyResponse>> action)
+        protected void RegisterPostRequestAsync(string path, Func<ChromelyRequest, Task<ChromelyResponse>> action)
         {
             AddRoute(Method.POST, path, new Route(Method.POST, path, action));
         }
@@ -148,7 +148,7 @@ namespace Chromely.Core.RestfulService
         /// <param name="action">
         /// The action.
         /// </param>
-        protected void RegisterPutRequest(string path, Func<ChromelyRequest, Task<ChromelyResponse>> action)
+        protected void RegisterPutRequestAsync(string path, Func<ChromelyRequest, Task<ChromelyResponse>> action)
         {
             AddRoute(Method.PUT, path, new Route(Method.PUT, path, action));
         }
@@ -176,7 +176,7 @@ namespace Chromely.Core.RestfulService
         /// <param name="action">
         /// The action.
         /// </param>
-        protected void RegisterDeleteRequest(string path, Func<ChromelyRequest, Task<ChromelyResponse>> action)
+        protected void RegisterDeleteRequestAsync(string path, Func<ChromelyRequest, Task<ChromelyResponse>> action)
         {
             AddRoute(Method.DELETE, path, new Route(Method.DELETE, path, action));
         }
@@ -204,7 +204,7 @@ namespace Chromely.Core.RestfulService
         /// <param name="action">
         /// The action.
         /// </param>
-        protected void RegisterHeadRequest(string path, Func<ChromelyRequest, Task<ChromelyResponse>> action)
+        protected void RegisterHeadRequestAsync(string path, Func<ChromelyRequest, Task<ChromelyResponse>> action)
         {
             AddRoute(Method.HEAD, path, new Route(Method.HEAD, path, action));
         }
@@ -232,7 +232,7 @@ namespace Chromely.Core.RestfulService
         /// <param name="action">
         /// The action.
         /// </param>
-        protected void RegisterOptionsRequest(string path, Func<ChromelyRequest, Task<ChromelyResponse>> action)
+        protected void RegisterOptionsRequestAsync(string path, Func<ChromelyRequest, Task<ChromelyResponse>> action)
         {
             AddRoute(Method.OPTIONS, path, new Route(Method.OPTIONS, path, action));
         }
@@ -260,7 +260,7 @@ namespace Chromely.Core.RestfulService
         /// <param name="action">
         /// The action.
         /// </param>
-        protected void RegisterPatchRequest(string path, Func<ChromelyRequest, Task<ChromelyResponse>> action)
+        protected void RegisterPatchRequestAsync(string path, Func<ChromelyRequest, Task<ChromelyResponse>> action)
         {
             AddRoute(Method.PATCH, path, new Route(Method.PATCH, path, action));
         }
@@ -288,7 +288,7 @@ namespace Chromely.Core.RestfulService
         /// <param name="action">
         /// The action.
         /// </param>
-        protected void RegisterMergeRequest(string path, Func<ChromelyRequest, Task<ChromelyResponse>> action)
+        protected void RegisterMergeRequestAsync(string path, Func<ChromelyRequest, Task<ChromelyResponse>> action)
         {
             AddRoute(Method.MERGE, path, new Route(Method.MERGE, path, action));
         }

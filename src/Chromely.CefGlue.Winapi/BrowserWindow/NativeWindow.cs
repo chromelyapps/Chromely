@@ -69,7 +69,10 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
         {
             while (User32Methods.GetMessage(out Message msg, IntPtr.Zero, 0, 0) != 0)
             {
-                CefRuntime.DoMessageLoopWork();
+                if (ChromelyConfiguration.Instance.HostFrameless)
+                {
+                    CefRuntime.DoMessageLoopWork();
+                }
 
                 User32Methods.TranslateMessage(ref msg);
                 User32Methods.DispatchMessage(ref msg);
@@ -245,8 +248,8 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
                 styles.Item1,
                 0,
                 0,
-                mHostConfig.HostWidth,
-                mHostConfig.HostHeight,
+                rect.Right - rect.Left,
+                rect.Bottom - rect.Top,
                 IntPtr.Zero,
                 IntPtr.Zero,
                 instanceHandle,
@@ -333,10 +336,15 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
 
                 case WM.NCHITTEST:
                     {
-                        // This might be a bit redundant to perform and should find another way
-                        // to pass the return value rather than performing a hit test again.
-                        var lRet = HitTestNCA(hwnd, wParam, lParam);
-                        return lRet;
+                        if (mHostConfig.HostFrameless)
+                        {
+                            // This might be a bit redundant to perform and should find another way
+                            // to pass the return value rather than performing a hit test again.
+                            var lRet = HitTestNCA(hwnd, wParam, lParam);
+                            return lRet;
+                        }
+
+                        break;
                     }
             }
 
@@ -408,7 +416,6 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
             if (mHostConfig.HostFrameless)
             {
                 styles = WindowStyles.WS_CAPTION | WindowStyles.WS_POPUP | WindowStyles.WS_THICKFRAME | WindowStyles.WS_MINIMIZEBOX | WindowStyles.WS_MAXIMIZEBOX | WindowStyles.WS_CAPTION | WindowStyles.WS_CLIPCHILDREN | WindowStyles.WS_CLIPSIBLINGS;
-                //exStyles = WindowExStyles.WS_EX_TOOLWINDOW;
             }
 
             switch (state)

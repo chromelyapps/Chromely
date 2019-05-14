@@ -180,16 +180,30 @@ namespace Chromely.CefSharp.Winapi.RestfulService
 
             ChromelyResponse response;
 
-            if (route.IsAsync)
+            try
             {
-                response = await route.InvokeAsync(requestId, routePath, parameters: parameters?.ToObjectDictionary(), postData: postData);
-                response.ReadyState = (int)ReadyState.ResponseIsReady;
-                response.Status = (int)System.Net.HttpStatusCode.OK;
+                if (route.IsAsync)
+                {
+                    response = await route.InvokeAsync(requestId, routePath,
+                        parameters: parameters?.ToObjectDictionary(), postData: postData);
+                }
+                else
+                {
+                    response = route.Invoke(requestId, routePath, parameters: parameters?.ToObjectDictionary(),
+                        postData: postData);
+                }
+
+                response.ReadyState = (int) ReadyState.ResponseIsReady;
+                response.Status = (int) System.Net.HttpStatusCode.OK;
                 response.StatusText = "OK";
+
             }
-            else
+            catch (Exception ex)
             {
-                response = route.Invoke(requestId, routePath, parameters: parameters?.ToObjectDictionary(), postData: postData);
+                response = new ChromelyResponse();
+                response.ReadyState = (int)ReadyState.ResponseIsReady;
+                response.Status = (int)System.Net.HttpStatusCode.InternalServerError;
+                response.StatusText = "Error";
             }
 
             return response;
