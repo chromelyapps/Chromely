@@ -246,6 +246,10 @@ namespace Chromely.CefSharp.Winapi.Browser.Internals
                             {
                                 browser.DragHandler = dragHandler;
                             }
+                            else if (ChromelyConfiguration.Instance.HostFrameless)
+                            {
+                                browser.DragHandler = new CefSharpDragHandler();
+                            }
 
                             break;
 

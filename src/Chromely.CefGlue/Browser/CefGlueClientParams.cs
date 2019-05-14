@@ -8,6 +8,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using Chromely.Core;
 using Chromely.CefGlue.Browser.Handlers;
 using Chromely.Core.Helpers;
 using Chromely.Core.Infrastructure;
@@ -216,6 +217,10 @@ namespace Chromely.CefGlue.Browser
                             if (instance is CefDragHandler dragHandler)
                             {
                                 clientParams.DragHandler = dragHandler;
+                            }
+                            else if (ChromelyConfiguration.Instance.HostFrameless)
+                            {
+                                clientParams.DragHandler = new CefGlueDragHandler();
                             }
 
                             break;
