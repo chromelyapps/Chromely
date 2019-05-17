@@ -45,7 +45,7 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
         /// <summary>
         /// The host config.
         /// </summary>
-        private readonly ChromelyConfiguration mHostConfig;
+        private readonly IChromelyConfiguration mHostConfig;
 
         private IntPtr mBrowserHandle;
         private IntPtr mBrowserWndProc;
@@ -66,7 +66,7 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
         /// <param name="settings">
         /// The settings.
         /// </param>
-        public Window(HostBase application, ChromelyConfiguration hostConfig, CefSettings settings)
+        public Window(HostBase application, IChromelyConfiguration hostConfig, CefSettings settings)
             : base(hostConfig)
         {
             mHostConfig = hostConfig;

@@ -50,7 +50,7 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
         /// <param name="hostConfig">
         /// The host config.
         /// </param>
-        protected HostBase(ChromelyConfiguration hostConfig)
+        protected HostBase(IChromelyConfiguration hostConfig)
         {
             HostConfig = hostConfig;
         }
@@ -72,7 +72,7 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
         /// <summary>
         /// Gets the host config.
         /// </summary>
-        public ChromelyConfiguration HostConfig { get; }
+        public IChromelyConfiguration HostConfig { get; }
 
         /// <summary>
         /// Gets the browser.

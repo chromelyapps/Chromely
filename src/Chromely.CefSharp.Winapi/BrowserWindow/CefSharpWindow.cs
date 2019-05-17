@@ -23,7 +23,7 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
         /// <param name="hostConfig">
         /// The host config.
         /// </param>
-        public CefSharpWindow(ChromelyConfiguration hostConfig) 
+        public CefSharpWindow(IChromelyConfiguration hostConfig) 
             : base(hostConfig)
         {
         }

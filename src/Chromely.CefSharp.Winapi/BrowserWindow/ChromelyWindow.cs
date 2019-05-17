@@ -14,7 +14,7 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
         /// </summary>
         /// <param name="config"></param>
         /// <returns>Interface to the main window</returns>
-        public static IChromelyWindow Create(ChromelyConfiguration config)
+        public static IChromelyWindow Create(IChromelyConfiguration config)
         {
             return new CefSharpWindow(config);
         }

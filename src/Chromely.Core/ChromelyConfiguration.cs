@@ -28,7 +28,7 @@ namespace Chromely.Core
     /// The Chromely configuration.
     /// </summary>
     // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
-    public class ChromelyConfiguration
+    public class ChromelyConfiguration : IChromelyConfiguration
     {
         /// <summary>
         /// The instance.
@@ -220,8 +220,8 @@ namespace Chromely.Core
             switch (ChromelyRuntime.Platform)
             {
                 case ChromelyPlatform.MacOSX:
-                    //TODO: check and define requirements for Mac OS - for now use linux settings
-                
+                //TODO: check and define requirements for Mac OS - for now use linux settings
+
                 case ChromelyPlatform.Linux:
                     return Instance
                         .WithCustomSetting(CefSettingKeys.MultiThreadedMessageLoop, false)
@@ -573,6 +573,7 @@ namespace Chromely.Core
             return RegisterJsHandler(new ChromelyJsHandler(objectNameToBind, registerAsync));
         }
 
+
         /// <summary>
         /// The use default websocket handler.
         /// </summary>
@@ -812,7 +813,7 @@ namespace Chromely.Core
         /// <returns>
         /// The <see cref="ChromelyConfiguration"/>.
         /// </returns>
-        public virtual ChromelyConfiguration RegisterEventHandler<T>(CefEventKey key, EventHandler<T> handler)
+        public virtual IChromelyConfiguration RegisterEventHandler<T>(CefEventKey key, EventHandler<T> handler)
         {
             return RegisterEventHandler(key, new ChromelyEventHandler<T>(key, handler));
         }
@@ -831,7 +832,7 @@ namespace Chromely.Core
         /// <returns>
         /// The <see cref="ChromelyConfiguration"/>.
         /// </returns>
-        public virtual ChromelyConfiguration RegisterEventHandler<T>(CefEventKey key, ChromelyEventHandler<T> handler)
+        public virtual IChromelyConfiguration RegisterEventHandler<T>(CefEventKey key, ChromelyEventHandler<T> handler)
         {
             var service = CefEventHandlerFakeTypes.GetHandlerType(key);
             IoC.RegisterInstance(service, handler.Key, handler);
@@ -850,7 +851,7 @@ namespace Chromely.Core
         /// <returns>
         /// The <see cref="ChromelyConfiguration"/> object.
         /// </returns>
-        public virtual ChromelyConfiguration RegisterCustomHandler(CefHandlerKey key, Type implementation)
+        public virtual IChromelyConfiguration RegisterCustomHandler(CefHandlerKey key, Type implementation)
         {
             var service = CefCustomHandlerFakeTypes.GetHandlerType(key);
             var keyStr = key.EnumToString();

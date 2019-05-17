@@ -31,7 +31,7 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
         /// <summary>
         /// The m host config.
         /// </summary>
-        private readonly ChromelyConfiguration mHostConfig;
+        private readonly IChromelyConfiguration mHostConfig;
 
         /// <summary>
         /// WindowProc ref : prevent GC Collect
@@ -52,7 +52,7 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
         /// <param name="hostConfig">
         /// Chromely configuration.
         /// </param>
-        public NativeWindow(ChromelyConfiguration hostConfig)
+        public NativeWindow(IChromelyConfiguration hostConfig)
         {
             Handle = IntPtr.Zero;
             mHostConfig = hostConfig;

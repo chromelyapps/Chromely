@@ -22,7 +22,7 @@ namespace Chromely.Core.Host
         /// <summary>
         /// Gets the host config.
         /// </summary>
-        ChromelyConfiguration HostConfig { get; }
+        IChromelyConfiguration HostConfig { get; }
 
         /// <summary>
         /// Gets the browser.
