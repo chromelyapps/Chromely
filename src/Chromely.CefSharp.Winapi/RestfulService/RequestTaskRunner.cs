@@ -60,8 +60,7 @@ namespace Chromely.CefSharp.Winapi.RestfulService
                 return Task.FromResult(response);
             }
 
-            response = ExcuteRoute(requestId, routePath, parameters, postData);
-            return Task.FromResult(response);
+            return ExcuteRouteAsync(requestId, routePath, parameters, postData);
         }
 
         /// <summary>
@@ -169,6 +168,47 @@ namespace Chromely.CefSharp.Winapi.RestfulService
 
             return response;
         }
+
+        private static async Task<ChromelyResponse> ExcuteRouteAsync(string requestId, RoutePath routePath, object parameters, object postData)
+        {
+            var route = ServiceRouteProvider.GetRoute(routePath);
+
+            if (route == null)
+            {
+                throw new Exception($"Route for path = {routePath} is null or invalid.");
+            }
+
+            ChromelyResponse response;
+
+            try
+            {
+                if (route.IsAsync)
+                {
+                    response = await route.InvokeAsync(requestId, routePath,
+                        parameters: parameters?.ToObjectDictionary(), postData: postData);
+                }
+                else
+                {
+                    response = route.Invoke(requestId, routePath, parameters: parameters?.ToObjectDictionary(),
+                        postData: postData);
+                }
+
+                response.ReadyState = (int) ReadyState.ResponseIsReady;
+                response.Status = (int) System.Net.HttpStatusCode.OK;
+                response.StatusText = "OK";
+
+            }
+            catch (Exception ex)
+            {
+                response = new ChromelyResponse();
+                response.ReadyState = (int)ReadyState.ResponseIsReady;
+                response.Status = (int)System.Net.HttpStatusCode.InternalServerError;
+                response.StatusText = "Error";
+            }
+
+            return response;
+        }
+
 
         /// <summary>
         /// The get info.
