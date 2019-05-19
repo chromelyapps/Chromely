@@ -52,6 +52,7 @@ namespace Chromely.Core
             LogFile = "logs\\chromely.cef.log";
             HostState = WindowState.Normal;
             HostCenterScreen = true;
+            UseDefaultSubprocess = true;
             HostWidth = 1200;
             HostHeight = 900;
             Locale = "en-US";
@@ -102,6 +103,11 @@ namespace Chromely.Core
         /// Gets or sets a value indicating whether host center screen.
         /// </summary>
         public bool HostCenterScreen { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether use default subprocess.
+        /// </summary>
+        public bool UseDefaultSubprocess { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether host to not display borders, minimize, maximize and close.
@@ -398,7 +404,31 @@ namespace Chromely.Core
             return this;
         }
 
+        /// <summary>
+        /// The with default subprocess.
+        /// </summary>
+        /// <param name="useDefault">
+        /// The use default.
+        /// </param>
+        /// <returns>
+        /// The <see cref="ChromelyConfiguration"/>.
+        /// </returns>
+        public ChromelyConfiguration WithDefaultSubprocess(bool useDefault = true)
+        {
+            UseDefaultSubprocess = useDefault;
 
+            if (useDefault)
+            {
+                // Disable security features
+                WithCommandLineArg("default-encoding", "utf-8");
+                WithCommandLineArg("allow-file-access-from-files");
+                WithCommandLineArg("allow-universal-access-from-files");
+                WithCommandLineArg("disable-web-security");
+                WithCommandLineArg("ignore-certificate-errors");
+            }
+
+            return this;
+        }
 
         /// <summary>
         /// Sets host/window/app title.

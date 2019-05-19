@@ -14,6 +14,7 @@ using System.Linq;
 using System.Reflection;
 using Chromely.CefGlue.Browser;
 using Chromely.CefGlue.Browser.Handlers;
+using Chromely.CefGlue.Subprocess;
 using Chromely.Core;
 using Chromely.Core.Helpers;
 using Chromely.Core.Host;
@@ -385,6 +386,12 @@ namespace Chromely.CefGlue.BrowserWindow
             settings.NoSandbox = true;
             settings.Locale = HostConfig.Locale;
 
+            if (HostConfig.UseDefaultSubprocess)
+            {
+                var subprocessExeFullpath = DefaultSubprocessExe.FulPath;
+                settings.BrowserSubprocessPath = subprocessExeFullpath ?? settings.BrowserSubprocessPath;
+            }
+
             var argv = args;
             if (CefRuntime.Platform != CefRuntimePlatform.Windows)
             {
@@ -399,13 +406,15 @@ namespace Chromely.CefGlue.BrowserWindow
             var mainArgs = new CefMainArgs(argv);
             var app = new CefGlueApp(HostConfig);
 
+            // CEF applications have multiple sub-processes (render, plugin, GPU, etc)
+            // that share the same executable. This function checks the command-line and,
+            // if this is a sub-process, executes the appropriate logic.
             var exitCode = CefRuntime.ExecuteProcess(mainArgs, app, IntPtr.Zero);
-            Log.Info($"CefRuntime.ExecuteProcess() returns {exitCode}");
-
-            if (exitCode != -1)
+            if (exitCode >= 0)
             {
-                // An error has occured.
+                // The sub-process has completed so return here.
                 CefBinariesLoader.DeleteTempFiles(tempFiles);
+                Log.Info($"Sub process executes successfully with code: {exitCode}");
                 return exitCode;
             }
 

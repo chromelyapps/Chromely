@@ -19,7 +19,6 @@ namespace Chromely.CefGlue.Loader
     /// <summary>
     /// Loads the necessary CEF runtime files from opensource.spotify.com
     /// Inherits detailed version information from cefbuilds/index page.
-    ///
     /// Note:
     /// Keep this class in a separate nuget package
     /// due to additional reference to ICSharpCode.SharpZipLib.
@@ -269,7 +268,6 @@ namespace Chromely.CefGlue.Loader
             var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
             CopyDirectory(srcPathRelease, appDirectory);
         }
-        
         
         private void DecompressProgressChanged(int percent)
         {

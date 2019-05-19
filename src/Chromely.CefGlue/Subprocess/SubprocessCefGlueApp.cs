@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CefGlueApp.cs" company="Chromely Projects">
+// <copyright file="SubprocessCefGlueApp.cs" company="Chromely Projects">
 //   Copyright (c) 2017-2018 Chromely Projects
 // </copyright>
 // <license>
@@ -12,38 +12,34 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Chromely.CefGlue.Browser.Handlers;
-using Chromely.Core;
-using Chromely.Core.Infrastructure;
 using Xilium.CefGlue;
 
-namespace Chromely.CefGlue.Browser
+namespace Chromely.CefGlue.Subprocess
 {
     /// <summary>
-    /// The CefGlue app.
+    /// The Subprocess CefGlue app.
     /// </summary>
-    public class CefGlueApp : CefApp
+    internal class SubprocessCefGlueApp : CefApp
     {
         /// <summary>
         /// The render process handler.
         /// </summary>
         private readonly CefRenderProcessHandler mRenderProcessHandler = new CefGlueRenderProcessHandler();
 
-        private readonly CefBrowserProcessHandler mBrowserProcessHandler = new CefGlueBrowserProcessHandler();
-        
         /// <summary>
-        /// The host config.
+        /// 
         /// </summary>
-        private readonly ChromelyConfiguration mHostConfig;
+        private readonly SubprocessParams mSubprocessParams;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CefGlueApp"/> class.
+        /// Initializes a new instance of the <see cref="SubprocessCefGlueApp"/> class.
         /// </summary>
-        /// <param name="hostConfig">
-        /// The host config.
+        /// <param name="subprocessParams">
+        /// Subprocess params
         /// </param>
-        public CefGlueApp(ChromelyConfiguration hostConfig)
+        public SubprocessCefGlueApp(SubprocessParams subprocessParams)
         {
-            mHostConfig = hostConfig;
+            mSubprocessParams = subprocessParams;
         }
 
         /// <summary>
@@ -54,21 +50,11 @@ namespace Chromely.CefGlue.Browser
         /// </param>
         protected override void OnRegisterCustomSchemes(CefSchemeRegistrar registrar)
         {
-            var schemeHandlerObjs = IoC.GetAllInstances(typeof(ChromelySchemeHandler));
-            if (schemeHandlerObjs != null)
+            if (mSubprocessParams == null && mSubprocessParams.CustomSchemes != null && mSubprocessParams.CustomSchemes.Any())
             {
-                var schemeHandlers = schemeHandlerObjs.ToList();
-
-                foreach (var item in schemeHandlers)
+                foreach (var item in mSubprocessParams.CustomSchemes)
                 {
-                    if (item is ChromelySchemeHandler handler)
-                    {
-                        bool isStandardScheme = UrlScheme.IsStandardScheme(handler.SchemeName);
-                        if (!isStandardScheme)
-                        { 
-                            registrar.AddCustomScheme(handler.SchemeName, true, false, false, false, true, false);
-                        }
-                    }
+                    registrar.AddCustomScheme(item, true, false, false, false, true, false);
                 }
             }
         }
@@ -84,18 +70,17 @@ namespace Chromely.CefGlue.Browser
         /// </param>
         protected override void OnBeforeCommandLineProcessing(string processType, CefCommandLine commandLine)
         {
-            // Get all custom command line argument switches
-            if (mHostConfig?.CommandLineArgs != null)
+            if (mSubprocessParams == null && mSubprocessParams.CommandLineArgs != null && mSubprocessParams.CommandLineArgs.Any())
             {
-                foreach (var commandArg in mHostConfig.CommandLineArgs)
+                foreach (var item in mSubprocessParams.CommandLineArgs)
                 {
-                    if (commandArg.Item3)
+                    if (item.Item3 && !string.IsNullOrWhiteSpace(item.Item1))
                     {
-                        commandLine.AppendSwitch(commandArg.Item1 ?? string.Empty, commandArg.Item2);
+                        commandLine.AppendSwitch(item.Item1, item.Item2);
                     }
-                    else
+                    else if (!string.IsNullOrWhiteSpace(item.Item2))
                     {
-                        commandLine.AppendSwitch(commandArg.Item2 ?? string.Empty);
+                        commandLine.AppendSwitch(item.Item2);
                     }
                 }
             }
@@ -110,6 +95,12 @@ namespace Chromely.CefGlue.Browser
 
                 commandLine.AppendSwitch("resources-dir-path", path);
                 commandLine.AppendSwitch("locales-dir-path", Path.Combine(path, "locales"));
+                commandLine.AppendSwitch("disable-extensions", "1");
+                commandLine.AppendSwitch("disable-gpu", "1");
+                commandLine.AppendSwitch("disable-gpu-compositing", "1");
+                commandLine.AppendSwitch("disable-smooth-scrolling", "1");
+                commandLine.AppendSwitch("no-sandbox", "1");
+                commandLine.AppendSwitch("no-zygote", "1");
             }
         }
 
@@ -122,11 +113,6 @@ namespace Chromely.CefGlue.Browser
         protected override CefRenderProcessHandler GetRenderProcessHandler()
         {
             return mRenderProcessHandler;
-        }
-
-        protected override CefBrowserProcessHandler GetBrowserProcessHandler()
-        {
-            return mBrowserProcessHandler;
         }
     }
 }

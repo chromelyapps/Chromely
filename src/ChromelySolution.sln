@@ -30,6 +30,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chromely.Integration.TestApp", "Tests\Chromely.Integration.TestApp\Chromely.Integration.TestApp.csproj", "{3FE7BAED-812E-4B45-9019-978E4F2F037B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Subprocesses", "Subprocesses", "{3B2D7662-90A5-477A-B5DE-640154F73556}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chromely.CefGlue.Win.Subprocess", "Subprocesses\Chromely.CefGlue.Win.Subprocess\Chromely.CefGlue.Win.Subprocess.csproj", "{8E2A8BE5-7ABA-47B7-B4E3-2386E9DA88DF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -203,6 +207,20 @@ Global
 		{3FE7BAED-812E-4B45-9019-978E4F2F037B}.ReleaseLinux|x64.Build.0 = ReleaseLinux|Any CPU
 		{3FE7BAED-812E-4B45-9019-978E4F2F037B}.ReleaseLinux|x86.ActiveCfg = ReleaseLinux|Any CPU
 		{3FE7BAED-812E-4B45-9019-978E4F2F037B}.ReleaseLinux|x86.Build.0 = ReleaseLinux|Any CPU
+		{8E2A8BE5-7ABA-47B7-B4E3-2386E9DA88DF}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{8E2A8BE5-7ABA-47B7-B4E3-2386E9DA88DF}.Debug|x64.ActiveCfg = Debug|x64
+		{8E2A8BE5-7ABA-47B7-B4E3-2386E9DA88DF}.Debug|x64.Build.0 = Debug|x64
+		{8E2A8BE5-7ABA-47B7-B4E3-2386E9DA88DF}.Debug|x86.ActiveCfg = Debug|x64
+		{8E2A8BE5-7ABA-47B7-B4E3-2386E9DA88DF}.Release|Any CPU.ActiveCfg = Release|x64
+		{8E2A8BE5-7ABA-47B7-B4E3-2386E9DA88DF}.Release|x64.ActiveCfg = Release|x64
+		{8E2A8BE5-7ABA-47B7-B4E3-2386E9DA88DF}.Release|x64.Build.0 = Release|x64
+		{8E2A8BE5-7ABA-47B7-B4E3-2386E9DA88DF}.Release|x86.ActiveCfg = Release|x64
+		{8E2A8BE5-7ABA-47B7-B4E3-2386E9DA88DF}.ReleaseLinux|Any CPU.ActiveCfg = Release|x64
+		{8E2A8BE5-7ABA-47B7-B4E3-2386E9DA88DF}.ReleaseLinux|Any CPU.Build.0 = Release|x64
+		{8E2A8BE5-7ABA-47B7-B4E3-2386E9DA88DF}.ReleaseLinux|x64.ActiveCfg = Release|x64
+		{8E2A8BE5-7ABA-47B7-B4E3-2386E9DA88DF}.ReleaseLinux|x64.Build.0 = Release|x64
+		{8E2A8BE5-7ABA-47B7-B4E3-2386E9DA88DF}.ReleaseLinux|x86.ActiveCfg = Release|x64
+		{8E2A8BE5-7ABA-47B7-B4E3-2386E9DA88DF}.ReleaseLinux|x86.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -212,6 +230,7 @@ Global
 		{03952732-BC74-45E4-9DE0-C59BC437C49B} = {25C4FBF4-EF53-4E55-97E1-55587A5228CA}
 		{A94A1FB5-DBCE-4A39-8C90-CAE93B5CB675} = {25C4FBF4-EF53-4E55-97E1-55587A5228CA}
 		{3FE7BAED-812E-4B45-9019-978E4F2F037B} = {25C4FBF4-EF53-4E55-97E1-55587A5228CA}
+		{8E2A8BE5-7ABA-47B7-B4E3-2386E9DA88DF} = {3B2D7662-90A5-477A-B5DE-640154F73556}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {970C1133-7B56-4953-B1D8-AEA029C44561}

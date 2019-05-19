@@ -7,23 +7,22 @@
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Threading;
+using System.Xml;
+using System.Xml.Linq;
+using Chromely.CefGlue.Loader;
+using Chromely.Core;
+using Chromely.Core.Infrastructure;
+using Xilium.CefGlue;
 
 namespace Chromely.CefGlue.BrowserWindow
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.IO;
-    using System.Linq;
-    using System.Xml;
-    using System.Xml.Linq;
-
-    using Loader;
-    using Core;
-    using Core.Infrastructure;
-    using Xilium.CefGlue;
-
     /// <summary>
     /// The cef binaries loader.
     /// </summary>
@@ -133,8 +132,12 @@ namespace Chromely.CefGlue.BrowserWindow
 
                 stopwatch.Stop();
                 var competedTempFile = LaunchCompletedPage($"Time elapsed: {stopwatch.Elapsed}.");
-                tempFiles.Add(competedTempFile);
-                
+
+                if (competedTempFile != null)
+                {
+                    tempFiles.Add(competedTempFile);
+                }
+
                 Thread.Sleep(TimeSpan.FromSeconds(2));
             }
             catch (Exception ex)
@@ -213,70 +216,94 @@ namespace Chromely.CefGlue.BrowserWindow
         /// </returns>
         private static string LaunchHtmlWarningPage(Tuple<string, string, string> message)
         {
-            var xDocument = new XDocument(
-                new XDocumentType("html", null, null, null),
-                new XElement(
-                    "html",
-                    new XAttribute("lang", "en"),
+            try
+            {
+                var xDocument = new XDocument(
+                    new XDocumentType("html", null, null, null),
                     new XElement(
-                        "head",
-                        new XElement(
-                            "meta",
-                            new XAttribute("http-equiv", "content-type"),
-                            new XAttribute("content", "text/html"),
-                            new XAttribute("charset", "utf-8")),
-                        new XElement("title", "Chromely CEF Binaries Download"),
-                        new XElement(
-                            "style",
-                            new XAttribute("type", "text/css"),
-                            "#box_1 { position: absolute; top: 75px; right: 75px; bottom: 75px; left: 75px; } #box_2 { position: absolute; top:150px; right: 150px; bottom: 150px; left: 150px; }")),
-                    new XElement(
-                        "body",
-                        new XElement("div", new XAttribute("id", "box_1")),
-                        new XElement(
-                            "div",
-                            new XAttribute("id", "box_2"),
-                            new XAttribute("align", "center")),
-                        new XElement(
-                            "img",
-                            new XAttribute("src", ChromelyImgBase6Encoded)),
-                        new XElement("h1", "chromely"),
-                        new XElement("div", message.Item1),
-                        new XElement("div", message.Item2),
-                        new XElement("div", message.Item3),
-                        new XElement("p", string.Empty),
-                        new XElement("div", "For more info - ", new XElement("a", "Chromely Apps", new XAttribute("href", "https://github.com/chromelyapps/Chromely"))),
-                        new XElement("p", string.Empty),
-                        new XElement(
-                            "input",
-                            new XAttribute("type", "button"),
-                            new XAttribute("value", "Close"),
-                            new XAttribute("onclick", "window.close()")))));
+                        "html",
+                                    new XAttribute("lang", "en"),
+                                    new XElement(
+                                        "head",
+                                        new XElement(
+                                            "meta",
+                                            new XAttribute("http-equiv", "content-type"),
+                                            new XAttribute("content", "text/html"),
+                                            new XAttribute("charset", "utf-8")),
+                                        new XElement("title", "Chromely CEF Binaries Download"),
+                                        new XElement(
+                                            "style",
+                                            new XAttribute("type", "text/css"),
+                                            "#box_1 { position: absolute; top: 75px; right: 75px; bottom: 75px; left: 75px; } #box_2 { position: absolute; top:150px; right: 150px; bottom: 150px; left: 150px; }")),
+                                    new XElement(
+                                        "body",
+                                        new XElement("div", new XAttribute("id", "box_1")),
+                                        new XElement(
+                                            "div",
+                                            new XAttribute("id", "box_2"),
+                                            new XAttribute("align", "center")),
+                                        new XElement(
+                                            "img",
+                                            new XAttribute("src", ChromelyImgBase6Encoded)),
+                                        new XElement("h1", "chromely"),
+                                        new XElement("div", message.Item1),
+                                        new XElement("div", message.Item2),
+                                        new XElement("div", message.Item3),
+                                        new XElement("p", string.Empty),
+                                        new XElement("div", "For more info - ", new XElement("a", "Chromely Apps", new XAttribute("href", "https://github.com/chromelyapps/Chromely"))),
+                                        new XElement("p", string.Empty),
+                                        new XElement(
+                                            "input",
+                                            new XAttribute("type", "button"),
+                                            new XAttribute("value", "Close"),
+                                            new XAttribute("onclick", "window.close()")))));
 
-            var settings = new XmlWriterSettings
+                var settings = new XmlWriterSettings
+                {
+                    OmitXmlDeclaration = true,
+                    Indent = true,
+                    IndentChars = "\t"
+                };
+
+                var htmlFileName = Guid.NewGuid() + ".html";
+
+                using (var writer = XmlWriter.Create(htmlFileName, settings))
+                {
+                    xDocument.WriteTo(writer);
+                }
+
+                if (CefRuntime.Platform == CefRuntimePlatform.Linux)
+                {
+                    Process.Start("xdg-open", htmlFileName);
+                }
+                else
+                {
+                    try
+                    {
+                        Process.Start(htmlFileName);
+                    }
+                    catch 
+                    {
+                        try
+                        {
+                            Process.Start(@"cmd.exe ", @"/c " + htmlFileName);
+                        }
+                        catch
+                        {
+                            // ignored
+                        }
+                    }
+                }
+
+                return htmlFileName;
+            }
+            catch (Exception e)
             {
-                OmitXmlDeclaration = true,
-                Indent = true,
-                IndentChars = "\t"
-            };
-
-            var htmlFileName = Guid.NewGuid() + ".html";
-
-            using (var writer = XmlWriter.Create(htmlFileName, settings))
-            {
-                xDocument.WriteTo(writer);
+                Log.Error(e);
+                Console.WriteLine(message);
             }
 
-            if (CefRuntime.Platform == CefRuntimePlatform.Linux)
-            {
-                Process.Start("xdg-open", htmlFileName);
-            }
-            else
-            {
-                Process.Start(htmlFileName);
-            }
-
-            return htmlFileName;
+            return null;
         }
     }
 }
