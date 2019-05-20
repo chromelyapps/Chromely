@@ -7,6 +7,7 @@
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
+// ReSharper disable UnusedMember.Global
 namespace Chromely.Core.Infrastructure
 {
     using System;
@@ -20,15 +21,15 @@ namespace Chromely.Core.Infrastructure
         /// <summary>
         /// The default Chromely container.
         /// </summary>
-        private static IChromelyContainer mContainer = new SimpleContainer();
+        private static IChromelyContainer _container = new SimpleContainer();
 
         /// <summary>
         /// Gets or sets the container.
         /// </summary>
         public static IChromelyContainer Container
         {
-            get => mContainer;
-            set => mContainer = value;
+            get => _container;
+            set => _container = value;
         }
 
         /// <summary>
@@ -45,7 +46,7 @@ namespace Chromely.Core.Infrastructure
         /// </returns>
         public static bool IsRegistered(Type service, string key)
         {
-            return (mContainer != null) && mContainer.IsRegistered(service, key);
+            return (_container != null) && _container.IsRegistered(service, key);
         }
 
         /// <summary>
@@ -62,7 +63,7 @@ namespace Chromely.Core.Infrastructure
         /// </returns>
         public static bool IsRegistered<TService>(string key)
         {
-            return (mContainer != null) && mContainer.IsRegistered<TService>(key);
+            return (_container != null) && _container.IsRegistered<TService>(key);
         }
 
         /// <summary>
@@ -79,7 +80,7 @@ namespace Chromely.Core.Infrastructure
         /// </param>
         public static void RegisterSingleton(Type service, string key, Type implementation)
         {
-            mContainer?.RegisterSingleton(service, key, implementation);
+            _container?.RegisterSingleton(service, key, implementation);
         }
 
         /// <summary>
@@ -96,7 +97,7 @@ namespace Chromely.Core.Infrastructure
         /// </typeparam>
         public static void RegisterSingleton<TService, TImplementation>(string key) where TImplementation : TService
         {
-            mContainer?.RegisterSingleton<TService, TImplementation>(key);
+            _container?.RegisterSingleton<TService, TImplementation>(key);
         }
 
         /// <summary>
@@ -113,7 +114,7 @@ namespace Chromely.Core.Infrastructure
         /// </param>
         public static void RegisterInstance(Type service, string key, object instance)
         {
-            mContainer?.RegisterInstance(service, key, instance);
+            _container?.RegisterInstance(service, key, instance);
         }
 
         /// <summary>
@@ -130,7 +131,7 @@ namespace Chromely.Core.Infrastructure
         /// </typeparam>
         public static void RegisterInstance<TService>(string key, TService instance)
         {
-            mContainer?.RegisterInstance(key, instance);
+            _container?.RegisterInstance(key, instance);
         }
 
         /// <summary>
@@ -147,7 +148,7 @@ namespace Chromely.Core.Infrastructure
         /// </param>
         public static void RegisterPerRequest(Type service, string key, Type implementation)
         {
-            mContainer?.RegisterPerRequest(service, key, implementation);
+            _container?.RegisterPerRequest(service, key, implementation);
         }
 
         /// <summary>
@@ -164,7 +165,7 @@ namespace Chromely.Core.Infrastructure
         /// </typeparam>
         public static void RegisterPerRequest<TService, TImplementation>(string key) where TImplementation : TService
         {
-            mContainer?.RegisterPerRequest<TService, TImplementation>(key);
+            _container?.RegisterPerRequest<TService, TImplementation>(key);
         }
 
         /// <summary>
@@ -178,7 +179,7 @@ namespace Chromely.Core.Infrastructure
         /// </param>
         public static void UnregisterHandler(Type service, string key)
         {
-            mContainer?.UnregisterHandler(service, key);
+            _container?.UnregisterHandler(service, key);
         }
 
         /// <summary>
@@ -192,7 +193,7 @@ namespace Chromely.Core.Infrastructure
         /// </typeparam>
         public static void UnregisterHandler<TService>(string key)
         {
-            mContainer?.UnregisterHandler<TService>(key);
+            _container?.UnregisterHandler<TService>(key);
         }
 
         /// <summary>
@@ -209,7 +210,7 @@ namespace Chromely.Core.Infrastructure
         /// </returns>
         public static object GetInstance(Type service, string key)
         {
-            return mContainer?.GetInstance(service, key);
+            return _container?.GetInstance(service, key);
         }
 
         /// <summary>
@@ -226,7 +227,7 @@ namespace Chromely.Core.Infrastructure
         /// </returns>
         public static TService GetInstance<TService>(string key)
         {
-            return (mContainer != null) ? mContainer.GetInstance<TService>(key) : default(TService);
+            return (_container != null) ? _container.GetInstance<TService>(key) : default(TService);
         }
 
         /// <summary>
@@ -240,7 +241,7 @@ namespace Chromely.Core.Infrastructure
         /// </returns>
         public static object[] GetAllInstances(Type service)
         {
-            return mContainer?.GetAllInstances(service);
+            return _container?.GetAllInstances(service);
         }
 
         /// <summary>
@@ -254,7 +255,7 @@ namespace Chromely.Core.Infrastructure
         /// </returns>
         public static TService[] GetAllInstances<TService>()
         {
-            return mContainer?.GetAllInstances<TService>();
+            return _container?.GetAllInstances<TService>();
         }
     }
 }

@@ -7,6 +7,9 @@
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
+// ReSharper disable UnusedMember.Global
+// ReSharper disable MemberCanBePrivate.Global
 namespace Chromely.Core.RestfulService
 {
     using System.Collections.Generic;

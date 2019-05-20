@@ -7,12 +7,12 @@
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Chromely.Core.Tests.RestfullService
-{
-    using Chromely.Core.Infrastructure;
-    using Xunit;
-    using Xunit.Abstractions;
+using Chromely.Core.Infrastructure;
+using Xunit;
+using Xunit.Abstractions;
 
+namespace Chromely.Core.Tests.RestfulService
+{
     /// <summary>
     /// The url scheme provider test.
     /// </summary>

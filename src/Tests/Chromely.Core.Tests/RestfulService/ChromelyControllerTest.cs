@@ -7,16 +7,16 @@
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Chromely.Core.Tests.RestfullService
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.Linq;
-    using Chromely.Core.RestfulService;
-    using Xunit;
-    using Xunit.Abstractions;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using Chromely.Core.RestfulService;
+using Xunit;
+using Xunit.Abstractions;
 
+namespace Chromely.Core.Tests.RestfulService
+{
     /// <summary>
     /// The chromely controller test.
     /// </summary>
@@ -26,12 +26,12 @@ namespace Chromely.Core.Tests.RestfullService
         /// The m test output.
         /// </summary>
         // ReSharper disable once NotAccessedField.Local
-        private readonly ITestOutputHelper mTestOutput;
+        private readonly ITestOutputHelper _testOutput;
 
         /// <summary>
         /// The m test controller.
         /// </summary>
-        private readonly TestController mTestController;
+        private readonly TestControllerMovies _testControllerMovies;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ChromelyControllerTest"/> class.
@@ -41,8 +41,8 @@ namespace Chromely.Core.Tests.RestfullService
         /// </param>
         public ChromelyControllerTest(ITestOutputHelper testOutput)
         {
-            mTestOutput = testOutput;
-            mTestController = new TestController();
+            _testOutput = testOutput;
+            _testControllerMovies = new TestControllerMovies();
         }
 
         /// <summary>
@@ -51,9 +51,9 @@ namespace Chromely.Core.Tests.RestfullService
         [Fact]
         public void IsControllerTest()
         {
-            Assert.NotNull(mTestController);
-            Assert.True(mTestController != null);
-            Assert.True(Attribute.IsDefined(mTestController.GetType(), typeof(ControllerPropertyAttribute)));
+            Assert.NotNull(_testControllerMovies);
+            Assert.True(_testControllerMovies != null);
+            Assert.True(Attribute.IsDefined(_testControllerMovies.GetType(), typeof(ControllerPropertyAttribute)));
         }
 
         /// <summary>
@@ -151,8 +151,8 @@ namespace Chromely.Core.Tests.RestfullService
         /// </returns>
         private Dictionary<string, Route> BaseTest()
         {
-            Assert.NotNull(mTestController);
-            var routeDict = mTestController.RouteDictionary;
+            Assert.NotNull(_testControllerMovies);
+            var routeDict = _testControllerMovies.RouteDictionary;
             Assert.NotNull(routeDict);
 
             return routeDict;
@@ -174,68 +174,6 @@ namespace Chromely.Core.Tests.RestfullService
         {
             var routhPath = new RoutePath(method, path);
             return routhPath.Key;
-        }
-
-        /// <summary>
-        /// The test controller.
-        /// </summary>
-        [ControllerProperty(Name = "TestController", Route = "testcontroller")]
-        public class TestController : ChromelyController
-        {
-            /// <summary>
-            /// Initializes a new instance of the <see cref="TestController"/> class.
-            /// </summary>
-            public TestController()
-            {
-                RegisterGetRequest("/testcontroller/movies", Get1);
-                RegisterGetRequest("/testcontroller/sitcoms", Get2);
-                RegisterPostRequest("/testcontroller/movies", Save);
-            }
-
-            /// <summary>
-            /// The get 1.
-            /// </summary>
-            /// <param name="request">
-            /// The request.
-            /// </param>
-            /// <returns>
-            /// The <see cref="ChromelyResponse"/>.
-            /// </returns>
-            private ChromelyResponse Get1(ChromelyRequest request)
-            {
-                var response = new ChromelyResponse { Data = 1000 };
-                return response;
-            }
-
-            /// <summary>
-            /// The get 2.
-            /// </summary>
-            /// <param name="request">
-            /// The request.
-            /// </param>
-            /// <returns>
-            /// The <see cref="ChromelyResponse"/>.
-            /// </returns>
-            private ChromelyResponse Get2(ChromelyRequest request)
-            {
-                var response = new ChromelyResponse { Data = "Test Get 2" };
-                return response;
-            }
-
-            /// <summary>
-            /// The save.
-            /// </summary>
-            /// <param name="request">
-            /// The request.
-            /// </param>
-            /// <returns>
-            /// The <see cref="ChromelyResponse"/>.
-            /// </returns>
-            private ChromelyResponse Save(ChromelyRequest request)
-            {
-                var response = new ChromelyResponse { Data = request.PostData };
-                return response;
-            }
         }
     }
 }

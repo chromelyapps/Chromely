@@ -59,7 +59,7 @@ namespace Chromely.Core.RestfulService
                 {
                     if (type.BaseType == typeof(ChromelyController))
                     {
-                        var instance = (ChromelyController)Activator.CreateInstance(type);
+                        var instance = ChromelyControllerFactory.CreateControllerInstance(type);
                         var currentRouteDictionary = instance.RouteDictionary;
 
                         // Merge with return route dictionary
