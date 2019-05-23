@@ -2,11 +2,12 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net461</TargetFramework>
-    <Platforms>x64</Platforms>
+    <Platforms>x64;AnyCPU</Platforms>
     <AssemblyName>Chromely.CefGlue.Win.Subprocess_x64</AssemblyName>
     <TrimUnusedDependencies>true</TrimUnusedDependencies>
     <RuntimeIdentifiers>win7-x64</RuntimeIdentifiers>
     <StartupObject />
+    <Configurations>Debug;Release;DebugLinux</Configurations>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
     <PlatformTarget>x86</PlatformTarget>

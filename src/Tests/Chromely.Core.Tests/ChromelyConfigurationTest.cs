@@ -8,12 +8,14 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using System.IO;
 using System.Linq;
 using Chromely.Core.Helpers;
+// ReSharper disable InconsistentNaming
 
 namespace Chromely.Core.Tests
 {
-    using Chromely.Core.Infrastructure;
+    using Infrastructure;
     using Xunit;
     using Xunit.Abstractions;
 
@@ -50,12 +52,12 @@ namespace Chromely.Core.Tests
         /// <summary>
         /// The cef log file.
         /// </summary>
-        private const string CefLogFile = "logs\\chromely.cef_new.log";
+        private readonly string CefLogFile = Path.Combine("logs", "chromely.cef_new.log");
 
         /// <summary>
         /// The default log file.
         /// </summary>
-        private const string DefaultLogFile = "logs\\chromely_new.log";
+        private readonly string DefaultLogFile = Path.Combine("logs", "chromely_new.log");
 
         /// <summary>
         /// The start url.

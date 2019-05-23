@@ -3,7 +3,7 @@
     <CefSharpAnyCpuSupport>true</CefSharpAnyCpuSupport>
     <Platforms>x64;x86;AnyCPU</Platforms>
     <TargetFramework>net461</TargetFramework>
-    <Configurations>Debug;Release;Release_Linux;ReleaseLinux</Configurations>
+    <Configurations>Debug;Release;Release_Linux;ReleaseLinux;DebugLinux</Configurations>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <PlatformTarget>x64</PlatformTarget>
@@ -12,6 +12,9 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'ReleaseLinux' ">
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'DebugLinux' ">
     <Optimize>true</Optimize>
   </PropertyGroup>
   <ItemGroup>

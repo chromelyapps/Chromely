@@ -12,6 +12,9 @@
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 // ReSharper disable UnusedMethodReturnValue.Global
 // ReSharper disable MemberCanBeProtected.Global
+
+using System.IO;
+
 namespace Chromely.Core
 {
     using System;
@@ -49,7 +52,7 @@ namespace Chromely.Core
             PerformDependencyCheck = false;
             ShutdownCefOnExit = true;
             LogSeverity = LogSeverity.Warning;
-            LogFile = "logs\\chromely.cef.log";
+            LogFile = Path.Combine("logs", "chromely.cef.log");
             HostState = WindowState.Normal;
             HostCenterScreen = true;
             UseDefaultSubprocess = true;

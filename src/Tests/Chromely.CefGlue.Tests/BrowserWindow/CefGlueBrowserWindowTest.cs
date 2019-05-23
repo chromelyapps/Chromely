@@ -7,6 +7,7 @@
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.IO;
 using Chromely.Core;
 using Chromely.Core.Helpers;
 using Chromely.Core.Infrastructure;
@@ -91,7 +92,7 @@ namespace Chromely.CefGlue.Tests.BrowserWindow
         /// </returns>
         private ChromelyConfiguration GetConfigWithDefaultValues()
         {
-            var defaultLogFile = "logs\\chromely_new.log";
+            var defaultLogFile = Path.Combine("logs", "chromely_new.log");
 
             var config = ChromelyConfiguration.Create()
                 .UseDefaultLogger(defaultLogFile)
@@ -139,8 +140,8 @@ namespace Chromely.CefGlue.Tests.BrowserWindow
             var hostWidth = 1200;
             var hostHeight = 900;
 
-            var cefLogFile = "logs\\chromely.cef_new.log";
-            var defaultLogFile = "logs\\chromely_new.log";
+            var cefLogFile = Path.Combine("logs", "chromely.cef_new.log");
+            var defaultLogFile = Path.Combine("logs", "chromely_new.log");
             var startUrl = "www.google.com";
 
             var logSeverity = LogSeverity.Error;

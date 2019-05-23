@@ -79,6 +79,7 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
 
         /// <summary>
         /// The g connect flags.
+        /// see: https://code.woboq.org/gtk/include/glib-2.0/gobject/gsignal.h.html#GConnectFlags
         /// </summary>
         [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1602:EnumerationItemsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
         internal enum GConnectFlags
@@ -86,12 +87,12 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
             /// <summary>
             /// whether the handler should be called before or after the default handler of the signal.
             /// </summary>
-            GConnectAfter,
+            GConnectAfter = 1 << 0,
 
             /// <summary>
             /// whether the instance and data should be swapped when calling the handler; see g_signal_connect_swapped() for an example.
             /// </summary>
-            GConnectSwapped
+            GConnectSwapped = 1 << 1
         }
 
         /// <summary>

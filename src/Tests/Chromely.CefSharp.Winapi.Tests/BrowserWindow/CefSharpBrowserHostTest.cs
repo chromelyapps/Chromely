@@ -8,6 +8,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using System.IO;
 using System.Linq;
 using Chromely.CefSharp.Winapi.Browser;
 using Chromely.CefSharp.Winapi.Tests.Models;
@@ -169,8 +170,8 @@ namespace Chromely.CefSharp.Winapi.Tests.BrowserWindow
             var hostWidth = 1200;
             var hostHeight = 900;
 
-            var cefLogFile = "logs\\chromely.cef_new.log";
-            var defaultLogFile = "logs\\chromely_new.log";
+            var cefLogFile = Path.Combine("logs", "chromely.cef_new.log");
+            var defaultLogFile = Path.Combine("logs", "chromely_new.log");
             string startUrl = "www.google.com";
 
             var logSeverity = LogSeverity.Error;

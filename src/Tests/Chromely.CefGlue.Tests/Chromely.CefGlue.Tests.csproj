@@ -3,10 +3,13 @@
     <RuntimeFrameworkVersion>2.1.1</RuntimeFrameworkVersion>
     <TargetFrameworks>net461;netcoreapp2.1</TargetFrameworks>
     <RuntimeIdentifiers>win7-x64;linux-x64</RuntimeIdentifiers>
-    <Configurations>Debug;Release;ReleaseLinux</Configurations>
+    <Configurations>Debug;Release;ReleaseLinux;DebugLinux</Configurations>
     <Platforms>AnyCPU</Platforms>    
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'ReleaseLinux' ">
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'DebugLinux' ">
     <Optimize>true</Optimize>
   </PropertyGroup>
   <ItemGroup>
