@@ -14,6 +14,7 @@ using Xilium.CefGlue;
 namespace Chromely.CefGlue.Subprocess
 {
     using System.Diagnostics;
+    using System.IO;
     using System.Threading.Tasks;
 
     using Chromely.Core;
@@ -28,7 +29,7 @@ namespace Chromely.CefGlue.Subprocess
         /// <summary>
         /// Initializes a new instance of the <see cref="Subprocess"/> class.
         /// </summary>
-        public Subprocess(IEnumerable<string> cmdlineArgs)
+        public Subprocess(string[] cmdlineArgs)
         {
             var subprocessParams = SubprocessParams.Parse(cmdlineArgs);
             _cefglueApp = new SubprocessCefGlueApp(subprocessParams);

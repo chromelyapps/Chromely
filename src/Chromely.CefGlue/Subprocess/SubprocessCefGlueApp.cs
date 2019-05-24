@@ -50,7 +50,7 @@ namespace Chromely.CefGlue.Subprocess
         /// </param>
         protected override void OnRegisterCustomSchemes(CefSchemeRegistrar registrar)
         {
-            if (mSubprocessParams == null && mSubprocessParams.CustomSchemes != null && mSubprocessParams.CustomSchemes.Any())
+            if (mSubprocessParams != null && mSubprocessParams.CustomSchemes != null && mSubprocessParams.CustomSchemes.Any())
             {
                 foreach (var item in mSubprocessParams.CustomSchemes)
                 {
@@ -70,7 +70,7 @@ namespace Chromely.CefGlue.Subprocess
         /// </param>
         protected override void OnBeforeCommandLineProcessing(string processType, CefCommandLine commandLine)
         {
-            if (mSubprocessParams == null && mSubprocessParams.CommandLineArgs != null && mSubprocessParams.CommandLineArgs.Any())
+            if (mSubprocessParams != null && mSubprocessParams.CommandLineArgs != null && mSubprocessParams.CommandLineArgs.Any())
             {
                 foreach (var item in mSubprocessParams.CommandLineArgs)
                 {
@@ -95,12 +95,6 @@ namespace Chromely.CefGlue.Subprocess
 
                 commandLine.AppendSwitch("resources-dir-path", path);
                 commandLine.AppendSwitch("locales-dir-path", Path.Combine(path, "locales"));
-                commandLine.AppendSwitch("disable-extensions", "1");
-                commandLine.AppendSwitch("disable-gpu", "1");
-                commandLine.AppendSwitch("disable-gpu-compositing", "1");
-                commandLine.AppendSwitch("disable-smooth-scrolling", "1");
-                commandLine.AppendSwitch("no-sandbox", "1");
-                commandLine.AppendSwitch("no-zygote", "1");
             }
         }
 

@@ -377,6 +377,7 @@ namespace Chromely.CefGlue.BrowserWindow
                 {
                     throw new NotSupportedException("Chromely currently does not support frameless windows using GTK.");
                 }
+
                 // MultiThreadedMessageLoop is not allowed to be used as it will break frameless mode
                 settings.MultiThreadedMessageLoop = false;
             }
@@ -388,8 +389,15 @@ namespace Chromely.CefGlue.BrowserWindow
 
             if (HostConfig.UseDefaultSubprocess)
             {
-                var subprocessExeFullpath = DefaultSubprocessExe.FulPath;
-                settings.BrowserSubprocessPath = subprocessExeFullpath ?? settings.BrowserSubprocessPath;
+                try
+                {
+                    var subprocessExeFullpath = DefaultSubprocessExe.FulPath;
+                    settings.BrowserSubprocessPath = subprocessExeFullpath ?? settings.BrowserSubprocessPath;
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(exception);
+                }
             }
 
             var argv = args;
