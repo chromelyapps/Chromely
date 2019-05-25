@@ -7,13 +7,13 @@
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Chromely.CefGlue.Win.Subprocess_x64
+namespace Chromely.CefGlue.Win.Subprocess
 {
     public class Program
     {
         public static int Main(string[] args)
         {
-            return Subprocess.Subprocess.Execute(args);
+            return CefGlue.Subprocess.Subprocess.Execute(args);
         }
     }
 }

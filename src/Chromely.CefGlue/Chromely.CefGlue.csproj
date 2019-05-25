@@ -56,6 +56,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Subprocess\win32\Chromely.CefGlue.Win.Subprocess.exe" />
+    <None Remove="Subprocess\win64\Chromely.CefGlue.Win.Subprocess.exe" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Subprocess\win32\Chromely.CefGlue.Win.Subprocess.exe" />
+    <EmbeddedResource Include="Subprocess\win64\Chromely.CefGlue.Win.Subprocess.exe" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Chromely.Core\Chromely.Core.csproj" />
   </ItemGroup>
   

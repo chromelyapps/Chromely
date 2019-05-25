@@ -33,14 +33,14 @@ namespace Chromely.CefGlue.Subprocess
                 string fullPath;
                 switch (Environment.OSVersion.Platform)
                 {
+                    // TODO
                     case PlatformID.MacOSX:
-                        fullPath = Path.Combine(localFolder ?? string.Empty, "Chromely.CefGlue.Mac.Subprocess.exe");
-                        break;
+                        return null;
 
+                    // TODO
                     case PlatformID.Unix:
                     case (PlatformID)128:   // Framework (1.0 and 1.1) didn't include any PlatformID value for Unix, so Mono used the value 128.
-                        fullPath = Path.Combine(localFolder ?? string.Empty, "Chromely.CefGlue.Linux.Subprocess.exe");
-                        break;
+                        return null;
 
                     case PlatformID.Win32NT:
                     case PlatformID.Win32S:
@@ -69,7 +69,7 @@ namespace Chromely.CefGlue.Subprocess
                     Log.Error(exception);
                 }
 
-                return fullPath;
+                return null;
             }
         }
 
@@ -86,8 +86,8 @@ namespace Chromely.CefGlue.Subprocess
 
                 if (isWin)
                 {
-                    var cpu = Environment.Is64BitOperatingSystem ? "x64" : "x86";
-                    return $"win.{cpu}.Chromely.CefGlue.Win.Subprocess.exe";
+                    var cpu = Environment.Is64BitProcess ? "win64" : "win32";
+                    return $"{cpu}.Chromely.CefGlue.Win.Subprocess.exe";
                 }
 
                 if (isLinux)
@@ -120,9 +120,12 @@ namespace Chromely.CefGlue.Subprocess
             string resourcePath = $"Chromely.CefGlue.Subprocess.{ResourcePath}";
             using (var resource = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourcePath))
             {
-                using (var file = new FileStream(fullPath, FileMode.Create, FileAccess.Write))
+                if (resource != null)
                 {
-                    resource?.CopyTo(file);
+                    using (var file = new FileStream(fullPath, FileMode.Create, FileAccess.Write))
+                    {
+                        resource.CopyTo(file);
+                    }
                 }
             }
 

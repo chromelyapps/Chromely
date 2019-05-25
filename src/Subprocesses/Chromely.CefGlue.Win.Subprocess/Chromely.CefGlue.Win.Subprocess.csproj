@@ -2,12 +2,12 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net461</TargetFramework>
-    <Platforms>x64;AnyCPU</Platforms>
-    <AssemblyName>Chromely.CefGlue.Win.Subprocess_x64</AssemblyName>
+    <Platforms>x64;x86</Platforms>
+    <AssemblyName>Chromely.CefGlue.Win.Subprocess</AssemblyName>
     <TrimUnusedDependencies>true</TrimUnusedDependencies>
-    <RuntimeIdentifiers>win7-x64</RuntimeIdentifiers>
+    <RuntimeIdentifiers>win7-x64;win7-x86</RuntimeIdentifiers>
     <StartupObject />
-    <Configurations>Debug;Release;DebugLinux</Configurations>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
     <PlatformTarget>x86</PlatformTarget>
@@ -19,6 +19,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <PlatformTarget>x64</PlatformTarget>
     <OutputPath>bin\x64\Debug\net461</OutputPath>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <PlatformTarget>x64</PlatformTarget>

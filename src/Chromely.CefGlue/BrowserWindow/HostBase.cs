@@ -389,15 +389,8 @@ namespace Chromely.CefGlue.BrowserWindow
 
             if (HostConfig.UseDefaultSubprocess)
             {
-                try
-                {
-                    var subprocessExeFullpath = DefaultSubprocessExe.FulPath;
-                    settings.BrowserSubprocessPath = subprocessExeFullpath ?? settings.BrowserSubprocessPath;
-                }
-                catch (Exception exception)
-                {
-                    Log.Error(exception);
-                }
+                var subprocessExeFullpath = DefaultSubprocessExe.FulPath;
+                settings.BrowserSubprocessPath = subprocessExeFullpath ?? settings.BrowserSubprocessPath;
             }
 
             var argv = args;
