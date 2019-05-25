@@ -100,7 +100,7 @@ namespace Chromely.CefGlue.Subprocess
                     return $"mac.Chromely.CefGlue.Mac.Subprocess.exe";
                 }
 
-                return "win.x64.Chromely.CefGlue.Win.Subprocess.exe";
+                return "win64.Chromely.CefGlue.Win.Subprocess.exe";
             }
         }
 
