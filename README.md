@@ -93,7 +93,7 @@ class Program
 dotnet new -i "Chromely.CefGlue.Win.Template::*"
 dotnet new chromelywin 
 dotnet restore
-dotnet chromelycef.dll download v66 --cpu=x64 --dest="bin\Debug\netcoreapp2.1"
+dotnet chromelycef.dll download v70 --cpu=x64 --dest="bin\Debug\netcoreapp2.1"
 dotnet build
 dotnet run 
 ````
