@@ -7,14 +7,14 @@
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.IO;
+using System.Reflection;
+using System.Text;
+
 // ReSharper disable InconsistentNaming
 namespace Chromely.Core.Infrastructure
 {
-    using System;
-    using System.IO;
-    using System.Reflection;
-    using System.Text;
-
     /// <summary>
     /// The simple logger.
     /// </summary>

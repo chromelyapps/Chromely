@@ -7,11 +7,11 @@
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Linq;
+
 namespace Chromely.Core.Infrastructure
 {
-    using System.Collections.Generic;
-    using System.Linq;
-
     /// <summary>
     /// The url scheme provider.
     /// </summary>

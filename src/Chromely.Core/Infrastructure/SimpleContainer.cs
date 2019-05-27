@@ -12,17 +12,17 @@
 // For more info: https://github.com/tibel/Caliburn.Light/blob/master/src/Caliburn.Core/IoC/SimpleContainer.cs
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using Chromely.Core;
+
 // ReSharper disable once CheckNamespace
 // ReSharper disable UnusedMember.Global
 namespace Caliburn.Light
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Reflection;
-    using Chromely.Core;
-
     /// <summary>
     /// A simple IoC container.
     /// </summary>

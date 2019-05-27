@@ -7,12 +7,12 @@
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using Caliburn.Light;
+
 // ReSharper disable UnusedMember.Global
 namespace Chromely.Core.Infrastructure
 {
-    using System;
-    using Caliburn.Light;
-
     /// <summary>
     /// Global IOC container implementation.
     /// </summary>

@@ -7,10 +7,10 @@
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+
 namespace Chromely.Core.Infrastructure
 {
-    using System;
-
     /// <summary>
     /// The url scheme.
     /// </summary>

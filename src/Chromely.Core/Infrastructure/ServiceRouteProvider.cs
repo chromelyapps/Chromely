@@ -7,14 +7,13 @@
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Chromely.Core.RestfulService;
+
 namespace Chromely.Core.Infrastructure
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
-    using Chromely.Core.RestfulService;
-
     /// <summary>
     /// The service route provider.
     /// </summary>

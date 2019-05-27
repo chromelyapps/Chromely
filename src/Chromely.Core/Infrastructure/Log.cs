@@ -7,10 +7,10 @@
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+
 namespace Chromely.Core.Infrastructure
 {
-    using System;
-
     /// <summary>
     /// Global logger implementation.
     /// </summary>
