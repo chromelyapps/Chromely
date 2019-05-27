@@ -1,24 +1,22 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ChromelyConfigurationTest.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
 //      See the LICENSE.md file in the project root for more information.
 // </license>
-// --------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------
 
 using System;
 using System.IO;
 using System.Linq;
 using Chromely.Core.Helpers;
-// ReSharper disable InconsistentNaming
+using Chromely.Core.Infrastructure;
+using Xunit;
+using Xunit.Abstractions;
 
 namespace Chromely.Core.Tests
 {
-    using Infrastructure;
-    using Xunit;
-    using Xunit.Abstractions;
-
     /// <summary>
     /// The chromely configuration test.
     /// </summary>
@@ -68,7 +66,7 @@ namespace Chromely.Core.Tests
         /// The m_test output.
         /// </summary>
         // ReSharper disable once NotAccessedField.Local
-        private readonly ITestOutputHelper mTestOutput;
+        private readonly ITestOutputHelper _testOutput;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ChromelyConfigurationTest"/> class.
@@ -78,7 +76,7 @@ namespace Chromely.Core.Tests
         /// </param>
         public ChromelyConfigurationTest(ITestOutputHelper testOutput)
         {
-            mTestOutput = testOutput;
+            _testOutput = testOutput;
         }
 
         /// <summary>
@@ -98,28 +96,6 @@ namespace Chromely.Core.Tests
             Assert.Equal(HostHeight, config.HostHeight);
             Assert.Equal(CefLogFile, config.LogFile);
             Assert.Equal(StartUrl, config.StartUrl);
-        }
-
-        /// <summary>
-        /// The get base chromely configuration.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="ChromelyConfiguration"/>.
-        /// </returns>
-        private ChromelyConfiguration GetBaseChromelyConfiguration()
-        {
-            var logSeverity = LogSeverity.Error;
-            var config = ChromelyConfiguration.Create()
-                .WithHostTitle(Title)
-                .WithHostIconFile(IconFile)
-                .WithAppArgs(null)
-                .WithHostSize(HostWidth, HostHeight)
-                .WithLogFile(CefLogFile)
-                .WithStartUrl(StartUrl)
-                .WithLogSeverity(logSeverity)
-                .UseDefaultLogger(DefaultLogFile);
-
-            return config;
         }
 
         /// <summary>
@@ -144,6 +120,28 @@ namespace Chromely.Core.Tests
             {
                 Assert.False(config.CustomSettings.Any());
             }
+        }
+
+        /// <summary>
+        /// The get base chromely configuration.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="ChromelyConfiguration"/>.
+        /// </returns>
+        private ChromelyConfiguration GetBaseChromelyConfiguration()
+        {
+            var logSeverity = LogSeverity.Error;
+            var config = ChromelyConfiguration.Create()
+                .WithHostTitle(Title)
+                .WithHostIconFile(IconFile)
+                .WithAppArgs(null)
+                .WithHostSize(HostWidth, HostHeight)
+                .WithLogFile(CefLogFile)
+                .WithStartUrl(StartUrl)
+                .WithLogSeverity(logSeverity)
+                .UseDefaultLogger(DefaultLogFile);
+
+            return config;
         }
     }
 }

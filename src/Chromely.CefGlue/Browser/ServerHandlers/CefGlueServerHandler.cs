@@ -1,11 +1,11 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CefGlueServerHandler.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
 //      See the LICENSE.md file in the project root for more information.
 // </license>
-// --------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------
 
 using System;
 using Chromely.Core;
@@ -32,22 +32,22 @@ namespace Chromely.CefGlue.Browser.ServerHandlers
         /// <summary>
         /// The lock obj.
         /// </summary>
-        private readonly object mlockObj = new object();
+        private readonly object _lockObj = new object();
 
         /// <summary>
-        /// The m websocket handler.
+        /// The websocket handler.
         /// </summary>
-        private readonly IChromelyWebsocketHandler mWebsocketHandler;
+        private readonly IChromelyWebsocketHandler _websocketHandler;
 
         /// <summary>
-        /// The m complete callback.
+        /// The complete callback.
         /// </summary>
-        private Action mCompleteCallback;
+        private Action _completeCallback;
 
         /// <summary>
         /// The m server.
         /// </summary>
-        private CefServer mServer;
+        private CefServer _server;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CefGlueServerHandler"/> class.
@@ -57,7 +57,7 @@ namespace Chromely.CefGlue.Browser.ServerHandlers
         /// </param>
         public CefGlueServerHandler(IChromelyWebsocketHandler websocketHandler)
         {
-            mWebsocketHandler = websocketHandler;
+            _websocketHandler = websocketHandler;
         }
 
         /// <summary>
@@ -100,7 +100,7 @@ namespace Chromely.CefGlue.Browser.ServerHandlers
                 return;
             }
 
-            if (mServer == null)
+            if (_server == null)
             {
                 if (!(port >= 1025 && port <= 65535))
                 {
@@ -109,7 +109,7 @@ namespace Chromely.CefGlue.Browser.ServerHandlers
 
                 Address = string.IsNullOrWhiteSpace(address) ? DefaultServerAddress : address;
                 Port = port;
-                mCompleteCallback = completecallback;
+                _completeCallback = completecallback;
 
 
                 CefServer.Create(Address, (ushort)Port, DefaultServerBacklog, this);
@@ -138,7 +138,7 @@ namespace Chromely.CefGlue.Browser.ServerHandlers
                 return;
             }
 
-            if (mServer == null)
+            if (_server == null)
             {
                 if (!(port >= 1025 && port <= 65535))
                 {
@@ -147,7 +147,7 @@ namespace Chromely.CefGlue.Browser.ServerHandlers
 
                 Address = DefaultServerAddress;
                 Port = port;
-                mCompleteCallback = completecallback;
+                _completeCallback = completecallback;
 
                 CefServer.Create(Address, (ushort)Port, DefaultServerBacklog, this);
             }
@@ -171,10 +171,10 @@ namespace Chromely.CefGlue.Browser.ServerHandlers
                 return;
             }
 
-            if (mServer != null)
+            if (_server != null)
             {
-                mCompleteCallback = completecallback;
-                mServer.Shutdown();
+                _completeCallback = completecallback;
+                _server.Shutdown();
             }
         }
 
@@ -183,11 +183,11 @@ namespace Chromely.CefGlue.Browser.ServerHandlers
         /// </summary>
         public void DisposeServer()
         {
-            if (mServer != null)
+            if (_server != null)
             {
-                mServer.Dispose();
+                _server.Dispose();
                 IsServerRunning = false;
-                mServer = null;
+                _server = null;
             }
         }
 
@@ -199,11 +199,11 @@ namespace Chromely.CefGlue.Browser.ServerHandlers
         /// </param>
         protected override void OnServerCreated(CefServer server)
         {
-            if (mServer == null)
+            if (_server == null)
             {
                 ConnectionNameMapper.Clear();
-                mServer = server;
-                IoC.RegisterInstance(typeof(CefServer), typeof(CefServer).FullName, mServer);
+                _server = server;
+                IoC.RegisterInstance(typeof(CefServer), typeof(CefServer).FullName, _server);
                 IsServerRunning = server.IsRunning;
                 RunCompleteCallback(server.IsRunning);
             }
@@ -217,9 +217,9 @@ namespace Chromely.CefGlue.Browser.ServerHandlers
         /// </param>
         protected override void OnServerDestroyed(CefServer server)
         {
-            if (mServer != null)
+            if (_server != null)
             {
-                mServer = null;
+                _server = null;
                 IsServerRunning = false;
                 RunCompleteCallback(true);
             }
@@ -332,9 +332,9 @@ namespace Chromely.CefGlue.Browser.ServerHandlers
         /// </param>
         protected override void OnWebSocketMessage(CefServer server, int connectionId, IntPtr data, long dataSize)
         {
-            lock (mlockObj)
+            lock (_lockObj)
             {
-                mWebsocketHandler?.OnMessage(connectionId, data, dataSize);
+                _websocketHandler?.OnMessage(connectionId, data, dataSize);
             }
         }
 
@@ -356,7 +356,7 @@ namespace Chromely.CefGlue.Browser.ServerHandlers
                 return;
             }
 
-            mCompleteCallback?.Invoke();
+            _completeCallback?.Invoke();
         }
 
         /// <summary>
@@ -442,24 +442,24 @@ namespace Chromely.CefGlue.Browser.ServerHandlers
         private class ActionTask1 : CefTask
         {
             /// <summary>
-            /// The m address.
+            /// The address.
             /// </summary>
-            private readonly string mAddress;
+            private readonly string _address;
 
             /// <summary>
-            /// The m port.
+            /// The port.
             /// </summary>
-            private readonly int mPort;
+            private readonly int _port;
 
             /// <summary>
-            /// The m completion callback.
+            /// The completion callback.
             /// </summary>
-            private readonly Action mCompletionCallback;
+            private readonly Action _completionCallback;
 
             /// <summary>
             /// The action.
             /// </summary>
-            private Action<string, int, Action> mAction;
+            private Action<string, int, Action> _action;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="ActionTask1"/> class.
@@ -478,10 +478,10 @@ namespace Chromely.CefGlue.Browser.ServerHandlers
             /// </param>
             public ActionTask1(Action<string, int, Action> action, string address, int port, Action completionCallback)
             {
-                mAddress = address;
-                mAction = action;
-                mPort = port;
-                mCompletionCallback = completionCallback;
+                _address = address;
+                _action = action;
+                _port = port;
+                _completionCallback = completionCallback;
             }
 
             /// <summary>
@@ -489,8 +489,8 @@ namespace Chromely.CefGlue.Browser.ServerHandlers
             /// </summary>
             protected override void Execute()
             {
-                mAction(mAddress, mPort, mCompletionCallback);
-                mAction = null;
+                _action(_address, _port, _completionCallback);
+                _action = null;
             }
         }
 
@@ -500,19 +500,19 @@ namespace Chromely.CefGlue.Browser.ServerHandlers
         private class ActionTask2 : CefTask
         {
             /// <summary>
-            /// The m port.
+            /// The port.
             /// </summary>
-            private readonly int mPort;
+            private readonly int _port;
 
             /// <summary>
-            /// The m completion callback.
+            /// The completion callback.
             /// </summary>
-            private readonly Action mCompletionCallback;
+            private readonly Action _completionCallback;
 
             /// <summary>
             /// The action.
             /// </summary>
-            private Action<int, Action> mAction;
+            private Action<int, Action> _action;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="ActionTask2"/> class.
@@ -528,9 +528,9 @@ namespace Chromely.CefGlue.Browser.ServerHandlers
             /// </param>
             public ActionTask2(Action<int, Action> action, int port, Action completionCallback)
             {
-                mAction = action;
-                mPort = port;
-                mCompletionCallback = completionCallback;
+                _action = action;
+                _port = port;
+                _completionCallback = completionCallback;
             }
 
             /// <summary>
@@ -538,8 +538,8 @@ namespace Chromely.CefGlue.Browser.ServerHandlers
             /// </summary>
             protected override void Execute()
             {
-                mAction(mPort, mCompletionCallback);
-                mAction = null;
+                _action(_port, _completionCallback);
+                _action = null;
             }
         }
 
@@ -549,14 +549,14 @@ namespace Chromely.CefGlue.Browser.ServerHandlers
         private class ActionTask3 : CefTask
         {
             /// <summary>
-            /// The m completion callback.
+            /// The completion callback.
             /// </summary>
-            private readonly Action mCompletionCallback;
+            private readonly Action _completionCallback;
 
             /// <summary>
             /// The action.
             /// </summary>
-            private Action<Action> mAction;
+            private Action<Action> _action;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="ActionTask3"/> class.
@@ -569,8 +569,8 @@ namespace Chromely.CefGlue.Browser.ServerHandlers
             /// </param>
             public ActionTask3(Action<Action> action, Action completionCallback)
             {
-                mAction = action;
-                mCompletionCallback = completionCallback;
+                _action = action;
+                _completionCallback = completionCallback;
             }
 
             /// <summary>
@@ -578,8 +578,8 @@ namespace Chromely.CefGlue.Browser.ServerHandlers
             /// </summary>
             protected override void Execute()
             {
-                mAction(mCompletionCallback);
-                mAction = null;
+                _action(_completionCallback);
+                _action = null;
             }
         }
 
@@ -589,14 +589,14 @@ namespace Chromely.CefGlue.Browser.ServerHandlers
         private class ActionTask4 : CefTask
         {
             /// <summary>
-            /// The m flag.
+            /// The flag.
             /// </summary>
-            private readonly bool mFlag;
+            private readonly bool _flag;
 
             /// <summary>
             /// The action.
             /// </summary>
-            private Action<bool> mAction;
+            private Action<bool> _action;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="ActionTask4"/> class.
@@ -609,8 +609,8 @@ namespace Chromely.CefGlue.Browser.ServerHandlers
             /// </param>
             public ActionTask4(Action<bool> action, bool flag)
             {
-                mAction = action;
-                mFlag = flag;
+                _action = action;
+                _flag = flag;
             }
 
             /// <summary>
@@ -618,8 +618,8 @@ namespace Chromely.CefGlue.Browser.ServerHandlers
             /// </summary>
             protected override void Execute()
             {
-                mAction(mFlag);
-                mAction = null;
+                _action(_flag);
+                _action = null;
             }
         }
     }

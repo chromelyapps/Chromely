@@ -1,11 +1,11 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="GtkNativeMethods.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+// <copyright file="NativeMethods.cs" company="Chromely Projects">
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
-// See the LICENSE.md file in the project root for more information.
+//      See the LICENSE.md file in the project root for more information.
 // </license>
-// --------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------
 
 using System;
 using System.Diagnostics.CodeAnalysis;
@@ -13,7 +13,6 @@ using System.IO;
 using System.Runtime.InteropServices;
 using Chromely.Core.Infrastructure;
 using Xilium.CefGlue;
-// ReSharper disable UnusedMember.Global
 
 namespace Chromely.CefGlue.Gtk.BrowserWindow
 {

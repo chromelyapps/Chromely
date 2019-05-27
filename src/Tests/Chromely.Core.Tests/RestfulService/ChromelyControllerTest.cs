@@ -1,11 +1,11 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ChromelyControllerTest.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
 //      See the LICENSE.md file in the project root for more information.
 // </license>
-// --------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------
 
 using System;
 using System.Collections.Generic;
@@ -23,13 +23,13 @@ namespace Chromely.Core.Tests.RestfulService
     public class ChromelyControllerTest
     {
         /// <summary>
-        /// The m test output.
+        /// The test output.
         /// </summary>
         // ReSharper disable once NotAccessedField.Local
         private readonly ITestOutputHelper _testOutput;
 
         /// <summary>
-        /// The m test controller.
+        /// The test controller.
         /// </summary>
         private readonly TestControllerMovies _testControllerMovies;
 

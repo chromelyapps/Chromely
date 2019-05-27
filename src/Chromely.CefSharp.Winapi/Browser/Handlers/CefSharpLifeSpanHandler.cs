@@ -1,17 +1,17 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CefSharpLifeSpanHandler.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
 //      See the LICENSE.md file in the project root for more information.
 // </license>
-// --------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------
+
+using global::CefSharp;
+using Chromely.Core.Infrastructure;
 
 namespace Chromely.CefSharp.Winapi.Browser.Handlers
 {
-    using global::CefSharp;
-    using Chromely.Core.Infrastructure;
-
     /// <summary>
     /// The cef sharp life span handler.
     /// </summary>

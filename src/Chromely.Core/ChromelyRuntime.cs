@@ -1,3 +1,12 @@
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ChromelyRuntime.cs" company="Chromely Projects">
+//   Copyright (c) 2017-2019 Chromely Projects
+// </copyright>
+// <license>
+//      See the LICENSE.md file in the project root for more information.
+// </license>
+// --------------------------------------------------------------------------------------------------------------------
+
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -15,10 +24,14 @@ namespace Chromely.Core
     public static class ChromelyRuntime
     {
         /// <summary>
-        /// 
+        /// The get expected chromium build number.
         /// </summary>
-        /// <param name="wrapper"></param>
-        /// <returns></returns>
+        /// <param name="wrapper">
+        /// The wrapper.
+        /// </param>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
         public static int GetExpectedChromiumBuildNumber(ChromelyCefWrapper wrapper)
         {
             try

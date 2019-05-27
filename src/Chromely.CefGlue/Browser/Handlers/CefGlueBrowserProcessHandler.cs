@@ -1,12 +1,14 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CefGlueBrowserProcessHandler.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
 //      See the LICENSE.md file in the project root for more information.
 // </license>
-// --------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Diagnostics;
 using System.Linq;
 using Chromely.CefGlue.Subprocess;
 using Chromely.Core;
@@ -15,11 +17,17 @@ using Xilium.CefGlue;
 
 namespace Chromely.CefGlue.Browser.Handlers
 {
-    using System;
-    using System.Diagnostics;
-
+    /// <summary>
+    /// The cef glue browser process handler.
+    /// </summary>
     public class CefGlueBrowserProcessHandler : CefBrowserProcessHandler
     {
+        /// <summary>
+        /// The on before child process launch.
+        /// </summary>
+        /// <param name="commandLine">
+        /// The command line.
+        /// </param>
         protected override void OnBeforeChildProcessLaunch(CefCommandLine commandLine)
         {
             // We need to know the process Id to establish WCF communication and for monitoring of parent process exit

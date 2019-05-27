@@ -1,20 +1,19 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CefSharpFrameHandler.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
 //      See the LICENSE.md file in the project root for more information.
 // </license>
-// --------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using global::CefSharp;
 
 namespace Chromely.CefSharp.Winapi.Browser.FrameHandlers
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
-    using global::CefSharp;
-
     /// <summary>
     /// The CefSharp frame handler.
     /// </summary>
@@ -23,7 +22,7 @@ namespace Chromely.CefSharp.Winapi.Browser.FrameHandlers
         /// <summary>
         /// The browser.
         /// </summary>
-        private readonly IBrowser mBrowser;
+        private readonly IBrowser _browser;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CefSharpFrameHandler"/> class.
@@ -33,7 +32,7 @@ namespace Chromely.CefSharp.Winapi.Browser.FrameHandlers
         /// </param>
         public CefSharpFrameHandler(IBrowser browser)
         {
-            mBrowser = browser;
+            _browser = browser;
         }
 
         /// <summary>
@@ -43,12 +42,12 @@ namespace Chromely.CefSharp.Winapi.Browser.FrameHandlers
         {
             get
             {
-                if (mBrowser == null)
+                if (_browser == null)
                 {
                     throw new Exception("Browser object cannot be null.");
                 }
 
-                return mBrowser;
+                return _browser;
             }
         }
 

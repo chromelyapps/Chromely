@@ -1,24 +1,22 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="RequestTaskRunner.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
 //      See the LICENSE.md file in the project root for more information.
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using CefSharp;
+using Chromely.Core.Infrastructure;
+using Chromely.Core.RestfulService;
+
 // ReSharper disable StyleCop.SA1210
 namespace Chromely.CefSharp.Winapi.RestfulService
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-
-    using Chromely.Core.Infrastructure;
-    using Chromely.Core.RestfulService;
-
-    using global::CefSharp;
-
     /// <summary>
     /// The request task runner.
     /// </summary>
@@ -161,7 +159,7 @@ namespace Chromely.CefSharp.Winapi.RestfulService
                 throw new Exception($"Route for path = {routePath} is null or invalid.");
             }
 
-            var response = route.Invoke(requestId, routePath, parameters: parameters?.ToObjectDictionary(), postData: postData);
+            var response = route.Invoke(requestId, routePath, parameters?.ToObjectDictionary(), postData);
             response.ReadyState = (int)ReadyState.ResponseIsReady;
             response.Status = (int)System.Net.HttpStatusCode.OK;
             response.StatusText = "OK";
@@ -169,6 +167,24 @@ namespace Chromely.CefSharp.Winapi.RestfulService
             return response;
         }
 
+        /// <summary>
+        /// The excute route async.
+        /// </summary>
+        /// <param name="requestId">
+        /// The request id.
+        /// </param>
+        /// <param name="routePath">
+        /// The route path.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <param name="postData">
+        /// The post data.
+        /// </param>
+        /// <returns>
+        /// The <see cref="Task"/>.
+        /// </returns>
         private static async Task<ChromelyResponse> ExcuteRouteAsync(string requestId, RoutePath routePath, object parameters, object postData)
         {
             var route = ServiceRouteProvider.GetRoute(routePath);
@@ -184,13 +200,20 @@ namespace Chromely.CefSharp.Winapi.RestfulService
             {
                 if (route.IsAsync)
                 {
-                    response = await route.InvokeAsync(requestId, routePath,
-                        parameters: parameters?.ToObjectDictionary(), postData: postData);
+                    // ReSharper disable once ConsiderUsingConfigureAwait
+                    response = await route.InvokeAsync(
+                                   requestId,
+                                   routePath,
+                                   parameters?.ToObjectDictionary(),
+                                   postData);
                 }
                 else
                 {
-                    response = route.Invoke(requestId, routePath, parameters: parameters?.ToObjectDictionary(),
-                        postData: postData);
+                    response = route.Invoke(
+                        requestId,
+                        routePath,
+                        parameters?.ToObjectDictionary(),
+                         postData);
                 }
 
                 response.ReadyState = (int) ReadyState.ResponseIsReady;
@@ -198,12 +221,15 @@ namespace Chromely.CefSharp.Winapi.RestfulService
                 response.StatusText = "OK";
 
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                response = new ChromelyResponse();
-                response.ReadyState = (int)ReadyState.ResponseIsReady;
-                response.Status = (int)System.Net.HttpStatusCode.InternalServerError;
-                response.StatusText = "Error";
+                Log.Error(exception );
+                response = new ChromelyResponse
+                {
+                    ReadyState = (int)ReadyState.ResponseIsReady,
+                    Status = (int)System.Net.HttpStatusCode.InternalServerError,
+                    StatusText = "Error"
+                };
             }
 
             return response;

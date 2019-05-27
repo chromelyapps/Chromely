@@ -1,3 +1,12 @@
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ChromelyControllerFactory.cs" company="Chromely Projects">
+//   Copyright (c) 2017-2019 Chromely Projects
+// </copyright>
+// <license>
+//      See the LICENSE.md file in the project root for more information.
+// </license>
+// --------------------------------------------------------------------------------------------------------------------
+
 using System;
 using System.Linq;
 using Chromely.Core.Infrastructure;
@@ -11,8 +20,7 @@ namespace Chromely.Core.RestfulService
             var instance = CreateType(type);
             return instance as ChromelyController;
         }
-    
-        
+
         private static object CreateType(Type type)
         {
             object instance = null;

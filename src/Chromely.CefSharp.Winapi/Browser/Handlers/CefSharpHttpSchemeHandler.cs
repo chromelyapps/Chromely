@@ -1,25 +1,24 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CefSharpHttpSchemeHandler.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
 //      See the LICENSE.md file in the project root for more information.
 // </license>
-// --------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------
 
-// ReSharper disable StyleCop.SA1210
+using System;
+using System.IO;
+using System.Net;
+using System.Text;
+using System.Threading.Tasks;
+using global::CefSharp;
+using Chromely.CefSharp.Winapi.RestfulService;
+using Chromely.Core.Infrastructure;
+using Chromely.Core.RestfulService;
+
 namespace Chromely.CefSharp.Winapi.Browser.Handlers
 {
-    using System;
-    using System.IO;
-    using System.Net;
-    using System.Text;
-    using System.Threading.Tasks;
-    using Chromely.CefSharp.Winapi.RestfulService;
-    using Chromely.Core.Infrastructure;
-    using Chromely.Core.RestfulService;
-    using global::CefSharp;
-
     /// <summary>
     /// The CefSharp http scheme handler.
     /// </summary>
@@ -28,17 +27,17 @@ namespace Chromely.CefSharp.Winapi.Browser.Handlers
         /// <summary>
         /// The ChromelyResponse object.
         /// </summary>
-        private ChromelyResponse mChromelyResponse;
+        private ChromelyResponse _chromelyResponse;
 
         /// <summary>
         /// The mime type.
         /// </summary>
-        private string mMimeType;
+        private string _mimeType;
 
         /// <summary>
         /// The stream object.
         /// </summary>
-        private Stream mStream = new MemoryStream();
+        private Stream _stream = new MemoryStream();
 
         /// <summary>
         /// The process request async.
@@ -63,18 +62,18 @@ namespace Chromely.CefSharp.Winapi.Browser.Handlers
                     {
                         try
                         {
-                            mChromelyResponse = RequestTaskRunner.Run(request);
+                            _chromelyResponse = RequestTaskRunner.Run(request);
 
-                            string jsonData = mChromelyResponse.Data.EnsureResponseIsJsonFormat();
+                            string jsonData = _chromelyResponse.Data.EnsureResponseIsJsonFormat();
                             var content = Encoding.UTF8.GetBytes(jsonData);
-                            mStream.Write(content, 0, content.Length);
-                            mMimeType = "application/json";
+                            _stream.Write(content, 0, content.Length);
+                            _mimeType = "application/json";
                         }
                         catch (Exception exception)
                         {
                             Log.Error(exception);
 
-                            mChromelyResponse =
+                            _chromelyResponse =
                                 new ChromelyResponse
                                     {
                                         Status = (int)HttpStatusCode.BadRequest,
@@ -113,7 +112,7 @@ namespace Chromely.CefSharp.Winapi.Browser.Handlers
         /// </returns>
         public override Stream GetResponse(IResponse response, out long responseLength, out string redirectUrl)
         {
-            responseLength = mStream.Length;
+            responseLength = _stream.Length;
             redirectUrl = null;
 
             var headers = response.Headers;
@@ -124,11 +123,11 @@ namespace Chromely.CefSharp.Winapi.Browser.Handlers
             headers.Add("Content-Type", "application/json; charset=utf-8");
             response.Headers = headers;
 
-            response.StatusCode = mChromelyResponse.Status;
-            response.StatusText = mChromelyResponse.StatusText;
-            response.MimeType = mMimeType; 
+            response.StatusCode = _chromelyResponse.Status;
+            response.StatusText = _chromelyResponse.StatusText;
+            response.MimeType = _mimeType; 
 
-            return mStream;
+            return _stream;
         }
     }
 }

@@ -113,8 +113,6 @@ namespace Chromely.CefGlue.Subprocess
         /// <returns>
         /// The <see cref="string"/>.
         /// </returns>
-        /// <exception cref="NotImplementedException">
-        /// </exception>
         private static string LoadFileFromResource(string fullPath)
         {
             string resourcePath = $"Chromely.CefGlue.Subprocess.{ResourcePath}";

@@ -1,3 +1,12 @@
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="TestControllerGetSave.cs" company="Chromely Projects">
+//   Copyright (c) 2017-2019 Chromely Projects
+// </copyright>
+// <license>
+//      See the LICENSE.md file in the project root for more information.
+// </license>
+// ----------------------------------------------------------------------------------------------------------------------
+
 using Chromely.Core.RestfulService;
 
 namespace Chromely.Core.Tests.RestfulService
@@ -9,7 +18,7 @@ namespace Chromely.Core.Tests.RestfulService
     public class TestControllerGetSave : ChromelyController
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="TestController"/> class.
+        /// Initializes a new instance of the <see cref="TestControllerGetSave"/> class.
         /// </summary>
         public TestControllerGetSave()
         {
@@ -29,8 +38,7 @@ namespace Chromely.Core.Tests.RestfulService
         /// </returns>
         private ChromelyResponse Get1(ChromelyRequest request)
         {
-            ChromelyResponse response = new ChromelyResponse();
-            response.Data = 1000;
+            var response = new ChromelyResponse { Data = 1000 };
             return response;
         }
 
@@ -45,8 +53,7 @@ namespace Chromely.Core.Tests.RestfulService
         /// </returns>
         private ChromelyResponse Get2(ChromelyRequest request)
         {
-            ChromelyResponse response = new ChromelyResponse();
-            response.Data = "Test Get 2";
+            var response = new ChromelyResponse { Data = "Test Get 2" };
             return response;
         }
 
@@ -61,8 +68,7 @@ namespace Chromely.Core.Tests.RestfulService
         /// </returns>
         private ChromelyResponse Save(ChromelyRequest request)
         {
-            ChromelyResponse response = new ChromelyResponse();
-            response.Data = request.PostData;
+            var response = new ChromelyResponse { Data = request.PostData };
             return response;
         }
     }

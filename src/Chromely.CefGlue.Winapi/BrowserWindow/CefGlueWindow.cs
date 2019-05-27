@@ -1,11 +1,11 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="WinApiCefGlueBrowserWindow.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+// <copyright file="CefGlueWindow.cs" company="Chromely Projects">
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
 //      See the LICENSE.md file in the project root for more information.
 // </license>
-// --------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------
 
 using Chromely.CefGlue.BrowserWindow;
 using Chromely.Core;
@@ -18,7 +18,7 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
     /// </summary>
     internal class CefGlueWindow : HostBase
     {
-        private IWindow mMaWindow;
+        private IWindow _mainWindow;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CefGlueWindow"/> class.
@@ -36,7 +36,7 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
         /// </summary>
         public new void Close()
         {
-            mMaWindow?.Exit();
+            _mainWindow?.Exit();
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
         /// </summary>
         public new void Exit()
         {
-            mMaWindow?.Exit();
+            _mainWindow?.Exit();
         }
 
         /// <summary>
@@ -78,8 +78,8 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
         /// </returns>
         protected override IWindow CreateMainView()
         {
-            mMaWindow = new Window(this, HostConfig);
-            return mMaWindow;
+            _mainWindow = new Window(this, HostConfig);
+            return _mainWindow;
         }
     }
 }

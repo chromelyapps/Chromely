@@ -1,7 +1,14 @@
-﻿using System;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Program.cs" company="Chromely Projects">
+//   Copyright (c) 2017-2019 Chromely Projects
+// </copyright>
+// <license>
+//      See the LICENSE.md file in the project root for more information.
+// </license>
+// ----------------------------------------------------------------------------------------------------------------------
+
+using System;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Chromely.CefGlue;
 using Chromely.CefGlue.Browser.EventParams;
@@ -13,10 +20,8 @@ namespace Chromely.Integration.TestApp
     /// <summary>
     /// This is a minimal chromely application
     /// to be used during integration tests.
-    ///
     /// Due it is cross platform it MUST NOT
     /// reference platform specific assemblies.
-    ///  
     /// It will emit console outputs starting
     /// with "CI-TRACE:" which are checked
     /// in the test run - so DON'T REMOVE them.

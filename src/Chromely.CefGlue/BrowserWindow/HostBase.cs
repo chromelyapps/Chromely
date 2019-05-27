@@ -1,11 +1,11 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="HostBase.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
 //      See the LICENSE.md file in the project root for more information.
 // </license>
-// --------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------
 
 using System;
 using System.Collections.Generic;
@@ -31,14 +31,14 @@ namespace Chromely.CefGlue.BrowserWindow
     public abstract class HostBase : IChromelyWindow
     {
         /// <summary>
-        /// The m main view.
+        /// The main view.
         /// </summary>
-        private IWindow mMainView;
+        private IWindow _mainView;
 
         /// <summary>
-        /// The Wwindow created.
+        /// The window created.
         /// </summary>
-        private bool mWindowCreated;
+        private bool _windowCreated;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HostBase"/> class.
@@ -78,7 +78,7 @@ namespace Chromely.CefGlue.BrowserWindow
         /// <summary>
         /// Gets the browser.
         /// </summary>
-        public object Browser => mMainView?.Browser;
+        public object Browser => _mainView?.Browser;
 
         /// <summary>
         /// Runs the application.
@@ -124,7 +124,7 @@ namespace Chromely.CefGlue.BrowserWindow
         /// </typeparam>
         public void RegisterEventHandler<T>(CefEventKey key, EventHandler<T> handler)
         {
-            if (mWindowCreated)
+            if (_windowCreated)
             {
                 throw new Exception("\"RegisterEventHandler\" method must be called before \"Run\" method.");
             }
@@ -146,7 +146,7 @@ namespace Chromely.CefGlue.BrowserWindow
         /// </typeparam>
         public void RegisterEventHandler<T>(CefEventKey key, ChromelyEventHandler<T> handler)
         {
-            if (mWindowCreated)
+            if (_windowCreated)
             {
                 throw new Exception("\"RegisterEventHandler\" method must be called before \"Run\" method.");
             }
@@ -168,7 +168,7 @@ namespace Chromely.CefGlue.BrowserWindow
         /// </param>
         public void RegisterCustomHandler(CefHandlerKey key, Type implementation)
         {
-            if (mWindowCreated)
+            if (_windowCreated)
             {
                 throw new Exception("\"RegisterCustomHandler\" method must be called before \"Run\" method.");
             }
@@ -188,7 +188,7 @@ namespace Chromely.CefGlue.BrowserWindow
         /// </summary>
         public void Exit()
         {
-            mMainView?.Exit();
+            _mainView?.Exit();
         }
 
         #endregion
@@ -301,7 +301,7 @@ namespace Chromely.CefGlue.BrowserWindow
         /// </param>
         public virtual void Dispose(bool disposing)
         {
-            mMainView?.Dispose();
+            _mainView?.Dispose();
         }
 
         #endregion
@@ -435,21 +435,21 @@ namespace Chromely.CefGlue.BrowserWindow
 
             Initialize();
 
-            mMainView = CreateMainView();
+            _mainView = CreateMainView();
 
             if (HostConfig.HostCenterScreen)
             {
-                mMainView.CenterToScreen();
+                _mainView.CenterToScreen();
             }
 
-            mWindowCreated = true;
+            _windowCreated = true;
 
             CefBinariesLoader.DeleteTempFiles(tempFiles);
 
             RunMessageLoop();
 
-            mMainView.Dispose();
-            mMainView = null;
+            _mainView.Dispose();
+            _mainView = null;
 
             CefRuntime.Shutdown();
 
@@ -505,7 +505,7 @@ namespace Chromely.CefGlue.BrowserWindow
             }
 
             BrowserMessageRouter = new CefMessageRouterBrowserSide(new CefMessageRouterConfig());
-            IoC.RegisterInstance<CefMessageRouterBrowserSide>(typeof(CefMessageRouterBrowserSide).FullName, BrowserMessageRouter);
+            IoC.RegisterInstance(typeof(CefMessageRouterBrowserSide).FullName, BrowserMessageRouter);
 
             // Register message router handlers
             var messageRouterHandlers = IoC.GetAllInstances(typeof(ChromelyMessageRouter)).ToList();
@@ -553,11 +553,6 @@ namespace Chromely.CefGlue.BrowserWindow
             }
 
             /// <summary>
-            /// Gets or sets the action.
-            /// </summary>
-            public Action Action { get; set; }
-
-            /// <summary>
             /// The execute.
             /// </summary>
             protected override void Execute()
@@ -565,6 +560,11 @@ namespace Chromely.CefGlue.BrowserWindow
                 Action();
                 Action = null;
             }
+
+            /// <summary>
+            /// Gets or sets the action.
+            /// </summary>
+            private Action Action { get; set; }
         }
     }
 }

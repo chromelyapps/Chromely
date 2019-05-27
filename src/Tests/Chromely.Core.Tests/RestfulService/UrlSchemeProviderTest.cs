@@ -1,11 +1,11 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="UrlSchemeProviderTest.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
 //      See the LICENSE.md file in the project root for more information.
 // </license>
-// --------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------
 
 using Chromely.Core.Infrastructure;
 using Xunit;
@@ -22,7 +22,7 @@ namespace Chromely.Core.Tests.RestfulService
         /// The m_test output.
         /// </summary>
         // ReSharper disable once NotAccessedField.Local
-        private readonly ITestOutputHelper mTestOutput;
+        private readonly ITestOutputHelper _testOutput;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UrlSchemeProviderTest"/> class.
@@ -32,7 +32,7 @@ namespace Chromely.Core.Tests.RestfulService
         /// </param>
         public UrlSchemeProviderTest(ITestOutputHelper testOutput)
         {
-            mTestOutput = testOutput;
+            _testOutput = testOutput;
             Init();
         }
 

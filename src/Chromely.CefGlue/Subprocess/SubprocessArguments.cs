@@ -5,7 +5,7 @@
 // <license>
 //      See the LICENSE.md file in the project root for more information.
 // </license>
-// --------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------
 
 using System.Collections.Generic;
 using System.Linq;
@@ -30,13 +30,8 @@ namespace Chromely.CefGlue.Subprocess
 
         public static string GetArgumentValue(this IEnumerable<string> args, string argumentName)
         {
-            var arg = args.FirstOrDefault(a => a.StartsWith(argumentName));
-            if (arg == null)
-            {
-                return null;
-            }
-
-            return arg.Split('=').Last();
+            var arg = args?.FirstOrDefault(a => a.StartsWith(argumentName));
+            return arg?.Split('=').Last();
         }
     }
 }

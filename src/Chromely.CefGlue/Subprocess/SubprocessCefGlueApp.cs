@@ -1,11 +1,11 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SubprocessCefGlueApp.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
 //      See the LICENSE.md file in the project root for more information.
 // </license>
-// --------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------
 
 using System;
 using System.IO;
@@ -24,12 +24,12 @@ namespace Chromely.CefGlue.Subprocess
         /// <summary>
         /// The render process handler.
         /// </summary>
-        private readonly CefRenderProcessHandler mRenderProcessHandler = new CefGlueRenderProcessHandler();
+        private readonly CefRenderProcessHandler _renderProcessHandler = new CefGlueRenderProcessHandler();
 
         /// <summary>
         /// 
         /// </summary>
-        private readonly SubprocessParams mSubprocessParams;
+        private readonly SubprocessParams _subprocessParams;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SubprocessCefGlueApp"/> class.
@@ -39,7 +39,7 @@ namespace Chromely.CefGlue.Subprocess
         /// </param>
         public SubprocessCefGlueApp(SubprocessParams subprocessParams)
         {
-            mSubprocessParams = subprocessParams;
+            _subprocessParams = subprocessParams;
         }
 
         /// <summary>
@@ -50,9 +50,9 @@ namespace Chromely.CefGlue.Subprocess
         /// </param>
         protected override void OnRegisterCustomSchemes(CefSchemeRegistrar registrar)
         {
-            if (mSubprocessParams != null && mSubprocessParams.CustomSchemes != null && mSubprocessParams.CustomSchemes.Any())
+            if (_subprocessParams != null && _subprocessParams.CustomSchemes != null && _subprocessParams.CustomSchemes.Any())
             {
-                foreach (var item in mSubprocessParams.CustomSchemes)
+                foreach (var item in _subprocessParams.CustomSchemes)
                 {
                     registrar.AddCustomScheme(item, true, false, false, false, true, false);
                 }
@@ -70,9 +70,9 @@ namespace Chromely.CefGlue.Subprocess
         /// </param>
         protected override void OnBeforeCommandLineProcessing(string processType, CefCommandLine commandLine)
         {
-            if (mSubprocessParams != null && mSubprocessParams.CommandLineArgs != null && mSubprocessParams.CommandLineArgs.Any())
+            if (_subprocessParams != null && _subprocessParams.CommandLineArgs != null && _subprocessParams.CommandLineArgs.Any())
             {
-                foreach (var item in mSubprocessParams.CommandLineArgs)
+                foreach (var item in _subprocessParams.CommandLineArgs)
                 {
                     if (item.Item3 && !string.IsNullOrWhiteSpace(item.Item1))
                     {
@@ -106,7 +106,7 @@ namespace Chromely.CefGlue.Subprocess
         /// </returns>
         protected override CefRenderProcessHandler GetRenderProcessHandler()
         {
-            return mRenderProcessHandler;
+            return _renderProcessHandler;
         }
     }
 }

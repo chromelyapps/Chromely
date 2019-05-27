@@ -1,8 +1,16 @@
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="DependencyInjectionTests.cs" company="Chromely Projects">
+//   Copyright (c) 2017-2019 Chromely Projects
+// </copyright>
+// <license>
+//      See the LICENSE.md file in the project root for more information.
+// </license>
+// ----------------------------------------------------------------------------------------------------------------------
+
 using System.Reflection;
 using Chromely.Core.Infrastructure;
 using Chromely.Core.RestfulService;
 using Xunit;
-// ReSharper disable StringLiteralTypo
 
 namespace Chromely.Core.Tests.Controller
 {
@@ -10,12 +18,11 @@ namespace Chromely.Core.Tests.Controller
     {
         /// <summary>
         /// The scanner should find all controller in test assembly.
-        
         /// </summary>
         [Fact]
         public void ScannerShouldInstantiateScannerControllerWithInjectedDependencies()
         {
-            const string testRoute = "/scannercontroller/get2";
+            const string TestRoute = "/scannercontroller/get2";
             
             var test = new TestDependency();
             IoC.RegisterInstance<ITestDependency>(nameof(ITestDependency), test);
@@ -30,9 +37,9 @@ namespace Chromely.Core.Tests.Controller
                 ServiceRouteProvider.AddRoute(route.Key, route.Value);
             }
             
-            var request = new ChromelyRequest(new RoutePath(Method.GET, testRoute), null, null);
+            var request = new ChromelyRequest(new RoutePath(Method.GET, TestRoute), null, null);
 
-            var routePath = new RoutePath(Method.GET, testRoute);
+            var routePath = new RoutePath(Method.GET, TestRoute);
             var get2 = ServiceRouteProvider.GetRoute(routePath);
             var getResponse = get2.Invoke(request);
 

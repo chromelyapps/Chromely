@@ -1,4 +1,13 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="SimpleContainer.cs" company="Chromely Projects">
+//   Copyright (c) 2017-2019 Chromely Projects
+// </copyright>
+// <license>
+//      See the LICENSE.md file in the project root for more information.
+// </license>
+// --------------------------------------------------------------------------------------------------------------------
+
+// --------------------------------------------------------------------------------------------------------------------
 // This is a port of Caliburn.Light SimpleContainer for Chromely.Mostly provided as-is. 
 // For more info: https://github.com/tibel/Caliburn.Light/blob/master/src/Caliburn.Core/IoC/SimpleContainer.cs
 // --------------------------------------------------------------------------------------------------------------------

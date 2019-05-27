@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SimpleLogger.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
 //      See the LICENSE.md file in the project root for more information.
@@ -23,22 +23,22 @@ namespace Chromely.Core.Infrastructure
         /// <summary>
         /// The filename.
         /// </summary>
-        private readonly string mFilename;
+        private readonly string _filename;
 
         /// <summary>
         /// The max size in kilo bytes.
         /// </summary>
-        private readonly int mMaxSizeInKiloBytes;
+        private readonly int _maxSizeInKiloBytes;
 
         /// <summary>
         /// The log to console flag.
         /// </summary>
-        private readonly bool mLogToConsole;
+        private readonly bool _logToConsole;
 
         /// <summary>
         /// The lock obj.
         /// </summary>
-        private readonly object mlockObj = new object();
+        private readonly object _lockObj = new object();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SimpleLogger"/> class.
@@ -62,12 +62,12 @@ namespace Chromely.Core.Infrastructure
                 fullFilePath = exeLocation != null ? Path.Combine(exeLocation, "Logs", "chromely_" + fileName) : fileName;
             }
 
-            mFilename = fullFilePath;
-            mLogToConsole = logToConsole;
+            _filename = fullFilePath;
+            _logToConsole = logToConsole;
 
             // 10 MB Max size before creating backup - not set
             rollingMaxMbFileSize = (rollingMaxMbFileSize < -0) ? 10 : rollingMaxMbFileSize;
-            mMaxSizeInKiloBytes = 1000 * rollingMaxMbFileSize; 
+            _maxSizeInKiloBytes = 1000 * rollingMaxMbFileSize; 
         }
 
         /// <summary>
@@ -169,13 +169,13 @@ namespace Chromely.Core.Infrastructure
         /// </param>
         private void Log(LogEntry entry)
         {
-            lock (mlockObj)
+            lock (_lockObj)
             {
                 try
                 {
                     if (entry != null)
                     {
-                        if (mLogToConsole)
+                        if (_logToConsole)
                         {
                             WriteToConsole(entry.ToString());
                         }
@@ -203,19 +203,19 @@ namespace Chromely.Core.Infrastructure
                 return;
             }
 
-            var directoryName = Path.GetDirectoryName(mFilename);
+            var directoryName = Path.GetDirectoryName(_filename);
             if (!string.IsNullOrWhiteSpace(directoryName))
             {
                 Directory.CreateDirectory(directoryName);
             }
 
-            var fileInfo = new FileInfo(mFilename);
-            if (fileInfo.Exists && (fileInfo.Length / 1024 >= mMaxSizeInKiloBytes))
+            var fileInfo = new FileInfo(_filename);
+            if (fileInfo.Exists && (fileInfo.Length / 1024 >= _maxSizeInKiloBytes))
             {
-                CreateCopyOfCurrentLogFile(mFilename);
+                CreateCopyOfCurrentLogFile(_filename);
             }
 
-            var writer = new StreamWriter(mFilename, true, Encoding.UTF8) { AutoFlush = true };
+            var writer = new StreamWriter(_filename, true, Encoding.UTF8) { AutoFlush = true };
             writer.WriteLine(text);
             writer.Close();
             writer.Dispose();

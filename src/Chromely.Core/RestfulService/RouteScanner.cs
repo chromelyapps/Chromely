@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="RouteScanner.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
 //      See the LICENSE.md file in the project root for more information.
@@ -23,9 +23,9 @@ namespace Chromely.Core.RestfulService
     public class RouteScanner
     {
         /// <summary>
-        /// Gets or sets the mAssembly.
+        /// Gets or sets the _assembly.
         /// </summary>
-        private readonly Assembly mAssembly;
+        private readonly Assembly _assembly;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RouteScanner"/> class.
@@ -35,7 +35,7 @@ namespace Chromely.Core.RestfulService
         /// </param>
         public RouteScanner(Assembly assembly)
         {
-            mAssembly = assembly;
+            _assembly = assembly;
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace Chromely.Core.RestfulService
 
             try
             {
-                var types = from type in mAssembly.GetLoadableTypes()
+                var types = from type in _assembly.GetLoadableTypes()
                             where Attribute.IsDefined(type, typeof(ControllerPropertyAttribute))
                             select type;
 

@@ -1,11 +1,11 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="GtkCefGlueBrowserWindow.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+// <copyright file="CefGlueWindow.cs" company="Chromely Projects">
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
-// See the LICENSE.md file in the project root for more information.
+//      See the LICENSE.md file in the project root for more information.
 // </license>
-// --------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------
 
 using Chromely.CefGlue.BrowserWindow;
 using Chromely.Core;
@@ -90,11 +90,11 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         /// The create main view.
         /// </summary>
         /// <returns>
-        /// The <see cref="GtkWindow"/>.
+        /// The <see cref="Window"/>.
         /// </returns>
         protected override IWindow CreateMainView()
         {
-            _mainWindow =  new Window(this, HostConfig);
+            _mainWindow = new Window(this, HostConfig);
             return _mainWindow;
         }
     }

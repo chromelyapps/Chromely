@@ -1,7 +1,15 @@
-using Chromely.Core.RestfulService;
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable StringLiteralTypo
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ScannerControllerWithDependencyInjection.cs" company="Chromely Projects">
+//   Copyright (c) 2017-2019 Chromely Projects
+// </copyright>
+// <license>
+//      See the LICENSE.md file in the project root for more information.
+// </license>
+// ----------------------------------------------------------------------------------------------------------------------
 
+using Chromely.Core.RestfulService;
+
+// ReSharper disable MemberCanBePrivate.Global
 namespace Chromely.Core.Tests.Controller
 {
     /// <summary>
@@ -13,11 +21,8 @@ namespace Chromely.Core.Tests.Controller
     {
         public const int Get1Response = 1000;
         public const string Get2Response = "Test Get 2";
-        
-        
         private readonly IChromelyLogger _logger;
         private readonly ITestDependency _dependency;
-        
         
         /// <summary>
         /// Initializes a new instance of the <see cref="ScannerControllerWithDependencyInjection"/> class.
@@ -42,7 +47,7 @@ namespace Chromely.Core.Tests.Controller
         /// </returns>
         private ChromelyResponse Get1(ChromelyRequest request)
         {
-            var response = new ChromelyResponse {Data = Get1Response};
+            var response = new ChromelyResponse { Data = Get1Response };
             return response;
         }
 
@@ -62,8 +67,8 @@ namespace Chromely.Core.Tests.Controller
             var text = (_dependency != null)
                 ? _dependency.ReturnTest()
                 : Get2Response;
-            
-            var response = new ChromelyResponse {Data = text};
+
+            var response = new ChromelyResponse { Data = text };
             return response;
         }
 
@@ -78,7 +83,7 @@ namespace Chromely.Core.Tests.Controller
         /// </returns>
         private ChromelyResponse Save(ChromelyRequest request)
         {
-            var response = new ChromelyResponse {Data = request.PostData};
+            var response = new ChromelyResponse { Data = request.PostData };
             return response;
         }
     }

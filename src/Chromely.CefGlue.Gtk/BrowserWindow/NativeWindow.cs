@@ -1,16 +1,15 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="GtkNativeWindow.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+// <copyright file="NativeWindow.cs" company="Chromely Projects">
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
-// See the LICENSE.md file in the project root for more information.
+//      See the LICENSE.md file in the project root for more information.
 // </license>
-// --------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------
 
 using System;
 using Chromely.Core;
 using Chromely.Core.Host;
-// ReSharper disable UnusedMember.Global
 
 namespace Chromely.CefGlue.Gtk.BrowserWindow
 {
@@ -22,21 +21,15 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         /// <summary>
         /// The event lock object.
         /// </summary>
-        private readonly object mEventLock = new object();
+        private readonly object _eventLock = new object();
 
         /// <summary>
-        /// The m host config.
+        /// The host config.
         /// </summary>
-        private readonly ChromelyConfiguration mHostConfig;
-
-        /// <summary>
-        /// The main window.
-        /// </summary>
-        private IntPtr mMainWindow;
-
-        private EventHandler<EventArgs> mRealizeEvent;
-        private EventHandler<EventArgs> mConfigureEvent;
-        private EventHandler<EventArgs> mDestroyEvent;
+        private readonly ChromelyConfiguration _hostConfig;
+        private EventHandler<EventArgs> _realizeEvent;
+        private EventHandler<EventArgs> _configureEvent;
+        private EventHandler<EventArgs> _destroyEvent;
 
         private uint hRealizeEvent;
         private uint hConfigureEvent;
@@ -47,8 +40,8 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         /// </summary>
         public NativeWindow()
         {
-            mMainWindow = IntPtr.Zero;
-            mHostConfig = ChromelyConfiguration.Create();
+            Handle = IntPtr.Zero;
+            _hostConfig = ChromelyConfiguration.Create();
         }
 
         /// <summary>
@@ -59,8 +52,8 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         /// </param>
         public NativeWindow(ChromelyConfiguration hostConfig)
         {
-            mMainWindow = IntPtr.Zero;
-            mHostConfig = hostConfig;
+            Handle = IntPtr.Zero;
+            _hostConfig = hostConfig;
         }
 
         #region Events
@@ -72,21 +65,21 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         {
             add
             {
-                lock (mEventLock)
+                lock (_eventLock)
                 {
-                    mRealizeEvent += value;
+                    _realizeEvent += value;
                     NativeMethods.EventHandler onRealizedHandler = LocalRealized;
-                    hRealizeEvent = NativeMethods.ConnectSignal(mMainWindow, "realize", onRealizedHandler, 0, IntPtr.Zero, (int)NativeMethods.GConnectFlags.GConnectAfter);
+                    hRealizeEvent = NativeMethods.ConnectSignal(Handle, "realize", onRealizedHandler, 0, IntPtr.Zero, (int)NativeMethods.GConnectFlags.GConnectAfter);
                 }
             }
 
             remove
             {
-                lock (mEventLock)
+                lock (_eventLock)
                 {
                     // ReSharper disable once DelegateSubtraction
-                    mRealizeEvent -= value;
-                    NativeMethods.DisconnectSignal(mMainWindow, hRealizeEvent);
+                    _realizeEvent -= value;
+                    NativeMethods.DisconnectSignal(Handle, hRealizeEvent);
                 }
             }
         }
@@ -98,21 +91,21 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         {
             add
             {
-                lock (mEventLock)
+                lock (_eventLock)
                 {
-                    mConfigureEvent += value;
+                    _configureEvent += value;
                     NativeMethods.EventHandler onConfiguredHandler = LocalConfigured;
-                    hConfigureEvent = NativeMethods.ConnectSignal(mMainWindow, "configure-event", onConfiguredHandler, 0, IntPtr.Zero, (int)NativeMethods.GConnectFlags.GConnectAfter);
+                    hConfigureEvent = NativeMethods.ConnectSignal(Handle, "configure-event", onConfiguredHandler, 0, IntPtr.Zero, (int)NativeMethods.GConnectFlags.GConnectAfter);
                 }
             }
 
             remove
             {
-                lock (mEventLock)
+                lock (_eventLock)
                 {
                     // ReSharper disable once DelegateSubtraction
-                    mConfigureEvent -= value;
-                    NativeMethods.DisconnectSignal(mMainWindow, hConfigureEvent);
+                    _configureEvent -= value;
+                    NativeMethods.DisconnectSignal(Handle, hConfigureEvent);
                 }
             }
         }
@@ -124,21 +117,21 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         {
             add
             {
-                lock (mEventLock)
+                lock (_eventLock)
                 {
-                    mDestroyEvent += value;
+                    _destroyEvent += value;
                     NativeMethods.EventHandler onDestroyedHandler = LocalDestroyed;
-                    hDestroyEvent = NativeMethods.ConnectSignal(mMainWindow, "destroy", onDestroyedHandler, 0, IntPtr.Zero, (int)NativeMethods.GConnectFlags.GConnectAfter);
+                    hDestroyEvent = NativeMethods.ConnectSignal(Handle, "destroy", onDestroyedHandler, 0, IntPtr.Zero, (int)NativeMethods.GConnectFlags.GConnectAfter);
                 }
             }
 
             remove
             {
-                lock (mEventLock)
+                lock (_eventLock)
                 {
                     // ReSharper disable once DelegateSubtraction
-                    mDestroyEvent -= value;
-                    NativeMethods.DisconnectSignal(mMainWindow, hDestroyEvent);
+                    _destroyEvent -= value;
+                    NativeMethods.DisconnectSignal(Handle, hDestroyEvent);
                 }
             }
         }
@@ -148,17 +141,17 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         /// <summary>
         /// Gets the handle.
         /// </summary>
-        public IntPtr Handle => mMainWindow;
+        public IntPtr Handle { get; private set; }
 
         /// <summary>
         /// The host.
         /// </summary>
-        public IntPtr Host => mMainWindow;
+        public IntPtr Host => Handle;
 
         /// <summary>
         /// The host xid.
         /// </summary>
-        public IntPtr HostXid => NativeMethods.GetWindowXid(mMainWindow);
+        public IntPtr HostXid => NativeMethods.GetWindowXid(Handle);
 
         /// <summary>
         /// The show window.
@@ -199,7 +192,7 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
             width = 0;
             height = 0;
 
-            if (mMainWindow == IntPtr.Zero)
+            if (Handle == IntPtr.Zero)
             {
                 return;
             }
@@ -254,36 +247,36 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         /// </summary>
         private void CreateWindow()
         {
-            var wndType = mHostConfig.HostFrameless
+            var wndType = _hostConfig.HostFrameless
                 ? NativeMethods.GtkWindowType.GtkWindowPopup
                 : NativeMethods.GtkWindowType.GtkWindowToplevel;
             
-            mMainWindow = NativeMethods.NewWindow(wndType);
+            Handle = NativeMethods.NewWindow(wndType);
             
-            NativeMethods.SetTitle(mMainWindow, mHostConfig.HostTitle);
-            NativeMethods.SetIconFromFile(mMainWindow, mHostConfig.HostIconFile);
-            NativeMethods.SetSizeRequest(mMainWindow, mHostConfig.HostWidth, mHostConfig.HostHeight);
+            NativeMethods.SetTitle(Handle, _hostConfig.HostTitle);
+            NativeMethods.SetIconFromFile(Handle, _hostConfig.HostIconFile);
+            NativeMethods.SetSizeRequest(Handle, _hostConfig.HostWidth, _hostConfig.HostHeight);
 
-            if (mHostConfig.HostCenterScreen)
+            if (_hostConfig.HostCenterScreen)
             {
-                NativeMethods.SetWindowPosition(mMainWindow, NativeMethods.GtkWindowPosition.GtkWinPosCenter);
+                NativeMethods.SetWindowPosition(Handle, NativeMethods.GtkWindowPosition.GtkWinPosCenter);
             }
 
-            switch (mHostConfig.HostState)
+            switch (_hostConfig.HostState)
             {
                 case WindowState.Normal:
                     break;
 
                 case WindowState.Maximize:
-                    NativeMethods.SetWindowMaximize(mMainWindow);
+                    NativeMethods.SetWindowMaximize(Handle);
                     break;
 
                 case WindowState.Fullscreen:
-                    NativeMethods.SetFullscreen(mMainWindow);
+                    NativeMethods.SetFullscreen(Handle);
                     break;
             }
 
-            NativeMethods.AddConfigureEvent(mMainWindow);
+            NativeMethods.AddConfigureEvent(Handle);
 
             Realized += OnRealized;
             
@@ -296,7 +289,7 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
 
             Exited += OnExit;
 
-            NativeMethods.ShowAll(mMainWindow);
+            NativeMethods.ShowAll(Handle);
         }
 
         /// <summary>
@@ -307,7 +300,7 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         /// </param>
         private void LocalRealized(NativeMethods.StructEventArgs eventArgs)
         {
-            mRealizeEvent(this, new EventArgs());
+            _realizeEvent(this, new EventArgs());
         }
 
         /// <summary>
@@ -318,7 +311,7 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         /// </param>
         private void LocalConfigured(NativeMethods.StructEventArgs eventArgs)
         {
-            mConfigureEvent(this, new EventArgs());
+            _configureEvent(this, new EventArgs());
         }
 
         /// <summary>
@@ -329,7 +322,7 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         /// </param>
         private void LocalDestroyed(NativeMethods.StructEventArgs eventArgs)
         {
-            mDestroyEvent(this, new EventArgs());
+            _destroyEvent(this, new EventArgs());
         }
     }
 }

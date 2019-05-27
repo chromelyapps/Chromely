@@ -1,11 +1,11 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="WinApiNativeWindow.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+// <copyright file="NativeWindow.cs" company="Chromely Projects">
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
 //      See the LICENSE.md file in the project root for more information.
 // </license>
-// --------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------
 
 using System;
 using System.Runtime.InteropServices;
@@ -18,7 +18,6 @@ using WinApi.Gdi32;
 using WinApi.Kernel32;
 using WinApi.User32;
 using Xilium.CefGlue;
-// ReSharper disable UnusedMember.Global
 
 namespace Chromely.CefGlue.Winapi.BrowserWindow
 {
@@ -28,14 +27,14 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
     internal class NativeWindow
     {
         /// <summary>
-        /// The m host config.
+        /// The host config.
         /// </summary>
-        private readonly ChromelyConfiguration mHostConfig;
+        private readonly ChromelyConfiguration _hostConfig;
         
         /// <summary>
         /// WindowProc ref : prevent GC Collect
         /// </summary>
-        private WindowProc mWindowProc;
+        private WindowProc _windowProc;
         
         /// <summary>
         /// Initializes a new instance of the <see cref="NativeWindow"/> class.
@@ -54,7 +53,7 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
         public NativeWindow(ChromelyConfiguration hostConfig)
         {
             Handle = IntPtr.Zero;
-            mHostConfig = hostConfig;
+            _hostConfig = hostConfig;
         }
 
         /// <summary>
@@ -211,7 +210,7 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
         {
             var instanceHandle = Kernel32Methods.GetModuleHandle(IntPtr.Zero);
 
-            mWindowProc = WindowProc;
+            _windowProc = WindowProc;
             
             var wc = new WindowClassEx
             {
@@ -221,7 +220,7 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
                 IconHandle = GetIconHandle(),
                 Styles = WindowClassStyles.CS_HREDRAW | WindowClassStyles.CS_VREDRAW,
                 BackgroundBrushHandle = new IntPtr((int)StockObject.WHITE_BRUSH),
-                WindowProc = mWindowProc,
+                WindowProc = _windowProc,
                 InstanceHandle = instanceHandle
             };
 
@@ -232,19 +231,19 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
                 return;
             }
 
-            var styles = GetWindowStyles(mHostConfig.HostState);
+            var styles = GetWindowStyles(_hostConfig.HostState);
 
             NativeMethods.RECT rect;
             rect.Left = 0;
             rect.Top = 0;
-            rect.Right = mHostConfig.HostWidth;
-            rect.Bottom = mHostConfig.HostHeight;
+            rect.Right = _hostConfig.HostWidth;
+            rect.Bottom = _hostConfig.HostHeight;
             NativeMethods.AdjustWindowRectEx(ref rect, styles.Item1, false, styles.Item2);
 
             var hwnd = User32Methods.CreateWindowEx(
                 styles.Item2,
                 wc.ClassName,
-                mHostConfig.HostTitle,
+                _hostConfig.HostTitle,
                 styles.Item1,
                 0,
                 0,
@@ -290,7 +289,7 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
             {
                 case WM.ACTIVATE:
                     {
-                        if (mHostConfig.HostFrameless)
+                        if (_hostConfig.HostFrameless)
                         {
                             Margins frameMargins = new Margins(7, 7, 27, 7);
                             DwmApiMethods.DwmExtendFrameIntoClientArea(Handle, ref frameMargins);
@@ -327,7 +326,7 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
 
                 case WM.NCCALCSIZE:
                     {
-                        if (mHostConfig.HostFrameless)
+                        if (_hostConfig.HostFrameless)
                         {
                             return IntPtr.Zero;
                         }
@@ -336,7 +335,7 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
 
                 case WM.NCHITTEST:
                     {
-                        if (mHostConfig.HostFrameless)
+                        if (_hostConfig.HostFrameless)
                         {
                             // This might be a bit redundant to perform and should find another way
                             // to pass the return value rather than performing a hit test again.
@@ -413,7 +412,7 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
             var styles = WindowStyles.WS_OVERLAPPEDWINDOW | WindowStyles.WS_CLIPCHILDREN | WindowStyles.WS_CLIPSIBLINGS;
             var exStyles = WindowExStyles.WS_EX_APPWINDOW | WindowExStyles.WS_EX_WINDOWEDGE;
 
-            if (mHostConfig.HostFrameless)
+            if (_hostConfig.HostFrameless)
             {
                 styles = WindowStyles.WS_CAPTION | WindowStyles.WS_POPUP | WindowStyles.WS_THICKFRAME | WindowStyles.WS_MINIMIZEBOX | WindowStyles.WS_MAXIMIZEBOX | WindowStyles.WS_CAPTION | WindowStyles.WS_CLIPCHILDREN | WindowStyles.WS_CLIPSIBLINGS;
             }
@@ -448,7 +447,7 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
         /// </returns>
         private IntPtr GetIconHandle()
         {
-            var hIcon = NativeMethods.LoadIconFromFile(mHostConfig.HostIconFile);
+            var hIcon = NativeMethods.LoadIconFromFile(_hostConfig.HostIconFile);
             return hIcon ?? User32Helpers.LoadIcon(IntPtr.Zero, SystemIcon.IDI_APPLICATION);
         }
     }

@@ -1,22 +1,20 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="NativeMethods.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
 //      See the LICENSE.md file in the project root for more information.
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Runtime.InteropServices;
+using WinApi.User32;
 
-// ReSharper disable InconsistentNaming
 namespace Chromely.CefSharp.Winapi.BrowserWindow
 {
-    using System;
-    using System.Diagnostics.CodeAnalysis;
-    using System.IO;
-    using System.Runtime.InteropServices;
-    using WinApi.User32;
-
     /// <summary>
     /// The native methods.
     /// </summary>

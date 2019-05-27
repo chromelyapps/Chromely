@@ -1,11 +1,11 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ServiceRouteProviderTest.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
 //      See the LICENSE.md file in the project root for more information.
 // </license>
-// --------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------
 
 using System.Collections.Generic;
 using Chromely.Core.Infrastructure;
@@ -21,13 +21,13 @@ namespace Chromely.Core.Tests.RestfulService
     public class ServiceRouteProviderTest
     {
         /// <summary>
-        /// The m_test output.
+        /// The test output.
         /// </summary>
         // ReSharper disable once NotAccessedField.Local
-        private readonly ITestOutputHelper mTestOutput;
+        private readonly ITestOutputHelper _testOutput;
 
         /// <summary>
-        /// The m test controller.
+        /// The test controller.
         /// </summary>
         private readonly TestControllerGetSave mTestController;
 
@@ -39,7 +39,7 @@ namespace Chromely.Core.Tests.RestfulService
         /// </param>
         public ServiceRouteProviderTest(ITestOutputHelper testOutput)
         {
-            mTestOutput = testOutput;
+            _testOutput = testOutput;
             mTestController = new TestControllerGetSave();
         }
 

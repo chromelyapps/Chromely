@@ -1,11 +1,11 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CefGlueApp.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
 //      See the LICENSE.md file in the project root for more information.
 // </license>
-// --------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------
 
 using System;
 using System.IO;
@@ -26,14 +26,17 @@ namespace Chromely.CefGlue.Browser
         /// <summary>
         /// The render process handler.
         /// </summary>
-        private readonly CefRenderProcessHandler mRenderProcessHandler = new CefGlueRenderProcessHandler();
+        private readonly CefRenderProcessHandler _renderProcessHandler = new CefGlueRenderProcessHandler();
 
-        private readonly CefBrowserProcessHandler mBrowserProcessHandler = new CefGlueBrowserProcessHandler();
+        /// <summary>
+        /// The browser process handler.
+        /// </summary>
+        private readonly CefBrowserProcessHandler _browserProcessHandler = new CefGlueBrowserProcessHandler();
         
         /// <summary>
         /// The host config.
         /// </summary>
-        private readonly ChromelyConfiguration mHostConfig;
+        private readonly ChromelyConfiguration _hostConfig;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CefGlueApp"/> class.
@@ -43,7 +46,7 @@ namespace Chromely.CefGlue.Browser
         /// </param>
         public CefGlueApp(ChromelyConfiguration hostConfig)
         {
-            mHostConfig = hostConfig;
+            _hostConfig = hostConfig;
         }
 
         /// <summary>
@@ -85,9 +88,9 @@ namespace Chromely.CefGlue.Browser
         protected override void OnBeforeCommandLineProcessing(string processType, CefCommandLine commandLine)
         {
             // Get all custom command line argument switches
-            if (mHostConfig?.CommandLineArgs != null)
+            if (_hostConfig?.CommandLineArgs != null)
             {
-                foreach (var commandArg in mHostConfig.CommandLineArgs)
+                foreach (var commandArg in _hostConfig.CommandLineArgs)
                 {
                     if (commandArg.Item3)
                     {
@@ -121,12 +124,18 @@ namespace Chromely.CefGlue.Browser
         /// </returns>
         protected override CefRenderProcessHandler GetRenderProcessHandler()
         {
-            return mRenderProcessHandler;
+            return _renderProcessHandler;
         }
 
+        /// <summary>
+        /// The get browser process handler.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="CefBrowserProcessHandler"/>.
+        /// </returns>
         protected override CefBrowserProcessHandler GetBrowserProcessHandler()
         {
-            return mBrowserProcessHandler;
+            return _browserProcessHandler;
         }
     }
 }

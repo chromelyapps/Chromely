@@ -1,11 +1,11 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CefGlueFrameHandler.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
 //      See the LICENSE.md file in the project root for more information.
 // </license>
-// --------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------
 
 using System;
 using System.Collections.Generic;
@@ -22,7 +22,7 @@ namespace Chromely.CefGlue.Browser.FrameHandlers
         /// <summary>
         /// The browser.
         /// </summary>
-        private readonly CefBrowser mBrowser;
+        private readonly CefBrowser _browser;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CefGlueFrameHandler"/> class.
@@ -32,7 +32,7 @@ namespace Chromely.CefGlue.Browser.FrameHandlers
         /// </param>
         public CefGlueFrameHandler(CefBrowser browser)
         {
-            mBrowser = browser;
+            _browser = browser;
         }
 
         /// <summary>
@@ -42,12 +42,12 @@ namespace Chromely.CefGlue.Browser.FrameHandlers
         {
             get
             {
-                if (mBrowser == null)
+                if (_browser == null)
                 {
                     throw new Exception("Browser object cannot be null.");
                 }
 
-                return mBrowser;
+                return _browser;
             }
         }
 

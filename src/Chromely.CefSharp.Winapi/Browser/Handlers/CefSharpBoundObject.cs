@@ -1,20 +1,19 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CefSharpBoundObject.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
 //      See the LICENSE.md file in the project root for more information.
 // </license>
-// --------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------
 
-// ReSharper disable StyleCop.SA1210
+using System.Threading.Tasks;
+using global::CefSharp;
+using Chromely.CefSharp.Winapi.RestfulService;
+using Chromely.Core.RestfulService;
+
 namespace Chromely.CefSharp.Winapi.Browser.Handlers
 {
-    using System.Threading.Tasks;
-    using Chromely.CefSharp.Winapi.RestfulService;
-    using Chromely.Core.RestfulService;
-    using global::CefSharp;
-
     /// <summary>
     /// The CefSharp bound object.
     /// </summary>

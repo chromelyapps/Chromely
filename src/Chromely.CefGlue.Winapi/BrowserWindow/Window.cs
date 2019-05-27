@@ -1,11 +1,11 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="WinApiWindow.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+// <copyright file="Window.cs" company="Chromely Projects">
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
 //      See the LICENSE.md file in the project root for more information.
 // </license>
-// --------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------
 
 using System;
 using System.Collections.Generic;
@@ -27,27 +27,22 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
         /// <summary>
         /// The host/app/window application.
         /// </summary>
-        private readonly HostBase mApplication;
+        private readonly HostBase _application;
 
         /// <summary>
         /// The host config.
         /// </summary>
-        private readonly ChromelyConfiguration mHostConfig;
-
-        /// <summary>
-        /// The CefGlueBrowser object.
-        /// </summary>
-        private CefGlueBrowser mBrowser;
+        private readonly ChromelyConfiguration _hostConfig;
 
         /// <summary>
         /// The browser window handle.
         /// </summary>
-        private IntPtr mBrowserWindowHandle;
-        private IntPtr mBrowserWndProc;
-        private IntPtr mBrowserRenderWidgetHandle;
-        private IntPtr mBrowserRenderWidgetWndProc;
-        private List<ChildWindow> childWindows;
-        private readonly List<WndProcOverride> wndProcOverrides = new List<WndProcOverride>();
+        private IntPtr _browserWindowHandle;
+        private IntPtr _browserWndProc;
+        private IntPtr _browserRenderWidgetHandle;
+        private IntPtr _browserRenderWidgetWndProc;
+        private List<ChildWindow> _childWindows;
+        private readonly List<WndProcOverride> _wndProcOverrides = new List<WndProcOverride>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Window"/> class.
@@ -61,13 +56,13 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
         public Window(HostBase application, ChromelyConfiguration hostConfig)
             : base(hostConfig)
         {
-            mHostConfig = hostConfig;
-            mBrowser = new CefGlueBrowser(this, hostConfig, new CefBrowserSettings());
-            mBrowser.Created += OnBrowserCreated;
-            mApplication = application;
+            _hostConfig = hostConfig;
+            Browser = new CefGlueBrowser(this, hostConfig, new CefBrowserSettings());
+            Browser.Created += OnBrowserCreated;
+            _application = application;
 
             // Set event handler
-            mBrowser.SetEventHandlers();
+            Browser.SetEventHandlers();
 
             ShowWindow();
         }
@@ -75,7 +70,7 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
         /// <summary>
         /// The browser.
         /// </summary>
-        public CefGlueBrowser Browser => mBrowser;
+        public CefGlueBrowser Browser { get; private set; }
 
         public void CenterToScreen()
         {
@@ -95,11 +90,11 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
         /// </summary>
         public void Dispose()
         {
-            if (mBrowser != null)
+            if (Browser != null)
             {
-                mBrowser.Dispose();
-                mBrowser = null;
-                mBrowserWindowHandle = IntPtr.Zero;
+                Browser.Dispose();
+                Browser = null;
+                _browserWindowHandle = IntPtr.Zero;
             }
         }
 
@@ -123,8 +118,8 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
         protected override void OnCreate(IntPtr hwnd, int width, int height)
         {
             var windowInfo = CefWindowInfo.Create();
-            windowInfo.SetAsChild(hwnd, new CefRectangle(0, 0, mHostConfig.HostWidth, mHostConfig.HostHeight));
-            mBrowser.Create(windowInfo);
+            windowInfo.SetAsChild(hwnd, new CefRectangle(0, 0, _hostConfig.HostWidth, _hostConfig.HostHeight));
+            Browser.Create(windowInfo);
         }
 
         /// <summary>
@@ -138,17 +133,17 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
         /// </param>
         protected override void OnSize(int width, int height)
         {
-            if (mBrowserWindowHandle != IntPtr.Zero)
+            if (_browserWindowHandle != IntPtr.Zero)
             {
                 if (width == 0 && height == 0)
                 {
                     // For windowed browsers when the frame window is minimized set the
                     // browser window size to 0x0 to reduce resource usage.
-                    NativeMethods.SetWindowPos(mBrowserWindowHandle, IntPtr.Zero, 0, 0, 0, 0, WindowPositionFlags.SWP_NOZORDER | WindowPositionFlags.SWP_NOMOVE | WindowPositionFlags.SWP_NOACTIVATE);
+                    NativeMethods.SetWindowPos(_browserWindowHandle, IntPtr.Zero, 0, 0, 0, 0, WindowPositionFlags.SWP_NOZORDER | WindowPositionFlags.SWP_NOMOVE | WindowPositionFlags.SWP_NOACTIVATE);
                 }
                 else
                 {
-                    NativeMethods.SetWindowPos(mBrowserWindowHandle, IntPtr.Zero, 0, 0, width, height, WindowPositionFlags.SWP_NOZORDER);
+                    NativeMethods.SetWindowPos(_browserWindowHandle, IntPtr.Zero, 0, 0, width, height, WindowPositionFlags.SWP_NOZORDER);
                 }
             }
         }
@@ -158,7 +153,7 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
         /// </summary>
         protected override void OnExit()
         {
-            mApplication.Quit();
+            _application.Quit();
         }
 
         private delegate bool EnumWindowProc(IntPtr hWnd, IntPtr lParam);
@@ -189,7 +184,7 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
             {
                 handle = wndHandle;
                 className = wndClassName;
-                newWndProc = new WindowProc(OverridenWndProc);
+                newWndProc = OverridenWndProc;
                 originalWndProc = User32Methods.SetWindowLongPtr(handle, -4, Marshal.GetFunctionPointerForDelegate(newWndProc));
             }
 
@@ -225,13 +220,13 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
         /// </param>
         private void OnBrowserCreated(object sender, EventArgs e)
         {
-            mBrowserWindowHandle = mBrowser.CefBrowser.GetHost().GetWindowHandle();
-            if (mBrowserWindowHandle != IntPtr.Zero)
+            _browserWindowHandle = Browser.CefBrowser.GetHost().GetWindowHandle();
+            if (_browserWindowHandle != IntPtr.Zero)
             {
                 var size = GetClientSize();
-                NativeMethods.SetWindowPos(mBrowserWindowHandle, IntPtr.Zero, 0, 0, size.Width, size.Height, WindowPositionFlags.SWP_NOZORDER);
+                NativeMethods.SetWindowPos(_browserWindowHandle, IntPtr.Zero, 0, 0, size.Width, size.Height, WindowPositionFlags.SWP_NOZORDER);
 
-                if (mHostConfig.HostFrameless)
+                if (_hostConfig.HostFrameless)
                 {
                     var childWindowsDetails = new EnumChildWindowsDetails();
                     var gcHandle = GCHandle.Alloc(childWindowsDetails);
@@ -240,10 +235,10 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
                     foreach (ChildWindow childWindow in childWindowsDetails.Windows)
                     {
                         var wndProcOverride = new WndProcOverride(childWindow.Handle, childWindow.ClassName);
-                        wndProcOverrides.Add(wndProcOverride);
+                        _wndProcOverrides.Add(wndProcOverride);
                     }
 
-                    childWindows = childWindowsDetails.Windows;
+                    _childWindows = childWindowsDetails.Windows;
 
                     gcHandle.Free();
                 }
