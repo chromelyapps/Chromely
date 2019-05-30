@@ -19,7 +19,7 @@ namespace Chromely.Core.RestfulService
     public class Route
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Route"/> class.
+        /// Initializes a new instance of the <see cref="Route"/> class using a synchronous action.
         /// </summary>
         /// <param name="method">
         /// The method.
@@ -37,6 +37,18 @@ namespace Chromely.Core.RestfulService
             Action = action;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Route"/> class using an async action.
+        /// </summary>
+        /// <param name="method">
+        /// The method.
+        /// </param>
+        /// <param name="path">
+        /// The path.
+        /// </param>
+        /// <param name="action">
+        /// The action.
+        /// </param>
         public Route(Method method, string path, Func<ChromelyRequest, Task<ChromelyResponse>> action)
         {
             Method = method;

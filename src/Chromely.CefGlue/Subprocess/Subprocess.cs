@@ -31,6 +31,11 @@ namespace Chromely.CefGlue.Subprocess
             _cefglueApp = new SubprocessCefGlueApp(subprocessParams);
         }
 
+        /// <summary>
+        /// Executes the <see cref="Subprocess"/>.
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
         public static int Execute(string[] args)
         {
             int result;

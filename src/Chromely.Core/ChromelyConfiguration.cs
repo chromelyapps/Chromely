@@ -53,7 +53,7 @@ namespace Chromely.Core
             LogFile = Path.Combine("logs", "chromely.cef.log");
             HostState = WindowState.Normal;
             HostCenterScreen = true;
-            UseDefaultSubprocess = HostType.IsWindow;
+            UseDefaultSubprocess = ChromelyRuntime.Platform == ChromelyPlatform.Windows;
             HostWidth = 1200;
             HostHeight = 900;
             Locale = "en-US";

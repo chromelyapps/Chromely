@@ -38,11 +38,14 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
         /// The browser window handle.
         /// </summary>
         private IntPtr _browserWindowHandle;
+#pragma warning disable 169
         private IntPtr _browserWndProc;
         private IntPtr _browserRenderWidgetHandle;
         private IntPtr _browserRenderWidgetWndProc;
         private List<ChildWindow> _childWindows;
+        // ReSharper disable once CollectionNeverQueried.Local
         private readonly List<WndProcOverride> _wndProcOverrides = new List<WndProcOverride>();
+#pragma warning restore 169
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Window"/> class.
