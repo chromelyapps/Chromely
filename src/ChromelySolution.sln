@@ -42,6 +42,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chromely.CefGlue.Linux.Subp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chromely.CefGlue.Mac.Subprocess", "Subprocesses\Chromely.CefGlue.Mac.Subprocess\Chromely.CefGlue.Mac.Subprocess.csproj", "{DB321BDD-AE53-4F77-84C3-815E9FA688D4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chromely.Dialogs", "Chromely.Dialogs\Chromely.Dialogs.csproj", "{7A9BD1D4-6174-4E1B-8000-646946F123BB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -332,6 +334,30 @@ Global
 		{DB321BDD-AE53-4F77-84C3-815E9FA688D4}.ReleaseLinux|x64.Build.0 = Release|x64
 		{DB321BDD-AE53-4F77-84C3-815E9FA688D4}.ReleaseLinux|x86.ActiveCfg = Release|x64
 		{DB321BDD-AE53-4F77-84C3-815E9FA688D4}.ReleaseLinux|x86.Build.0 = Release|x64
+		{7A9BD1D4-6174-4E1B-8000-646946F123BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A9BD1D4-6174-4E1B-8000-646946F123BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A9BD1D4-6174-4E1B-8000-646946F123BB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7A9BD1D4-6174-4E1B-8000-646946F123BB}.Debug|x64.Build.0 = Debug|Any CPU
+		{7A9BD1D4-6174-4E1B-8000-646946F123BB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7A9BD1D4-6174-4E1B-8000-646946F123BB}.Debug|x86.Build.0 = Debug|Any CPU
+		{7A9BD1D4-6174-4E1B-8000-646946F123BB}.DebugLinux|Any CPU.ActiveCfg = DebugLinux|Any CPU
+		{7A9BD1D4-6174-4E1B-8000-646946F123BB}.DebugLinux|Any CPU.Build.0 = DebugLinux|Any CPU
+		{7A9BD1D4-6174-4E1B-8000-646946F123BB}.DebugLinux|x64.ActiveCfg = DebugLinux|Any CPU
+		{7A9BD1D4-6174-4E1B-8000-646946F123BB}.DebugLinux|x64.Build.0 = DebugLinux|Any CPU
+		{7A9BD1D4-6174-4E1B-8000-646946F123BB}.DebugLinux|x86.ActiveCfg = DebugLinux|Any CPU
+		{7A9BD1D4-6174-4E1B-8000-646946F123BB}.DebugLinux|x86.Build.0 = DebugLinux|Any CPU
+		{7A9BD1D4-6174-4E1B-8000-646946F123BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A9BD1D4-6174-4E1B-8000-646946F123BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A9BD1D4-6174-4E1B-8000-646946F123BB}.Release|x64.ActiveCfg = Release|Any CPU
+		{7A9BD1D4-6174-4E1B-8000-646946F123BB}.Release|x64.Build.0 = Release|Any CPU
+		{7A9BD1D4-6174-4E1B-8000-646946F123BB}.Release|x86.ActiveCfg = Release|Any CPU
+		{7A9BD1D4-6174-4E1B-8000-646946F123BB}.Release|x86.Build.0 = Release|Any CPU
+		{7A9BD1D4-6174-4E1B-8000-646946F123BB}.ReleaseLinux|Any CPU.ActiveCfg = ReleaseLinux|Any CPU
+		{7A9BD1D4-6174-4E1B-8000-646946F123BB}.ReleaseLinux|Any CPU.Build.0 = ReleaseLinux|Any CPU
+		{7A9BD1D4-6174-4E1B-8000-646946F123BB}.ReleaseLinux|x64.ActiveCfg = ReleaseLinux|Any CPU
+		{7A9BD1D4-6174-4E1B-8000-646946F123BB}.ReleaseLinux|x64.Build.0 = ReleaseLinux|Any CPU
+		{7A9BD1D4-6174-4E1B-8000-646946F123BB}.ReleaseLinux|x86.ActiveCfg = ReleaseLinux|Any CPU
+		{7A9BD1D4-6174-4E1B-8000-646946F123BB}.ReleaseLinux|x86.Build.0 = ReleaseLinux|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

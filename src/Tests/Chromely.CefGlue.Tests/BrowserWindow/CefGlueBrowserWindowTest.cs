@@ -26,7 +26,7 @@ namespace Chromely.CefGlue.Tests.BrowserWindow
         /// The output.
         /// </summary>
         // ReSharper disable once NotAccessedField.Local
-        private readonly ITestOutputHelper mTestOutput;
+        private readonly ITestOutputHelper _testOutput;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CefGlueBrowserWindowTest"/> class.
@@ -36,7 +36,7 @@ namespace Chromely.CefGlue.Tests.BrowserWindow
         /// </param>
         public CefGlueBrowserWindowTest(ITestOutputHelper testOutput)
         {
-            mTestOutput = testOutput;
+            _testOutput = testOutput;
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace Chromely.CefGlue.Tests.BrowserWindow
             Assert.Equal(nameof(CefSettingKeys.ProductVersion), settings.ProductVersion);
             Assert.Equal(nameof(CefSettingKeys.Locale), settings.Locale);
             Assert.Equal(nameof(CefSettingKeys.LogFile), settings.LogFile);
-            Assert.Equal(CefLogSeverity.Error, (CefLogSeverity)settings.LogSeverity);
+            Assert.Equal(CefLogSeverity.Error, settings.LogSeverity);
             Assert.Equal(nameof(CefSettingKeys.JavaScriptFlags), settings.JavaScriptFlags);
             Assert.Equal(nameof(CefSettingKeys.ResourcesDirPath), settings.ResourcesDirPath);
             Assert.Equal(nameof(CefSettingKeys.LocalesDirPath), settings.LocalesDirPath);
@@ -98,7 +98,7 @@ namespace Chromely.CefGlue.Tests.BrowserWindow
                 .UseDefaultLogger(defaultLogFile)
                 .UseDefaultResourceSchemeHandler("local", string.Empty)
                 .UseDefaultHttpSchemeHandler("http", "chromely.com")
-                .UseDefaultJsHandler("boundedObject", true)
+                //.UseDefaultJsHandler("boundedObject", true)       only available with Chromely.CefSharp.Winapi.ChromelyConfigurationExtension
                 .WithCustomSetting(CefSettingKeys.NoSandbox, true)
                 .WithCustomSetting(CefSettingKeys.SingleProcess, true)
                 .WithCustomSetting(CefSettingKeys.BrowserSubprocessPath, nameof(CefSettingKeys.BrowserSubprocessPath))
