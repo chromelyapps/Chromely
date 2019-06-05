@@ -147,6 +147,7 @@ namespace Chromely.CefGlue.Loader
             
             using (var client = new WebClient())
             {
+                Log.Info($"CefLoader: Load index page {indexUrl}");
                 var cefIndex = client.DownloadString(indexUrl);
                 // up to Chromium version 72
                 var found = new Regex(binaryNamePattern1).Match(cefIndex);
@@ -181,6 +182,7 @@ namespace Chromely.CefGlue.Loader
                 _archiveName = FindCefArchiveName(_platform, _architecture, _build);  
                 _folderName = _archiveName.Replace(".tar.bz2", "");
                 _downloadUrl = CefDownloadUrl(_archiveName);
+                Log.Info($"CefLoader: Found download URL {_downloadUrl}");
 
                 var webRequest = WebRequest.Create(_downloadUrl);  
                 webRequest.Method = "HEAD";  
