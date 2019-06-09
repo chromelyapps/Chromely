@@ -35,11 +35,6 @@ namespace Chromely.Dialogs
             return _dialogs.MessageBox(message, options);
         }
 
-        public static DialogResponse InputBox(DialogIcon icon, string message, DialogOptions options)
-        {
-            return _dialogs.InputBox(message, options);
-        }
-
         public static DialogResponse SelectFolder(string message, FileDialogOptions options)
         {
             return _dialogs.SelectFolder(message, options);

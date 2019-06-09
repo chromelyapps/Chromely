@@ -33,11 +33,6 @@ namespace Chromely.Dialogs.Windows
             return new DialogResponse { IsCanceled = ret == WindowsInterop.IDCANCEL };
         }
 
-        public DialogResponse InputBox(string message, DialogOptions options)
-        {
-            throw new System.NotImplementedException();
-        }
-
 
         private static string _initialPath;
         private int OnBrowseEvent(IntPtr hWnd, int msg, IntPtr lp, IntPtr lpData)

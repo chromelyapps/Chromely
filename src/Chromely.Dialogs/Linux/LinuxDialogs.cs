@@ -58,11 +58,6 @@ namespace Chromely.Dialogs.Linux
             return new DialogResponse { IsCanceled = response == GtkInterop.ResponseType.GTK_RESPONSE_DELETE_EVENT };
         }
 
-        public DialogResponse InputBox(string message, DialogOptions options)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public DialogResponse SelectFolder(string message, FileDialogOptions options)
         {
             var widget = IntPtr.Zero;
