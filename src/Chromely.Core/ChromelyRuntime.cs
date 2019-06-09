@@ -57,11 +57,15 @@ namespace Chromely.Core
         {
             try
             {
+                var directory = Path.GetDirectoryName(dllName);
+                var fileNameWithExt = Path.GetFileName(dllName);
+
                 // for CefGlue use common assembly
-                dllName = dllName
+                fileNameWithExt = fileNameWithExt?
                     .Replace(".CefGlue.Gtk.", ".CefGlue.")
                     .Replace(".CefGlue.Winapi.", ".CefGlue.");
 
+                if (directory != null) dllName = Path.Combine(directory, fileNameWithExt);
                 var assembly = Assembly.LoadFrom(dllName);
                 var types = assembly.GetTypes();
                 var type = types.FirstOrDefault(t => t.Name == "CefRuntime");
@@ -92,10 +96,14 @@ namespace Chromely.Core
         {
             try
             {
+                var directory = Path.GetDirectoryName(dllName);
+                var fileNameWithExt = Path.GetFileName(dllName);
+
                 var arch = RuntimeInformation.ProcessArchitecture.ToString();
-                dllName = dllName
+                fileNameWithExt = fileNameWithExt?
                     .Replace("Chromely.CefSharp.Winapi", Path.Combine(arch, "CefSharp.Core"));
 
+                if (directory != null) dllName = Path.Combine(directory, fileNameWithExt);
                 var assembly = Assembly.LoadFrom(dllName);
                 var types = assembly.GetTypes();
                 var type = types.FirstOrDefault(t => t.Name == "Cef");
@@ -192,7 +200,7 @@ namespace Chromely.Core
         public static string GetWrapperAssemblyName(ChromelyCefWrapper wrapper)
         {
             var coreAssembly = typeof(ChromelyRuntime).Assembly;
-            var path = Path.GetDirectoryName(coreAssembly.Location) ?? ".";
+            var path = Path.GetDirectoryName(new Uri(coreAssembly.CodeBase).LocalPath) ?? ".";
 
             var wrapperApi = (wrapper == ChromelyCefWrapper.CefSharp)
                 ? ChromelyHostApi.Winapi.ToString()
