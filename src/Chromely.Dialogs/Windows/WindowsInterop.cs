@@ -167,30 +167,53 @@ namespace Chromely.Dialogs.Windows
         [DllImport("ole32.dll")]
         internal static extern IntPtr OleInitialize(IntPtr pvReserved);
 
-        
-        
         [StructLayout(LayoutKind.Sequential, CharSet=CharSet.Auto)]
-        internal class OPENFILENAME
+        internal class OPENFILENAME_32
         {
             public int lstructSize;
             public int hwndOwner;
             public int hInstance;
-            public string lpstrFilter = null;
-            public string lpstrCustomFilter = null;
+            public string lpstrFilter;
+            public string lpstrCustomFilter;
             public int lMaxCustomFilter;
             public int lFilterIndex;
-            public string lpstrFile = null;
-            public int lMaxFile = 0;
-            public string lpstrFileTitle = null;
-            public int lMaxFileTitle = 0;
-            public string lpstrInitialDir = null;
-            public string lpstrTitle = null;
+            public string lpstrFile;
+            public int lMaxFile;
+            public string lpstrFileTitle;
+            public int lMaxFileTitle;
+            public string lpstrInitialDir;
+            public string lpstrTitle;
             public int lFlags;
             public ushort nFileOffset;
             public ushort nFileExtension;
-            public string lpstrDefExt = null;
+            public string lpstrDefExt;
             public int lCustData;
-            public int lpfHook;
+            public IntPtr lpfHook;
+            public int lpTemplateName;
+        }
+
+        [StructLayout(LayoutKind.Sequential, CharSet=CharSet.Auto)]
+        internal class OPENFILENAME_64
+        {
+            public long lstructSize;
+            public IntPtr hwndOwner;
+            public int hInstance;
+            public string lpstrFilter;
+            public string lpstrCustomFilter;
+            public int lMaxCustomFilter;
+            public int lFilterIndex;
+            public string lpstrFile;
+            public int lMaxFile;
+            public string lpstrFileTitle;
+            public int lMaxFileTitle;
+            public string lpstrInitialDir;
+            public string lpstrTitle;
+            public int lFlags;
+            public ushort nFileOffset;
+            public ushort nFileExtension;
+            public string lpstrDefExt;
+            public int lCustData;
+            public IntPtr lpfHook;
             public int lpTemplateName;
         }
 
@@ -224,11 +247,17 @@ namespace Chromely.Dialogs.Windows
         internal const int OFN_FORCESHOWHIDDEN = 0x10000000;    // Show All files including System and hidden files
         internal const int OFN_EX_NOPLACESBAR = 0x00000001;
 
-        [DllImport("comdlg32.dll", CharSet = CharSet.Auto, SetLastError=true)]
-        internal static extern bool GetOpenFileName([In, Out] OPENFILENAME ofn);
+        [DllImport("comdlg32.dll", EntryPoint = "GetOpenFileName", CharSet = CharSet.Auto, SetLastError=true)]
+        internal static extern bool GetOpenFileName32([In, Out] OPENFILENAME_32 ofn);
         
-        [DllImport("comdlg32.dll", CharSet=CharSet.Auto, SetLastError=true)]
-        internal static extern bool GetSaveFileName([In, Out] OPENFILENAME ofn);
+        [DllImport("comdlg32.dll", EntryPoint="GetSaveFileName", CharSet=CharSet.Auto, SetLastError=true)]
+        internal static extern bool GetSaveFileName32([In, Out] OPENFILENAME_32 ofn);
+
+        [DllImport("comdlg32.dll", EntryPoint = "GetOpenFileName", CharSet = CharSet.Auto, SetLastError = true)]
+        internal static extern bool GetOpenFileName64([In, Out] OPENFILENAME_64 ofn);
+
+        [DllImport("comdlg32.dll", EntryPoint = "GetSaveFileName", CharSet = CharSet.Auto, SetLastError = true)]
+        internal static extern bool GetSaveFileName64([In, Out] OPENFILENAME_64 ofn);
 
     }
 }

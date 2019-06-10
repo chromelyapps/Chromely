@@ -4,6 +4,8 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
+using Chromely.Core;
+
 // ReSharper disable CommentTypo
 
 namespace Chromely.Dialogs.Windows
@@ -126,7 +128,43 @@ namespace Chromely.Dialogs.Windows
 
         public DialogResponse FileOpen(string message, FileDialogOptions options)
         {
-            var ofn = new WindowsInterop.OPENFILENAME();
+            return Environment.Is64BitProcess
+                ? FileOpen64(message, options)
+                : FileOpen32(message, options);
+        }
+        public DialogResponse FileOpen32(string message, FileDialogOptions options)
+        {
+            var ofn = new WindowsInterop.OPENFILENAME_32();
+            ofn.lstructSize = Marshal.SizeOf(ofn);
+
+            if (Directory.Exists(options.Directory))
+            {
+                ofn.lpstrInitialDir = options.Directory;
+            }
+
+            ofn.lpstrFilter = options.Filters
+                                  .Select(f => $"{f.Name}\0*.{f.Extension}\0")
+                                  .Aggregate("", (s1, s2) => s1 + s2)
+                              + "\0";
+
+            ofn.lpstrFile = new string(' ', 4096);
+            ofn.lMaxFile = ofn.lpstrFile.Length;
+
+            ofn.lpstrTitle = options.Title;
+            ofn.lMaxFileTitle = ofn.lpstrTitle.Length;
+
+            ofn.lFlags = WindowsInterop.OFN_EXPLORER;
+            if (options.MustExist)
+            {
+                ofn.lFlags |= WindowsInterop.OFN_PATHMUSTEXIST | WindowsInterop.OFN_FILEMUSTEXIST;
+            }
+
+            var ok = WindowsInterop.GetOpenFileName32(ofn);
+            return new DialogResponse { IsCanceled = !ok, Value = ofn.lpstrFile };
+        }
+        public DialogResponse FileOpen64(string message, FileDialogOptions options)
+        {
+            var ofn = new WindowsInterop.OPENFILENAME_64();
             ofn.lstructSize = Marshal.SizeOf(ofn);
             
             if (Directory.Exists(options.Directory))
@@ -151,13 +189,19 @@ namespace Chromely.Dialogs.Windows
                 ofn.lFlags |= WindowsInterop.OFN_PATHMUSTEXIST | WindowsInterop.OFN_FILEMUSTEXIST;
             }
             
-            var ok = WindowsInterop.GetOpenFileName(ofn);
+            var ok = WindowsInterop.GetOpenFileName64(ofn);
             return new DialogResponse { IsCanceled = !ok, Value = ofn.lpstrFile };
         }
 
         public DialogResponse FileSave(string message, string fileName, FileDialogOptions options)
         {
-            var ofn = new WindowsInterop.OPENFILENAME();
+            return Environment.Is64BitProcess
+                ? FileSave64(message, fileName, options)
+                : FileSave32(message, fileName, options);
+        }
+        public DialogResponse FileSave32(string message, string fileName, FileDialogOptions options)
+        {
+            var ofn = new WindowsInterop.OPENFILENAME_32();
             ofn.lstructSize = Marshal.SizeOf(ofn);
             
             if (Directory.Exists(options.Directory))
@@ -186,9 +230,43 @@ namespace Chromely.Dialogs.Windows
                 ofn.lFlags |= WindowsInterop.OFN_OVERWRITEPROMPT;
             }
 
-            var ok = WindowsInterop.GetSaveFileName(ofn);
+            var ok = WindowsInterop.GetSaveFileName32(ofn);
             return new DialogResponse { IsCanceled = !ok, Value = ofn.lpstrFile };
         }
-        
+        public DialogResponse FileSave64(string message, string fileName, FileDialogOptions options)
+        {
+            var ofn = new WindowsInterop.OPENFILENAME_64();
+            ofn.lstructSize = Marshal.SizeOf(ofn);
+
+            if (Directory.Exists(options.Directory))
+            {
+                ofn.lpstrInitialDir = options.Directory;
+            }
+
+            ofn.lpstrFilter = options.Filters
+                                  .Select(f => $"{f.Name}\0*.{f.Extension}\0")
+                                  .Aggregate("", (s1, s2) => s1 + s2)
+                              + "\0";
+
+            ofn.lpstrFile = fileName;
+            ofn.lMaxFile = 4096;
+
+            ofn.lpstrTitle = options.Title;
+            ofn.lMaxFileTitle = ofn.lpstrTitle.Length;
+
+            ofn.lFlags = WindowsInterop.OFN_EXPLORER;
+            if (options.MustExist)
+            {
+                ofn.lFlags |= WindowsInterop.OFN_PATHMUSTEXIST | WindowsInterop.OFN_FILEMUSTEXIST;
+            }
+            if (options.ConfirmOverwrite)
+            {
+                ofn.lFlags |= WindowsInterop.OFN_OVERWRITEPROMPT;
+            }
+
+            var ok = WindowsInterop.GetSaveFileName64(ofn);
+            return new DialogResponse { IsCanceled = !ok, Value = ofn.lpstrFile };
+        }
+
     }
 }
