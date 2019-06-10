@@ -214,7 +214,7 @@ namespace Chromely.Dialogs.Windows
                                   .Aggregate("", (s1, s2) => s1 + s2)
                               + "\0";
 
-            ofn.lpstrFile = fileName;
+            ofn.lpstrFile = (fileName ?? "") + "\0" + new string(' ', 4096); 
             ofn.lMaxFile = 4096;
             
             ofn.lpstrTitle = options.Title;
@@ -248,7 +248,7 @@ namespace Chromely.Dialogs.Windows
                                   .Aggregate("", (s1, s2) => s1 + s2)
                               + "\0";
 
-            ofn.lpstrFile = fileName;
+            ofn.lpstrFile = (fileName ?? "") + "\0" + new string(' ', 4096);
             ofn.lMaxFile = 4096;
 
             ofn.lpstrTitle = options.Title;

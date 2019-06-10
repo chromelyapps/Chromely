@@ -6,9 +6,9 @@
         <TargetFramework>netstandard2.0</TargetFramework>
         <Platforms>AnyCPU</Platforms>
         <ProductVersion>4.0.70.0</ProductVersion>
-        <AssemblyVersion>4.1.70.0</AssemblyVersion>
-        <FileVersion>4.1.70.0</FileVersion>
-        <Version>4.1.70.0</Version>
+        <AssemblyVersion>4.2.70.0</AssemblyVersion>
+        <FileVersion>4.2.70.0</FileVersion>
+        <Version>4.2.70.0</Version>
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Product>Chromely.Dialogs</Product>

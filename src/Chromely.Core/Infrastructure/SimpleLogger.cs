@@ -9,7 +9,6 @@
 
 using System;
 using System.IO;
-using System.Reflection;
 using System.Text;
 
 // ReSharper disable InconsistentNaming
@@ -56,10 +55,9 @@ namespace Chromely.Core.Infrastructure
         {
             if (string.IsNullOrEmpty(fullFilePath))
             {
-                var exeLocation = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+                var exeLocation = AppDomain.CurrentDomain.BaseDirectory;
                 var fileName = DateTime.Now.ToString("yyyyMMdd") + ".log";
-
-                fullFilePath = exeLocation != null ? Path.Combine(exeLocation, "Logs", "chromely_" + fileName) : fileName;
+                fullFilePath = Path.Combine(exeLocation, "Logs", "chromely_" + fileName);
             }
 
             _filename = fullFilePath;
