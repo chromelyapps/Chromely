@@ -1,11 +1,11 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="GtkWindow.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+// <copyright file="Window.cs" company="Chromely Projects">
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
-// See the LICENSE.md file in the project root for more information.
+//      See the LICENSE.md file in the project root for more information.
 // </license>
-// --------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------
 
 using System;
 using Chromely.CefGlue.Browser;
@@ -23,22 +23,17 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         /// <summary>
         /// The host/app/window application.
         /// </summary>
-        private readonly HostBase mApplication;
+        private readonly HostBase _application;
 
         /// <summary>
         /// The host config.
         /// </summary>
-        private readonly ChromelyConfiguration mHostConfig;
-
-        /// <summary>
-        /// The CefGlueBrowser object.
-        /// </summary>
-        private CefGlueBrowser mBrowser;
+        private readonly ChromelyConfiguration _hostConfig;
 
         /// <summary>
         /// The browser window handle.
         /// </summary>
-        private IntPtr mBrowserWindowHandle;
+        private IntPtr _browserWindowHandle;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Window"/> class.
@@ -52,21 +47,21 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         public Window(HostBase application, ChromelyConfiguration hostConfig)
             : base(hostConfig)
         {
-            mHostConfig = hostConfig;
-            mBrowser = new CefGlueBrowser(this, hostConfig, new CefBrowserSettings());
-            mBrowser.Created += OnBrowserCreated;
-            mApplication = application;
+            _hostConfig = hostConfig;
+            Browser = new CefGlueBrowser(this, hostConfig, new CefBrowserSettings());
+            Browser.Created += OnBrowserCreated;
+            _application = application;
 
             // Set event handler
-            mBrowser.SetEventHandlers();
+            Browser.SetEventHandlers();
 
             ShowWindow();
         }
 
         /// <summary>
-        /// The browser.
+        /// Gets the browser.
         /// </summary>
-        public CefGlueBrowser Browser => mBrowser;
+        public CefGlueBrowser Browser { get; private set; }
 
         public void CenterToScreen()
         {
@@ -78,7 +73,7 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         /// </summary>
         public void Exit()
         {
-            mApplication?.Quit();
+            _application?.Quit();
         }
 
         #region Dispose
@@ -88,11 +83,11 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         /// </summary>
         public void Dispose()
         {
-            if (mBrowser != null)
+            if (Browser != null)
             {
-                mBrowser.Dispose();
-                mBrowser = null;
-                mBrowserWindowHandle = IntPtr.Zero;
+                Browser.Dispose();
+                Browser = null;
+                _browserWindowHandle = IntPtr.Zero;
             }
         }
 
@@ -117,11 +112,11 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
             {
                 case CefRuntimePlatform.Windows:
                     var parentHandle = HostXid;
-                    windowInfo.SetAsChild(parentHandle, new CefRectangle(0, 0, mHostConfig.HostWidth, mHostConfig.HostHeight)); 
+                    windowInfo.SetAsChild(parentHandle, new CefRectangle(0, 0, _hostConfig.HostWidth, _hostConfig.HostHeight)); 
                     break;
 
                 case CefRuntimePlatform.Linux:
-                    windowInfo.SetAsChild(HostXid, new CefRectangle(0, 0, mHostConfig.HostWidth, mHostConfig.HostHeight));
+                    windowInfo.SetAsChild(HostXid, new CefRectangle(0, 0, _hostConfig.HostWidth, _hostConfig.HostHeight));
                     break;
 
                 case CefRuntimePlatform.MacOSX:
@@ -131,7 +126,7 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
                     throw new NotSupportedException();
             }
 
-            mBrowser.Create(windowInfo);
+            Browser.Create(windowInfo);
         }
 
         /// <summary>
@@ -147,15 +142,10 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         {
             if (CefRuntime.Platform == CefRuntimePlatform.Windows)
             {
-                if (mBrowserWindowHandle != IntPtr.Zero)
+                if (_browserWindowHandle != IntPtr.Zero)
                 {
-                    // ReSharper disable once InlineOutVariableDeclaration
-                    int width;
-                    // ReSharper disable once InlineOutVariableDeclaration
-                    int height;
-                    GetSize(out width, out height);
-
-                    NativeMethods.SetWindowPos(mBrowserWindowHandle, IntPtr.Zero, 0, 0, width, height);
+                    GetSize(out var width, out var height);
+                    NativeMethods.SetWindowPos(_browserWindowHandle, IntPtr.Zero, 0, 0, width, height);
                 }
             }
             else
@@ -175,7 +165,7 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         /// </param>
         protected override void OnExit(object sender, EventArgs e)
         {
-            mApplication?.Quit();
+            _application?.Quit();
         }
 
         /// <summary>
@@ -189,10 +179,10 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         /// </param>
         private void OnBrowserCreated(object sender, EventArgs e)
         {
-            mBrowserWindowHandle = mBrowser.CefBrowser.GetHost().GetWindowHandle();
+            _browserWindowHandle = Browser.CefBrowser.GetHost().GetWindowHandle();
             if (CefRuntime.Platform == CefRuntimePlatform.Windows)
             {
-                if (mBrowserWindowHandle != IntPtr.Zero)
+                if (_browserWindowHandle != IntPtr.Zero)
                 {
                     // ReSharper disable once InlineOutVariableDeclaration
                     int width;
@@ -200,7 +190,7 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
                     int height;
                     GetSize(out width, out height);
 
-                    NativeMethods.SetWindowPos(mBrowserWindowHandle, IntPtr.Zero, 0, 0, width, height);
+                    NativeMethods.SetWindowPos(_browserWindowHandle, IntPtr.Zero, 0, 0, width, height);
                 }
             }
         }

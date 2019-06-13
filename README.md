@@ -32,12 +32,14 @@ Cross-platform - Windows, Linux. Built on CefGlue, CefSharp, NET Standard 2.0, .
 | Linux<sup>(2)</sup> 32-bit   |  ---     | netstandard2.0         |  ---     |
 | Linux<sup>(2)</sup> 64-bit   |  ---     | netstandard2.0         |  ---     |
 | MacOSX<sup>(3)</sup> 64-bit  |  ---     | ---                    |  ---     |
-| Linux ARM<sup>(4)</sup>      |  ---     |  ---                   |  ---     |
+| Linux ARM<sup>(4)</sup>      |  ---     | netstandard2.0         |  ---     |
 
 &nbsp;<sup>(1)</sup>&nbsp; Windows 7, Service Pack 1 and newer    
-&nbsp;<sup>(2)</sup>&nbsp; Ubuntu 16.04 and newer (Mono currently not working)    
+&nbsp;<sup>(2)</sup>&nbsp; Ubuntu 16.04 and newer    
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Mono currently not working, window resizing not working)    
 &nbsp;<sup>(3)</sup>&nbsp; Work in progress...    
-&nbsp;<sup>(4)</sup>&nbsp; i.e. Raspberry Pi 3+ (CEF not available as ARM builds)    
+&nbsp;<sup>(4)</sup>&nbsp; i.e. Raspberry Pi 3+    
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(manual download of CEF builds for ARM available on http://chromely.org/cefbuilds/index.html)    
 
 
 For more info/documentation, please check [Chromely wiki](https://github.com/chromelyapps/Chromely/wiki). 
@@ -91,7 +93,7 @@ class Program
 dotnet new -i "Chromely.CefGlue.Win.Template::*"
 dotnet new chromelywin 
 dotnet restore
-dotnet chromelycef.dll download v66 --cpu=x64 --dest="bin\Debug\netcoreapp2.1"
+dotnet chromelycef.dll download v70 --cpu=x64 --dest="bin\Debug\netcoreapp2.1"
 dotnet build
 dotnet run 
 ````

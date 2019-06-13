@@ -1,11 +1,11 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="WebsocketServerRunner.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
 //      See the LICENSE.md file in the project root for more information.
 // </license>
-// --------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------
 
 using System;
 using Chromely.CefGlue.Browser.ServerHandlers;
@@ -20,9 +20,9 @@ namespace Chromely.CefGlue
     public static class WebsocketServerRunner
     {
         /// <summary>
-        /// The m server handler.
+        /// The server handler.
         /// </summary>
-        private static CefGlueServerHandler mServerHandler;
+        private static CefGlueServerHandler _serverHandler;
 
         /// <summary>
         /// Gets the server address.
@@ -41,12 +41,12 @@ namespace Chromely.CefGlue
         {
             get
             {
-                if (mServerHandler == null)
+                if (_serverHandler == null)
                 {
                     return false;
                 }
 
-                return mServerHandler.IsServerRunning;
+                return _serverHandler.IsServerRunning;
             }
         }
 
@@ -96,8 +96,8 @@ namespace Chromely.CefGlue
                                    ?? new CefGlueWebsocketHandler();
 
                 ConnectionNameMapper.Clear();
-                mServerHandler = new CefGlueServerHandler(sockeHandler);
-                mServerHandler.StartServer(Address, Port, OnStartServerComplete);
+                _serverHandler = new CefGlueServerHandler(sockeHandler);
+                _serverHandler.StartServer(Address, Port, OnStartServerComplete);
             }
             catch (Exception exception)
             {
@@ -112,14 +112,14 @@ namespace Chromely.CefGlue
         {
             try
             {
-                if (mServerHandler == null)
+                if (_serverHandler == null)
                 {
                     Log.Info("Cannot stop server. Server is not currently running.");
                     return;
                 }
 
                 // Stop the server. OnComplete will be executed upon completion.
-                mServerHandler.StopServer(OnStopServerComplete);
+                _serverHandler.StopServer(OnStopServerComplete);
             }
             catch (Exception exception)
             {
@@ -140,11 +140,11 @@ namespace Chromely.CefGlue
         /// </summary>
         private static void OnStopServerComplete()
         {
-            if (mServerHandler != null)
+            if (_serverHandler != null)
             {
                 Log.Info($"Server on {Address} and port {Port} stopped.");
-                mServerHandler.DisposeServer();
-                mServerHandler = null;
+                _serverHandler.DisposeServer();
+                _serverHandler = null;
             }
         }
     }

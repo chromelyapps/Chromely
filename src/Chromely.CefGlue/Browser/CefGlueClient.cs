@@ -1,11 +1,11 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CefGlueClient.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
 //      See the LICENSE.md file in the project root for more information.
 // </license>
-// --------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------
 
 using Chromely.Core.Infrastructure;
 using Xilium.CefGlue;
@@ -21,62 +21,62 @@ namespace Chromely.CefGlue.Browser
         /// <summary>
         /// The life span handler.
         /// </summary>
-        private readonly CefLifeSpanHandler mLifeSpanHandler;
+        private readonly CefLifeSpanHandler _lifeSpanHandler;
 
         /// <summary>
         /// The load handler.
         /// </summary>
-        private readonly CefLoadHandler mLoadHandler;
+        private readonly CefLoadHandler _loadHandler;
 
         /// <summary>
         /// The request handler.
         /// </summary>
-        private readonly CefRequestHandler mRequestHandler;
+        private readonly CefRequestHandler _requestHandler;
 
         /// <summary>
         /// The display handler.
         /// </summary>
-        private readonly CefDisplayHandler mDisplayHandler;
+        private readonly CefDisplayHandler _displayHandler;
 
         /// <summary>
         /// The context menu handler.
         /// </summary>
-        private readonly CefContextMenuHandler mContextMenuHandler;
+        private readonly CefContextMenuHandler _contextMenuHandler;
 
         /// <summary>
         /// The focus handler.
         /// </summary>
-        private readonly CefFocusHandler mFocusHandler;
+        private readonly CefFocusHandler _focusHandler;
 
         /// <summary>
         /// The keyboard handler.
         /// </summary>
-        private readonly CefKeyboardHandler mKeyboardHandler;
+        private readonly CefKeyboardHandler _keyboardHandler;
 
         /// <summary>
         /// The Javascript dialog handler.
         /// </summary>
-        private readonly CefJSDialogHandler mJsDialogHandler;
+        private readonly CefJSDialogHandler _jsDialogHandler;
 
         /// <summary>
         /// The dialog handler.
         /// </summary>
-        private readonly CefDialogHandler mDialogHandler;
+        private readonly CefDialogHandler _dialogHandler;
 
         /// <summary>
         /// The drag handler.
         /// </summary>
-        private readonly CefDragHandler mDragHandler;
+        private readonly CefDragHandler _dragHandler;
 
         /// <summary>
         /// The download handler.
         /// </summary>
-        private readonly CefDownloadHandler mDownloadHandler;
+        private readonly CefDownloadHandler _downloadHandler;
 
         /// <summary>
         /// The find handler.
         /// </summary>
-        private readonly CefFindHandler mFindHandler;
+        private readonly CefFindHandler _findHandler;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CefGlueClient"/> class.
@@ -87,18 +87,18 @@ namespace Chromely.CefGlue.Browser
         public CefGlueClient(CefGlueClientParams clientParams)
         {
             CoreBrowser = clientParams.Browser;
-            mLifeSpanHandler = clientParams.LifeSpanHandler;
-            mLoadHandler = clientParams.LoadHandler;
-            mRequestHandler = clientParams.RequestHandler;
-            mDisplayHandler = clientParams.DisplayHandler;
-            mContextMenuHandler = clientParams.ContextMenuHandler;
-            mFocusHandler = clientParams.FocusHandler;
-            mKeyboardHandler = clientParams.KeyboardHandler;
-            mJsDialogHandler = clientParams.JsDialogHandler;
-            mDialogHandler = clientParams.DialogHandler;
-            mDragHandler = clientParams.DragHandler;
-            mDownloadHandler = clientParams.DownloadHandler;
-            mFindHandler = clientParams.FindHandler;
+            _lifeSpanHandler = clientParams.LifeSpanHandler;
+            _loadHandler = clientParams.LoadHandler;
+            _requestHandler = clientParams.RequestHandler;
+            _displayHandler = clientParams.DisplayHandler;
+            _contextMenuHandler = clientParams.ContextMenuHandler;
+            _focusHandler = clientParams.FocusHandler;
+            _keyboardHandler = clientParams.KeyboardHandler;
+            _jsDialogHandler = clientParams.JsDialogHandler;
+            _dialogHandler = clientParams.DialogHandler;
+            _dragHandler = clientParams.DragHandler;
+            _downloadHandler = clientParams.DownloadHandler;
+            _findHandler = clientParams.FindHandler;
         }
 
         /// <summary>
@@ -114,7 +114,7 @@ namespace Chromely.CefGlue.Browser
         /// </returns>
         protected override CefLifeSpanHandler GetLifeSpanHandler()
         {
-            return mLifeSpanHandler;
+            return _lifeSpanHandler;
         }
 
         /// <summary>
@@ -125,7 +125,7 @@ namespace Chromely.CefGlue.Browser
         /// </returns>
         protected override CefLoadHandler GetLoadHandler()
         {
-            return mLoadHandler;
+            return _loadHandler;
         }
 
         /// <summary>
@@ -136,7 +136,7 @@ namespace Chromely.CefGlue.Browser
         /// </returns>
         protected override CefRequestHandler GetRequestHandler()
         {
-            return mRequestHandler;
+            return _requestHandler;
         }
 
         /// <summary>
@@ -147,7 +147,7 @@ namespace Chromely.CefGlue.Browser
         /// </returns>
         protected override CefDisplayHandler GetDisplayHandler()
         {
-            return mDisplayHandler;
+            return _displayHandler;
         }
 
         /// <summary>
@@ -158,7 +158,7 @@ namespace Chromely.CefGlue.Browser
         /// </returns>
         protected override CefContextMenuHandler GetContextMenuHandler()
         {
-            return mContextMenuHandler;
+            return _contextMenuHandler;
         }
 
         /// <summary>
@@ -169,7 +169,7 @@ namespace Chromely.CefGlue.Browser
         /// </returns>
         protected override CefFocusHandler GetFocusHandler()
         {
-            return mFocusHandler;
+            return _focusHandler;
         }
 
         /// <summary>
@@ -180,7 +180,7 @@ namespace Chromely.CefGlue.Browser
         /// </returns>
         protected override CefKeyboardHandler GetKeyboardHandler()
         {
-            return mKeyboardHandler;
+            return _keyboardHandler;
         }
 
         /// <summary>
@@ -191,7 +191,7 @@ namespace Chromely.CefGlue.Browser
         /// </returns>
         protected override CefJSDialogHandler GetJSDialogHandler()
         {
-            return mJsDialogHandler;
+            return _jsDialogHandler;
         }
 
         /// <summary>
@@ -202,7 +202,7 @@ namespace Chromely.CefGlue.Browser
         /// </returns>
         protected override CefDialogHandler GetDialogHandler()
         {
-            return mDialogHandler;
+            return _dialogHandler;
         }
 
         /// <summary>
@@ -213,7 +213,7 @@ namespace Chromely.CefGlue.Browser
         /// </returns>
         protected override CefDragHandler GetDragHandler()
         {
-            return mDragHandler;
+            return _dragHandler;
         }
 
         /// <summary>
@@ -224,7 +224,7 @@ namespace Chromely.CefGlue.Browser
         /// </returns>
         protected override CefDownloadHandler GetDownloadHandler()
         {
-            return mDownloadHandler;
+            return _downloadHandler;
         }
 
         /// <summary>
@@ -235,7 +235,7 @@ namespace Chromely.CefGlue.Browser
         /// </returns>
         protected override CefFindHandler GetFindHandler()
         {
-            return mFindHandler;
+            return _findHandler;
         }
 
         /// <summary>

@@ -25,7 +25,7 @@
     </PackageReleaseNotes>
     <RepositoryType>Github Repository</RepositoryType>
     <RepositoryUrl>https://github.com/chromelyapps/Chromely</RepositoryUrl>
-    <Configurations>Debug;Release;ReleaseLinux</Configurations>
+    <Configurations>Debug;Release;ReleaseLinux;DebugLinux</Configurations>
     <Platforms>AnyCPU</Platforms>
     <TargetFramework>net461</TargetFramework>
   </PropertyGroup>

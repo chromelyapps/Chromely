@@ -1,11 +1,11 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CefGlueHttpSchemeHandler.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
 //      See the LICENSE.md file in the project root for more information.
 // </license>
-// --------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------
 
 using System;
 using System.IO;
@@ -27,22 +27,22 @@ namespace Chromely.CefGlue.Browser.Handlers
         /// <summary>
         /// The ChromelyResponse object.
         /// </summary>
-        private ChromelyResponse mChromelyResponse;
+        private ChromelyResponse _chromelyResponse;
 
         /// <summary>
         /// The response in bytes.
         /// </summary>
-        private byte[] mResponseBytes;
+        private byte[] _responseBytes;
 
         /// <summary>
         /// The completed flag.
         /// </summary>
-        private bool mCompleted;
+        private bool _completed;
 
         /// <summary>
         /// The total bytes read.
         /// </summary>
-        private int mTotalBytesRead;
+        private int _totalBytesRead;
 
         /// <summary>
         /// The process request.
@@ -67,15 +67,15 @@ namespace Chromely.CefGlue.Browser.Handlers
                     {
                         try
                         {
-                            mChromelyResponse = RequestTaskRunner.Run(request);
-                            string jsonData = mChromelyResponse.Data.EnsureResponseIsJsonFormat();
-                            mResponseBytes = Encoding.UTF8.GetBytes(jsonData);
+                            _chromelyResponse = RequestTaskRunner.Run(request);
+                            string jsonData = _chromelyResponse.Data.EnsureResponseIsJsonFormat();
+                            _responseBytes = Encoding.UTF8.GetBytes(jsonData);
                         }
                         catch (Exception exception)
                         {
                             Log.Error(exception);
 
-                            mChromelyResponse =
+                            _chromelyResponse =
                                 new ChromelyResponse
                                     {
                                         Status = (int)HttpStatusCode.BadRequest,
@@ -118,8 +118,8 @@ namespace Chromely.CefGlue.Browser.Handlers
 
             try
             {
-                HttpStatusCode status = (mChromelyResponse != null) ? (HttpStatusCode)mChromelyResponse.Status : HttpStatusCode.BadRequest;
-                string errorStatus = (mChromelyResponse != null) ? mChromelyResponse.Data.ToString() : "Not Found";
+                HttpStatusCode status = (_chromelyResponse != null) ? (HttpStatusCode)_chromelyResponse.Status : HttpStatusCode.BadRequest;
+                string errorStatus = (_chromelyResponse != null) ? _chromelyResponse.Data.ToString() : "Not Found";
 
                 var headers = response.GetHeaderMap();
                 headers.Add("Cache-Control", "private");
@@ -163,30 +163,30 @@ namespace Chromely.CefGlue.Browser.Handlers
 
             try
             {
-                if (mCompleted)
+                if (_completed)
                 {
                     bytesRead = 0;
-                    mTotalBytesRead = 0;
-                    mResponseBytes = null;
+                    _totalBytesRead = 0;
+                    _responseBytes = null;
                     return false;
                 }
                 else
                 {
-                    if (mResponseBytes != null)
+                    if (_responseBytes != null)
                     {
-                        currBytesRead = Math.Min(mResponseBytes.Length - mTotalBytesRead, bytesToRead);
-                        response.Write(mResponseBytes, mTotalBytesRead, currBytesRead);
-                        mTotalBytesRead += currBytesRead;
+                        currBytesRead = Math.Min(_responseBytes.Length - _totalBytesRead, bytesToRead);
+                        response.Write(_responseBytes, _totalBytesRead, currBytesRead);
+                        _totalBytesRead += currBytesRead;
 
-                        if (mTotalBytesRead >= mResponseBytes.Length)
+                        if (_totalBytesRead >= _responseBytes.Length)
                         {
-                            mCompleted = true;
+                            _completed = true;
                         }
                     }
                     else
                     {
                         bytesRead = 0;
-                        mCompleted = true;
+                        _completed = true;
                     }
                 }
             }

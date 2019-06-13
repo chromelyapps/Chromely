@@ -1,17 +1,16 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CefSharpBrowserWindow.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+// <copyright file="CefSharpWindow.cs" company="Chromely Projects">
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
 //      See the LICENSE.md file in the project root for more information.
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Chromely.Core;
+
 namespace Chromely.CefSharp.Winapi.BrowserWindow
 {
-    using Chromely.CefSharp.Winapi.Browser;
-    using Chromely.Core;
-
     /// <summary>
     /// The cefsharp chromium window.
     /// </summary>
@@ -28,16 +27,25 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
         {
         }
 
+        /// <summary>
+        /// The initialize.
+        /// </summary>
         public new void Initialize()
         {
             base.Initialize();
         }
 
+        /// <summary>
+        /// The close.
+        /// </summary>
         public new void Close()
         {
             base.Close();
         }
 
+        /// <summary>
+        /// The exit.
+        /// </summary>
         public new void Exit()
         {
             base.Exit();

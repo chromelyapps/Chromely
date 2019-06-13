@@ -1,11 +1,11 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="GtkNativeMethods.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+// <copyright file="NativeMethods.cs" company="Chromely Projects">
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
-// See the LICENSE.md file in the project root for more information.
+//      See the LICENSE.md file in the project root for more information.
 // </license>
-// --------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------
 
 using System;
 using System.Diagnostics.CodeAnalysis;
@@ -13,7 +13,6 @@ using System.IO;
 using System.Runtime.InteropServices;
 using Chromely.Core.Infrastructure;
 using Xilium.CefGlue;
-// ReSharper disable UnusedMember.Global
 
 namespace Chromely.CefGlue.Gtk.BrowserWindow
 {
@@ -79,6 +78,7 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
 
         /// <summary>
         /// The g connect flags.
+        /// see: https://code.woboq.org/gtk/include/glib-2.0/gobject/gsignal.h.html#GConnectFlags
         /// </summary>
         [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1602:EnumerationItemsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
         internal enum GConnectFlags
@@ -86,12 +86,12 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
             /// <summary>
             /// whether the handler should be called before or after the default handler of the signal.
             /// </summary>
-            GConnectAfter,
+            GConnectAfter = 1 << 0,
 
             /// <summary>
             /// whether the instance and data should be swapped when calling the handler; see g_signal_connect_swapped() for an example.
             /// </summary>
-            GConnectSwapped
+            GConnectSwapped = 1 << 1
         }
 
         /// <summary>
@@ -606,19 +606,34 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         /// <param name="flags">
         /// The flags.
         /// </param>
-        internal static void ConnectSignal(IntPtr window, string name, Delegate callback, int key, IntPtr data, int flags)
+        internal static uint ConnectSignal(IntPtr window, string name, Delegate callback, int key, IntPtr data, int flags)
         {
-            if (CefRuntime.Platform == CefRuntimePlatform.Windows)
+            switch (CefRuntime.Platform)
             {
-                Win.g_signal_connect_data(window, name, callback, key, data, flags);
-            }
-
-            if (CefRuntime.Platform == CefRuntimePlatform.Linux)
-            {
-                Linux.g_signal_connect_data(window, name, callback, key, data, flags);
+                case CefRuntimePlatform.Windows:
+                    return Win.g_signal_connect_data(window, name, callback, key, data, flags);
+                case CefRuntimePlatform.Linux:
+                    return Linux.g_signal_connect_data(window, name, callback, key, data, flags);
+                case CefRuntimePlatform.MacOSX:
+                default:
+                    return 0;
             }
         }
 
+        internal static uint DisconnectSignal(IntPtr window, uint handler)
+        {
+            switch (CefRuntime.Platform)
+            {
+                case CefRuntimePlatform.Windows:
+                    return Win.g_signal_handler_disconnect(window, handler);
+                case CefRuntimePlatform.Linux:
+                    return Linux.g_signal_handler_disconnect(window, handler);
+                case CefRuntimePlatform.MacOSX:
+                default:
+                    return 0;
+            }
+        }
+        
         /// <summary>
         /// The set icon from file.
         /// </summary>

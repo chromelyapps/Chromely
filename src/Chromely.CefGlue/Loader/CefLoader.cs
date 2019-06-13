@@ -1,3 +1,12 @@
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="CefLoader.cs" company="Chromely Projects">
+//   Copyright (c) 2017-2019 Chromely Projects
+// </copyright>
+// <license>
+//      See the LICENSE.md file in the project root for more information.
+// </license>
+// ----------------------------------------------------------------------------------------------------------------------
+
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -19,7 +28,6 @@ namespace Chromely.CefGlue.Loader
     /// <summary>
     /// Loads the necessary CEF runtime files from opensource.spotify.com
     /// Inherits detailed version information from cefbuilds/index page.
-    ///
     /// Note:
     /// Keep this class in a separate nuget package
     /// due to additional reference to ICSharpCode.SharpZipLib.
@@ -52,7 +60,11 @@ namespace Chromely.CefGlue.Loader
             {
                 var watch = new Stopwatch();
                 watch.Start();
-                loader.Download();
+                loader.GetDownloadUrl();
+                if (!loader.ParallelDownload())
+                {
+                    loader.Download();
+                }
                 Log.Info($"CefLoader: Download took {watch.ElapsedMilliseconds}ms");
                 watch.Restart();
                 loader.DecompressArchive();
@@ -139,6 +151,7 @@ namespace Chromely.CefGlue.Loader
             
             using (var client = new WebClient())
             {
+                Log.Info($"CefLoader: Load index page {indexUrl}");
                 var cefIndex = client.DownloadString(indexUrl);
                 // up to Chromium version 72
                 var found = new Regex(binaryNamePattern1).Match(cefIndex);
@@ -159,84 +172,110 @@ namespace Chromely.CefGlue.Loader
             
             return "";
         }
-        
+
+        private void GetDownloadUrl()
+        {
+            _archiveName = FindCefArchiveName(_platform, _architecture, _build);
+            _folderName = _archiveName.Replace(".tar.bz2", "");
+            _downloadUrl = CefDownloadUrl(_archiveName);
+            Log.Info($"CefLoader: Found download URL {_downloadUrl}");
+        }
+
         private class Range  
         {  
             public long Start { get; set; }  
             public long End { get; set; }  
         }  
-        private void Download()
+        private bool ParallelDownload()
         {
-          
-            using (var client = new WebClient())
+            try
             {
-                _archiveName = FindCefArchiveName(_platform, _architecture, _build);  
-                _folderName = _archiveName.Replace(".tar.bz2", "");
-                _downloadUrl = CefDownloadUrl(_archiveName);
+                var webRequest = WebRequest.Create(_downloadUrl);
+                webRequest.Method = "HEAD";
+                using (var webResponse = webRequest.GetResponse())
+                {
+                    _downloadLength = long.Parse(webResponse.Headers.Get("Content-Length"));
+                }
 
-                var webRequest = WebRequest.Create(_downloadUrl);  
-                webRequest.Method = "HEAD";  
-                using (var webResponse = webRequest.GetResponse())  
-                {  
-                    _downloadLength = long.Parse(webResponse.Headers.Get("Content-Length"));  
-                }  
-                
-                Log.Info($"CefLoader: Loading {_archiveName}, {_downloadLength / (1024 * 1024)}MB");
-                client.DownloadProgressChanged += Client_DownloadProgressChanged;
+                Log.Info($"CefLoader: Parallel download {_archiveName}, {_downloadLength / (1024 * 1024)}MB");
 
                 // Calculate ranges  
-                var readRanges = new List<Range>();  
-                for (var chunk = 0; chunk < _numberOfParallelDownloads - 1; chunk++)  
-                {  
-                    var range = new Range()  
-                    {  
-                        Start = chunk * (_downloadLength / _numberOfParallelDownloads),  
-                        End = ((chunk + 1) * (_downloadLength / _numberOfParallelDownloads)) - 1  
-                    };  
-                    readRanges.Add(range);  
-                }  
-                readRanges.Add(new Range()  
-                {  
-                    Start = readRanges.Any() ? readRanges.Last().End + 1 : 0,  
-                    End = _downloadLength - 1  
-                });  
+                var readRanges = new List<Range>();
+                for (var chunk = 0; chunk < _numberOfParallelDownloads - 1; chunk++)
+                {
+                    var range = new Range()
+                    {
+                        Start = chunk * (_downloadLength / _numberOfParallelDownloads),
+                        End = ((chunk + 1) * (_downloadLength / _numberOfParallelDownloads)) - 1
+                    };
+                    readRanges.Add(range);
+                }
+                readRanges.Add(new Range()
+                {
+                    Start = readRanges.Any() ? readRanges.Last().End + 1 : 0,
+                    End = _downloadLength - 1
+                });
 
                 // Parallel download
-                var tempFilesDictionary = new ConcurrentDictionary<long, string>();  
-                
-                Parallel.ForEach(readRanges, new ParallelOptions() { MaxDegreeOfParallelism = _numberOfParallelDownloads }, readRange =>  
-                {  
-                    var httpWebRequest = WebRequest.Create(_downloadUrl) as HttpWebRequest;  
+                var tempFilesDictionary = new ConcurrentDictionary<long, string>();
+
+                Parallel.ForEach(readRanges, new ParallelOptions() { MaxDegreeOfParallelism = _numberOfParallelDownloads }, readRange =>
+                {
+                    var httpWebRequest = WebRequest.Create(_downloadUrl) as HttpWebRequest;
                     // ReSharper disable once PossibleNullReferenceException
                     httpWebRequest.Method = "GET";
                     httpWebRequest.Timeout = (int)TimeSpan.FromMinutes(DownloadTimeoutMinutes).TotalMilliseconds;
-                    httpWebRequest.AddRange(readRange.Start, readRange.End);  
-                    using (var httpWebResponse = httpWebRequest.GetResponse() as HttpWebResponse)  
-                    {  
-                        var tempFilePath = Path.GetTempFileName();  
+                    httpWebRequest.AddRange(readRange.Start, readRange.End);
+                    using (var httpWebResponse = httpWebRequest.GetResponse() as HttpWebResponse)
+                    {
+                        var tempFilePath = Path.GetTempFileName();
                         Log.Info($"CefLoader: Load {tempFilePath} ({readRange.Start}..{readRange.End})");
-                        using (var fileStream = new FileStream(tempFilePath, FileMode.Create, FileAccess.Write, FileShare.Write))  
-                        {  
-                            httpWebResponse?.GetResponseStream()?.CopyTo(fileStream);  
-                            tempFilesDictionary.TryAdd(readRange.Start, tempFilePath);  
-                        }  
-                    }  
-                });  
+                        using (var fileStream = new FileStream(tempFilePath, FileMode.Create, FileAccess.Write, FileShare.Write))
+                        {
+                            httpWebResponse?.GetResponseStream()?.CopyTo(fileStream);
+                            tempFilesDictionary.TryAdd(readRange.Start, tempFilePath);
+                        }
+                    }
+                });
 
                 // Merge to single file
-                if (File.Exists(_tempBz2File))  
-                {  
-                    File.Delete(_tempBz2File);  
-                }  
-                using (var destinationStream = new FileStream(_tempBz2File, FileMode.Append))  
+                if (File.Exists(_tempBz2File))
                 {
-                    foreach (var tempFile in tempFilesDictionary.OrderBy(b => b.Key))  
-                    {  
-                        var tempFileBytes = File.ReadAllBytes(tempFile.Value);  
-                        destinationStream.Write(tempFileBytes, 0, tempFileBytes.Length);  
-                        File.Delete(tempFile.Value);  
+                    File.Delete(_tempBz2File);
+                }
+                using (var destinationStream = new FileStream(_tempBz2File, FileMode.Append))
+                {
+                    foreach (var tempFile in tempFilesDictionary.OrderBy(b => b.Key))
+                    {
+                        var tempFileBytes = File.ReadAllBytes(tempFile.Value);
+                        destinationStream.Write(tempFileBytes, 0, tempFileBytes.Length);
+                        File.Delete(tempFile.Value);
                     }
-                }  
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal("CefLoader.ParallelDownload: " + ex.Message);
+            }
+
+            return false;
+        }
+
+        private void Download()
+        {
+            using (var client = new WebClient())
+            {
+                if (File.Exists(_tempBz2File))
+                {
+                    File.Delete(_tempBz2File);
+                }
+
+                Log.Info($"CefLoader: Loading {_tempBz2File}");
+                client.DownloadProgressChanged += Client_DownloadProgressChanged;
+
+                client.DownloadFile(_downloadUrl, _tempBz2File);
             }
         }
 
@@ -269,7 +308,6 @@ namespace Chromely.CefGlue.Loader
             var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
             CopyDirectory(srcPathRelease, appDirectory);
         }
-        
         
         private void DecompressProgressChanged(int percent)
         {

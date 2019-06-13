@@ -1,11 +1,11 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CefGlueDisplayHandler.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
 //      See the LICENSE.md file in the project root for more information.
 // </license>
-// --------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------
 
 using Chromely.CefGlue.Browser.EventParams;
 using Chromely.Core.Host;
@@ -21,14 +21,14 @@ namespace Chromely.CefGlue.Browser.Handlers
         /// <summary>
         /// The m_browser.
         /// </summary>
-        private readonly CefGlueBrowser mBrowser;
+        private readonly CefGlueBrowser _browser;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CefGlueDisplayHandler"/> class.
         /// </summary>
         public CefGlueDisplayHandler()
         {
-            mBrowser = CefGlueBrowser.BrowserCore;
+            _browser = CefGlueBrowser.BrowserCore;
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace Chromely.CefGlue.Browser.Handlers
         /// </param>
         protected override void OnTitleChange(CefBrowser browser, string title)
         {
-            mBrowser.InvokeAsyncIfPossible(() => mBrowser.OnTitleChanged(new TitleChangedEventArgs(title)));
+            _browser.InvokeAsyncIfPossible(() => _browser.OnTitleChanged(new TitleChangedEventArgs(title)));
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace Chromely.CefGlue.Browser.Handlers
         {
             if (frame.IsMain)
             {
-                mBrowser.InvokeAsyncIfPossible(() => mBrowser.OnAddressChanged(new AddressChangedEventArgs(frame, url)));
+                _browser.InvokeAsyncIfPossible(() => _browser.OnAddressChanged(new AddressChangedEventArgs(frame, url)));
             }
         }
 
@@ -76,7 +76,7 @@ namespace Chromely.CefGlue.Browser.Handlers
         /// </param>
         protected override void OnStatusMessage(CefBrowser browser, string value)
         {
-            mBrowser.InvokeAsyncIfPossible(() => mBrowser.OnStatusMessage(new StatusMessageEventArgs(value)));
+            _browser.InvokeAsyncIfPossible(() => _browser.OnStatusMessage(new StatusMessageEventArgs(value)));
         }
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace Chromely.CefGlue.Browser.Handlers
         protected override bool OnConsoleMessage(CefBrowser browser, CefLogSeverity level, string message, string source, int line)
         {
             var evntArgs = new ConsoleMessageEventArgs(message, source, line);
-            mBrowser.InvokeAsyncIfPossible(() => mBrowser.OnConsoleMessage(evntArgs));
+            _browser.InvokeAsyncIfPossible(() => _browser.OnConsoleMessage(evntArgs));
             return evntArgs.Handled;
         }
 
@@ -122,7 +122,7 @@ namespace Chromely.CefGlue.Browser.Handlers
         protected override bool OnTooltip(CefBrowser browser, string text)
         {
             var evntArgs = new TooltipEventArgs(text);
-            mBrowser.InvokeAsyncIfPossible(() => mBrowser.OnTooltip(evntArgs));
+            _browser.InvokeAsyncIfPossible(() => _browser.OnTooltip(evntArgs));
             return evntArgs.Handled;
         }
     }

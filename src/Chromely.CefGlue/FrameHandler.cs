@@ -1,11 +1,11 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="FrameHandler.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
 //      See the LICENSE.md file in the project root for more information.
 // </license>
-// --------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------
 
 using Chromely.CefGlue.Browser.FrameHandlers;
 using Chromely.Core.Infrastructure;
@@ -21,7 +21,7 @@ namespace Chromely.CefGlue
         /// <summary>
         /// The browser.
         /// </summary>
-        private static CefBrowser mBrowser;
+        private static CefBrowser _browser;
 
         /// <summary>
         /// Gets the browser.
@@ -30,18 +30,18 @@ namespace Chromely.CefGlue
         {
             get
             {
-                if (mBrowser != null)
+                if (_browser != null)
                 {
-                    return mBrowser;
+                    return _browser;
                 }
 
                 var cefGlueFrameHandler = IoC.GetInstance<CefGlueFrameHandler>(typeof(CefGlueFrameHandler).FullName);
                 if (cefGlueFrameHandler != null)
                 {
-                    mBrowser = cefGlueFrameHandler.Browser;
+                    _browser = cefGlueFrameHandler.Browser;
                 }
 
-                return mBrowser;
+                return _browser;
             }
         }
 

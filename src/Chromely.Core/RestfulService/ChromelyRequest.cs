@@ -1,12 +1,15 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ChromelyRequest.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
 //      See the LICENSE.md file in the project root for more information.
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
+// ReSharper disable UnusedMember.Global
+// ReSharper disable MemberCanBePrivate.Global
 namespace Chromely.Core.RestfulService
 {
     using System.Collections.Generic;

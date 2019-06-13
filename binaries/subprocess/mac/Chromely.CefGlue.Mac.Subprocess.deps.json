@@ -1,0 +1,59 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v2.0/osx.10.12-x64",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v2.0": {},
+    ".NETCoreApp,Version=v2.0/osx.10.12-x64": {
+      "Chromely.CefGlue.Mac.Subprocess/1.0.0": {
+        "dependencies": {
+          "Chromely.CefGlue": "4.0.70",
+          "Microsoft.Packaging.Tools.Trimming": "1.1.0-preview1-26619-01"
+        },
+        "runtime": {
+          "Chromely.CefGlue.Mac.Subprocess.dll": {}
+        }
+      },
+      "Microsoft.Packaging.Tools.Trimming/1.1.0-preview1-26619-01": {},
+      "Chromely.CefGlue/4.0.70": {
+        "dependencies": {
+          "Chromely.Core": "4.0.0"
+        },
+        "runtime": {
+          "Chromely.CefGlue.dll": {}
+        }
+      },
+      "Chromely.Core/4.0.0": {
+        "runtime": {
+          "Chromely.Core.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Chromely.CefGlue.Mac.Subprocess/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft.Packaging.Tools.Trimming/1.1.0-preview1-26619-01": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-nrrp0UB/urshyztx/9+jbCtg5wmry10jFPqujzmcXAhQv58Rt6BdGCNUvqe33gHRUVXNYnIX8Qjy4DKIRCdMgQ==",
+      "path": "microsoft.packaging.tools.trimming/1.1.0-preview1-26619-01",
+      "hashPath": "microsoft.packaging.tools.trimming.1.1.0-preview1-26619-01.nupkg.sha512"
+    },
+    "Chromely.CefGlue/4.0.70": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Chromely.Core/4.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

@@ -1,12 +1,11 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="WinApiNativeMethods.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+// <copyright file="NativeMethods.cs" company="Chromely Projects">
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
 //      See the LICENSE.md file in the project root for more information.
 // </license>
-// --------------------------------------------------------------------------------------------------------------------
-
+// ----------------------------------------------------------------------------------------------------------------------
 
 // ReSharper disable InconsistentNaming
 
@@ -15,7 +14,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.InteropServices;
 using WinApi.User32;
-// ReSharper disable UnusedMember.Global
 
 namespace Chromely.CefGlue.Winapi.BrowserWindow
 {

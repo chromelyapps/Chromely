@@ -1,4 +1,13 @@
-﻿using System;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Program.cs" company="Chromely Projects">
+//   Copyright (c) 2017-2019 Chromely Projects
+// </copyright>
+// <license>
+//      See the LICENSE.md file in the project root for more information.
+// </license>
+// ----------------------------------------------------------------------------------------------------------------------
+
+using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Chromely.CefGlue;
@@ -11,10 +20,8 @@ namespace Chromely.Integration.TestApp
     /// <summary>
     /// This is a minimal chromely application
     /// to be used during integration tests.
-    ///
     /// Due it is cross platform it MUST NOT
     /// reference platform specific assemblies.
-    ///  
     /// It will emit console outputs starting
     /// with "CI-TRACE:" which are checked
     /// in the test run - so DON'T REMOVE them.
@@ -28,14 +35,14 @@ namespace Chromely.Integration.TestApp
             Console.WriteLine($"{TraceSignature} {key}={value}");
         }
 
-        private static Stopwatch startupTimer;
+        private static Stopwatch _startupTimer;
 
         private static int Main(string[] args)
         {
             CiTrace("Application", "Started");
             // measure startup time (maybe including CEF download)
-            startupTimer = new Stopwatch();
-            startupTimer.Start();
+            _startupTimer = new Stopwatch();
+            _startupTimer.Start();
 
             var core = typeof(ChromelyConfiguration).Assembly;
             CiTrace("Chromely.Core", core.GetName().Version.ToString());
@@ -47,6 +54,7 @@ namespace Chromely.Integration.TestApp
 
             var config = ChromelyConfiguration
                 .Create()
+                .WithDebuggingMode(true)
                 .WithLoadingCefBinariesIfNotFound(true)
                 .RegisterEventHandler<ConsoleMessageEventArgs>(CefEventKey.ConsoleMessage, OnWebBrowserConsoleMessage)
                 .WithAppArgs(args)
@@ -74,9 +82,9 @@ namespace Chromely.Integration.TestApp
 
         private static void OnWebBrowserConsoleMessage(object sender, ConsoleMessageEventArgs e)
         {
-            startupTimer.Stop();
+            _startupTimer.Stop();
             CiTrace("Content", "Loaded");
-            CiTrace("StartupMs", startupTimer.ElapsedMilliseconds.ToString());
+            CiTrace("StartupMs", _startupTimer.ElapsedMilliseconds.ToString());
 
             Task.Run(async () =>
             {

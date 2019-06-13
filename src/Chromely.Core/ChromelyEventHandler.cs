@@ -1,22 +1,22 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ChromelyEventHandler.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
 //      See the LICENSE.md file in the project root for more information.
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using Chromely.Core.Helpers;
+
 namespace Chromely.Core
 {
-    using System;
-
-    using Chromely.Core.Helpers;
-
     /// <summary>
     /// The chromely event handler.
     /// </summary>
     /// <typeparam name="T">
+    /// Handler type. 
     /// </typeparam>
     public class ChromelyEventHandler<T>
     {

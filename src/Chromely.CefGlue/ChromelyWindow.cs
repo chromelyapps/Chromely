@@ -1,3 +1,12 @@
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ChromelyWindow.cs" company="Chromely Projects">
+//   Copyright (c) 2017-2019 Chromely Projects
+// </copyright>
+// <license>
+//      See the LICENSE.md file in the project root for more information.
+// </license>
+// ----------------------------------------------------------------------------------------------------------------------
+
 using System;
 using System.IO;
 using System.Linq;
@@ -12,7 +21,7 @@ namespace Chromely.CefGlue
     /// Factory class to create the application window
     /// in a platform independent way.
     /// </summary>
-    public class ChromelyWindow
+    public static class ChromelyWindow
     {
         /// <summary>
         /// Factory method to create main window.
@@ -22,14 +31,12 @@ namespace Chromely.CefGlue
         public static IChromelyWindow Create(ChromelyConfiguration config)
         {
             var platform = config.HostApi.ToString();
-            var path = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) ?? ".";
+            var path = AppDomain.CurrentDomain.BaseDirectory;
             var dllName = Path.Combine(path, $"Chromely.CefGlue.{platform}.dll");
             var assembly = Assembly.LoadFile(dllName);
     
             var type = assembly.GetTypes().First(t => t.Name == "CefGlueWindow");
             return Activator.CreateInstance(type, config) as HostBase;
         }
-
     }
-
 }

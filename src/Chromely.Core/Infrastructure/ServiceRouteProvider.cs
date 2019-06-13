@@ -1,20 +1,19 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ServiceRouteProvider.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
 //      See the LICENSE.md file in the project root for more information.
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Chromely.Core.RestfulService;
+
 namespace Chromely.Core.Infrastructure
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
-    using Chromely.Core.RestfulService;
-
     /// <summary>
     /// The service route provider.
     /// </summary>

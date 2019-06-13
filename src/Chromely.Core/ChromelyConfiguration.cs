@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ChromelyConfiguration.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
 //      See the LICENSE.md file in the project root for more information.
@@ -12,18 +12,19 @@
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 // ReSharper disable UnusedMethodReturnValue.Global
 // ReSharper disable MemberCanBeProtected.Global
+
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Reflection;
+using Chromely.Core.Helpers;
+using Chromely.Core.Host;
+using Chromely.Core.Infrastructure;
+using Chromely.Core.RestfulService;
+
 namespace Chromely.Core
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Reflection;
-
-    using Helpers;
-    using Host;
-    using Infrastructure;
-    using RestfulService;
-
     /// <summary>
     /// The Chromely configuration.
     /// </summary>
@@ -49,9 +50,10 @@ namespace Chromely.Core
             PerformDependencyCheck = false;
             ShutdownCefOnExit = true;
             LogSeverity = LogSeverity.Warning;
-            LogFile = "logs\\chromely.cef.log";
+            LogFile = Path.Combine("logs", "chromely.cef.log");
             HostState = WindowState.Normal;
             HostCenterScreen = true;
+            UseDefaultSubprocess = ChromelyRuntime.Platform == ChromelyPlatform.Windows;
             HostWidth = 1200;
             HostHeight = 900;
             Locale = "en-US";
@@ -102,6 +104,11 @@ namespace Chromely.Core
         /// Gets or sets a value indicating whether host center screen.
         /// </summary>
         public bool HostCenterScreen { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether use default subprocess.
+        /// </summary>
+        public bool UseDefaultSubprocess { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether host to not display borders, minimize, maximize and close.
@@ -398,7 +405,31 @@ namespace Chromely.Core
             return this;
         }
 
+        /// <summary>
+        /// The with default subprocess.
+        /// </summary>
+        /// <param name="useDefault">
+        /// The use default.
+        /// </param>
+        /// <returns>
+        /// The <see cref="ChromelyConfiguration"/>.
+        /// </returns>
+        public ChromelyConfiguration WithDefaultSubprocess(bool useDefault = true)
+        {
+            UseDefaultSubprocess = useDefault;
 
+            if (useDefault)
+            {
+                // Disable security features
+                WithCommandLineArg("default-encoding", "utf-8");
+                WithCommandLineArg("allow-file-access-from-files");
+                WithCommandLineArg("allow-universal-access-from-files");
+                WithCommandLineArg("disable-web-security");
+                WithCommandLineArg("ignore-certificate-errors");
+            }
+
+            return this;
+        }
 
         /// <summary>
         /// Sets host/window/app title.
@@ -554,23 +585,6 @@ namespace Chromely.Core
             RegisterSchemeHandler(handler);
 
             return this;
-        }
-
-        /// <summary>
-        /// Sets use default Javascript object handler flag.
-        /// </summary>
-        /// <param name="objectNameToBind">
-        /// The object name to bind.
-        /// </param>
-        /// <param name="registerAsync">
-        /// The register async.
-        /// </param>
-        /// <returns>
-        /// The <see cref="ChromelyConfiguration"/> object.
-        /// </returns>
-        public ChromelyConfiguration UseDefaultJsHandler(string objectNameToBind, bool registerAsync)
-        {
-            return RegisterJsHandler(new ChromelyJsHandler(objectNameToBind, registerAsync));
         }
 
         /// <summary>
@@ -897,122 +911,6 @@ namespace Chromely.Core
                 IoC.RegisterInstance(typeof(ChromelySchemeHandler), schemeHandler.Key, schemeHandler);
             }
 
-            return this;
-        }
-
-        /// <summary>
-        /// Registers Javascript object handler.
-        /// </summary>
-        /// <param name="javascriptMethod">
-        /// The javascript method.
-        /// </param>
-        /// <param name="boundObject">
-        /// The bound object.
-        /// </param>
-        /// <param name="boundingOptions">
-        /// The bounding options.
-        /// </param>
-        /// <param name="registerAsync">
-        /// The register async.
-        /// </param>
-        /// <returns>
-        /// The <see cref="ChromelyConfiguration"/> object.
-        /// </returns>
-        public virtual ChromelyConfiguration RegisterJsHandler(string javascriptMethod, object boundObject, object boundingOptions, bool registerAsync)
-        {
-            return RegisterJsHandler(new ChromelyJsHandler(javascriptMethod, boundObject, boundingOptions, registerAsync));
-        }
-
-        /// <summary>
-        /// Registers Javascript object handler.
-        /// </summary>
-        /// <param name="chromelyJsHandler">
-        /// The chromely js handler.
-        /// </param>
-        /// <returns>
-        /// The <see cref="ChromelyConfiguration"/> object.
-        /// </returns>
-        public virtual ChromelyConfiguration RegisterJsHandler(ChromelyJsHandler chromelyJsHandler)
-        {
-            if (chromelyJsHandler != null)
-            {
-                IoC.RegisterInstance(typeof(ChromelyJsHandler), chromelyJsHandler.Key, chromelyJsHandler);
-            }
-
-            return this;
-        }
-
-        /// <summary>
-        /// Registers message router handler.
-        /// </summary>
-        /// <param name="messageRouterHandler">
-        /// The chromely message router handler.
-        /// </param>
-        /// <returns>
-        /// The <see cref="ChromelyConfiguration"/> object.
-        /// </returns>
-        public virtual ChromelyConfiguration RegisterMessageRouterHandler(object messageRouterHandler)
-        {
-            return RegisterMessageRouterHandler(new ChromelyMessageRouter(messageRouterHandler));
-        }
-
-        /// <summary>
-        /// Registers message router handler.
-        /// </summary>
-        /// <param name="messageRouterHandler">
-        /// The chromely message router.
-        /// </param>
-        /// <returns>
-        /// The <see cref="ChromelyConfiguration"/> object.
-        /// </returns>
-        public virtual ChromelyConfiguration RegisterMessageRouterHandler(ChromelyMessageRouter messageRouterHandler)
-        {
-            if (messageRouterHandler != null)
-            {
-                IoC.RegisterInstance(typeof(ChromelyMessageRouter), messageRouterHandler.Key, messageRouterHandler);
-            }
-
-            return this;
-        }
-
-
-        /// <summary>
-        /// The register websocket handler.
-        /// </summary>
-        /// <param name="socketHandler">
-        /// The socket handler.
-        /// </param>
-        /// <param name="address">
-        /// The address.
-        /// </param>
-        /// <param name="port">
-        /// The port.
-        /// </param>
-        /// <param name="onLoadStartServer">
-        /// The onLoadStartServer.
-        /// </param>
-        /// <returns>
-        /// The <see cref="ChromelyConfiguration"/>.
-        /// </returns>
-        public ChromelyConfiguration RegisterWebsocketHandler(IChromelyWebsocketHandler socketHandler, string address, int port, bool onLoadStartServer)
-        {
-            if (socketHandler == null)
-            {
-                return this;
-            }
-
-            // Remove handler if exists - only one handler is allowed.
-            var isHandlerRegistered = IoC.IsRegistered<IChromelyWebsocketHandler>(typeof(IChromelyWebsocketHandler).FullName);
-            if (isHandlerRegistered)
-            {
-                IoC.UnregisterHandler<IChromelyWebsocketHandler>(typeof(IChromelyWebsocketHandler).FullName);
-            }
-
-            IoC.RegisterInstance(typeof(IChromelyWebsocketHandler), typeof(IChromelyWebsocketHandler).FullName, socketHandler);
-
-            WebsocketAddress = address;
-            WebsocketPort = port;
-            StartWebSocket = onLoadStartServer;
             return this;
         }
     }

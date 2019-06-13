@@ -1,11 +1,11 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="RequestInfo.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
 //      See the LICENSE.md file in the project root for more information.
 // </license>
-// --------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------
 
 using LitJson;
 
@@ -17,9 +17,9 @@ namespace Chromely.CefGlue.Browser.ServerHandlers
     public class RequestInfo
     {
         /// <summary>
-        /// The m message type.
+        /// The message type.
         /// </summary>
-        private readonly MessageType mMessageType;
+        private readonly MessageType _messageType;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RequestInfo"/> class.
@@ -33,7 +33,7 @@ namespace Chromely.CefGlue.Browser.ServerHandlers
                                 ? string.Empty 
                                 : requestString;
 
-            mMessageType = MessageType.None;
+            _messageType = MessageType.None;
             var jsonData = JsonMapper.ToObject<JsonData>(requestString);
 
             TargetName = jsonData.Keys.Contains("targetname") ? jsonData["targetname"].ToString() : string.Empty;
@@ -47,14 +47,14 @@ namespace Chromely.CefGlue.Browser.ServerHandlers
                 && string.IsNullOrEmpty(broadcastStr))
             {
                 Data = requestString;
-                mMessageType = MessageType.Echo;
+                _messageType = MessageType.Echo;
             }
 
             bool.TryParse(broadcastStr, out var broadcast);
             Broadcast = broadcast;
-            mMessageType = Broadcast 
+            _messageType = Broadcast 
                                   ? MessageType.Broadcast
-                                  : mMessageType;
+                                  : _messageType;
         }
 
         /// <summary>
@@ -64,9 +64,9 @@ namespace Chromely.CefGlue.Browser.ServerHandlers
         {
             get
             {
-                if (mMessageType != MessageType.None)
+                if (_messageType != MessageType.None)
                 {
-                    return mMessageType;
+                    return _messageType;
                 }
 
                 if (!string.IsNullOrEmpty(Url))

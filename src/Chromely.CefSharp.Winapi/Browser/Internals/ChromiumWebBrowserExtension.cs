@@ -1,22 +1,21 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ChromiumWebBrowserExtension.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
 //      See the LICENSE.md file in the project root for more information.
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
-// ReSharper disable StyleCop.SA1210
+using System;
+using global::CefSharp;
+using Chromely.CefSharp.Winapi.Browser.Handlers;
+using Chromely.Core;
+using Chromely.Core.Helpers;
+using Chromely.Core.Infrastructure;
+
 namespace Chromely.CefSharp.Winapi.Browser.Internals
 {
-    using System;
-    using Chromely.CefSharp.Winapi.Browser.Handlers;
-    using Chromely.Core;
-    using Chromely.Core.Helpers;
-    using Chromely.Core.Infrastructure;
-    using global::CefSharp;
-
     /// <summary>
     /// The chromium web browser extension.
     /// </summary>
@@ -245,6 +244,10 @@ namespace Chromely.CefSharp.Winapi.Browser.Internals
                             if (instance is IDragHandler dragHandler)
                             {
                                 browser.DragHandler = dragHandler;
+                            }
+                            else if (ChromelyConfiguration.Instance.HostFrameless)
+                            {
+                                browser.DragHandler = new CefSharpDragHandler();
                             }
 
                             break;
