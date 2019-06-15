@@ -27,17 +27,16 @@
     <RepositoryType>Github Repository</RepositoryType>
     <RepositoryUrl>https://github.com/chromelyapps/Chromely</RepositoryUrl>
     <Configurations>Debug;Release;ReleaseLinux;DebugLinux</Configurations>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">    
     <DocumentationFile>bin\Debug\netstandard2.0\Chromely.CefGlue.xml</DocumentationFile>
     <NoWarn>1701;1702; NU5125;7035</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\netstandard2.0\Chromely.CefGlue.xml</DocumentationFile>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>bin\Release\netstandard2.0\Chromely.CefGlue.xml</DocumentationFile>    
     <NoWarn>1701;1702; NU5125;7035</NoWarn>
   </PropertyGroup>
 
