@@ -8,6 +8,7 @@
 // ----------------------------------------------------------------------------------------------------------------------
 
 using System;
+using System.Reflection;
 using Chromely.CefGlue.Browser.EventParams;
 using Chromely.CefGlue.Browser.FrameHandlers;
 using Chromely.Core;
@@ -193,8 +194,10 @@ namespace Chromely.CefGlue.Browser
                 IoC.RegisterInstance(typeof(CefGlueBrowser), typeof(CefGlueBrowser).FullName, this);
                 _client = new CefGlueClient(CefGlueClientParams.Create(this));
             }
-
-            _settings = this._settings ?? new CefBrowserSettings();
+            if (_settings == null)
+            {
+                _settings = new CefBrowserSettings();
+            }
 
             _settings.DefaultEncoding = "UTF-8";
             _settings.FileAccessFromFileUrls = CefState.Enabled;
@@ -211,29 +214,25 @@ namespace Chromely.CefGlue.Browser
         /// </summary>
         public void Dispose()
         {
-            try
+            if (_websocketStarted)
             {
-                if (_websocketStarted)
-                {
-                    WebsocketServerRunner.StopServer();
-                }
+                WebsocketServerRunner.StopServer();
+            }
 
-                if (CefBrowser != null)
+            unsafe
+            {
+                if (CefBrowser != null 
+                    && typeof(CefBrowser).GetField("_self", BindingFlags.NonPublic | BindingFlags.Instance)?.GetValue(CefBrowser) is Pointer self 
+                    && Pointer.Unbox(self) != null)
                 {
                     var host = CefBrowser.GetHost();
                     host.CloseBrowser(true);
                     host.Dispose();
                     CefBrowser.Dispose();
+                    CefBrowser = null;
                 }
             }
-            catch
-            {
-                // ignore exceptions here
-            }
-            finally
-            {
-                CefBrowser = null;
-            }
+
         }
 
         #endregion

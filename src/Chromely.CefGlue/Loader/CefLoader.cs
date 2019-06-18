@@ -348,9 +348,10 @@ namespace Chromely.CefGlue.Loader
             }
 
             // Copy all the files & replaces any files with the same name
-            foreach (var newPath in Directory.GetFiles(srcPath, "*.*", SearchOption.AllDirectories))
+            foreach (var srcFile in Directory.GetFiles(srcPath, "*.*", SearchOption.AllDirectories))
             {
-                File.Copy(newPath, newPath.Replace(srcPath, dstPath), true);
+                var dstFile = Path.Combine(dstPath, Path.GetFileName(srcFile));
+                File.Copy(srcFile, dstFile, true);
             }
         }
 
