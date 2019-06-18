@@ -221,6 +221,9 @@ namespace Chromely.CefGlue.Browser
 
             unsafe
             {
+                // due we don't want to change Xilium.CefGlue.CefBrowser
+                // we check the internal _self property to see
+                // if it is already destroyed
                 if (CefBrowser != null 
                     && typeof(CefBrowser).GetField("_self", BindingFlags.NonPublic | BindingFlags.Instance)?.GetValue(CefBrowser) is Pointer self 
                     && Pointer.Unbox(self) != null)
