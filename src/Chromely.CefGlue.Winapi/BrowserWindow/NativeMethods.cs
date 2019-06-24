@@ -10,6 +10,7 @@
 // ReSharper disable InconsistentNaming
 
 using System;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -180,6 +181,40 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
             );
         }
 
+        #region Delegates
+
+        public delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
+
+        #endregion
+
+        private const int WH_KEYBOARD_LL = 13;
+        private const int WM_KEYDOWN = 0x0100;
+
+        public static IntPtr SetHook(LowLevelKeyboardProc proc)
+        {
+            using (var curProcess = Process.GetCurrentProcess())
+            using (var curModule = curProcess.MainModule)
+            {
+                return SetWindowsHookEx(WH_KEYBOARD_LL, proc, GetModuleHandle(curModule.ModuleName), 0);
+            }
+        }
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern IntPtr SetWindowsHookEx(int idHook,
+                                                      LowLevelKeyboardProc lpfn, IntPtr hMod, uint dwThreadId);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool UnhookWindowsHookEx(IntPtr hhk);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        public static extern IntPtr CallNextHookEx(IntPtr hhk, int nCode,
+                                                   IntPtr wParam, IntPtr lParam);
+
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern IntPtr GetModuleHandle(string lpModuleName);
+
+
         [SuppressMessage(
             "StyleCop.CSharp.DocumentationRules",
             "SA1600:ElementsMustBeDocumented",
@@ -212,5 +247,142 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
             /// </summary>
             public int Bottom;
         }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public class KBDLLHOOKSTRUCT
+        {
+            public uint vkCode;
+            public uint scanCode;
+            public KBDLLHOOKSTRUCTFlags flags;
+            public uint time;
+            public UIntPtr dwExtraInfo;
+        }
+
+        [Flags]
+        public enum KBDLLHOOKSTRUCTFlags : uint
+        {
+            LLKHF_EXTENDED = 0x01,
+            LLKHF_INJECTED = 0x10,
+            LLKHF_ALTDOWN = 0x20,
+            LLKHF_UP = 0x80,
+        }
+    }
+       
+    internal enum DeviceCapsParams
+    {
+        /// <summary>
+        /// Device driver version
+        /// </summary>
+        DRIVERVERSION = 0,
+        /// <summary>
+        ///  Device classification   
+        /// </summary>
+        TECHNOLOGY = 2,
+        /// <summary>
+        /// Horizontal size in millimeters
+        /// </summary>
+        HORZSIZE = 4,
+        /// <summary>
+        /// Vertical size in millimeters
+        /// </summary>
+        VERTSIZE = 6,
+        /// <summary>
+        /// Horizontal width in pixels
+        /// </summary>
+        HORZRES = 8,
+        /// <summary>
+        /// Vertical height in pixels
+        /// </summary>
+        VERTRES = 10,
+        /// <summary>
+        /// Number of bits per pixel
+        /// </summary>
+        BITSPIXEL = 12,
+        /// <summary>
+        /// Number of planes
+        /// </summary>
+        PLANES = 14,
+        /// <summary>
+        /// Number of brushes the device has
+        /// </summary>
+        NUMBRUSHES = 16,
+        /// <summary>
+        /// Number of pens the device has
+        /// </summary>
+        NUMPENS = 18,
+        /// <summary>
+        /// Number of markers the device has
+        /// </summary>
+        NUMMARKERS = 20,
+        /// <summary>
+        /// Number of fonts the device has
+        /// </summary>
+        NUMFONTS = 22,
+        /// <summary>
+        /// Number of colors the device supports
+        /// </summary>
+        NUMCOLORS = 24,
+        /// <summary>
+        /// Size required for device descriptor
+        /// </summary>
+        PDEVICESIZE = 26,
+        /// <summary>
+        /// Curve capabilities
+        /// </summary>
+        CURVECAPS = 28,
+        /// <summary>
+        /// Line capabilities
+        /// </summary>
+        LINECAPS = 30,
+        /// <summary>
+        /// Polygonal capabilities
+        /// </summary>
+        POLYGONALCAPS = 32,
+        /// <summary>
+        /// Text capabilities
+        /// </summary>
+        TEXTCAPS = 34,
+        /// <summary>
+        /// Clipping capabilities
+        /// </summary>
+        CLIPCAPS = 36,
+        /// <summary>
+        /// Bitblt capabilities
+        /// </summary>
+        RASTERCAPS = 38,
+        /// <summary>
+        /// Length of the X leg
+        /// </summary>
+        ASPECTX = 40,
+        /// <summary>
+        /// Length of the Y leg
+        /// </summary>
+        ASPECTY = 42,
+        /// <summary>
+        /// Length of the hypotenuse
+        /// </summary>
+        ASPECTXY = 44,
+        /// <summary>
+        /// Logical pixels/inch in X
+        /// </summary>
+
+        LOGPIXELSX = 88,
+        /// <summary>
+        /// Logical pixels/inch in Y
+        /// </summary>
+        LOGPIXELSY = 90,
+        /// <summary>
+        /// Number of entries in physical palette
+        /// </summary>
+
+        SIZEPALETTE = 104,
+        /// <summary>
+        /// Number of reserved entries in palette
+        /// </summary>
+        NUMRESERVED = 106,
+        /// <summary>
+        /// Actual color resolution
+        /// </summary>
+        COLORRES = 108,
     }
 }
