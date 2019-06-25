@@ -152,12 +152,16 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
 
         private class WndProcOverride
         {
+            private ChromiumWebBrowser browser;
+            private IntPtr mainHandle;
             private IntPtr handle;
             private IntPtr originalWndProc;
             private WindowProc newWndProc;
 
-            public WndProcOverride(IntPtr wndHandle, string wndClassName)
+            public WndProcOverride(IntPtr wndHandle, string wndClassName, ChromiumWebBrowser browser, IntPtr parentHandle)
             {
+                this.browser = browser;
+                mainHandle = parentHandle;
                 handle = wndHandle;
                 newWndProc = new WindowProc(OverridenWndProc);
                 originalWndProc = User32Methods.SetWindowLongPtr(handle, -4, Marshal.GetFunctionPointerForDelegate(newWndProc));
@@ -169,6 +173,19 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
                 var originalRet = User32Methods.CallWindowProc(originalWndProc, hWnd, uMsg, wParam, lParam);
                 switch (msg)
                 {
+                    case WM.LBUTTONDOWN:
+                        {
+                            var mousePoint = new System.Drawing.Point(lParam.ToInt32());
+                            var dragHandler = browser.DragHandler as CefSharpDragHandler;
+                            if (dragHandler.DragRegion.IsVisible(mousePoint))
+                            {
+                                // Release the capture of browser window and send a caption drag to the main window
+                                User32Methods.ReleaseCapture();
+                                User32Methods.SendMessage(mainHandle, (uint)WM.NCLBUTTONDOWN, new IntPtr(2), IntPtr.Zero);
+                            }
+                            break;
+                        }
+
                     case WM.NCHITTEST:
                         {
                             // If we hit a non client area (our overlapped frame) then we'll force an NCHITTEST to bubble back up to the main process
@@ -210,7 +227,7 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
 
                     foreach (ChildWindow childWindow in childWindowsDetails.Windows)
                     {
-                        var wndProcOverride = new WndProcOverride(childWindow.Handle, childWindow.ClassName);
+                        var wndProcOverride = new WndProcOverride(childWindow.Handle, childWindow.ClassName, Browser, Handle);
                         _wndProcOverrides.Add(wndProcOverride);
                     }
 

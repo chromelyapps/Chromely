@@ -291,7 +291,9 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
                     {
                         if (_hostConfig.HostFrameless)
                         {
-                            Margins frameMargins = new Margins(7, 7, 27, 7);
+                            int frameSizeY = User32Methods.GetSystemMetrics(SystemMetrics.SM_CYFRAME);
+                            int frameSizeX = User32Methods.GetSystemMetrics(SystemMetrics.SM_CXFRAME);
+                            Margins frameMargins = new Margins(frameSizeX, frameSizeX, frameSizeY, frameSizeY);
                             DwmApiMethods.DwmExtendFrameIntoClientArea(Handle, ref frameMargins);
                             User32Methods.SetWindowPos(hwnd, IntPtr.Zero, 0, 0, 0, 0, WindowPositionFlags.SWP_NOZORDER | WindowPositionFlags.SWP_NOOWNERZORDER | WindowPositionFlags.SWP_NOMOVE | WindowPositionFlags.SWP_NOSIZE | WindowPositionFlags.SWP_FRAMECHANGED);
                         }
@@ -373,30 +375,34 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
             // Get the window rectangle.
             User32Methods.GetWindowRect(hWnd, out var rectWindow);
 
-            // Get the frame rectangle, adjusted for the style without a caption.
-            Rectangle rectFrame = new Rectangle(4, 4, 27, 4);
+            // Get the border sizes
+            int frameSizeY = User32Methods.GetSystemMetrics(SystemMetrics.SM_CYFRAME);
+            int frameSizeX = User32Methods.GetSystemMetrics(SystemMetrics.SM_CXFRAME);
+
+            // Get the frame rectangle
+            Rectangle rectFrame = new Rectangle(frameSizeX, frameSizeX, frameSizeY, frameSizeY);
             User32Methods.AdjustWindowRectEx(ref rectFrame, WindowStyles.WS_OVERLAPPEDWINDOW & ~WindowStyles.WS_CAPTION, false, 0);
             ushort row = 1;
             ushort col = 1;
             bool onTopResizeBorder = false;
 
             // Determine if the point is at the top or bottom of the window.
-            if (mousePoint.Y >= rectWindow.Top && mousePoint.Y < rectWindow.Top + 27)
+            if (mousePoint.Y >= rectWindow.Top && mousePoint.Y < rectWindow.Top + frameSizeY)
             {
                 onTopResizeBorder = (mousePoint.Y < (rectWindow.Top - rectFrame.Top));
                 row = 0;
             }
-            else if (mousePoint.Y < rectWindow.Bottom && mousePoint.Y >= rectWindow.Bottom - 7)
+            else if (mousePoint.Y < rectWindow.Bottom && mousePoint.Y >= rectWindow.Bottom - frameSizeY)
             {
                 row = 2;
             }
 
             // Determine if the point is at the left or right of the window.
-            if (mousePoint.X >= rectWindow.Left && mousePoint.X < rectWindow.Left + 7)
+            if (mousePoint.X >= rectWindow.Left && mousePoint.X < rectWindow.Left + frameSizeX)
             {
                 col = 0;
             }
-            else if (mousePoint.X < rectWindow.Right && mousePoint.X >= rectWindow.Right - 7)
+            else if (mousePoint.X < rectWindow.Right && mousePoint.X >= rectWindow.Right - frameSizeX)
             {
                 col = 2;
             }
@@ -404,7 +410,7 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
             // Defines the tests to determine what value to return for NCHITTEST
             int[,] hitTests =
                 {
-                    { 13, onTopResizeBorder ? 12 : 2, 11 },
+                    { 13, 12, 11 },
                     { 10, 0, 11 },
                     { 16, 15, 17 }
                 };

@@ -12,9 +12,14 @@ using Xilium.CefGlue;
 
 namespace Chromely.CefGlue.Browser.Handlers
 {
-    internal class CefGlueDragHandler : CefDragHandler
+    public class CefGlueDragHandler : CefDragHandler
     {
-        public Region DragRegion = new Region();
+        public Region DragRegion { get; private set; }
+
+        public CefGlueDragHandler()
+        {
+            DragRegion = new Region();
+        }
 
         protected override bool OnDragEnter(CefBrowser browser, CefDragData dragData, CefDragOperationsMask mask)
         {

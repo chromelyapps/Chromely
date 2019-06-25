@@ -43,6 +43,11 @@ namespace Chromely.CefGlue.Browser
         private bool _websocketStarted;
 
         /// <summary>
+        /// The CefGlueClientParams for this browser.
+        /// </summary>
+        public CefGlueClientParams ClientParams { get; private set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="CefGlueBrowser"/> class.
         /// </summary>
         /// <param name="owner">
@@ -192,7 +197,8 @@ namespace Chromely.CefGlue.Browser
             if (_client == null)
             {
                 IoC.RegisterInstance(typeof(CefGlueBrowser), typeof(CefGlueBrowser).FullName, this);
-                _client = new CefGlueClient(CefGlueClientParams.Create(this));
+                ClientParams = CefGlueClientParams.Create(this);
+                _client = new CefGlueClient(ClientParams);
             }
             if (_settings == null)
             {
