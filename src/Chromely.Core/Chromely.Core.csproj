@@ -3,10 +3,10 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Platforms>AnyCPU</Platforms>
-    <ProductVersion>0.9.2.0</ProductVersion>
-    <AssemblyVersion>0.9.3.0</AssemblyVersion>
-    <FileVersion>0.9.3.0</FileVersion>
-    <Version>0.9.2.0</Version>
+    <ProductVersion>4.0.0.0</ProductVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+    <FileVersion>4.0.0.0</FileVersion>
+    <Version>4.0.0.0</Version>
     <Authors>Chromely Projects</Authors>
     <Company>Chromely Projects</Company>
     <PackageTags>Cef Chromium HTML5 Desktop Chromely CefGlue CefSharp Restful  Ajax HTTP XHR MessageRouter JavascriptIntegration NetStandard .NET Core</PackageTags>
@@ -18,19 +18,36 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageReleaseNotes>
-      - ChromelyConfiguration is now Singleton - only one instance per Chromely app.
+      - Breaking changes! - ChromelyConfiguration.Create() browser window creation - https://github.com/chromelyapps/Chromely#creating-a-simple-app-using-cefglue-with-winapi-host.
+      - Added ChromelyConfiguration options - WithLoadingCefBinariesIfNotFound, WithFramelessHost.
+      - Added configurable Runtime CEF binaries downloader with WithLoadingCefBinariesIfNotFound.
+      - Added frameless window configurable with WithFramelessHost.
     </PackageReleaseNotes>
     <RepositoryUrl>https://github.com/chromelyapps/Chromely</RepositoryUrl>
     <RepositoryType>Github Repository</RepositoryType>
+    <Configurations>Debug;Release;ReleaseLinux;DebugLinux</Configurations>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DocumentationFile>bin\Debug\netstandard2.0\Chromely.Core.xml</DocumentationFile>
+    <WarningsAsErrors>NU1605</WarningsAsErrors>
+    <NoWarn>1701;1702; NU5125</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DocumentationFile>bin\Release\netstandard2.0\Chromely.Core.xml</DocumentationFile>
+    <NoWarn>1701;1702; NU5125;7035</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'ReleaseLinux' ">
+    <Optimize>true</Optimize>
+    <NoWarn>1701;1702; NU5125;7035</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'DebugLinux' ">
+    <Optimize>true</Optimize>
+    <NoWarn>1701;1702; NU5125;7035</NoWarn>
   </PropertyGroup>
  
 </Project>

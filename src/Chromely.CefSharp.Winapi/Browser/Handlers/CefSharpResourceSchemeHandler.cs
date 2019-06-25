@@ -1,24 +1,23 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CefSharpResourceSchemeHandler.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
 //      See the LICENSE.md file in the project root for more information.
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
-// ReSharper disable StyleCop.SA1210
+using System;
+using System.IO;
+using System.Net;
+using System.Threading.Tasks;
+using global::CefSharp;
+using Chromely.Core.Helpers;
+using Chromely.Core.Infrastructure;
+using Chromely.Core.RestfulService;
+
 namespace Chromely.CefSharp.Winapi.Browser.Handlers
 {
-    using System;
-    using System.IO;
-    using System.Net;
-    using System.Threading.Tasks;
-    using Chromely.Core.Helpers;
-    using Chromely.Core.Infrastructure;
-    using Chromely.Core.RestfulService;
-    using global::CefSharp;
-
     /// <summary>
     /// The CefSharp resource scheme handler.
     /// </summary>
@@ -27,17 +26,17 @@ namespace Chromely.CefSharp.Winapi.Browser.Handlers
         /// <summary>
         /// The ChromelyResponse response.
         /// </summary>
-        private ChromelyResponse mChromelyResponse;
+        private ChromelyResponse _chromelyResponse;
 
         /// <summary>
         /// The mime type.
         /// </summary>
-        private string mMimeType;
+        private string _mimeType;
 
         /// <summary>
         /// The stream object.
         /// </summary>
-        private Stream mStream = new MemoryStream();
+        private Stream _stream = new MemoryStream();
 
         /// <summary>
         /// The process request async.
@@ -64,19 +63,19 @@ namespace Chromely.CefSharp.Winapi.Browser.Handlers
                     {
                         try
                         {
-                            mChromelyResponse = new ChromelyResponse { Status = (int)HttpStatusCode.OK, Data = "OK." };
+                            _chromelyResponse = new ChromelyResponse { Status = (int)HttpStatusCode.OK, Data = "OK." };
 
                             byte[] fileBytes = File.ReadAllBytes(file);
-                            mStream = new MemoryStream(fileBytes);
+                            _stream = new MemoryStream(fileBytes);
 
                             string extension = Path.GetExtension(file);
-                            mMimeType = MimeMapper.GetMimeType(extension);
+                            _mimeType = MimeMapper.GetMimeType(extension);
                         }
                         catch (Exception exception)
                         {
                             Log.Error(exception);
 
-                            mChromelyResponse =
+                            _chromelyResponse =
                                 new ChromelyResponse
                                     {
                                         Status = (int)HttpStatusCode.BadRequest,
@@ -115,14 +114,14 @@ namespace Chromely.CefSharp.Winapi.Browser.Handlers
         /// </returns>
         public override Stream GetResponse(IResponse response, out long responseLength, out string redirectUrl)
         {
-            responseLength = mStream.Length;
+            responseLength = _stream.Length;
             redirectUrl = null;
 
-            response.StatusCode = mChromelyResponse.Status;
-            response.StatusText = mChromelyResponse.StatusText;
-            response.MimeType = mMimeType;
+            response.StatusCode = _chromelyResponse.Status;
+            response.StatusText = _chromelyResponse.StatusText;
+            response.MimeType = _mimeType;
 
-            return mStream;
+            return _stream;
         }
     }
 }

@@ -1,11 +1,11 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CefGlueLifeSpanHandler.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
 //      See the LICENSE.md file in the project root for more information.
 // </license>
-// --------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------
 
 using Chromely.CefGlue.Browser.EventParams;
 using Chromely.Core.Host;
@@ -22,14 +22,14 @@ namespace Chromely.CefGlue.Browser.Handlers
         /// <summary>
         /// The CefGlueBrowser object.
         /// </summary>
-        private readonly CefGlueBrowser mBrowser;
+        private readonly CefGlueBrowser _browser;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CefGlueLifeSpanHandler"/> class.
         /// </summary>
         public CefGlueLifeSpanHandler()
         {
-            mBrowser = CefGlueBrowser.BrowserCore;
+            _browser = CefGlueBrowser.BrowserCore;
         }
 
         /// <summary>
@@ -41,8 +41,7 @@ namespace Chromely.CefGlue.Browser.Handlers
         protected override void OnAfterCreated(CefBrowser browser)
         {
             base.OnAfterCreated(browser);
-
-            mBrowser.InvokeAsyncIfPossible(() => mBrowser.OnBrowserAfterCreated(browser));
+            _browser.InvokeAsyncIfPossible(() => _browser.OnBrowserAfterCreated(browser));
         }
 
         /// <summary>
@@ -67,7 +66,7 @@ namespace Chromely.CefGlue.Browser.Handlers
         /// </param>
         protected override void OnBeforeClose(CefBrowser browser)
         {
-            mBrowser.InvokeAsyncIfPossible(() => mBrowser.OnBeforeClose(new BeforeCloseEventArgs()));
+            _browser.InvokeAsyncIfPossible(() => _browser.OnBeforeClose(new BeforeCloseEventArgs()));
         }
 
         /// <summary>

@@ -1,16 +1,16 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="InternalWebBrowserExtensions.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
 //      See the LICENSE.md file in the project root for more information.
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
+using global::CefSharp.Internals;
+
 namespace Chromely.CefSharp.Winapi.Browser.Internals
 {
-    using global::CefSharp.Internals;
-
     /// <summary>
     /// The internal web browser extensions.
     /// </summary>
@@ -31,6 +31,7 @@ namespace Chromely.CefSharp.Winapi.Browser.Internals
             browser.LifeSpanHandler = null;
             browser.KeyboardHandler = null;
             browser.JsDialogHandler = null;
+            browser.DragHandler = null;
             browser.DownloadHandler = null;
             browser.MenuHandler = null;
             browser.FocusHandler = null;

@@ -1,14 +1,15 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CefGlueClientParams.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
 //      See the LICENSE.md file in the project root for more information.
 // </license>
-// --------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------
 
 using System;
 using Chromely.CefGlue.Browser.Handlers;
+using Chromely.Core;
 using Chromely.Core.Helpers;
 using Chromely.Core.Infrastructure;
 using Xilium.CefGlue;
@@ -216,6 +217,10 @@ namespace Chromely.CefGlue.Browser
                             if (instance is CefDragHandler dragHandler)
                             {
                                 clientParams.DragHandler = dragHandler;
+                            }
+                            else if (ChromelyConfiguration.Instance.HostFrameless)
+                            {
+                                clientParams.DragHandler = new CefGlueDragHandler();
                             }
 
                             break;

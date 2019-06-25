@@ -1,0 +1,25 @@
+<!-- Chromely.CefGlue.Gtk.props 
+This is a post build cef binaries download for Chromely.CefGlue.Gtk
+If this is not successful, developers can try running this on cmd, using help to get the options:
+
+chromelycef.exe (Windows), chromelycef.dll (Linux, Mac) will be found in the Chromely.CefGlue.Gtk package location.
+
+For help:
+chromelycef.exe download -h 
+dotnet chromelycef.dll download -h 
+-->
+<Project>
+ 
+   <PropertyGroup>
+     <DownloadCefBinariesExe Condition=" '$(OS)' != 'Windows_NT' ">dotnet "$(MSBuildThisFileDirectory)\linux\chromelycef.dll"</DownloadCefBinariesExe>
+     <DownloadCefBinariesExe Condition=" '$(OS)' == 'Windows_NT' ">"$(MSBuildThisFileDirectory)\win\chromelycef.exe"</DownloadCefBinariesExe>
+     <ChromiumVersionParameter>v70</ChromiumVersionParameter>
+     <CefVersionParameter>3.3538.1852.gcb937fc</CefVersionParameter>
+    </PropertyGroup>
+
+    <Target Name="DownloadCefBinaries" AfterTargets="CoreCompile">
+      <Message Text="$(DownloadCefBinariesExe) download $(ChromiumVersionParameter) --cef-binary-version=$(CefVersionParameter) --cpu=$(Platform) --dest=&quot;$(MSBuildProjectDirectory)\$(OutputPath)&quot;"  Importance="high" />
+      <Exec Command="$(DownloadCefBinariesExe) download $(ChromiumVersionParameter) --cef-binary-version=$(CefVersionParameter) --cpu=$(Platform) --dest=&quot;$(MSBuildProjectDirectory)\$(OutputPath)&quot;" ContinueOnError="WarnAndContinue"/>
+    </Target>
+
+</Project>

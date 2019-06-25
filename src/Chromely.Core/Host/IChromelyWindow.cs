@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="IChromelyWindow.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
 //      See the LICENSE.md file in the project root for more information.
@@ -12,11 +12,12 @@ namespace Chromely.Core.Host
     using System;
 
     using Chromely.Core.Helpers;
+    using Chromely.Core.RestfulService;
 
     /// <summary>
     /// The IChromelyWindow interface.
     /// </summary>
-    public interface IChromelyWindow
+    public interface IChromelyWindow : IChromelyServiceProvider, IDisposable
     {
         /// <summary>
         /// Gets the host config.
@@ -83,5 +84,15 @@ namespace Chromely.Core.Host
         /// The implementation.
         /// </param>
         void RegisterCustomHandler(CefHandlerKey key, Type implementation);
+
+        /// <summary>
+        /// The close.
+        /// </summary>
+        void Close();
+
+        /// <summary>
+        /// The shutdown.
+        /// </summary>
+        void Exit();
     }
 }

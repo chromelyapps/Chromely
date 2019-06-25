@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 
+// ReSharper disable once CheckNamespace
 namespace ICSharpCode.SharpZipLib.Tar
 {
     /// <summary>
@@ -37,7 +38,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 
         /// <summary>
         /// Get/set flag indicating ownership of the underlying stream.
-        /// When the flag is true <see cref="Close"></see> will close the underlying stream also.
+        /// When the flag is true <see cref="Stream.Close"></see> will close the underlying stream also.
         /// </summary>
         public bool IsStreamOwner
         {

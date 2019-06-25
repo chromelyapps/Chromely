@@ -1,13 +1,14 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CefGlueBrowser.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
 //      See the LICENSE.md file in the project root for more information.
 // </license>
-// --------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------
 
 using System;
+using System.Reflection;
 using Chromely.CefGlue.Browser.EventParams;
 using Chromely.CefGlue.Browser.FrameHandlers;
 using Chromely.Core;
@@ -24,22 +25,22 @@ namespace Chromely.CefGlue.Browser
         /// <summary>
         /// The host config.
         /// </summary>
-        private readonly ChromelyConfiguration mHostConfig;
+        private readonly ChromelyConfiguration _hostConfig;
 
         /// <summary>
         /// The CefBrowserSettings object.
         /// </summary>
-        private CefBrowserSettings mSettings;
+        private CefBrowserSettings _settings;
 
         /// <summary>
         /// The CefGlueClient object.
         /// </summary>
-        private CefGlueClient mClient;
+        private CefGlueClient _client;
 
         /// <summary>
-        /// The m websocket started.
+        /// The websocket started.
         /// </summary>
-        private bool mWebsocketStarted;
+        private bool _websocketStarted;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CefGlueBrowser"/> class.
@@ -56,8 +57,8 @@ namespace Chromely.CefGlue.Browser
         public CefGlueBrowser(object owner, ChromelyConfiguration hostConfig, CefBrowserSettings settings)
         {
             Owner = owner;
-            mHostConfig = hostConfig;
-            mSettings = settings;
+            _hostConfig = hostConfig;
+            _settings = settings;
             StartUrl = hostConfig.StartUrl;
         }
 
@@ -188,20 +189,22 @@ namespace Chromely.CefGlue.Browser
         /// </param>
         public void Create(CefWindowInfo windowInfo)
         {
-            if (mClient == null)
+            if (_client == null)
             {
                 IoC.RegisterInstance(typeof(CefGlueBrowser), typeof(CefGlueBrowser).FullName, this);
-                mClient = new CefGlueClient(CefGlueClientParams.Create(this));
+                _client = new CefGlueClient(CefGlueClientParams.Create(this));
+            }
+            if (_settings == null)
+            {
+                _settings = new CefBrowserSettings();
             }
 
-            mSettings = this.mSettings ?? new CefBrowserSettings();
+            _settings.DefaultEncoding = "UTF-8";
+            _settings.FileAccessFromFileUrls = CefState.Enabled;
+            _settings.UniversalAccessFromFileUrls = CefState.Enabled;
+            _settings.WebSecurity = CefState.Disabled;
 
-            mSettings.DefaultEncoding = "UTF-8";
-            mSettings.FileAccessFromFileUrls = CefState.Enabled;
-            mSettings.UniversalAccessFromFileUrls = CefState.Enabled;
-            mSettings.WebSecurity = CefState.Enabled;
-
-            CefBrowserHost.CreateBrowser(windowInfo, mClient, mSettings, StartUrl);
+            CefBrowserHost.CreateBrowser(windowInfo, _client, _settings, StartUrl);
         }
 
         #region Dispose
@@ -211,19 +214,28 @@ namespace Chromely.CefGlue.Browser
         /// </summary>
         public void Dispose()
         {
-            if (mWebsocketStarted)
+            if (_websocketStarted)
             {
                 WebsocketServerRunner.StopServer();
             }
 
-            if (CefBrowser != null)
+            unsafe
             {
-                var host = CefBrowser.GetHost();
-                host.CloseBrowser(true);
-                host.Dispose();
-                CefBrowser.Dispose();
-                CefBrowser = null;
+                // due we don't want to change Xilium.CefGlue.CefBrowser
+                // we check the internal _self property to see
+                // if it is already destroyed
+                if (CefBrowser != null 
+                    && typeof(CefBrowser).GetField("_self", BindingFlags.NonPublic | BindingFlags.Instance)?.GetValue(CefBrowser) is Pointer self 
+                    && Pointer.Unbox(self) != null)
+                {
+                    var host = CefBrowser.GetHost();
+                    host.CloseBrowser(true);
+                    host.Dispose();
+                    CefBrowser.Dispose();
+                    CefBrowser = null;
+                }
             }
+
         }
 
         #endregion
@@ -413,10 +425,10 @@ namespace Chromely.CefGlue.Browser
         {
             try
             {
-                if (mHostConfig.StartWebSocket)
+                if (_hostConfig.StartWebSocket)
                 {
-                    WebsocketServerRunner.StartServer(mHostConfig.WebsocketAddress, mHostConfig.WebsocketPort);
-                    mWebsocketStarted = true;
+                    WebsocketServerRunner.StartServer(_hostConfig.WebsocketAddress, _hostConfig.WebsocketPort);
+                    _websocketStarted = true;
                 }
             }
             catch (Exception exception)

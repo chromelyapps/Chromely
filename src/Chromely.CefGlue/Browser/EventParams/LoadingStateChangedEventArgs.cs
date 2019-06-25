@@ -1,11 +1,11 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LoadingStateChangeEventArgs.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+// <copyright file="LoadingStateChangedEventArgs.cs" company="Chromely Projects">
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
 //      See the LICENSE.md file in the project root for more information.
 // </license>
-// --------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------
 
 using System;
 
@@ -17,7 +17,7 @@ namespace Chromely.CefGlue.Browser.EventParams
     public class LoadingStateChangedEventArgs : EventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="LoadingStateChangeEventArgs"/> class.
+        /// Initializes a new instance of the <see cref="LoadingStateChangedEventArgs"/> class.
         /// </summary>
         /// <param name="isLoading">
         /// The is loading.

@@ -1,43 +1,41 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="NativeWindow.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
 //      See the LICENSE.md file in the project root for more information.
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
-// ReSharper disable UnusedMember.Global
+using System;
+using System.Runtime.InteropServices;
+using CefSharp;
+using Chromely.Core;
+using Chromely.Core.Host;
+using Chromely.Core.Infrastructure;
+using NetCoreEx.Geometry;
+using WinApi.DwmApi;
+using WinApi.Gdi32;
+using WinApi.Kernel32;
+using WinApi.User32;
+
 namespace Chromely.CefSharp.Winapi.BrowserWindow
 {
-    using System;
-    using System.Runtime.InteropServices;
-
-    using Core;
-    using Core.Host;
-    using Core.Infrastructure;
-    using global::CefSharp;
-    using NetCoreEx.Geometry;
-    using WinApi.DwmApi;
-    using WinApi.Gdi32;
-    using WinApi.Kernel32;
-    using WinApi.User32;
-
     /// <summary>
     /// The native window.
     /// </summary>
-    public class NativeWindow
+    internal class NativeWindow
     {
         /// <summary>
-        /// The m host config.
+        /// The host config.
         /// </summary>
-        private readonly ChromelyConfiguration mHostConfig;
+        private readonly ChromelyConfiguration _hostConfig;
 
         /// <summary>
         /// WindowProc ref : prevent GC Collect
         /// </summary>
-        private WindowProc mWindowProc;
-        
+        private WindowProc _windowProc;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="NativeWindow"/> class.
         /// </summary>
@@ -55,7 +53,7 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
         public NativeWindow(ChromelyConfiguration hostConfig)
         {
             Handle = IntPtr.Zero;
-            mHostConfig = hostConfig;
+            _hostConfig = hostConfig;
         }
 
         /// <summary>
@@ -70,7 +68,10 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
         {
             while (User32Methods.GetMessage(out Message msg, IntPtr.Zero, 0, 0) != 0)
             {
-                Cef.DoMessageLoopWork();
+                if (ChromelyConfiguration.Instance.HostFrameless)
+                {
+                    Cef.DoMessageLoopWork();
+                }
 
                 User32Methods.TranslateMessage(ref msg);
                 User32Methods.DispatchMessage(ref msg);
@@ -91,6 +92,14 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
         public void ShowWindow()
         {
             CreateWindow();
+        }
+
+        /// <summary>
+        /// The close window externally.
+        /// </summary>
+        public void CloseWindowExternally()
+        {
+            User32Methods.PostMessage(Handle, (uint)WM.CLOSE, IntPtr.Zero, IntPtr.Zero);
         }
 
         /// <summary>
@@ -201,7 +210,7 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
         {
             var instanceHandle = Kernel32Methods.GetModuleHandle(IntPtr.Zero);
 
-            mWindowProc = WindowProc;
+            _windowProc = WindowProc;
             
             var wc = new WindowClassEx
             {
@@ -211,7 +220,7 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
                 IconHandle = GetIconHandle(),
                 Styles = WindowClassStyles.CS_HREDRAW | WindowClassStyles.CS_VREDRAW,
                 BackgroundBrushHandle = new IntPtr((int)StockObject.WHITE_BRUSH),
-                WindowProc = mWindowProc,
+                WindowProc = _windowProc,
                 InstanceHandle = instanceHandle
             };
 
@@ -222,17 +231,24 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
                 return;
             }
 
-            var styles = GetWindowStyles(mHostConfig.HostState);
+            var styles = GetWindowStyles(_hostConfig.HostState);
+
+            NativeMethods.RECT rect;
+            rect.Left = 0;
+            rect.Top = 0;
+            rect.Right = _hostConfig.HostWidth;
+            rect.Bottom = _hostConfig.HostHeight;
+            NativeMethods.AdjustWindowRectEx(ref rect, styles.Item1, false, styles.Item2);
 
             var hwnd = User32Methods.CreateWindowEx(
                 styles.Item2,
                 wc.ClassName,
-                mHostConfig.HostTitle,
+                _hostConfig.HostTitle,
                 styles.Item1,
                 0,
                 0,
-                mHostConfig.HostWidth,
-                mHostConfig.HostHeight,
+                rect.Right - rect.Left,
+                rect.Bottom - rect.Top,   
                 IntPtr.Zero,
                 IntPtr.Zero,
                 instanceHandle,
@@ -273,9 +289,9 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
             {
                 case WM.ACTIVATE:
                     {
-                        if (mHostConfig.HostFrameless)
+                        if (_hostConfig.HostFrameless)
                         {
-                            Margins frameMargins = new Margins(4, 4, 4, 4);
+                            Margins frameMargins = new Margins(7, 7, 27, 7);
                             DwmApiMethods.DwmExtendFrameIntoClientArea(Handle, ref frameMargins);
                             User32Methods.SetWindowPos(hwnd, IntPtr.Zero, 0, 0, 0, 0, WindowPositionFlags.SWP_NOZORDER | WindowPositionFlags.SWP_NOOWNERZORDER | WindowPositionFlags.SWP_NOMOVE | WindowPositionFlags.SWP_NOSIZE | WindowPositionFlags.SWP_FRAMECHANGED);
                         }
@@ -304,12 +320,13 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
                     {
                         OnExit();
                         Exit();
+                        Environment.Exit(0);
                         break;
                     }
 
                 case WM.NCCALCSIZE:
                     {
-                        if (mHostConfig.HostFrameless)
+                        if (_hostConfig.HostFrameless)
                         {
                             return IntPtr.Zero;
                         }
@@ -318,58 +335,79 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
 
                 case WM.NCHITTEST:
                     {
-                        // This might be a bit redundant to perform and should find another way
-                        // to pass the return value rather than performing a hit test again.
-                        var lRet = HitTestNCA(hwnd, wParam, lParam);
-                        return lRet;
+                        if (_hostConfig.HostFrameless)
+                        {
+                            // This might be a bit redundant to perform and should find another way
+                            // to pass the return value rather than performing a hit test again.
+                            var lRet = HitTestNCA(hwnd, wParam, lParam);
+                            return lRet;
+                        }
+
+                        break;
                     }
             }
 
             return User32Methods.DefWindowProc(hwnd, umsg, wParam, lParam);
         }
 
+        /// <summary>
+        /// The hit test nca.
+        /// </summary>
+        /// <param name="hWnd">
+        /// The h wnd.
+        /// </param>
+        /// <param name="wParam">
+        /// The w param.
+        /// </param>
+        /// <param name="lParam">
+        /// The l param.
+        /// </param>
+        /// <returns>
+        /// The <see cref="IntPtr"/>.
+        /// </returns>
         internal static IntPtr HitTestNCA(IntPtr hWnd, IntPtr wParam, IntPtr lParam)
         {
             // Get the point coordinates for the hit test.
-            Point mousePoint = new Point(lParam.ToInt32() & 0xFFFF, lParam.ToInt32() >> 16);
+            var mousePoint = new Point(lParam.ToInt32() & 0xFFFF, lParam.ToInt32() >> 16);
 
             // Get the window rectangle.
-            Rectangle rectWindow;
-            User32Methods.GetWindowRect(hWnd, out rectWindow);
+            User32Methods.GetWindowRect(hWnd, out var rectWindow);
 
             // Get the frame rectangle, adjusted for the style without a caption.
-            Rectangle rectFrame = new Rectangle(4, 4, 4, 4);
+            Rectangle rectFrame = new Rectangle(4, 4, 27, 4);
             User32Methods.AdjustWindowRectEx(ref rectFrame, WindowStyles.WS_OVERLAPPEDWINDOW & ~WindowStyles.WS_CAPTION, false, 0);
             ushort row = 1;
             ushort col = 1;
+            bool onTopResizeBorder = false;
 
             // Determine if the point is at the top or bottom of the window.
-            if (mousePoint.Y >= rectWindow.Top && mousePoint.Y < rectWindow.Top + 4)
+            if (mousePoint.Y >= rectWindow.Top && mousePoint.Y < rectWindow.Top + 27)
             {
+                onTopResizeBorder = (mousePoint.Y < (rectWindow.Top - rectFrame.Top));
                 row = 0;
             }
-            else if (mousePoint.Y < rectWindow.Bottom && mousePoint.Y >= rectWindow.Bottom - 4)
+            else if (mousePoint.Y < rectWindow.Bottom && mousePoint.Y >= rectWindow.Bottom - 7)
             {
                 row = 2;
             }
 
             // Determine if the point is at the left or right of the window.
-            if (mousePoint.X >= rectWindow.Left && mousePoint.X < rectWindow.Left + 4)
+            if (mousePoint.X >= rectWindow.Left && mousePoint.X < rectWindow.Left + 7)
             {
                 col = 0;
             }
-            else if (mousePoint.X < rectWindow.Right && mousePoint.X >= rectWindow.Right - 4)
+            else if (mousePoint.X < rectWindow.Right && mousePoint.X >= rectWindow.Right - 7)
             {
                 col = 2;
             }
 
             // Defines the tests to determine what value to return for NCHITTEST
             int[,] hitTests =
-            {
-                { 13, 12, 11 },
-                { 10, 0, 11 },
-                { 16, 15, 17 }
-            };
+                {
+                    { 13, onTopResizeBorder ? 12 : 2, 11 },
+                    { 10, 0, 11 },
+                    { 16, 15, 17 }
+                };
 
             return (IntPtr)hitTests[row, col];
         }
@@ -388,10 +426,9 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
             var styles = WindowStyles.WS_OVERLAPPEDWINDOW | WindowStyles.WS_CLIPCHILDREN | WindowStyles.WS_CLIPSIBLINGS;
             var exStyles = WindowExStyles.WS_EX_APPWINDOW | WindowExStyles.WS_EX_WINDOWEDGE;
 
-            if (mHostConfig.HostFrameless)
+            if (_hostConfig.HostFrameless)
             {
                 styles = WindowStyles.WS_CAPTION | WindowStyles.WS_POPUP | WindowStyles.WS_THICKFRAME | WindowStyles.WS_MINIMIZEBOX | WindowStyles.WS_MAXIMIZEBOX | WindowStyles.WS_CAPTION | WindowStyles.WS_CLIPCHILDREN | WindowStyles.WS_CLIPSIBLINGS;
-                //exStyles = WindowExStyles.WS_EX_TOOLWINDOW;
             }
 
             switch (state)
@@ -424,7 +461,7 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
         /// </returns>
         private IntPtr GetIconHandle()
         {
-            var hIcon = NativeMethods.LoadIconFromFile(mHostConfig.HostIconFile);
+            var hIcon = NativeMethods.LoadIconFromFile(_hostConfig.HostIconFile);
             return hIcon ?? User32Helpers.LoadIcon(IntPtr.Zero, SystemIcon.IDI_APPLICATION);
         }
     }

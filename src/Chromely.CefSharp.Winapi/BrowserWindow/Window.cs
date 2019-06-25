@@ -1,53 +1,45 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Window.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
 //      See the LICENSE.md file in the project root for more information.
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text;
+using CefSharp;
+using Chromely.CefSharp.Winapi.Browser;
+using Chromely.CefSharp.Winapi.Browser.Handlers;
+using Chromely.CefSharp.Winapi.Browser.Internals;
+using Chromely.Core;
+using Chromely.Core.Infrastructure;
+using WinApi.User32;
+
 namespace Chromely.CefSharp.Winapi.BrowserWindow
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Runtime.InteropServices;
-    using System.Text;
-    using System.Threading;
-    using Chromely.CefSharp.Winapi.Browser;
-    using Chromely.CefSharp.Winapi.Browser.Handlers;
-    using Chromely.CefSharp.Winapi.Browser.Internals;
-    using Chromely.Core;
-    using Chromely.Core.Infrastructure;
-
-    using global::CefSharp;
-    using NetCoreEx.Geometry;
-    using WinApi.DwmApi;
-    using WinApi.User32;
-
-
     /// <summary>
     /// The window.
     /// </summary>
-    public class Window : NativeWindow
+    internal class Window : NativeWindow
     {
         /// <summary>
         /// The host/app/window application.
         /// </summary>
-        private readonly HostBase mApplication;
+        private readonly HostBase _application;
 
         /// <summary>
-        /// The ChromiumWebBrowser object.
+        /// The host config.
         /// </summary>
-        private ChromiumWebBrowser mBrowser;
-
-        private IntPtr mBrowserHandle;
-        private IntPtr mBrowserWndProc;
-        private IntPtr mBrowserRenderWidgetHandle;
-        private IntPtr mBrowserRenderWidgetWndProc;
-        private List<ChildWindow> childWindows;
-        private List<WndProcOverride> wndProcOverrides = new List<WndProcOverride>();
+        private readonly ChromelyConfiguration _hostConfig;
+        private IntPtr _browserWndProc;
+        private IntPtr _browserRenderWidgetHandle;
+        private IntPtr _browserRenderWidgetWndProc;
+        private List<WndProcOverride> _wndProcOverrides = new List<WndProcOverride>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Window"/> class.
@@ -64,24 +56,24 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
         public Window(HostBase application, ChromelyConfiguration hostConfig, CefSettings settings)
             : base(hostConfig)
         {
-            mBrowser = new ChromiumWebBrowser(settings, hostConfig.StartUrl);
-            mBrowser.IsBrowserInitializedChanged += IsBrowserInitializedChanged;
-            mBrowser.DragHandler = new CefSharpDragHandler();
+            _hostConfig = hostConfig;
+            Browser = new ChromiumWebBrowser(settings, _hostConfig.StartUrl);
+            Browser.IsBrowserInitializedChanged += IsBrowserInitializedChanged;
 
             // Set handlers
-            mBrowser.SetEventHandlers();
-            mBrowser.SetCustomHandlers();
+            Browser.SetEventHandlers();
+            Browser.SetCustomHandlers();
 
             RegisterJsHandlers();
-            mApplication = application;
+            _application = application;
 
             ShowWindow();
         }
 
         /// <summary>
-        /// The browser.
+        /// Gets the browser.
         /// </summary>
-        public ChromiumWebBrowser Browser => mBrowser;
+        public ChromiumWebBrowser Browser { get; private set; }
 
         #region Dispose
 
@@ -90,10 +82,10 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
         /// </summary>
         public void Dispose()
         {
-            if (mBrowser != null)
+            if (Browser != null)
             {
-                mBrowser.Dispose();
-                mBrowser = null;
+                Browser.Dispose();
+                Browser = null;
             }
         }
 
@@ -116,7 +108,7 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
         /// </exception>
         protected override void OnCreate(IntPtr hwnd, int width, int height)
         {
-            mBrowser?.CreateBrowser(hwnd);
+            Browser?.CreateBrowser(hwnd, _hostConfig.StartUrl);
         }
 
         /// <summary>
@@ -130,7 +122,7 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
         /// </param>
         protected override void OnSize(int width, int height)
         {
-            mBrowser?.SetSize(width, height);
+            Browser?.SetSize(width, height);
         }
 
         /// <summary>
@@ -138,7 +130,7 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
         /// </summary>
         protected override void OnExit()
         {
-            mApplication.Quit();
+            _application.Quit();
         }
 
         private delegate bool EnumWindowProc(IntPtr hWnd, IntPtr lParam);
@@ -160,19 +152,13 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
 
         private class WndProcOverride
         {
-            private ChromiumWebBrowser browser;
-            private IntPtr mainHandle;
             private IntPtr handle;
             private IntPtr originalWndProc;
-            private string className;
             private WindowProc newWndProc;
 
-            public WndProcOverride(IntPtr wndHandle, string wndClassName, ChromiumWebBrowser mBrowser, IntPtr parentHandle)
+            public WndProcOverride(IntPtr wndHandle, string wndClassName)
             {
-                browser = mBrowser;
-                mainHandle = parentHandle;
                 handle = wndHandle;
-                className = wndClassName;
                 newWndProc = new WindowProc(OverridenWndProc);
                 originalWndProc = User32Methods.SetWindowLongPtr(handle, -4, Marshal.GetFunctionPointerForDelegate(newWndProc));
             }
@@ -183,23 +169,12 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
                 var originalRet = User32Methods.CallWindowProc(originalWndProc, hWnd, uMsg, wParam, lParam);
                 switch (msg)
                 {
-                    case WM.LBUTTONDOWN:
-                        {
-                            var mousePoint = new System.Drawing.Point(lParam.ToInt32());
-                            var dragHandler = browser.DragHandler as CefSharpDragHandler;
-                            if (dragHandler.DragRegion.IsVisible(mousePoint)) {
-                                // Release the capture of browser window and send a caption drag to the main window
-                                User32Methods.ReleaseCapture();
-                                User32Methods.SendMessage(mainHandle, (uint)WM.NCLBUTTONDOWN, new IntPtr(2), IntPtr.Zero);
-                            }
-                            break;
-                        }
-
                     case WM.NCHITTEST:
                         {
                             // If we hit a non client area (our overlapped frame) then we'll force an NCHITTEST to bubble back up to the main process
                             IntPtr hitTest = HitTestNCA(hWnd, wParam, lParam);
-                            if (hitTest != IntPtr.Zero) {
+                            if (hitTest != IntPtr.Zero)
+                            {
                                 return new IntPtr(-1);
                             }
                             break;
@@ -223,24 +198,24 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
             if (eventArgs.IsBrowserInitialized)
             {
                 var size = GetClientSize();
-                mBrowser.SetSize(size.Width, size.Height);
-                mBrowser.IsBrowserInitializedChanged -= IsBrowserInitializedChanged;
+                Browser.SetSize(size.Width, size.Height);
+                Browser.IsBrowserInitializedChanged -= IsBrowserInitializedChanged;
+                Browser.GetBrowserHost().GetWindowHandle();
 
-                mBrowserHandle = mBrowser.GetBrowserHost().GetWindowHandle();
-
-                var childWindowsDetails = new EnumChildWindowsDetails();
-                var gcHandle = GCHandle.Alloc(childWindowsDetails);
-                EnumChildWindows(Handle, new EnumWindowProc(EnumWindow), GCHandle.ToIntPtr(gcHandle));
-
-                foreach(ChildWindow childWindow in childWindowsDetails.Windows)
+                if (_hostConfig.HostFrameless)
                 {
-                    var wndProcOverride = new WndProcOverride(childWindow.Handle, childWindow.ClassName, mBrowser, Handle);
-                    wndProcOverrides.Add(wndProcOverride);
+                    var childWindowsDetails = new EnumChildWindowsDetails();
+                    var gcHandle = GCHandle.Alloc(childWindowsDetails);
+                    EnumChildWindows(Handle, new EnumWindowProc(EnumWindow), GCHandle.ToIntPtr(gcHandle));
+
+                    foreach (ChildWindow childWindow in childWindowsDetails.Windows)
+                    {
+                        var wndProcOverride = new WndProcOverride(childWindow.Handle, childWindow.ClassName);
+                        _wndProcOverrides.Add(wndProcOverride);
+                    }
+
+                    gcHandle.Free();
                 }
-
-                childWindows = childWindowsDetails.Windows;
-
-                gcHandle.Free();
             }
         }
 
@@ -288,11 +263,11 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
 
                         if (handler.RegisterAsAsync)
                         {
-                            mBrowser.RegisterAsyncJsObject(handler.ObjectNameToBind, boundObject, options);
+                            Browser.RegisterAsyncJsObject(handler.ObjectNameToBind, boundObject, options);
                         }
                         else
                         {
-                            mBrowser.RegisterJsObject(handler.ObjectNameToBind, boundObject, options);
+                            Browser.RegisterJsObject(handler.ObjectNameToBind, boundObject, options);
                         }
                     }
                 }

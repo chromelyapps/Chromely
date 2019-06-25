@@ -1,15 +1,16 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Log.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
 //      See the LICENSE.md file in the project root for more information.
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
+
+using System;
+
 namespace Chromely.Core.Infrastructure
 {
-    using System;
-
     /// <summary>
     /// Global logger implementation.
     /// </summary>
@@ -18,15 +19,15 @@ namespace Chromely.Core.Infrastructure
         /// <summary>
         /// The logger object.
         /// </summary>
-        private static IChromelyLogger mLogger;
+        private static IChromelyLogger _logger;
 
         /// <summary>
         /// Gets or sets the logger.
         /// </summary>
         public static IChromelyLogger Logger
         {
-            get => mLogger ?? (mLogger = GetCurrentLogger);
-            set => mLogger = value;
+            get => _logger ?? (_logger = GetCurrentLogger);
+            set => _logger = value;
         }
 
         /// <summary>

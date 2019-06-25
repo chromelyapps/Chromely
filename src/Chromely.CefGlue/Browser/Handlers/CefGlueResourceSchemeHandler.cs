@@ -1,11 +1,11 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CefGlueResourceSchemeHandler.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
 //      See the LICENSE.md file in the project root for more information.
 // </license>
-// --------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------
 
 using System;
 using System.IO;
@@ -25,22 +25,22 @@ namespace Chromely.CefGlue.Browser.Handlers
         /// <summary>
         /// The file read in bytes.
         /// </summary>
-        private byte[] mFileBytes;
+        private byte[] _fileBytes;
 
         /// <summary>
         /// The mime type.
         /// </summary>
-        private string mMime;
+        private string _mime;
 
         /// <summary>
         /// The completed flag.
         /// </summary>
-        private bool mCompleted;
+        private bool _completed;
 
         /// <summary>
         /// The total bytes read.
         /// </summary>
-        private int mTotalBytesRead;
+        private int _totalBytesRead;
 
         /// <summary>
         /// The process request.
@@ -59,9 +59,9 @@ namespace Chromely.CefGlue.Browser.Handlers
             var u = new Uri(request.Url);
             var file = u.Authority + u.AbsolutePath;
 
-            mTotalBytesRead = 0;
-            mFileBytes = null;
-            mCompleted = false;
+            _totalBytesRead = 0;
+            _fileBytes = null;
+            _completed = false;
 
             if (File.Exists(file))
             {
@@ -71,10 +71,10 @@ namespace Chromely.CefGlue.Browser.Handlers
                     {
                         try
                         {
-                            mFileBytes = File.ReadAllBytes(file);
+                            _fileBytes = File.ReadAllBytes(file);
 
                             string extension = Path.GetExtension(file);
-                            mMime = MimeMapper.GetMimeType(extension);
+                            _mime = MimeMapper.GetMimeType(extension);
                         }
                         catch (Exception exception)
                         {
@@ -120,7 +120,7 @@ namespace Chromely.CefGlue.Browser.Handlers
                 response.SetHeaderMap(headers);
 
                 response.Status = (int)HttpStatusCode.OK;
-                response.MimeType = mMime;
+                response.MimeType = _mime;
                 response.StatusText = "OK";
             }
             catch (Exception exception)
@@ -157,30 +157,30 @@ namespace Chromely.CefGlue.Browser.Handlers
 
             try
             {
-                if (mCompleted)
+                if (_completed)
                 {
                     bytesRead = 0;
-                    mTotalBytesRead = 0;
-                    mFileBytes = null;
+                    _totalBytesRead = 0;
+                    _fileBytes = null;
                     return false;
                 }
                 else
                 {
-                    if (mFileBytes != null)
+                    if (_fileBytes != null)
                     {
-                        currBytesRead = Math.Min(mFileBytes.Length - mTotalBytesRead, bytesToRead);
-                        response.Write(mFileBytes, mTotalBytesRead, currBytesRead);
-                        mTotalBytesRead += currBytesRead;
+                        currBytesRead = Math.Min(_fileBytes.Length - _totalBytesRead, bytesToRead);
+                        response.Write(_fileBytes, _totalBytesRead, currBytesRead);
+                        _totalBytesRead += currBytesRead;
 
-                        if (mTotalBytesRead >= mFileBytes.Length)
+                        if (_totalBytesRead >= _fileBytes.Length)
                         {
-                            mCompleted = true;
+                            _completed = true;
                         }
                     }
                     else
                     {
                         bytesRead = 0;
-                        mCompleted = true;
+                        _completed = true;
                     }
                 }
             }

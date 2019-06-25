@@ -1,11 +1,11 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CefGlueLoadHandler.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2018 Chromely Projects
+//   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
 // <license>
 //      See the LICENSE.md file in the project root for more information.
 // </license>
-// --------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------
 
 using Chromely.CefGlue.Browser.EventParams;
 using Chromely.Core.Host;
@@ -21,14 +21,14 @@ namespace Chromely.CefGlue.Browser.Handlers
         /// <summary>
         /// The CefGlueBrowser object.
         /// </summary>
-        private readonly CefGlueBrowser mBrowser;
+        private readonly CefGlueBrowser _browser;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CefGlueLoadHandler"/> class.
         /// </summary>
         public CefGlueLoadHandler()
         {
-            mBrowser = CefGlueBrowser.BrowserCore;
+            _browser = CefGlueBrowser.BrowserCore;
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace Chromely.CefGlue.Browser.Handlers
         /// </param>
         protected override void OnLoadEnd(CefBrowser browser, CefFrame frame, int httpStatusCode)
         {
-            mBrowser.InvokeAsyncIfPossible(() => mBrowser.OnFrameLoadEnd(new FrameLoadEndEventArgs(frame, httpStatusCode)));
+            _browser.InvokeAsyncIfPossible(() => _browser.OnFrameLoadEnd(new FrameLoadEndEventArgs(frame, httpStatusCode)));
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace Chromely.CefGlue.Browser.Handlers
         /// </param>
         protected override void OnLoadError(CefBrowser browser, CefFrame frame, CefErrorCode errorCode, string errorText, string failedUrl)
         {
-            mBrowser.InvokeAsyncIfPossible(() => mBrowser.OnLoadError(new LoadErrorEventArgs(frame, errorCode, errorText, failedUrl)));
+            _browser.InvokeAsyncIfPossible(() => _browser.OnLoadError(new LoadErrorEventArgs(frame, errorCode, errorText, failedUrl)));
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace Chromely.CefGlue.Browser.Handlers
         /// </param>
         protected override void OnLoadStart(CefBrowser browser, CefFrame frame, CefTransitionType transitionType)
         {
-            mBrowser.InvokeAsyncIfPossible(() => mBrowser.OnFrameLoadStart(new FrameLoadStartEventArgs(frame)));
+            _browser.InvokeAsyncIfPossible(() => _browser.OnFrameLoadStart(new FrameLoadStartEventArgs(frame)));
         }
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace Chromely.CefGlue.Browser.Handlers
         /// </param>
         protected override void OnLoadingStateChange(CefBrowser browser, bool isLoading, bool canGoBack, bool canGoForward)
         {
-            mBrowser.InvokeAsyncIfPossible(() => mBrowser.OnLoadingStateChange(new LoadingStateChangedEventArgs(isLoading, canGoBack, canGoForward)));
+            _browser.InvokeAsyncIfPossible(() => _browser.OnLoadingStateChange(new LoadingStateChangedEventArgs(isLoading, canGoBack, canGoForward)));
         }
     }
 }

@@ -25,6 +25,23 @@ Have an app/project/tool using Chromely -[please share!](https://github.com/chro
 ### Platforms
 Cross-platform - Windows, Linux. Built on CefGlue, CefSharp, NET Standard 2.0, .NET Core 2.0, .NET Framework 4.61 and above.
 
+| Platform                     | CefGlue.Winapi         |  CefGlue.Gtk           | CefSharp.Winapi |
+| ---------------------------- | :--------------------: | :--------------------: | :------: |
+| Windows<sup>(1)</sup> 32-bit | net461, netstandard2.0 | net461, netstandard2.0 | net461   |
+| Windows<sup>(1)</sup> 64-bit | net461, netstandard2.0 |  ---                   |  ---     |
+| Linux<sup>(2)</sup> 32-bit   |  ---     | netstandard2.0         |  ---     |
+| Linux<sup>(2)</sup> 64-bit   |  ---     | netstandard2.0         |  ---     |
+| MacOSX<sup>(3)</sup> 64-bit  |  ---     | ---                    |  ---     |
+| Linux ARM<sup>(4)</sup>      |  ---     | netstandard2.0         |  ---     |
+
+&nbsp;<sup>(1)</sup>&nbsp; Windows 7, Service Pack 1 and newer    
+&nbsp;<sup>(2)</sup>&nbsp; Ubuntu 16.04 and newer    
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Mono currently not working, window resizing not working)    
+&nbsp;<sup>(3)</sup>&nbsp; Work in progress...    
+&nbsp;<sup>(4)</sup>&nbsp; i.e. Raspberry Pi 3+    
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(manual download of CEF builds for ARM available on http://chromely.org/cefbuilds/index.html)    
+
+
 For more info/documentation, please check [Chromely wiki](https://github.com/chromelyapps/Chromely/wiki). 
 
 [![Chromely.Core](http://img.shields.io/nuget/vpre/Chromely.Core.svg?style=flat&label=Chromely.Core)](https://www.nuget.org/packages/Chromely.Core)
@@ -42,7 +59,8 @@ Get started with the [demos](https://github.com/chromelyapps/demo-projects).
 ### Creating a Simple App (Using CefGlue with Winapi host)
 For more info see - [Getting Started](https://github.com/chromelyapps/Chromely/wiki/Getting-Started)
 
-**Notes on Upgrade to CefGlue version 68 and CefSharp version 67** - Please [see](https://github.com/chromelyapps/Chromely/wiki/Upgrade-to-CefGlue-v68-and-CefSharp-v67).
+**Notes on Upgrade to CefGlue version 70 and CefSharp version 71 (Chromely v4)** - Please [see](https://github.com/chromelyapps/Chromely/wiki/Upgrade-to-CefGlue-v70-and-CefSharp-v71).
+
 ````csharp
 class Program
 {
@@ -59,13 +77,15 @@ class Program
                      .WithHostSize(1000, 600)
                      .WithStartUrl(startUrl);
 
-      using (var window = new CefGlueBrowserWindow(config))
+      using (var window = ChromelyWindow.Create(config))
       {
          return window.Run(args);
       }
   }
 }
 ````
+ - [CefGlue Usage Readme](https://github.com/chromelyapps/demo-projects/blob/master/regular-chromely/Chromely.CefGlue.Winapi.Demo/README.md) 
+ - [CefSharp Usage Readme](https://github.com/chromelyapps/demo-projects/blob/master/regular-chromely/Chromely.CefSharp.Winapi.Demo/README.md)
 
 #### Run Starter Template (Using dotnet core cli). For more info, please see - [dotnet cli demo template install](https://github.com/chromelyapps/Chromely/wiki/dotnet-cli-Starter-Template)
 
@@ -73,7 +93,7 @@ class Program
 dotnet new -i "Chromely.CefGlue.Win.Template::*"
 dotnet new chromelywin 
 dotnet restore
-dotnet chromelycef.dll download v66 --cpu=x64 --dest="bin\Debug\netcoreapp2.1"
+dotnet chromelycef.dll download v70 --cpu=x64 --dest="bin\Debug\netcoreapp2.1"
 dotnet build
 dotnet run 
 ````

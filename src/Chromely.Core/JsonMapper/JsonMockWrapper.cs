@@ -15,6 +15,7 @@
 using System;
 using System.Collections;
 using System.Collections.Specialized;
+#pragma warning disable 1591
 
 
 namespace LitJson

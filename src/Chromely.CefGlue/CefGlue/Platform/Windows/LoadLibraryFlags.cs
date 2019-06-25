@@ -1,8 +1,10 @@
-﻿namespace Xilium.CefGlue.Platform.Windows
+﻿// ReSharper disable InconsistentNaming
+// ReSharper disable UnusedMember.Global
+#pragma warning disable 1591
+// ReSharper disable once CheckNamespace
+namespace Xilium.CefGlue.Platform.Windows
 {
     using System;
-    using System.Collections.Generic;
-    using System.Text;
 
     [Flags]
     public enum LoadLibraryFlags : uint

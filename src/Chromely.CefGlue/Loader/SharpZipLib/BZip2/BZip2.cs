@@ -15,6 +15,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
         /// <param name="inStream">The readable stream containing data to decompress.</param>
         /// <param name="outStream">The output stream to receive the decompressed data.</param>
         /// <param name="isStreamOwner">Both streams are closed on completion if true.</param>
+        /// <param name="progressPercent">Callback action to provide progress feedback.</param>
         public static void Decompress(Stream inStream, Stream outStream, bool isStreamOwner, Action<int> progressPercent = null)
         {
             if (inStream == null || outStream == null)

@@ -1,4 +1,5 @@
-﻿namespace Xilium.CefGlue.Platform.Windows
+﻿#pragma warning disable 1591
+namespace Xilium.CefGlue.Platform.Windows
 {
     using System;
     using System.Collections.Generic;
