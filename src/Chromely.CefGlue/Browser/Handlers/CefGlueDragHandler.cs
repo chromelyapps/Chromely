@@ -18,7 +18,7 @@ namespace Chromely.CefGlue.Browser.Handlers
 
         public CefGlueDragHandler()
         {
-            DragRegion = new Region();
+            DragRegion = new Region(new Rectangle(0, 0, 0, 0));
         }
 
         protected override bool OnDragEnter(CefBrowser browser, CefDragData dragData, CefDragOperationsMask mask)
@@ -32,25 +32,18 @@ namespace Chromely.CefGlue.Browser.Handlers
             {
                 lock (DragRegion)
                 {
-                    DragRegion = null;
+                    DragRegion = new Region(new Rectangle(0, 0, 0, 0));
                     foreach (var region in regions)
                     {
                         var rect = new Rectangle(region.Bounds.X, region.Bounds.Y, region.Bounds.Width, region.Bounds.Height);
 
-                        if (DragRegion == null)
+                        if (region.Draggable)
                         {
-                            DragRegion = new Region(rect);
+                            DragRegion.Union(rect);
                         }
                         else
                         {
-                            if (region.Draggable)
-                            {
-                                DragRegion.Union(rect);
-                            }
-                            else
-                            {
-                                DragRegion.Exclude(rect);
-                            }
+                            DragRegion.Exclude(rect);
                         }
                     }
                 }
