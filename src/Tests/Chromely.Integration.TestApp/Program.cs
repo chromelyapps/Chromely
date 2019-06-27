@@ -56,6 +56,8 @@ namespace Chromely.Integration.TestApp
                 .Create()
                 .WithDebuggingMode(true)
                 .WithLoadingCefBinariesIfNotFound(true)
+                .WithSilentCefBinariesLoading(true)
+                //.WithFramelessHost()
                 .RegisterEventHandler<ConsoleMessageEventArgs>(CefEventKey.ConsoleMessage, OnWebBrowserConsoleMessage)
                 .WithAppArgs(args)
                 .WithHostSize(1000, 600)
@@ -85,6 +87,8 @@ namespace Chromely.Integration.TestApp
             _startupTimer.Stop();
             CiTrace("Content", "Loaded");
             CiTrace("StartupMs", _startupTimer.ElapsedMilliseconds.ToString());
+
+            if (Debugger.IsAttached) return;
 
             Task.Run(async () =>
             {
