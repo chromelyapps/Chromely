@@ -22,6 +22,22 @@ namespace Chromely.CefGlue.Browser.Handlers
     /// </summary>
     public class CefGlueBrowserProcessHandler : CefBrowserProcessHandler
     {
+        private readonly ChromelyConfiguration _hostConfig;
+
+        /// <summary>
+        /// The constructor
+        /// </summary>
+        /// <param name="hostConfig">Host configruation</param>
+        public CefGlueBrowserProcessHandler(ChromelyConfiguration hostConfig)
+        {
+            _hostConfig = hostConfig;
+        }
+
+        /// <summary>
+        /// Host configuration
+        /// </summary>
+        public ChromelyConfiguration HostConfig => _hostConfig;
+
         /// <summary>
         /// The on before child process launch.
         /// </summary>
@@ -34,7 +50,7 @@ namespace Chromely.CefGlue.Browser.Handlers
             commandLine.AppendSwitch(SubprocessArguments.HostProcessIdArgument, Process.GetCurrentProcess().Id.ToString());
             commandLine.AppendSwitch(SubprocessArguments.ExitIfParentProcessClosed, "1");
 
-            var schemeHandlerObjs = IoC.GetAllInstances(typeof(ChromelySchemeHandler));
+            var schemeHandlerObjs = _hostConfig.IoCContainer.GetAllInstances(typeof(ChromelySchemeHandler));
             if (schemeHandlerObjs != null)
             {
                 var schemeHandlers = schemeHandlerObjs.ToList();
@@ -56,10 +72,10 @@ namespace Chromely.CefGlue.Browser.Handlers
             }
 
             // Get all custom command line argument switches
-            if (ChromelyConfiguration.Instance.CommandLineArgs != null)
+            if (_hostConfig.CommandLineArgs != null)
             {
                 var argument = string.Empty;
-                foreach (var commandArg in ChromelyConfiguration.Instance.CommandLineArgs)
+                foreach (var commandArg in _hostConfig.CommandLineArgs)
                 {
                     if (commandArg.Item3)
                     {
@@ -89,7 +105,7 @@ namespace Chromely.CefGlue.Browser.Handlers
             commandLine.AppendSwitch("disable-web-security");
             commandLine.AppendSwitch("ignore-certificate-errors");
 
-            if (ChromelyConfiguration.Instance.DebuggingMode)
+            if (_hostConfig.DebuggingMode)
             {
                 Console.WriteLine("On CefGlue child process launch arguments:");
                 Console.WriteLine(commandLine.ToString());

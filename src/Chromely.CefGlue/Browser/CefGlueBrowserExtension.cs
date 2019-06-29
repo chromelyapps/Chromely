@@ -40,9 +40,9 @@ namespace Chromely.CefGlue.Browser
                     var keyStr = enumKey.EnumToString();
                     try
                     {
-                        if (IoC.IsRegistered(service, keyStr))
+                        if (browser.HostConfig.IoCContainer.IsRegistered(service, keyStr))
                         {
-                            instance = IoC.GetInstance(service, keyStr);
+                            instance = browser.HostConfig.IoCContainer.GetInstance(service, keyStr);
                         }
                     }
                     catch (Exception exception)

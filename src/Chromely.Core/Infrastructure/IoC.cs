@@ -16,6 +16,7 @@ namespace Chromely.Core.Infrastructure
     /// <summary>
     /// Global IOC container implementation.
     /// </summary>
+    [Obsolete("Use singletion IoC container on host configuration instead.")]
     public static class IoC
     {
         /// <summary>
@@ -228,6 +229,21 @@ namespace Chromely.Core.Infrastructure
         public static TService GetInstance<TService>(string key)
         {
             return (_container != null) ? _container.GetInstance<TService>(key) : default(TService);
+        }
+
+        /// <summary>
+        /// The get instance.
+        /// </summary>
+        /// <param name="container">The container</param>
+        /// <typeparam name="TService">
+        /// Service type.
+        /// </typeparam>
+        /// <returns>
+        /// Collection of TService objects to return.
+        /// </returns>
+        public static TService GetInstance<TService>(this IChromelyContainer container)
+        {
+            return container.GetInstance<TService>(typeof(TService).FullName);
         }
 
         /// <summary>

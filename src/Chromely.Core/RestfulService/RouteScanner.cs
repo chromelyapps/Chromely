@@ -26,6 +26,7 @@ namespace Chromely.Core.RestfulService
         /// Gets or sets the _assembly.
         /// </summary>
         private readonly Assembly _assembly;
+        private readonly IChromelyContainer _container;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RouteScanner"/> class.
@@ -33,9 +34,20 @@ namespace Chromely.Core.RestfulService
         /// <param name="assembly">
         /// The assembly.
         /// </param>
-        public RouteScanner(Assembly assembly)
+        [Obsolete("Use ioc overload with IoC container")]
+        public RouteScanner(Assembly assembly) : this(assembly, IoC.Container) { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RouteScanner"/> class.
+        /// </summary>
+        /// <param name="assembly">
+        /// The assembly.
+        /// </param>
+        /// <param name="container">IoC container that used to resolve routs</param>
+        public RouteScanner(Assembly assembly, IChromelyContainer container)
         {
             _assembly = assembly;
+            _container = container;
         }
 
         /// <summary>
@@ -59,7 +71,7 @@ namespace Chromely.Core.RestfulService
                 {
                     if (type.BaseType == typeof(ChromelyController))
                     {
-                        var instance = ChromelyControllerFactory.CreateControllerInstance(type);
+                        var instance = this._container.CreateControllerInstance(type);
                         var currentRouteDictionary = instance.RouteDictionary;
 
                         // Merge with return route dictionary

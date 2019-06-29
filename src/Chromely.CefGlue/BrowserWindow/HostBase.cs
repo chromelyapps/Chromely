@@ -264,9 +264,9 @@ namespace Chromely.CefGlue.BrowserWindow
             {
                 if (!assembly.IsScanned)
                 {
-                    var scanner = new RouteScanner(assembly.Assembly);
+                    var scanner = new RouteScanner(assembly.Assembly, HostConfig.IoCContainer);
                     var currentRouteDictionary = scanner.Scan();
-                    ServiceRouteProvider.MergeRoutes(currentRouteDictionary);
+                    this.HostConfig.IoCContainer.MergeRoutes(currentRouteDictionary);
 
                     assembly.IsScanned = true;
                 }
@@ -464,7 +464,7 @@ namespace Chromely.CefGlue.BrowserWindow
         private void RegisterSchemeHandlers()
         {
             // Register scheme handlers
-            var schemeHandlerObjs = IoC.GetAllInstances(typeof(ChromelySchemeHandler));
+            var schemeHandlerObjs = this.HostConfig.IoCContainer.GetAllInstances(typeof(ChromelySchemeHandler));
             if (schemeHandlerObjs != null)
             {
                 var schemeHandlers = schemeHandlerObjs.ToList();
@@ -505,10 +505,10 @@ namespace Chromely.CefGlue.BrowserWindow
             }
 
             BrowserMessageRouter = new CefMessageRouterBrowserSide(new CefMessageRouterConfig());
-            IoC.RegisterInstance(typeof(CefMessageRouterBrowserSide).FullName, BrowserMessageRouter);
+            this.HostConfig.IoCContainer.RegisterInstance(typeof(CefMessageRouterBrowserSide).FullName, BrowserMessageRouter);
 
             // Register message router handlers
-            var messageRouterHandlers = IoC.GetAllInstances(typeof(ChromelyMessageRouter)).ToList();
+            var messageRouterHandlers = this.HostConfig.IoCContainer.GetAllInstances(typeof(ChromelyMessageRouter)).ToList();
             if (messageRouterHandlers.Any())
             {
                 var routerHandlers = messageRouterHandlers.ToList();

@@ -25,22 +25,23 @@ namespace Chromely.Core.Tests.Controller
             const string TestRoute = "/scannercontroller/get2";
             
             var test = new TestDependency();
-            IoC.RegisterInstance<ITestDependency>(nameof(ITestDependency), test);
+            var container = IoC.Container;
+            container.RegisterInstance<ITestDependency>(nameof(ITestDependency), test);
 
             var logger = new TestLogger(); 
-            IoC.RegisterInstance<IChromelyLogger>(nameof(IChromelyLogger), logger);
+            container.RegisterInstance<IChromelyLogger>(nameof(IChromelyLogger), logger);
 
-            var scanner = new RouteScanner(Assembly.GetExecutingAssembly());
+            var scanner = new RouteScanner(Assembly.GetExecutingAssembly(), container);
             var routes = scanner.Scan();
             foreach (var route in routes)
             {
-                ServiceRouteProvider.AddRoute(route.Key, route.Value);
+                container.AddRoute(route.Key, route.Value);
             }
             
             var request = new ChromelyRequest(new RoutePath(Method.GET, TestRoute), null, null);
 
             var routePath = new RoutePath(Method.GET, TestRoute);
-            var get2 = ServiceRouteProvider.GetRoute(routePath);
+            var get2 = container.GetRoute(routePath);
             var getResponse = get2.Invoke(request);
 
             Assert.Equal(TestDependency.TestDependencyResponse, getResponse.Data.ToString());

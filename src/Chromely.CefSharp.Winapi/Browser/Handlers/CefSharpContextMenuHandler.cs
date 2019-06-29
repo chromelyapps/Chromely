@@ -35,9 +35,9 @@ namespace Chromely.CefSharp.Winapi.Browser.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="CefSharpContextMenuHandler"/> class.
         /// </summary>
-        public CefSharpContextMenuHandler()
+        public CefSharpContextMenuHandler(bool debuggingMode)
         {
-            debugging = ChromelyConfiguration.Instance.DebuggingMode;
+            this.debugging = debuggingMode;
         }
 
         /// <summary>

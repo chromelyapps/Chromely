@@ -22,10 +22,6 @@ namespace Chromely.CefGlue.Browser
     /// </summary>
     public class CefGlueBrowser
     {
-        /// <summary>
-        /// The host config.
-        /// </summary>
-        private readonly ChromelyConfiguration _hostConfig;
 
         /// <summary>
         /// The CefBrowserSettings object.
@@ -57,7 +53,7 @@ namespace Chromely.CefGlue.Browser
         public CefGlueBrowser(object owner, ChromelyConfiguration hostConfig, CefBrowserSettings settings)
         {
             Owner = owner;
-            _hostConfig = hostConfig;
+            HostConfig = hostConfig;
             _settings = settings;
             StartUrl = hostConfig.StartUrl;
         }
@@ -136,25 +132,25 @@ namespace Chromely.CefGlue.Browser
 
         #endregion Events Handling Properties
 
-        /// <summary>
-        /// Gets the browser core.
-        /// </summary>
-        public static CefGlueBrowser BrowserCore
-        {
-            get
-            {
-                if (IoC.IsRegistered(typeof(CefGlueBrowser), typeof(CefGlueBrowser).FullName))
-                {
-                    var instance = IoC.GetInstance(typeof(CefGlueBrowser), typeof(CefGlueBrowser).FullName);
-                    if (instance is CefGlueBrowser browser)
-                    {
-                        return browser;
-                    }
-                }
+        ///// <summary>
+        ///// Gets the browser core.
+        ///// </summary>
+        //public static CefGlueBrowser BrowserCore
+        //{
+        //    get
+        //    {
+        //        if (IoC.IsRegistered(typeof(CefGlueBrowser), typeof(CefGlueBrowser).FullName))
+        //        {
+        //            var instance = IoC.GetInstance(typeof(CefGlueBrowser), typeof(CefGlueBrowser).FullName);
+        //            if (instance is CefGlueBrowser browser)
+        //            {
+        //                return browser;
+        //            }
+        //        }
 
-                return null;
-            }
-        }
+        //        return null;
+        //    }
+        //}
 
         /// <summary>
         /// Gets the owner.
@@ -182,6 +178,11 @@ namespace Chromely.CefGlue.Browser
         public CefBrowser CefBrowser { get; private set; }
 
         /// <summary>
+        /// Browser host configuration
+        /// </summary>
+        public ChromelyConfiguration HostConfig { get; }
+
+        /// <summary>
         /// The create.
         /// </summary>
         /// <param name="windowInfo">
@@ -191,8 +192,8 @@ namespace Chromely.CefGlue.Browser
         {
             if (_client == null)
             {
-                IoC.RegisterInstance(typeof(CefGlueBrowser), typeof(CefGlueBrowser).FullName, this);
-                _client = new CefGlueClient(CefGlueClientParams.Create(this));
+                this.HostConfig.IoCContainer.RegisterInstance(typeof(CefGlueBrowser), typeof(CefGlueBrowser).FullName, this);
+                _client = new CefGlueClient(CefGlueClientParams.Create(this, this.HostConfig));
             }
             if (_settings == null)
             {
@@ -254,7 +255,7 @@ namespace Chromely.CefGlue.Browser
 
             // Register browser 
             CefGlueFrameHandler frameHandler = new CefGlueFrameHandler(browser);
-            IoC.RegisterInstance(typeof(CefGlueFrameHandler), typeof(CefGlueFrameHandler).FullName, frameHandler);
+            this.HostConfig.IoCContainer.RegisterInstance(typeof(CefGlueFrameHandler), typeof(CefGlueFrameHandler).FullName, frameHandler);
 
             StartWebsocket();
             Created?.Invoke(this, EventArgs.Empty);
@@ -425,9 +426,9 @@ namespace Chromely.CefGlue.Browser
         {
             try
             {
-                if (_hostConfig.StartWebSocket)
+                if (HostConfig.StartWebSocket)
                 {
-                    WebsocketServerRunner.StartServer(_hostConfig.WebsocketAddress, _hostConfig.WebsocketPort);
+                    WebsocketServerRunner.StartServer(HostConfig, HostConfig.WebsocketAddress, HostConfig.WebsocketPort);
                     _websocketStarted = true;
                 }
             }

@@ -65,42 +65,16 @@ namespace Chromely.CefGlue
         private static readonly object ObjLock8 = new object();
 
         /// <summary>
-        /// The cefserver.
-        /// </summary>
-        private static CefServer cefserver;
-
-        /// <summary>
-        /// Gets the browser.
-        /// </summary>
-        private static CefServer Server
-        {
-            get
-            {
-                if (cefserver != null)
-                {
-                    return cefserver;
-                }
-
-                var server = IoC.GetInstance<CefServer>(typeof(CefServer).FullName);
-                if (server != null)
-                {
-                    cefserver = server;
-                }
-
-                return server;
-            }
-        }
-
-        /// <summary>
         /// The send.
         /// </summary>
+        /// <param name="server">The Cef server</param>
         /// <param name="clientName">
         /// The client name.
         /// </param>
         /// <param name="response">
         /// The response.
         /// </param>
-        public static void Send(string clientName, ChromelyResponse response)
+        public static void Send(this CefServer server, string clientName, ChromelyResponse response)
         {
             lock (ObjLock1)
             {
@@ -116,13 +90,13 @@ namespace Chromely.CefGlue
                         return;
                     }
 
-                    if (Server == null)
+                    if (server == null)
                     {
                         return;
                     }
 
                     var jsonResponse = JsonMapper.ToJson(response);
-                    SendMessage(clientName, jsonResponse);
+                    SendMessage(server, clientName, jsonResponse);
                 }
                 catch (Exception exception)
                 {
@@ -134,13 +108,14 @@ namespace Chromely.CefGlue
         /// <summary>
         /// The send.
         /// </summary>
+        /// <param name="server">The Cef Server</param>
         /// <param name="connectionId">
         /// The connection id.
         /// </param>
         /// <param name="response">
         /// The response.
         /// </param>
-        public static void Send(int connectionId, ChromelyResponse response)
+        public static void Send(this CefServer server, int connectionId, ChromelyResponse response)
         {
             lock (ObjLock2)
             {
@@ -156,13 +131,13 @@ namespace Chromely.CefGlue
                         return;
                     }
 
-                    if (Server == null)
+                    if (server == null)
                     {
                         return;
                     }
 
                     var jsonResponse = JsonMapper.ToJson(response);
-                    SendMessage(connectionId, jsonResponse);
+                    SendMessage(server, connectionId, jsonResponse);
                 }
                 catch (Exception exception)
                 {
@@ -174,13 +149,14 @@ namespace Chromely.CefGlue
         /// <summary>
         /// The send.
         /// </summary>
+        /// <param name="server">The CefServer</param>
         /// <param name="clientName">
         /// The client name.
         /// </param>
         /// <param name="data">
         /// The data.
         /// </param>
-        public static void Send(string clientName, string data)
+        public static void Send(this CefServer server, string clientName, string data)
         {
             lock (ObjLock3)
             {
@@ -196,12 +172,12 @@ namespace Chromely.CefGlue
                         return;
                     }
 
-                    if (Server == null)
+                    if (server == null)
                     {
                         return;
                     }
 
-                    SendMessage(clientName, data);
+                    SendMessage(server, clientName, data);
                 }
                 catch (Exception exception)
                 {
@@ -213,13 +189,14 @@ namespace Chromely.CefGlue
         /// <summary>
         /// The send.
         /// </summary>
+        /// <param name="server">The CefServer</param>
         /// <param name="connectionId">
         /// The connection id.
         /// </param>
         /// <param name="data">
         /// The data.
         /// </param>
-        public static void Send(int connectionId, string data)
+        public static void Send(this CefServer server, int connectionId, string data)
         {
             lock (ObjLock4)
             {
@@ -235,12 +212,12 @@ namespace Chromely.CefGlue
                         return;
                     }
 
-                    if (Server == null)
+                    if (server == null)
                     {
                         return;
                     }
 
-                    SendMessage(connectionId, data);
+                    SendMessage(server, connectionId, data);
                 }
                 catch (Exception exception)
                 {
@@ -252,6 +229,7 @@ namespace Chromely.CefGlue
         /// <summary>
         /// The send.
         /// </summary>
+        /// <param name="server">The CefServer</param>
         /// <param name="connectionId">
         /// The connection id.
         /// </param>
@@ -261,7 +239,7 @@ namespace Chromely.CefGlue
         /// <param name="dataSize">
         /// The data size.
         /// </param>
-        public static void Send(int connectionId, IntPtr data, long dataSize)
+        public static void Send(this CefServer server, int connectionId, IntPtr data, long dataSize)
         {
             lock (ObjLock5)
             {
@@ -272,12 +250,12 @@ namespace Chromely.CefGlue
                         return;
                     }
 
-                    if (Server == null)
+                    if (server == null)
                     {
                         return;
                     }
 
-                    SendMessage(connectionId, data, dataSize);
+                    SendMessage(server, connectionId, data, dataSize);
                 }
                 catch (Exception exception)
                 {
@@ -289,13 +267,14 @@ namespace Chromely.CefGlue
         /// <summary>
         /// The broadcast.
         /// </summary>
+        /// <param name="server">The CefServer</param>
         /// <param name="connectionId">
         /// The connection id.
         /// </param>
         /// <param name="response">
         /// The response.
         /// </param>
-        public static void Broadcast(int connectionId, ChromelyResponse response)
+        public static void Broadcast(this CefServer server, int connectionId, ChromelyResponse response)
         {
             lock (ObjLock6)
             {
@@ -311,13 +290,13 @@ namespace Chromely.CefGlue
                         return;
                     }
 
-                    if (Server == null)
+                    if (server == null)
                     {
                         return;
                     }
 
                     var jsonResponse = JsonMapper.ToJson(response);
-                    BroadcastMessage(connectionId, jsonResponse);
+                    BroadcastMessage(server, connectionId, jsonResponse);
                 }
                 catch (Exception exception)
                 {
@@ -329,13 +308,14 @@ namespace Chromely.CefGlue
         /// <summary>
         /// The broadcast.
         /// </summary>
+        /// <param name="server">The CefServer</param>
         /// <param name="connectionId">
         /// The connection id.
         /// </param>
         /// <param name="data">
         /// The data.
         /// </param>
-        public static void Broadcast(int connectionId, string data)
+        public static void Broadcast(this CefServer server, int connectionId, string data)
         {
             lock (ObjLock7)
             {
@@ -351,7 +331,7 @@ namespace Chromely.CefGlue
                         return;
                     }
 
-                    BroadcastMessage(connectionId, data);
+                    BroadcastMessage(server, connectionId, data);
                 }
                 catch (Exception exception)
                 {
@@ -363,6 +343,7 @@ namespace Chromely.CefGlue
         /// <summary>
         /// The broadcast.
         /// </summary>
+        /// <param name="server">The CefServer</param>
         /// <param name="connectionId">
         /// The connection id.
         /// </param>
@@ -372,7 +353,7 @@ namespace Chromely.CefGlue
         /// <param name="dataSize">
         /// The data size.
         /// </param>
-        public static void Broadcast(int connectionId, IntPtr data, long dataSize)
+        public static void Broadcast(this CefServer server, int connectionId, IntPtr data, long dataSize)
         {
             lock (ObjLock8)
             {
@@ -383,7 +364,7 @@ namespace Chromely.CefGlue
                         return;
                     }
 
-                    BroadcastMessage(connectionId, data, dataSize);
+                    BroadcastMessage(server, connectionId, data, dataSize);
                 }
                 catch (Exception exception)
                 {
@@ -395,13 +376,14 @@ namespace Chromely.CefGlue
         /// <summary>
         /// The send message.
         /// </summary>
+        /// <param name="server">The CefServer</param>
         /// <param name="clientName">
         /// The client name.
         /// </param>
         /// <param name="data">
         /// The data.
         /// </param>
-        private static void SendMessage(string clientName, string data)
+        private static void SendMessage(CefServer server, string clientName, string data)
         {
             Task.Run(() =>
             {
@@ -420,7 +402,7 @@ namespace Chromely.CefGlue
                         return;
                     }
 
-                    if (Server == null)
+                    if (server == null)
                     {
                         return;
                     }
@@ -429,7 +411,7 @@ namespace Chromely.CefGlue
                     outIntPtr = Marshal.AllocHGlobal(outputByte.Length);
                     Marshal.Copy(outputByte, 0, outIntPtr, outputByte.Length);
 
-                    Server.SendWebSocketMessage(connectionId, outIntPtr, outputByte.Length);
+                    server.SendWebSocketMessage(connectionId, outIntPtr, outputByte.Length);
                 }
                 catch (Exception exception)
                 {
@@ -446,13 +428,14 @@ namespace Chromely.CefGlue
         /// <summary>
         /// The send message.
         /// </summary>
+        /// <param name="server">The CefServer</param>
         /// <param name="connectionId">
         /// The connection id.
         /// </param>
         /// <param name="data">
         /// The data.
         /// </param>
-        private static void SendMessage(int connectionId, string data)
+        private static void SendMessage(CefServer server, int connectionId, string data)
         {
             Task.Run(() =>
             {
@@ -465,7 +448,7 @@ namespace Chromely.CefGlue
                         return;
                     }
 
-                    if (Server == null)
+                    if (server == null)
                     {
                         return;
                     }
@@ -474,7 +457,7 @@ namespace Chromely.CefGlue
                     outIntPtr = Marshal.AllocHGlobal(outputByte.Length);
                     Marshal.Copy(outputByte, 0, outIntPtr, outputByte.Length);
 
-                    Server.SendWebSocketMessage(connectionId, outIntPtr, outputByte.Length);
+                    server.SendWebSocketMessage(connectionId, outIntPtr, outputByte.Length);
                 }
                 catch (Exception exception)
                 {
@@ -491,6 +474,7 @@ namespace Chromely.CefGlue
         /// <summary>
         /// The send message.
         /// </summary>
+        /// <param name="server">The CefServer</param>
         /// <param name="connectionId">
         /// The connection id.
         /// </param>
@@ -500,19 +484,19 @@ namespace Chromely.CefGlue
         /// <param name="dataSize">
         /// The data size.
         /// </param>
-        private static void SendMessage(int connectionId, IntPtr data, long dataSize)
+        private static void SendMessage(CefServer server, int connectionId, IntPtr data, long dataSize)
         {
             Task.Run(() =>
                 {
                     try
                     {
 
-                        if (Server == null)
+                        if (server == null)
                         {
                             return;
                         }
 
-                        Server.SendWebSocketMessage(connectionId, data, dataSize);
+                        server.SendWebSocketMessage(connectionId, data, dataSize);
                     }
                     catch (Exception exception)
                     {
@@ -524,13 +508,14 @@ namespace Chromely.CefGlue
         /// <summary>
         /// The broadcast message.
         /// </summary>
+        /// <param name="server">The CefServer</param>
         /// <param name="connectionId">
         /// The connection id.
         /// </param>
         /// <param name="data">
         /// The data.
         /// </param>
-        private static void BroadcastMessage(int connectionId, string data)
+        private static void BroadcastMessage(CefServer server, int connectionId, string data)
         {
             Task.Run(() =>
             {
@@ -559,7 +544,7 @@ namespace Chromely.CefGlue
                         return;
                     }
 
-                    if (Server == null)
+                    if (server == null)
                     {
                         return;
                     }
@@ -572,7 +557,7 @@ namespace Chromely.CefGlue
                     {
                         if (id != connectionId)
                         {
-                            Server.SendWebSocketMessage(id, outIntPtr, outputByte.Length);
+                            server.SendWebSocketMessage(id, outIntPtr, outputByte.Length);
                         }
                     }
                 }
@@ -591,6 +576,7 @@ namespace Chromely.CefGlue
         /// <summary>
         /// The broadcast message.
         /// </summary>
+        /// <param name="server">The CefServer</param>
         /// <param name="connectionId">
         /// The connection id.
         /// </param>
@@ -600,7 +586,7 @@ namespace Chromely.CefGlue
         /// <param name="dataSize">
         /// The data size.
         /// </param>
-        private static void BroadcastMessage(int connectionId, IntPtr data, long dataSize)
+        private static void BroadcastMessage(CefServer server, int connectionId, IntPtr data, long dataSize)
         {
             Task.Run(() =>
                 {
@@ -622,7 +608,7 @@ namespace Chromely.CefGlue
                             return;
                         }
 
-                        if (Server == null)
+                        if (server == null)
                         {
                             return;
                         }
@@ -631,7 +617,7 @@ namespace Chromely.CefGlue
                         {
                             if (id != connectionId)
                             {
-                                Server.SendWebSocketMessage(id, data, dataSize);
+                                server.SendWebSocketMessage(id, data, dataSize);
                             }
                         }
                     }

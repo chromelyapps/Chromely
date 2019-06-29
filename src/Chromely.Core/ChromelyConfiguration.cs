@@ -31,18 +31,18 @@ namespace Chromely.Core
     // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
     public class ChromelyConfiguration
     {
-        /// <summary>
-        /// The instance.
-        /// </summary>
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1311:StaticReadonlyFieldsMustBeginWithUpperCaseLetter", Justification = "Reviewed. Suppression is OK here.")]
-        // ReSharper disable once InconsistentNaming
-        private static readonly ChromelyConfiguration instance = new ChromelyConfiguration();
+        ///// <summary>
+        ///// The instance.
+        ///// </summary>
+        //[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1311:StaticReadonlyFieldsMustBeginWithUpperCaseLetter", Justification = "Reviewed. Suppression is OK here.")]
+        //// ReSharper disable once InconsistentNaming
+        //private static readonly ChromelyConfiguration instance = new ChromelyConfiguration();
 
         /// <summary>
         /// Prevents a default instance of the <see cref="ChromelyConfiguration"/> class from being created.
         /// </summary>
         [SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1201:ElementsMustAppearInTheCorrectOrder", Justification = "Reviewed. Suppression is OK here.")]
-        private ChromelyConfiguration()
+        private ChromelyConfiguration(IChromelyContainer container)
         {
             HostApi = ChromelyRuntime.DefaultHostApi;
             LoadCefBinariesIfNotFound = true;
@@ -67,18 +67,23 @@ namespace Chromely.Core
 #endif
         }
 
+        ///// <summary>
+        ///// Gets the instance.
+        ///// </summary>
+        //public static ChromelyConfiguration Instance
+        //{
+        //    // ReSharper disable once ArrangeAccessorOwnerBody
+        //    get
+        //    {
+        //        // ReSharper disable once ArrangeAccessorOwnerBody
+        //        return instance;
+        //    }
+        //}
+
         /// <summary>
-        /// Gets the instance.
+        /// The IoC container used by this configuration
         /// </summary>
-        public static ChromelyConfiguration Instance
-        {
-            // ReSharper disable once ArrangeAccessorOwnerBody
-            get
-            {
-                // ReSharper disable once ArrangeAccessorOwnerBody
-                return instance;
-            }
-        }
+        public IChromelyContainer IoCContainer { get; private set; }
 
         /// <summary>
         /// Gets or sets the desired host interface technology.
@@ -219,10 +224,16 @@ namespace Chromely.Core
         /// </returns>
         public static ChromelyConfiguration Create(IChromelyContainer container = null)
         {
-            if (container != null)
+            if (container==null)
             {
-                IoC.Container = container;
+                container = IoC.Container;
             }
+            var config = new ChromelyConfiguration(container);
+
+            //if (container != null)
+            //{
+            //    IoC1.Container = container;
+            //}
 
             switch (ChromelyRuntime.Platform)
             {
@@ -230,7 +241,7 @@ namespace Chromely.Core
                     //TODO: check and define requirements for Mac OS - for now use linux settings
                 
                 case ChromelyPlatform.Linux:
-                    return Instance
+                    return config
                         .WithCustomSetting(CefSettingKeys.MultiThreadedMessageLoop, false)
                         .WithCustomSetting(CefSettingKeys.SingleProcess, true)
                         .WithCustomSetting(CefSettingKeys.NoSandbox, true)
@@ -243,7 +254,7 @@ namespace Chromely.Core
                         .WithCommandLineArg("no-zygote", "1");
 
                 case ChromelyPlatform.Windows:
-                    return Instance;
+                    return config;
 
                 default:
                     throw new PlatformNotSupportedException();
@@ -543,7 +554,7 @@ namespace Chromely.Core
         public ChromelyConfiguration UseDefaultLogger(string logFile = null, bool logToConsole = true, int rollingMaxMbFileSize = 10)
         {
             var simpleLogger = new SimpleLogger(logFile, logToConsole, rollingMaxMbFileSize);
-            IoC.RegisterInstance(typeof(IChromelyLogger), typeof(Log).FullName, simpleLogger);
+            this.IoCContainer.RegisterInstance(typeof(IChromelyLogger), typeof(Log).FullName, simpleLogger);
             return this;
         }
 
@@ -848,7 +859,7 @@ namespace Chromely.Core
         public virtual ChromelyConfiguration RegisterEventHandler<T>(CefEventKey key, ChromelyEventHandler<T> handler)
         {
             var service = CefEventHandlerFakeTypes.GetHandlerType(key);
-            IoC.RegisterInstance(service, handler.Key, handler);
+            this.IoCContainer.RegisterInstance(service, handler.Key, handler);
             return this;
         }
 
@@ -868,7 +879,7 @@ namespace Chromely.Core
         {
             var service = CefCustomHandlerFakeTypes.GetHandlerType(key);
             var keyStr = key.EnumToString();
-            IoC.RegisterPerRequest(service, keyStr, implementation);
+            this.IoCContainer.RegisterPerRequest(service, keyStr, implementation);
 
             return this;
         }
@@ -908,7 +919,7 @@ namespace Chromely.Core
             {
                 var scheme = new UrlScheme(schemeHandler.SchemeName, schemeHandler.DomainName, false);
                 UrlSchemeProvider.RegisterScheme(scheme);
-                IoC.RegisterInstance(typeof(ChromelySchemeHandler), schemeHandler.Key, schemeHandler);
+                this.IoCContainer.RegisterInstance(typeof(ChromelySchemeHandler), schemeHandler.Key, schemeHandler);
             }
 
             return this;

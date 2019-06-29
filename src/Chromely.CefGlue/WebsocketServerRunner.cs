@@ -11,6 +11,7 @@ using System;
 using Chromely.CefGlue.Browser.ServerHandlers;
 using Chromely.Core;
 using Chromely.Core.Infrastructure;
+using Xilium.CefGlue;
 
 namespace Chromely.CefGlue
 {
@@ -50,35 +51,36 @@ namespace Chromely.CefGlue
             }
         }
 
-        /// <summary>
-        /// The start server.
-        /// </summary>
-        public static void StartServer()
-        {
-            StartServer(0);
-        }
+        ///// <summary>
+        ///// The start server.
+        ///// </summary>
+        //public static void StartServer()
+        //{
+        //    StartServer(0);
+        //}
+
+        ///// <summary>
+        ///// The start server.
+        ///// </summary>
+        ///// <param name="port">
+        ///// The port.
+        ///// </param>
+        //public static void StartServer(int port)
+        //{
+        //    StartServer(string.Empty, port);
+        //}
 
         /// <summary>
         /// The start server.
         /// </summary>
-        /// <param name="port">
-        /// The port.
-        /// </param>
-        public static void StartServer(int port)
-        {
-            StartServer(string.Empty, port);
-        }
-
-        /// <summary>
-        /// The start server.
-        /// </summary>
+        /// <param name="config">The host configuration</param>
         /// <param name="address">
         /// The address.
         /// </param>
         /// <param name="port">
         /// The port.
         /// </param>
-        public static void StartServer(string address, int port)
+        public static void StartServer(ChromelyConfiguration config, string address, int port)
         {
             try
             {
@@ -92,11 +94,11 @@ namespace Chromely.CefGlue
                     return;
                 }
 
-                var sockeHandler = IoC.GetInstance<IChromelyWebsocketHandler>(typeof(IChromelyWebsocketHandler).FullName)
-                                   ?? new CefGlueWebsocketHandler();
+                var socketHandler = config.IoCContainer.GetInstance<IChromelyWebsocketHandler>(typeof(IChromelyWebsocketHandler).FullName)
+                                   ?? new CefGlueWebsocketHandler(config.IoCContainer.GetInstance<CefServer>());
 
                 ConnectionNameMapper.Clear();
-                _serverHandler = new CefGlueServerHandler(sockeHandler);
+                _serverHandler = new CefGlueServerHandler(socketHandler, config.IoCContainer);
                 _serverHandler.StartServer(Address, Port, OnStartServerComplete);
             }
             catch (Exception exception)

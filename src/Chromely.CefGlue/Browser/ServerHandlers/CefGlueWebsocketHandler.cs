@@ -16,6 +16,7 @@ using Chromely.Core;
 using Chromely.Core.Infrastructure;
 using Chromely.Core.RestfulService;
 using LitJson;
+using Xilium.CefGlue;
 
 namespace Chromely.CefGlue.Browser.ServerHandlers
 {
@@ -24,6 +25,17 @@ namespace Chromely.CefGlue.Browser.ServerHandlers
     /// </summary>
     public class CefGlueWebsocketHandler : IChromelyWebsocketHandler
     {
+        private readonly CefServer _cefServer;
+
+        /// <summary>
+        /// The constructor
+        /// </summary>
+        /// <param name="cefServer"></param>
+        public CefGlueWebsocketHandler(CefServer cefServer)
+        {
+            _cefServer = cefServer;
+        }
+
         /// <summary>
         /// The on message.
         /// </summary>
@@ -55,22 +67,22 @@ namespace Chromely.CefGlue.Browser.ServerHandlers
                         switch (requestInfo.Type)
                         {
                             case MessageType.Echo:
-                                WebsocketMessageSender.Send(connectionId, requestInfo.Data);
+                                this._cefServer.Send(connectionId, requestInfo.Data);
                                 break;
                             case MessageType.TargetRecepient:
-                                WebsocketMessageSender.Send(requestInfo.TargetConnectionId, requestInfo.Data);
+                                this._cefServer.Send(requestInfo.TargetConnectionId, requestInfo.Data);
                                 break;
                             case MessageType.Broadcast:
-                                WebsocketMessageSender.Broadcast(connectionId, requestInfo.Data);
+                                this._cefServer.Broadcast(connectionId, requestInfo.Data);
                                 break;
                             case MessageType.ControllerAction:
                                 var jsonData = JsonMapper.ToObject<JsonData>(requestString);
                                 var request = new ChromelyRequest(jsonData);
                                 var response = RequestTaskRunner.Run(request);
-                                WebsocketMessageSender.Send(connectionId, response);
+                                this._cefServer.Send(connectionId, response);
                                 break;
                             default:
-                                WebsocketMessageSender.Send(connectionId, requestInfo.Data);
+                                this._cefServer.Send(connectionId, requestInfo.Data);
                                 break;
                         }
                     }
@@ -100,7 +112,7 @@ namespace Chromely.CefGlue.Browser.ServerHandlers
         /// </param>
         public void Send(int connectionId, IntPtr data, long dataSize)
         {
-            WebsocketMessageSender.Send(connectionId, data, dataSize);
+            this._cefServer.Send(connectionId, data, dataSize);
         }
 
         /// <summary>
@@ -114,7 +126,7 @@ namespace Chromely.CefGlue.Browser.ServerHandlers
         /// </param>
         public void Send(int connectionId, string data)
         {
-            WebsocketMessageSender.Send(connectionId, data);
+            this._cefServer.Send(connectionId, data);
         }
 
         /// <summary>
@@ -128,7 +140,7 @@ namespace Chromely.CefGlue.Browser.ServerHandlers
         /// </param>
         public void Send(int connectionId, ChromelyResponse response)
         {
-            WebsocketMessageSender.Send(connectionId, response);
+            this._cefServer.Send(connectionId, response);
         }
 
         /// <summary>
@@ -145,7 +157,7 @@ namespace Chromely.CefGlue.Browser.ServerHandlers
         /// </param>
         public void Broadcast(int connectionId, IntPtr data, long dataSize)
         {
-            WebsocketMessageSender.Broadcast(connectionId, data, dataSize);
+            this._cefServer.Broadcast(connectionId, data, dataSize);
         }
 
         /// <summary>
@@ -159,7 +171,7 @@ namespace Chromely.CefGlue.Browser.ServerHandlers
         /// </param>
         public void Broadcast(int connectionId, string data)
         {
-            WebsocketMessageSender.Broadcast(connectionId, data);
+            this._cefServer.Broadcast(connectionId, data);
         }
 
         /// <summary>
@@ -173,7 +185,7 @@ namespace Chromely.CefGlue.Browser.ServerHandlers
         /// </param>
         public void Broadcast(int connectionId, ChromelyResponse response)
         {
-            WebsocketMessageSender.Broadcast(connectionId, response);
+            this._cefServer.Broadcast(connectionId, response);
         }
     }
 }

@@ -7,6 +7,7 @@
 // </license>
 // ----------------------------------------------------------------------------------------------------------------------
 
+using Chromely.Core;
 using Chromely.Core.Infrastructure;
 using Xilium.CefGlue;
 using Xilium.CefGlue.Wrapper;
@@ -78,6 +79,9 @@ namespace Chromely.CefGlue.Browser
         /// </summary>
         private readonly CefFindHandler _findHandler;
 
+
+
+
         /// <summary>
         /// Initializes a new instance of the <see cref="CefGlueClient"/> class.
         /// </summary>
@@ -86,6 +90,7 @@ namespace Chromely.CefGlue.Browser
         /// </param>
         public CefGlueClient(CefGlueClientParams clientParams)
         {
+            Config = clientParams.Config;
             CoreBrowser = clientParams.Browser;
             _lifeSpanHandler = clientParams.LifeSpanHandler;
             _loadHandler = clientParams.LoadHandler;
@@ -105,6 +110,12 @@ namespace Chromely.CefGlue.Browser
         /// Gets the core browser.
         /// </summary>
         public CefGlueBrowser CoreBrowser { get; }
+
+        /// <summary>
+        /// The Chromely host config
+        /// </summary>
+        public ChromelyConfiguration Config { get; }
+
 
         /// <summary>
         /// The get life span handler.
@@ -255,7 +266,7 @@ namespace Chromely.CefGlue.Browser
         /// </returns>
         protected override bool OnProcessMessageReceived(CefBrowser browser, CefProcessId sourceProcess, CefProcessMessage message)
         {
-            var browserMessageRouter = IoC.GetInstance<CefMessageRouterBrowserSide>(typeof(CefMessageRouterBrowserSide).FullName);
+            var browserMessageRouter = this.Config.IoCContainer.GetInstance<CefMessageRouterBrowserSide>(typeof(CefMessageRouterBrowserSide).FullName);
             return browserMessageRouter?.OnProcessMessageReceived(browser, sourceProcess, message) ?? false;
         }
     }

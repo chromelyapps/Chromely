@@ -64,11 +64,11 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
         /// <summary>
         /// The run message loop.
         /// </summary>
-        public static void RunMessageLoop()
+        public virtual void RunMessageLoop()
         {
             while (User32Methods.GetMessage(out Message msg, IntPtr.Zero, 0, 0) != 0)
             {
-                if (ChromelyConfiguration.Instance.HostFrameless)
+                if (this._hostConfig.HostFrameless)
                 {
                     Cef.DoMessageLoopWork();
                 }
@@ -81,7 +81,7 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
         /// <summary>
         /// The exit.
         /// </summary>
-        public static void Exit()
+        public virtual void Exit()
         {
             User32Methods.PostQuitMessage(0);
         }

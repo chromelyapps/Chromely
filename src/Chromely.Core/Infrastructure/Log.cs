@@ -37,7 +37,7 @@ namespace Chromely.Core.Infrastructure
         {
             get
             {
-                var logger = IoC.GetInstance(typeof(IChromelyLogger), typeof(Log).FullName);
+                var logger = IoC.Container.GetInstance(typeof(IChromelyLogger), typeof(Log).FullName);
                 if (logger is IChromelyLogger chromelyLogger)
                 {
                     return chromelyLogger;

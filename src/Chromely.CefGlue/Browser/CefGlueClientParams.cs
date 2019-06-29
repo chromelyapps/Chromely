@@ -87,17 +87,25 @@ namespace Chromely.CefGlue.Browser
         public CefFindHandler FindHandler { get; set; }
 
         /// <summary>
+        /// The Chromely host config
+        /// </summary>
+        public ChromelyConfiguration Config { get; private set; }
+
+
+
+        /// <summary>
         /// The create.
         /// </summary>
         /// <param name="browser">
         /// The browser.
         /// </param>
+        /// <param name="config">Chromely engine config</param>
         /// <returns>
         /// The <see cref="CefGlueClientParams"/>.
         /// </returns>
-        public static CefGlueClientParams Create(CefGlueBrowser browser)
+        public static CefGlueClientParams Create(CefGlueBrowser browser, ChromelyConfiguration config)
         {
-            var clientParams = new CefGlueClientParams { Browser = browser };
+            var clientParams = new CefGlueClientParams { Browser = browser, Config = config };
 
             try
             {
@@ -109,9 +117,9 @@ namespace Chromely.CefGlue.Browser
                     var keyStr = enumKey.EnumToString();
                     try
                     {
-                        if (IoC.IsRegistered(service, keyStr))
+                        if (config.IoCContainer.IsRegistered(service, keyStr))
                         {
-                            instance = IoC.GetInstance(service, keyStr);
+                            instance = config.IoCContainer.GetInstance(service, keyStr);
                         }
                     }
                     catch (Exception exception)
@@ -128,7 +136,7 @@ namespace Chromely.CefGlue.Browser
                             }
                             else
                             {
-                                clientParams.LifeSpanHandler = new CefGlueLifeSpanHandler();
+                                clientParams.LifeSpanHandler = new CefGlueLifeSpanHandler(config.IoCContainer.GetInstance<CefGlueBrowser>());
                             }
 
                             break;
@@ -140,7 +148,7 @@ namespace Chromely.CefGlue.Browser
                             }
                             else
                             {
-                                clientParams.LoadHandler = new CefGlueLoadHandler();
+                                clientParams.LoadHandler = new CefGlueLoadHandler(config.IoCContainer.GetInstance<CefGlueBrowser>());
                             }
 
                             break;
@@ -152,7 +160,7 @@ namespace Chromely.CefGlue.Browser
                             }
                             else
                             {
-                                clientParams.RequestHandler = new CefGlueRequestHandler();
+                                clientParams.RequestHandler = new CefGlueRequestHandler(config.IoCContainer.GetInstance<CefGlueBrowser>());
                             }
 
                             break;
@@ -164,7 +172,7 @@ namespace Chromely.CefGlue.Browser
                             }
                             else
                             {
-                                clientParams.DisplayHandler = new CefGlueDisplayHandler();
+                                clientParams.DisplayHandler = new CefGlueDisplayHandler(config.IoCContainer.GetInstance<CefGlueBrowser>());
                             }
 
                             break;
@@ -176,7 +184,7 @@ namespace Chromely.CefGlue.Browser
                             }
                             else
                             {
-                                clientParams.ContextMenuHandler = new CefGlueContextMenuHandler();
+                                clientParams.ContextMenuHandler = new CefGlueContextMenuHandler(config.DebuggingMode);
                             }
 
                             break;
@@ -218,7 +226,7 @@ namespace Chromely.CefGlue.Browser
                             {
                                 clientParams.DragHandler = dragHandler;
                             }
-                            else if (ChromelyConfiguration.Instance.HostFrameless)
+                            else if (config.HostFrameless)
                             {
                                 clientParams.DragHandler = new CefGlueDragHandler();
                             }
@@ -250,5 +258,6 @@ namespace Chromely.CefGlue.Browser
 
             return clientParams;
         }
+
     }
 }

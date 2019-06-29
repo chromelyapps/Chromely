@@ -8,6 +8,7 @@
 // ----------------------------------------------------------------------------------------------------------------------
 
 using Chromely.CefGlue.Browser.FrameHandlers;
+using Chromely.Core;
 using Chromely.Core.Infrastructure;
 using Xilium.CefGlue;
 
@@ -24,50 +25,29 @@ namespace Chromely.CefGlue
         private static CefBrowser _browser;
 
         /// <summary>
-        /// Gets the browser.
-        /// </summary>
-        private static CefBrowser Browser
-        {
-            get
-            {
-                if (_browser != null)
-                {
-                    return _browser;
-                }
-
-                var cefGlueFrameHandler = IoC.GetInstance<CefGlueFrameHandler>(typeof(CefGlueFrameHandler).FullName);
-                if (cefGlueFrameHandler != null)
-                {
-                    _browser = cefGlueFrameHandler.Browser;
-                }
-
-                return _browser;
-            }
-        }
-
-        /// <summary>
         /// The get main frame.
         /// </summary>
         /// <returns>
         /// The <see cref="CefFrame"/>.
         /// </returns>
-        public static CefFrame GetMainFrame()
+        public static CefFrame GetMainFrame(this IChromelyContainer container)
         {
-            return Browser?.GetMainFrame();
+            return container.GetBrowser()?.GetMainFrame();
         }
 
         /// <summary>
         /// The get frame.
         /// </summary>
+        /// <param name="container"></param>
         /// <param name="name">
         /// The name.
         /// </param>
         /// <returns>
         /// The <see cref="CefFrame"/>.
         /// </returns>
-        public static CefFrame GetFrame(string name)
+        public static CefFrame GetFrame(this IChromelyContainer container, string name)
         {
-            return Browser?.GetFrame(name);
+            return container.GetBrowser()?.GetFrame(name);
         }
 
         /// <summary>
@@ -76,9 +56,20 @@ namespace Chromely.CefGlue
         /// <returns>
         /// The <see cref="CefBrowser"/>.
         /// </returns>
-        public static CefBrowser GetBrowser()
+        public static CefBrowser GetBrowser(this IChromelyContainer container)
         {
-            return Browser;
+            if (_browser != null)
+            {
+                return _browser;
+            }
+
+            var cefGlueFrameHandler = container.GetInstance<CefGlueFrameHandler>(typeof(CefGlueFrameHandler).FullName);
+            if (cefGlueFrameHandler != null)
+            {
+                _browser = cefGlueFrameHandler.Browser;
+            }
+
+            return _browser;
         }
     }
 }

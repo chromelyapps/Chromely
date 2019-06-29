@@ -105,7 +105,7 @@ namespace Chromely.CefGlue
         {
             if (messageRouterHandler != null)
             {
-                IoC.RegisterInstance(typeof(ChromelyMessageRouter), messageRouterHandler.Key, messageRouterHandler);
+                configuration.IoCContainer.RegisterInstance(typeof(ChromelyMessageRouter), messageRouterHandler.Key, messageRouterHandler);
             }
 
             return configuration;
@@ -141,13 +141,13 @@ namespace Chromely.CefGlue
             }
 
             // Remove handler if exists - only one handler is allowed.
-            var isHandlerRegistered = IoC.IsRegistered<IChromelyWebsocketHandler>(typeof(IChromelyWebsocketHandler).FullName);
+            var isHandlerRegistered = configuration.IoCContainer.IsRegistered<IChromelyWebsocketHandler>(typeof(IChromelyWebsocketHandler).FullName);
             if (isHandlerRegistered)
             {
-                IoC.UnregisterHandler<IChromelyWebsocketHandler>(typeof(IChromelyWebsocketHandler).FullName);
+                configuration.IoCContainer.UnregisterHandler<IChromelyWebsocketHandler>(typeof(IChromelyWebsocketHandler).FullName);
             }
 
-            IoC.RegisterInstance(typeof(IChromelyWebsocketHandler), typeof(IChromelyWebsocketHandler).FullName, socketHandler);
+            configuration.IoCContainer.RegisterInstance(typeof(IChromelyWebsocketHandler), typeof(IChromelyWebsocketHandler).FullName, socketHandler);
 
             configuration.WebsocketAddress = address;
             configuration.WebsocketPort = port;

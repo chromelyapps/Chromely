@@ -24,13 +24,26 @@ namespace Chromely.Core.RestfulService
         /// </summary>
         /// <param name="type">Controller type to be created.</param>
         /// <returns>Instance reference or null if failed.</returns>
+        [Obsolete("Use IoC container extension method instead.")]
         public static ChromelyController CreateControllerInstance(Type type)
         {
-            var instance = CreateType(type);
+            return IoC.Container.CreateControllerInstance(type);
+        }
+
+        /// <summary>
+        /// Creates an instance of a chromely controller of given type.
+        /// Ctor dependency injection is done using the global IoC container.
+        /// </summary>
+        /// <param name="container"></param>
+        /// <param name="type">Controller type to be created.</param>
+        /// <returns>Instance reference or null if failed.</returns>
+        public static ChromelyController CreateControllerInstance(this IChromelyContainer container, Type type)
+        {
+            var instance = CreateType(container, type);
             return instance as ChromelyController;
         }
 
-        private static object CreateType(Type type)
+        private static object CreateType(IChromelyContainer container, Type type)
         {
             object instance = null;
             foreach (var constructor in type.GetConstructors())
@@ -48,8 +61,8 @@ namespace Chromely.Core.RestfulService
                 {
                     var parameterInfo = parameters[ix];
 
-                    var iocInstance = IoC.GetAllInstances(parameterInfo.ParameterType).FirstOrDefault();
-                    var parameterInstance = iocInstance ?? CreateType(parameterInfo.ParameterType);
+                    var iocInstance = container.GetAllInstances(parameterInfo.ParameterType).FirstOrDefault();
+                    var parameterInstance = iocInstance ?? CreateType(container, parameterInfo.ParameterType);
 
                     paramValues[ix] = parameterInstance;
                 }

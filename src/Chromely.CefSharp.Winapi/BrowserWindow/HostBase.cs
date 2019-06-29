@@ -267,9 +267,9 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
             {
                 if (!assembly.IsScanned)
                 {
-                    var scanner = new RouteScanner(assembly.Assembly);
+                    var scanner = new RouteScanner(assembly.Assembly, HostConfig.IoCContainer);
                     var currentRouteDictionary = scanner.Scan();
-                    ServiceRouteProvider.MergeRoutes(currentRouteDictionary);
+                    HostConfig.IoCContainer.MergeRoutes(currentRouteDictionary);
 
                     assembly.IsScanned = true;
                 }
@@ -378,7 +378,7 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
         /// </summary>
         private void RunMessageLoop()
         {
-            NativeWindow.RunMessageLoop();
+            _mainView.RunMessageLoop();
         }
 
         /// <summary>
@@ -386,7 +386,7 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
         /// </summary>
         private void QuitMessageLoop()
         {
-            NativeWindow.Exit();
+            _mainView.Exit();
         }
 
         /// <summary>
@@ -417,7 +417,7 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
         private void RegisterSchemeHandlers()
         {
             // Register scheme handlers
-            var schemeHandlerObjs = IoC.GetAllInstances(typeof(ChromelySchemeHandler));
+            var schemeHandlerObjs = this.HostConfig.IoCContainer.GetAllInstances(typeof(ChromelySchemeHandler));
             if (schemeHandlerObjs != null)
             {
                 var schemeHandlers = schemeHandlerObjs.ToList();

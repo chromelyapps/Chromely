@@ -36,9 +36,9 @@ namespace Chromely.CefGlue.Browser.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="CefGlueContextMenuHandler"/> class.
         /// </summary>
-        public CefGlueContextMenuHandler()
+        public CefGlueContextMenuHandler(bool debugging)
         {
-            debugging = ChromelyConfiguration.Instance.DebuggingMode;
+            this.debugging = debugging;
         }
 
         /// <summary>

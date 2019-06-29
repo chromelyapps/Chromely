@@ -36,9 +36,7 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
         /// The host config.
         /// </summary>
         private readonly ChromelyConfiguration _hostConfig;
-        private IntPtr _browserWndProc;
-        private IntPtr _browserRenderWidgetHandle;
-        private IntPtr _browserRenderWidgetWndProc;
+
         private List<WndProcOverride> _wndProcOverrides = new List<WndProcOverride>();
 
         /// <summary>
@@ -57,7 +55,7 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
             : base(hostConfig)
         {
             _hostConfig = hostConfig;
-            Browser = new ChromiumWebBrowser(settings, _hostConfig.StartUrl);
+            Browser = new ChromiumWebBrowser(hostConfig, settings, _hostConfig.StartUrl);
             Browser.IsBrowserInitializedChanged += IsBrowserInitializedChanged;
 
             // Set handlers
@@ -243,7 +241,7 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
         private void RegisterJsHandlers()
         {
             // Register javascript handlers
-            var jsHandlerObjs = IoC.GetAllInstances(typeof(ChromelyJsHandler));
+            var jsHandlerObjs = this._hostConfig.IoCContainer.GetAllInstances(typeof(ChromelyJsHandler));
             if (jsHandlerObjs != null)
             {
                 var jsHandlers = jsHandlerObjs.ToList();

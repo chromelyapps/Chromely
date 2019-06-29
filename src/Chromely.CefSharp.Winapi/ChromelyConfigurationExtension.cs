@@ -82,7 +82,7 @@ namespace Chromely.CefSharp.Winapi
         {
             if (chromelyJsHandler != null)
             {
-                IoC.RegisterInstance(typeof(ChromelyJsHandler), chromelyJsHandler.Key, chromelyJsHandler);
+                configuration.IoCContainer.RegisterInstance(typeof(ChromelyJsHandler), chromelyJsHandler.Key, chromelyJsHandler);
             }
 
             return configuration;

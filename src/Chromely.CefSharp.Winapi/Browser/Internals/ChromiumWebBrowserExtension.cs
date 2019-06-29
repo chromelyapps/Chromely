@@ -39,9 +39,9 @@ namespace Chromely.CefSharp.Winapi.Browser.Internals
                     var keyStr = enumKey.EnumToString();
                     try
                     {
-                        if (IoC.IsRegistered(service, keyStr))
+                        if (browser.Config.IoCContainer.IsRegistered(service, keyStr))
                         {
-                            instance = IoC.GetInstance(service, keyStr);
+                            instance = browser.Config.IoCContainer.GetInstance(service, keyStr);
                         }
                     }
                     catch (Exception exception)
@@ -144,9 +144,9 @@ namespace Chromely.CefSharp.Winapi.Browser.Internals
                     var keyStr = enumKey.EnumToString();
                     try
                     {
-                        if (IoC.IsRegistered(service, keyStr))
+                        if (browser.Config.IoCContainer.IsRegistered(service, keyStr))
                         {
-                            instance = IoC.GetInstance(service, keyStr);
+                            instance = browser.Config.IoCContainer.GetInstance(service, keyStr);
                         }
                     }
                     catch (Exception exception)
@@ -203,7 +203,7 @@ namespace Chromely.CefSharp.Winapi.Browser.Internals
                             }
                             else
                             {
-                                browser.MenuHandler = new CefSharpContextMenuHandler();
+                                browser.MenuHandler = new CefSharpContextMenuHandler(browser.Config.DebuggingMode);
                             }
 
                             break;
@@ -245,7 +245,7 @@ namespace Chromely.CefSharp.Winapi.Browser.Internals
                             {
                                 browser.DragHandler = dragHandler;
                             }
-                            else if (ChromelyConfiguration.Instance.HostFrameless)
+                            else if (browser.Config.HostFrameless)
                             {
                                 browser.DragHandler = new CefSharpDragHandler();
                             }

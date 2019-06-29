@@ -31,7 +31,7 @@ namespace Chromely.CefGlue.Browser
         /// <summary>
         /// The browser process handler.
         /// </summary>
-        private readonly CefBrowserProcessHandler _browserProcessHandler = new CefGlueBrowserProcessHandler();
+        private readonly CefBrowserProcessHandler _browserProcessHandler;
         
         /// <summary>
         /// The host config.
@@ -47,6 +47,7 @@ namespace Chromely.CefGlue.Browser
         public CefGlueApp(ChromelyConfiguration hostConfig)
         {
             _hostConfig = hostConfig;
+            _browserProcessHandler = new CefGlueBrowserProcessHandler(hostConfig);
         }
 
         /// <summary>
@@ -57,7 +58,7 @@ namespace Chromely.CefGlue.Browser
         /// </param>
         protected override void OnRegisterCustomSchemes(CefSchemeRegistrar registrar)
         {
-            var schemeHandlerObjs = IoC.GetAllInstances(typeof(ChromelySchemeHandler));
+            var schemeHandlerObjs = this._hostConfig.IoCContainer.GetAllInstances(typeof(ChromelySchemeHandler));
             if (schemeHandlerObjs != null)
             {
                 var schemeHandlers = schemeHandlerObjs.ToList();

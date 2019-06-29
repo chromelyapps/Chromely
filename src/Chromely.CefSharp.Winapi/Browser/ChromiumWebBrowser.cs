@@ -10,6 +10,7 @@
 using System;
 using Chromely.CefSharp.Winapi.Browser.FrameHandlers;
 using Chromely.CefSharp.Winapi.Browser.Internals;
+using Chromely.Core;
 using Chromely.Core.Infrastructure;
 using global::CefSharp;
 using global::CefSharp.Internals;
@@ -21,6 +22,8 @@ namespace Chromely.CefSharp.Winapi.Browser
     /// </summary>
     internal class ChromiumWebBrowser : IWebBrowserInternal
     {
+        private readonly ChromelyConfiguration _config;
+
         /// <summary>
         /// The settings.
         /// </summary>
@@ -61,6 +64,7 @@ namespace Chromely.CefSharp.Winapi.Browser
         /// <summary>
         /// Initializes a new instance of the <see cref="ChromiumWebBrowser"/> class.
         /// </summary>
+        /// <param name="config">Chromley config</param>
         /// <param name="settings">
         /// The Settings.
         /// </param>
@@ -70,9 +74,10 @@ namespace Chromely.CefSharp.Winapi.Browser
         /// <param name="useLegacyJavascriptBindingEnabled">
         /// Flag to use whether Javascript binding should be used.
         /// </param>
-        public ChromiumWebBrowser(AbstractCefSettings settings, string address,  bool useLegacyJavascriptBindingEnabled = true)
+        public ChromiumWebBrowser(ChromelyConfiguration config, AbstractCefSettings settings, string address,  bool useLegacyJavascriptBindingEnabled = true)
         {
             Address = address;
+            _config = config;
             _settings = settings;
             CefSharpSettings.LegacyJavascriptBindingEnabled = useLegacyJavascriptBindingEnabled;
             InitializeFieldsAndCefIfRequired();
@@ -329,6 +334,8 @@ namespace Chromely.CefSharp.Winapi.Browser
         /// <value><c>true</c> if this instance has parent; otherwise, <c>false</c>.</value>
         bool IWebBrowserInternal.HasParent { get; set; }
 
+        public ChromelyConfiguration Config => _config;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ChromiumWebBrowser"/> class.
         /// </summary>
@@ -522,7 +529,7 @@ namespace Chromely.CefSharp.Winapi.Browser
 
             // Register browser 
             var frameHandler = new CefSharpFrameHandler(browser);
-            IoC.RegisterInstance(typeof(CefSharpFrameHandler), typeof(CefSharpFrameHandler).FullName, frameHandler);
+            this.Config.IoCContainer.RegisterInstance(typeof(CefSharpFrameHandler), typeof(CefSharpFrameHandler).FullName, frameHandler);
 
             IsBrowserInitializedChanged?.Invoke(this, new IsBrowserInitializedChangedEventArgs(IsBrowserInitialized));
         }

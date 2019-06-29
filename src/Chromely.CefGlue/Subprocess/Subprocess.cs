@@ -35,9 +35,12 @@ namespace Chromely.CefGlue.Subprocess
         /// Executes the <see cref="Subprocess"/>.
         /// </summary>
         /// <param name="args"></param>
+        /// <param name="configuration">Host configucation</param>
         /// <returns></returns>
-        public static int Execute(string[] args)
+        public static int Execute(string[] args, ChromelyConfiguration configuration = null)
         {
+            var config = configuration ?? ChromelyConfiguration.Create();
+
             int result;
             var type = args.GetArgumentValue(SubprocessArguments.ArgumentType);
 
@@ -65,7 +68,7 @@ namespace Chromely.CefGlue.Subprocess
                 result = ExecuteProcess(args);
             }
 
-            if (ChromelyConfiguration.Instance.DebuggingMode)
+            if (config.DebuggingMode)
             {
                 Console.WriteLine("CefGlue Subprocess shutting down.");
             }

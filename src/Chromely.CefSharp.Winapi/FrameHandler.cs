@@ -12,6 +12,7 @@ namespace Chromely.CefSharp.Winapi
     using global::CefSharp;
     using Chromely.CefSharp.Winapi.Browser.FrameHandlers;
     using Chromely.Core.Infrastructure;
+    using Chromely.Core;
 
     /// <summary>
     /// The frame handler extension.
@@ -21,29 +22,29 @@ namespace Chromely.CefSharp.Winapi
         /// <summary>
         /// The browser.
         /// </summary>
-        private static IBrowser mBrowser;
+        private static IBrowser _browser;
 
-        /// <summary>
-        /// Gets the browser.
-        /// </summary>
-        private static IBrowser Browser
-        {
-            get
-            {
-                if (mBrowser != null)
-                {
-                    return mBrowser;
-                }
+        ///// <summary>
+        ///// Gets the browser.
+        ///// </summary>
+        //private static IBrowser Browser
+        //{
+        //    get
+        //    {
+        //        if (mBrowser != null)
+        //        {
+        //            return mBrowser;
+        //        }
 
-                var cefSharpFrameHandler = IoC.GetInstance<CefSharpFrameHandler>(typeof(CefSharpFrameHandler).FullName);
-                if (cefSharpFrameHandler != null)
-                {
-                    mBrowser = cefSharpFrameHandler.Browser;
-                }
+        //        var cefSharpFrameHandler = IoC.GetInstance<CefSharpFrameHandler>(typeof(CefSharpFrameHandler).FullName);
+        //        if (cefSharpFrameHandler != null)
+        //        {
+        //            mBrowser = cefSharpFrameHandler.Browser;
+        //        }
 
-                return mBrowser;
-            }
-        }
+        //        return mBrowser;
+        //    }
+        //}
 
         /// <summary>
         /// The get main frame.
@@ -51,23 +52,24 @@ namespace Chromely.CefSharp.Winapi
         /// <returns>
         /// The <see cref="IFrame"/>.
         /// </returns>
-        public static IFrame GetMainFrame()
+        public static IFrame GetMainFrame(this IChromelyContainer container)
         {
-            return Browser?.MainFrame;
+            return container.GetBrowser()?.MainFrame;
         }
 
         /// <summary>
         /// The get frame.
         /// </summary>
+        /// <param name="container">Chromely container</param>
         /// <param name="name">
         /// The name.
         /// </param>
         /// <returns>
         /// The <see cref="IFrame"/>.
         /// </returns>
-        public static IFrame GetFrame(string name)
+        public static IFrame GetFrame(this IChromelyContainer container, string name)
         {
-            return Browser?.GetFrame(name);
+            return container.GetBrowser()?.GetFrame(name);
         }
 
         /// <summary>
@@ -76,9 +78,20 @@ namespace Chromely.CefSharp.Winapi
         /// <returns>
         /// The <see cref="IBrowser"/>.
         /// </returns>
-        public static IBrowser GetBrowser()
+        public static IBrowser GetBrowser(this IChromelyContainer container)
         {
-            return Browser;
+            if (_browser != null)
+            {
+                return _browser;
+            }
+
+            var cefSharpFrameHandler = container.GetInstance<CefSharpFrameHandler>(typeof(CefSharpFrameHandler).FullName);
+            if (cefSharpFrameHandler != null)
+            {
+                _browser = cefSharpFrameHandler.Browser;
+            }
+
+            return _browser;
         }
     }
 }

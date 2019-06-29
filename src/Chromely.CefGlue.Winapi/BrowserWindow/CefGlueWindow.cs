@@ -18,7 +18,7 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
     /// </summary>
     internal class CefGlueWindow : HostBase
     {
-        private IWindow _mainWindow;
+        private Window _mainWindow;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CefGlueWindow"/> class.
@@ -59,7 +59,8 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
         /// </summary>
         protected override void RunMessageLoop()
         {
-            NativeWindow.RunMessageLoop();
+            _mainWindow.RunMessageLoop();
+            //NativeWindow.RunMessageLoop();
         }
 
         /// <summary>
@@ -67,7 +68,7 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
         /// </summary>
         protected override void QuitMessageLoop()
         {
-            NativeWindow.Exit();
+            _mainWindow.Exit();
         }
 
         /// <summary>

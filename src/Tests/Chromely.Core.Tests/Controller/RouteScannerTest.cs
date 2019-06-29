@@ -42,9 +42,10 @@ namespace Chromely.Core.Tests.Controller
         [Fact]
         public void ScannerShouldFindAllRoutersInTestAssembly()
         {
+            var container = Infrastructure.IoC.Container;
             // Note that the current assembly scan will include this file
             // And all other routes defined in other files in the assembly
-            var scanner = new RouteScanner(Assembly.GetExecutingAssembly());
+            var scanner = new RouteScanner(Assembly.GetExecutingAssembly(), container);
             Assert.NotNull(scanner);
 
             var result = scanner.Scan();

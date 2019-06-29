@@ -49,17 +49,19 @@ namespace Chromely.Core.Tests.RestfulService
         [Fact]
         public void RouteProviderTest()
         {
+            var container = IoC.Container;
+
             var routeDict = BaseTest();
             Assert.Equal(3, routeDict.Count);
 
             foreach (var item in routeDict)
             {
-                ServiceRouteProvider.AddRoute(item.Key, item.Value);
+                container.AddRoute(item.Key, item.Value);
             }
 
-            var getRoute1 = ServiceRouteProvider.GetRoute(new RoutePath(Method.GET, "/testcontroller/get1"));
-            var getRoute2 = ServiceRouteProvider.GetRoute(new RoutePath(Method.GET, "/testcontroller/get2"));
-            var postRoute = ServiceRouteProvider.GetRoute(new RoutePath(Method.POST, "/testcontroller/save"));
+            var getRoute1 = container.GetRoute(new RoutePath(Method.GET, "/testcontroller/get1"));
+            var getRoute2 = container.GetRoute(new RoutePath(Method.GET, "/testcontroller/get2"));
+            var postRoute = container.GetRoute(new RoutePath(Method.POST, "/testcontroller/save"));
             Assert.True((getRoute1 != null) || (getRoute2 != null) || (postRoute != null));
         }
 

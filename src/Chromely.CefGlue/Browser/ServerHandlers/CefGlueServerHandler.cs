@@ -38,6 +38,7 @@ namespace Chromely.CefGlue.Browser.ServerHandlers
         /// The websocket handler.
         /// </summary>
         private readonly IChromelyWebsocketHandler _websocketHandler;
+        private readonly IChromelyContainer _chromelyContainer;
 
         /// <summary>
         /// The complete callback.
@@ -55,9 +56,11 @@ namespace Chromely.CefGlue.Browser.ServerHandlers
         /// <param name="websocketHandler">
         /// The websocket handler.
         /// </param>
-        public CefGlueServerHandler(IChromelyWebsocketHandler websocketHandler)
+        /// <param name="chromelyContainer">The Chromely IoC container</param>
+        public CefGlueServerHandler(IChromelyWebsocketHandler websocketHandler, IChromelyContainer chromelyContainer)
         {
             _websocketHandler = websocketHandler;
+            _chromelyContainer = chromelyContainer;
         }
 
         /// <summary>
@@ -203,7 +206,7 @@ namespace Chromely.CefGlue.Browser.ServerHandlers
             {
                 ConnectionNameMapper.Clear();
                 _server = server;
-                IoC.RegisterInstance(typeof(CefServer), typeof(CefServer).FullName, _server);
+                _chromelyContainer.RegisterInstance(typeof(CefServer), typeof(CefServer).FullName, _server);
                 IsServerRunning = server.IsRunning;
                 RunCompleteCallback(server.IsRunning);
             }

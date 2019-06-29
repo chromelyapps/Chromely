@@ -29,9 +29,9 @@ namespace Chromely.CefGlue.Browser.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="CefGlueRequestHandler"/> class.
         /// </summary>
-        public CefGlueRequestHandler()
+        public CefGlueRequestHandler(CefGlueBrowser browser)
         {
-            _browser = CefGlueBrowser.BrowserCore;
+            _browser = browser;
         }
 
         /// <summary>
