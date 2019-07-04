@@ -20,7 +20,7 @@ Options of communicating (IPC) with rendering process are via:
 
 Have a quick question? Wanna chat? Connect on  [![Join the chat at https://gitter.im/chromely_/Lobby](https://badges.gitter.im/chromely_/Lobby.svg)](https://gitter.im/chromely_/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-Have an app/project/tool using Chromely -[please share!](https://github.com/chromelyapps/Chromely/issues/63)
+Have an app/project/tool using Chromely - [please share!](https://github.com/chromelyapps/Chromely/issues/63)
 
 ### Platforms
 Cross-platform - Windows, Linux. Built on CefGlue, CefSharp, NET Standard 2.0, .NET Core 2.0, .NET Framework 4.61 and above.
