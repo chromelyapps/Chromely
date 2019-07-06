@@ -7,16 +7,16 @@
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+
+using Chromely.Core.Infrastructure;
+
 namespace Chromely.Core.RestfulService
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Reflection;
-
-    using Chromely.Core.Infrastructure;
-
     /// <summary>
     /// The registration of service assemblies extension.
     /// </summary>

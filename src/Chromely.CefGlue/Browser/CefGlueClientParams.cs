@@ -218,10 +218,6 @@ namespace Chromely.CefGlue.Browser
                             {
                                 clientParams.DragHandler = dragHandler;
                             }
-                            else if (ChromelyConfiguration.Instance.HostFrameless)
-                            {
-                                clientParams.DragHandler = new CefGlueDragHandler();
-                            }
 
                             break;
 

@@ -27,6 +27,8 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
         /// </summary>
         internal const string DllName = "user32.dll";
 
+        internal const int HT_CAPTION = 0x2;
+
         /// <summary>
         /// The load image.
         /// </summary>

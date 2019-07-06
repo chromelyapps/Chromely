@@ -7,15 +7,15 @@
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+
+using LitJson;
+
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 // ReSharper disable UnusedMember.Global
 // ReSharper disable MemberCanBePrivate.Global
 namespace Chromely.Core.RestfulService
 {
-    using System.Collections.Generic;
-
-    using LitJson;
-
     /// <summary>
     /// The chromely request.
     /// </summary>

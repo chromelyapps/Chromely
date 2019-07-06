@@ -7,13 +7,19 @@
 // </license>
 // ----------------------------------------------------------------------------------------------------------------------
 
+using System.Drawing;
 using Xilium.CefGlue;
 
 namespace Chromely.CefGlue.Browser.Handlers
 {
-    internal class CefGlueDragHandler : CefDragHandler
+    public class CefGlueDragHandler : CefDragHandler
     {
-      //  public Region DragRegion = new Region();
+        public Region DragRegion { get; private set; }
+
+        public CefGlueDragHandler()
+        {
+            DragRegion = new Region(new Rectangle(0, 0, 0, 0));
+        }
 
         protected override bool OnDragEnter(CefBrowser browser, CefDragData dragData, CefDragOperationsMask mask)
         {
@@ -24,30 +30,23 @@ namespace Chromely.CefGlue.Browser.Handlers
         {
             if (!browser.IsPopup)
             {
-                //lock (DragRegion)
-                //{
-                //    DragRegion = null;
-                //    foreach (var region in regions)
-                //    {
-                //        var rect = new Rectangle(region.X, region.Y, region.Width, region.Height);
+                lock (DragRegion)
+                {
+                    DragRegion = new Region(new Rectangle(0, 0, 0, 0));
+                    foreach (var region in regions)
+                    {
+                        var rect = new Rectangle(region.Bounds.X, region.Bounds.Y, region.Bounds.Width, region.Bounds.Height);
 
-                //        if (DragRegion == null)
-                //        {
-                //            DragRegion = new Region(rect);
-                //        }
-                //        else
-                //        {
-                //            if (region.Draggable)
-                //            {
-                //                DragRegion.Union(rect);
-                //            }
-                //            else
-                //            {
-                //                DragRegion.Exclude(rect);
-                //            }
-                //        }
-                //    }
-                //}
+                        if (region.Draggable)
+                        {
+                            DragRegion.Union(rect);
+                        }
+                        else
+                        {
+                            DragRegion.Exclude(rect);
+                        }
+                    }
+                }
             }
         }
     }

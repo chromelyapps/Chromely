@@ -7,12 +7,12 @@
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
 namespace Chromely.Core.RestfulService
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-
     /// <summary>
     /// The route.
     /// </summary>

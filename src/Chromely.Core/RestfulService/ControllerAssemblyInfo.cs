@@ -7,10 +7,10 @@
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Reflection;
+
 namespace Chromely.Core.RestfulService
 {
-    using System.Reflection;
-
     /// <summary>
     /// The controller assembly info.
     /// </summary>

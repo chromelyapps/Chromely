@@ -7,18 +7,18 @@
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.ComponentModel;
+using System.Linq;
+using System.Web;
+
+using LitJson;
+
 namespace Chromely.Core.RestfulService
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Collections.Specialized;
-    using System.ComponentModel;
-    using System.Linq;
-    using System.Web;
-
-    using LitJson;
-
     /// <summary>
     /// The extension methods.
     /// </summary>

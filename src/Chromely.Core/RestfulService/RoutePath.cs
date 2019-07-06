@@ -7,10 +7,10 @@
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+
 namespace Chromely.Core.RestfulService
 {
-    using System;
-
     /// <summary>
     /// The route path.
     /// </summary>

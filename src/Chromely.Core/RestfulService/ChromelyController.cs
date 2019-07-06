@@ -7,15 +7,15 @@
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Reflection;
 using System.Threading.Tasks;
+using Chromely.Core.Infrastructure;
 
 namespace Chromely.Core.RestfulService
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Reflection;
 
-    using Chromely.Core.Infrastructure;
 
     /// <summary>
     /// The chromely controller.
