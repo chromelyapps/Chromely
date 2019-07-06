@@ -26,6 +26,8 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
     /// </summary>
     internal class NativeWindow
     {
+        private static readonly NativeMethods.LowLevelKeyboardProc _hookCallback = HookCallback;
+
         /// <summary>
         /// The host config.
         /// </summary>
@@ -35,6 +37,8 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
         /// WindowProc ref : prevent GC Collect
         /// </summary>
         private WindowProc _windowProc;
+
+        private IntPtr _hookID = IntPtr.Zero;
         
         /// <summary>
         /// Initializes a new instance of the <see cref="NativeWindow"/> class.
@@ -68,7 +72,16 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
         {
             while (User32Methods.GetMessage(out Message msg, IntPtr.Zero, 0, 0) != 0)
             {
-                if (ChromelyConfiguration.Instance.HostFrameless)
+                if (msg.Value == (uint)WM.CLOSE)
+                {
+                    DetachKeyboardHook();
+                }
+
+                if (ChromelyConfiguration.Instance.KioskMode && msg.Value == (uint)WM.HOTKEY && msg.WParam == (IntPtr)1)
+                {
+                    User32Methods.PostMessage(NativeWindow.NativeInstance.Handle, (uint)WM.CLOSE, IntPtr.Zero, IntPtr.Zero);
+                }
+                if (ChromelyConfiguration.Instance.HostFrameless || ChromelyConfiguration.Instance.KioskMode)
                 {
                     CefRuntime.DoMessageLoopWork();
                 }
@@ -211,7 +224,7 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
             var instanceHandle = Kernel32Methods.GetModuleHandle(IntPtr.Zero);
 
             _windowProc = WindowProc;
-            
+
             var wc = new WindowClassEx
             {
                 Size = (uint)Marshal.SizeOf<WindowClassEx>(),
@@ -243,7 +256,7 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
             var hwnd = User32Methods.CreateWindowEx(
                 styles.Item2,
                 wc.ClassName,
-                _hostConfig.HostTitle,
+                _hostConfig.HostFrameless ? string.Empty : _hostConfig.HostTitle,
                 styles.Item1,
                 0,
                 0,
@@ -260,9 +273,121 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
                 return;
             }
 
-            User32Methods.ShowWindow(Handle, styles.Item3);
+            if (_hostConfig.KioskMode)
+            {
+                //// Set new window style and size.
+                //var styles = GetWindowStyles(WindowState.Normal);
+                var windowHDC = User32Methods.GetDC(Handle);
+                var fullscreenWidth =  Gdi32Methods.GetDeviceCaps(windowHDC, (int)DeviceCapsParams.HORZRES);
+                var fullscreenHeight = Gdi32Methods.GetDeviceCaps(windowHDC, (int)DeviceCapsParams.VERTRES);
+                User32Methods.ReleaseDC(Handle, windowHDC);
+
+                User32Methods.SetWindowLongPtr(Handle, (int)WindowLongFlags.GWL_STYLE, (IntPtr)styles.Item1);
+                User32Methods.SetWindowLongPtr(Handle, (int)WindowLongFlags.GWL_EXSTYLE, (IntPtr)styles.Item2);
+
+
+                User32Methods.SetWindowPos(Handle, (IntPtr)HwndZOrder.HWND_TOPMOST, 0, 0, fullscreenWidth, fullscreenHeight,
+                    WindowPositionFlags.SWP_NOZORDER | WindowPositionFlags.SWP_NOACTIVATE | WindowPositionFlags.SWP_FRAMECHANGED);
+
+                User32Methods.ShowWindow(Handle, ShowWindowCommands.SW_MAXIMIZE);
+
+                try
+                {
+                    this._hookID = NativeMethods.SetHook(_hookCallback);
+                }
+                catch
+                {
+                    DetachKeyboardHook();
+                }
+            }
+            else
+            {
+                User32Methods.ShowWindow(Handle, styles.Item3);
+            }
             User32Methods.UpdateWindow(Handle);
+
+            User32Methods.RegisterHotKey(IntPtr.Zero, 1, KeyModifierFlags.MOD_CONTROL, VirtualKey.L);
+
         }
+        
+        public static IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
+        {
+            if (nCode >= 0)
+            {
+
+                var msg = (WM)wParam;
+                var hookInfo = Marshal.PtrToStructure<NativeMethods.KBDLLHOOKSTRUCT>(lParam);
+
+                var key = (VirtualKey)hookInfo.vkCode;
+
+
+
+                bool alt = User32Methods.GetKeyState(VirtualKey.MENU).IsPressed;
+                bool control = User32Methods.GetKeyState(VirtualKey.CONTROL).IsPressed;             
+
+                //if (alt && key == VirtualKey.F4)
+                //{
+                //    Application.Current.Shutdown();
+                //    return (IntPtr)1; // Handled.
+                //}
+
+                if (!AllowKeyboardInput(alt, control, key))
+                {
+                    return (IntPtr)1; // Handled.
+                }
+            }
+
+            return NativeMethods.CallNextHookEx(NativeInstance._hookID, nCode, wParam, lParam);
+        }
+
+        /// <summary>Determines whether the specified keyboard input should be allowed to be processed by the system.</summary>
+        /// <remarks>Helps block unwanted keys and key combinations that could exit the app, make system changes, etc.</remarks>
+        public static bool AllowKeyboardInput(bool alt, bool control, VirtualKey key)
+        {
+            // Disallow various special keys.
+            if (key <= VirtualKey.BACK || key == VirtualKey.NONAME ||
+                key == VirtualKey.MENU || key == VirtualKey.PAUSE ||
+                key == VirtualKey.HELP)
+            {
+                return false;
+            }
+
+            // Disallow ranges of special keys.
+            // Currently leaves volume controls enabled; consider if this makes sense.
+            // Disables non-existing Keys up to 65534, to err on the side of caution for future keyboard expansion.
+            if ((key >= VirtualKey.LWIN && key <= VirtualKey.SLEEP) ||
+                (key >= VirtualKey.KANA && key <= VirtualKey.HANJA) ||
+                (key >= VirtualKey.CONVERT && key <= VirtualKey.MODECHANGE) ||
+                //(key >= VirtualKey.BROWSER_BACK && key <= VirtualKey.BROWSER_HOME) ||
+                (key >= VirtualKey.MEDIA_NEXT_TRACK && key <= VirtualKey.LAUNCH_APP2) ||
+                (key >= VirtualKey.PROCESSKEY && key <= (VirtualKey)65534))
+            {
+                return false;
+            }
+
+            // Disallow specific key combinations. (These component keys would be OK on their own.)
+            if ((alt && key == VirtualKey.TAB) ||
+                (alt && key == VirtualKey.SPACE) ||
+                (control && key == VirtualKey.ESCAPE))
+            {
+                return false;
+            }
+
+            // Allow anything else (like letters, numbers, spacebar, braces, and so on).
+            return true;
+        }
+
+        /// <summary>
+        /// Detach the keyboard hook; call during shutdown to prevent calls as we unload
+        /// </summary>
+        private static void DetachKeyboardHook()
+        {
+            if (NativeInstance._hookID != IntPtr.Zero)
+                NativeMethods.UnhookWindowsHookEx(NativeInstance._hookID);
+        }
+
+
+        internal static NativeWindow NativeInstance { get; set; }
 
         /// <summary>
         /// The window proc.
@@ -287,21 +412,40 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
             var msg = (WM)umsg;
             switch (msg)
             {
+                case WM.HOTKEY:
+                    {
+                        if (wParam == (IntPtr)1)
+                        {
+                            User32Methods.PostMessage(Handle, (uint)WM.CLOSE, IntPtr.Zero, IntPtr.Zero);
+                            return IntPtr.Zero;
+                        }
+                        break;
+                    }
+                case WM.SYSKEYDOWN:
+                    {
+                        if (_hostConfig.KioskMode &&  (wParam == (IntPtr)VirtualKey.F4))
+                        {
+                            return IntPtr.Zero;
+                        }
+                        break;
+                    }
                 case WM.ACTIVATE:
                     {
                         if (_hostConfig.HostFrameless)
                         {
-                            int frameSizeY = User32Methods.GetSystemMetrics(SystemMetrics.SM_CYFRAME);
-                            int frameSizeX = User32Methods.GetSystemMetrics(SystemMetrics.SM_CXFRAME);
-                            Margins frameMargins = new Margins(frameSizeX, frameSizeX, frameSizeY, frameSizeY);
+                            var frameSizeY = User32Methods.GetSystemMetrics(SystemMetrics.SM_CYFRAME);
+                            var frameSizeX = User32Methods.GetSystemMetrics(SystemMetrics.SM_CXFRAME);
+                            var frameMargins = new Margins(frameSizeX, frameSizeX, frameSizeY, frameSizeY);
                             DwmApiMethods.DwmExtendFrameIntoClientArea(Handle, ref frameMargins);
                             User32Methods.SetWindowPos(hwnd, IntPtr.Zero, 0, 0, 0, 0, WindowPositionFlags.SWP_NOZORDER | WindowPositionFlags.SWP_NOOWNERZORDER | WindowPositionFlags.SWP_NOMOVE | WindowPositionFlags.SWP_NOSIZE | WindowPositionFlags.SWP_FRAMECHANGED);
                         }
+                        
                         break;
                     }
 
                 case WM.CREATE:
                     {
+                        NativeInstance = this;
                         Handle = hwnd;
                         var size = GetClientSize();
                         OnCreate(hwnd, size.Width, size.Height);
@@ -326,82 +470,15 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
                         break;
                     }
 
-                case WM.NCCALCSIZE:
-                    {
-                        if (_hostConfig.HostFrameless)
-                        {
-                            return IntPtr.Zero;
-                        }
-                        break;
-                    }
-
                 case WM.NCHITTEST:
+                    if (_hostConfig.HostFrameless)
                     {
-                        if (_hostConfig.HostFrameless)
-                        {
-                            // This might be a bit redundant to perform and should find another way
-                            // to pass the return value rather than performing a hit test again.
-                            var lRet = HitTestNCA(hwnd, wParam, lParam);
-                            return lRet;
-                        }
-
-                        break;
+                        return (IntPtr)NativeMethods.HT_CAPTION;
                     }
+                    break;
             }
 
             return User32Methods.DefWindowProc(hwnd, umsg, wParam, lParam);
-        }
-
-        internal static IntPtr HitTestNCA(IntPtr hWnd, IntPtr wParam, IntPtr lParam)
-        {
-            // Get the point coordinates for the hit test.
-            Point mousePoint = new Point(lParam.ToInt32() & 0xFFFF, lParam.ToInt32() >> 16);
-
-            // Get the window rectangle.
-            Rectangle rectWindow;
-            User32Methods.GetWindowRect(hWnd, out rectWindow);
-
-            // Get the border sizes
-            int frameSizeY = User32Methods.GetSystemMetrics(SystemMetrics.SM_CYFRAME);
-            int frameSizeX = User32Methods.GetSystemMetrics(SystemMetrics.SM_CXFRAME);
-
-            // Get the frame rectangle
-            Rectangle rectFrame = new Rectangle(frameSizeX, frameSizeX, frameSizeY, frameSizeY);
-            User32Methods.AdjustWindowRectEx(ref rectFrame, WindowStyles.WS_OVERLAPPEDWINDOW & ~WindowStyles.WS_CAPTION, false, 0);
-            ushort row = 1;
-            ushort col = 1;
-            bool onTopResizeBorder = false;
-
-            // Determine if the point is at the top or bottom of the window.
-            if (mousePoint.Y >= rectWindow.Top && mousePoint.Y < rectWindow.Top + frameSizeY)
-            {
-                onTopResizeBorder = (mousePoint.Y < (rectWindow.Top - rectFrame.Top));
-                row = 0;
-            }
-            else if (mousePoint.Y < rectWindow.Bottom && mousePoint.Y >= rectWindow.Bottom - frameSizeY)
-            {
-                row = 2;
-            }
-
-            // Determine if the point is at the left or right of the window.
-            if (mousePoint.X >= rectWindow.Left && mousePoint.X < rectWindow.Left + frameSizeX)
-            {
-                col = 0;
-            }
-            else if (mousePoint.X < rectWindow.Right && mousePoint.X >= rectWindow.Right - frameSizeX)
-            {
-                col = 2;
-            }
-
-            // Defines the tests to determine what value to return for NCHITTEST
-            int[,] hitTests =
-            {
-                { 13, 12, 11 },
-                { 10, 0, 11 },
-                { 16, 15, 17 }
-            };
-
-            return (IntPtr)hitTests[row, col];
         }
 
         /// <summary>
@@ -420,7 +497,13 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
 
             if (_hostConfig.HostFrameless)
             {
-                styles = WindowStyles.WS_CAPTION | WindowStyles.WS_POPUP | WindowStyles.WS_THICKFRAME | WindowStyles.WS_MINIMIZEBOX | WindowStyles.WS_MAXIMIZEBOX | WindowStyles.WS_CAPTION | WindowStyles.WS_CLIPCHILDREN | WindowStyles.WS_CLIPSIBLINGS;
+                styles = WindowStyles.WS_CAPTION | WindowStyles.WS_POPUP | WindowStyles.WS_THICKFRAME | WindowStyles.WS_MINIMIZEBOX | WindowStyles.WS_MAXIMIZEBOX | WindowStyles.WS_CLIPCHILDREN | WindowStyles.WS_CLIPSIBLINGS;
+            }
+
+            if (_hostConfig.KioskMode)
+            {
+                styles &= ~(WindowStyles.WS_CAPTION | WindowStyles.WS_THICKFRAME);
+                exStyles &= ~(WindowExStyles.WS_EX_DLGMODALFRAME | WindowExStyles.WS_EX_WINDOWEDGE | WindowExStyles.WS_EX_CLIENTEDGE | WindowExStyles.WS_EX_STATICEDGE);
             }
 
             switch (state)
@@ -438,6 +521,7 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
                 {
                     styles |= WindowStyles.WS_MAXIMIZE;
                     exStyles = WindowExStyles.WS_EX_TOOLWINDOW;
+                       
                     return new Tuple<WindowStyles, WindowExStyles, ShowWindowCommands>(styles, exStyles, ShowWindowCommands.SW_SHOWMAXIMIZED);
                 }
             }
