@@ -51,6 +51,7 @@ namespace Chromely.Core
             ShutdownCefOnExit = true;
             LogSeverity = LogSeverity.Warning;
             LogFile = Path.Combine("logs", "chromely.cef.log");
+            KioskMode = false;
             HostState = WindowState.Normal;
             HostCenterScreen = true;
             UseDefaultSubprocess = ChromelyRuntime.Platform == ChromelyPlatform.Windows;
@@ -114,6 +115,11 @@ namespace Chromely.Core
         /// Gets or sets a value indicating whether host to not display borders, minimize, maximize and close.
         /// </summary>
         public bool HostFrameless { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to display in fullscreen, topmost and disable ALT+F4 and ALT+Tab global hotkeys.
+        /// </summary>
+        public bool KioskMode { get; set; }
 
         /// <summary>
         /// Gets or sets the host/window/app title.
@@ -382,6 +388,23 @@ namespace Chromely.Core
         public ChromelyConfiguration WithFramelessHost(bool frameless = true)
         {
             HostFrameless = frameless;
+            return this;
+        }
+
+        /// <summary>
+        /// Set frameless host mode.
+        /// </summary>
+        /// <param name="kiosk"></param>
+        /// The <see cref="ChromelyConfiguration"/>.
+        public ChromelyConfiguration WithKioskMode(bool kiosk = true)
+        {
+            KioskMode = kiosk;
+            if (this.KioskMode)
+            {
+                this.WithHostMode(WindowState.Normal, false)
+                    .WithFramelessHost(false);
+
+            }
             return this;
         }
 
