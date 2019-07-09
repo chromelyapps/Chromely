@@ -52,12 +52,12 @@ namespace Chromely.Core.RestfulService
             try
             {
                 var types = from type in _assembly.GetLoadableTypes()
-                            where Attribute.IsDefined(type, typeof(ControllerPropertyAttribute))
-                            select type;
+                    where Attribute.IsDefined(type, typeof(ControllerPropertyAttribute))
+                    select type;
 
                 foreach (var type in types)
                 {
-                    if (type.BaseType == typeof(ChromelyController))
+                    if (typeof(ChromelyController).IsAssignableFrom(type.BaseType))
                     {
                         var instance = ChromelyControllerFactory.CreateControllerInstance(type);
                         var currentRouteDictionary = instance.RouteDictionary;
@@ -88,8 +88,10 @@ namespace Chromely.Core.RestfulService
     /// <summary>
     /// The route scanner extensions.
     /// </summary>
-    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed. Suppression is OK here.")]
-    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1400:AccessModifierMustBeDeclared", Justification = "Reviewed. Suppression is OK here.")]
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification =
+        "Reviewed. Suppression is OK here.")]
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1400:AccessModifierMustBeDeclared", Justification =
+        "Reviewed. Suppression is OK here.")]
     static class RouteScannerExtensions
     {
         /// <summary>
