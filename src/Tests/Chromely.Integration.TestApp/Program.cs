@@ -14,6 +14,7 @@ using Chromely.CefGlue;
 using Chromely.CefGlue.Browser.EventParams;
 using Chromely.Core;
 using Chromely.Core.Helpers;
+using Chromely.Core.Host;
 
 namespace Chromely.Integration.TestApp
 {
@@ -29,6 +30,7 @@ namespace Chromely.Integration.TestApp
     internal static class Program
     {
         private const string TraceSignature = "CI-TRACE:";
+        private static IChromelyWindow _window;
 
         private static void CiTrace(string key, string value)
         {
@@ -66,10 +68,11 @@ namespace Chromely.Integration.TestApp
 
             try
             {
-                using (var window = ChromelyWindow.Create(config))
+                using (_window = ChromelyWindow.Create(config))
                 {
+                    _window.RegisterEventHandler(CefEventKey.FrameLoadEnd, new ChromelyEventHandler<FrameLoadEndEventArgs>(CefEventKey.FrameLoadEnd, OnFrameLoaded));
                     CiTrace("Window", "Created");
-                    var result = window.Run(args);
+                    var result = _window.Run(args);
                     CiTrace("RunResult", result.ToString());
                 }
             }
@@ -81,6 +84,13 @@ namespace Chromely.Integration.TestApp
             CiTrace("Application", "Done");
             return 0;
         }
+
+        private static void OnFrameLoaded(object sender, FrameLoadEndEventArgs e)
+        {
+            var hWnd = Process.GetCurrentProcess().MainWindowHandle;
+            CiTrace("NativeMainWindowHandle", hWnd.ToString());
+        }
+
 
         private static void OnWebBrowserConsoleMessage(object sender, ConsoleMessageEventArgs e)
         {
