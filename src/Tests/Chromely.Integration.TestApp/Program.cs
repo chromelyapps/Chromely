@@ -71,6 +71,7 @@ namespace Chromely.Integration.TestApp
                 using (_window = ChromelyWindow.Create(config))
                 {
                     _window.RegisterEventHandler(CefEventKey.FrameLoadEnd, new ChromelyEventHandler<FrameLoadEndEventArgs>(CefEventKey.FrameLoadEnd, OnFrameLoaded));
+                    _window.RegisterEventHandler(CefEventKey.BeforeClose, new ChromelyEventHandler<BeforeCloseEventArgs>(CefEventKey.BeforeClose, OnBeforeClose));
                     CiTrace("Window", "Created");
                     var result = _window.Run(args);
                     CiTrace("RunResult", result.ToString());
@@ -83,6 +84,11 @@ namespace Chromely.Integration.TestApp
             }
             CiTrace("Application", "Done");
             return 0;
+        }
+
+        private static void OnBeforeClose(object sender, BeforeCloseEventArgs e)
+        {
+            CiTrace("OnBeforeClose", "called");
         }
 
         private static void OnFrameLoaded(object sender, FrameLoadEndEventArgs e)

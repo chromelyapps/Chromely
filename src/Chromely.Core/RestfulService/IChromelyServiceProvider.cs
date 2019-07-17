@@ -53,10 +53,10 @@ namespace Chromely.Core.RestfulService
         /// <summary>
         /// Registers service assemblies.
         /// </summary>
-        /// <param name="filenames">
+        /// <param name="fileNames">
         /// The filenames.
         /// </param>
-        void RegisterServiceAssemblies(List<string> filenames);
+        void RegisterServiceAssemblies(List<string> fileNames);
 
         /// <summary>
         /// Scan assemblies.

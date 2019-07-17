@@ -13,6 +13,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Chromely.CefGlue.Browser;
+using Chromely.CefGlue.Browser.EventParams;
 using Chromely.CefGlue.Browser.Handlers;
 using Chromely.CefGlue.Subprocess;
 using Chromely.Core;
@@ -120,7 +121,7 @@ namespace Chromely.CefGlue.BrowserWindow
         /// The handler.
         /// </param>
         /// <typeparam name="T">
-        /// This is the event argument classe - e,g - LoadErrorEventArgs, FrameLoadStartEventArgs. 
+        /// This is the event argument class - e,g - LoadErrorEventArgs, FrameLoadStartEventArgs. 
         /// </typeparam>
         public void RegisterEventHandler<T>(CefEventKey key, EventHandler<T> handler)
         {
@@ -142,7 +143,7 @@ namespace Chromely.CefGlue.BrowserWindow
         /// The handler.
         /// </param>
         /// <typeparam name="T">
-        /// This is the event argument classe - e,g - LoadErrorEventArgs, FrameLoadStartEventArgs. 
+        /// This is the event argument class - e,g - LoadErrorEventArgs, FrameLoadStartEventArgs. 
         /// </typeparam>
         public void RegisterEventHandler<T>(CefEventKey key, ChromelyEventHandler<T> handler)
         {
@@ -242,12 +243,12 @@ namespace Chromely.CefGlue.BrowserWindow
         /// <summary>
         /// The register service assemblies.
         /// </summary>
-        /// <param name="filenames">
-        /// The filenames.
+        /// <param name="fileNames">
+        /// The fileNames.
         /// </param>
-        public void RegisterServiceAssemblies(List<string> filenames)
+        public void RegisterServiceAssemblies(List<string> fileNames)
         {
-            HostConfig?.ServiceAssemblies?.RegisterServiceAssemblies(filenames);
+            HostConfig?.ServiceAssemblies?.RegisterServiceAssemblies(fileNames);
         }
 
         /// <summary>
@@ -281,6 +282,7 @@ namespace Chromely.CefGlue.BrowserWindow
         /// </summary>
         public virtual void Quit()
         {
+            _mainView?.Browser?.OnBeforeClose(new BeforeCloseEventArgs());
             QuitMessageLoop();
         }
 
@@ -389,8 +391,8 @@ namespace Chromely.CefGlue.BrowserWindow
 
             if (HostConfig.UseDefaultSubprocess)
             {
-                var subprocessExeFullpath = DefaultSubprocessExe.FulPath;
-                settings.BrowserSubprocessPath = subprocessExeFullpath ?? settings.BrowserSubprocessPath;
+                var subProcessExeFullPath = DefaultSubprocessExe.FulPath;
+                settings.BrowserSubprocessPath = subProcessExeFullPath ?? settings.BrowserSubprocessPath;
             }
 
             var argv = args;

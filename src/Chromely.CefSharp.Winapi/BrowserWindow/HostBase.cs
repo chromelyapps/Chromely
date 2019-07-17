@@ -245,12 +245,12 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
         /// <summary>
         /// The register service assemblies.
         /// </summary>
-        /// <param name="filenames">
+        /// <param name="fileNames">
         /// The filenames.
         /// </param>
-        public void RegisterServiceAssemblies(List<string> filenames)
+        public void RegisterServiceAssemblies(List<string> fileNames)
         {
-            HostConfig?.ServiceAssemblies?.RegisterServiceAssemblies(filenames);
+            HostConfig?.ServiceAssemblies?.RegisterServiceAssemblies(fileNames);
         }
 
         /// <summary>

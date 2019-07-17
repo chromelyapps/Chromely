@@ -7,6 +7,8 @@
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Linq;
+
 namespace Chromely.Core.Helpers
 {
     using System;
@@ -157,24 +159,11 @@ namespace Chromely.Core.Helpers
         /// The get all event handler keys.
         /// </summary>
         /// <returns>
-        /// The <see cref="IList"/>.
+        /// The <see cref="IEnumerable"/>.
         /// </returns>
-        public static List<CefEventKey> GetAllEventHandlerKeys()
+        public static IEnumerable<CefEventKey> GetAllEventHandlerKeys()
         {
-            var types = new List<CefEventKey>
-                            {
-                                CefEventKey.None,
-                                CefEventKey.FrameLoadStart,
-                                CefEventKey.AddressChanged,
-                                CefEventKey.TitleChanged,
-                                CefEventKey.FrameLoadEnd,
-                                CefEventKey.LoadingStateChanged,
-                                CefEventKey.ConsoleMessage,
-                                CefEventKey.StatusMessage,
-                                CefEventKey.LoadError
-                            };
-
-            return types;
+            return Enum.GetValues(typeof(CefEventKey)).Cast<CefEventKey>();
         }
     }
 }

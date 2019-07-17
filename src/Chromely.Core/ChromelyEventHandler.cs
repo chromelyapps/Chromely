@@ -23,6 +23,7 @@ namespace Chromely.Core
         /// <summary>
         /// Initializes a new instance of the <see cref="ChromelyEventHandler{T}"/> class. 
         /// </summary>
+        // ReSharper disable once UnusedMember.Global
         public ChromelyEventHandler()
         {
             Key = Guid.NewGuid().ToString();

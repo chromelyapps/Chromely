@@ -7,12 +7,14 @@
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
+// ReSharper disable UnusedMemberInSuper.Global
+// ReSharper disable UnusedMember.Global
 namespace Chromely.Core.Host
 {
     using System;
 
-    using Chromely.Core.Helpers;
-    using Chromely.Core.RestfulService;
+    using Helpers;
+    using RestfulService;
 
     /// <summary>
     /// The IChromelyWindow interface.
@@ -53,7 +55,7 @@ namespace Chromely.Core.Host
         /// The handler.
         /// </param>
         /// <typeparam name="T">
-        /// This is the event argument classe - e,g - LoadErrorEventArgs, FrameLoadStartEventArgs. 
+        /// This is the event argument class - e,g - LoadErrorEventArgs, FrameLoadStartEventArgs. 
         /// </typeparam>
         void RegisterEventHandler<T>(CefEventKey key, EventHandler<T> handler);
 
@@ -67,7 +69,7 @@ namespace Chromely.Core.Host
         /// The handler.
         /// </param>
         /// <typeparam name="T">
-        /// This is the event argument classe - e,g - LoadErrorEventArgs, FrameLoadStartEventArgs. 
+        /// This is the event argument class - e,g - LoadErrorEventArgs, FrameLoadStartEventArgs. 
         /// </typeparam>
         void RegisterEventHandler<T>(CefEventKey key, ChromelyEventHandler<T> handler);
 
