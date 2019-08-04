@@ -247,7 +247,7 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         /// </summary>
         private void CreateWindow()
         {
-            var wndType = _hostConfig.HostFrameless
+            var wndType = _hostConfig.HostPlacement.Frameless
                 ? NativeMethods.GtkWindowType.GtkWindowPopup
                 : NativeMethods.GtkWindowType.GtkWindowToplevel;
             
@@ -255,14 +255,15 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
             
             NativeMethods.SetTitle(Handle, _hostConfig.HostTitle);
             NativeMethods.SetIconFromFile(Handle, _hostConfig.HostIconFile);
-            NativeMethods.SetSizeRequest(Handle, _hostConfig.HostWidth, _hostConfig.HostHeight);
+            var placement = _hostConfig.HostPlacement;
+            NativeMethods.SetSizeRequest(Handle, placement.Width, placement.Height);
 
-            if (_hostConfig.HostCenterScreen)
+            if (placement.CenterScreen)
             {
                 NativeMethods.SetWindowPosition(Handle, NativeMethods.GtkWindowPosition.GtkWinPosCenter);
             }
 
-            switch (_hostConfig.HostState)
+            switch (_hostConfig.HostPlacement.State)
             {
                 case WindowState.Normal:
                     break;

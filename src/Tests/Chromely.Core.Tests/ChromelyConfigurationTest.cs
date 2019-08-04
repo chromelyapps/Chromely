@@ -92,8 +92,8 @@ namespace Chromely.Core.Tests
             Assert.Equal(Title, config.HostTitle);
             Assert.Equal(IconFile, config.HostIconFile);
             Assert.Equal(Args, config.AppArgs);
-            Assert.Equal(HostWidth, config.HostWidth);
-            Assert.Equal(HostHeight, config.HostHeight);
+            Assert.Equal(HostWidth, config.HostPlacement.Width);
+            Assert.Equal(HostHeight, config.HostPlacement.Height);
             Assert.Equal(CefLogFile, config.LogFile);
             Assert.Equal(StartUrl, config.StartUrl);
         }
@@ -135,7 +135,7 @@ namespace Chromely.Core.Tests
                 .WithHostTitle(Title)
                 .WithHostIconFile(IconFile)
                 .WithAppArgs(null)
-                .WithHostSize(HostWidth, HostHeight)
+                .WithHostBounds(HostWidth, HostHeight)
                 .WithLogFile(CefLogFile)
                 .WithStartUrl(StartUrl)
                 .WithLogSeverity(logSeverity)

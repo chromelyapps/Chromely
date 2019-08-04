@@ -18,10 +18,10 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageReleaseNotes>
-      - Breaking changes! - ChromelyConfiguration.Create() browser window creation - https://github.com/chromelyapps/Chromely#creating-a-simple-app-using-cefglue-with-winapi-host.
-      - Added ChromelyConfiguration options - WithLoadingCefBinariesIfNotFound, WithFramelessHost.
-      - Added configurable Runtime CEF binaries downloader with WithLoadingCefBinariesIfNotFound.
-      - Added frameless window configurable with WithFramelessHost.
+      - Breaking changes!
+      - Added CefGlue Subprocess - https://github.com/chromelyapps/Chromely/wiki/Sub-Process
+      - Added WindowPlacement options - NoResize, NoMinMaxBoxes.
+      - Added custom Winapi window creation style.
     </PackageReleaseNotes>
     <RepositoryUrl>https://github.com/chromelyapps/Chromely</RepositoryUrl>
     <RepositoryType>Github Repository</RepositoryType>

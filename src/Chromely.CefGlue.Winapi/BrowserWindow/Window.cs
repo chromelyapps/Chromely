@@ -64,6 +64,11 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
         /// </summary>
         public CefGlueBrowser Browser { get; private set; }
 
+        /// <summary>
+        /// Gets the window handle.
+        /// </summary>
+        public IntPtr HostHandle => Handle;
+
         public void CenterToScreen()
         {
             base.CenterToScreen();
@@ -110,7 +115,8 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
         protected override void OnCreate(IntPtr hwnd, int width, int height)
         {
             var windowInfo = CefWindowInfo.Create();
-            windowInfo.SetAsChild(hwnd, new CefRectangle(0, 0, _hostConfig.HostWidth, _hostConfig.HostHeight));
+            var placement = _hostConfig.HostPlacement;
+            windowInfo.SetAsChild(hwnd, new CefRectangle(0, 0, placement.Width, placement.Height));
             Browser.Create(windowInfo);
         }
 

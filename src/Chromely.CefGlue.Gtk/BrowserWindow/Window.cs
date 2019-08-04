@@ -63,6 +63,11 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         /// </summary>
         public CefGlueBrowser Browser { get; private set; }
 
+        /// <summary>
+        /// Gets the window handle.
+        /// </summary>
+        public IntPtr HostHandle => Handle;
+
         public void CenterToScreen()
         {
             //TODO: Implement
@@ -108,15 +113,16 @@ namespace Chromely.CefGlue.Gtk.BrowserWindow
         protected override void OnRealized(object sender, EventArgs e)
         {
             var windowInfo = CefWindowInfo.Create();
+            var placement = _hostConfig.HostPlacement;
             switch (CefRuntime.Platform)
             {
                 case CefRuntimePlatform.Windows:
                     var parentHandle = HostXid;
-                    windowInfo.SetAsChild(parentHandle, new CefRectangle(0, 0, _hostConfig.HostWidth, _hostConfig.HostHeight)); 
+                    windowInfo.SetAsChild(parentHandle, new CefRectangle(0, 0, placement.Width, placement.Height)); 
                     break;
 
                 case CefRuntimePlatform.Linux:
-                    windowInfo.SetAsChild(HostXid, new CefRectangle(0, 0, _hostConfig.HostWidth, _hostConfig.HostHeight));
+                    windowInfo.SetAsChild(HostXid, new CefRectangle(0, 0, placement.Width, placement.Height));
                     break;
 
                 case CefRuntimePlatform.MacOSX:

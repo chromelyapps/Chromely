@@ -17,6 +17,17 @@ namespace Chromely.CefSharp.Winapi
     /// </summary>
     public static class ChromelyConfigurationExtension
     {
+
+        public static ChromelyConfiguration WithHostCustomStyle(this ChromelyConfiguration configuration, WindowCreationStyle customStyle)
+        {
+            if (configuration != null)
+            {
+                configuration.HostCustomCreationStyle = customStyle;
+            }
+
+            return configuration;
+        }
+
         /// <summary>
         /// Use default Javascript object handler.
         /// </summary>

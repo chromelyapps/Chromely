@@ -186,7 +186,7 @@ namespace Chromely.CefSharp.Winapi.Tests.BrowserWindow
                 .WithHostTitle(title)
                 .WithHostIconFile(iconFile)
                 .WithAppArgs(null)
-                .WithHostSize(hostWidth, hostHeight)
+                .WithHostBounds(hostWidth, hostHeight)
                 .WithLogFile(cefLogFile)
                 .WithStartUrl(startUrl)
                 .WithLogSeverity(logSeverity)

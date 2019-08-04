@@ -77,11 +77,11 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
                     DetachKeyboardHook();
                 }
 
-                if (ChromelyConfiguration.Instance.KioskMode && msg.Value == (uint)WM.HOTKEY && msg.WParam == (IntPtr)1)
+                if (ChromelyConfiguration.Instance.HostPlacement.KioskMode && msg.Value == (uint)WM.HOTKEY && msg.WParam == (IntPtr)1)
                 {
                     User32Methods.PostMessage(NativeWindow.NativeInstance.Handle, (uint)WM.CLOSE, IntPtr.Zero, IntPtr.Zero);
                 }
-                if (ChromelyConfiguration.Instance.HostFrameless || ChromelyConfiguration.Instance.KioskMode)
+                if (ChromelyConfiguration.Instance.HostPlacement.Frameless || ChromelyConfiguration.Instance.HostPlacement.KioskMode)
                 {
                     CefRuntime.DoMessageLoopWork();
                 }
@@ -244,22 +244,25 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
                 return;
             }
 
-            var styles = GetWindowStyles(_hostConfig.HostState);
+            var styles = GetWindowStyles(_hostConfig.HostPlacement.State);
+
+            var placement = _hostConfig.HostPlacement;
 
             NativeMethods.RECT rect;
-            rect.Left = 0;
-            rect.Top = 0;
-            rect.Right = _hostConfig.HostWidth;
-            rect.Bottom = _hostConfig.HostHeight;
+            rect.Left = placement.Left;
+            rect.Top = placement.Top;
+            rect.Right = placement.Left + placement.Width;
+            rect.Bottom = placement.Top + placement.Height;
+
             NativeMethods.AdjustWindowRectEx(ref rect, styles.Item1, false, styles.Item2);
 
             var hwnd = User32Methods.CreateWindowEx(
                 styles.Item2,
                 wc.ClassName,
-                _hostConfig.HostFrameless ? string.Empty : _hostConfig.HostTitle,
+                _hostConfig.HostPlacement.Frameless ? string.Empty : _hostConfig.HostTitle,
                 styles.Item1,
-                0,
-                0,
+                rect.Left,
+                rect.Top,
                 rect.Right - rect.Left,
                 rect.Bottom - rect.Top,
                 IntPtr.Zero,
@@ -273,7 +276,7 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
                 return;
             }
 
-            if (_hostConfig.KioskMode)
+            if (_hostConfig.HostPlacement.KioskMode)
             {
                 //// Set new window style and size.
                 //var styles = GetWindowStyles(WindowState.Normal);
@@ -423,7 +426,7 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
                     }
                 case WM.SYSKEYDOWN:
                     {
-                        if (_hostConfig.KioskMode &&  (wParam == (IntPtr)VirtualKey.F4))
+                        if (_hostConfig.HostPlacement.KioskMode &&  (wParam == (IntPtr)VirtualKey.F4))
                         {
                             return IntPtr.Zero;
                         }
@@ -431,7 +434,7 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
                     }
                 case WM.ACTIVATE:
                     {
-                        if (_hostConfig.HostFrameless)
+                        if (_hostConfig.HostPlacement.Frameless)
                         {
                             var frameSizeY = User32Methods.GetSystemMetrics(SystemMetrics.SM_CYFRAME);
                             var frameSizeX = User32Methods.GetSystemMetrics(SystemMetrics.SM_CXFRAME);
@@ -471,7 +474,7 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
                     }
 
                 case WM.NCHITTEST:
-                    if (_hostConfig.HostFrameless)
+                    if (_hostConfig.HostPlacement.Frameless)
                     {
                         return (IntPtr)NativeMethods.HT_CAPTION;
                     }
@@ -495,12 +498,33 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
             var styles = WindowStyles.WS_OVERLAPPEDWINDOW | WindowStyles.WS_CLIPCHILDREN | WindowStyles.WS_CLIPSIBLINGS;
             var exStyles = WindowExStyles.WS_EX_APPWINDOW | WindowExStyles.WS_EX_WINDOWEDGE;
 
-            if (_hostConfig.HostFrameless)
+            if (_hostConfig.UseHostCustomCreationStyle)
+            {
+                var customCreationStyle = _hostConfig.HostCustomCreationStyle as WindowCreationStyle;
+                if (customCreationStyle != null)
+                {
+                    return GetWindowStyles(customCreationStyle, state);
+                }
+            }
+
+            if (_hostConfig.HostPlacement.NoResize)
+            {
+                styles = WindowStyles.WS_OVERLAPPEDWINDOW & ~WindowStyles.WS_THICKFRAME | WindowStyles.WS_CLIPCHILDREN | WindowStyles.WS_CLIPSIBLINGS;
+                styles &= ~WindowStyles.WS_MAXIMIZEBOX;
+            }
+
+            if (_hostConfig.HostPlacement.NoMinMaxBoxes)
+            {
+                styles &= ~WindowStyles.WS_MINIMIZEBOX;
+                styles &= ~WindowStyles.WS_MAXIMIZEBOX;
+            }
+
+            if (_hostConfig.HostPlacement.Frameless)
             {
                 styles = WindowStyles.WS_CAPTION | WindowStyles.WS_POPUP | WindowStyles.WS_THICKFRAME | WindowStyles.WS_MINIMIZEBOX | WindowStyles.WS_MAXIMIZEBOX | WindowStyles.WS_CLIPCHILDREN | WindowStyles.WS_CLIPSIBLINGS;
             }
 
-            if (_hostConfig.KioskMode)
+            if (_hostConfig.HostPlacement.KioskMode)
             {
                 styles &= ~(WindowStyles.WS_CAPTION | WindowStyles.WS_THICKFRAME);
                 exStyles &= ~(WindowExStyles.WS_EX_DLGMODALFRAME | WindowExStyles.WS_EX_WINDOWEDGE | WindowExStyles.WS_EX_CLIENTEDGE | WindowExStyles.WS_EX_STATICEDGE);
@@ -512,23 +536,50 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
                     return new Tuple<WindowStyles, WindowExStyles, ShowWindowCommands>(styles, exStyles, ShowWindowCommands.SW_SHOWNORMAL);
 
                 case WindowState.Maximize:
-                {
-                    styles |= WindowStyles.WS_MAXIMIZE;
-                    return new Tuple<WindowStyles, WindowExStyles, ShowWindowCommands>(styles, exStyles, ShowWindowCommands.SW_SHOWMAXIMIZED);
-                }
+                    {
+                        styles |= WindowStyles.WS_MAXIMIZE;
+                        return new Tuple<WindowStyles, WindowExStyles, ShowWindowCommands>(styles, exStyles, ShowWindowCommands.SW_SHOWMAXIMIZED);
+                    }
 
                 case WindowState.Fullscreen:
-                {
-                    styles |= WindowStyles.WS_MAXIMIZE;
-                    exStyles = WindowExStyles.WS_EX_TOOLWINDOW;
-                       
-                    return new Tuple<WindowStyles, WindowExStyles, ShowWindowCommands>(styles, exStyles, ShowWindowCommands.SW_SHOWMAXIMIZED);
-                }
+                    {
+                        styles |= WindowStyles.WS_MAXIMIZE;
+                        exStyles = WindowExStyles.WS_EX_TOOLWINDOW;
+                        return new Tuple<WindowStyles, WindowExStyles, ShowWindowCommands>(styles, exStyles, ShowWindowCommands.SW_SHOWMAXIMIZED);
+                    }
             }
 
             return new Tuple<WindowStyles, WindowExStyles, ShowWindowCommands>(styles, exStyles, ShowWindowCommands.SW_SHOWNORMAL);
         }
 
+        /// <summary>
+        /// The get window styles.
+        /// </summary>
+        /// <param name="state">
+        /// The state.
+        /// </param>
+        /// <returns>
+        /// The <see cref="Tuple"/>.
+        /// </returns>
+        private Tuple<WindowStyles, WindowExStyles, ShowWindowCommands> GetWindowStyles(WindowCreationStyle customCreationStyle, WindowState state)
+        {
+            var styles = customCreationStyle.WindowStyles;
+            var exStyles = customCreationStyle.WindowExStyles;
+
+            switch (state)
+            {
+                case WindowState.Normal:
+                    return new Tuple<WindowStyles, WindowExStyles, ShowWindowCommands>(styles, exStyles, ShowWindowCommands.SW_SHOWNORMAL);
+
+                case WindowState.Maximize:
+                    return new Tuple<WindowStyles, WindowExStyles, ShowWindowCommands>(styles, exStyles, ShowWindowCommands.SW_SHOWMAXIMIZED);
+
+                case WindowState.Fullscreen:
+                    return new Tuple<WindowStyles, WindowExStyles, ShowWindowCommands>(styles, exStyles, ShowWindowCommands.SW_SHOWMAXIMIZED);
+            }
+
+            return new Tuple<WindowStyles, WindowExStyles, ShowWindowCommands>(styles, exStyles, ShowWindowCommands.SW_SHOWNORMAL);
+        }
         /// <summary>
         /// The get icon handle.
         /// </summary>

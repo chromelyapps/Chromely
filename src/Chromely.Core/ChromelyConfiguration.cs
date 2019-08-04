@@ -51,12 +51,9 @@ namespace Chromely.Core
             ShutdownCefOnExit = true;
             LogSeverity = LogSeverity.Warning;
             LogFile = Path.Combine("logs", "chromely.cef.log");
-            KioskMode = false;
-            HostState = WindowState.Normal;
-            HostCenterScreen = true;
+            HostPlacement = new WindowPlacement();
+            HostCustomCreationStyle = null;
             UseDefaultSubprocess = ChromelyRuntime.Platform == ChromelyPlatform.Windows;
-            HostWidth = 1200;
-            HostHeight = 900;
             Locale = "en-US";
             StartWebSocket = false;
             ServiceAssemblies = new List<ControllerAssemblyInfo>();
@@ -97,14 +94,9 @@ namespace Chromely.Core
         public bool SilentCefBinariesLoading { get; set; }
 
         /// <summary>
-        /// Gets or sets the host state.
+        /// Gets or sets the window placement - X, Y, Width, Height, Center (or not)
         /// </summary>
-        public WindowState HostState { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether host center screen.
-        /// </summary>
-        public bool HostCenterScreen { get; set; }
+        public WindowPlacement HostPlacement { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether use default subprocess.
@@ -112,34 +104,27 @@ namespace Chromely.Core
         public bool UseDefaultSubprocess { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether host to not display borders, minimize, maximize and close.
-        /// </summary>
-        public bool HostFrameless { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether to display in fullscreen, topmost and disable ALT+F4 and ALT+Tab global hotkeys.
-        /// </summary>
-        public bool KioskMode { get; set; }
-
-        /// <summary>
         /// Gets or sets the host/window/app title.
         /// </summary>
         public string HostTitle { get; set; }
 
         /// <summary>
-        /// Gets or sets the host/window/app width.
-        /// </summary>
-        public int HostWidth { get; set; }
-
-        /// <summary>
-        /// Gets or sets the host/window/app height.
-        /// </summary>
-        public int HostHeight { get; set; }
-
-        /// <summary>
         /// Gets or sets the host/window/app icon file.
         /// </summary>
         public string HostIconFile { get; set; }
+
+        /// <summary>
+        /// Gets or sets the host custom creation style.
+        /// </summary>
+        public object HostCustomCreationStyle { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to use host custom creation style.
+        /// </summary>
+        public bool UseHostCustomCreationStyle
+        {
+            get { return HostCustomCreationStyle != null; }
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether CEF browser creation should perform dependency check.
@@ -367,44 +352,25 @@ namespace Chromely.Core
         /// <param name="windowState">
         /// The window state.
         /// </param>
-        /// <param name="centerScreen">
-        /// The center screen.
-        /// </param>
         /// <returns>
         /// The <see cref="ChromelyConfiguration"/>.
         /// </returns>
-        public ChromelyConfiguration WithHostMode(WindowState windowState, bool centerScreen = true)
+        public ChromelyConfiguration WithHostMode(WindowState windowState)
         {
-            HostState = windowState;
-            HostCenterScreen = centerScreen;
-            return this;
-        }
-
-        /// <summary>
-        /// Set frameless host mode.
-        /// </summary>
-        /// <param name="frameless"></param>
-        /// The <see cref="ChromelyConfiguration"/>.
-        public ChromelyConfiguration WithFramelessHost(bool frameless = true)
-        {
-            HostFrameless = frameless;
-            return this;
-        }
-
-        /// <summary>
-        /// Set frameless host mode.
-        /// </summary>
-        /// <param name="kiosk"></param>
-        /// The <see cref="ChromelyConfiguration"/>.
-        public ChromelyConfiguration WithKioskMode(bool kiosk = true)
-        {
-            KioskMode = kiosk;
-            if (this.KioskMode)
+            if (HostPlacement == null)
             {
-                this.WithHostMode(WindowState.Normal, false)
-                    .WithFramelessHost(false);
-
+                throw new Exception("HostPlacement cannot be nul");
             }
+
+            HostPlacement.State = windowState;
+            if (HostPlacement.KioskMode)
+            {
+                if (HostPlacement.State == WindowState.Normal)
+                {
+                    HostPlacement.Frameless = false;
+                }
+            }
+
             return this;
         }
 
@@ -493,13 +459,61 @@ namespace Chromely.Core
         /// <param name="height">
         /// The height.
         /// </param>
+        /// <param name="left"></param>
+        /// <param name="top"></param>
         /// <returns>
         /// The <see cref="ChromelyConfiguration"/> object.
         /// </returns>
-        public ChromelyConfiguration WithHostSize(int width, int height)
+        public ChromelyConfiguration WithHostBounds(int width, int height, int left = 0, int top = 0)
         {
-            HostWidth = width;
-            HostHeight = height;
+            if (HostPlacement == null) HostPlacement = new WindowPlacement();
+            HostPlacement.Left = left;
+            HostPlacement.Top = top;
+            HostPlacement.Width = width;
+            HostPlacement.Height = height;
+            return this;
+        }
+
+        public ChromelyConfiguration WithHostFlag(HostFlagKey key, bool flag)
+        {
+            if (HostPlacement == null)
+            {
+                throw new Exception("HostPlacement cannot be nul");
+            }
+
+            switch (key)
+            {
+                case HostFlagKey.None:
+                    break;
+
+                case HostFlagKey.CenterScreen:
+                    HostPlacement.CenterScreen = flag;
+                    break;
+
+                case HostFlagKey.Frameless:
+                    HostPlacement.Frameless = flag;
+                    break;
+
+                case HostFlagKey.NoResize:
+                    HostPlacement.NoResize = flag;
+                    break;
+
+                case HostFlagKey.NoMinMaxBoxes:
+                    HostPlacement.NoMinMaxBoxes = flag;
+                    break;
+
+                case HostFlagKey.KioskMode:
+                    HostPlacement.KioskMode = flag;
+                    if (HostPlacement.KioskMode)
+                    {
+                        if (HostPlacement.State == WindowState.Normal)
+                        {
+                            HostPlacement.Frameless = false;
+                        }
+                    }
+                    break;
+            }
+
             return this;
         }
 

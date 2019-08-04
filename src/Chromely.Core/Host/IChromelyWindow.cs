@@ -27,6 +27,11 @@ namespace Chromely.Core.Host
         ChromelyConfiguration HostConfig { get; }
 
         /// <summary>
+        /// Gets the window handle.
+        /// </summary>
+        IntPtr Handle { get; }
+
+        /// <summary>
         /// Gets the browser.
         /// </summary>
         object Browser { get; }

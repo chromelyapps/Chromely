@@ -59,10 +59,9 @@ namespace Chromely.Integration.TestApp
                 .WithDebuggingMode(true)
                 .WithLoadingCefBinariesIfNotFound(true)
                 .WithSilentCefBinariesLoading(true)
-                //.WithFramelessHost()
                 .RegisterEventHandler<ConsoleMessageEventArgs>(CefEventKey.ConsoleMessage, OnWebBrowserConsoleMessage)
                 .WithAppArgs(args)
-                .WithHostSize(1000, 600)
+                .WithHostBounds(1000, 600)
                 .WithStartUrl(startUrl);
             CiTrace("Configuration", "Created");
 

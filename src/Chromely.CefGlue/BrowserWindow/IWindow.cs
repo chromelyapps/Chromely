@@ -18,6 +18,11 @@ namespace Chromely.CefGlue.BrowserWindow
     public interface IWindow : IDisposable
     {
         /// <summary>
+        /// Gets the window handle.
+        /// </summary>
+        IntPtr HostHandle { get; }
+
+        /// <summary>
         /// Gets a reference to the browser.
         /// </summary>
         CefGlueBrowser Browser { get; }
