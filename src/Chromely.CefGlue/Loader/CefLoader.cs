@@ -341,19 +341,34 @@ namespace Chromely.CefGlue.Loader
 
         private static void CopyDirectory(string srcPath, string dstPath)
         {
+            var localesDir = string.Empty;
             // Create all of the sub-directories
             foreach (var dirPath in Directory.GetDirectories(srcPath, "*", SearchOption.AllDirectories))
             {
-                Directory.CreateDirectory(dirPath.Replace(srcPath, dstPath));
+                var newPath = dirPath.Replace(srcPath, dstPath);
+                var dirInfo = new DirectoryInfo(newPath);
+                if (!string.IsNullOrWhiteSpace(dirInfo.Name) && dirInfo.Name.Equals("locales", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    localesDir = newPath;
+                }
+
+                Directory.CreateDirectory(newPath);
             }
 
-            // Copy all the files & replaces any files with the same name
+             // Copy all the files & replaces any files with the same name
             foreach (var srcFile in Directory.GetFiles(srcPath, "*.*", SearchOption.AllDirectories))
             {
                 var dstFile = Path.Combine(dstPath, Path.GetFileName(srcFile));
                 File.Copy(srcFile, dstFile, true);
+
+                // Copy all ***-**.pak file to locales directory
+                var fileName = Path.GetFileName(dstFile);
+                var ext = Path.GetExtension(dstFile);
+                if (!string.IsNullOrWhiteSpace(localesDir) && !string.IsNullOrWhiteSpace(ext) && ext.ToLower().Equals(".pak") && fileName.Contains("-"))
+                {
+                    File.Copy(dstFile, Path.Combine(localesDir, Path.GetFileName(fileName)), true);
+                }
             }
         }
-
     }
 }
