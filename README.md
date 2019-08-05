@@ -74,7 +74,7 @@ class Program
                      .WithHostTitle("chromely")
                      .WithHostIconFile("chromely.ico")
                      .WithAppArgs(args)
-                     .WithHostSize(1000, 600)
+                     .WithHostBounds(1000, 600)
                      .WithStartUrl(startUrl);
 
       using (var window = ChromelyWindow.Create(config))
