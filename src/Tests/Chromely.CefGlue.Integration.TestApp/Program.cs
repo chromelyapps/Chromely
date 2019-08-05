@@ -12,11 +12,13 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Chromely.CefGlue;
 using Chromely.CefGlue.Browser.EventParams;
+using Chromely.CefGlue.Winapi;
 using Chromely.Core;
 using Chromely.Core.Helpers;
 using Chromely.Core.Host;
+using WinApi.User32;
 
-namespace Chromely.Integration.TestApp
+namespace Chromely.CefGlue.Integration.TestApp
 {
     /// <summary>
     /// This is a minimal chromely application
@@ -54,6 +56,10 @@ namespace Chromely.Integration.TestApp
             CiTrace("AppDirectory", appDirectory);
             var startUrl = $"file:///{appDirectory}/index.html";
 
+            var windowStyle = new WindowCreationStyle();
+            windowStyle.WindowStyles = WindowStyles.WS_OVERLAPPEDWINDOW | WindowStyles.WS_CLIPCHILDREN | WindowStyles.WS_CLIPSIBLINGS;
+            windowStyle.WindowExStyles = WindowExStyles.WS_EX_APPWINDOW | WindowExStyles.WS_EX_WINDOWEDGE;
+
             var config = ChromelyConfiguration
                 .Create()
                 .WithDebuggingMode(true)
@@ -62,6 +68,12 @@ namespace Chromely.Integration.TestApp
                 .RegisterEventHandler<ConsoleMessageEventArgs>(CefEventKey.ConsoleMessage, OnWebBrowserConsoleMessage)
                 .WithAppArgs(args)
                 .WithHostBounds(1000, 600)
+                .WithHostCustomStyle(windowStyle)
+                //.WithHostFlag(HostFlagKey.CenterScreen, true | false - default true)
+                //.WithHostFlag(HostFlagKey.Frameless, true | false -  default false)
+                //.WithHostFlag(HostFlagKey.KioskMode, true | false - default false)
+                .WithHostFlag(HostFlagKey.NoResize, true) // - default false)
+                .WithHostFlag(HostFlagKey.NoMinMaxBoxes, true) // - default false)
                 .WithStartUrl(startUrl);
             CiTrace("Configuration", "Created");
 

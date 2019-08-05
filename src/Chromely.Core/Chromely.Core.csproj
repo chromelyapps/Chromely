@@ -3,10 +3,10 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Platforms>AnyCPU</Platforms>
-    <ProductVersion>4.0.0.0</ProductVersion>
-    <AssemblyVersion>4.0.0.0</AssemblyVersion>
-    <FileVersion>4.0.0.0</FileVersion>
-    <Version>4.0.0.0</Version>
+    <ProductVersion>4.0.0.1</ProductVersion>
+    <AssemblyVersion>4.0.0.1</AssemblyVersion>
+    <FileVersion>4.0.0.1</FileVersion>
+    <Version>4.0.0.1</Version>
     <Authors>Chromely Projects</Authors>
     <Company>Chromely Projects</Company>
     <PackageTags>Cef Chromium HTML5 Desktop Chromely CefGlue CefSharp Restful  Ajax HTTP XHR MessageRouter JavascriptIntegration NetStandard .NET Core</PackageTags>
@@ -20,8 +20,9 @@
     <PackageReleaseNotes>
       - Breaking changes!
       - Added CefGlue Subprocess - https://github.com/chromelyapps/Chromely/wiki/Sub-Process
-      - Added WindowPlacement options - NoResize, NoMinMaxBoxes.
-      - Added custom Winapi window creation style.
+      - Added WindowPlacement options - NoResize, NoMinMaxBoxes - https://github.com/chromelyapps/Chromely/wiki/Window-Flags-and-Custom-Window-Creation-Styles
+      - Added custom window creation style - https://github.com/chromelyapps/Chromely/wiki/Window-Flags-and-Custom-Window-Creation-Styles
+      - Added exposure of Window handle for custom messaging.
     </PackageReleaseNotes>
     <RepositoryUrl>https://github.com/chromelyapps/Chromely</RepositoryUrl>
     <RepositoryType>Github Repository</RepositoryType>

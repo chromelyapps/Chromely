@@ -3,10 +3,10 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Platforms>AnyCPU</Platforms>
-    <ProductVersion>4.0.70.0</ProductVersion>
-    <AssemblyVersion>4.0.70.0</AssemblyVersion>
-    <FileVersion>4.0.70.0</FileVersion>
-    <Version>4.0.70.0</Version>
+    <ProductVersion>4.0.70.1</ProductVersion>
+    <AssemblyVersion>4.0.70.1</AssemblyVersion>
+    <FileVersion>4.0.70.1</FileVersion>
+    <Version>4.0.70.1</Version>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Product>Chromely.CefGlue.Winapi</Product>
@@ -19,10 +19,11 @@
     <PackageTags>Cef Chromium HTML5 Desktop Chromely CefGlue  Restful  Ajax HTTP XHR MessageRouter JavascriptIntegration  .NET Core</PackageTags>
     <Description>Chromely CefGlue Winapi implementation library - this is in .NET Standard 2.0 as it can be used in both .NET (Windows) and .NET Core (Windows, Linux). Chromely.CefGlue.Winapi version naming is based Chromely and Chromium versions implemented- major.minor.chromuim version.patch e.g 1.0.70.0.</Description>
     <PackageReleaseNotes>
-      - Breaking changes! - ChromelyConfiguration.Create() browser window creation - https://github.com/chromelyapps/Chromely#creating-a-simple-app-using-cefglue-with-winapi-host.
-      - Added ChromelyConfiguration options - WithLoadingCefBinariesIfNotFound, WithFramelessHost.
-      - Added configurable Runtime CEF binaries downloader with WithLoadingCefBinariesIfNotFound.
-      - Added frameless window configurable with WithFramelessHost.
+      - Breaking changes!
+      - Added CefGlue Subprocess - https://github.com/chromelyapps/Chromely/wiki/Sub-Process
+      - Added WindowPlacement options - NoResize, NoMinMaxBoxes - https://github.com/chromelyapps/Chromely/wiki/Window-Flags-and-Custom-Window-Creation-Styles
+      - Added custom window creation style - https://github.com/chromelyapps/Chromely/wiki/Window-Flags-and-Custom-Window-Creation-Styles
+      - Added exposure of Window handle for custom messaging.
     </PackageReleaseNotes>
     <RepositoryType>Github Repository</RepositoryType>
     <RepositoryUrl>https://github.com/chromelyapps/Chromely</RepositoryUrl>

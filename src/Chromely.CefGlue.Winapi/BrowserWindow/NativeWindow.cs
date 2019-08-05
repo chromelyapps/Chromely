@@ -112,7 +112,7 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
         /// </summary>
         public void CloseWindowExternally()
         {
-            User32Methods.PostMessage(Handle, (uint)WM.CLOSE, IntPtr.Zero, IntPtr.Zero);
+            User32Methods.PostQuitMessage(0);
         }
 
         /// <summary>
@@ -495,9 +495,6 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
         /// </returns>
         private Tuple<WindowStyles, WindowExStyles, ShowWindowCommands> GetWindowStyles(WindowState state)
         {
-            var styles = WindowStyles.WS_OVERLAPPEDWINDOW | WindowStyles.WS_CLIPCHILDREN | WindowStyles.WS_CLIPSIBLINGS;
-            var exStyles = WindowExStyles.WS_EX_APPWINDOW | WindowExStyles.WS_EX_WINDOWEDGE;
-
             if (_hostConfig.UseHostCustomCreationStyle)
             {
                 var customCreationStyle = _hostConfig.HostCustomCreationStyle as WindowCreationStyle;
@@ -506,6 +503,9 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
                     return GetWindowStyles(customCreationStyle, state);
                 }
             }
+
+            var styles = WindowStyles.WS_OVERLAPPEDWINDOW | WindowStyles.WS_CLIPCHILDREN | WindowStyles.WS_CLIPSIBLINGS;
+            var exStyles = WindowExStyles.WS_EX_APPWINDOW | WindowExStyles.WS_EX_WINDOWEDGE;
 
             if (_hostConfig.HostPlacement.NoResize)
             {

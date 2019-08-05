@@ -1,7 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="WindowPlacement.cs" company="Chromely Projects">
+//   Copyright (c) 2017-2019 Chromely Projects
+// </copyright>
+// <license>
+//      See the LICENSE.md file in the project root for more information.
+// </license>
+// --------------------------------------------------------------------------------------------------------------------
+
 using System.Drawing;
-using System.Text;
 
 namespace Chromely.Core.Host
 {
