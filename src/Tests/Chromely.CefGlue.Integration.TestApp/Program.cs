@@ -10,24 +10,25 @@
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using Chromely.CefGlue;
 using Chromely.CefGlue.Browser.EventParams;
-using Chromely.CefGlue.Winapi;
 using Chromely.Core;
 using Chromely.Core.Helpers;
 using Chromely.Core.Host;
-using WinApi.User32;
 
 namespace Chromely.CefGlue.Integration.TestApp
 {
     /// <summary>
-    /// This is a minimal chromely application
-    /// to be used during integration tests.
-    /// Due it is cross platform it MUST NOT
-    /// reference platform specific assemblies.
-    /// It will emit console outputs starting
-    /// with "CI-TRACE:" which are checked
+    /// 
+    /// This is a minimal chromely application to be used during integration tests.
+    ///
+    /// PLEASE NOTE:
+    /// Due it is cross platform it MUST NOT reference PLATFORM SPECIFIC ASSEMBLIES.
+    ///
+    /// Use projects in Chromely-Demo to show platform specific samples !
+    /// 
+    /// It will emit console outputs starting with "CI-TRACE:" which are checked
     /// in the test run - so DON'T REMOVE them.
+    /// 
     /// </summary>
     internal static class Program
     {
@@ -56,10 +57,6 @@ namespace Chromely.CefGlue.Integration.TestApp
             CiTrace("AppDirectory", appDirectory);
             var startUrl = $"file:///{appDirectory}/index.html";
 
-            var windowStyle = new WindowCreationStyle();
-            windowStyle.WindowStyles = WindowStyles.WS_OVERLAPPEDWINDOW | WindowStyles.WS_CLIPCHILDREN | WindowStyles.WS_CLIPSIBLINGS;
-            windowStyle.WindowExStyles = WindowExStyles.WS_EX_APPWINDOW | WindowExStyles.WS_EX_WINDOWEDGE;
-
             var config = ChromelyConfiguration
                 .Create()
                 .WithDebuggingMode(true)
@@ -68,7 +65,6 @@ namespace Chromely.CefGlue.Integration.TestApp
                 .RegisterEventHandler<ConsoleMessageEventArgs>(CefEventKey.ConsoleMessage, OnWebBrowserConsoleMessage)
                 .WithAppArgs(args)
                 .WithHostBounds(1000, 600)
-                .WithHostCustomStyle(windowStyle)
                 //.WithHostFlag(HostFlagKey.CenterScreen, true | false - default true)
                 //.WithHostFlag(HostFlagKey.Frameless, true | false -  default false)
                 //.WithHostFlag(HostFlagKey.KioskMode, true | false - default false)
