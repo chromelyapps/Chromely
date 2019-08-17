@@ -234,6 +234,7 @@ namespace Chromely.Core
                         .WithCommandLineArg("no-zygote", "1");
 
                 case ChromelyPlatform.Windows:
+					EnsureExpectedWorkingDirectory();
                     return Instance;
 
                 default:
@@ -949,6 +950,33 @@ namespace Chromely.Core
             }
 
             return this;
+        }
+		
+		        /// <summary>
+        /// Using local resource handling requires files to be relative to the 
+        /// Expected working directory
+        /// For example, if the app is launched via the taskbar the working directory gets changed to
+        /// C:\Windows\system32
+        /// This needs to be changed to the right one.
+        /// </summary>
+        private static void EnsureExpectedWorkingDirectory()
+        {
+           try
+            {
+                var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                var currentWkDir = Environment.CurrentDirectory;
+                DirectoryInfo appDirInfo = new DirectoryInfo(appDirectory.TrimEnd('\\').TrimEnd('\\'));
+                DirectoryInfo currentWkDirInfo = new DirectoryInfo(currentWkDir.TrimEnd('\\').TrimEnd('\\'));
+
+                if (!string.Equals(appDirInfo.FullName, currentWkDirInfo.FullName, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    Directory.SetCurrentDirectory(appDirectory);
+                }
+            }
+            catch (Exception exception)
+            {
+                Log.Error(exception);
+            }
         }
     }
 }
