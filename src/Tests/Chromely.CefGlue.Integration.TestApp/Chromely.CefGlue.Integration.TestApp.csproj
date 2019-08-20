@@ -7,6 +7,7 @@
         <TargetFrameworks>net461;netcoreapp2.1</TargetFrameworks>
         <Configurations>Debug;Release;ReleaseLinux;DebugLinux</Configurations>
         <Platforms>AnyCPU</Platforms>
+        <ApplicationManifest>application.manifest</ApplicationManifest>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
