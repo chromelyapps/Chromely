@@ -43,6 +43,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\Common\ChromeWidgetMessageInterceptor.cs" Link="BrowserWindow\ChromeWidgetMessageInterceptor.cs" />
+    <Compile Include="..\Common\NativeMethods.cs" Link="BrowserWindow\NativeMethods.cs" />
+    <Compile Include="..\Common\NativeWindowBase.cs" Link="BrowserWindow\NativeWindowBase.cs" />
+    <Compile Include="..\Common\WinapiConfigurationExtension.cs" Link="WinapiConfigurationExtension.cs" />
+    <Compile Include="..\Common\WindowCreationStyle.cs" Link="WindowCreationStyle.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="CefSharp.Common" Version="71.0.2" />
     <PackageReference Include="WinApi" Version="4.0.0" />
   </ItemGroup>

@@ -46,6 +46,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chromely.CefGlue.Integratio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chromely.CefSharp.Integration.TestApp", "Tests\Chromely.CefSharp.Integration.TestApp\Chromely.CefSharp.Integration.TestApp.csproj", "{4C6976FC-11C3-4CF4-B421-3517815ADC88}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WinapiCommon", "WinapiCommon", "{C600A7EE-24D8-46F3-9776-E0B1D0D72515}"
+	ProjectSection(SolutionItems) = preProject
+		Common\ChromeWidgetMessageInterceptor.cs = Common\ChromeWidgetMessageInterceptor.cs
+		Common\NativeMethods.cs = Common\NativeMethods.cs
+		Common\NativeWindowBase.cs = Common\NativeWindowBase.cs
+		Common\WinapiConfigurationExtension.cs = Common\WinapiConfigurationExtension.cs
+		Common\WindowCreationStyle.cs = Common\WindowCreationStyle.cs
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -253,6 +262,7 @@ Global
 		{B54E5806-3A8D-4F37-9AA4-2962AD9FE033}.ReleaseLinux|x86.ActiveCfg = ReleaseLinux|Any CPU
 		{B54E5806-3A8D-4F37-9AA4-2962AD9FE033}.ReleaseLinux|x86.Build.0 = ReleaseLinux|Any CPU
 		{8E2A8BE5-7ABA-47B7-B4E3-2386E9DA88DF}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{8E2A8BE5-7ABA-47B7-B4E3-2386E9DA88DF}.Debug|Any CPU.Build.0 = Debug|x64
 		{8E2A8BE5-7ABA-47B7-B4E3-2386E9DA88DF}.Debug|x64.ActiveCfg = Debug|x64
 		{8E2A8BE5-7ABA-47B7-B4E3-2386E9DA88DF}.Debug|x64.Build.0 = Debug|x64
 		{8E2A8BE5-7ABA-47B7-B4E3-2386E9DA88DF}.Debug|x86.ActiveCfg = Debug|x64
@@ -273,6 +283,7 @@ Global
 		{8E2A8BE5-7ABA-47B7-B4E3-2386E9DA88DF}.ReleaseLinux|x86.ActiveCfg = Release|x64
 		{8E2A8BE5-7ABA-47B7-B4E3-2386E9DA88DF}.ReleaseLinux|x86.Build.0 = Release|x64
 		{3B985DD7-FE75-4002-A90D-0AF4D0CECA19}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{3B985DD7-FE75-4002-A90D-0AF4D0CECA19}.Debug|Any CPU.Build.0 = Debug|x64
 		{3B985DD7-FE75-4002-A90D-0AF4D0CECA19}.Debug|x64.ActiveCfg = Debug|x64
 		{3B985DD7-FE75-4002-A90D-0AF4D0CECA19}.Debug|x64.Build.0 = Debug|x64
 		{3B985DD7-FE75-4002-A90D-0AF4D0CECA19}.Debug|x86.ActiveCfg = Debug|x64
@@ -293,6 +304,7 @@ Global
 		{3B985DD7-FE75-4002-A90D-0AF4D0CECA19}.ReleaseLinux|x86.ActiveCfg = Release|x64
 		{3B985DD7-FE75-4002-A90D-0AF4D0CECA19}.ReleaseLinux|x86.Build.0 = Release|x64
 		{DB321BDD-AE53-4F77-84C3-815E9FA688D4}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{DB321BDD-AE53-4F77-84C3-815E9FA688D4}.Debug|Any CPU.Build.0 = Debug|x64
 		{DB321BDD-AE53-4F77-84C3-815E9FA688D4}.Debug|x64.ActiveCfg = Debug|x64
 		{DB321BDD-AE53-4F77-84C3-815E9FA688D4}.Debug|x64.Build.0 = Debug|x64
 		{DB321BDD-AE53-4F77-84C3-815E9FA688D4}.Debug|x86.ActiveCfg = Debug|x64
@@ -361,6 +373,7 @@ Global
 		{AF9D9003-92D4-4F81-BB1E-AA2406749FEC}.ReleaseLinux|x86.ActiveCfg = ReleaseLinux|Any CPU
 		{AF9D9003-92D4-4F81-BB1E-AA2406749FEC}.ReleaseLinux|x86.Build.0 = ReleaseLinux|Any CPU
 		{4C6976FC-11C3-4CF4-B421-3517815ADC88}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{4C6976FC-11C3-4CF4-B421-3517815ADC88}.Debug|Any CPU.Build.0 = Debug|x64
 		{4C6976FC-11C3-4CF4-B421-3517815ADC88}.Debug|x64.ActiveCfg = Debug|x64
 		{4C6976FC-11C3-4CF4-B421-3517815ADC88}.Debug|x64.Build.0 = Debug|x64
 		{4C6976FC-11C3-4CF4-B421-3517815ADC88}.Debug|x86.ActiveCfg = Debug|x64

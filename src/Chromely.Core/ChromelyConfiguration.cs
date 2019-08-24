@@ -479,7 +479,7 @@ namespace Chromely.Core
         {
             if (HostPlacement == null)
             {
-                throw new Exception("HostPlacement cannot be nul");
+                throw new Exception("HostPlacement cannot be null.");
             }
 
             switch (key)

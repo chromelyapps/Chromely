@@ -16,7 +16,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using WinApi.User32;
 
-namespace Chromely.CefGlue.Winapi.BrowserWindow
+namespace Chromely.Common
 {
     /// <summary>
     /// The native methods.
@@ -28,7 +28,66 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
         /// </summary>
         internal const string DllName = "user32.dll";
 
-        internal const int HT_CAPTION = 0x2;
+        internal const int SC_DRAGMOVE = 61458;
+
+        [DllImport(DllName)]
+        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+
+        [DllImport(DllName, SetLastError = true)]
+        public static extern IntPtr GetWindowLong(IntPtr hWnd, int nIndex);
+
+        [DllImport(DllName, EntryPoint = "SetWindowLong")]
+        public static extern int SetWindowLong32(HandleRef hWnd, int nIndex, int dwNewLong);
+
+        [DllImport(DllName, EntryPoint = "SetWindowLongPtr")]
+        public static extern IntPtr SetWindowLongPtr64(HandleRef hWnd, int nIndex, IntPtr dwNewLong);
+
+        public static IntPtr SetWindowLongPtr(IntPtr hWnd, int nIndex, IntPtr newWndProc)
+        {
+            if (Environment.Is64BitProcess)
+                return SetWindowLongPtr64(new HandleRef(null, hWnd), nIndex, newWndProc);
+            else
+                return new IntPtr(SetWindowLong32(new HandleRef(null, hWnd), nIndex, newWndProc.ToInt32()));
+        }
+
+        public static IntPtr SetWindowLong(IntPtr hWnd, int nIndex, IntPtr newWndProc)
+        {
+            if (Environment.Is64BitProcess)
+                return SetWindowLongPtr64(new HandleRef(null, hWnd), nIndex, newWndProc);
+            else
+                return new IntPtr(SetWindowLong32(new HandleRef(null, hWnd), nIndex, newWndProc.ToInt32()));
+        }
+
+        [DllImport(DllName, EntryPoint = "GetWindowLong")]
+        public static extern IntPtr GetWindowLongPtr32(IntPtr hWnd, int nIndex);
+
+        [DllImport(DllName, EntryPoint = "GetWindowLongPtr")]
+        public static extern IntPtr GetWindowLongPtr64(IntPtr hWnd, int nIndex);
+
+        public static IntPtr GetWindowLongPtr(IntPtr hWnd, int nIndex)
+        {
+            return Environment.Is64BitProcess ? GetWindowLongPtr64(hWnd, nIndex) : GetWindowLongPtr32(hWnd, nIndex);
+        }
+
+        public static int HIWORD(int n)
+        {
+            return (n >> 16) & 0xffff;
+        }
+
+        public static int HIWORD(IntPtr n)
+        {
+            return HIWORD(unchecked((int)(long)n));
+        }
+
+        public static int LOWORD(int n)
+        {
+            return n & 0xffff;
+        }
+
+        public static int LOWORD(IntPtr n)
+        {
+            return LOWORD(unchecked((int)(long)n));
+        }
 
         /// <summary>
         /// The load image.
@@ -167,7 +226,13 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
 
             if (!File.Exists(iconFullPath))
             {
-                return null;
+                // If local file
+                var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                iconFullPath = Path.Combine(appDirectory, iconFullPath);
+                if (!File.Exists(iconFullPath))
+                {
+                    return null;
+                }
             }
 
             return LoadImage(                                         // returns a HANDLE so we have to cast to HICON
@@ -201,15 +266,15 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
             }
         }
 
-        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        [DllImport(DllName, CharSet = CharSet.Auto, SetLastError = true)]
         private static extern IntPtr SetWindowsHookEx(int idHook,
                                                       LowLevelKeyboardProc lpfn, IntPtr hMod, uint dwThreadId);
 
-        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        [DllImport(DllName, CharSet = CharSet.Auto, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool UnhookWindowsHookEx(IntPtr hhk);
 
-        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        [DllImport(DllName, CharSet = CharSet.Auto, SetLastError = true)]
         public static extern IntPtr CallNextHookEx(IntPtr hhk, int nCode,
                                                    IntPtr wParam, IntPtr lParam);
 
@@ -267,6 +332,26 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
             LLKHF_INJECTED = 0x10,
             LLKHF_ALTDOWN = 0x20,
             LLKHF_UP = 0x80,
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct WINDOWPOS
+        {
+            public IntPtr hwnd;
+            public IntPtr hwndInsertAfter;
+            public int x;
+            public int y;
+            public int cx;
+            public int cy;
+            public uint flags;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct NCCALCSIZE_PARAMS
+        {
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
+            public RECT[] rgrc;
+            public WINDOWPOS lppos;
         }
     }
        

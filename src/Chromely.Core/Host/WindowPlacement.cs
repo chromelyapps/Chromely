@@ -25,6 +25,7 @@ namespace Chromely.Core.Host
             Frameless = false;
             KioskMode = false;
             State = WindowState.Normal;
+            FramelessOptions = new DefaultFramelessOptions();
         }
 
         public int Left { get; set; }
@@ -36,6 +37,7 @@ namespace Chromely.Core.Host
         public bool Frameless { get; set; }
         public bool CenterScreen { get; set; }
         public bool KioskMode { get; set; }
+        public IFramelessOptions FramelessOptions { get; set; }
 
         /// <summary>
         /// Gets or sets the host state.
@@ -49,5 +51,26 @@ namespace Chromely.Core.Host
                 return new Size(Width, Height);
             }
         }
+    }
+
+    public class DefaultFramelessOptions : IFramelessOptions
+    {
+        private const int WHITESTRIPEHEIGHT = 8;
+
+        public DefaultFramelessOptions()
+        {
+            var dragRegion = new FramelessDragRegion();
+            Height = dragRegion.Height;
+            NoDragWidth = dragRegion.NoDragWidth;
+            WhiteStripeHeight = WHITESTRIPEHEIGHT;
+            IsDraggable = true;
+            IsResizable = true;
+        }
+
+        public int Height { get; set; }
+        public int NoDragWidth { get; set; }
+        public int WhiteStripeHeight { get; set; }
+        public bool IsDraggable { get; set; }
+        public bool IsResizable { get; set; }
     }
 }

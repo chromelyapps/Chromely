@@ -349,6 +349,7 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
                 LocalesDirPath = localesDirPath,
                 Locale = HostConfig.Locale,
 
+               // MultiThreadedMessageLoop = true,
                 // MultiThreadedMessageLoop is not allowed to be used as it will break frameless mode
                 MultiThreadedMessageLoop = !(HostConfig.HostPlacement.Frameless || HostConfig.HostPlacement.KioskMode),
 

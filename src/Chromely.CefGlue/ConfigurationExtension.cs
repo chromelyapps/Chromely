@@ -15,7 +15,7 @@ namespace Chromely.CefGlue
     /// <summary>
     /// The chromely configuration extension.
     /// </summary>
-    public static class ChromelyConfigurationExtension
+    public static class ConfigurationExtension
     {
         /// <summary>
         /// The use default subprocess.

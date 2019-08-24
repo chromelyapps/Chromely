@@ -10,6 +10,7 @@
 using System;
 using Chromely.CefGlue.Browser;
 using Chromely.CefGlue.BrowserWindow;
+using Chromely.Common;
 using Chromely.Core;
 using WinApi.User32;
 using Xilium.CefGlue;
@@ -170,6 +171,22 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
             {
                 var size = GetClientSize();
                 NativeMethods.SetWindowPos(_browserWindowHandle, IntPtr.Zero, 0, 0, size.Width, size.Height, WindowPositionFlags.SWP_NOZORDER);
+
+                if (_hostConfig.HostPlacement.Frameless && _hostConfig.HostPlacement.FramelessOptions.IsDraggable)
+                {
+                    ChromeWidgetMessageInterceptor.Setup(Handle, _hostConfig.HostPlacement.FramelessOptions, (message) =>
+                    {
+                        var msg = (WM)message.Value;
+                        switch (msg)
+                        {
+                            case WM.LBUTTONDOWN:
+                                User32Methods.ReleaseCapture();
+                                NativeMethods.SendMessage(Handle, (int)WM.SYSCOMMAND, NativeMethods.SC_DRAGMOVE, 0);
+                                break;
+                        }
+
+                    });
+                }
             }
         }
     }

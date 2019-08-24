@@ -65,6 +65,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="..\Common\ChromeWidgetMessageInterceptor.cs" Link="BrowserWindow\ChromeWidgetMessageInterceptor.cs" />
+    <Compile Include="..\Common\NativeMethods.cs" Link="BrowserWindow\NativeMethods.cs" />
+    <Compile Include="..\Common\NativeWindowBase.cs" Link="BrowserWindow\NativeWindowBase.cs" />
+    <Compile Include="..\Common\WinapiConfigurationExtension.cs" Link="WinapiConfigurationExtension.cs" />
+    <Compile Include="..\Common\WindowCreationStyle.cs" Link="WindowCreationStyle.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="build\Chromely.CefGlue.Winapi.props">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

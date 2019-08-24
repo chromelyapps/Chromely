@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using CefSharp;
 using Chromely.CefSharp.Winapi;
 using Chromely.CefSharp.Winapi.BrowserWindow;
+using Chromely.Common;
 using Chromely.Core;
 using Chromely.Core.Helpers;
 using Chromely.Core.Host;
@@ -67,9 +68,9 @@ namespace Chromely.CefSharp.Integration.TestApp
                 .WithAppArgs(args)
                 .WithHostBounds(1000, 600)
                 .WithHostCustomStyle(windowStyle)
-                //.WithHostFlag(HostParamKey.CenterScreen, true | false - default true)
-                //.WithHostFlag(HostParamKey.Frameless, true | false -  default false)
-                //.WithHostFlag(HostParamKey.KioskMode, true | false - default false)
+                //.WithHostFlag(HostFlagKey.CenterScreen, true | false - default true)
+                //.WithHostFlag(HostFlagKey.Frameless, true | false -  default false)
+                //.WithHostFlag(HostFlagKey.KioskMode, true | false - default false)
                 .WithHostFlag(HostFlagKey.NoResize, true) // - default false)
                 .WithHostFlag(HostFlagKey.NoMinMaxBoxes, true) // - default false)
                 .WithStartUrl(startUrl);

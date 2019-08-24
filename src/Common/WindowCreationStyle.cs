@@ -9,7 +9,7 @@
 
 using WinApi.User32;
 
-namespace Chromely.CefSharp.Winapi
+namespace Chromely.Common
 {
     public class WindowCreationStyle
     {

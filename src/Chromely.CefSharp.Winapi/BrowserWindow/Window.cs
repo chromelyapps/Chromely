@@ -14,8 +14,10 @@ using CefSharp;
 using Chromely.CefSharp.Winapi.Browser;
 using Chromely.CefSharp.Winapi.Browser.Handlers;
 using Chromely.CefSharp.Winapi.Browser.Internals;
+using Chromely.Common;
 using Chromely.Core;
 using Chromely.Core.Infrastructure;
+using WinApi.User32;
 
 namespace Chromely.CefSharp.Winapi.BrowserWindow
 {
@@ -143,6 +145,21 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
                 Browser.SetSize(size.Width, size.Height);
                 Browser.IsBrowserInitializedChanged -= IsBrowserInitializedChanged;
                 Browser.GetBrowserHost().GetWindowHandle();
+
+                if (_hostConfig.HostPlacement.Frameless && _hostConfig.HostPlacement.FramelessOptions.IsDraggable)
+                {
+                    ChromeWidgetMessageInterceptor.Setup(Handle, _hostConfig.HostPlacement.FramelessOptions, (message) =>
+                    {
+                        var msg = (WM)message.Value;
+                        switch (msg)
+                        {
+                            case WM.LBUTTONDOWN:
+                                User32Methods.ReleaseCapture();
+                                NativeMethods.SendMessage(Handle, (int)WM.SYSCOMMAND, NativeMethods.SC_DRAGMOVE, 0);
+                                break;
+                        }
+                    });
+                }
             }
         }
 
