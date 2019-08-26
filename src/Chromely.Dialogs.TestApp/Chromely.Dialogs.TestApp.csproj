@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>netcoreapp2.2</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="IctBaden.Stonehenge3" Version="3.7.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Chromely.CefGlue.Gtk\Chromely.CefGlue.Gtk.csproj" />
+      <ProjectReference Include="..\Chromely.CefGlue.Winapi\Chromely.CefGlue.Winapi.csproj" />
+      <ProjectReference Include="..\Chromely.CefGlue\Chromely.CefGlue.csproj" />
+      <ProjectReference Include="..\Chromely.Core\Chromely.Core.csproj" />
+      <ProjectReference Include="..\Chromely.Dialogs\Chromely.Dialogs.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="app\messages.html" />
+      <EmbeddedResource Include="app\messages.html" />
+    </ItemGroup>
+
+</Project>
