@@ -57,7 +57,24 @@ namespace Chromely.Core.Infrastructure
         {
             lock (ObjLock)
             {
-                return UrlSchemes.Any(x => (x.IsUrlOfSameScheme(url) && x.IsExternal));
+                return UrlSchemes.Any(x => (x.IsUrlOfSameScheme(url) && x.UrlSchemeType == UrlSchemeType.External));
+            }
+        }
+
+        /// <summary>
+        /// Checks if url registered is a command url.
+        /// </summary>
+        /// <param name="url">
+        /// The url.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        public static bool IsUrlRegisteredCommand(string url)
+        {
+            lock (ObjLock)
+            {
+                return UrlSchemes.Any(x => (x.IsUrlOfSameScheme(url) && x.UrlSchemeType == UrlSchemeType.Command));
             }
         }
 
@@ -74,7 +91,7 @@ namespace Chromely.Core.Infrastructure
         {
             lock (ObjLock)
             {
-                return UrlSchemes.Any(x => (x.IsUrlOfSameScheme(url) && !x.IsExternal));
+                return UrlSchemes.Any(x => (x.IsUrlOfSameScheme(url) && x.UrlSchemeType == UrlSchemeType.Custom));
             }
         }
     }

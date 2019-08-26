@@ -11,6 +11,7 @@ using System;
 using System.Security.Cryptography.X509Certificates;
 using global::CefSharp;
 using Chromely.Core.Infrastructure;
+using Chromely.Core.RestfulService;
 
 namespace Chromely.CefSharp.Winapi.Browser.Handlers
 {
@@ -49,6 +50,13 @@ namespace Chromely.CefSharp.Winapi.Browser.Handlers
             if (isUrlExternal)
             {
                 System.Diagnostics.Process.Start(request.Url);
+                return true;
+            }
+
+            var isUrlCommand = UrlSchemeProvider.IsUrlRegisteredCommand(request.Url);
+            if (isUrlCommand)
+            {
+                CommandTaskRunner.RunAsync(request.Url);
                 return true;
             }
 

@@ -28,10 +28,13 @@ namespace Chromely.Common
     /// </summary>
     internal class ChromeWidgetMessageInterceptor
     {
-        private Action<Message> _forwardAction;
-        private IntPtr _parentHandle;
-        private IntPtr _childHandle;
-        private WindowProc _childWndProc;
+        private static Action<Message> _forwardAction;
+        private static IntPtr _parentHandle;
+        private static IntPtr _childHandle;
+        private static  WindowProc _childWndProc;
+        private static IntPtr _oldWindProc;
+        private static IntPtr _parentWndProcHandle;
+        private static IntPtr _prevWndProc;
         private IFramelessOptions _framelessOptions;
 
         private ChromeWidgetMessageInterceptor(IntPtr window, IntPtr childHandle, IFramelessOptions framelessOptions, Action<Message> forwardAction)
@@ -41,8 +44,9 @@ namespace Chromely.Common
             _childWndProc = WndProc;
             _framelessOptions = framelessOptions;
 
-            IntPtr oldWndProc = NativeMethods.SetWindowLongPtr(childHandle, (int)WindowLongFlags.GWLP_WNDPROC, Marshal.GetFunctionPointerForDelegate(_childWndProc));
-            NativeMethods.SetWindowLongPtr(childHandle, (int)WindowLongFlags.GWLP_USERDATA, oldWndProc);
+            _parentWndProcHandle = Marshal.GetFunctionPointerForDelegate(_childWndProc);
+            _oldWindProc = NativeMethods.SetWindowLongPtr(_childHandle, (int)WindowLongFlags.GWLP_WNDPROC, _parentWndProcHandle);
+            NativeMethods.SetWindowLongPtr(_childHandle, (int)WindowLongFlags.GWLP_USERDATA, _oldWindProc);
             _forwardAction = forwardAction;
         }
 
@@ -50,10 +54,11 @@ namespace Chromely.Common
         /// Asynchronously wait for the Chromium widget window to be created for the given ChromiumWebBrowser,
         /// and when created hook into its Windows message loop.
         /// </summary>
+        /// <param name="interceptor">The interceptor.</param>
         /// <param name="window">The browser window to intercept Windows messages for.</param>
         /// <param name="framelessOptions">The frameless options.</param>
         /// <param name="forwardAction">This action will be called whenever a Windows message is received.</param>
-        internal static void Setup(IntPtr window, IFramelessOptions framelessOptions, Action<Message> forwardAction)
+        internal static void Setup(ChromeWidgetMessageInterceptor interceptor, IntPtr window, IFramelessOptions framelessOptions, Action<Message> forwardAction)
         {
             Task.Run(() =>
             {
@@ -65,7 +70,7 @@ namespace Chromely.Common
                         if (ChromeWidgetHandleFinder.TryFindHandle(window, out var chromeWidgetHostHandle))
                         {
                             foundWidget = true;
-                            new ChromeWidgetMessageInterceptor(window, chromeWidgetHostHandle, framelessOptions, forwardAction);
+                            interceptor = new ChromeWidgetMessageInterceptor(window, chromeWidgetHostHandle, framelessOptions, forwardAction);
                         }
                         else
                         {
@@ -80,7 +85,7 @@ namespace Chromely.Common
 
         private IntPtr WndProc(IntPtr hWnd, uint uMsg, IntPtr wParam, IntPtr lParam)
         {
-            IntPtr prevWndProc = User32Helpers.GetWindowLongPtr(hWnd, WindowLongFlags.GWLP_USERDATA);
+            _prevWndProc = User32Helpers.GetWindowLongPtr(hWnd, WindowLongFlags.GWLP_USERDATA);
 
             var msg = (WM)uMsg;
             switch (msg)
@@ -102,7 +107,7 @@ namespace Chromely.Common
                     break;
             }
 
-            return User32Methods.CallWindowProc(prevWndProc, hWnd, uMsg, wParam, lParam);
+            return User32Methods.CallWindowProc(_prevWndProc, hWnd, uMsg, wParam, lParam);
         }
 
         private bool IsCursorInDraggableRegion(IntPtr hWnd, IntPtr lParam)

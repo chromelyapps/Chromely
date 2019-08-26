@@ -31,12 +31,17 @@ namespace Chromely.Core.Tests.Controller
             IoC.RegisterInstance<IChromelyLogger>(nameof(IChromelyLogger), logger);
 
             var scanner = new RouteScanner(Assembly.GetExecutingAssembly());
-            var routes = scanner.Scan();
-            foreach (var route in routes)
+            var routeCommands = scanner.Scan();
+            foreach (var route in routeCommands.Item1)
             {
                 ServiceRouteProvider.AddRoute(route.Key, route.Value);
             }
-            
+
+            foreach (var command in routeCommands.Item2)
+            {
+                ServiceRouteProvider.AddCommand(command.Key, command.Value);
+            }
+
             var request = new ChromelyRequest(new RoutePath(Method.GET, TestRoute), null, null);
 
             var routePath = new RoutePath(Method.GET, TestRoute);

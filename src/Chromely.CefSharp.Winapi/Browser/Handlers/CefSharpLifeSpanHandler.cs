@@ -9,6 +9,7 @@
 
 using global::CefSharp;
 using Chromely.Core.Infrastructure;
+using Chromely.Core.RestfulService;
 
 namespace Chromely.CefSharp.Winapi.Browser.Handlers
 {
@@ -110,6 +111,12 @@ namespace Chromely.CefSharp.Winapi.Browser.Handlers
             if (isUrlExternal)
             {
                 System.Diagnostics.Process.Start(targetUrl);
+            }
+
+            var isUrlCommand = UrlSchemeProvider.IsUrlRegisteredCommand(targetUrl);
+            if (isUrlCommand)
+            {
+                CommandTaskRunner.RunAsync(targetUrl);
             }
 
             return true;

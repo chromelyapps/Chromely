@@ -34,6 +34,20 @@ namespace Chromely.Core.Infrastructure
         }
 
         /// <summary>
+        /// Adds command.
+        /// </summary>
+        /// <param name="key">
+        /// The key.
+        /// </param>
+        /// <param name="command">
+        /// The command.
+        /// </param>
+        public static void AddCommand(string key, Command command)
+        {
+            IoC.RegisterInstance(typeof(Command), key, command);
+        }
+
+        /// <summary>
         /// Merge routes.
         /// </summary>
         /// <param name="newRouteDictionary">
@@ -46,6 +60,23 @@ namespace Chromely.Core.Infrastructure
                 foreach (var item in newRouteDictionary)
                 {
                     IoC.RegisterInstance(typeof(Route), item.Key, item.Value);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Merge routes.
+        /// </summary>
+        /// <param name="newCommandDictionary">
+        /// The new command dictionary.
+        /// </param>
+        public static void MergeCommands(Dictionary<string, Command> newCommandDictionary)
+        {
+            if (newCommandDictionary != null && newCommandDictionary.Any())
+            {
+                foreach (var item in newCommandDictionary)
+                {
+                    IoC.RegisterInstance(typeof(Command), item.Key, item.Value);
                 }
             }
         }
@@ -71,6 +102,30 @@ namespace Chromely.Core.Infrastructure
             }
 
             return (Route)routeObj;
+        }
+
+        /// <summary>
+        /// The get route.
+        /// </summary>
+        /// <param name="commandPath">
+        /// The command path.
+        /// </param>
+        /// <returns>
+        /// The <see cref="Command"/>.
+        /// </returns>
+        /// <exception cref="Exception">
+        /// Generic exception - Route Not found.
+        /// </exception>
+        public static Command GetCommand(string commandPath)
+        {
+            var key = Command.GetKeyFromPath(commandPath);
+            object commandObj = IoC.GetInstance(typeof(Command), key);
+            if ((commandObj == null) || !(commandObj is Command))
+            {
+                throw new Exception($"No route found for command with key:{key}.");
+            }
+
+            return (Command)commandObj;
         }
     }
 }

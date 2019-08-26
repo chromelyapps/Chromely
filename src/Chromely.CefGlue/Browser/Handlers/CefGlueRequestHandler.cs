@@ -12,6 +12,7 @@ using System.Diagnostics;
 using Chromely.CefGlue.Browser.EventParams;
 using Chromely.Core.Host;
 using Chromely.Core.Infrastructure;
+using Chromely.Core.RestfulService;
 using Xilium.CefGlue;
 
 namespace Chromely.CefGlue.Browser.Handlers
@@ -86,6 +87,13 @@ namespace Chromely.CefGlue.Browser.Handlers
                     }
                 }
 
+                return true;
+            }
+
+            var isUrlCommand = UrlSchemeProvider.IsUrlRegisteredCommand(request.Url);
+            if (isUrlCommand)
+            {
+                CommandTaskRunner.RunAsync(request.Url);
                 return true;
             }
 
