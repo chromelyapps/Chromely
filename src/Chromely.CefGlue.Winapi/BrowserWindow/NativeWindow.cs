@@ -44,7 +44,7 @@ namespace Chromely.CefGlue.Winapi.BrowserWindow
 
                 if (ChromelyConfiguration.Instance.HostPlacement.KioskMode && msg.Value == (uint)WM.HOTKEY && msg.WParam == (IntPtr)1)
                 {
-                    User32Methods.PostMessage(NativeWindow.NativeInstance.Handle, (uint)WM.CLOSE, IntPtr.Zero, IntPtr.Zero);
+                    User32Methods.PostMessage(NativeInstance.Handle, (uint)WM.CLOSE, IntPtr.Zero, IntPtr.Zero);
                 }
                 if (ChromelyConfiguration.Instance.HostPlacement.Frameless || ChromelyConfiguration.Instance.HostPlacement.KioskMode)
                 {

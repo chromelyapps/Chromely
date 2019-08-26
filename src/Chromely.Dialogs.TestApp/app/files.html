@@ -1,7 +1,8 @@
-<!--Title:Messages:10-->
+<!--Title:Files:30-->
+<!--ViewModel:FoldersFilesVm-->
 <div class="content">
 
-    <h1>Message Dialog</h1>
+    <h1>Folder Dialog</h1>
 
     <table>
 
@@ -23,6 +24,15 @@
         </tr>
         <tr>
             <td>
+                FileName
+            </td>
+            <td>
+                <input v-model="FileName">
+            </td>
+        </tr>
+
+        <tr>
+            <td>
                 <b>Options</b>
             </td>
             <td>
@@ -39,15 +49,13 @@
         </tr>
         <tr>
             <td>
-                Icon
+                Folder
             </td>
             <td>
-                <select v-model="Options.Icon">
-                    <option v-for="option in DialogIcons" :id="option.Key" :value="option.Key">{{option.Value}}</option>
-                </select>
+                <input v-model="Options.Directory" style="width: 800px;">
             </td>
         </tr>
-
+        
         <tr>
             <td>
                 <b>Test</b>
@@ -61,7 +69,15 @@
                 &nbsp;
             </td>
             <td>
-                <button @click="TestMessageBox()">MessageBox</button>
+                <button @click="TestFileOpen()">FileOpen</button>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                <button @click="TestFileSave()">FileSave</button>
             </td>
         </tr>
 

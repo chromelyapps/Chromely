@@ -11,9 +11,18 @@ using WinApi.User32;
 
 namespace Chromely.Common
 {
+    /// <summary>
+    /// Styles to be used in Windows environment.
+    /// </summary>
     public class WindowCreationStyle
     {
+        /// <summary>
+        /// The window styles WS_*
+        /// </summary>
         public WindowStyles WindowStyles { get; set; }
+        /// <summary>
+        /// The window extended styles WS_EX_*
+        /// </summary>
         public WindowExStyles WindowExStyles { get; set; }
     }
 }

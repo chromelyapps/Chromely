@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
@@ -18,7 +18,13 @@
     </ItemGroup>
 
     <ItemGroup>
+      <None Remove="app\files.html" />
+      <None Remove="app\folders.html" />
       <None Remove="app\messages.html" />
+      <None Remove="app\styles\dialogs.css" />
+      <EmbeddedResource Include="app\files.html" />
+      <EmbeddedResource Include="app\folders.html" />
+      <EmbeddedResource Include="app\styles\dialogs.css" />
       <EmbeddedResource Include="app\messages.html" />
     </ItemGroup>
 

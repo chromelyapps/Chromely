@@ -1,24 +1,24 @@
-using System;
 using Chromely.Core;
 using Chromely.Dialogs.Linux;
 using Chromely.Dialogs.Windows;
 // ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedMember.Global
 
 namespace Chromely.Dialogs
 {
     public static class ChromelyDialogs
     {
-        private static IChromelyDialogs _dialogs;
+        private static readonly IChromelyDialogs Dialogs;
 
         static ChromelyDialogs()
         {
             switch (ChromelyRuntime.Platform)
             {
                 case ChromelyPlatform.Windows:
-                    _dialogs = new WindowsDialogs();
+                    Dialogs = new WindowsDialogs();
                     return;
                 case ChromelyPlatform.Linux:
-                    _dialogs = new LinuxDialogs();
+                    Dialogs = new LinuxDialogs();
                     return;
                 case ChromelyPlatform.MacOSX:
                     break;
@@ -32,22 +32,22 @@ namespace Chromely.Dialogs
         }
         public static DialogResponse MessageBox(string message, DialogOptions options)
         {
-            return _dialogs.MessageBox(message, options);
+            return Dialogs.MessageBox(message, options);
         }
 
         public static DialogResponse SelectFolder(string message, FileDialogOptions options)
         {
-            return _dialogs.SelectFolder(message, options);
+            return Dialogs.SelectFolder(message, options);
         }
 
         public static DialogResponse FileOpen(string message, FileDialogOptions options)
         {
-            return _dialogs.FileOpen(message, options);
+            return Dialogs.FileOpen(message, options);
         }
 
         public static DialogResponse FileSave(string message, string fileName, FileDialogOptions options)
         {
-            return _dialogs.FileSave(message, fileName, options);
+            return Dialogs.FileSave(message, fileName, options);
         }
         
     }
