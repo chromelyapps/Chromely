@@ -45,9 +45,10 @@ namespace Chromely.Core.RestfulService
         /// <returns>
         /// The <see cref="IDictionary"/>.
         /// </returns>
-        public Dictionary<string, Route> Scan()
+        public Tuple<Dictionary<string, Route>, Dictionary<string, Command>> Scan()
         {
             var routeDictionary = new Dictionary<string, Route>();
+            var commandDictionary = new Dictionary<string, Command>();
 
             try
             {
@@ -61,6 +62,7 @@ namespace Chromely.Core.RestfulService
                     {
                         var instance = ChromelyControllerFactory.CreateControllerInstance(type);
                         var currentRouteDictionary = instance.RouteDictionary;
+                        var currentCommandDictionary = instance.CommandDictionary;
 
                         // Merge with return route dictionary
                         if ((currentRouteDictionary != null) && currentRouteDictionary.Any())
@@ -73,6 +75,18 @@ namespace Chromely.Core.RestfulService
                                 }
                             }
                         }
+
+                        // Merge with return command dictionary
+                        if ((currentCommandDictionary != null) && currentCommandDictionary.Any())
+                        {
+                            foreach (var item in currentCommandDictionary)
+                            {
+                                if (!commandDictionary.ContainsKey(item.Key))
+                                {
+                                    commandDictionary.Add(item.Key, item.Value);
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -81,7 +95,7 @@ namespace Chromely.Core.RestfulService
                 Log.Error(exception);
             }
 
-            return routeDictionary;
+            return new Tuple<Dictionary<string, Route>, Dictionary<string, Command>>(routeDictionary, commandDictionary);
         }
     }
 

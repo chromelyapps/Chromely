@@ -282,8 +282,10 @@ namespace Chromely.CefGlue.BrowserWindow
                 if (!assembly.IsScanned)
                 {
                     var scanner = new RouteScanner(assembly.Assembly);
-                    var currentRouteDictionary = scanner.Scan();
+                    var currentRouteDictionary = scanner.Scan().Item1;
+                    var currentCommandDictionary = scanner.Scan().Item2;
                     ServiceRouteProvider.MergeRoutes(currentRouteDictionary);
+                    ServiceRouteProvider.MergeCommands(currentCommandDictionary);
 
                     assembly.IsScanned = true;
                 }

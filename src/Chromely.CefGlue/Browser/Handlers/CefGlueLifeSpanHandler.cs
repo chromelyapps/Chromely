@@ -10,6 +10,7 @@
 using Chromely.CefGlue.Browser.EventParams;
 using Chromely.Core.Host;
 using Chromely.Core.Infrastructure;
+using Chromely.Core.RestfulService;
 using Xilium.CefGlue;
 
 namespace Chromely.CefGlue.Browser.Handlers
@@ -114,6 +115,12 @@ namespace Chromely.CefGlue.Browser.Handlers
             if (isUrlExternal)
             {
                 RegisteredExternalUrl.Launch(targetUrl);
+            }
+
+            var isUrlCommand = UrlSchemeProvider.IsUrlRegisteredCommand(targetUrl);
+            if (isUrlCommand)
+            {
+                CommandTaskRunner.RunAsync(targetUrl);
             }
 
             return true;

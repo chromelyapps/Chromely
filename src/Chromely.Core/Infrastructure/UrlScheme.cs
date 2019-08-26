@@ -25,14 +25,14 @@ namespace Chromely.Core.Infrastructure
         /// <param name="host">
         /// The host.
         /// </param>
-        /// <param name="isExternal">
+        /// <param name="type">
         /// The is external.
         /// </param>
-        public UrlScheme(string scheme, string host, bool isExternal)
+        public UrlScheme(string scheme, string host, UrlSchemeType type)
         {
             Scheme = scheme;
             Host = host;
-            IsExternal = isExternal;
+            UrlSchemeType = type;
         }
 
         /// <summary>
@@ -41,17 +41,17 @@ namespace Chromely.Core.Infrastructure
         /// <param name="url">
         /// The url.
         /// </param>
-        /// <param name="isExternal">
-        /// The is external.
+        /// <param name="type">
+        /// The is url scheme type.
         /// </param>
-        public UrlScheme(string url, bool isExternal)
+        public UrlScheme(string url, UrlSchemeType type)
         {
             if (!string.IsNullOrEmpty(url))
             {
                 var uri = new Uri(url);
                 Scheme = uri.Scheme;
                 Host = uri.Host;
-                IsExternal = isExternal;
+                UrlSchemeType = type;
             }
         }
 
@@ -66,9 +66,9 @@ namespace Chromely.Core.Infrastructure
         public string Host { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether is external.
+        /// Gets or sets url scheme type.
         /// </summary>
-        public bool IsExternal { get; set; }
+        public UrlSchemeType UrlSchemeType { get; set; }
 
         /// <summary>
         /// Check if scheme is a standard type.

@@ -36,6 +36,8 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
         /// </summary>
         private readonly ChromelyConfiguration _hostConfig;
 
+        private ChromeWidgetMessageInterceptor _interceptor;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Window"/> class.
         /// </summary>
@@ -148,7 +150,7 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
 
                 if (_hostConfig.HostPlacement.Frameless && _hostConfig.HostPlacement.FramelessOptions.IsDraggable)
                 {
-                    ChromeWidgetMessageInterceptor.Setup(Handle, _hostConfig.HostPlacement.FramelessOptions, (message) =>
+                    ChromeWidgetMessageInterceptor.Setup(_interceptor, Handle, _hostConfig.HostPlacement.FramelessOptions, (message) =>
                     {
                         var msg = (WM)message.Value;
                         switch (msg)

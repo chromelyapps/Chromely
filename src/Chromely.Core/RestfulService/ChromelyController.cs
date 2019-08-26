@@ -28,12 +28,18 @@ namespace Chromely.Core.RestfulService
         protected ChromelyController()
         {
             RouteDictionary = new Dictionary<string, Route>();
+            CommandDictionary = new Dictionary<string, Command>();
         }
 
         /// <summary>
         /// Gets the route dictionary.
         /// </summary>
         public Dictionary<string, Route> RouteDictionary { get; }
+
+        /// <summary>
+        /// Gets the command dictionary.
+        /// </summary>
+        public Dictionary<string, Command> CommandDictionary { get; }
 
         /// <summary>
         /// Gets the route name.
@@ -291,6 +297,26 @@ namespace Chromely.Core.RestfulService
         protected void RegisterMergeRequestAsync(string path, Func<ChromelyRequest, Task<ChromelyResponse>> action)
         {
             AddRoute(Method.MERGE, path, new Route(Method.MERGE, path, action));
+        }
+
+        /// <summary>
+        /// The register command.
+        /// </summary>
+        /// <param name="path">
+        /// The path.
+        /// </param>
+        /// <param name="action">
+        /// The action.
+        /// </param>
+        protected void RegisterCommand(string path, Action<IDictionary<string, string[]>> action)
+        {
+            if (string.IsNullOrWhiteSpace(path) || action == null)
+            {
+                return;
+            }
+            
+            var command = new Command(path, action);
+            CommandDictionary[command.Key] = command;
         }
 
         /// <summary>

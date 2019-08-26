@@ -53,6 +53,7 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
                 {
                     User32Methods.PostMessage(NativeWindow.NativeInstance.Handle, (uint)WM.CLOSE, IntPtr.Zero, IntPtr.Zero);
                 }
+
                 if (ChromelyConfiguration.Instance.HostPlacement.Frameless || ChromelyConfiguration.Instance.HostPlacement.KioskMode)
                 {
                     Cef.DoMessageLoopWork();

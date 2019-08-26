@@ -47,7 +47,7 @@ namespace Chromely.Core.Tests.Controller
             var scanner = new RouteScanner(Assembly.GetExecutingAssembly());
             Assert.NotNull(scanner);
 
-            var result = scanner.Scan();
+            var result = scanner.Scan().Item1;
             Assert.NotNull(result);
 
             Assert.Equal(9, result.Count);

@@ -811,7 +811,7 @@ namespace Chromely.Core
         /// </returns>
         public virtual ChromelyConfiguration RegisterCustomerUrlScheme(string schemeName, string domainName)
         {
-            var scheme = new UrlScheme(schemeName, domainName, false);
+            var scheme = new UrlScheme(schemeName, domainName, UrlSchemeType.Custom);
             UrlSchemeProvider.RegisterScheme(scheme);
             return this;
         }
@@ -845,7 +845,7 @@ namespace Chromely.Core
         /// </returns>
         public virtual ChromelyConfiguration RegisterExternalUrlScheme(string schemeName, string domainName)
         {
-            var scheme = new UrlScheme(schemeName, domainName, true);
+            var scheme = new UrlScheme(schemeName, domainName, UrlSchemeType.External);
             UrlSchemeProvider.RegisterScheme(scheme);
             return this;
         }
@@ -944,7 +944,7 @@ namespace Chromely.Core
         {
             if (schemeHandler != null)
             {
-                var scheme = new UrlScheme(schemeHandler.SchemeName, schemeHandler.DomainName, false);
+                var scheme = new UrlScheme(schemeHandler.SchemeName, schemeHandler.DomainName, UrlSchemeType.Custom);
                 UrlSchemeProvider.RegisterScheme(scheme);
                 IoC.RegisterInstance(typeof(ChromelySchemeHandler), schemeHandler.Key, schemeHandler);
             }

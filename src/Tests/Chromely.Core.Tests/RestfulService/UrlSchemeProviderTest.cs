@@ -61,10 +61,10 @@ namespace Chromely.Core.Tests.RestfulService
         /// </summary>
         private void Init()
         {
-            UrlSchemeProvider.RegisterScheme(new UrlScheme("http", "chromely.com", false));
-            UrlSchemeProvider.RegisterScheme(new UrlScheme("https", "test.com", false));
-            UrlSchemeProvider.RegisterScheme(new UrlScheme("https://www.google.com", true));
-            UrlSchemeProvider.RegisterScheme(new UrlScheme("http://www.test.com", true));
+            UrlSchemeProvider.RegisterScheme(new UrlScheme("http", "chromely.com", UrlSchemeType.Custom));
+            UrlSchemeProvider.RegisterScheme(new UrlScheme("https", "test.com", UrlSchemeType.Custom));
+            UrlSchemeProvider.RegisterScheme(new UrlScheme("https://www.google.com", UrlSchemeType.External));
+            UrlSchemeProvider.RegisterScheme(new UrlScheme("http://www.test.com", UrlSchemeType.External));
         }
     }
 }
