@@ -13,7 +13,6 @@ using Chromely.Core;
 using Chromely.Core.Host;
 using Chromely.Core.Infrastructure;
 using NetCoreEx.Geometry;
-using WinApi.DwmApi;
 using WinApi.Gdi32;
 using WinApi.Kernel32;
 using WinApi.User32;
@@ -490,7 +489,7 @@ namespace Chromely.Common
             }
 
             var styles = WindowStyles.WS_OVERLAPPEDWINDOW | WindowStyles.WS_CLIPCHILDREN | WindowStyles.WS_CLIPSIBLINGS;
-            var exStyles = WindowExStyles.WS_EX_COMPOSITED | WindowExStyles.WS_EX_APPWINDOW | WindowExStyles.WS_EX_WINDOWEDGE;
+            var exStyles = WindowExStyles.WS_EX_APPWINDOW | WindowExStyles.WS_EX_WINDOWEDGE;
 
             if (_hostConfig.HostPlacement.NoResize)
             {
