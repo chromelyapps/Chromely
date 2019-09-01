@@ -415,6 +415,25 @@ namespace Chromely.Common
                 case WM.ERASEBKGND:
                     return new IntPtr(1);
 
+                case WM.NCPAINT:
+                    {
+                        if (_hostConfig.HostPlacement.Frameless && _hostConfig.HostPlacement.FramelessOptions.IsResizable)
+                        {
+                            return IntPtr.Zero;
+                        }
+                        break;
+                    }
+
+                case WM.NCACTIVATE:
+                    {
+                        if (_hostConfig.HostPlacement.Frameless && _hostConfig.HostPlacement.FramelessOptions.IsResizable)
+                        {
+                            var result = User32Methods.DefWindowProc(hwnd, umsg, wParam, new IntPtr(-1));
+                            return result;
+                        }
+                        break;
+                    }
+
                 case WM.NCCALCSIZE:
                     {
                         if (_hostConfig.HostPlacement.Frameless && _hostConfig.HostPlacement.FramelessOptions.IsResizable)
@@ -471,7 +490,7 @@ namespace Chromely.Common
             }
 
             var styles = WindowStyles.WS_OVERLAPPEDWINDOW | WindowStyles.WS_CLIPCHILDREN | WindowStyles.WS_CLIPSIBLINGS;
-            var exStyles = WindowExStyles.WS_EX_APPWINDOW | WindowExStyles.WS_EX_WINDOWEDGE;
+            var exStyles = WindowExStyles.WS_EX_COMPOSITED | WindowExStyles.WS_EX_APPWINDOW | WindowExStyles.WS_EX_WINDOWEDGE;
 
             if (_hostConfig.HostPlacement.NoResize)
             {

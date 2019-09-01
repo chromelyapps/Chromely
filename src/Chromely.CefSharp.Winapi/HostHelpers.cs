@@ -7,12 +7,12 @@
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using Chromely.Core.Infrastructure;
+using WinApi.Windows;
+
 namespace Chromely.CefSharp.Winapi
 {
-    using System;
-    using Chromely.Core.Infrastructure;
-    using WinApi.Windows;
-
     /// <summary>
     /// The host helpers.
     /// </summary>
