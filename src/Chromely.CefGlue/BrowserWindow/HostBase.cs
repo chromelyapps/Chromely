@@ -198,6 +198,7 @@ namespace Chromely.CefGlue.BrowserWindow
         /// </summary>
         public void Close()
         {
+            _mainView?.Exit();
         }
 
         /// <summary>
@@ -464,6 +465,7 @@ namespace Chromely.CefGlue.BrowserWindow
             }
 
             _windowCreated = true;
+            IoC.RegisterInstance(typeof(IChromelyWindow), typeof(IChromelyWindow).FullName, this);
 
             CefBinariesLoader.DeleteTempFiles(tempFiles);
 

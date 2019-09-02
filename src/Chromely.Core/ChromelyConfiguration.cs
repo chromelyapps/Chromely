@@ -121,10 +121,7 @@ namespace Chromely.Core
         /// <summary>
         /// Gets or sets a value indicating whether to use host custom creation style.
         /// </summary>
-        public bool UseHostCustomCreationStyle
-        {
-            get { return HostCustomCreationStyle != null; }
-        }
+        public bool UseHostCustomCreationStyle => HostCustomCreationStyle != null;
 
         /// <summary>
         /// Gets or sets a value indicating whether CEF browser creation should perform dependency check.

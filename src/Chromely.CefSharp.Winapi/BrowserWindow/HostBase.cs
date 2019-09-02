@@ -381,6 +381,8 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
 
             _windowCreated = true;
 
+            IoC.RegisterInstance(typeof(IChromelyWindow), typeof(IChromelyWindow).FullName, this);
+
             RunMessageLoop();
 
             _mainView.Dispose();

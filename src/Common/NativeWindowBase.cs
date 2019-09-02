@@ -68,7 +68,10 @@ namespace Chromely.Common
         /// </summary>
         public static void Exit()
         {
-            User32Methods.PostQuitMessage(0);
+            if (IoC.GetInstance(typeof(IChromelyWindow), typeof(IChromelyWindow).FullName) is IChromelyWindow window)
+            {
+                User32Methods.SendMessage(window.Handle, (int)WM.SYSCOMMAND, (IntPtr)SysCommand.SC_CLOSE, IntPtr.Zero);
+            }
         }
 
         /// <summary>
@@ -84,7 +87,7 @@ namespace Chromely.Common
         /// </summary>
         public void CloseWindowExternally()
         {
-            User32Methods.PostQuitMessage(0);
+            User32Methods.SendMessage(Handle, (int)WM.SYSCOMMAND, (IntPtr)SysCommand.SC_CLOSE, IntPtr.Zero);
         }
 
         /// <summary>
@@ -543,6 +546,9 @@ namespace Chromely.Common
         /// <summary>
         /// The get window styles.
         /// </summary>
+        /// <param name="customCreationStyle">
+        /// The custom style.
+        /// </param>
         /// <param name="state">
         /// The state.
         /// </param>

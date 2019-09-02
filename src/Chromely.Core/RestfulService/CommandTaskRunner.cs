@@ -14,7 +14,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using Chromely.Core.Infrastructure;
-using Chromely.Core.RestfulService;
 
 // ReSharper disable StyleCop.SA1210
 namespace Chromely.Core.RestfulService
@@ -26,6 +25,7 @@ namespace Chromely.Core.RestfulService
     {
         /// <summary>
         /// The run command async.
+        /// </summary>
         /// <param name="url">
         /// The url.
         /// </param>
@@ -44,6 +44,7 @@ namespace Chromely.Core.RestfulService
                     if (command == null)
                     {
                         Log.Error($"Command for path = {commandPath} is null or invalid.");
+                        return;
                     }
 
                     var queryParameters = GetQueryParameters(url);

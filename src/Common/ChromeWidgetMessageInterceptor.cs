@@ -33,7 +33,7 @@ namespace Chromely.Common
         private static IntPtr _childHandle;
         private static  WindowProc _childWndProc;
         private static IntPtr _oldWindProc;
-        private static IntPtr _parentWndProcHandle;
+        private static IntPtr _childWndProcHandle;
         private static IntPtr _prevWndProc;
         private IFramelessOptions _framelessOptions;
 
@@ -44,8 +44,8 @@ namespace Chromely.Common
             _childWndProc = WndProc;
             _framelessOptions = framelessOptions;
 
-            _parentWndProcHandle = Marshal.GetFunctionPointerForDelegate(_childWndProc);
-            _oldWindProc = NativeMethods.SetWindowLongPtr(_childHandle, (int)WindowLongFlags.GWLP_WNDPROC, _parentWndProcHandle);
+            _childWndProcHandle = Marshal.GetFunctionPointerForDelegate(_childWndProc);
+            _oldWindProc = NativeMethods.SetWindowLongPtr(_childHandle, (int)WindowLongFlags.GWLP_WNDPROC, _childWndProcHandle);
             NativeMethods.SetWindowLongPtr(_childHandle, (int)WindowLongFlags.GWLP_USERDATA, _oldWindProc);
             _forwardAction = forwardAction;
         }
