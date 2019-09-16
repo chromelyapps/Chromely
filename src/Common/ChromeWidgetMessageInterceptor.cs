@@ -102,6 +102,8 @@ namespace Chromely.Common
                             message.WParam = wParam;
                             message.LParam = lParam;
                             _forwardAction(message);
+
+                            return IntPtr.Zero;
                         }
                     }
                     break;
