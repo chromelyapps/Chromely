@@ -172,6 +172,13 @@ namespace Chromely.Common
         }
 
         /// <summary>
+        /// The on moving.
+        /// </summary>
+        protected virtual void OnMoving()
+        {
+        }
+
+        /// <summary>
         /// The on size.
         /// </summary>
         /// <param name="width">
@@ -452,6 +459,13 @@ namespace Chromely.Common
                         break;
                     }
 
+                case WM.MOVING:
+                case WM.MOVE:
+                    {
+                        OnMoving();
+                        return  IntPtr.Zero;
+                    }
+
                 case WM.SIZE:
                     {
                         var size = GetClientSize();
@@ -462,7 +476,7 @@ namespace Chromely.Common
                 case WM.CLOSE:
                     {
                         OnExit();
-                        Exit();
+                        User32Methods.PostQuitMessage(0);
                         Environment.Exit(0);
                         break;
                     }
