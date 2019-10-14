@@ -1,0 +1,62 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29230.61
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chromely.Core", "Chromely.Core\Chromely.Core.csproj", "{52DA5F12-C23D-439A-9B1E-6DE9979A6AFC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chromely.CefGlue", "Chromely.CefGlue\Chromely.CefGlue.csproj", "{22204C61-7827-4A53-AAA8-E5DE3B27267E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chromely", "Chromely\Chromely.csproj", "{35DACBFA-ACA0-4A73-93B9-701FCB9CBC11}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{14116D18-B73C-47DE-A8AD-9E315D304EE2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chromely.Core.Tests", "Tests\Chromely.Core.Tests\Chromely.Core.Tests.csproj", "{2EAC5A46-17F0-464C-9B75-0E404F880220}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chromely.Integration.Test", "Tests\Chromely.Integration.Test\Chromely.Integration.Test.csproj", "{A248DCDC-2F83-4E08-8924-5386E6090865}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demos", "Demos", "{9CDF451F-236A-4F26-A312-9487E97B78ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrossPlatDemo", "Demos\CrossPlatDemo\CrossPlatDemo.csproj", "{3CACF616-3118-4418-84BA-74268C7737BD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{52DA5F12-C23D-439A-9B1E-6DE9979A6AFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52DA5F12-C23D-439A-9B1E-6DE9979A6AFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52DA5F12-C23D-439A-9B1E-6DE9979A6AFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52DA5F12-C23D-439A-9B1E-6DE9979A6AFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22204C61-7827-4A53-AAA8-E5DE3B27267E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22204C61-7827-4A53-AAA8-E5DE3B27267E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22204C61-7827-4A53-AAA8-E5DE3B27267E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22204C61-7827-4A53-AAA8-E5DE3B27267E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35DACBFA-ACA0-4A73-93B9-701FCB9CBC11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35DACBFA-ACA0-4A73-93B9-701FCB9CBC11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35DACBFA-ACA0-4A73-93B9-701FCB9CBC11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35DACBFA-ACA0-4A73-93B9-701FCB9CBC11}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EAC5A46-17F0-464C-9B75-0E404F880220}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EAC5A46-17F0-464C-9B75-0E404F880220}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EAC5A46-17F0-464C-9B75-0E404F880220}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EAC5A46-17F0-464C-9B75-0E404F880220}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A248DCDC-2F83-4E08-8924-5386E6090865}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{A248DCDC-2F83-4E08-8924-5386E6090865}.Debug|Any CPU.Build.0 = Debug|x64
+		{A248DCDC-2F83-4E08-8924-5386E6090865}.Release|Any CPU.ActiveCfg = Release|x64
+		{3CACF616-3118-4418-84BA-74268C7737BD}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{3CACF616-3118-4418-84BA-74268C7737BD}.Debug|Any CPU.Build.0 = Debug|x64
+		{3CACF616-3118-4418-84BA-74268C7737BD}.Release|Any CPU.ActiveCfg = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2EAC5A46-17F0-464C-9B75-0E404F880220} = {14116D18-B73C-47DE-A8AD-9E315D304EE2}
+		{A248DCDC-2F83-4E08-8924-5386E6090865} = {14116D18-B73C-47DE-A8AD-9E315D304EE2}
+		{3CACF616-3118-4418-84BA-74268C7737BD} = {9CDF451F-236A-4F26-A312-9487E97B78ED}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E3F0A011-30A1-427B-84A3-3F407C61FC46}
+	EndGlobalSection
+EndGlobal

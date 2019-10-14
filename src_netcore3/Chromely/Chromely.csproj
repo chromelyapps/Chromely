@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Native\mac\libchromely.dylib" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Native\mac\libchromely.dylib" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Chromely.CefGlue\Chromely.CefGlue.csproj" />
+    <ProjectReference Include="..\Chromely.Core\Chromely.Core.csproj" />
+  </ItemGroup>
+  
+</Project>
