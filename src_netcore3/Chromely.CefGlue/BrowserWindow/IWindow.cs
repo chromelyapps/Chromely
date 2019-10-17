@@ -32,6 +32,8 @@ namespace Chromely.CefGlue.BrowserWindow
         /// </summary>
         void CenterToScreen();
 
+        void Run();
+
         /// <summary>
         /// Closes the window.
         /// </summary>

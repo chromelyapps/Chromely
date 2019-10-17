@@ -232,13 +232,13 @@ namespace Chromely.Native
 
     public static class IconHandler
     {
-        public static IntPtr IconFileToPtr(string iconFile)
+        public static string IconFullPath(string iconFile)
         {
             try
             {
                 if (string.IsNullOrEmpty(iconFile))
                 {
-                    return IntPtr.Zero;
+                    return iconFile;
                 }
 
                 if (!File.Exists(iconFile))
@@ -248,8 +248,30 @@ namespace Chromely.Native
                     iconFile = Path.Combine(appDirectory, iconFile);
                     if (!File.Exists(iconFile))
                     {
-                        return IntPtr.Zero;
+                        return string.Empty;
                     }
+
+                    return iconFile;
+                }
+
+                return iconFile;
+            }
+            catch (Exception exception)
+            {
+                Log.Error(exception);
+            }
+
+            return iconFile;
+        }
+
+        public static IntPtr IconFileToPtr(string iconFile)
+        {
+            try
+            {
+                iconFile = IconFullPath(iconFile);
+                if (string.IsNullOrEmpty(iconFile))
+                {
+                    return IntPtr.Zero;
                 }
 
                 var iconBytes = File.ReadAllBytes(iconFile);

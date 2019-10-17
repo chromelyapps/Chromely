@@ -5,7 +5,7 @@ using Chromely.Core;
 
 namespace Chromely.Native
 {
-    public interface INativeGui
+    public interface INativeHost
     {
         event EventHandler<CreatedEventArgs> Created;
         event EventHandler<MovingEventArgs> Moving;
@@ -27,7 +27,7 @@ namespace Chromely.Native
         void SetWindowPosistion(GtkWindowPosition position);
         void SetWindowMaximize();
         void SetFullscreen();
-        void Quit();
+        void Exit();
         void RegisterHandler(string signalName, IntPtr handler, GClosureNotify destroyData, GConnectFlags connectFlags = GConnectFlags.GConnectAfter, IntPtr data = default(IntPtr));
         void MessageBox(string message, MessageType messageType = MessageType.Error);
     }

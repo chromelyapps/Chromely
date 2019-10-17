@@ -44,7 +44,7 @@ namespace Chromely.BrowserWindow
         /// </summary>
         protected override void Initialize()
         {
-            HostRuntime.LoadNativeGuiFile(HostConfig.Platform);
+            HostRuntime.LoadNativeHostFile(HostConfig.Platform);
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace Chromely.BrowserWindow
             if (CefRuntime.Platform == CefRuntimePlatform.Windows)
             {
                 /* Run the GTK3 LINUX OR COCOA MACOS main loop */
-                NativeWindow.Run(HostConfig.Platform);
+                _mainWindow?.Run();
             }
             else
             {
@@ -70,7 +70,7 @@ namespace Chromely.BrowserWindow
         {
             if (CefRuntime.Platform == CefRuntimePlatform.Windows)
             {
-                NativeWindow.Quit(HostConfig.Platform);
+                _mainWindow?.Exit();
             }
             else
             {
@@ -86,7 +86,7 @@ namespace Chromely.BrowserWindow
         /// </returns>
         protected override IWindow CreateMainView()
         {
-            HostRuntime.EnsureNativeGuiFileExists(HostConfig.Platform);
+            HostRuntime.EnsureNativeHostFileExists(HostConfig.Platform);
 
             _mainWindow = new Window(this, HostConfig);
             return _mainWindow;

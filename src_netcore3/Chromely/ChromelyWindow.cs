@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ChromelyWindow.cs" company="Chromely Projects">
 //   Copyright (c) 2017-2019 Chromely Projects
 // </copyright>
@@ -14,8 +14,10 @@ using System.Reflection;
 using Chromely.Core;
 using Chromely.Core.Host;
 using Chromely.CefGlue.BrowserWindow;
+using Chromely.Native;
+using Chromely.BrowserWindow;
 
-namespace Chromely.CefGlue
+namespace Chromely
 {
     /// <summary>
     /// Factory class to create the application window
@@ -30,12 +32,7 @@ namespace Chromely.CefGlue
         /// <returns>Interface to the main window</returns>
         public static IChromelyWindow Create(ChromelyConfiguration config)
         {
-            var path = AppDomain.CurrentDomain.BaseDirectory;
-            var dllName = Path.Combine(path, $"Chromely.dll");
-            var assembly = Assembly.LoadFile(dllName);
-
-            var type = assembly.GetTypes().First(t => t.Name == "CefGlueWindow");
-            return Activator.CreateInstance(type, config) as HostBase;
+            return new CefGlueWindow(config);
         }
     }
 

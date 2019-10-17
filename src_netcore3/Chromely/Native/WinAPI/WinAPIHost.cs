@@ -5,7 +5,7 @@ using Chromely.Core;
 
 namespace Chromely.Native
 {
-    public class WinNativeGui : INativeGui
+    public class WinAPIHost : INativeHost
     {
         public event EventHandler<CreatedEventArgs> Created;
         public event EventHandler<MovingEventArgs> Moving;
@@ -18,7 +18,7 @@ namespace Chromely.Native
         private IntPtr _xid;
         private bool _isInitialized;
 
-        public WinNativeGui()
+        public WinAPIHost()
         {
             _isInitialized = false;
             _handle = IntPtr.Zero;
@@ -89,7 +89,7 @@ namespace Chromely.Native
         {
         }
 
-        public void Quit()
+        public void Exit()
         {
         }
 

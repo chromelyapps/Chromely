@@ -13,7 +13,7 @@ namespace Chromely.Native
         // Only MacOS required.
         private static string MacOSNativeDllFile = "libchromely.dylib";
 
-        public static void LoadNativeGuiFile(ChromelyPlatform chromelyPlatform)
+        public static void LoadNativeHostFile(ChromelyPlatform chromelyPlatform)
         {
             if (chromelyPlatform != ChromelyPlatform.MacOSX) return;
 
@@ -38,7 +38,7 @@ namespace Chromely.Native
             });
         }
 
-        public static void EnsureNativeGuiFileExists(ChromelyPlatform chromelyPlatform)
+        public static void EnsureNativeHostFileExists(ChromelyPlatform chromelyPlatform)
         {
             if (chromelyPlatform != ChromelyPlatform.MacOSX) return;
 

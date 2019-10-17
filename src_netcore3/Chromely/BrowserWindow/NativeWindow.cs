@@ -6,55 +6,46 @@ namespace Chromely.BrowserWindow
 {
     public class NativeWindow
     {
-        private readonly ChromelyConfiguration _hostConfig;
-        private readonly INativeGui _nativeGui;
+        private readonly ChromelyConfiguration _config;
+        private readonly INativeHost _nativeHost;
 
-        public NativeWindow(ChromelyConfiguration hostConfig)
+        public NativeWindow(ChromelyConfiguration config)
         {
-            _hostConfig = hostConfig;
+            _nativeHost = NativeHostFactory.GetNativeHost(config);
+            _config = config;
             Handle = IntPtr.Zero;
-            _nativeGui = NativeGuiFactory.GetNativeGui(hostConfig.Platform);
 
-            _nativeGui.Created += OnCreated;
-            _nativeGui.Moving += OnMoving;
-            _nativeGui.SizeChanged += OnSizeChanged;
-            _nativeGui.Close += OnClose;
+            _nativeHost.Created += OnCreated;
+            _nativeHost.Moving += OnMoving;
+            _nativeHost.SizeChanged += OnSizeChanged;
+            _nativeHost.Close += OnClose;
         }
 
         public IntPtr Handle { get; private set; }
         public IntPtr WinXID { get; private set; }
-  
-        public void ShowWindow()
+
+        public virtual void ShowWindow()
         {
-            _nativeGui.CreateWindow(_hostConfig);
+            _nativeHost?.CreateWindow(_config);
         }
 
-        public void SetWindowPosition()
+        public virtual void SetWindowPosition()
         {
         }
 
-        public static void Run(ChromelyPlatform chromelyPlatform)
+        public virtual void Run()
         {
-            var nativeGui = NativeGuiFactory.GetNativeGui(chromelyPlatform);
-            nativeGui.Run();
+            _nativeHost?.Run();
         }
 
-        public static void Quit(ChromelyPlatform chromelyPlatform)
+        public virtual void Quit()
         {
-            var nativeGui = NativeGuiFactory.GetNativeGui(chromelyPlatform);
-            nativeGui.Quit();
+            _nativeHost?.Exit();
         }
 
-        public static void Resize(ChromelyPlatform chromelyPlatform, IntPtr window, int width, int height)
+        public virtual void Resize(IntPtr window, int width, int height)
         {
-            var nativeGui = NativeGuiFactory.GetNativeGui(chromelyPlatform);
-            nativeGui.ResizeWindow(window, width, height);
-        }
-
-        public static void MessageBox(ChromelyPlatform chromelyPlatform, string message, MessageType messageType = MessageType.Error)
-        {
-            var nativeGui = NativeGuiFactory.GetNativeGui(chromelyPlatform);
-            nativeGui.MessageBox(message, messageType);
+            _nativeHost?.ResizeWindow(window, width, height);
         }
 
         #region
@@ -76,5 +67,14 @@ namespace Chromely.BrowserWindow
         }
 
         #endregion
+
+        #region Message Box
+        public static void MessageBox(ChromelyConfiguration config, string message, MessageType messageType = MessageType.Error)
+        {
+            var nativeGui = NativeHostFactory.GetNativeHost(config);
+            nativeGui.MessageBox(message, messageType);
+        }
+
+        #endregion Message Box
     }
 }

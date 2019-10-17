@@ -68,7 +68,7 @@ namespace Chromely.BrowserWindow
 
         public void Exit()
         {
-            Quit(_hostConfig.Platform);
+            Quit();
         }
 
         #region Dispose
@@ -130,8 +130,7 @@ namespace Chromely.BrowserWindow
         {
             if (_browserWindowHandle != IntPtr.Zero)
             {
-                var nativeMethods = NativeGuiFactory.GetNativeGui(this._hostConfig.Platform);
-                nativeMethods.ResizeWindow(_browserWindowHandle, sizeChangedEventArgs.Width, sizeChangedEventArgs.Height);
+                Resize(_browserWindowHandle, sizeChangedEventArgs.Width, sizeChangedEventArgs.Height);
             }
         }
 
@@ -161,6 +160,5 @@ namespace Chromely.BrowserWindow
         {
             _browserWindowHandle = Browser.CefBrowser.GetHost().GetWindowHandle();
         }
-
     }
 }

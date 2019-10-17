@@ -7,7 +7,7 @@ using Chromely.Core.Infrastructure;
 
 namespace Chromely.Native
 {
-    public class MacNativeGui : INativeGui
+    public class MacCocoaHost : INativeHost
     {
         public event EventHandler<CreatedEventArgs> Created;
         public event EventHandler<MovingEventArgs> Moving;
@@ -27,7 +27,7 @@ namespace Chromely.Native
         private IntPtr _viewHandle;
         private bool _isInitialized;
 
-        public MacNativeGui()
+        public MacCocoaHost()
         {
             _appHandle = IntPtr.Zero;
             _poolHandle = IntPtr.Zero;
@@ -185,7 +185,7 @@ namespace Chromely.Native
         {
         }
 
-        public void Quit()
+        public void Exit()
         {
             try
             {
@@ -193,7 +193,7 @@ namespace Chromely.Native
             }
             catch (Exception exception)
             {
-                Log.Error("Error in LinuxNativeMethods::Quit");
+                Log.Error("Error in MacCocoaHost::Quit");
                 Log.Error(exception);
             }
         }

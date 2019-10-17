@@ -8,7 +8,7 @@ using Chromely.Core.Infrastructure;
 
 namespace Chromely.Native
 {
-    public class LinuxNativeGui : INativeGui
+    public class LinuxGtk3Host : INativeHost
     {
         public event EventHandler<CreatedEventArgs> Created;
         public event EventHandler<MovingEventArgs> Moving;
@@ -21,7 +21,7 @@ namespace Chromely.Native
         private IntPtr _xid;
         private bool _isInitialized;
 
-        public LinuxNativeGui()
+        public LinuxGtk3Host()
         {
             _isInitialized = false;
             _handle = IntPtr.Zero;
@@ -84,7 +84,7 @@ namespace Chromely.Native
             }
             catch (Exception exception)
             {
-                Log.Error("Error in LinuxNativeMethods::CreateNewWindow");
+                Log.Error("Error in LinuxGtk3Host::CreateNewWindow");
                 Log.Error(exception);
             }
 
@@ -101,7 +101,7 @@ namespace Chromely.Native
             }
             catch (Exception exception)
             {
-                Log.Error("Error in LinuxNativeMethods::GetGdkHandle");
+                Log.Error("Error in LinuxGtk3Host::GetGdkHandle");
                 Log.Error(exception);
             }
 
@@ -120,7 +120,7 @@ namespace Chromely.Native
             }
             catch (Exception exception)
             {
-                Log.Error("Error in LinuxNativeMethods::GetNativeHandle");
+                Log.Error("Error in LinuxGtk3Host::GetNativeHandle");
                 Log.Error(exception);
             }
 
@@ -135,7 +135,7 @@ namespace Chromely.Native
             }
             catch (Exception exception)
             {
-                Log.Error("Error in LinuxNativeMethods::Init");
+                Log.Error("Error in LinuxGtk3Host::Init");
                 Log.Error(exception);
             }
         }
@@ -148,7 +148,7 @@ namespace Chromely.Native
             }
             catch (Exception exception)
             {
-                Log.Error("Error in LinuxNativeMethods::ShowWindow");
+                Log.Error("Error in LinuxGtk3Host::ShowWindow");
                 Log.Error(exception);
             }
         }
@@ -161,7 +161,7 @@ namespace Chromely.Native
             }
             catch (Exception exception)
             {
-                Log.Error("Error in LinuxNativeMethods::Run");
+                Log.Error("Error in LinuxGtk3Host::Run");
                 Log.Error(exception);
             }
         }
@@ -175,7 +175,7 @@ namespace Chromely.Native
             }
             catch (Exception exception)
             {
-                Log.Error("Error in LinuxNativeMethods::GetWindowSize");
+                Log.Error("Error in LinuxGtk3Host::GetWindowSize");
                 Log.Error(exception);
             }
 
@@ -190,7 +190,7 @@ namespace Chromely.Native
             }
             catch (Exception exception)
             {
-                Log.Error("Error in LinuxNativeMethods::SetWindowTitle");
+                Log.Error("Error in LinuxGtk3Host::SetWindowTitle");
                 Log.Error(exception);
             }
         }
@@ -203,7 +203,7 @@ namespace Chromely.Native
             }
             catch (Exception exception)
             {
-                Log.Error("Error in LinuxNativeMethods::SetWindowDefaultSize");
+                Log.Error("Error in LinuxGtk3Host::SetWindowDefaultSize");
                 Log.Error(exception);
             }
         }
@@ -236,12 +236,11 @@ namespace Chromely.Native
         {
             try
             {
-                IntPtr ptrToAnsi = IconHandler.IconFileToPtr(filename);
-                if (ptrToAnsi != IntPtr.Zero)
+                filename = IconHandler.IconFullPath(filename);
+                if (string.IsNullOrWhiteSpace(filename))
                 {
                     IntPtr error = IntPtr.Zero;
-                    NativeMethods.gtk_window_set_icon_from_file(window, ptrToAnsi, out error);
-                    Marshal.FreeCoTaskMem(ptrToAnsi);
+                    NativeMethods.gtk_window_set_icon_from_file(window, filename, out error);
                     if (error != IntPtr.Zero)
                     {
                         Log.Error("Icon handle not successfully freed.");
@@ -262,7 +261,7 @@ namespace Chromely.Native
             }
             catch (Exception exception)
             {
-                Log.Error("Error in LinuxNativeMethods::SetWindowPosistion");
+                Log.Error("Error in LinuxGtk3Host::SetWindowPosistion");
                 Log.Error(exception);
             }
         }
@@ -275,7 +274,7 @@ namespace Chromely.Native
             }
             catch (Exception exception)
             {
-                Log.Error("Error in LinuxNativeMethods::SetWindowMaximize");
+                Log.Error("Error in LinuxGtk3Host::SetWindowMaximize");
                 Log.Error(exception);
             }
         }
@@ -288,12 +287,12 @@ namespace Chromely.Native
             }
             catch (Exception exception)
             {
-                Log.Error("Error in LinuxNativeMethods::SetFullscreen");
+                Log.Error("Error in LinuxGtk3Host::SetFullscreen");
                 Log.Error(exception);
             }
         }
 
-        public void Quit()
+        public void Exit()
         {
             try
             {
@@ -301,7 +300,7 @@ namespace Chromely.Native
             }
             catch (Exception exception)
             {
-                Log.Error("Error in LinuxNativeMethods::Quit");
+                Log.Error("Error in LinuxGtk3Host::Quit");
                 Log.Error(exception);
             }
         }
@@ -314,7 +313,7 @@ namespace Chromely.Native
             }
             catch (Exception exception)
             {
-                Log.Error("Error in LinuxNativeMethods::RegisterHandler");
+                Log.Error("Error in LinuxGtk3Host::RegisterHandler");
                 Log.Error(exception);
             }
         }
@@ -329,7 +328,7 @@ namespace Chromely.Native
             }
             catch (Exception exception)
             {
-                Log.Error("Error in LinuxNativeMethods::MessageBox");
+                Log.Error("Error in LinuxGtk3Host::MessageBox");
                 Log.Error(exception);
             }
         }
@@ -480,7 +479,7 @@ namespace Chromely.Native
             internal static extern void gdk_window_move_resize(IntPtr window, int x, int y, int width, int height);
 
             [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, ExactSpelling = false)]
-            internal static extern bool gtk_window_set_icon_from_file(IntPtr raw, IntPtr filename, out IntPtr err);
+            internal static extern bool gtk_window_set_icon_from_file(IntPtr raw, string filename, out IntPtr err);
 
             [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl)]
             internal static extern bool gtk_window_set_position(IntPtr window, GtkWindowPosition position);

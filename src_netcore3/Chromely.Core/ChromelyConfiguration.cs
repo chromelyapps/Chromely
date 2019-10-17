@@ -39,6 +39,7 @@ namespace Chromely.Core
         private ChromelyConfiguration()
         {
             _appExeLocation = string.Empty;
+            HostType = ChromelyHostType.OSDefault;
             LoadCefBinariesIfNotFound = true;
             SilentCefBinariesLoading = false;
             PerformDependencyCheck = false;
@@ -73,6 +74,11 @@ namespace Chromely.Core
 
         /// <summary>
         /// Gets or sets the desired host interface technology.
+        /// </summary>
+        public ChromelyHostType HostType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the desired platform - WinOS, Linux, MacOS
         /// </summary>
         public ChromelyPlatform Platform { get; set; }
 
@@ -215,12 +221,14 @@ namespace Chromely.Core
         /// <returns>
         /// The <see cref="ChromelyConfiguration"/> object.
         /// </returns>
-        public static ChromelyConfiguration Create(IChromelyContainer container = null)
+        public static ChromelyConfiguration Create(ChromelyHostType hostType = ChromelyHostType.OSDefault, IChromelyContainer container = null)
         {
             if (container != null)
             {
                 IoC.Container = container;
             }
+
+            Instance.HostType = hostType;
 
             EnsureExpectedWorkingDirectory();
 
@@ -254,13 +262,19 @@ namespace Chromely.Core
 
                 case ChromelyPlatform.Windows:
                     Instance.Platform = ChromelyPlatform.Windows;
-                    // Temporary
-                    throw new Exception("Windows migration to .NET Core 3 is pending.\nCurrently only Linux and MacOS suppored.\n Please check back soon.");
-                    // return Instance;
+                    if (hostType == ChromelyHostType.OSDefault)
+                        throw new Exception("Windows migration to .NET Core 3 is pending.\nCurrently only Gtk3 is supported on Windows.\n Please check back soon.");
+                     return Instance;
 
                 default:
                     throw new PlatformNotSupportedException();
             }
+        }
+
+        public ChromelyConfiguration WithHostType(ChromelyHostType guiType)
+        {
+            HostType = guiType;
+            return this;
         }
 
         /// <summary>
