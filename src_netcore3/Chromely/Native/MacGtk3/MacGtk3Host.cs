@@ -114,8 +114,8 @@ namespace Chromely.Native
             {
                 _gdkHandle = NativeMethods.gtk_widget_get_window(_handle);
                 Utils.AssertNotNull("GetNativeHandle:gtk_widget_get_window", _gdkHandle);
-                _xid = NativeMethods.gdk_quartz_window_get_nswindow(_gdkHandle);
-                Utils.AssertNotNull("GetNativeHandle:NativeMethods.gdk_quartz_window_get_nswindow", _xid);
+                _xid = NativeMethods.gdk_quartz_window_get_nsview(_gdkHandle);
+                Utils.AssertNotNull("GetNativeHandle:NativeMethods.gdk_quartz_window_get_nsview", _xid);
                 return _xid;
             }
             catch (Exception exception)
@@ -343,10 +343,23 @@ namespace Chromely.Native
 
         private void OnRealized(IntPtr window)
         {
-            _xid = GetNativeHandle();
-            var createdEvent = new CreatedEventArgs(IntPtr.Zero, window, _xid);
-            Created?.Invoke(this, createdEvent);
-            _isInitialized = true;
+            try
+            {
+                _xid = GetNativeHandle();
+                if (_xid == IntPtr.Zero)
+                {
+                    throw new Exception("Window XID is invalid");
+                }
+
+                var createdEvent = new CreatedEventArgs(IntPtr.Zero, window, _xid);
+                Created?.Invoke(this, createdEvent);
+                _isInitialized = true;
+            }
+            catch (Exception exception)
+            {
+                Log.Error("Error in LinuxGtk3Host::OnRealized");
+                Log.Error(exception);
+            }
         }
 
         private void OnSizeAllocate(IntPtr window, IntPtr allocation, int baseline)
@@ -444,7 +457,7 @@ namespace Chromely.Native
             internal const string GdkLib = "libgdk-3.0.dylib";
             internal const string GlibLib = "libglib-2.0.0.dylib";
             internal const string GioLib = "libgio-2.0.0.dylib";
-            internal const string QuartzLib = "libgtk-quartz-2.0.dylib";
+            internal const string QuartzLib = "libgtk-quartz-2.0.0.dylib";
 
             [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl)]
             internal static extern void gtk_init(int argc, string[] argv);

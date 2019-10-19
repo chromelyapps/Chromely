@@ -343,10 +343,23 @@ namespace Chromely.Native
 
         private void OnRealized(IntPtr window)
         {
-            _xid = GetNativeHandle();
-            var createdEvent = new CreatedEventArgs(IntPtr.Zero, window, _xid);
-            Created?.Invoke(this, createdEvent);
-            _isInitialized = true;
+            try
+            {
+                _xid = GetNativeHandle();
+                if (_xid == IntPtr.Zero)
+                {
+                    throw new Exception("Window XID is invalid");
+                }
+
+                var createdEvent = new CreatedEventArgs(IntPtr.Zero, window, _xid);
+                Created?.Invoke(this, createdEvent);
+                _isInitialized = true;
+            }
+            catch (Exception exception)
+            {
+                Log.Error("Error in LinuxGtk3Host::OnRealized");
+                Log.Error(exception);
+            }
         }
 
         private void OnSizeAllocate(IntPtr window, IntPtr allocation, int baseline)

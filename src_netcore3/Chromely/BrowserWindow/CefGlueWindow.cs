@@ -44,7 +44,7 @@ namespace Chromely.BrowserWindow
         /// </summary>
         protected override void Initialize()
         {
-            HostRuntime.LoadNativeHostFile(HostConfig.Platform);
+            HostRuntime.LoadNativeHostFile(HostConfig);
         }
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace Chromely.BrowserWindow
         /// </returns>
         protected override IWindow CreateMainView()
         {
-            HostRuntime.EnsureNativeHostFileExists(HostConfig.Platform);
+            HostRuntime.EnsureNativeHostFileExists(HostConfig);
 
             _mainWindow = new Window(this, HostConfig);
             return _mainWindow;
