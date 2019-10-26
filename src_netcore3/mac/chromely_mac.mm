@@ -5,15 +5,26 @@
 // include the Cocoa Frameworks
 #import <Cocoa/Cocoa.h>    
 
+#include "cef_application_mac.h"
+
 // include Chromely custom header
 #include "chromely_mac.h"
 
 /*
+* ChromelyApplication manages events.
+* Provide the CefAppProtocol implementation required by CEF.
+*/
+@interface ChromelyApplication : NSApplication <CefAppProtocol> {
+ @private
+  BOOL handlingSendEvent_;
+}
+@end
+
+/*
 * ChromelyAppDelegate manages events.
 */
-
 @interface ChromelyAppDelegate : NSObject <NSApplicationDelegate, NSWindowDelegate> {
-    NSApplication *application;
+    ChromelyApplication *application;
     NSWindow * window;
     NSView   *cefParentView;
     CHROMELYPARAM chromelyParam;
@@ -23,6 +34,33 @@
 - (NSUInteger)windowCustomStyle;
 
 @end
+
+
+/*
+* ChromelyApplication manages events.
+* Provide the CefAppProtocol implementation required by CEF.
+*/
+@implementation ChromelyApplication
+- (BOOL)isHandlingSendEvent {
+  return handlingSendEvent_;
+}
+
+- (void)setHandlingSendEvent:(BOOL)handlingSendEvent {
+  handlingSendEvent_ = handlingSendEvent;
+}
+
+- (void)sendEvent:(NSEvent*)event {
+    #ifdef __cplusplus
+    CefScopedSendingEvent sendingEventScoper;
+    #endif
+  [super sendEvent:event];
+}
+@end
+
+
+/*
+* ChromelyAppDelegate manages events.
+*/
 
 @implementation ChromelyAppDelegate : NSObject
 
@@ -111,7 +149,7 @@
 
 void createwindow(CHROMELYPARAM* pParam) {
     NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-    NSApp = [NSApplication sharedApplication];
+    NSApp = [ChromelyApplication sharedApplication];
 
     ChromelyAppDelegate * appDelegate = [[[ChromelyAppDelegate alloc] init] autorelease];
     [appDelegate setParams:*pParam];
@@ -122,7 +160,7 @@ void createwindow(CHROMELYPARAM* pParam) {
 
 APPDATA createwindowdata(CHROMELYPARAM* pParam) {
     NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-    NSApp = [NSApplication sharedApplication];
+    NSApp = [ChromelyApplication sharedApplication];
 
     ChromelyAppDelegate * appDelegate = [[[ChromelyAppDelegate alloc] init] autorelease];
     [appDelegate setParams:*pParam];
