@@ -191,15 +191,12 @@
             The <see cref="T:Chromely.Core.ChromelyConfiguration"/> object.
             </returns>
         </member>
-        <member name="M:Chromely.Core.ChromelyConfiguration.WithHostMode(Chromely.Core.Host.WindowState,System.Boolean)">
+        <member name="M:Chromely.Core.ChromelyConfiguration.WithHostMode(Chromely.Core.Host.WindowState)">
             <summary>
             The with host mode.
             </summary>
             <param name="windowState">
             The window state.
-            </param>
-            <param name="centerScreen">
-            The center screen.
             </param>
             <returns>
             The <see cref="T:Chromely.Core.ChromelyConfiguration"/>.
@@ -227,7 +224,7 @@
             The <see cref="T:Chromely.Core.ChromelyConfiguration"/> object.
             </returns>
         </member>
-        <member name="M:Chromely.Core.ChromelyConfiguration.WithHostSize(System.Int32,System.Int32)">
+        <member name="M:Chromely.Core.ChromelyConfiguration.WithHostBounds(System.Int32,System.Int32,System.Int32,System.Int32)">
             <summary>
             Sets host/window/app size.
             </summary>
@@ -236,6 +233,12 @@
             </param>
             <param name="height">
             The height.
+            </param>
+            <param name="left">
+            The left position of the window.
+            </param>
+            <param name="top">
+            The top position of the window.
             </param>
             <returns>
             The <see cref="T:Chromely.Core.ChromelyConfiguration"/> object.
