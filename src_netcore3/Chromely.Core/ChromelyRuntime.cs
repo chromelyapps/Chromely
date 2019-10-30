@@ -48,16 +48,16 @@ namespace Chromely.Core
                 }
                 if (type == null)
                 {
-                    Log.Error("Could not get expected chromium build number: Unable to load CefRuntime.ChromeVersion"); 
+                    Logger.Instance.Log.Error("Could not get expected chromium build number: Unable to load CefRuntime.ChromeVersion"); 
                 }
                 else
                 {
-                    Log.Error($"Could not parse chromium build number '{version}'");
+                    Logger.Instance.Log.Error($"Could not parse chromium build number '{version}'");
                 }
             }
             catch (Exception ex)
             {
-                Log.Error("Could not get expected chromium build number: " + ex.Message);
+                Logger.Instance.Log.Error("Could not get expected chromium build number: " + ex.Message);
             }
             return 0;
         }
@@ -93,7 +93,6 @@ namespace Chromely.Core
                 
             }
         }
-        
 
         private static bool IsRunningOnMac()
         {

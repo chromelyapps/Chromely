@@ -9,6 +9,8 @@
 
 using System;
 using Chromely.CefGlue;
+using Chromely.Core;
+using Chromely.Core.Infrastructure;
 using Chromely.Core.RestfulService;
 using LitJson;
 
@@ -20,11 +22,14 @@ namespace CrossPlatDemo.Controllers
     [ControllerProperty(Name = "ExecuteJavaScriptDemoController", Route = "executejavascript")]
     public class ExecuteJavaScriptDemoController : ChromelyController
     {
+        private readonly IChromelyConfiguration _config;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ExecuteJavaScriptDemoController"/> class.
         /// </summary>
-        public ExecuteJavaScriptDemoController()
+        public ExecuteJavaScriptDemoController(IChromelyConfiguration config)
         {
+            _config = config;
             RegisterPostRequest("/executejavascript/execute", Execute);
         }
 
@@ -50,19 +55,20 @@ namespace CrossPlatDemo.Controllers
             try
             {
                 var scriptInfo = new ScriptInfo(request.PostData);
-                var frame = FrameHandler.GetFrame(scriptInfo.FrameName);
-                if (frame == null)
+                var scriptExecutor = _config?.JavaScriptExecutor;
+                if (scriptExecutor == null)
                 {
                     response.Data = $"Frame {scriptInfo.FrameName} does not exist.";
                     return response;
                 }
 
-                frame.ExecuteJavaScript(scriptInfo.Script, null, 0);
+                scriptExecutor.ExecuteScript(scriptInfo.Script);
                 response.Data = "Executed script :" + scriptInfo.Script;
                 return response;
             }
             catch (Exception e)
             {
+                Logger.Instance.Log.Error(e);
                 response.Data = e.Message;
                 response.ReadyState = (int)ReadyState.RequestReceived;
                 response.Status = (int)System.Net.HttpStatusCode.BadRequest;

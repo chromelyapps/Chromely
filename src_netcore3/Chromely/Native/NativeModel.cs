@@ -258,7 +258,7 @@ namespace Chromely.Native
             }
             catch (Exception exception)
             {
-                Log.Error(exception);
+                Logger.Instance.Log.Error(exception);
             }
 
             return iconFile;
@@ -279,7 +279,7 @@ namespace Chromely.Native
             }
             catch (Exception exception)
             {
-                Log.Error(exception);
+                Logger.Instance.Log.Error(exception);
             }
 
             return IntPtr.Zero;

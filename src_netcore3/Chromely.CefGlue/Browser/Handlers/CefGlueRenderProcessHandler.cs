@@ -7,6 +7,7 @@
 // </license>
 // ----------------------------------------------------------------------------------------------------------------------
 
+using Chromely.Core;
 using Xilium.CefGlue;
 using Xilium.CefGlue.Wrapper;
 
@@ -17,11 +18,14 @@ namespace Chromely.CefGlue.Browser.Handlers
     /// </summary>
     public class CefGlueRenderProcessHandler : CefRenderProcessHandler
     {
+        private readonly IChromelyConfiguration _config;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="CefGlueRenderProcessHandler"/> class.
         /// </summary>
-        public CefGlueRenderProcessHandler()
+        public CefGlueRenderProcessHandler(IChromelyConfiguration config)
         {
+            _config = config;
             MessageRouter = new CefMessageRouterRendererSide(new CefMessageRouterConfig());
         }
 

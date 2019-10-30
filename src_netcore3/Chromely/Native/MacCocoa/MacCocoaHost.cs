@@ -20,7 +20,7 @@ namespace Chromely.Native
         private delegate void ResizeCallbackEvent(int width, int height);
         private delegate void QuitCallbackEvent();
 
-        private ChromelyConfiguration _hostConfig;
+        private IChromelyConfiguration _config;
         private IntPtr _appHandle;
         private IntPtr _poolHandle;
         private IntPtr _windowHandle;
@@ -36,9 +36,9 @@ namespace Chromely.Native
             _isInitialized = false;
         }
 
-        public void CreateWindow(ChromelyConfiguration hostConfig)
+        public void CreateWindow(IChromelyConfiguration config)
         {
-            _hostConfig = hostConfig;
+            _config = config;
             NativeMethods.ChromelyParam configParam = InitParam(InitCallback,
                                                          CreateCallback,
                                                          MovingCallback,
@@ -46,20 +46,19 @@ namespace Chromely.Native
                                                          QuitCallback);
 
 
-            var placement = _hostConfig.HostPlacement;
-            configParam.centerscreen = placement.CenterScreen ? 1 : 0;
-            configParam.frameless = placement.Frameless ? 1 : 0;
-            configParam.fullscreen = placement.State == Core.Host.WindowState.Fullscreen ? 1 : 0;
-            configParam.noresize = placement.NoResize ? 1 : 0;
-            configParam.nominbutton = placement.NoMinMaxBoxes ? 1 : 0;
-            configParam.nomaxbutton = placement.NoMinMaxBoxes ? 1 : 0;
+            configParam.centerscreen = _config.WindowCenterScreen ? 1 : 0;
+            configParam.frameless = _config.WindowFrameless ? 1 : 0;
+            configParam.fullscreen = _config.WindowState == Core.Host.WindowState.Fullscreen ? 1 : 0;
+            configParam.noresize = _config.WindowNoResize ? 1 : 0;
+            configParam.nominbutton = _config.WindowNoMinMaxBoxes ? 1 : 0;
+            configParam.nomaxbutton = _config.WindowNoMinMaxBoxes ? 1 : 0;
 
-            configParam.title = _hostConfig.HostTitle;
+            configParam.title = _config.WindowTitle;
 
-            configParam.x = placement.Left;
-            configParam.y = placement.Top;
-            configParam.width = placement.Width;
-            configParam.height = placement.Height;
+            configParam.x = _config.WindowLeft;
+            configParam.y = _config.WindowTop;
+            configParam.width = _config.WindowWidth;
+            configParam.height = _config.WindowHeight;
 
             NativeMethods.createwindow(ref configParam);
         }
@@ -125,7 +124,7 @@ namespace Chromely.Native
 
         #endregion
 
-        public IntPtr CreateNewWindow(GtkWindowType type)
+        public IntPtr CreateNewWindow(int type)
         {
             return IntPtr.Zero;
         }
@@ -173,7 +172,7 @@ namespace Chromely.Native
         {
         }
 
-        public void SetWindowPosistion(GtkWindowPosition position)
+        public void SetWindowPosistion(int position)
         {
         }
 
@@ -193,8 +192,8 @@ namespace Chromely.Native
             }
             catch (Exception exception)
             {
-                Log.Error("Error in MacCocoaHost::Quit");
-                Log.Error(exception);
+                Logger.Instance.Log.Error("Error in MacCocoaHost::Quit");
+                Logger.Instance.Log.Error(exception);
             }
         }
 

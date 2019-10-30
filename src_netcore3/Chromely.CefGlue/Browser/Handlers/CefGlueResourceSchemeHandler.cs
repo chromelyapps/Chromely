@@ -78,7 +78,7 @@ namespace Chromely.CefGlue.Browser.Handlers
                         }
                         catch (Exception exception)
                         {
-                            Log.Error(exception);
+                            Logger.Instance.Log.Error(exception);
                         }
                         finally
                         {
@@ -129,7 +129,7 @@ namespace Chromely.CefGlue.Browser.Handlers
                 response.MimeType = "text/plain";
                 response.StatusText = "Resource loading error.";
 
-                Log.Error(exception);
+                Logger.Instance.Log.Error(exception);
             }
         }
 
@@ -186,7 +186,7 @@ namespace Chromely.CefGlue.Browser.Handlers
             }
             catch (Exception exception)
             {
-                Log.Error(exception);
+                Logger.Instance.Log.Error(exception);
             }
 
             bytesRead = currBytesRead;

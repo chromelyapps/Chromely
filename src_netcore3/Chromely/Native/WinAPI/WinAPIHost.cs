@@ -12,7 +12,7 @@ namespace Chromely.Native
         public event EventHandler<SizeChangedEventArgs> SizeChanged;
         public event EventHandler<CloseEventArgs> Close;
 
-        private ChromelyConfiguration _hostConfig;
+        private IChromelyConfiguration _config;
         private IntPtr _handle;
         private IntPtr _gdkHandle;
         private IntPtr _xid;
@@ -26,11 +26,11 @@ namespace Chromely.Native
             _xid = IntPtr.Zero;
         }
 
-        public void CreateWindow(ChromelyConfiguration hostConfig)
+        public void CreateWindow(IChromelyConfiguration config)
         {
         }
 
-        public IntPtr CreateNewWindow(GtkWindowType type)
+        public IntPtr CreateNewWindow(int type)
         {
             return IntPtr.Zero;
         }
@@ -77,7 +77,7 @@ namespace Chromely.Native
         {
         }
 
-        public void SetWindowPosistion(GtkWindowPosition position)
+        public void SetWindowPosistion(int position)
         {
         }
 

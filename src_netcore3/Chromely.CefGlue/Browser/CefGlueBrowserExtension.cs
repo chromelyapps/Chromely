@@ -28,26 +28,26 @@ namespace Chromely.CefGlue.Browser
         /// <param name="browser">
         /// The browser.
         /// </param>
-        public static void SetEventHandlers(this CefGlueBrowser browser)
+        public static void SetEventHandlers(this CefGlueBrowser browser, IChromelyContainer container)
         {
             try
             {
-                foreach (var enumKey in CefEventHandlerFakeTypes.GetAllEventHandlerKeys())
+                foreach (var enumKey in CefEventHandlerTypes.GetAllEventHandlerKeys())
                 {
                     object instance = null;
 
-                    var service = CefEventHandlerFakeTypes.GetHandlerType(enumKey);
+                    var service = CefEventHandlerTypes.GetHandlerType(enumKey);
                     var keyStr = enumKey.EnumToString();
                     try
                     {
-                        if (IoC.IsRegistered(service, keyStr))
+                        if (container.IsRegistered(service, keyStr))
                         {
-                            instance = IoC.GetInstance(service, keyStr);
+                            instance = container.GetInstance(service, keyStr);
                         }
                     }
                     catch (Exception exception)
                     {
-                        Log.Error(exception);
+                        Logger.Instance.Log.Error(exception);
                     }
 
                     switch (enumKey)
@@ -163,7 +163,7 @@ namespace Chromely.CefGlue.Browser
             }
             catch (Exception exception)
             {
-                Log.Error(exception);
+                Logger.Instance.Log.Error(exception);
             }
         }
     }

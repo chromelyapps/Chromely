@@ -22,6 +22,8 @@ namespace Chromely.Core.RestfulService
     /// </summary>
     public class RouteScanner
     {
+        private readonly IChromelyContainer _container;
+
         /// <summary>
         /// Gets or sets the _assembly.
         /// </summary>
@@ -33,9 +35,10 @@ namespace Chromely.Core.RestfulService
         /// <param name="assembly">
         /// The assembly.
         /// </param>
-        public RouteScanner(Assembly assembly)
+        public RouteScanner(Assembly assembly, IChromelyContainer container)
         {
             _assembly = assembly;
+            _container = container;
         }
 
         /// <summary>
@@ -45,10 +48,10 @@ namespace Chromely.Core.RestfulService
         /// <returns>
         /// The <see cref="IDictionary"/>.
         /// </returns>
-        public Tuple<Dictionary<string, Route>, Dictionary<string, Command>> Scan()
+        public Tuple<Dictionary<string, ActionRoute>, Dictionary<string, CommandRoute>> Scan()
         {
-            var routeDictionary = new Dictionary<string, Route>();
-            var commandDictionary = new Dictionary<string, Command>();
+            var routeDictionary = new Dictionary<string, ActionRoute>();
+            var commandDictionary = new Dictionary<string, CommandRoute>();
 
             try
             {
@@ -60,9 +63,10 @@ namespace Chromely.Core.RestfulService
                 {
                     if (typeof(ChromelyController).IsAssignableFrom(type.BaseType))
                     {
-                        var instance = ChromelyControllerFactory.CreateControllerInstance(type);
-                        var currentRouteDictionary = instance.RouteDictionary;
-                        var currentCommandDictionary = instance.CommandDictionary;
+                        var controller = new ChromelyControllerFactory(_container);
+                        var instance = controller.CreateControllerInstance(type);
+                        var currentRouteDictionary = instance.ActionRouteDictionary;
+                        var currentCommandDictionary = instance.CommandRouteDictionary;
 
                         // Merge with return route dictionary
                         if ((currentRouteDictionary != null) && currentRouteDictionary.Any())
@@ -92,31 +96,15 @@ namespace Chromely.Core.RestfulService
             }
             catch (Exception exception)
             {
-                Log.Error(exception);
+                Logger.Instance.Log.Error(exception);
             }
 
-            return new Tuple<Dictionary<string, Route>, Dictionary<string, Command>>(routeDictionary, commandDictionary);
+            return new Tuple<Dictionary<string, ActionRoute>, Dictionary<string, CommandRoute>>(routeDictionary, commandDictionary);
         }
     }
 
-    /// <summary>
-    /// The route scanner extensions.
-    /// </summary>
-    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification =
-        "Reviewed. Suppression is OK here.")]
-    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1400:AccessModifierMustBeDeclared", Justification =
-        "Reviewed. Suppression is OK here.")]
     static class RouteScannerExtensions
     {
-        /// <summary>
-        /// Get loadable types.
-        /// </summary>
-        /// <param name="assembly">
-        /// The assembly.
-        /// </param>
-        /// <returns>
-        /// The <see cref="IEnumerable"/>.
-        /// </returns>
         public static IEnumerable<Type> GetLoadableTypes(this Assembly assembly)
         {
             try

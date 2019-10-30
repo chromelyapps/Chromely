@@ -53,7 +53,7 @@ namespace Chromely.CefGlue
                 }
                 catch (Exception exception)
                 {
-                    Log.Error(exception);
+                    Logger.Instance.Log.Error(exception);
                 }
             }
         }

@@ -35,7 +35,7 @@ namespace Chromely.Core.RestfulService
         {
             if (!File.Exists(filename))
             {
-                Log.Error($"Assembly file: {filename} does not exist.");
+                Logger.Instance.Log.Error($"Assembly file: {filename} does not exist.");
             }
 
             try
@@ -45,7 +45,7 @@ namespace Chromely.Core.RestfulService
             }
             catch (Exception exception)
             {
-                Log.Error(exception);
+                Logger.Instance.Log.Error(exception);
             }
         }
 

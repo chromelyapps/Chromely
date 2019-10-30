@@ -14,23 +14,30 @@ using Chromely.Core.Infrastructure;
 namespace Chromely.Core.RestfulService
 {
     /// <summary>
-    /// Static factory class to create chromely controllers from given type.
+    /// Factory class to create chromely controllers from given type.
     /// </summary>
-    public static class ChromelyControllerFactory
+    public class ChromelyControllerFactory
     {
+        private readonly IChromelyContainer _container;
+
+        public ChromelyControllerFactory(IChromelyContainer container)
+        {
+            _container = container;
+        }
+
         /// <summary>
         /// Creates an instance of a chromely controller of given type.
         /// Ctor dependency injection is done using the global IoC container.
         /// </summary>
         /// <param name="type">Controller type to be created.</param>
         /// <returns>Instance reference or null if failed.</returns>
-        public static ChromelyController CreateControllerInstance(Type type)
+        public ChromelyController CreateControllerInstance(Type type)
         {
             var instance = CreateType(type);
             return instance as ChromelyController;
         }
 
-        private static object CreateType(Type type)
+        private object CreateType(Type type)
         {
             object instance = null;
             foreach (var constructor in type.GetConstructors())
@@ -48,7 +55,7 @@ namespace Chromely.Core.RestfulService
                 {
                     var parameterInfo = parameters[ix];
 
-                    var iocInstance = IoC.GetAllInstances(parameterInfo.ParameterType).FirstOrDefault();
+                    var iocInstance = _container.GetAllInstances(parameterInfo.ParameterType).FirstOrDefault();
                     var parameterInstance = iocInstance ?? CreateType(parameterInfo.ParameterType);
 
                     paramValues[ix] = parameterInstance;
@@ -61,7 +68,7 @@ namespace Chromely.Core.RestfulService
                 }
                 catch (Exception ex)
                 {
-                    Log.Error(ex.Message);
+                    Logger.Instance.Log.Error(ex.Message);
                 }
             }
 

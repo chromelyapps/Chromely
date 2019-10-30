@@ -13,11 +13,9 @@ namespace Chromely.Native
         // Only MacOS required.
         private static string MacOSNativeDllFile = "libchromely.dylib";
 
-        public static void LoadNativeHostFile(ChromelyConfiguration config)
+        public static void LoadNativeHostFile(IChromelyConfiguration config)
         {
-            // Required only when MacOS and HostType = OSDefault
             if (config.Platform != ChromelyPlatform.MacOSX) return;
-            if (config.HostType == ChromelyHostType.Gtk3) return;
 
             var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
             string fullPathNativeDll = Path.Combine(appDirectory, MacOSNativeDllFile);
@@ -40,11 +38,9 @@ namespace Chromely.Native
             });
         }
 
-        public static void EnsureNativeHostFileExists(ChromelyConfiguration config)
+        public static void EnsureNativeHostFileExists(IChromelyConfiguration config)
         {
-            // Required only when MacOS and HostType = OSDefault
             if (config.Platform != ChromelyPlatform.MacOSX) return;
-            if (config.HostType == ChromelyHostType.Gtk3) return;
 
             var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
             string fullPathNativeDll = Path.Combine(appDirectory, MacOSNativeDllFile);
@@ -55,7 +51,7 @@ namespace Chromely.Native
             {
                 if (DateTime.Now > timeout)
                 {
-                    Log.Error($"File {fullPathNativeDll} does not exist.");
+                    Logger.Instance.Log.Error($"File {fullPathNativeDll} does not exist.");
                     return;
                 }
 

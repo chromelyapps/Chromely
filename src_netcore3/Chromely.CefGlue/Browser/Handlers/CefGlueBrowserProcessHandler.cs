@@ -18,6 +18,13 @@ namespace Chromely.CefGlue.Browser.Handlers
     /// </summary>
     public class CefGlueBrowserProcessHandler : CefBrowserProcessHandler
     {
+        private readonly IChromelyConfiguration _config;
+
+        public CefGlueBrowserProcessHandler(IChromelyConfiguration config)
+        {
+            _config = config;
+        }
+
         /// <summary>
         /// The on before child process launch.
         /// </summary>
@@ -33,7 +40,7 @@ namespace Chromely.CefGlue.Browser.Handlers
             browser_cmd.AppendSwitch("disable-web-security");
             browser_cmd.AppendSwitch("ignore-certificate-errors");
 
-            if (ChromelyConfiguration.Instance.DebuggingMode)
+            if (_config.DebuggingMode)
             {
                 Console.WriteLine("On CefGlue child process launch arguments:");
                 Console.WriteLine(browser_cmd.ToString());

@@ -1,7 +1,6 @@
-﻿using System;
+﻿using Chromely.Core;
+using System;
 using System.Drawing;
-using Chromely.BrowserWindow;
-using Chromely.Core;
 
 namespace Chromely.Native
 {
@@ -12,9 +11,8 @@ namespace Chromely.Native
         event EventHandler<SizeChangedEventArgs> SizeChanged;
         event EventHandler<CloseEventArgs> Close;
 
-        void CreateWindow(ChromelyConfiguration hostConfig);
-        IntPtr CreateNewWindow(GtkWindowType type);
-        IntPtr GetGdkHandle();
+        void CreateWindow(IChromelyConfiguration config);
+        IntPtr CreateNewWindow(int type);
         IntPtr GetNativeHandle();
         void Init(int argc, string[] argv);
         void ShowWindow();
@@ -24,7 +22,7 @@ namespace Chromely.Native
         void SetWindowDefaultSize(int width, int height);
         void ResizeWindow(IntPtr window, int width, int height);
         void SetAppIcon(IntPtr raw, string filename);
-        void SetWindowPosistion(GtkWindowPosition position);
+        void SetWindowPosistion(int position);
         void SetWindowMaximize();
         void SetFullscreen();
         void Exit();

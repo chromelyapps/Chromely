@@ -41,13 +41,13 @@ namespace Chromely.CefGlue.BrowserWindow
         /// <returns>
         /// The list of temporary files generated
         /// </returns>
-        public static List<string> Load(ChromelyConfiguration config)
+        public static List<string> Load(IChromelyConfiguration config)
         {
             try
             {
                 var platform = CefRuntime.Platform;
                 var version = CefRuntime.ChromeVersion;
-                Log.Info($"Running {platform} chromium {version}");
+                Logger.Instance.Log.Info($"Running {platform} chromium {version}");
 
                 try
                 {
@@ -55,7 +55,7 @@ namespace Chromely.CefGlue.BrowserWindow
                 }
                 catch (Exception ex)
                 {
-                    Log.Error(ex);
+                    Logger.Instance.Log.Error(ex);
                     if (config.LoadCefBinariesIfNotFound)
                     {
                         if (config.SilentCefBinariesLoading)
@@ -75,7 +75,7 @@ namespace Chromely.CefGlue.BrowserWindow
             }
             catch (Exception ex)
             {
-                Log.Error(ex);
+                Logger.Instance.Log.Error(ex);
                 Environment.Exit(0);
             }
 
@@ -103,7 +103,7 @@ namespace Chromely.CefGlue.BrowserWindow
                 }
                 catch (Exception ex)
                 {
-                    Log.Error(ex);
+                    Logger.Instance.Log.Error(ex);
                     throw;
                 }
             }
@@ -141,7 +141,7 @@ namespace Chromely.CefGlue.BrowserWindow
             }
             catch (Exception ex)
             {
-                Log.Error(ex);
+                Logger.Instance.Log.Error(ex);
                 var onErrorTempFile = LaunchErrorPage(ex);
                 tempFiles.Add(onErrorTempFile);
                 Environment.Exit(0);
@@ -302,7 +302,7 @@ namespace Chromely.CefGlue.BrowserWindow
             }
             catch (Exception e)
             {
-                Log.Error(e);
+                Logger.Instance.Log.Error(e);
                 Console.WriteLine(message);
             }
 

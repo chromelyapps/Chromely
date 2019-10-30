@@ -8,6 +8,7 @@
 // ----------------------------------------------------------------------------------------------------------------------
 
 using Chromely.CefGlue.Browser.EventParams;
+using Chromely.Core;
 using Chromely.Core.Host;
 using Chromely.Core.Infrastructure;
 using Chromely.Core.RestfulService;
@@ -20,6 +21,9 @@ namespace Chromely.CefGlue.Browser.Handlers
     /// </summary>
     public class CefGlueLifeSpanHandler : CefLifeSpanHandler
     {
+        private readonly IChromelyConfiguration _config;
+        private readonly IChromelyCommandTaskRunner _commandTaskRunner;
+
         /// <summary>
         /// The CefGlueBrowser object.
         /// </summary>
@@ -28,9 +32,11 @@ namespace Chromely.CefGlue.Browser.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="CefGlueLifeSpanHandler"/> class.
         /// </summary>
-        public CefGlueLifeSpanHandler()
+        public CefGlueLifeSpanHandler(IChromelyConfiguration config, IChromelyCommandTaskRunner commandTaskRunner, CefGlueBrowser browser)
         {
-            _browser = CefGlueBrowser.BrowserCore;
+            _config = config;
+            _commandTaskRunner = commandTaskRunner;
+            _browser = browser;
         }
 
         /// <summary>
@@ -111,16 +117,16 @@ namespace Chromely.CefGlue.Browser.Handlers
         /// </returns>
         protected override bool OnBeforePopup(CefBrowser browser, CefFrame frame, string targetUrl, string targetFrameName, CefWindowOpenDisposition targetDisposition, bool userGesture, CefPopupFeatures popupFeatures, CefWindowInfo windowInfo, ref CefClient client, CefBrowserSettings settings, ref bool noJavascriptAccess)
         {
-            var isUrlExternal = UrlSchemeProvider.IsUrlRegisteredExternal(targetUrl);
-            if (isUrlExternal)
+            var isUrlExternal = _config?.UrlSchemes?.IsUrlRegisteredExternalScheme(targetUrl);
+            if (isUrlExternal.HasValue && isUrlExternal.Value)
             {
                 RegisteredExternalUrl.Launch(targetUrl);
             }
 
-            var isUrlCommand = UrlSchemeProvider.IsUrlRegisteredCommand(targetUrl);
-            if (isUrlCommand)
+            var isUrlCommand = _config?.UrlSchemes?.IsUrlRegisteredCommandScheme(targetUrl);
+            if (isUrlCommand.HasValue && isUrlCommand.Value)
             {
-                CommandTaskRunner.RunAsync(targetUrl);
+                _commandTaskRunner.RunAsync(targetUrl);
             }
 
             return true;

@@ -12,7 +12,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using Chromely.CefGlue.RestfulService;
+using Chromely.Core;
 using Chromely.Core.Infrastructure;
 using Chromely.Core.RestfulService;
 using Xilium.CefGlue;
@@ -24,6 +24,9 @@ namespace Chromely.CefGlue.Browser.Handlers
     /// </summary>
     public class CefGlueHttpSchemeHandler : CefResourceHandler
     {
+        private readonly IChromelyConfiguration _config;
+        private readonly IChromelyRequestTaskRunner _requestTaskRunner;
+
         /// <summary>
         /// The ChromelyResponse object.
         /// </summary>
@@ -44,6 +47,12 @@ namespace Chromely.CefGlue.Browser.Handlers
         /// </summary>
         private int _totalBytesRead;
 
+        public CefGlueHttpSchemeHandler(IChromelyConfiguration config, IChromelyRequestTaskRunner requestTaskRunner)
+        {
+            _config = config;
+            _requestTaskRunner = requestTaskRunner;
+        }
+
         /// <summary>
         /// The process request.
         /// </summary>
@@ -58,8 +67,8 @@ namespace Chromely.CefGlue.Browser.Handlers
         /// </returns>
         protected override bool ProcessRequest(CefRequest request, CefCallback callback)
         {
-            bool isCustomScheme = UrlSchemeProvider.IsUrlOfRegisteredCustomScheme(request.Url);
-            if (isCustomScheme)
+            var isCustomScheme = _config?.UrlSchemes?.IsUrlRegisteredCustomScheme(request.Url);
+            if (isCustomScheme.HasValue && isCustomScheme.Value)
             {
                 Task.Run(() =>
                 {
@@ -67,13 +76,31 @@ namespace Chromely.CefGlue.Browser.Handlers
                     {
                         try
                         {
-                            _chromelyResponse = RequestTaskRunner.Run(request);
-                            string jsonData = _chromelyResponse.Data.EnsureResponseIsJsonFormat();
-                            _responseBytes = Encoding.UTF8.GetBytes(jsonData);
+                            var uri = new Uri(request.Url);
+                            var path = uri.LocalPath;
+
+                            var response = new ChromelyResponse();
+                            if (string.IsNullOrEmpty(path))
+                            {
+                                response.ReadyState = (int)ReadyState.ResponseIsReady;
+                                response.Status = (int)System.Net.HttpStatusCode.BadRequest;
+                                response.StatusText = "Bad Request";
+
+                                _chromelyResponse = response;
+                            }
+                            else
+                            {
+                                var parameters = request.Url.GetParameters();
+                                var postData = GetPostData(request);
+
+                                _chromelyResponse = _requestTaskRunner.Run(request.Method, path, parameters, postData);
+                                string jsonData = _chromelyResponse.Data.EnsureResponseIsJsonFormat();
+                                _responseBytes = Encoding.UTF8.GetBytes(jsonData);
+                            }
                         }
                         catch (Exception exception)
                         {
-                            Log.Error(exception);
+                            Logger.Instance.Log.Error(exception);
 
                             _chromelyResponse =
                                 new ChromelyResponse
@@ -92,7 +119,7 @@ namespace Chromely.CefGlue.Browser.Handlers
                 return true;
             }
 
-            Log.Error($"Url {request.Url} is not of a registered custom scheme.");
+            Logger.Instance.Log.Error($"Url {request.Url} is not of a registered custom scheme.");
             callback.Dispose();
             return false;
         }
@@ -135,7 +162,7 @@ namespace Chromely.CefGlue.Browser.Handlers
             }
             catch (Exception exception)
             {
-                Log.Error(exception);
+                Logger.Instance.Log.Error(exception);
             }
         }
 
@@ -192,7 +219,7 @@ namespace Chromely.CefGlue.Browser.Handlers
             }
             catch (Exception exception)
             {
-                Log.Error(exception);
+                Logger.Instance.Log.Error(exception);
             }
 
             bytesRead = currBytesRead;
@@ -232,6 +259,29 @@ namespace Chromely.CefGlue.Browser.Handlers
         /// </summary>
         protected override void Cancel()
         {
+        }
+
+        private static string GetPostData(CefRequest request)
+        {
+            var postDataElements = request?.PostData?.GetElements();
+            if (postDataElements == null || (postDataElements.Length == 0))
+            {
+                return string.Empty;
+            }
+
+            var dataElement = postDataElements[0];
+
+            switch (dataElement.ElementType)
+            {
+                case CefPostDataElementType.Empty:
+                    break;
+                case CefPostDataElementType.File:
+                    break;
+                case CefPostDataElementType.Bytes:
+                    return Encoding.UTF8.GetString(dataElement.GetBytes());
+            }
+
+            return string.Empty;
         }
     }
 }

@@ -1,0 +1,72 @@
+{
+  "startUrl": {
+    "url": "local://app/chromely.html",
+    "loadType": "localResource"
+  },
+  "loadCefBinariesIfNotFound": true,
+  "silentCefBinariesLoading": true,
+  "windowLeft": 0,
+  "windowTop": 0,
+  "windowWidth": 1200,
+  "windowHeight": 900,
+  "windowNoResize": false,
+  "windowNoMinMaxBoxes": false,
+  "windowFrameless": false,
+  "windowCenterScreen": true,
+  "windowKioskMode": false,
+  "windowState": "normal",
+  "windowTitle": "chromely",
+  "windowIconFile": "chromely.ico",
+  "debuggingMode": true,
+  "windowCustomCreation": {
+    "style": 0,
+    "useCustomtyle": true
+  },
+  "urlSchemes": [
+    {
+      "name": "default-resource",
+      "baseUrl": "",
+      "scheme": "local",
+      "host": "",
+      "urlSchemeType": "resource",
+      "baseUrlStrict": false
+    },
+    {
+      "name": "default-custom-http",
+      "baseUrl": "",
+      "scheme": "http",
+      "host": "chromely.com",
+      "urlSchemeType": "custom",
+      "baseUrlStrict": false
+    },
+    {
+      "name": "chromely-site",
+      "baseUrl": "https://github.com/chromelyapps/Chromely",
+      "scheme": "",
+      "host": "",
+      "urlSchemeType": "external",
+      "baseUrlStrict": true
+    }
+  ],
+  "controllerAssemblies": [
+    "Chromely.Service.Demo.dll"
+  ],
+  "customSettings": [
+    {
+      "name": "cefLogFile",
+      "value": "logs\\chromely.cef.log"
+    },
+    {
+      "name": "logSeverity",
+      "value": "info"
+    },
+    {
+      "name": "locale",
+      "value": "en-US"
+    }
+  ],
+  "commandLineArgs": [
+  ],
+  "commandLineOptions": [
+  ]
+}

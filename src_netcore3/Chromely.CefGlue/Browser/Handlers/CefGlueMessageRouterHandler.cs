@@ -8,7 +8,6 @@
 // ----------------------------------------------------------------------------------------------------------------------
 
 using System.Threading.Tasks;
-using Chromely.CefGlue.RestfulService;
 using Chromely.Core.RestfulService;
 using LitJson;
 using Xilium.CefGlue;
@@ -21,30 +20,14 @@ namespace Chromely.CefGlue.Browser.Handlers
     /// </summary>
     public class CefGlueMessageRouterHandler : CefMessageRouterBrowserSide.Handler
     {
-        /// <summary>
-        /// The on query.
-        /// </summary>
-        /// <param name="browser">
-        /// The browser.
-        /// </param>
-        /// <param name="frame">
-        /// The frame.
-        /// </param>
-        /// <param name="queryId">
-        /// The query id.
-        /// </param>
-        /// <param name="request">
-        /// The request.
-        /// </param>
-        /// <param name="persistent">
-        /// The persistent.
-        /// </param>
-        /// <param name="callback">
-        /// The callback.
-        /// </param>
-        /// <returns>
-        /// The <see cref="bool"/>.
-        /// </returns>
+        private readonly IChromelyRequestTaskRunner _requestTaskRunner;
+
+
+        public CefGlueMessageRouterHandler(IChromelyRequestTaskRunner requestTaskRunner)
+        {
+            _requestTaskRunner = requestTaskRunner;
+        }
+
         public override bool OnQuery(CefBrowser browser, CefFrame frame, long queryId, string request, bool persistent, CefMessageRouterBrowserSide.Callback callback)
         {
             var requestData = JsonMapper.ToObject(request);
@@ -61,7 +44,7 @@ namespace Chromely.CefGlue.Browser.Handlers
                     var postData = requestData.Keys.Contains("postData") ? requestData["postData"] : null;
 
                     var routePath = new RoutePath(method, path);
-                    var response = RequestTaskRunner.Run(id, routePath, parameters, postData, request);
+                    var response = _requestTaskRunner.Run(id, routePath, parameters, postData, request);
                     var jsonResponse = response.EnsureJson();
 
                     callback.Success(jsonResponse);

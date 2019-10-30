@@ -8,7 +8,6 @@
 // ----------------------------------------------------------------------------------------------------------------------
 
 using System.IO;
-using System.Linq;
 using Chromely.CefGlue.Browser.Handlers;
 using Chromely.Core;
 using Chromely.Core.Infrastructure;
@@ -16,35 +15,19 @@ using Xilium.CefGlue;
 
 namespace Chromely.CefGlue.Browser
 {
-    /// <summary>
-    /// The CefGlue app.
-    /// </summary>
     public class CefGlueApp : CefApp
     {
-        /// <summary>
-        /// The render process handler.
-        /// </summary>
-        private readonly CefRenderProcessHandler _renderProcessHandler = new CefGlueRenderProcessHandler();
+        private readonly CefRenderProcessHandler _renderProcessHandler;
 
-        /// <summary>
-        /// The browser process handler.
-        /// </summary>
-        private readonly CefBrowserProcessHandler _browserProcessHandler = new CefGlueBrowserProcessHandler();
+        private readonly CefBrowserProcessHandler _browserProcessHandler;
         
-        /// <summary>
-        /// The host config.
-        /// </summary>
-        private readonly ChromelyConfiguration _hostConfig;
+        private readonly IChromelyConfiguration _config;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CefGlueApp"/> class.
-        /// </summary>
-        /// <param name="hostConfig">
-        /// The host config.
-        /// </param>
-        public CefGlueApp(ChromelyConfiguration hostConfig)
+        public CefGlueApp(IChromelyConfiguration config)
         {
-            _hostConfig = hostConfig;
+            _config = config;
+             _renderProcessHandler = new CefGlueRenderProcessHandler(_config);
+            _browserProcessHandler = new CefGlueBrowserProcessHandler(_config);
         }
 
         /// <summary>
@@ -55,20 +38,28 @@ namespace Chromely.CefGlue.Browser
         /// </param>
         protected override void OnRegisterCustomSchemes(CefSchemeRegistrar registrar)
         {
-            var schemeHandlerObjs = IoC.GetAllInstances(typeof(ChromelySchemeHandler));
-            if (schemeHandlerObjs != null)
+            var resourceSchemes = _config?.UrlSchemes?.GetAllResouceSchemes();
+            if (resourceSchemes != null)
             {
-                var schemeHandlers = schemeHandlerObjs.ToList();
-
-                foreach (var item in schemeHandlers)
+                foreach (var item in resourceSchemes)
                 {
-                    if (item is ChromelySchemeHandler handler)
+                    bool isStandardScheme = UrlScheme.IsStandardScheme(item.Scheme);
+                    if (!isStandardScheme)
                     {
-                        bool isStandardScheme = UrlScheme.IsStandardScheme(handler.SchemeName);
-                        if (!isStandardScheme)
-                        { 
-                            registrar.AddCustomScheme(handler.SchemeName, true, false, false, false, true, false);
-                        }
+                        registrar.AddCustomScheme(item.Scheme, true, false, false, false, true, false);
+                    }
+                }
+            }
+
+            var customSchemes = _config?.UrlSchemes?.GetAllCustomSchemes();
+            if (customSchemes != null)
+            {
+                foreach (var item in customSchemes)
+                {
+                    bool isStandardScheme = UrlScheme.IsStandardScheme(item.Scheme);
+                    if (!isStandardScheme)
+                    {
+                        registrar.AddCustomScheme(item.Scheme, true, false, false, false, true, false);
                     }
                 }
             }
@@ -86,18 +77,19 @@ namespace Chromely.CefGlue.Browser
         protected override void OnBeforeCommandLineProcessing(string processType, CefCommandLine commandLine)
         {
             // Get all custom command line argument switches
-            if (_hostConfig?.CommandLineArgs != null)
+            if (_config?.CommandLineArgs != null)
             {
-                foreach (var commandArg in _hostConfig.CommandLineArgs)
+                foreach (var commandArg in _config.CommandLineArgs)
                 {
-                    if (commandArg.Item3)
-                    {
-                        commandLine.AppendSwitch(commandArg.Item1 ?? string.Empty, commandArg.Item2);
-                    }
-                    else
-                    {
-                        commandLine.AppendSwitch(commandArg.Item2 ?? string.Empty);
-                    }
+                    commandLine.AppendSwitch(commandArg.Item1 ?? string.Empty, commandArg.Item2);
+                }
+            }
+
+            if (_config?.CommandLineOptions != null)
+            {
+                foreach (var commmandOption in _config?.CommandLineOptions)
+                {
+                    commandLine.AppendSwitch(commmandOption ?? string.Empty);
                 }
             }
 
@@ -117,8 +109,8 @@ namespace Chromely.CefGlue.Browser
                                 commandLine.AppendSwitch("disable-gpu", "1");
                 commandLine.AppendSwitch("disable-software-rasterizer", "1");
 
-                commandLine.AppendSwitch("resources-dir-path", _hostConfig.AppExeLocation);
-                commandLine.AppendSwitch("locales-dir-path", Path.Combine(_hostConfig.AppExeLocation, "locales"));
+                commandLine.AppendSwitch("resources-dir-path", _config.AppExeLocation);
+                commandLine.AppendSwitch("locales-dir-path", Path.Combine(_config.AppExeLocation, "locales"));
             }
         }
 

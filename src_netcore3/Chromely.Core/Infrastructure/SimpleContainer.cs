@@ -103,6 +103,29 @@ namespace Caliburn.Light
         }
 
         /// <summary>
+        /// Get all keys by service.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <returns>The list of keys.</returns>
+        public string[] GetKeys(Type service)
+        {
+            if (service == null)
+            {
+                return new string[] {};
+            }
+
+            lock (_entries)
+            {
+                var keys = _entries
+                    .Where(x => x.Service == service)
+                    .Select(e => e.Key)
+                    .ToArray();
+
+                return keys;
+            }
+        }
+
+        /// <summary>
         /// Registers the class so that it is created once, on first request, and the same instance is returned to all requestors thereafter.
         /// </summary>
         /// <param name="service">The service.</param>
@@ -437,7 +460,7 @@ namespace Caliburn.Light
             }
 
             var args = constructor.GetParameters()
-                .Select(info => GetInstance(info.ParameterType))
+                .Select(info => GetAllInstances(info.ParameterType).FirstOrDefault())
                 .ToArray();
 
             return ActivateInstance(type, args);

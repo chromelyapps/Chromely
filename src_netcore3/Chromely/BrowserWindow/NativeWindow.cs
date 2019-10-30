@@ -4,15 +4,20 @@ using Chromely.Core;
 
 namespace Chromely.BrowserWindow
 {
-    public class NativeWindow
+    public abstract class NativeWindow
     {
-        private readonly ChromelyConfiguration _config;
+        private readonly IChromelyConfiguration _config;
         private readonly INativeHost _nativeHost;
 
-        public NativeWindow(ChromelyConfiguration config)
+        public NativeWindow(IChromelyConfiguration config, INativeHost nativeHost)
         {
-            _nativeHost = NativeHostFactory.GetNativeHost(config);
             _config = config;
+            _nativeHost = nativeHost;
+            if (_nativeHost == null)
+            {
+                _nativeHost = NativeHostFactory.GetNativeHost(_config);
+            }
+
             Handle = IntPtr.Zero;
 
             _nativeHost.Created += OnCreated;
@@ -69,7 +74,7 @@ namespace Chromely.BrowserWindow
         #endregion
 
         #region Message Box
-        public static void MessageBox(ChromelyConfiguration config, string message, MessageType messageType = MessageType.Error)
+        public static void MessageBox(IChromelyConfiguration config, string message, MessageType messageType = MessageType.Error)
         {
             var nativeGui = NativeHostFactory.GetNativeHost(config);
             nativeGui.MessageBox(message, messageType);
