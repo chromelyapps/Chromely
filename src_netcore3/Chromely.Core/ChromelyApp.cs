@@ -32,6 +32,16 @@ namespace Chromely.Core
             }
         }
 
+        public virtual IChromelyWindow Window
+        {
+            get
+            {
+                EnsureContainerValid(Container);
+                var window = Container.GetInstance(typeof(IChromelyWindow), typeof(IChromelyWindow).Name) as IChromelyWindow;
+                return window;
+            }
+        }
+
         public virtual void Initialize(IChromelyContainer container, IChromelyConfiguration config, IChromelyLogger chromelyLogger)
         {
             EnsureExpectedWorkingDirectory();

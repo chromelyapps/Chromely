@@ -94,7 +94,7 @@ namespace Chromely.CefGlue.Browser.Handlers
                                 var postData = GetPostData(request);
 
                                 _chromelyResponse = _requestTaskRunner.Run(request.Method, path, parameters, postData);
-                                string jsonData = _chromelyResponse.Data.EnsureResponseIsJsonFormat();
+                                string jsonData = _chromelyResponse.Data.EnsureResponseDataIsJsonFormat();
                                 _responseBytes = Encoding.UTF8.GetBytes(jsonData);
                             }
                         }

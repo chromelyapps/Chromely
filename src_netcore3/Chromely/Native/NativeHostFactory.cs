@@ -16,7 +16,7 @@ namespace Chromely.Native
 
                 case ChromelyPlatform.Windows:
                     throw new System.Exception("Windows host not migrated yet!");
-                    //return new WinAPIHost();
+                //return new WinAPIHost();
 
                 default:
                     return new WinAPIHost();

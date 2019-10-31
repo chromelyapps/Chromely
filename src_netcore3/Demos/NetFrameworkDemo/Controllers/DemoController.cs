@@ -10,6 +10,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
 using Chromely.Core.RestfulService;
 
 namespace CrossPlatDemo.Controllers
@@ -84,10 +85,13 @@ namespace CrossPlatDemo.Controllers
             }
 
             var response = new ChromelyResponse(request.Id);
-            var postDataJson = request.PostData.EnsureJson();
-            var movies = LitJson.JsonMapper.ToObject<List<MovieInfo>>(postDataJson);
+            var postDataJson = request.PostData.ToJson();
 
-            var rowsReceived = movies.ArrayCount();
+            var options = new JsonSerializerOptions();
+            options.ReadCommentHandling = JsonCommentHandling.Skip;
+            options.AllowTrailingCommas = true;
+            var movies = JsonSerializer.Deserialize<List<MovieInfo>>(postDataJson, options);
+            var rowsReceived = movies != null ? movies.Count : 0;
 
             response.Data = $"{DateTime.Now}: {rowsReceived} rows of data successfully saved.";
 

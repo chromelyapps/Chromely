@@ -8,11 +8,10 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
-using Chromely.CefGlue;
+using System.Text.Json;
 using Chromely.Core;
 using Chromely.Core.Infrastructure;
 using Chromely.Core.RestfulService;
-using LitJson;
 
 namespace CrossPlatDemo.Controllers
 {
@@ -95,9 +94,13 @@ namespace CrossPlatDemo.Controllers
                 Script = string.Empty;
                 if (postData != null)
                 {
-                    var jsonData = JsonMapper.ToObject(postData.ToString());
-                    FrameName = jsonData.Keys.Contains("framename") ? jsonData["framename"].ToString() : string.Empty;
-                    Script = jsonData.Keys.Contains("script") ? jsonData["script"].ToString() : string.Empty;
+                    var options = new JsonSerializerOptions();
+                    options.ReadCommentHandling = JsonCommentHandling.Skip;
+                    options.AllowTrailingCommas = true;
+                    var requestData = JsonSerializer.Deserialize<scriptInfo>(postData.ToString(), options);
+
+                    FrameName = requestData.framename ?? string.Empty;
+                    Script = requestData.script ?? string.Empty;
                 }
             }
 
@@ -110,6 +113,12 @@ namespace CrossPlatDemo.Controllers
             /// Gets the script.
             /// </summary>
             public string Script { get; }
+        }
+
+        private class scriptInfo
+        {
+            public string framename { get; set; }
+            public string script { get; set; }
         }
     }
 }

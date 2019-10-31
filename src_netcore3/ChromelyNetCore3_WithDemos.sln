@@ -19,7 +19,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demos", "Demos", "{9CDF451F
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrossPlatDemo", "Demos\CrossPlatDemo\CrossPlatDemo.csproj", "{3CACF616-3118-4418-84BA-74268C7737BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetFrameworkDemo", "Demos\NetFrameworkDemo\NetFrameworkDemo.csproj", "{670644A5-505C-4F94-9DB7-099D03C31F8A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetFrameworkDemo", "Demos\NetFrameworkDemo\NetFrameworkDemo.csproj", "{670644A5-505C-4F94-9DB7-099D03C31F8A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chromely.External.Controllers", "Demos\Chromely.External.Controllers\Chromely.External.Controllers.csproj", "{6F643EB2-7481-452D-B8A4-9922763EA62F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -52,6 +54,10 @@ Global
 		{670644A5-505C-4F94-9DB7-099D03C31F8A}.Debug|Any CPU.ActiveCfg = Debug|x64
 		{670644A5-505C-4F94-9DB7-099D03C31F8A}.Debug|Any CPU.Build.0 = Debug|x64
 		{670644A5-505C-4F94-9DB7-099D03C31F8A}.Release|Any CPU.ActiveCfg = Release|x64
+		{6F643EB2-7481-452D-B8A4-9922763EA62F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F643EB2-7481-452D-B8A4-9922763EA62F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F643EB2-7481-452D-B8A4-9922763EA62F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F643EB2-7481-452D-B8A4-9922763EA62F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -61,6 +67,7 @@ Global
 		{A248DCDC-2F83-4E08-8924-5386E6090865} = {14116D18-B73C-47DE-A8AD-9E315D304EE2}
 		{3CACF616-3118-4418-84BA-74268C7737BD} = {9CDF451F-236A-4F26-A312-9487E97B78ED}
 		{670644A5-505C-4F94-9DB7-099D03C31F8A} = {9CDF451F-236A-4F26-A312-9487E97B78ED}
+		{6F643EB2-7481-452D-B8A4-9922763EA62F} = {9CDF451F-236A-4F26-A312-9487E97B78ED}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E3F0A011-30A1-427B-84A3-3F407C61FC46}

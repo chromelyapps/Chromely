@@ -1,24 +1,15 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DemoController.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2019 Chromely Projects
-// </copyright>
-// <license>
-//      See the LICENSE.md file in the project root for more information.
-// </license>
-// --------------------------------------------------------------------------------------------------------------------
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using Chromely.Core.RestfulService;
 
-namespace CrossPlatDemo.Controllers
+namespace Chromely.External.Controllers
 {
     /// <summary>
     /// The demo controller.
     /// </summary>
-    [ControllerProperty(Name = "DemoController", Route = "democontroller")]
+    [ControllerProperty(Name = "DemoController", Route = "externalcontroller")]
     public class DemoController : ChromelyController
     {
         /// <summary>
@@ -26,8 +17,8 @@ namespace CrossPlatDemo.Controllers
         /// </summary>
         public DemoController()
         {
-            RegisterGetRequest("/democontroller/movies", GetMovies);
-            RegisterPostRequest("/democontroller/movies", SaveMovies);
+            RegisterGetRequest("/externalcontroller/movies", GetMovies);
+            RegisterPostRequest("/externalcontroller/movies", SaveMovies);
         }
 
         /// <summary>

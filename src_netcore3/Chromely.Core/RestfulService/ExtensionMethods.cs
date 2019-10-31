@@ -13,105 +13,116 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
+using System.Text.Json;
 using System.Web;
-
-using LitJson;
+using Chromely.Core.Infrastructure;
 
 namespace Chromely.Core.RestfulService
 {
-    /// <summary>
-    /// The extension methods.
-    /// </summary>
+    class ReturnedData
+    {
+        public object Data { get; set; }
+    }
+
     public static class ExtensionMethods
     {
-        /// <summary>
-        /// Ensure object is returned in json format.
-        /// </summary>
-        /// <param name="obj">
-        /// The object.
-        /// </param>
-        /// <returns>
-        /// The <see cref="string"/>.
-        /// </returns>
-        public static string EnsureJson(this object obj)
+        public static string ToJson(this object value)
         {
             try
             {
-               return JsonMapper.ToJson(obj);
+                if (IsOfType<string>(value) && IsValidJson(value.ToString()))
+                {
+                    return value.ToString();
+                }
+
+                var options = new JsonSerializerOptions();
+                options.ReadCommentHandling = JsonCommentHandling.Skip;
+                options.AllowTrailingCommas = true;
+
+                return JsonSerializer.Serialize(value);
             }
             catch (Exception)
             {
                 // Swallow
             }
 
-            return obj.ToString();
+            return value.ToString();
         }
 
-        /// <summary>
-        /// Ensure response is json format.
-        /// </summary>
-        /// <param name="obj">
-        /// The object.
-        /// </param>
-        /// <returns>
-        /// The <see cref="string"/>.
-        /// </returns>
-        public static string EnsureResponseIsJsonFormat(this object obj)
+        public static string EnsureResponseDataIsJsonFormat(this object value)
         {
-            JsonData newJsonData;
-
             try
             {
-                var jsonData = JsonMapper.ToObject(obj.EnsureJson());
-                if (jsonData.IsArray)
+                if (value == null)
                 {
-                    return jsonData.ToJson();
+                    var returnNullData = new ReturnedData() { Data = value };
+                    return JsonSerializer.Serialize(returnNullData, JsonSerializingOption);
                 }
 
-                ICollection<string> keys = null;
-                try
+                if (!IsOfType<string>(value))
                 {
-                    keys = jsonData.Keys;
-                }
-                catch (Exception)
-                {
-                    // ignored
+                    return JsonSerializer.Serialize(value, JsonSerializingOption);
                 }
 
-                if ((keys == null) || (keys.Count == 0))
+                if (IsValidJson(value.ToString()))
                 {
-                    newJsonData = new JsonData { ["Data"] = jsonData.ToJson() };
-                    return newJsonData.ToJson();
+                    return JsonSerializer.Serialize(value, JsonSerializingOption);
                 }
 
-                return jsonData.ToJson();
+                var returnData = new ReturnedData() { Data = value };
+                return JsonSerializer.Serialize(returnData, JsonSerializingOption);
             }
             catch (Exception)
             {
                 // Swallow
             }
 
-            newJsonData = new JsonData { ["Data"] = obj.ToString() };
-            return newJsonData.ToJson();
+            return value.ToString();
         }
 
-        /// <summary>
-        /// Gets the object array count.
-        /// </summary>
-        /// <param name="obj">
-        /// The object.
-        /// </param>
-        /// <returns>
-        /// The <see cref="int"/>.
-        /// </returns>
-        public static int ArrayCount(this object obj)
+        public static IDictionary<string, object> JsonToArray(this string json)
         {
             try
             {
-                var jsonData = JsonMapper.ToObject(obj.EnsureJson());
-                if (jsonData.IsArray)
+                if (string.IsNullOrWhiteSpace(json))
+                    return null;
+
+                return JsonSerializer.Deserialize<IDictionary<string, object>>(json, JsonSerializingOption);
+            }
+            catch (Exception exception)
+            {
+                Logger.Instance.Log.Error(exception);
+            }
+
+            return null;
+        }
+
+        public static IDictionary<string, object> ToObjectDictionary(this object value)
+        {
+            try
+            {
+                if (value == null) return null;
+
+                if (IsOfType<string>(value) && IsValidJson(value.ToString()))
                 {
-                    return jsonData.Count;
+                    return JsonSerializer.Deserialize<IDictionary<string, object>>(value.ToString(), JsonSerializingOption);
+                }
+
+                var dict1 = value as IDictionary<string, string>;
+                if (dict1 != null)
+                {
+                    var dict1Res = new Dictionary<string, object>();
+                    foreach (var item in dict1)
+                    {
+                        dict1Res.Add(item.Key, item.Value);
+                    }
+                    return dict1Res;
+                }
+
+                var dict2 = value as IDictionary<string, object>;
+                if (dict2 != null)
+                {
+                    return dict2;
                 }
             }
             catch (Exception)
@@ -119,82 +130,12 @@ namespace Chromely.Core.RestfulService
                 // ignored
             }
 
-            return 0;
+            return null;
         }
 
-        /// <summary>
-        /// The to object dictionary.
-        /// </summary>
-        /// <param name="obj">
-        /// The obj.
-        /// </param>
-        /// <returns>
-        /// The <see cref="IDictionary"/>.
-        /// </returns>
-        public static IDictionary<string, object> ToObjectDictionary(this object obj)
+        private static T2 IDictionary<T1, T2>()
         {
-            try
-            {
-                if (obj is IDictionary<string, object> objects)
-                {
-                    return objects;
-                }
-
-                if (obj is IDictionary<string, string> dict)
-                {
-                    return dict.ToDictionary<KeyValuePair<string, string>, string, object>(item => item.Key, item => item.Value);
-                }
-
-                if (obj is JsonData jsonDataObj)
-                {
-                    if (jsonDataObj.IsObject)
-                    {
-                        var objDic = new Dictionary<string, object>();
-                        foreach (var key in jsonDataObj.Keys)
-                        {
-                            objDic[key] = jsonDataObj[key];
-                        }
-
-                        return objDic;
-                    }
-                }
-
-                // If json
-                if (obj is string)
-                {
-                    try
-                    {
-                        var jsonData = JsonMapper.ToObject(obj.ToString());
-                        if (!jsonData.IsArray && jsonData.IsObject)
-                        {
-                            var count = jsonData.Count;
-                            string[] arrayKeys = new string[count];
-
-                            // Copy the list to the array.
-                            var responseDic = new Dictionary<string, object>();
-                            jsonData.Keys.CopyTo(arrayKeys, 0);
-                            for (int i = 0; i < count; i++)
-                            {
-                               responseDic.Add(arrayKeys[i], jsonData[arrayKeys[i]]);
-                            }
-
-                            return responseDic;
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        // ignored
-                    }
-                }
-
-                return obj.ObjectToDictionary();
-            }
-            catch (Exception)
-            {
-                // ignored
-            }
-
-            return new Dictionary<string, object>();
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -367,5 +308,29 @@ namespace Chromely.Core.RestfulService
         {
             return value is T;
         }
+
+        public static bool IsValidJson(this string strInput)
+        {
+            strInput = strInput.Trim();
+            if ((strInput.StartsWith("{") && strInput.EndsWith("}")) || //For object
+                (strInput.StartsWith("[") && strInput.EndsWith("]"))) //For array
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+       private static JsonSerializerOptions JsonSerializingOption
+       {
+            get
+            {
+                var options = new JsonSerializerOptions();
+                options.ReadCommentHandling = JsonCommentHandling.Skip;
+                options.AllowTrailingCommas = true;
+
+                return options;
+            }
+       }
     }
 }

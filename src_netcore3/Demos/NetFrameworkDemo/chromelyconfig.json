@@ -49,7 +49,7 @@
     }
   ],
   "controllerAssemblies": [
-    "Chromely.Service.Demo.dll"
+    "Chromely.External.Controllers.dll"
   ],
   "customSettings": [
     {
