@@ -1,21 +1,12 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ChromelyControllerFactory.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2019 Chromely Projects
-// </copyright>
-// <license>
-//      See the LICENSE.md file in the project root for more information.
-// </license>
-// --------------------------------------------------------------------------------------------------------------------
-
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
 using Chromely.Core.Infrastructure;
 
 namespace Chromely.Core.RestfulService
 {
-    /// <summary>
-    /// Factory class to create chromely controllers from given type.
-    /// </summary>
     public class ChromelyControllerFactory
     {
         private readonly IChromelyContainer _container;
@@ -35,6 +26,62 @@ namespace Chromely.Core.RestfulService
         {
             var instance = CreateType(type);
             return instance as ChromelyController;
+        }
+
+        public IDictionary<string, ActionRoute> GetHttpAttributeRoutes(ChromelyController controller)
+        {
+            if (controller == null)
+            {
+                return null;
+            }
+
+            var result = new Dictionary<string, ActionRoute>();
+
+            var methodInfos = controller.GetType().GetMethods()
+             .Where(m => m.GetCustomAttributes(typeof(HttpAttribute), false).Length > 0)
+             .ToArray();
+
+            foreach (var item in methodInfos)
+            {
+                var httpAttributeDelegate = CreateDelegate(controller, item) as Func<ChromelyRequest, ChromelyResponse>;
+                var attribute = item.GetCustomAttribute<HttpAttribute>();
+
+                if (httpAttributeDelegate != null && attribute != null)
+                {
+                    var routhPath = new RoutePath(attribute.Method, attribute.Route);
+                    result[routhPath.Key] = new ActionRoute(attribute.Method, attribute.Route, httpAttributeDelegate);
+                }
+            }
+
+            return result;
+        }
+
+        public IDictionary<string, CommandRoute>  GetCommandAttributeRoutes(ChromelyController controller)
+        {
+            if (controller == null)
+            {
+                return null;
+            }
+
+            var result = new Dictionary<string, CommandRoute>();
+
+            var methodInfos = controller.GetType().GetMethods()
+             .Where(m => m.GetCustomAttributes(typeof(CommandAttribute), false).Length > 0)
+             .ToArray();
+
+            foreach (var item in methodInfos)
+            {
+                var customAttributeDelegate = CreateDelegate(controller, item) as Action<IDictionary<string, string>>;
+                var attribute = item.GetCustomAttribute<CommandAttribute>();
+
+                if (customAttributeDelegate != null && attribute != null)
+                {
+                    var commandRoute = new CommandRoute(attribute.Route, customAttributeDelegate);
+                    result[commandRoute.Key] = commandRoute;
+                }
+            }
+
+            return result;
         }
 
         private object CreateType(Type type)
@@ -75,7 +122,14 @@ namespace Chromely.Core.RestfulService
             return instance;
         }
 
+        private Delegate CreateDelegate(object instance, MethodInfo method)
+        {
+            var parameters = method.GetParameters()
+                       .Select(p => Expression.Parameter(p.ParameterType, p.Name))
+                        .ToArray();
+
+            var call = Expression.Call(Expression.Constant(instance), method, parameters);
+            return Expression.Lambda(call, parameters).Compile();
+        }
     }
-    
-    
 }

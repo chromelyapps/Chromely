@@ -21,6 +21,36 @@ namespace Chromely.External.Controllers
             RegisterPostRequest("/externalcontroller/movies", SaveMovies);
         }
 
+        #region HttpAttributes
+
+        [HttpGet(Route = "/externalcontroller/testhttp/one")]
+        public ChromelyResponse HttpTestOne(ChromelyRequest request)
+        {
+            return new ChromelyResponse();
+        }
+
+        [HttpPost(Route = "/externalcontroller/testhttp/two")]
+        public ChromelyResponse HttpTestTwo(ChromelyRequest request)
+        {
+            return new ChromelyResponse();
+        }
+
+        #endregion
+
+        #region CustomAttributes
+
+        [Command(Route = "/externalcontroller/testcommand/one")]
+        public void CommandTestOne(IDictionary<string, string> queryParameters)
+        {
+        }
+
+        [Command(Route = "/externalcontroller/testcommand/two")]
+        public void CommandTestTwo(IDictionary<string, string> queryParameters)
+        {
+        }
+
+        #endregion
+
         /// <summary>
         /// The get movies.
         /// </summary>

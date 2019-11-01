@@ -113,8 +113,6 @@ namespace Chromely.Core
                 {
                     try
                     {
-                        window.ScanAssemblies();
-                        window.RegisterRoutes();
                         window.Run(args);
                     }
                     catch (Exception exception)

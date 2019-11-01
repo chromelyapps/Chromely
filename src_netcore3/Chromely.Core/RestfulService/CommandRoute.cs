@@ -26,7 +26,7 @@ namespace Chromely.Core.RestfulService
             {
                 return string.Empty;
             }
-            return $"{path}".Replace("/", "_").ToLower();
+            return $"command_{path}".Replace("/", "_").ToLower();
         }
     }
 }

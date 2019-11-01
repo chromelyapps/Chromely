@@ -1,20 +1,7 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="HostBase.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2019 Chromely Projects
-// </copyright>
-// <license>
-//      See the LICENSE.md file in the project root for more information.
-// </license>
-// ----------------------------------------------------------------------------------------------------------------------
-
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
-using System.Linq;
-using System.Reflection;
 using Chromely.CefGlue.Browser;
 using Chromely.CefGlue.Browser.EventParams;
-using Chromely.CefGlue.Browser.Handlers;
 using Chromely.Core;
 using Chromely.Core.Host;
 using Chromely.Core.Infrastructure;
@@ -24,9 +11,6 @@ using Xilium.CefGlue.Wrapper;
 
 namespace Chromely.CefGlue.BrowserWindow
 {
-    /// <summary>
-    /// The host base.
-    /// </summary>
     public abstract partial class HostBase : IChromelyWindow
     {
         protected readonly IChromelyContainer _container;
@@ -56,9 +40,6 @@ namespace Chromely.CefGlue.BrowserWindow
 
         #endregion Destructor
 
-        /// <summary>
-        /// Gets the browser message router.
-        /// </summary>
         public CefMessageRouterBrowserSide BrowserMessageRouter { get; private set; }
 
         #region IChromelyWindow implementations
@@ -191,29 +172,11 @@ namespace Chromely.CefGlue.BrowserWindow
 
         #endregion Abstract Methods
 
-        /// <summary>
-        /// The post task.
-        /// </summary>
-        /// <param name="threadId">
-        /// The thread id.
-        /// </param>
-        /// <param name="action">
-        /// The action.
-        /// </param>
         private static void PostTask(CefThreadId threadId, Action action)
         {
             CefRuntime.PostTask(threadId, new ActionTask(action));
         }
 
-        /// <summary>
-        /// The run internal.
-        /// </summary>
-        /// <param name="args">
-        /// The args.
-        /// </param>
-        /// <returns>
-        /// The <see cref="int"/>.
-        /// </returns>
         private int RunInternal(string[] args)
         {
             Initialize();
@@ -271,6 +234,8 @@ namespace Chromely.CefGlue.BrowserWindow
 
             CefRuntime.Initialize(mainArgs, settings, app, IntPtr.Zero);
 
+            ScanAssemblies();
+            RegisterRoutes();
             RegisterResourceHandlers();
             RegisterSchemeHandlers();
             RegisterMessageRouters();
@@ -309,102 +274,6 @@ namespace Chromely.CefGlue.BrowserWindow
             }
 
             _mainWindow = CreateMainView();
-        }
-
-        
-
-        /// <summary>
-        /// The register resource handlers.
-        /// </summary>
-        private void RegisterResourceHandlers()
-        {
-            // Register resource handlers
-            var resourceSchemes = _config?.UrlSchemes.GetAllResouceSchemes();
-            if (resourceSchemes != null && resourceSchemes.Any())
-            {
-                foreach (var item in resourceSchemes)
-                {
-                    bool isDefault = true;
-                    if (!string.IsNullOrWhiteSpace(item.Name))
-                    {
-                        var resourceObj = _container.GetInstance(typeof(IChromelyResourceHandlerFactory), item.Name);
-                        var resourceHandlerFactory = resourceObj as CefSchemeHandlerFactory;
-                        if (resourceHandlerFactory != null)
-                        {
-                            isDefault = false;
-                            CefRuntime.RegisterSchemeHandlerFactory(item.Scheme, item.Host, resourceHandlerFactory);
-                        }
-                    }
-
-                    if (isDefault)
-                    {
-                        CefRuntime.RegisterSchemeHandlerFactory(item.Scheme, item.Host, new CefGlueResourceSchemeHandlerFactory());
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// The register scheme handlers.
-        /// </summary>
-        private void RegisterSchemeHandlers()
-        {
-            // Register scheme handlers
-            var schemeSchemes = _config?.UrlSchemes.GetAllCustomSchemes();
-            if (schemeSchemes != null && schemeSchemes.Any())
-            {
-                foreach (var item in schemeSchemes)
-                {
-                    bool isDefault = true;
-                    if (!string.IsNullOrWhiteSpace(item.Name))
-                    {
-                        var schemeObj = _container.GetInstance(typeof(IChromelySchemeHandlerFactory), item.Name);
-                        var schemeHandlerFactory = schemeObj as CefSchemeHandlerFactory;
-                        if (schemeHandlerFactory != null)
-                        {
-                            isDefault = false;
-                            CefRuntime.RegisterSchemeHandlerFactory(item.Scheme, item.Host, schemeHandlerFactory);
-                        }
-                    }
-
-                    if (isDefault)
-                    {
-                        CefRuntime.RegisterSchemeHandlerFactory(item.Scheme, item.Host, new CefGlueHttpSchemeHandlerFactory(_config, _requestTaskRunner));
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// The register message routers.
-        /// </summary>
-        private void RegisterMessageRouters()
-        {
-            if (!CefRuntime.CurrentlyOn(CefThreadId.UI))
-            {
-                PostTask(CefThreadId.UI, RegisterMessageRouters);
-                return;
-            }
-
-            BrowserMessageRouter = new CefMessageRouterBrowserSide(new CefMessageRouterConfig());
-
-            // Register message router handlers
-            var messageRouterHandlers = _container.GetAllInstances(typeof(IChromelyMessageRouter));
-            if (messageRouterHandlers == null && messageRouterHandlers.Any())
-            {
-                foreach (var handler in messageRouterHandlers)
-                {
-                    var router = handler as CefMessageRouterBrowserSide.Handler;
-                    if (router != null)
-                    {
-                        BrowserMessageRouter.AddHandler(router);
-                    }
-                }
-            }
-            else
-            {
-                BrowserMessageRouter.AddHandler(new CefGlueMessageRouterHandler(_requestTaskRunner));
-            }
         }
 
         /// <summary>

@@ -15,49 +15,14 @@ namespace Chromely.Core.RestfulService
     /// </summary>
     public enum Method
     {
-        /// <summary>
-        /// The none.
-        /// </summary>
         None,
-
-        /// <summary>
-        /// The get.
-        /// </summary>
         GET,
-
-        /// <summary>
-        /// The post.
-        /// </summary>
         POST,
-
-        /// <summary>
-        /// The put.
-        /// </summary>
         PUT,
-
-        /// <summary>
-        /// The delete.
-        /// </summary>
         DELETE,
-
-        /// <summary>
-        /// The head.
-        /// </summary>
         HEAD,
-
-        /// <summary>
-        /// The options.
-        /// </summary>
         OPTIONS,
-
-        /// <summary>
-        /// The patch.
-        /// </summary>
         PATCH,
-
-        /// <summary>
-        /// The merge.
-        /// </summary>
         MERGE
     }
 }

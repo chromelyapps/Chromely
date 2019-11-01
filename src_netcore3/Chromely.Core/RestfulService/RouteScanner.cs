@@ -63,8 +63,8 @@ namespace Chromely.Core.RestfulService
                 {
                     if (typeof(ChromelyController).IsAssignableFrom(type.BaseType))
                     {
-                        var controller = new ChromelyControllerFactory(_container);
-                        var instance = controller.CreateControllerInstance(type);
+                        var controllerFactory = new ChromelyControllerFactory(_container);
+                        var instance = controllerFactory.CreateControllerInstance(type);
                         var currentRouteDictionary = instance.ActionRouteDictionary;
                         var currentCommandDictionary = instance.CommandRouteDictionary;
 
@@ -84,6 +84,32 @@ namespace Chromely.Core.RestfulService
                         if ((currentCommandDictionary != null) && currentCommandDictionary.Any())
                         {
                             foreach (var item in currentCommandDictionary)
+                            {
+                                if (!commandDictionary.ContainsKey(item.Key))
+                                {
+                                    commandDictionary.Add(item.Key, item.Value);
+                                }
+                            }
+                        }
+
+                        // Add Http Attributes
+                        var httpAttributeRoutes = controllerFactory.GetHttpAttributeRoutes(instance);
+                        if ((httpAttributeRoutes != null) && httpAttributeRoutes.Any())
+                        {
+                            foreach (var item in httpAttributeRoutes)
+                            {
+                                if (!routeDictionary.ContainsKey(item.Key))
+                                {
+                                    routeDictionary.Add(item.Key, item.Value);
+                                }
+                            }
+                        }
+
+                        // Add Custom Attributes
+                        var customAttributeRoutes = controllerFactory.GetCommandAttributeRoutes(instance);
+                        if ((customAttributeRoutes != null) && customAttributeRoutes.Any())
+                        {
+                            foreach (var item in customAttributeRoutes)
                             {
                                 if (!commandDictionary.ContainsKey(item.Key))
                                 {
