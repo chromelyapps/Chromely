@@ -90,7 +90,8 @@ namespace Chromely.Core
         }
         private class WindowCustomCreationLocal
         {
-            public int style { get; set; }
+            public int windowStyles { get; set; }
+            public int windowExStyles { get; set; }
             public bool useCustomtyle { get; set; }
         }
         private class CustomSettingLocal
@@ -242,7 +243,7 @@ namespace Chromely.Core
 
                     if (windowCustomCreation != null)
                     {
-                        config.WindowCustomStyle = windowCustomCreation.style;
+                        config.WindowCustomStyle = new WindowCustomStyle(windowCustomCreation.windowStyles, windowCustomCreation.windowExStyles);
                         config.UseWindowCustomStyle = windowCustomCreation.useCustomtyle;
                     }
 

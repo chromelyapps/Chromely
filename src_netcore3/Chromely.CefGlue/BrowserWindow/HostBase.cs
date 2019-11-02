@@ -13,6 +13,7 @@ namespace Chromely.CefGlue.BrowserWindow
 {
     public abstract partial class HostBase : IChromelyWindow
     {
+        protected readonly IChromelyNativeHost _nativeHost;
         protected readonly IChromelyContainer _container;
         protected readonly IChromelyConfiguration _config;
         protected readonly IChromelyRequestTaskRunner _requestTaskRunner;
@@ -20,8 +21,9 @@ namespace Chromely.CefGlue.BrowserWindow
 
         protected IWindow _mainWindow;
 
-        protected HostBase(IChromelyContainer container, IChromelyConfiguration config, IChromelyRequestTaskRunner requestTaskRunner, IChromelyCommandTaskRunner commandTaskRunner)
+        protected HostBase(IChromelyNativeHost nativeHost, IChromelyContainer container, IChromelyConfiguration config, IChromelyRequestTaskRunner requestTaskRunner, IChromelyCommandTaskRunner commandTaskRunner)
         {
+            _nativeHost = nativeHost;
             _container = container;
             _config = config;
             _requestTaskRunner = requestTaskRunner;
@@ -241,12 +243,6 @@ namespace Chromely.CefGlue.BrowserWindow
             RegisterMessageRouters();
 
             CreateMainWindow();
-   
-            bool centerScreen = _config.WindowCenterScreen;
-            if (centerScreen)
-            {
-                _mainWindow.CenterToScreen();
-            }
 
             CefBinariesLoader.DeleteTempFiles(tempFiles);
 

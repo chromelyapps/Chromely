@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
-using Chromely.BrowserWindow;
 using Chromely.Core;
+using Chromely.Core.Host;
 using Chromely.Core.Infrastructure;
+using static Chromely.Native.MacNativeMethods;
 
 namespace Chromely.Native
 {
-    public class MacCocoaHost : INativeHost
+    public class MacCocoaHost : IChromelyNativeHost
     {
         public event EventHandler<CreatedEventArgs> Created;
         public event EventHandler<MovingEventArgs> Moving;
@@ -39,14 +40,14 @@ namespace Chromely.Native
         public void CreateWindow(IChromelyConfiguration config)
         {
             _config = config;
-            NativeMethods.ChromelyParam configParam = InitParam(InitCallback,
+            ChromelyParam configParam = InitParam(InitCallback,
                                                          CreateCallback,
                                                          MovingCallback,
                                                          ResizeCallback,
                                                          QuitCallback);
 
 
-            configParam.centerscreen = _config.WindowCenterScreen ? 1 : 0;
+            configParam.centerscreen = _config.WindowState == WindowState.Normal && _config.WindowCenterScreen ? 1 : 0;
             configParam.frameless = _config.WindowFrameless ? 1 : 0;
             configParam.fullscreen = _config.WindowState == Core.Host.WindowState.Fullscreen ? 1 : 0;
             configParam.noresize = _config.WindowNoResize ? 1 : 0;
@@ -60,19 +61,19 @@ namespace Chromely.Native
             configParam.width = _config.WindowWidth;
             configParam.height = _config.WindowHeight;
 
-            NativeMethods.createwindow(ref configParam);
+            createwindow(ref configParam);
         }
 
         #region CreateWindow
 
-        private static NativeMethods.ChromelyParam InitParam(InitCallbackEvent initCallback,
+        private static ChromelyParam InitParam(InitCallbackEvent initCallback,
                                                     CreateCallbackEvent createCallback,
                                                     MovingCallbackEvent movingCallback,
                                                     ResizeCallbackEvent resizeCallback,
                                                     QuitCallbackEvent quitCallback)
         {
 
-            NativeMethods.ChromelyParam configParam = new NativeMethods.ChromelyParam();
+            ChromelyParam configParam = new ChromelyParam();
             configParam.initCallback = Marshal.GetFunctionPointerForDelegate(initCallback);
             configParam.createCallback = Marshal.GetFunctionPointerForDelegate(createCallback);
             configParam.movingCallback = Marshal.GetFunctionPointerForDelegate(movingCallback);
@@ -110,8 +111,7 @@ namespace Chromely.Native
         {
             if (_viewHandle != IntPtr.Zero && _isInitialized)
             {
-                var size = GetWindowSize();
-                SizeChanged?.Invoke(this, new SizeChangedEventArgs(size.Width, size.Height));
+                SizeChanged?.Invoke(this, new SizeChangedEventArgs(width, height));
             }
         }
 
@@ -124,63 +124,21 @@ namespace Chromely.Native
 
         #endregion
 
-        public IntPtr CreateNewWindow(int type)
-        {
-            return IntPtr.Zero;
-        }
-
-        public IntPtr GetGdkHandle()
-        {
-            return IntPtr.Zero;
-        }
-
         public IntPtr GetNativeHandle()
         {
-            return IntPtr.Zero;
-        }
-
-        public void Init(int argc, string[] argv)
-        {
-        }
-
-        public void ShowWindow()
-        {
+            return _viewHandle;
         }
 
         public void Run()
         {
         }
 
-        public Size GetWindowSize()
+        public Size GetWindowClientSize()
         {
-            return new Size();
+            throw new NotImplementedException();
         }
 
-        public void SetWindowTitle(string title)
-        {
-        }
-
-        public void SetWindowDefaultSize(int width, int height)
-        {
-        }
-
-        public void ResizeWindow(IntPtr window, int width, int height)
-        {
-        }
-
-        public void SetAppIcon(IntPtr window, string filename)
-        {
-        }
-
-        public void SetWindowPosistion(int position)
-        {
-        }
-
-        public void SetWindowMaximize()
-        {
-        }
-
-        public void SetFullscreen()
+        public void ResizeBrowser(IntPtr window, int width, int height)
         {
         }
 
@@ -188,7 +146,7 @@ namespace Chromely.Native
         {
             try
             {
-                NativeMethods.quit(_appHandle, _poolHandle);
+                quit(_appHandle, _poolHandle);
             }
             catch (Exception exception)
             {
@@ -197,51 +155,9 @@ namespace Chromely.Native
             }
         }
 
-        public void RegisterHandler(string signalName, IntPtr handler, GClosureNotify destroyData, GConnectFlags connectFlags = GConnectFlags.GConnectAfter, IntPtr data = default(IntPtr))
+        public void MessageBox(string message, int type)
         {
-        }
-
-        public void MessageBox(string message, MessageType messageType = MessageType.Error)
-        {
-        }
-
-        /// <summary>
-        /// The win.
-        /// </summary>
-        private static class NativeMethods
-        {
-            internal const string ChromelyMacLib = "libchromely.dylib";
-
-            [StructLayout(LayoutKind.Sequential)]
-            internal struct ChromelyParam
-            {
-                public int x;
-                public int y;
-                public int width;
-                public int height;
-                public int centerscreen;
-                public int frameless;
-                public int fullscreen;
-                public int noresize;
-                public int nominbutton;
-                public int nomaxbutton;
-                [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
-                public string title;
-                public IntPtr initCallback;
-                public IntPtr createCallback;
-                public IntPtr movingCallback;
-                public IntPtr resizeCallback;
-                public IntPtr exitCallback;
-            }
-
-            [DllImport(ChromelyMacLib, CallingConvention = CallingConvention.Cdecl)]
-            internal static extern void createwindow(ref ChromelyParam chromelyParam);
-
-            [DllImport(ChromelyMacLib, CallingConvention = CallingConvention.Cdecl)]
-            internal static extern void run(IntPtr application);
-
-            [DllImport(ChromelyMacLib, CallingConvention = CallingConvention.Cdecl)]
-            internal static extern void quit(IntPtr application, IntPtr pool);
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,11 +1,18 @@
 ﻿using Chromely.Core;
+using Chromely.Core.Host;
+using System;
 
 namespace Chromely.Native
 {
     public static class NativeHostFactory
     {
-        public static INativeHost GetNativeHost(IChromelyConfiguration config)
+        public static IChromelyNativeHost GetNativeHost(IChromelyConfiguration config)
         {
+            if (config == null)
+            {
+                throw new ArgumentNullException("config");
+            }
+
             switch (config.Platform)
             {
                 case ChromelyPlatform.MacOSX:
@@ -15,8 +22,7 @@ namespace Chromely.Native
                     return new LinuxGtk3Host(); 
 
                 case ChromelyPlatform.Windows:
-                    throw new System.Exception("Windows host not migrated yet!");
-                //return new WinAPIHost();
+                    return new WinAPIHost();
 
                 default:
                     return new WinAPIHost();

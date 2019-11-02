@@ -17,26 +17,12 @@ namespace Chromely.CefGlue.BrowserWindow
     /// </summary>
     public interface IWindow : IDisposable
     {
-        /// <summary>
-        /// Gets the window handle.
-        /// </summary>
         IntPtr HostHandle { get; }
 
-        /// <summary>
-        /// Gets a reference to the browser.
-        /// </summary>
         CefGlueBrowser Browser { get; }
-
-        /// <summary>
-        /// Centers the main window on screen.
-        /// </summary>
-        void CenterToScreen();
 
         void Run();
 
-        /// <summary>
-        /// Closes the window.
-        /// </summary>
         void Exit();
     }
 }

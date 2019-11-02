@@ -1,15 +1,16 @@
 ﻿using System;
 using Chromely.Native;
 using Chromely.Core;
+using Chromely.Core.Host;
 
-namespace Chromely.BrowserWindow
+namespace Chromely.Windows
 {
     public abstract class NativeWindow
     {
         private readonly IChromelyConfiguration _config;
-        private readonly INativeHost _nativeHost;
+        private readonly IChromelyNativeHost _nativeHost;
 
-        public NativeWindow(IChromelyConfiguration config, INativeHost nativeHost)
+        public NativeWindow(IChromelyNativeHost nativeHost, IChromelyConfiguration config)
         {
             _config = config;
             _nativeHost = nativeHost;
@@ -48,9 +49,19 @@ namespace Chromely.BrowserWindow
             _nativeHost?.Exit();
         }
 
-        public virtual void Resize(IntPtr window, int width, int height)
+        public virtual void ResizeBrowser(IntPtr window)
         {
-            _nativeHost?.ResizeWindow(window, width, height);
+            if (_nativeHost != null)
+            {
+                var clientSize = _nativeHost.GetWindowClientSize();
+                _nativeHost.ResizeBrowser(window, clientSize.Width, clientSize.Height);
+
+            }
+        }
+
+        public virtual void ResizeBrowser(IntPtr window, int width, int height)
+        {
+            _nativeHost?.ResizeBrowser(window, width, height);
         }
 
         #region
@@ -74,7 +85,7 @@ namespace Chromely.BrowserWindow
         #endregion
 
         #region Message Box
-        public static void MessageBox(IChromelyConfiguration config, string message, MessageType messageType = MessageType.Error)
+        public static void MessageBox(IChromelyConfiguration config, string message, int messageType)
         {
             var nativeGui = NativeHostFactory.GetNativeHost(config);
             nativeGui.MessageBox(message, messageType);

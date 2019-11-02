@@ -2,12 +2,13 @@
 using Chromely.CefGlue.Browser;
 using Chromely.CefGlue.BrowserWindow;
 using Chromely.Core;
+using Chromely.Core.Host;
 using Chromely.Core.RestfulService;
 using Chromely.Native;
 using Xilium.CefGlue;
 using Xilium.CefGlue.Wrapper;
 
-namespace Chromely.BrowserWindow
+namespace Chromely.Windows
 {
     public class Window : NativeWindow, IWindow
     {
@@ -18,8 +19,8 @@ namespace Chromely.BrowserWindow
 
         private IntPtr _browserWindowHandle;
 
-        public Window(IChromelyContainer container, IChromelyConfiguration config, IChromelyCommandTaskRunner commandTaskRunner, CefMessageRouterBrowserSide browserMessageRouter)
-            : base(config, null)
+        public Window(IChromelyNativeHost nativeHost, IChromelyContainer container, IChromelyConfiguration config, IChromelyCommandTaskRunner commandTaskRunner, CefMessageRouterBrowserSide browserMessageRouter)
+            : base(nativeHost, config)
         {
             _container = container;
             _config = config;
@@ -86,7 +87,7 @@ namespace Chromely.BrowserWindow
         {
             if (_browserWindowHandle != IntPtr.Zero)
             {
-                Resize(_browserWindowHandle, sizeChangedEventArgs.Width, sizeChangedEventArgs.Height);
+                ResizeBrowser(_browserWindowHandle, sizeChangedEventArgs.Width, sizeChangedEventArgs.Height);
             }
         }
 
@@ -97,6 +98,10 @@ namespace Chromely.BrowserWindow
         private void OnBrowserCreated(object sender, EventArgs e)
         {
             _browserWindowHandle = Browser.CefBrowser.GetHost().GetWindowHandle();
+            if (_browserWindowHandle != IntPtr.Zero)
+            {
+                ResizeBrowser(_browserWindowHandle);
+            }
         }
     }
 }

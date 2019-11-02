@@ -24,7 +24,7 @@ namespace Chromely.Core
         public WindowState WindowState { get; set; }
         public string WindowTitle { get; set; }
         public string WindowIconFile { get; set; }
-        public int WindowCustomStyle { get; set; }
+        public WindowCustomStyle WindowCustomStyle { get; set; }
         public bool UseWindowCustomStyle { get; set; }
         public string AppExeLocation { get; set; }
         public string StartUrl { get; set; }

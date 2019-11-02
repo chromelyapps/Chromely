@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Chromely.Native
+namespace Chromely.Core.Host
 {
     public class CloseEventArgs : EventArgs
     {

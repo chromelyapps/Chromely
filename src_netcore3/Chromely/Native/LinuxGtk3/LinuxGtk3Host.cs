@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
-using Chromely.BrowserWindow;
 using Chromely.Core;
 using Chromely.Core.Host;
 using Chromely.Core.Infrastructure;
+using static Chromely.Native.LinuxNativeMethods;
 
 namespace Chromely.Native
 {
-    public class LinuxGtk3Host : INativeHost
+    public class LinuxGtk3Host : IChromelyNativeHost
     {
         public event EventHandler<CreatedEventArgs> Created;
         public event EventHandler<MovingEventArgs> Moving;
@@ -45,7 +45,7 @@ namespace Chromely.Native
             SetAppIcon(_handle, _config.WindowIconFile);
             SetWindowDefaultSize(_config.WindowWidth, _config.WindowHeight);
 
-            if (_config.WindowCenterScreen)
+            if (_config.WindowState == WindowState.Normal && _config.WindowCenterScreen)
             {
                 SetWindowPosistion((int)GtkWindowPosition.GtkWinPosCenter);
             }
@@ -72,31 +72,13 @@ namespace Chromely.Native
             ShowWindow();
         }
 
-        public IntPtr CreateNewWindow(int windowType)
-        {
-            try
-            {
-                GtkWindowType type = (GtkWindowType)windowType;
-                _handle = NativeMethods.gtk_window_new(type);
-                Utils.AssertNotNull("CreateNewWindow", _handle);
-                return _handle;
-            }
-            catch (Exception exception)
-            {
-                Logger.Instance.Log.Error("Error in LinuxGtk3Host::CreateNewWindow");
-                Logger.Instance.Log.Error(exception);
-            }
-
-            return IntPtr.Zero;
-        }
-
         public IntPtr GetNativeHandle()
         {
             try
             {
-                _gdkHandle = NativeMethods.gtk_widget_get_window(_handle);
+                _gdkHandle = gtk_widget_get_window(_handle);
                 Utils.AssertNotNull("GetNativeHandle:gtk_widget_get_window", _gdkHandle);
-                _xid = NativeMethods.gdk_x11_window_get_xid(_gdkHandle);
+                _xid = gdk_x11_window_get_xid(_gdkHandle);
                 Utils.AssertNotNull("GetNativeHandle:gdk_x11_window_get_xid", _xid);
                 return _xid;
             }
@@ -109,37 +91,11 @@ namespace Chromely.Native
             return IntPtr.Zero;
         }
 
-        public void Init(int argc, string[] argv)
-        {
-            try
-            {
-                NativeMethods.gtk_init(argc, argv);
-            }
-            catch (Exception exception)
-            {
-                Logger.Instance.Log.Error("Error in LinuxGtk3Host::Init");
-                Logger.Instance.Log.Error(exception);
-            }
-        }
-
-        public void ShowWindow()
-        {
-            try
-            {
-                NativeMethods.gtk_widget_show_all(_handle);
-            }
-            catch (Exception exception)
-            {
-                Logger.Instance.Log.Error("Error in LinuxGtk3Host::ShowWindow");
-                Logger.Instance.Log.Error(exception);
-            }
-        }
-
         public void Run()
         {
             try
             {
-                NativeMethods.gtk_main();
+                gtk_main();
             }
             catch (Exception exception)
             {
@@ -148,49 +104,12 @@ namespace Chromely.Native
             }
         }
 
-        public Size GetWindowSize()
+        public Size GetWindowClientSize()
         {
-            try
-            {
-                NativeMethods.gtk_window_get_size(_handle, out int width, out int height);
-                return new Size(width, height);
-            }
-            catch (Exception exception)
-            {
-                Logger.Instance.Log.Error("Error in LinuxGtk3Host::GetWindowSize");
-                Logger.Instance.Log.Error(exception);
-            }
-
-            return new Size();
+            throw new NotImplementedException();
         }
 
-        public void SetWindowTitle(string title)
-        {
-            try
-            {
-                NativeMethods.gtk_window_set_title(_handle, title);
-            }
-            catch (Exception exception)
-            {
-                Logger.Instance.Log.Error("Error in LinuxGtk3Host::SetWindowTitle");
-                Logger.Instance.Log.Error(exception);
-            }
-        }
-
-        public void SetWindowDefaultSize(int width, int height)
-        {
-            try
-            {
-                NativeMethods.gtk_window_set_default_size(_handle, width, height);
-            }
-            catch (Exception exception)
-            {
-                Logger.Instance.Log.Error("Error in LinuxGtk3Host::SetWindowDefaultSize");
-                Logger.Instance.Log.Error(exception);
-            }
-        }
-
-        public void ResizeWindow(IntPtr window, int width, int height)
+        public void ResizeBrowser(IntPtr window, int width, int height)
         {
             /*
               RESIZE IS NOT SUPPORTED
@@ -214,46 +133,11 @@ namespace Chromely.Native
              */
         }
 
-        public void SetAppIcon(IntPtr window, string filename)
-        {
-            try
-            {
-                filename = IconHandler.IconFullPath(filename);
-                if (string.IsNullOrWhiteSpace(filename))
-                {
-                    IntPtr error = IntPtr.Zero;
-                    NativeMethods.gtk_window_set_icon_from_file(window, filename, out error);
-                    if (error != IntPtr.Zero)
-                    {
-                        Logger.Instance.Log.Error("Icon handle not successfully freed.");
-                    }
-                }
-            }
-            catch (Exception exception)
-            {
-                Logger.Instance.Log.Error(exception);
-            }
-        }
-
-        public void SetWindowPosistion(int windowPosition)
-        {
-            try
-            {
-                GtkWindowPosition position = (GtkWindowPosition)windowPosition;
-                NativeMethods.gtk_window_set_position(_handle, position);
-            }
-            catch (Exception exception)
-            {
-                Logger.Instance.Log.Error("Error in LinuxGtk3Host::SetWindowPosistion");
-                Logger.Instance.Log.Error(exception);
-            }
-        }
-
         public void SetWindowMaximize()
         {
             try
             {
-                NativeMethods.gtk_window_maximize(_handle);
+                gtk_window_maximize(_handle);
             }
             catch (Exception exception)
             {
@@ -266,7 +150,7 @@ namespace Chromely.Native
         {
             try
             {
-                NativeMethods.gtk_window_fullscreen(_handle);
+                gtk_window_fullscreen(_handle);
             }
             catch (Exception exception)
             {
@@ -279,7 +163,7 @@ namespace Chromely.Native
         {
             try
             {
-                NativeMethods.gtk_main_quit();
+                gtk_main_quit();
             }
             catch (Exception exception)
             {
@@ -288,26 +172,14 @@ namespace Chromely.Native
             }
         }
 
-        public void RegisterHandler(string signalName, IntPtr handler, GClosureNotify destroyData, GConnectFlags connectFlags = GConnectFlags.GConnectAfter, IntPtr data = default(IntPtr))
+        public void MessageBox(string message, int type)
         {
             try
             {
-                NativeMethods.g_signal_connect_data(_handle, signalName, handler, data, destroyData, connectFlags);
-            }
-            catch (Exception exception)
-            {
-                Logger.Instance.Log.Error("Error in LinuxGtk3Host::RegisterHandler");
-                Logger.Instance.Log.Error(exception);
-            }
-        }
-
-        public void MessageBox(string message, MessageType messageType = MessageType.Error)
-        {
-            try
-            {
-                var diag = NativeMethods.gtk_message_dialog_new(IntPtr.Zero, DialogFlags.Modal, messageType, ButtonsType.Ok, message, IntPtr.Zero);
-                NativeMethods.gtk_dialog_run(diag);
-                NativeMethods.gtk_widget_destroy(diag);
+                MessageType messageType = (MessageType)type;
+                var diag = gtk_message_dialog_new(IntPtr.Zero, DialogFlags.Modal, messageType, ButtonsType.Ok, message, IntPtr.Zero);
+                gtk_dialog_run(diag);
+                gtk_widget_destroy(diag);
             }
             catch (Exception exception)
             {
@@ -316,11 +188,50 @@ namespace Chromely.Native
             }
         }
 
+        #region CreateWindow
+
+        private delegate void SizeAllocateCallback(IntPtr window, IntPtr allocation, int baseline);
+        private delegate bool ResizeCallback(IntPtr window, GtkEvent gtkEvent, IntPtr data);
+        private delegate void RealizeCallback(IntPtr window);
+        private delegate bool DestroyCallback(IntPtr window, IntPtr data);
+        private delegate void QuitCallback();
+
+        private void Init(int argc, string[] argv)
+        {
+            try
+            {
+                gtk_init(argc, argv);
+            }
+            catch (Exception exception)
+            {
+                Logger.Instance.Log.Error("Error in LinuxGtk3Host::Init");
+                Logger.Instance.Log.Error(exception);
+            }
+        }
+
+        private IntPtr CreateNewWindow(int windowType)
+        {
+            try
+            {
+                GtkWindowType type = (GtkWindowType)windowType;
+                _handle = gtk_window_new(type);
+                Utils.AssertNotNull("CreateNewWindow", _handle);
+                return _handle;
+            }
+            catch (Exception exception)
+            {
+                Logger.Instance.Log.Error("Error in LinuxGtk3Host::CreateNewWindow");
+                Logger.Instance.Log.Error(exception);
+            }
+
+            return IntPtr.Zero;
+        }
+
         private IntPtr GetGdkHandle()
         {
             try
             {
-                _gdkHandle = NativeMethods.gtk_widget_get_window(_handle);
+                _gdkHandle = gtk_widget_get_window(_handle);
                 Utils.AssertNotNull("GetGdkHandle", _gdkHandle);
                 return _gdkHandle;
             }
@@ -332,14 +243,95 @@ namespace Chromely.Native
 
             return IntPtr.Zero;
         }
+        private void SetWindowTitle(string title)
+        {
+            try
+            {
+                gtk_window_set_title(_handle, title);
+            }
+            catch (Exception exception)
+            {
+                Logger.Instance.Log.Error("Error in LinuxGtk3Host::SetWindowTitle");
+                Logger.Instance.Log.Error(exception);
+            }
+        }
 
-        #region CreateWindow
+        private void SetWindowDefaultSize(int width, int height)
+        {
+            try
+            {
+                gtk_window_set_default_size(_handle, width, height);
+            }
+            catch (Exception exception)
+            {
+                Logger.Instance.Log.Error("Error in LinuxGtk3Host::SetWindowDefaultSize");
+                Logger.Instance.Log.Error(exception);
+            }
+        }
 
-        private delegate void SizeAllocateCallback(IntPtr window, IntPtr allocation, int baseline);
-        private delegate bool ResizeCallback(IntPtr window, GtkEvent gtkEvent, IntPtr data);
-        private delegate void RealizeCallback(IntPtr window);
-        private delegate bool DestroyCallback(IntPtr window, IntPtr data);
-        private delegate void QuitCallback();
+        private void SetWindowPosistion(int windowPosition)
+        {
+            try
+            {
+                GtkWindowPosition position = (GtkWindowPosition)windowPosition;
+                gtk_window_set_position(_handle, position);
+            }
+            catch (Exception exception)
+            {
+                Logger.Instance.Log.Error("Error in LinuxGtk3Host::SetWindowPosistion");
+                Logger.Instance.Log.Error(exception);
+            }
+        }
+
+        private void SetAppIcon(IntPtr window, string filename)
+        {
+            try
+            {
+                filename = IconHandler.IconFullPath(filename);
+                if (string.IsNullOrWhiteSpace(filename))
+                {
+                    IntPtr error = IntPtr.Zero;
+                    gtk_window_set_icon_from_file(window, filename, out error);
+                    if (error != IntPtr.Zero)
+                    {
+                        Logger.Instance.Log.Error("Icon handle not successfully freed.");
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                Logger.Instance.Log.Error(exception);
+            }
+        }
+
+        private void ShowWindow()
+        {
+            try
+            {
+                gtk_widget_show_all(_handle);
+            }
+            catch (Exception exception)
+            {
+                Logger.Instance.Log.Error("Error in LinuxGtk3Host::ShowWindow");
+                Logger.Instance.Log.Error(exception);
+            }
+        }
+
+        private Size GetWindowSize()
+        {
+            try
+            {
+                gtk_window_get_size(_handle, out int width, out int height);
+                return new Size(width, height);
+            }
+            catch (Exception exception)
+            {
+                Logger.Instance.Log.Error("Error in LinuxGtk3Host::GetWindowSize");
+                Logger.Instance.Log.Error(exception);
+            }
+
+            return new Size();
+        }
 
         private void OnRealized(IntPtr window)
         {
@@ -441,85 +433,23 @@ namespace Chromely.Native
                 IntPtr.Zero);
         }
 
+        private void RegisterHandler(string signalName, IntPtr handler, GClosureNotify destroyData, GConnectFlags connectFlags = GConnectFlags.GConnectAfter, IntPtr data = default(IntPtr))
+        {
+            try
+            {
+                g_signal_connect_data(_handle, signalName, handler, data, destroyData, connectFlags);
+            }
+            catch (Exception exception)
+            {
+                Logger.Instance.Log.Error("Error in LinuxGtk3Host::RegisterHandler");
+                Logger.Instance.Log.Error(exception);
+            }
+        }
+
         private void FreeData()
         {
         }
 
         #endregion CreateWindow
-
-        /// <summary>
-        /// The win.
-        /// </summary>
-        private static class NativeMethods
-        {
-            internal const string GtkLib = "libgtk-3.so.0";
-            internal const string GObjLib = "libgobject-2.0.so.0";
-            internal const string GdkLib = "libgdk-3.so.0";
-            internal const string GlibLib = "libglib-2.0.so.0";
-            internal const string GioLib = "libgio-2.0.so.0";
-
-            [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl)]
-            internal static extern void gtk_init(int argc, string[] argv);
-
-            [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl)]
-            internal static extern IntPtr gtk_window_new(GtkWindowType type);
-
-            [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, ExactSpelling = false)]
-            internal static extern void gtk_main();
-
-            [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl)]
-            internal static extern IntPtr gtk_widget_get_window(IntPtr widget);
-
-            [DllImport(GdkLib, CallingConvention = CallingConvention.Cdecl)]
-            internal static extern IntPtr gdk_x11_window_get_xid(IntPtr raw);
-
-            [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl)]
-            internal static extern void gtk_widget_show_all(IntPtr window);
-
-            [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl)]
-            internal static extern void gtk_window_get_size(IntPtr window, out int width, out int height);
-
-            [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl)]
-            internal static extern IntPtr gtk_window_set_title(IntPtr window, string title);
-
-            [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl)]
-            internal static extern void gtk_window_set_default_size(IntPtr window, int width, int height);
-
-            [DllImport(GdkLib, CallingConvention = CallingConvention.Cdecl)]
-            internal static extern void gdk_window_resize(IntPtr window, int width, int height);
-
-            [DllImport(GdkLib, CallingConvention = CallingConvention.Cdecl)]
-            internal static extern void gdk_window_move_resize(IntPtr window, int x, int y, int width, int height);
-
-            [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, ExactSpelling = false)]
-            internal static extern bool gtk_window_set_icon_from_file(IntPtr raw, string filename, out IntPtr err);
-
-            [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl)]
-            internal static extern bool gtk_window_set_position(IntPtr window, GtkWindowPosition position);
-
-            [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl)]
-            internal static extern bool gtk_window_maximize(IntPtr window);
-
-            [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl)]
-            internal static extern bool gtk_window_fullscreen(IntPtr window);
-
-            [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl)]
-            internal static extern void gtk_main_quit();
-
-            // Signals
-            [DllImport(GObjLib, CallingConvention = CallingConvention.Cdecl)]
-            internal static extern uint g_signal_connect_data(IntPtr instance, string detailedSignal, IntPtr handler,
-                IntPtr data, GClosureNotify destroyData, GConnectFlags connectFlags);
-
-            // MessageBox
-            [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl)]
-            internal static extern IntPtr gtk_message_dialog_new(IntPtr parent_window, DialogFlags flags, MessageType type, ButtonsType bt, string msg, IntPtr args);
-
-            [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl)]
-            internal static extern int gtk_dialog_run(IntPtr raw);
-
-            [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl)]
-            internal static extern void gtk_widget_destroy(IntPtr widget);
-        }
     }
 }

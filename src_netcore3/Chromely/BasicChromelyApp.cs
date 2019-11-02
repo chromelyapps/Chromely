@@ -1,6 +1,6 @@
-﻿using Chromely.BrowserWindow;
-using Chromely.Core;
+﻿using Chromely.Core;
 using Chromely.Core.Host;
+using Chromely.Windows;
 
 namespace Chromely
 {

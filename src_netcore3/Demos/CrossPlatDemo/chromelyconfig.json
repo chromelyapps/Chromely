@@ -19,7 +19,8 @@
   "windowIconFile": "chromely.ico",
   "debuggingMode": true,
   "windowCustomCreation": {
-    "style": 0,
+    "windowStyles": 0,
+    "windowExStyles": 0,
     "useCustomtyle": true
   },
   "urlSchemes": [

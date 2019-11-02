@@ -1,18 +1,19 @@
 ﻿using Chromely.CefGlue.BrowserWindow;
 using Chromely.Core;
+using Chromely.Core.Host;
 using Chromely.Core.RestfulService;
 using Chromely.Native;
 using Xilium.CefGlue;
 
-namespace Chromely.BrowserWindow
+namespace Chromely.Windows
 {
     /// <summary>
     /// The CefGlue browser host/window/app.
     /// </summary>
     public class ChromelyWindow : HostBase
     {
-        public ChromelyWindow(IChromelyContainer container, IChromelyConfiguration config, IChromelyRequestTaskRunner requestTaskRunner, IChromelyCommandTaskRunner commandTaskRunner)
-            : base(container, config, requestTaskRunner, commandTaskRunner)
+        public ChromelyWindow(IChromelyNativeHost nativeHost, IChromelyContainer container, IChromelyConfiguration config, IChromelyRequestTaskRunner requestTaskRunner, IChromelyCommandTaskRunner commandTaskRunner)
+            : base(nativeHost, container, config, requestTaskRunner, commandTaskRunner)
         {
         }
 
@@ -83,7 +84,7 @@ namespace Chromely.BrowserWindow
 
             if (_mainWindow == null)
             {
-                _mainWindow = new Window(_container, _config, _commandTaskRunner, BrowserMessageRouter);
+                _mainWindow = new Window(_nativeHost, _container, _config, _commandTaskRunner, BrowserMessageRouter);
             }
 
             return _mainWindow;
