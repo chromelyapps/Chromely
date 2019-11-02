@@ -297,12 +297,8 @@ namespace Chromely.Common
         {
             if (nCode >= 0)
             {
-
-                var msg = (WM)wParam;
                 var hookInfo = Marshal.PtrToStructure<NativeMethods.KBDLLHOOKSTRUCT>(lParam);
-
                 var key = (VirtualKey)hookInfo.vkCode;
-
 
 
                 bool alt = User32Methods.GetKeyState(VirtualKey.MENU).IsPressed;
@@ -448,8 +444,7 @@ namespace Chromely.Common
                         if (_hostConfig.HostPlacement.Frameless && _hostConfig.HostPlacement.FramelessOptions.IsResizable)
                         {
                             var result = User32Methods.DefWindowProc(hwnd, umsg, wParam, lParam);
-                            NativeMethods.NCCALCSIZE_PARAMS csp;
-                            csp = (NativeMethods.NCCALCSIZE_PARAMS)Marshal.PtrToStructure(
+                            var csp = (NativeMethods.NCCALCSIZE_PARAMS)Marshal.PtrToStructure(
                                 lParam,
                                 typeof(NativeMethods.NCCALCSIZE_PARAMS));
                             csp.rgrc[0].Top -= _hostConfig.HostPlacement.FramelessOptions.WhiteStripeHeight; // # remove top whitestripe border!
@@ -463,7 +458,7 @@ namespace Chromely.Common
                 case WM.MOVE:
                     {
                         OnMoving();
-                        return  IntPtr.Zero;
+                        return IntPtr.Zero;
                     }
 
                 case WM.SIZE:
@@ -498,8 +493,7 @@ namespace Chromely.Common
         {
             if (_hostConfig.UseHostCustomCreationStyle)
             {
-                var customCreationStyle = _hostConfig.HostCustomCreationStyle as WindowCreationStyle;
-                if (customCreationStyle != null)
+                if (_hostConfig.HostCustomCreationStyle is WindowCreationStyle customCreationStyle)
                 {
                     return GetWindowStyles(customCreationStyle, state);
                 }
