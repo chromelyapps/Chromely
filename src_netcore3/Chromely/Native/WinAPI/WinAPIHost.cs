@@ -163,7 +163,6 @@ namespace Chromely.Native
 
         public void MessageBox(string message, int type)
         {
-            throw new NotImplementedException();
         }
 
         #region CreateWindow

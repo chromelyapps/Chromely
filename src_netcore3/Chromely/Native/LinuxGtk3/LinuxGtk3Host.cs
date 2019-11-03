@@ -106,7 +106,7 @@ namespace Chromely.Native
 
         public Size GetWindowClientSize()
         {
-            throw new NotImplementedException();
+            return new Size();
         }
 
         public void ResizeBrowser(IntPtr window, int width, int height)
