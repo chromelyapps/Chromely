@@ -12,12 +12,13 @@ namespace Chromely.Dialogs.Linux
 {
     public class LinuxDialogs : IChromelyDialogs
     {
-        private IntPtr _mainWnd;
+        private IChromelyWindow _window;
 
+        private IntPtr MainWindowHandle => _window?.Handle ?? IntPtr.Zero;
+        
         public void Init(IChromelyWindow window)
         {
-            var browser = window.Browser as CefBrowser;
-            _mainWnd = browser?.GetHost().GetWindowHandle() ?? IntPtr.Zero;
+            _window = window;
 
             GtkInterop.XInitThreads();
             GtkInterop.gtk_init(0, new string[0]);
@@ -53,7 +54,7 @@ namespace Chromely.Dialogs.Linux
             var response = GtkInterop.ResponseType.GTK_RESPONSE_OK;
             try
             {
-                widget = GtkInterop.gtk_message_dialog_new(_mainWnd, flags, type, bt, title, IntPtr.Zero);
+                widget = GtkInterop.gtk_message_dialog_new(MainWindowHandle, flags, type, bt, title, IntPtr.Zero);
                 GtkInterop.gtk_message_dialog_format_secondary_text(widget, message);
                 response = GtkInterop.gtk_dialog_run(widget);
             }
@@ -88,14 +89,16 @@ namespace Chromely.Dialogs.Linux
                 Console.WriteLine("#2");
                 widget = GtkInterop.gtk_file_chooser_dialog_new(
                     options.Title,
-                    _mainWnd, 
+                    MainWindowHandle, 
                     GtkInterop.FileChooserAction.GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER,
                     ok, (int) GtkInterop.ResponseType.GTK_RESPONSE_OK,
                     cancel, (int) GtkInterop.ResponseType.GTK_RESPONSE_CANCEL,
                     IntPtr.Zero);
                 Console.WriteLine("#3");
-                response = GtkInterop.gtk_dialog_run(widget);
+
                 Console.WriteLine("#4");
+                response = GtkInterop.gtk_dialog_run(widget);
+                Console.WriteLine("#5");
                 if (response == GtkInterop.ResponseType.GTK_RESPONSE_OK)
                 {
                     var uri = new Uri(GtkInterop.gtk_file_chooser_get_uri(widget));
@@ -133,7 +136,9 @@ namespace Chromely.Dialogs.Linux
             var fileName = "";
             try
             {
-                widget = GtkInterop.gtk_file_chooser_dialog_new(options.Title, _mainWnd,
+                widget = GtkInterop.gtk_file_chooser_dialog_new(
+                    options.Title, 
+                    MainWindowHandle,
                     GtkInterop.FileChooserAction.GTK_FILE_CHOOSER_ACTION_OPEN,
                     ok, (int) GtkInterop.ResponseType.GTK_RESPONSE_OK,
                     cancel, (int) GtkInterop.ResponseType.GTK_RESPONSE_CANCEL,
@@ -194,7 +199,9 @@ namespace Chromely.Dialogs.Linux
 
             try
             {
-                widget = GtkInterop.gtk_file_chooser_dialog_new(options.Title, _mainWnd,
+                widget = GtkInterop.gtk_file_chooser_dialog_new(
+                    options.Title,
+                    MainWindowHandle,
                     GtkInterop.FileChooserAction.GTK_FILE_CHOOSER_ACTION_SAVE,
                     ok, (int) GtkInterop.ResponseType.GTK_RESPONSE_OK,
                     cancel, (int) GtkInterop.ResponseType.GTK_RESPONSE_CANCEL,
