@@ -7,12 +7,12 @@
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
+using global::CefSharp;
+using Chromely.CefSharp.Winapi.Browser.FrameHandlers;
+using Chromely.Core.Infrastructure;
+
 namespace Chromely.CefSharp.Winapi
 {
-    using global::CefSharp;
-    using Chromely.CefSharp.Winapi.Browser.FrameHandlers;
-    using Chromely.Core.Infrastructure;
-
     /// <summary>
     /// The frame handler extension.
     /// </summary>

@@ -373,13 +373,14 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
 
             _mainView = CreateMainView(_settings);
 
-            bool centerScreen = HostConfig.HostPlacement.CenterScreen;
-            if (centerScreen)
+            if (HostConfig.HostPlacement.CenterScreen && HostConfig.HostPlacement.State == WindowState.Normal)
             {
                 _mainView.CenterToScreen();
             }
 
             _windowCreated = true;
+
+            IoC.RegisterInstance(typeof(IChromelyWindow), typeof(IChromelyWindow).FullName, this);
 
             RunMessageLoop();
 

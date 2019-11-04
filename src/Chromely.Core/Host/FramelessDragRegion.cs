@@ -1,8 +1,15 @@
-﻿using Chromely.Core.Infrastructure;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="FramelessDragRegion.cs" company="Chromely Projects">
+//   Copyright (c) 2017-2019 Chromely Projects
+// </copyright>
+// <license>
+//      See the LICENSE.md file in the project root for more information.
+// </license>
+// --------------------------------------------------------------------------------------------------------------------
+
+using Chromely.Core.Infrastructure;
 using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace Chromely.Core.Host
 {

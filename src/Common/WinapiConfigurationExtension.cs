@@ -7,10 +7,8 @@
 // </license>
 // ----------------------------------------------------------------------------------------------------------------------
 
-using Chromely.Common;
 using Chromely.Core;
 using Chromely.Core.Host;
-using Chromely.Core.Infrastructure;
 using System;
 
 namespace Chromely.Common

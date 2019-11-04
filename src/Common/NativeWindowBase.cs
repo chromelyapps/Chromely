@@ -13,7 +13,6 @@ using Chromely.Core;
 using Chromely.Core.Host;
 using Chromely.Core.Infrastructure;
 using NetCoreEx.Geometry;
-using WinApi.DwmApi;
 using WinApi.Gdi32;
 using WinApi.Kernel32;
 using WinApi.User32;
@@ -69,7 +68,10 @@ namespace Chromely.Common
         /// </summary>
         public static void Exit()
         {
-            User32Methods.PostQuitMessage(0);
+            if (IoC.GetInstance(typeof(IChromelyWindow), typeof(IChromelyWindow).FullName) is IChromelyWindow window)
+            {
+                User32Methods.SendMessage(window.Handle, (int)WM.SYSCOMMAND, (IntPtr)SysCommand.SC_CLOSE, IntPtr.Zero);
+            }
         }
 
         /// <summary>
@@ -85,7 +87,7 @@ namespace Chromely.Common
         /// </summary>
         public void CloseWindowExternally()
         {
-            User32Methods.PostQuitMessage(0);
+            User32Methods.SendMessage(Handle, (int)WM.SYSCOMMAND, (IntPtr)SysCommand.SC_CLOSE, IntPtr.Zero);
         }
 
         /// <summary>
@@ -166,6 +168,13 @@ namespace Chromely.Common
         /// The height.
         /// </param>
         protected virtual void OnCreate(IntPtr hwnd, int width, int height)
+        {
+        }
+
+        /// <summary>
+        /// The on moving.
+        /// </summary>
+        protected virtual void OnMoving()
         {
         }
 
@@ -288,12 +297,8 @@ namespace Chromely.Common
         {
             if (nCode >= 0)
             {
-
-                var msg = (WM)wParam;
                 var hookInfo = Marshal.PtrToStructure<NativeMethods.KBDLLHOOKSTRUCT>(lParam);
-
                 var key = (VirtualKey)hookInfo.vkCode;
-
 
 
                 bool alt = User32Methods.GetKeyState(VirtualKey.MENU).IsPressed;
@@ -415,13 +420,31 @@ namespace Chromely.Common
                 case WM.ERASEBKGND:
                     return new IntPtr(1);
 
+                case WM.NCPAINT:
+                    {
+                        if (_hostConfig.HostPlacement.Frameless && _hostConfig.HostPlacement.FramelessOptions.IsResizable)
+                        {
+                            return IntPtr.Zero;
+                        }
+                        break;
+                    }
+
+                case WM.NCACTIVATE:
+                    {
+                        if (_hostConfig.HostPlacement.Frameless && _hostConfig.HostPlacement.FramelessOptions.IsResizable)
+                        {
+                            var result = User32Methods.DefWindowProc(hwnd, umsg, wParam, new IntPtr(-1));
+                            return result;
+                        }
+                        break;
+                    }
+
                 case WM.NCCALCSIZE:
                     {
                         if (_hostConfig.HostPlacement.Frameless && _hostConfig.HostPlacement.FramelessOptions.IsResizable)
                         {
                             var result = User32Methods.DefWindowProc(hwnd, umsg, wParam, lParam);
-                            NativeMethods.NCCALCSIZE_PARAMS csp;
-                            csp = (NativeMethods.NCCALCSIZE_PARAMS)Marshal.PtrToStructure(
+                            var csp = (NativeMethods.NCCALCSIZE_PARAMS)Marshal.PtrToStructure(
                                 lParam,
                                 typeof(NativeMethods.NCCALCSIZE_PARAMS));
                             csp.rgrc[0].Top -= _hostConfig.HostPlacement.FramelessOptions.WhiteStripeHeight; // # remove top whitestripe border!
@@ -429,6 +452,13 @@ namespace Chromely.Common
                             return result;
                         }
                         break;
+                    }
+
+                case WM.MOVING:
+                case WM.MOVE:
+                    {
+                        OnMoving();
+                        return IntPtr.Zero;
                     }
 
                 case WM.SIZE:
@@ -441,7 +471,7 @@ namespace Chromely.Common
                 case WM.CLOSE:
                     {
                         OnExit();
-                        Exit();
+                        User32Methods.PostQuitMessage(0);
                         Environment.Exit(0);
                         break;
                     }
@@ -463,8 +493,7 @@ namespace Chromely.Common
         {
             if (_hostConfig.UseHostCustomCreationStyle)
             {
-                var customCreationStyle = _hostConfig.HostCustomCreationStyle as WindowCreationStyle;
-                if (customCreationStyle != null)
+                if (_hostConfig.HostCustomCreationStyle is WindowCreationStyle customCreationStyle)
                 {
                     return GetWindowStyles(customCreationStyle, state);
                 }
@@ -525,6 +554,9 @@ namespace Chromely.Common
         /// <summary>
         /// The get window styles.
         /// </summary>
+        /// <param name="customCreationStyle">
+        /// The custom style.
+        /// </param>
         /// <param name="state">
         /// The state.
         /// </param>

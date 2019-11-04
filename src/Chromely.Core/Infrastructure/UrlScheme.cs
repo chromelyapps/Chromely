@@ -38,22 +38,33 @@ namespace Chromely.Core.Infrastructure
         /// <summary>
         /// Initializes a new instance of the <see cref="UrlScheme"/> class.
         /// </summary>
-        /// <param name="url">
-        /// The url.
+        /// <param name="baseUrl">
+        /// The base url.
         /// </param>
         /// <param name="type">
         /// The is url scheme type.
         /// </param>
-        public UrlScheme(string url, UrlSchemeType type)
+        /// <param name="baseUrlStrict">
+        /// Sets true or false, if base url must be relative to the base url.
+        /// </param>
+        public UrlScheme(string baseUrl, UrlSchemeType type, bool baseUrlStrict = true)
         {
-            if (!string.IsNullOrEmpty(url))
+            BaseUrl = baseUrl;
+            UrlSchemeType = type;
+            BaseUrlStrict = baseUrlStrict;
+
+            if (!string.IsNullOrEmpty(BaseUrl))
             {
-                var uri = new Uri(url);
+                var uri = new Uri(BaseUrl);
                 Scheme = uri.Scheme;
                 Host = uri.Host;
-                UrlSchemeType = type;
             }
         }
+
+        /// <summary>
+        /// Gets or sets the base url.
+        /// </summary>
+        public string BaseUrl { get; set; }
 
         /// <summary>
         /// Gets or sets the scheme.
@@ -69,6 +80,15 @@ namespace Chromely.Core.Infrastructure
         /// Gets or sets url scheme type.
         /// </summary>
         public UrlSchemeType UrlSchemeType { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether url must be relative to base.
+        /// Only valid for external url.
+        /// If base is http://a.com/me/you then 
+        /// http://a.com/me/you/they is valid but
+        /// http://a.com/me/they is not  valid
+        /// </summary>
+        public bool BaseUrlStrict { get; set; }
 
         /// <summary>
         /// Check if scheme is a standard type.
@@ -129,10 +149,27 @@ namespace Chromely.Core.Infrastructure
             if (Scheme.ToLower().Equals(uri.Scheme) &&
                 Host.ToLower().Equals(uri.Host))
             {
-                return true;
+                return IsValidUrl(url);
             }
 
             return false;
+        }
+
+        private bool IsValidUrl(string url)
+        {
+            if (BaseUrlStrict &&
+                !string.IsNullOrWhiteSpace(BaseUrl) &&
+                !string.IsNullOrWhiteSpace(url))
+            {
+                if (url.StartsWith(BaseUrl, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return true;
+                }
+
+                return false;
+            }
+
+            return true;
         }
     }
 }

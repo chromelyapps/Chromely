@@ -70,7 +70,7 @@ class Program
 
       var config = ChromelyConfiguration
                      .Create()
-                     .WithHostMode(WindowState.Normal, true)
+                     .WithHostMode(WindowState.Normal)
                      .WithHostTitle("chromely")
                      .WithHostIconFile("chromely.ico")
                      .WithAppArgs(args)

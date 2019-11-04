@@ -109,6 +109,17 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
         }
 
         /// <summary>
+        /// The on moving.
+        /// </summary>
+        protected override void OnMoving()
+        {
+            if (Browser != null && Browser.IsBrowserInitialized)
+            {
+                Browser.GetBrowser().GetHost().NotifyMoveOrResizeStarted();
+            }
+        }
+
+        /// <summary>
         /// The on size.
         /// </summary>
         /// <param name="width">
@@ -127,7 +138,6 @@ namespace Chromely.CefSharp.Winapi.BrowserWindow
         /// </summary>
         protected override void OnExit()
         {
-            _application.Quit();
         }
 
         /// <summary>
