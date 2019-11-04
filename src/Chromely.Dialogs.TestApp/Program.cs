@@ -8,6 +8,7 @@ using IctBaden.Stonehenge3.Hosting;
 using IctBaden.Stonehenge3.Kestrel;
 using IctBaden.Stonehenge3.Resources;
 using IctBaden.Stonehenge3.Vue;
+using Xilium.CefGlue;
 
 namespace Chromely.Dialogs.TestApp
 {
@@ -61,6 +62,7 @@ namespace Chromely.Dialogs.TestApp
 
             using (var window = ChromelyWindow.Create(config))
             {
+                ChromelyDialogs.Init(window);
                 var exitCode = window.Run(args);
                 if (exitCode != 0)
                 {

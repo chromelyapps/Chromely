@@ -14,8 +14,20 @@ namespace Chromely.Dialogs.Linux
         internal const string GtkLib = "libgtk-x11-2.0.so.0";
         
         [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, ExactSpelling = false)]
+        internal static extern void XInitThreads();
+
+
+        
+        [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, ExactSpelling = false)]
         internal static extern void gtk_init(int argc, string[] argv);
 
+
+        [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, ExactSpelling = false)]
+        internal static extern void gdk_threads_enter();
+        [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, ExactSpelling = false)]
+        internal static extern void gdk_threads_leave();
+
+        
         [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Auto, ExactSpelling = false)]
         internal static extern IntPtr g_malloc(UIntPtr n_bytes);
 

@@ -4,6 +4,8 @@ using System.Linq;
 using IctBaden.Stonehenge3.Core;
 using IctBaden.Stonehenge3.ViewModel;
 // ReSharper disable UnusedMember.Global
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace Chromely.Dialogs.TestApp.ViewModels
 {

@@ -29,6 +29,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Chromely.CefGlue\Chromely.CefGlue.csproj" />
       <ProjectReference Include="..\Chromely.Core\Chromely.Core.csproj" />
     </ItemGroup>
 

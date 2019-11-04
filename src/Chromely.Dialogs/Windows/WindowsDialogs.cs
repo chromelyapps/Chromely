@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
+using Chromely.Core.Host;
 
 // ReSharper disable CommentTypo
 
@@ -11,6 +12,10 @@ namespace Chromely.Dialogs.Windows
 {
     public class WindowsDialogs : IChromelyDialogs
     {
+        public void Init(IChromelyWindow window)
+        {
+        }
+        
         public DialogResponse MessageBox(string message, DialogOptions options)
         {
             var type = WindowsInterop.MB_SYSTEMMODAL | WindowsInterop.MB_SETFOREGROUND;

@@ -1,4 +1,6 @@
+using System;
 using Chromely.Core;
+using Chromely.Core.Host;
 using Chromely.Dialogs.Linux;
 using Chromely.Dialogs.Windows;
 // ReSharper disable MemberCanBePrivate.Global
@@ -25,7 +27,12 @@ namespace Chromely.Dialogs
             }
             throw new System.NotImplementedException();
         }
-        
+
+        public static void Init(IChromelyWindow window)
+        {
+            Dialogs.Init(window);
+        }
+
         public static DialogResponse MessageBox(string message)
         {
             return MessageBox(message, new DialogOptions());

@@ -1,7 +1,11 @@
-﻿namespace Chromely.Dialogs
+﻿using Chromely.Core.Host;
+
+namespace Chromely.Dialogs
 {
     public interface IChromelyDialogs
     {
+        void Init(IChromelyWindow window);
+        
         DialogResponse MessageBox(string message, DialogOptions options);
         
         DialogResponse SelectFolder(string message, FileDialogOptions options);
