@@ -1,18 +1,24 @@
 using System;
 using System.IO;
+using System.Runtime.InteropServices;
+using System.Threading;
+using System.Threading.Tasks;
+using Chromely.Core.Helpers;
 using Chromely.Core.Host;
 using Chromely.Core.Infrastructure;
+using Xilium.CefGlue;
 
 namespace Chromely.Dialogs.Linux
 {
     public class LinuxDialogs : IChromelyDialogs
     {
         private IntPtr _mainWnd;
-        
+
         public void Init(IChromelyWindow window)
         {
-            _mainWnd = window.Handle;
-            
+            var browser = window.Browser as CefBrowser;
+            _mainWnd = browser?.GetHost().GetWindowHandle() ?? IntPtr.Zero;
+
             GtkInterop.XInitThreads();
             GtkInterop.gtk_init(0, new string[0]);
         }
@@ -20,14 +26,12 @@ namespace Chromely.Dialogs.Linux
         public DialogResponse MessageBox(string message, DialogOptions options)
         {
             GtkInterop.gdk_threads_enter();
-            
-            const GtkInterop.DialogFlags flags = GtkInterop.DialogFlags.GTK_DIALOG_MODAL;
 
-            var type = GtkInterop.MessageType.GTK_MESSAGE_INFO;
+            const GtkInterop.DialogFlags flags = GtkInterop.DialogFlags.GTK_DIALOG_DESTROY_WITH_PARENT;
+
+            var type = GtkInterop.MessageType.GTK_MESSAGE_NONE;
             switch (options.Icon)
             {
-                case DialogIcon.None:
-                    break;
                 case DialogIcon.Question:
                     type = GtkInterop.MessageType.GTK_MESSAGE_QUESTION;
                     break;
@@ -62,7 +66,7 @@ namespace Chromely.Dialogs.Linux
                 GtkInterop.gtk_widget_destroy(widget);
                 GtkInterop.g_free(title);
             }
-            
+
             GtkInterop.gdk_threads_leave();
 
             return new DialogResponse {IsCanceled = response == GtkInterop.ResponseType.GTK_RESPONSE_DELETE_EVENT};
@@ -71,7 +75,7 @@ namespace Chromely.Dialogs.Linux
         public DialogResponse SelectFolder(string message, FileDialogOptions options)
         {
             GtkInterop.gdk_threads_enter();
-            
+
             Console.WriteLine("#1");
 
             var widget = IntPtr.Zero;
@@ -82,17 +86,16 @@ namespace Chromely.Dialogs.Linux
             try
             {
                 Console.WriteLine("#2");
-                widget = GtkInterop.gtk_file_chooser_dialog_new(options.Title, _mainWnd,
+                widget = GtkInterop.gtk_file_chooser_dialog_new(
+                    options.Title,
+                    _mainWnd, 
                     GtkInterop.FileChooserAction.GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER,
                     ok, (int) GtkInterop.ResponseType.GTK_RESPONSE_OK,
                     cancel, (int) GtkInterop.ResponseType.GTK_RESPONSE_CANCEL,
                     IntPtr.Zero);
                 Console.WriteLine("#3");
-
-                GtkInterop.gtk_widget_show_all(widget);
-                Console.WriteLine("#4");
                 response = GtkInterop.gtk_dialog_run(widget);
-                Console.WriteLine("#5");
+                Console.WriteLine("#4");
                 if (response == GtkInterop.ResponseType.GTK_RESPONSE_OK)
                 {
                     var uri = new Uri(GtkInterop.gtk_file_chooser_get_uri(widget));
@@ -111,7 +114,7 @@ namespace Chromely.Dialogs.Linux
             }
 
             GtkInterop.gdk_threads_leave();
-            
+
             return new DialogResponse
             {
                 IsCanceled = response != GtkInterop.ResponseType.GTK_RESPONSE_OK,
@@ -122,7 +125,7 @@ namespace Chromely.Dialogs.Linux
         public DialogResponse FileOpen(string message, FileDialogOptions options)
         {
             GtkInterop.gdk_threads_enter();
-            
+
             var widget = IntPtr.Zero;
             var response = GtkInterop.ResponseType.GTK_RESPONSE_OK;
             var ok = GtkInterop.AllocGtkString("OK");
@@ -170,7 +173,7 @@ namespace Chromely.Dialogs.Linux
                 GtkInterop.g_free(ok);
                 GtkInterop.g_free(cancel);
             }
-            
+
             GtkInterop.gdk_threads_leave();
 
             return new DialogResponse
@@ -183,7 +186,7 @@ namespace Chromely.Dialogs.Linux
         public DialogResponse FileSave(string message, string fileName, FileDialogOptions options)
         {
             GtkInterop.gdk_threads_enter();
-            
+
             var widget = IntPtr.Zero;
             var response = GtkInterop.ResponseType.GTK_RESPONSE_OK;
             var ok = GtkInterop.AllocGtkString("OK");
@@ -238,7 +241,7 @@ namespace Chromely.Dialogs.Linux
             }
 
             GtkInterop.gdk_threads_leave();
-            
+
             return new DialogResponse
             {
                 IsCanceled = response != GtkInterop.ResponseType.GTK_RESPONSE_OK,

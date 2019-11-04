@@ -12,22 +12,25 @@ namespace Chromely.Dialogs.Linux
     internal static class GtkInterop
     {
         internal const string GtkLib = "libgtk-x11-2.0.so.0";
-        
+        internal const string Gtk3Lib = "libgtk-3.so.0";
+
         [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, ExactSpelling = false)]
         internal static extern void XInitThreads();
 
 
-        
         [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, ExactSpelling = false)]
         internal static extern void gtk_init(int argc, string[] argv);
 
 
         [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, ExactSpelling = false)]
         internal static extern void gdk_threads_enter();
+
         [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, ExactSpelling = false)]
         internal static extern void gdk_threads_leave();
 
-        
+        [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Auto, ExactSpelling = false)]
+        internal static extern bool gtk_main_iteration_do(bool blocking);
+
         [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Auto, ExactSpelling = false)]
         internal static extern IntPtr g_malloc(UIntPtr n_bytes);
 
@@ -61,7 +64,7 @@ namespace Chromely.Dialogs.Linux
             GTK_MESSAGE_WARNING,
             GTK_MESSAGE_QUESTION,
             GTK_MESSAGE_ERROR,
-            GTK_MESSAGE_OTHER
+            GTK_MESSAGE_NONE
         }
 
         internal enum ButtonsType
@@ -110,47 +113,49 @@ namespace Chromely.Dialogs.Linux
 
         internal enum FileChooserAction
         {
-        GTK_FILE_CHOOSER_ACTION_OPEN,
-        GTK_FILE_CHOOSER_ACTION_SAVE,
-        GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER,
-        GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER
+            GTK_FILE_CHOOSER_ACTION_OPEN,
+            GTK_FILE_CHOOSER_ACTION_SAVE,
+            GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER,
+            GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER
         }
-        
-        
+
+
         [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Auto, ExactSpelling = false)]
-        internal static extern IntPtr gtk_file_chooser_dialog_new(string title, IntPtr parent, FileChooserAction action, 
-            IntPtr first_button_text, int first_button_id, IntPtr second_button_text, int second_button_id, IntPtr args);
+        internal static extern IntPtr gtk_file_chooser_dialog_new(string title, IntPtr parent, FileChooserAction action,
+            IntPtr first_button_text, int first_button_id, IntPtr second_button_text, int second_button_id,
+            IntPtr args);
 
 
         [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Auto, ExactSpelling = false)]
         internal static extern void gtk_file_chooser_set_current_folder(IntPtr chooser, string fileName);
+
         [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Auto, ExactSpelling = false)]
         internal static extern void gtk_file_chooser_set_filename(IntPtr chooser, string fileName);
+
         [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Auto, ExactSpelling = false)]
         internal static extern void gtk_file_chooser_set_current_name(IntPtr chooser, string fileName);
-        
+
         [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Auto, ExactSpelling = false)]
         internal static extern string gtk_file_chooser_get_uri(IntPtr chooser);
-        
+
         [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Auto, ExactSpelling = false)]
         internal static extern string gtk_file_chooser_get_filename(IntPtr chooser);
-        
-        
+
+
         [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Auto, ExactSpelling = false)]
         internal static extern void gtk_file_chooser_set_do_overwrite_confirmation(IntPtr chooser, bool value);
-        
-        
+
+
         [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Auto, ExactSpelling = false)]
-        
         internal static extern void gtk_file_chooser_add_filter(IntPtr chooser, IntPtr filter);
-        
-        
+
+
         [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Auto, ExactSpelling = false)]
         internal static extern IntPtr gtk_file_filter_new();
-        
+
         [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Auto, ExactSpelling = false)]
         internal static extern void gtk_file_filter_set_name(IntPtr filter, string name);
-        
+
         [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Auto, ExactSpelling = false)]
         internal static extern void gtk_file_filter_add_pattern(IntPtr filter, string pattern);
     }
