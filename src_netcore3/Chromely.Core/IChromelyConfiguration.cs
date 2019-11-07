@@ -17,6 +17,7 @@ namespace Chromely.Core
 {
     public interface IChromelyConfiguration
     {
+        string AppName { get; set; }
         ChromelyPlatform Platform { get; set; }
         string ChromelyVersion { get; set; }
         bool LoadCefBinariesIfNotFound { get; set; }

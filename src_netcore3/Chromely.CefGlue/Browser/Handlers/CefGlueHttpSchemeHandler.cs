@@ -227,38 +227,28 @@ namespace Chromely.CefGlue.Browser.Handlers
         }
 
         /// <summary>
-        /// The can get cookie.
-        /// </summary>
-        /// <param name="cookie">
-        /// The cookie.
-        /// </param>
-        /// <returns>
-        /// The <see cref="bool"/>.
-        /// </returns>
-        protected override bool CanGetCookie(CefCookie cookie)
-        {
-            return true;
-        }
-
-        /// <summary>
-        /// The can set cookie.
-        /// </summary>
-        /// <param name="cookie">
-        /// The cookie.
-        /// </param>
-        /// <returns>
-        /// The <see cref="bool"/>.
-        /// </returns>
-        protected override bool CanSetCookie(CefCookie cookie)
-        {
-            return true;
-        }
-
-        /// <summary>
         /// The cancel.
         /// </summary>
         protected override void Cancel()
         {
+        }
+
+        protected override bool Open(CefRequest request, out bool handleRequest, CefCallback callback)
+        {
+            handleRequest = false;
+            return false;
+        }
+
+        protected override bool Skip(long bytesToSkip, out long bytesSkipped, CefResourceSkipCallback callback)
+        {
+            bytesSkipped = 0;
+            return true;
+        }
+
+        protected override bool Read(IntPtr dataOut, int bytesToRead, out int bytesRead, CefResourceReadCallback callback)
+        {
+            bytesRead = -1;
+            return false;
         }
 
         private static string GetPostData(CefRequest request)

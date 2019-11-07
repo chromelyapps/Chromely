@@ -133,8 +133,8 @@ namespace Chromely.CefGlue
                             case LogSeverityOption.EXTERNAL:
                                 cefSettings.LogSeverity = CefLogSeverity.Error;
                                 break;
-                            case LogSeverityOption.ERRORREPORT:
-                                cefSettings.LogSeverity = CefLogSeverity.ErrorReport;
+                            case LogSeverityOption.FATAL:
+                                cefSettings.LogSeverity = CefLogSeverity.Fatal;
                                 break;
                             case LogSeverityOption.DISABLE:
                                 cefSettings.LogSeverity = CefLogSeverity.Disable;

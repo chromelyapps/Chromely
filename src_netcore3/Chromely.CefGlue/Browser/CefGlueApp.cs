@@ -46,7 +46,8 @@ namespace Chromely.CefGlue.Browser
                     bool isStandardScheme = UrlScheme.IsStandardScheme(item.Scheme);
                     if (!isStandardScheme)
                     {
-                        registrar.AddCustomScheme(item.Scheme, true, false, false, false, true, false);
+                        var option = CefSchemeOptions.Local | CefSchemeOptions.CorsEnabled;
+                        registrar.AddCustomScheme(item.Scheme, option);
                     }
                 }
             }
@@ -59,7 +60,8 @@ namespace Chromely.CefGlue.Browser
                     bool isStandardScheme = UrlScheme.IsStandardScheme(item.Scheme);
                     if (!isStandardScheme)
                     {
-                        registrar.AddCustomScheme(item.Scheme, true, false, false, false, true, false);
+                        var option = CefSchemeOptions.Local | CefSchemeOptions.CorsEnabled;
+                        registrar.AddCustomScheme(item.Scheme, option);
                     }
                 }
             }

@@ -1,6 +1,5 @@
 ﻿using Chromely.Core.Infrastructure;
 using System;
-using System.Reflection;
 
 namespace Chromely.Core
 {
@@ -8,6 +7,7 @@ namespace Chromely.Core
     {
         private IChromelyContainer _container;
         private IChromelyConfiguration _config;
+        private IChromelyAppSettings _appSettings;
         private IChromelyLogger _logger;
         private ChromelyApp _chromelyApp;
         private int _stepCompleted;
@@ -22,13 +22,24 @@ namespace Chromely.Core
             var appBuilder = new AppBuilder();
             return appBuilder;
         }
-       
+
         public AppBuilder UseContainer<T>(IChromelyContainer container = null) where T : IChromelyContainer
         {
             _container = container;
             if (_container == null)
             {
                 _container = (T)Activator.CreateInstance(typeof(T));
+            }
+
+            return this;
+        }
+
+        public AppBuilder UseAppSettings<T>(IChromelyAppSettings appSettings = null) where T : IChromelyAppSettings
+        {
+            _appSettings = appSettings;
+            if (_appSettings == null)
+            {
+                _appSettings = (T)Activator.CreateInstance(typeof(T));
             }
 
             return this;
@@ -90,7 +101,7 @@ namespace Chromely.Core
                 throw new Exception($"ChromelyApp {nameof(_chromelyApp)} cannot be null.");
             }
 
-            _chromelyApp.Initialize(_container, _config, _logger);
+            _chromelyApp.Initialize(_container, _appSettings, _config, _logger);
             _container = _chromelyApp.Container;
             _config = _chromelyApp.Configuration;
             _chromelyApp.Configure(_container);

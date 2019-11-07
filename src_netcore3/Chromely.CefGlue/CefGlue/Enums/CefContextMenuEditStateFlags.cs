@@ -2,8 +2,6 @@
 // This file manually written from cef/include/internal/cef_types.h.
 // C API name: cef_context_menu_edit_state_flags_t.
 //
-#pragma warning disable 1591
-// ReSharper disable once CheckNamespace
 namespace Xilium.CefGlue
 {
     using System;

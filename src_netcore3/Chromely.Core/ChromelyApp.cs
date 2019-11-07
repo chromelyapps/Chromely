@@ -42,9 +42,21 @@ namespace Chromely.Core
             }
         }
 
-        public virtual void Initialize(IChromelyContainer container, IChromelyConfiguration config, IChromelyLogger chromelyLogger)
+        public virtual void Initialize(IChromelyContainer container, IChromelyAppSettings appSettings, IChromelyConfiguration config, IChromelyLogger chromelyLogger)
         {
             EnsureExpectedWorkingDirectory();
+
+            #region Container
+
+            _container = container;
+            if (_container == null)
+            {
+                _container = new SimpleContainer();
+            }
+
+            #endregion
+
+            #region Configuration 
 
             if (config == null)
             {
@@ -58,6 +70,28 @@ namespace Chromely.Core
             }
 
             InitConfiguration(config);
+            config.Platform = ChromelyRuntime.Platform;
+
+            #endregion
+
+            #region Application/User Settings
+
+            if (appSettings == null)
+            {
+                appSettings = new DefaultAppSettings();
+            }
+
+            var currentAppSettings = new CurrentAppSettings();
+            currentAppSettings.Properties = appSettings;
+            chromely.App = currentAppSettings;
+
+            chromely.App.Properties.AppName = config.AppName;
+            chromely.App.Properties.Read(config);
+            chromely.App.Properties.Settings.Config = config.UrlSchemes;
+
+            #endregion
+
+            #region Logger
 
             if (chromelyLogger == null)
             {
@@ -68,16 +102,11 @@ namespace Chromely.Core
             defaultLogger.Log = chromelyLogger;
             Logger.Instance = defaultLogger;
 
-            config.Platform = ChromelyRuntime.Platform;
-
-            _container = container;
-            if (_container == null)
-            {
-                _container = new SimpleContainer();
-            }
+            #endregion
 
             // Register all primary objects
             _container.RegisterInstance(typeof(IChromelyContainer), typeof(IChromelyContainer).Name, _container);
+            _container.RegisterInstance(typeof(IChromelyAppSettings), typeof(IChromelyAppSettings).Name, appSettings);
             _container.RegisterInstance(typeof(IChromelyConfiguration), typeof(IChromelyConfiguration).Name, config);
             _container.RegisterInstance(typeof(IChromelyLogger), typeof(IChromelyLogger).Name, chromelyLogger);
         }

@@ -25,7 +25,7 @@ namespace Xilium.CefGlue.Interop
         #if !DEBUG
         [SuppressUnmanagedCodeSecurity]
         #endif
-        private delegate int add_custom_scheme_delegate(cef_scheme_registrar_t* self, cef_string_t* scheme_name, int is_standard, int is_local, int is_display_isolated, int is_secure, int is_cors_enabled, int is_csp_bypassing);
+        private delegate int add_custom_scheme_delegate(cef_scheme_registrar_t* self, cef_string_t* scheme_name, int options);
         
         // Del
         private static IntPtr _p0;
@@ -48,7 +48,7 @@ namespace Xilium.CefGlue.Interop
         private static IntPtr _p1;
         private static add_custom_scheme_delegate _d1;
         
-        public static int add_custom_scheme(cef_scheme_registrar_t* self, cef_string_t* scheme_name, int is_standard, int is_local, int is_display_isolated, int is_secure, int is_cors_enabled, int is_csp_bypassing)
+        public static int add_custom_scheme(cef_scheme_registrar_t* self, cef_string_t* scheme_name, int options)
         {
             add_custom_scheme_delegate d;
             var p = self->_add_custom_scheme;
@@ -58,7 +58,7 @@ namespace Xilium.CefGlue.Interop
                 d = (add_custom_scheme_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(add_custom_scheme_delegate));
                 if (_p1 == IntPtr.Zero) { _d1 = d; _p1 = p; }
             }
-            return d(self, scheme_name, is_standard, is_local, is_display_isolated, is_secure, is_cors_enabled, is_csp_bypassing);
+            return d(self, scheme_name, options);
         }
         
     }

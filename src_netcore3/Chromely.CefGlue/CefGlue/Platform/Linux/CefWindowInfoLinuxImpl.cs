@@ -51,8 +51,8 @@
 
         public override string Name
         {
-            get { return default(string); }
-            set { }
+            get { ThrowIfDisposed(); return cef_string_t.ToString(&_self->window_name); }
+            set { ThrowIfDisposed(); cef_string_t.Copy(value, &_self->window_name); }
         }
 
         public override int X
@@ -107,6 +107,18 @@
         {
             get { ThrowIfDisposed(); return _self->windowless_rendering_enabled != 0; }
             set { ThrowIfDisposed(); _self->windowless_rendering_enabled = value ? 1 : 0; }
+        }
+
+        public override bool SharedTextureEnabled
+        {
+            get { ThrowIfDisposed(); return _self->shared_texture_enabled != 0; }
+            set { ThrowIfDisposed(); _self->shared_texture_enabled = value ? 1 : 0; }
+        }
+
+        public override bool ExternalBeginFrameEnabled
+        {
+            get { ThrowIfDisposed(); return _self->external_begin_frame_enabled != 0; }
+            set { ThrowIfDisposed(); _self->external_begin_frame_enabled = value ? 1 : 0; }
         }
     }
 }

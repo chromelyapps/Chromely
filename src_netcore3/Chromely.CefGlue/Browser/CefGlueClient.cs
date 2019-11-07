@@ -255,9 +255,9 @@ namespace Chromely.CefGlue.Browser
         /// <returns>
         /// The <see cref="bool"/>.
         /// </returns>
-        protected override bool OnProcessMessageReceived(CefBrowser browser, CefProcessId sourceProcess, CefProcessMessage message)
+        protected override bool OnProcessMessageReceived(CefBrowser browser, CefFrame frame, CefProcessId sourceProcess, CefProcessMessage message)
         {
-            return _browserMessageRouter?.OnProcessMessageReceived(browser, sourceProcess, message) ?? false;
+            return _browserMessageRouter?.OnProcessMessageReceived(browser, frame, sourceProcess, message) ?? false;
         }
     }
 }

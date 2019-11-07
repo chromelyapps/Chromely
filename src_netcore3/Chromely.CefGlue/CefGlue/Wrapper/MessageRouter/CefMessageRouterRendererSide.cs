@@ -223,8 +223,12 @@
             {
                 return _browserRequestInfoMap.Count(browser.Identifier);
             }
+            else
+            {
+                return _browserRequestInfoMap.Count();
+            }
 
-            return _browserRequestInfoMap.Count();
+            return 0;
         }
 
         #region The below methods should be called from other CEF handlers. They must be called exactly as documented for the router to function correctly.
@@ -283,7 +287,7 @@
         /// Call from CefRenderProcessHandler::OnProcessMessageReceived. Returns true
         /// if the message is handled by this router or false otherwise.
         /// </summary>
-        public bool OnProcessMessageReceived(CefBrowser browser, CefProcessId sourceProcess, CefProcessMessage message)
+        public bool OnProcessMessageReceived(CefBrowser browser, CefFrame frame, CefProcessId sourceProcess, CefProcessMessage message)
         {
             Helpers.RequireRendererThread();
 
@@ -383,7 +387,8 @@
             args.SetString(4, request);
             args.SetBool(5, persistent);
 
-            browser.SendProcessMessage(CefProcessId.Browser, message);
+            CefFrame frame = browser.GetFrame(frameId);
+            frame?.SendProcessMessage(CefProcessId.Browser, message);
 
             args.Dispose();
             message.Dispose();
@@ -438,7 +443,8 @@
                 args.SetInt(0, contextId);
                 args.SetInt(1, requestId);
 
-                browser.SendProcessMessage(CefProcessId.Browser, message);
+                CefFrame frame = browser.GetFrame(frameId);
+                frame?.SendProcessMessage(CefProcessId.Browser, message);
                 return true;
             }
 

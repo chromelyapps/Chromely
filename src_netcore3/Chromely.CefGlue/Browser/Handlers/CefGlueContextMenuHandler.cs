@@ -1,64 +1,25 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CefGlueContextMenuHandler.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2019 Chromely Projects
-// </copyright>
-// <license>
-//      See the LICENSE.md file in the project root for more information.
-// </license>
-// ----------------------------------------------------------------------------------------------------------------------
-
-using System;
+﻿using System;
 using Chromely.Core;
 using Xilium.CefGlue;
 
 namespace Chromely.CefGlue.Browser.Handlers
 {
-    /// <summary>
-    /// The CefGlue context menu handler.
-    /// </summary>
     public class CefGlueContextMenuHandler : CefContextMenuHandler
     {
         private readonly IChromelyConfiguration _config;
 
-        /// <summary>
-        /// The show dev tools.
-        /// </summary>
         private const int ShowDevTools = 26501;
 
-        /// <summary>
-        /// The close dev tools.
-        /// </summary>
         private const int CloseDevTools = 26502;
 
-        /// <summary>
-        /// The debugging.
-        /// </summary>
         private readonly bool debugging;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CefGlueContextMenuHandler"/> class.
-        /// </summary>
         public CefGlueContextMenuHandler(IChromelyConfiguration config)
         {
             _config = config;
             debugging = _config.DebuggingMode;
         }
 
-        /// <summary>
-        /// The on before context menu.
-        /// </summary>
-        /// <param name="browser">
-        /// The browser.
-        /// </param>
-        /// <param name="frame">
-        /// The frame.
-        /// </param>
-        /// <param name="state">
-        /// The state.
-        /// </param>
-        /// <param name="model">
-        /// The model.
-        /// </param>
         protected override void OnBeforeContextMenu(CefBrowser browser, CefFrame frame, CefContextMenuParams state, CefMenuModel model)
         {
             // To disable the menu then call clear
@@ -76,53 +37,11 @@ namespace Chromely.CefGlue.Browser.Handlers
             }
         }
 
-        /// <summary>
-        /// The run context menu.
-        /// </summary>
-        /// <param name="browser">
-        /// The browser.
-        /// </param>
-        /// <param name="frame">
-        /// The frame.
-        /// </param>
-        /// <param name="parameters">
-        /// The parameters.
-        /// </param>
-        /// <param name="model">
-        /// The model.
-        /// </param>
-        /// <param name="callback">
-        /// The callback.
-        /// </param>
-        /// <returns>
-        /// The <see cref="bool"/>.
-        /// </returns>
         protected override bool RunContextMenu(CefBrowser browser, CefFrame frame, CefContextMenuParams parameters, CefMenuModel model, CefRunContextMenuCallback callback)
         {
             return false;
         }
 
-        /// <summary>
-        /// The on context menu command.
-        /// </summary>
-        /// <param name="browser">
-        /// The browser.
-        /// </param>
-        /// <param name="frame">
-        /// The frame.
-        /// </param>
-        /// <param name="state">
-        /// The state.
-        /// </param>
-        /// <param name="commandId">
-        /// The command id.
-        /// </param>
-        /// <param name="eventFlags">
-        /// The event flags.
-        /// </param>
-        /// <returns>
-        /// The <see cref="bool"/>.
-        /// </returns>
         protected override bool OnContextMenuCommand(CefBrowser browser, CefFrame frame, CefContextMenuParams state, int commandId, CefEventFlags eventFlags)
         {
             if (debugging)
@@ -144,22 +63,10 @@ namespace Chromely.CefGlue.Browser.Handlers
             return false;
         }
 
-        /// <summary>
-        /// The on context menu dismissed.
-        /// </summary>
-        /// <param name="browser">
-        /// The browser.
-        /// </param>
-        /// <param name="frame">
-        /// The frame.
-        /// </param>
         protected override void OnContextMenuDismissed(CefBrowser browser, CefFrame frame)
         {
         }
 
-        /// <summary>
-        /// The dev tools web client.
-        /// </summary>
         private class DevToolsWebClient : CefClient
         {
         }

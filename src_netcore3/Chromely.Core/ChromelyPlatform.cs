@@ -16,10 +16,8 @@ namespace Chromely.Core
     public enum ChromelyPlatform
     {
         NotSupported,
-
         Windows,
         Linux,
-        // ReSharper disable once InconsistentNaming
         MacOSX
     }
 }

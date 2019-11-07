@@ -1,4 +1,4 @@
-﻿namespace Xilium.CefGlue
+namespace Xilium.CefGlue
 {
     using System;
     using System.Collections.Generic;
@@ -81,260 +81,74 @@
         }
 
 
-        private CefReturnValue on_before_resource_load(cef_request_handler_t* self, cef_browser_t* browser, cef_frame_t* frame, cef_request_t* request, cef_request_callback_t* callback)
+        private cef_resource_request_handler_t* get_resource_request_handler(cef_request_handler_t* self, cef_browser_t* browser, cef_frame_t* frame, cef_request_t* request, int is_navigation, int is_download, cef_string_t* request_initiator, int* disable_default_handling)
         {
             CheckSelf(self);
 
-            var m_browser = CefBrowser.FromNative(browser);
-            var m_frame = CefFrame.FromNative(frame);
+            var m_browser = CefBrowser.FromNativeOrNull(browser);
+            var m_frame = CefFrame.FromNativeOrNull(frame);
             var m_request = CefRequest.FromNative(request);
-            var m_callback = CefRequestCallback.FromNative(callback);
+            var m_isNavigation = is_navigation != 0;
+            var m_isDownload = is_download != 0;
+            var m_requestInitiator = cef_string_t.ToString(request_initiator);
+            var m_disableDefaultHandling = *disable_default_handling != 0;
 
-            var result = OnBeforeResourceLoad(m_browser, m_frame, m_request, m_callback);
+            var m_result = GetResourceRequestHandler(m_browser, m_frame, m_request, m_isNavigation, m_isDownload, m_requestInitiator, ref m_disableDefaultHandling);
 
-            if (result != CefReturnValue.ContinueAsync)
-            {
-                m_browser.Dispose();
-                m_frame.Dispose();
-                m_request.Dispose();
-                m_callback.Dispose();
-            }
+            *disable_default_handling = m_disableDefaultHandling ? 1 : 0;
 
-            return result;
+            return m_result != null ? m_result.ToNative() : null;
         }
 
         /// <summary>
-        /// Called on the IO thread before a resource request is loaded. The |request|
-        /// object may be modified. Return RV_CONTINUE to continue the request
-        /// immediately. Return RV_CONTINUE_ASYNC and call CefRequestCallback::
-        /// Continue() at a later time to continue or cancel the request
-        /// asynchronously. Return RV_CANCEL to cancel the request immediately.
+        /// Called on the browser process IO thread before a resource request is
+        /// initiated. The |browser| and |frame| values represent the source of the
+        /// request. |request| represents the request contents and cannot be modified
+        /// in this callback. |is_navigation| will be true if the resource request is a
+        /// navigation. |is_download| will be true if the resource request is a
+        /// download. |request_initiator| is the origin (scheme + domain) of the page
+        /// that initiated the request. Set |disable_default_handling| to true to
+        /// disable default handling of the request, in which case it will need to be
+        /// handled via CefResourceRequestHandler::GetResourceHandler or it will be
+        /// canceled. To allow the resource load to proceed with default handling
+        /// return NULL. To specify a handler for the resource return a
+        /// CefResourceRequestHandler object. If this callback returns NULL the same
+        /// method will be called on the associated CefRequestContextHandler, if any.
         /// </summary>
-        protected virtual CefReturnValue OnBeforeResourceLoad(CefBrowser browser, CefFrame frame, CefRequest request, CefRequestCallback callback)
-        {
-            return CefReturnValue.Continue;
-        }
+        protected abstract CefResourceRequestHandler GetResourceRequestHandler(CefBrowser browser, CefFrame frame, CefRequest request, bool isNavigation, bool isDownload, string requestInitiator, ref bool disableDefaultHandling);
 
 
-        private cef_resource_handler_t* get_resource_handler(cef_request_handler_t* self, cef_browser_t* browser, cef_frame_t* frame, cef_request_t* request)
+        private int get_auth_credentials(cef_request_handler_t* self, cef_browser_t* browser, cef_string_t* origin_url, int isProxy, cef_string_t* host, int port, cef_string_t* realm, cef_string_t* scheme, cef_auth_callback_t* callback)
         {
             CheckSelf(self);
 
             var m_browser = CefBrowser.FromNative(browser);
-            var m_frame = CefFrame.FromNative(frame);
-            var m_request = CefRequest.FromNative(request);
-
-            var handler = GetResourceHandler(m_browser, m_frame, m_request);
-
-            m_request.Dispose();
-
-            return handler != null ? handler.ToNative() : null;
-        }
-
-        /// <summary>
-        /// Called on the IO thread before a resource is loaded. To allow the resource
-        /// to load normally return NULL. To specify a handler for the resource return
-        /// a CefResourceHandler object. The |request| object should not be modified in
-        /// this callback.
-        /// </summary>
-        protected virtual CefResourceHandler GetResourceHandler(CefBrowser browser, CefFrame frame, CefRequest request)
-        {
-            return null;
-        }
-
-
-        private void on_resource_redirect(cef_request_handler_t* self, cef_browser_t* browser, cef_frame_t* frame, cef_request_t* request, cef_response_t* response, cef_string_t* new_url)
-        {
-            CheckSelf(self);
-
-            var m_browser = CefBrowser.FromNative(browser);
-            var m_frame = CefFrame.FromNative(frame);
-            var m_request = CefRequest.FromNative(request);
-            var m_response = CefResponse.FromNative(response);
-            var m_newUrl = cef_string_t.ToString(new_url);
-
-            var o_newUrl = m_newUrl;
-            OnResourceRedirect(m_browser, m_frame, m_request, m_response, ref m_newUrl);
-
-            if ((object)m_newUrl != (object)o_newUrl)
-            {
-                cef_string_t.Copy(m_newUrl, new_url);
-            }
-        }
-
-        /// <summary>
-        /// Called on the IO thread when a resource load is redirected. The |request|
-        /// parameter will contain the old URL and other request-related information.
-        /// The |response| parameter will contain the response that resulted in the
-        /// redirect. The |new_url| parameter will contain the new URL and can be
-        /// changed if desired. The |request| object cannot be modified in this
-        /// callback.
-        /// </summary>
-        protected virtual void OnResourceRedirect(CefBrowser browser, CefFrame frame, CefRequest request, CefResponse response, ref string newUrl)
-        {
-        }
-
-
-        private int on_resource_response(cef_request_handler_t* self, cef_browser_t* browser, cef_frame_t* frame, cef_request_t* request, cef_response_t* response)
-        {
-            CheckSelf(self);
-
-            var m_browser = CefBrowser.FromNative(browser);
-            var m_frame = CefFrame.FromNative(frame);
-            var m_request = CefRequest.FromNative(request);
-            var m_response = CefResponse.FromNative(response);
-
-            var m_result = OnResourceResponse(m_browser, m_frame, m_request, m_response);
-
-            return m_result ? 1 : 0;
-        }
-
-        /// <summary>
-        /// Called on the IO thread when a resource response is received. To allow the
-        /// resource to load normally return false. To redirect or retry the resource
-        /// modify |request| (url, headers or post body) and return true. The
-        /// |response| object cannot be modified in this callback.
-        /// </summary>
-        protected virtual bool OnResourceResponse(CefBrowser browser, CefFrame frame, CefRequest request, CefResponse response)
-        {
-            return false;
-        }
-
-
-        private cef_response_filter_t* get_resource_response_filter(cef_request_handler_t* self, cef_browser_t* browser, cef_frame_t* frame, cef_request_t* request, cef_response_t* response)
-        {
-            CheckSelf(self);
-
-            var mBrowser = CefBrowser.FromNative(browser);
-            var mFrame = CefFrame.FromNative(frame);
-            var mRequest = CefRequest.FromNative(request);
-            var mResponse = CefResponse.FromNative(response);
-
-            var result = GetResourceResponseFilter(mBrowser, mFrame, mRequest, mResponse);
-
-            if (result != null)
-            {
-                return result.ToNative();
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Called on the IO thread to optionally filter resource response content.
-        /// |request| and |response| represent the request and response respectively
-        /// and cannot be modified in this callback.
-        /// </summary>
-        protected virtual CefResponseFilter GetResourceResponseFilter(CefBrowser browser, CefFrame frame, CefRequest request, CefResponse response)
-        {
-            return null;
-        }
-
-
-        private void on_resource_load_complete(cef_request_handler_t* self, cef_browser_t* browser, cef_frame_t* frame, cef_request_t* request, cef_response_t* response, CefUrlRequestStatus status, long received_content_length)
-        {
-            CheckSelf(self);
-
-            var mBrowser = CefBrowser.FromNative(browser);
-            var mFrame = CefFrame.FromNative(frame);
-            var mRequest = CefRequest.FromNative(request);
-            var mResponse = CefResponse.FromNative(response);
-
-            OnResourceLoadComplete(mBrowser, mFrame, mRequest, mResponse, status, received_content_length);
-        }
-
-        /// <summary>
-        /// Called on the IO thread when a resource load has completed. |request| and
-        /// |response| represent the request and response respectively and cannot be
-        /// modified in this callback. |status| indicates the load completion status.
-        /// |received_content_length| is the number of response bytes actually read.
-        /// </summary>
-        protected virtual void OnResourceLoadComplete(CefBrowser browser, CefFrame frame, CefRequest request, CefResponse response, CefUrlRequestStatus status, long receivedContentLength)
-        {
-        }
-
-
-        private int get_auth_credentials(cef_request_handler_t* self, cef_browser_t* browser, cef_frame_t* frame, int isProxy, cef_string_t* host, int port, cef_string_t* realm, cef_string_t* scheme, cef_auth_callback_t* callback)
-        {
-            CheckSelf(self);
-
-            var m_browser = CefBrowser.FromNative(browser);
-            var m_frame = CefFrame.FromNative(frame);
+            var m_originUrl = cef_string_t.ToString(origin_url);
             var m_host = cef_string_t.ToString(host);
             var m_realm = cef_string_t.ToString(realm);
             var m_scheme = cef_string_t.ToString(scheme);
             var m_callback = CefAuthCallback.FromNative(callback);
 
-            var result = GetAuthCredentials(m_browser, m_frame, isProxy != 0, m_host, port, m_realm, m_scheme, m_callback);
+            var result = GetAuthCredentials(m_browser, m_originUrl, isProxy != 0, m_host, port, m_realm, m_scheme, m_callback);
 
             return result ? 1 : 0;
         }
 
         /// <summary>
         /// Called on the IO thread when the browser needs credentials from the user.
-        /// |isProxy| indicates whether the host is a proxy server. |host| contains the
-        /// hostname and |port| contains the port number. |realm| is the realm of the
-        /// challenge and may be empty. |scheme| is the authentication scheme used,
-        /// such as "basic" or "digest", and will be empty if the source of the request
-        /// is an FTP server. Return true to continue the request and call
+        /// |origin_url| is the origin making this authentication request. |isProxy|
+        /// indicates whether the host is a proxy server. |host| contains the hostname
+        /// and |port| contains the port number. |realm| is the realm of the challenge
+        /// and may be empty. |scheme| is the authentication scheme used, such as
+        /// "basic" or "digest", and will be empty if the source of the request is an
+        /// FTP server. Return true to continue the request and call
         /// CefAuthCallback::Continue() either in this method or at a later time when
         /// the authentication information is available. Return false to cancel the
         /// request immediately.
         /// </summary>
-        protected virtual bool GetAuthCredentials(CefBrowser browser, CefFrame frame, bool isProxy, string host, int port, string realm, string scheme, CefAuthCallback callback)
+        protected virtual bool GetAuthCredentials(CefBrowser browser, string originUrl, bool isProxy, string host, int port, string realm, string scheme, CefAuthCallback callback)
         {
             return false;
-        }
-
-
-        private int can_get_cookies(cef_request_handler_t* self, cef_browser_t* browser, cef_frame_t* frame, cef_request_t* request)
-        {
-            CheckSelf(self);
-
-            var mBrowser = CefBrowser.FromNative(browser);
-            var mFrame = CefFrame.FromNative(frame);
-            var mRequest = CefRequest.FromNative(request);
-
-            var mResult = CanGetCookies(mBrowser, mFrame, mRequest);
-
-            return mResult ? 1 : 0;
-        }
-
-        /// <summary>
-        /// Called on the IO thread before sending a network request with a "Cookie"
-        /// request header. Return true to allow cookies to be included in the network
-        /// request or false to block cookies. The |request| object should not be
-        /// modified in this callback.
-        /// </summary>
-        protected virtual bool CanGetCookies(CefBrowser browser, CefFrame frame, CefRequest request)
-        {
-            return true;
-        }
-
-
-        private int can_set_cookie(cef_request_handler_t* self, cef_browser_t* browser, cef_frame_t* frame, cef_request_t* request, cef_cookie_t* cookie)
-        {
-            CheckSelf(self);
-
-            var mBrowser = CefBrowser.FromNative(browser);
-            var mFrame = CefFrame.FromNative(frame);
-            var mRequest = CefRequest.FromNative(request);
-            var mCookie = CefCookie.FromNative(cookie);
-
-            var mResult = CanSetCookie(mBrowser, mFrame, mRequest, mCookie);
-
-            return mResult ? 1 : 0;
-        }
-
-        /// <summary>
-        /// Called on the IO thread when receiving a network request with a
-        /// "Set-Cookie" response header value represented by |cookie|. Return true to
-        /// allow the cookie to be stored or false to block the cookie. The |request|
-        /// object should not be modified in this callback.
-        /// </summary>
-        protected virtual bool CanSetCookie(CefBrowser browser, CefFrame frame, CefRequest request, CefCookie cookie)
-        {
-            return true;
         }
 
 
@@ -363,32 +177,6 @@
         {
             callback.Continue(true);
             return true;
-        }
-
-
-        private void on_protocol_execution(cef_request_handler_t* self, cef_browser_t* browser, cef_string_t* url, int* allow_os_execution)
-        {
-            CheckSelf(self);
-
-            var m_browser = CefBrowser.FromNative(browser);
-            var m_url = cef_string_t.ToString(url);
-            bool m_allow_os_execution;
-
-            OnProtocolExecution(m_browser, m_url, out m_allow_os_execution);
-
-            *allow_os_execution = m_allow_os_execution ? 1 : 0;
-        }
-
-        /// <summary>
-        /// Called on the UI thread to handle requests for URLs with an unknown
-        /// protocol component. Set |allow_os_execution| to true to attempt execution
-        /// via the registered OS protocol handler, if any.
-        /// SECURITY WARNING: YOU SHOULD USE THIS METHOD TO ENFORCE RESTRICTIONS BASED
-        /// ON SCHEME, HOST OR OTHER URL ANALYSIS BEFORE ALLOWING OS EXECUTION.
-        /// </summary>
-        protected virtual void OnProtocolExecution(CefBrowser browser, string url, out bool allowOSExecution)
-        {
-            allowOSExecution = true;
         }
 
 

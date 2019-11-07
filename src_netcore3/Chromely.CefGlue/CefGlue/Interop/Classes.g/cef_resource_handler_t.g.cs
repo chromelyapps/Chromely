@@ -13,11 +13,12 @@ namespace Xilium.CefGlue.Interop
     internal unsafe struct cef_resource_handler_t
     {
         internal cef_base_ref_counted_t _base;
+        internal IntPtr _open;
         internal IntPtr _process_request;
         internal IntPtr _get_response_headers;
+        internal IntPtr _skip;
+        internal IntPtr _read;
         internal IntPtr _read_response;
-        internal IntPtr _can_get_cookie;
-        internal IntPtr _can_set_cookie;
         internal IntPtr _cancel;
         
         [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
@@ -48,6 +49,12 @@ namespace Xilium.CefGlue.Interop
         #if !DEBUG
         [SuppressUnmanagedCodeSecurity]
         #endif
+        internal delegate int open_delegate(cef_resource_handler_t* self, cef_request_t* request, int* handle_request, cef_callback_t* callback);
+        
+        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
+        #if !DEBUG
+        [SuppressUnmanagedCodeSecurity]
+        #endif
         internal delegate int process_request_delegate(cef_resource_handler_t* self, cef_request_t* request, cef_callback_t* callback);
         
         [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
@@ -60,19 +67,19 @@ namespace Xilium.CefGlue.Interop
         #if !DEBUG
         [SuppressUnmanagedCodeSecurity]
         #endif
+        internal delegate int skip_delegate(cef_resource_handler_t* self, long bytes_to_skip, long* bytes_skipped, cef_resource_skip_callback_t* callback);
+        
+        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
+        #if !DEBUG
+        [SuppressUnmanagedCodeSecurity]
+        #endif
+        internal delegate int read_delegate(cef_resource_handler_t* self, void* data_out, int bytes_to_read, int* bytes_read, cef_resource_read_callback_t* callback);
+        
+        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
+        #if !DEBUG
+        [SuppressUnmanagedCodeSecurity]
+        #endif
         internal delegate int read_response_delegate(cef_resource_handler_t* self, void* data_out, int bytes_to_read, int* bytes_read, cef_callback_t* callback);
-        
-        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
-        #if !DEBUG
-        [SuppressUnmanagedCodeSecurity]
-        #endif
-        internal delegate int can_get_cookie_delegate(cef_resource_handler_t* self, cef_cookie_t* cookie);
-        
-        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
-        #if !DEBUG
-        [SuppressUnmanagedCodeSecurity]
-        #endif
-        internal delegate int can_set_cookie_delegate(cef_resource_handler_t* self, cef_cookie_t* cookie);
         
         [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
         #if !DEBUG

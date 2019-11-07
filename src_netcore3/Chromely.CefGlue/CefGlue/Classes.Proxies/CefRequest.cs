@@ -153,6 +153,38 @@
         }
 
         /// <summary>
+        /// Returns the first header value for |name| or an empty string if not found.
+        /// Will not return the Referer value if any. Use GetHeaderMap instead if
+        /// |name| might have multiple values.
+        /// </summary>
+        public string GetHeaderByName(string name)
+        {
+            fixed (char* name_str = name)
+            {
+                var n_name = new cef_string_t(name_str, name != null ? name.Length : 0);
+                var n_result = cef_request_t.get_header_by_name(_self, &n_name);
+                return cef_string_userfree.ToString(n_result);
+            }
+        }
+
+        /// <summary>
+        /// Set the header |name| to |value|. If |overwrite| is true any existing
+        /// values will be replaced with the new value. If |overwrite| is false any
+        /// existing values will not be overwritten. The Referer value cannot be set
+        /// using this method.
+        /// </summary>
+        public void SetHeaderByName(string name, string value, bool overwrite)
+        {
+            fixed (char* name_str = name)
+            fixed (char* value_str = value)
+            {
+                var n_name = new cef_string_t(name_str, name != null ? name.Length : 0);
+                var n_value = new cef_string_t(value_str, value != null ? value.Length : 0);
+                cef_request_t.set_header_by_name(_self, &n_name, &n_value, overwrite ? 1 : 0);
+            }
+        }
+
+        /// <summary>
         /// Set all values at one time.
         /// </summary>
         public void Set(string url, string method, CefPostData postData, NameValueCollection headers)
@@ -226,8 +258,8 @@
 
         /// <summary>
         /// Returns the globally unique identifier for this request or 0 if not
-        /// specified. Can be used by CefRequestHandler implementations in the browser
-        /// process to track a single request across multiple callbacks.
+        /// specified. Can be used by CefResourceRequestHandler implementations in the
+        /// browser process to track a single request across multiple callbacks.
         /// </summary>
         public ulong Identifier
         {

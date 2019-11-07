@@ -182,6 +182,7 @@ namespace Chromely.Core
         }
         private class ConfigurationLocal
         {
+            public string appName { get; set; }
             public StartUrlLocal startUrl { get; set; }
             public bool loadCefBinariesIfNotFound { get; set; }
             public bool silentCefBinariesLoading { get; set; }
@@ -221,6 +222,7 @@ namespace Chromely.Core
                         return;
                     }
 
+                    config.AppName = appName;
                     if (startUrl != null)
                     {
                         config.StartUrl = startUrl.GetStartUrl();

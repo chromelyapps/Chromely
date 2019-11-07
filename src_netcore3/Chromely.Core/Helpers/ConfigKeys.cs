@@ -30,7 +30,7 @@
         public const string INFO = nameof(INFO);
         public const string ERROR = nameof(ERROR);
         public const string EXTERNAL = nameof(EXTERNAL);
-        public const string ERRORREPORT = nameof(ERRORREPORT);
+        public const string FATAL = nameof(FATAL);
         public const string DISABLE = nameof(DISABLE);
     }
 

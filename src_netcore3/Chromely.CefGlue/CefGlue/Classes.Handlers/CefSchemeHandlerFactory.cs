@@ -33,7 +33,7 @@
         /// will be the browser window and frame respectively that originated the
         /// request or NULL if the request did not originate from a browser window
         /// (for example, if the request came from CefURLRequest). The |request| object
-        /// passed to this method will not contain cookie data.
+        /// passed to this method cannot be modified.
         /// </summary>
         protected abstract CefResourceHandler Create(CefBrowser browser, CefFrame frame, string schemeName, CefRequest request);
     }

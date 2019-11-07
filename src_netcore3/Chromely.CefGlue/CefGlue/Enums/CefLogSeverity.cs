@@ -40,12 +40,13 @@ namespace Xilium.CefGlue
         Error,
 
         /// <summary>
-        /// ERROR_REPORT logging.
+        /// FATAL logging.
         /// </summary>
-        ErrorReport,
+        Fatal,
 
         /// <summary>
-        /// Completely disable logging.
+        /// Disable logging to file for all messages, and to stderr for messages with
+        /// severity less than FATAL.
         /// </summary>
         Disable = 99,
     }

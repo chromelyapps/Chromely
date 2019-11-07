@@ -1,10 +1,11 @@
 {
+  "appName": "chromely_demo",
   "startUrl": {
     "url": "local://app/chromely.html",
     "loadType": "localResource"
   },
   "loadCefBinariesIfNotFound": true,
-  "silentCefBinariesLoading": true,
+  "silentCefBinariesLoading": false,
   "windowLeft": 0,
   "windowTop": 0,
   "windowWidth": 1200,

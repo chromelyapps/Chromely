@@ -52,7 +52,8 @@
 
         /// <summary>
         /// Called to retrieve the root window rectangle in screen coordinates. Return
-        /// true if the rectangle was provided.
+        /// true if the rectangle was provided. If this method returns false the
+        /// rectangle from GetViewRect will be used.
         /// </summary>
         protected virtual bool GetRootScreenRect(CefBrowser browser, ref CefRectangle rect)
         {
@@ -61,35 +62,26 @@
         }
 
 
-        private int get_view_rect(cef_render_handler_t* self, cef_browser_t* browser, cef_rect_t* rect)
+        private void get_view_rect(cef_render_handler_t* self, cef_browser_t* browser, cef_rect_t* rect)
         {
             CheckSelf(self);
 
             var m_browser = CefBrowser.FromNative(browser);
-            var m_rect = new CefRectangle();
+            CefRectangle m_rect;
 
-            var result = GetViewRect(m_browser, ref m_rect);
+            GetViewRect(m_browser, out m_rect);
 
-            if (result)
-            {
-                rect->x = m_rect.X;
-                rect->y = m_rect.Y;
-                rect->width = m_rect.Width;
-                rect->height = m_rect.Height;
-                return 1;
-            }
-            else return 0;
+            rect->x = m_rect.X;
+            rect->y = m_rect.Y;
+            rect->width = m_rect.Width;
+            rect->height = m_rect.Height;
         }
 
         /// <summary>
         /// Called to retrieve the view rectangle which is relative to screen
-        /// coordinates. Return true if the rectangle was provided.
+        /// coordinates. This method must always provide a non-empty rectangle.
         /// </summary>
-        protected virtual bool GetViewRect(CefBrowser browser, ref CefRectangle rect)
-        {
-            // TODO: return CefRectangle? (Nullable<CefRectangle>) instead of returning bool?
-            return false;
-        }
+        protected abstract void GetViewRect(CefBrowser browser, out CefRectangle rect);
 
 
         private int get_screen_point(cef_render_handler_t* self, cef_browser_t* browser, int viewX, int viewY, int* screenX, int* screenY)
@@ -215,9 +207,46 @@
         /// contains the pixel data for the whole image. |dirtyRects| contains the set
         /// of rectangles in pixel coordinates that need to be repainted. |buffer| will
         /// be |width|*|height|*4 bytes in size and represents a BGRA image with an
-        /// upper-left origin.
+        /// upper-left origin. This method is only called when CefWindowInfo::SharedTextureEnabled
+        /// is set to false.
         /// </summary>
         protected abstract void OnPaint(CefBrowser browser, CefPaintElementType type, CefRectangle[] dirtyRects, IntPtr buffer, int width, int height);
+
+
+        private void on_accelerated_paint(cef_render_handler_t* self, cef_browser_t* browser, CefPaintElementType type, UIntPtr dirtyRectsCount, cef_rect_t* dirtyRects, void* shared_handle)
+        {
+            CheckSelf(self);
+
+            var m_browser = CefBrowser.FromNative(browser);
+
+            // TODO: reuse arrays?
+            var m_dirtyRects = new CefRectangle[(int)dirtyRectsCount];
+
+            var count = (int)dirtyRectsCount;
+            var rect = dirtyRects;
+            for (var i = 0; i < count; i++)
+            {
+                m_dirtyRects[i].X = rect->x;
+                m_dirtyRects[i].Y = rect->y;
+                m_dirtyRects[i].Width = rect->width;
+                m_dirtyRects[i].Height = rect->height;
+
+                rect++;
+            }
+
+            OnAcceleratedPaint(m_browser, type, m_dirtyRects, (IntPtr)shared_handle);
+        }
+
+        /// <summary>
+        /// Called when an element has been rendered to the shared texture handle.
+        /// |type| indicates whether the element is the view or the popup widget.
+        /// |dirtyRects| contains the set of rectangles in pixel coordinates that need
+        /// to be repainted. |shared_handle| is the handle for a D3D11 Texture2D that
+        /// can be accessed via ID3D11Device using the OpenSharedResource method. This
+        /// method is only called when CefWindowInfo::SharedTextureEnabled is set to
+        /// true, and is currently only supported on Windows.
+        /// </summary>
+        protected abstract void OnAcceleratedPaint(CefBrowser browser, CefPaintElementType type, CefRectangle[] dirtyRects, IntPtr sharedHandle);
 
 
         private void on_cursor_change(cef_render_handler_t* self, cef_browser_t* browser, IntPtr cursor, CefCursorType type, cef_cursor_info_t* custom_cursor_info)
@@ -281,7 +310,7 @@
 
         /// <summary>
         /// Called when the web view wants to update the mouse cursor during a
-        /// drag and drop operation. |operation| describes the allowed operation
+        /// drag & drop operation. |operation| describes the allowed operation
         /// (none, move, copy, link).
         /// </summary>
         protected virtual void UpdateDragCursor(CefBrowser browser, CefDragOperationsMask operation)
@@ -361,5 +390,22 @@
         /// the character range.
         /// </summary>
         protected virtual void OnTextSelectionChanged(CefBrowser browser, string selectedText, CefRange selectedRange) { }
+
+
+        private void on_virtual_keyboard_requested(cef_render_handler_t* self, cef_browser_t* browser, CefTextInputMode input_mode)
+        {
+            CheckSelf(self);
+
+            var mBrowser = CefBrowser.FromNative(browser);
+            OnVirtualKeyboardRequested(mBrowser, input_mode);
+        }
+
+        /// <summary>
+        /// Called when an on-screen keyboard should be shown or hidden for the
+        /// specified |browser|. |input_mode| specifies what kind of keyboard
+        /// should be opened. If |input_mode| is CEF_TEXT_INPUT_MODE_NONE, any
+        /// existing keyboard for this browser should be hidden.
+        /// </summary>
+        protected virtual void OnVirtualKeyboardRequested(CefBrowser browser, CefTextInputMode inputMode) { }
     }
 }

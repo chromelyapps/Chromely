@@ -37,6 +37,8 @@ namespace Xilium.CefGlue.Interop
         internal IntPtr _get_browser;
         internal IntPtr _get_v8context;
         internal IntPtr _visit_dom;
+        internal IntPtr _create_urlrequest;
+        internal IntPtr _send_process_message;
         
         [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
         #if !DEBUG
@@ -205,6 +207,18 @@ namespace Xilium.CefGlue.Interop
         [SuppressUnmanagedCodeSecurity]
         #endif
         private delegate void visit_dom_delegate(cef_frame_t* self, cef_domvisitor_t* visitor);
+        
+        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
+        #if !DEBUG
+        [SuppressUnmanagedCodeSecurity]
+        #endif
+        private delegate cef_urlrequest_t* create_urlrequest_delegate(cef_frame_t* self, cef_request_t* request, cef_urlrequest_client_t* client);
+        
+        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
+        #if !DEBUG
+        [SuppressUnmanagedCodeSecurity]
+        #endif
+        private delegate void send_process_message_delegate(cef_frame_t* self, CefProcessId target_process, cef_process_message_t* message);
         
         // AddRef
         private static IntPtr _p0;
@@ -680,6 +694,40 @@ namespace Xilium.CefGlue.Interop
                 if (_p1b == IntPtr.Zero) { _d1b = d; _p1b = p; }
             }
             d(self, visitor);
+        }
+        
+        // CreateURLRequest
+        private static IntPtr _p1c;
+        private static create_urlrequest_delegate _d1c;
+        
+        public static cef_urlrequest_t* create_urlrequest(cef_frame_t* self, cef_request_t* request, cef_urlrequest_client_t* client)
+        {
+            create_urlrequest_delegate d;
+            var p = self->_create_urlrequest;
+            if (p == _p1c) { d = _d1c; }
+            else
+            {
+                d = (create_urlrequest_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(create_urlrequest_delegate));
+                if (_p1c == IntPtr.Zero) { _d1c = d; _p1c = p; }
+            }
+            return d(self, request, client);
+        }
+        
+        // SendProcessMessage
+        private static IntPtr _p1d;
+        private static send_process_message_delegate _d1d;
+        
+        public static void send_process_message(cef_frame_t* self, CefProcessId target_process, cef_process_message_t* message)
+        {
+            send_process_message_delegate d;
+            var p = self->_send_process_message;
+            if (p == _p1d) { d = _d1d; }
+            else
+            {
+                d = (send_process_message_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(send_process_message_delegate));
+                if (_p1d == IntPtr.Zero) { _d1d = d; _p1d = p; }
+            }
+            d(self, target_process, message);
         }
         
     }

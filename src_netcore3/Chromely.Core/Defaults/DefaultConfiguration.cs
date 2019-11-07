@@ -8,6 +8,7 @@ namespace Chromely.Core
 {
     public class DefaultConfiguration : IChromelyConfiguration
     {
+        public string AppName { get; set; }
         public ChromelyPlatform Platform { get; set; }
         public string ChromelyVersion { get; set; }
         public bool LoadCefBinariesIfNotFound { get; set; }

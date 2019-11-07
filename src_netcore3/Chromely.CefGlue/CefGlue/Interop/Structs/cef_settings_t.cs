@@ -1,4 +1,4 @@
-﻿//
+//
 // This file manually written from cef/include/internal/cef_types.h.
 // C API name: cef_settings_t.
 //
@@ -19,11 +19,13 @@ namespace Xilium.CefGlue.Interop
         public int no_sandbox;
         public cef_string_t browser_subprocess_path;
         public cef_string_t framework_dir_path;
+        public cef_string_t main_bundle_path;
         public int multi_threaded_message_loop;
         public int external_message_pump;
         public int windowless_rendering_enabled;
         public int command_line_args_disabled;
         public cef_string_t cache_path;
+        public cef_string_t root_cache_path;
         public cef_string_t user_data_path;
         public int persist_session_cookies;
         public int persist_user_preferences;
@@ -42,6 +44,7 @@ namespace Xilium.CefGlue.Interop
         public int enable_net_security_expiration;
         public uint background_color;
         public cef_string_t accept_language_list;
+        public cef_string_t application_client_id_for_file_scanning;
 
         #region Alloc & Free
         private static int _sizeof;

@@ -1,6 +1,3 @@
-﻿#pragma warning disable 1591
-
-// ReSharper disable once CheckNamespace
 namespace Xilium.CefGlue
 {
     using System;
@@ -47,6 +44,13 @@ namespace Xilium.CefGlue
         public string FrameworkDirPath { get; set; }
 
         /// <summary>
+        /// The path to the main bundle on macOS. If this value is empty then it
+        /// defaults to the top-level app bundle. Also configurable using
+        /// the "main-bundle-path" command-line switch.
+        /// </summary>
+        public string MainBundlePath { get; set; }
+
+        /// <summary>
         /// Set to <c>true</c> to have the browser process message loop run in a separate
         /// thread. If <c>false</c> than the CefDoMessageLoopWork() function must be
         /// called from your application message loop. This option is only supported on
@@ -82,14 +86,26 @@ namespace Xilium.CefGlue
         public bool CommandLineArgsDisabled { get; set; }
 
         /// <summary>
-        /// The location where cache data will be stored on disk. If empty then
-        /// browsers will be created in "incognito mode" where in-memory caches are
-        /// used for storage and no data is persisted to disk. HTML5 databases such as
-        /// localStorage will only persist across sessions if a cache path is
-        /// specified. Can be overridden for individual CefRequestContext instances via
-        /// the CefRequestContextSettings.cache_path value.
+        /// The location where data for the global browser cache will be stored on
+        /// disk. If non-empty this must be either equal to or a child directory of
+        /// CefSettings.root_cache_path. If empty then browsers will be created in
+        /// "incognito mode" where in-memory caches are used for storage and no data is
+        /// persisted to disk. HTML5 databases such as localStorage will only persist
+        /// across sessions if a cache path is specified. Can be overridden for
+        /// individual CefRequestContext instances via the
+        /// CefRequestContextSettings.cache_path value.
         /// </summary>
         public string CachePath { get; set; }
+
+        /// <summary>
+        /// The root directory that all CefSettings.cache_path and
+        /// CefRequestContextSettings.cache_path values must have in common. If this
+        /// value is empty and CefSettings.cache_path is non-empty then this value will
+        /// default to the CefSettings.cache_path value. Failure to set this value
+        /// correctly may result in the sandbox blocking read/write access to the
+        /// cache_path directory.
+        /// </summary>
+        public string RootCachePath { get; set; }
 
         /// <summary>
         /// The location where user data such as spell checking dictionary files will
@@ -159,9 +175,10 @@ namespace Xilium.CefGlue
 
         /// <summary>
         /// The log severity. Only messages of this severity level or higher will be
-        /// logged. Also configurable using the "log-severity" command-line switch with
-        /// a value of "verbose", "info", "warning", "error", "error-report" or
-        /// "disable".
+        /// logged. When set to DISABLE no messages will be written to the log file,
+        /// but FATAL messages will still be output to stderr. Also configurable using
+        /// the "log-severity" command-line switch with a value of "verbose", "info",
+        /// "warning", "error", "fatal" or "disable".
         /// </summary>
         public CefLogSeverity LogSeverity { get; set; }
 
@@ -263,17 +280,27 @@ namespace Xilium.CefGlue
         /// </summary>
         public string AcceptLanguageList { get; set; }
 
+        /// <summary>
+        /// GUID string used for identifying the application. This is passed to the
+        /// system AV function for scanning downloaded files. By default, the GUID
+        /// will be an empty string and the file will be treated as an untrusted
+        /// file when the GUID is empty.
+        /// </summary>
+        public string ApplicationClientIdForFileScanning { get; set; }
+
         internal cef_settings_t* ToNative()
         {
             var ptr = cef_settings_t.Alloc();
             ptr->no_sandbox = NoSandbox ? 1 : 0;
             cef_string_t.Copy(BrowserSubprocessPath, &ptr->browser_subprocess_path);
             cef_string_t.Copy(FrameworkDirPath, &ptr->framework_dir_path);
+            cef_string_t.Copy(MainBundlePath, &ptr->main_bundle_path);
             ptr->multi_threaded_message_loop = MultiThreadedMessageLoop ? 1 : 0;
             ptr->windowless_rendering_enabled = WindowlessRenderingEnabled ? 1 : 0;
             ptr->external_message_pump = ExternalMessagePump ? 1 : 0;
             ptr->command_line_args_disabled = CommandLineArgsDisabled ? 1 : 0;
             cef_string_t.Copy(CachePath, &ptr->cache_path);
+            cef_string_t.Copy(RootCachePath, &ptr->root_cache_path);
             cef_string_t.Copy(UserDataPath, &ptr->user_data_path);
             ptr->persist_session_cookies = PersistSessionCookies ? 1 : 0;
             ptr->persist_user_preferences = PersistUserPreferences ? 1 : 0;
@@ -292,6 +319,7 @@ namespace Xilium.CefGlue
             ptr->enable_net_security_expiration = EnableNetSecurityExpiration ? 1 : 0;
             ptr->background_color = BackgroundColor.ToArgb();
             cef_string_t.Copy(AcceptLanguageList, &ptr->accept_language_list);
+            cef_string_t.Copy(ApplicationClientIdForFileScanning, &ptr->application_client_id_for_file_scanning);
             return ptr;
         }
 
@@ -299,7 +327,9 @@ namespace Xilium.CefGlue
         {
             libcef.string_clear(&ptr->browser_subprocess_path);
             libcef.string_clear(&ptr->framework_dir_path);
+            libcef.string_clear(&ptr->main_bundle_path);
             libcef.string_clear(&ptr->cache_path);
+            libcef.string_clear(&ptr->root_cache_path);
             libcef.string_clear(&ptr->user_data_path);
             libcef.string_clear(&ptr->user_agent);
             libcef.string_clear(&ptr->product_version);
@@ -309,6 +339,7 @@ namespace Xilium.CefGlue
             libcef.string_clear(&ptr->resources_dir_path);
             libcef.string_clear(&ptr->locales_dir_path);
             libcef.string_clear(&ptr->accept_language_list);
+            libcef.string_clear(&ptr->application_client_id_for_file_scanning);
         }
 
         internal static void Free(cef_settings_t* ptr)

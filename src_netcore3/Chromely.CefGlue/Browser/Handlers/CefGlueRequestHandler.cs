@@ -41,6 +41,11 @@ namespace Chromely.CefGlue.Browser.Handlers
             _browser = browser;
         }
 
+        protected override CefResourceRequestHandler GetResourceRequestHandler(CefBrowser browser, CefFrame frame, CefRequest request, bool isNavigation, bool isDownload, string requestInitiator, ref bool disableDefaultHandling)
+        {
+            return null;
+        }
+
         /// <summary>
         /// The on before browse.
         /// </summary>

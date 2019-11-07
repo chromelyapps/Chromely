@@ -67,6 +67,6 @@ namespace Xilium.CefGlue
         NoReferrer,
 
         // Always the last value in this enumeration.
-        //LastValue,
+        LastValue = NoReferrer,
     }
 }
