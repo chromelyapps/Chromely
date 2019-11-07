@@ -61,8 +61,7 @@ namespace Chromely.CefGlue.BrowserWindow
                     {
                         if (config.SilentCefBinariesLoading)
                         {
-                            // CefLoader.Load(config.Platform);
-                            CefLoaderTemp.Load(config.Platform);
+                            CefLoader.Load(config.Platform);
                         }
                         else
                         {
@@ -129,8 +128,7 @@ namespace Chromely.CefGlue.BrowserWindow
                 var startTempFile = LaunchStartPage();
                 tempFiles.Add(startTempFile);
 
-                // CefLoader.Load(platform);
-                CefLoaderTemp.Load(platform);
+                CefLoader.Load(platform);
 
                 stopwatch.Stop();
                 var competedTempFile = LaunchCompletedPage($"Time elapsed: {stopwatch.Elapsed}.");

@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chromely.Core.Tests", "Test
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chromely.Integration.Test", "Tests\Chromely.Integration.Test\Chromely.Integration.Test.csproj", "{A248DCDC-2F83-4E08-8924-5386E6090865}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chromely.Integration.TestApp", "Tests\Chromely.Integration.TestApp\Chromely.Integration.TestApp.csproj", "{1449BB63-7E05-4160-B3C2-DDB703BD0297}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,10 @@ Global
 		{A248DCDC-2F83-4E08-8924-5386E6090865}.Debug|Any CPU.ActiveCfg = Debug|x64
 		{A248DCDC-2F83-4E08-8924-5386E6090865}.Debug|Any CPU.Build.0 = Debug|x64
 		{A248DCDC-2F83-4E08-8924-5386E6090865}.Release|Any CPU.ActiveCfg = Release|x64
+		{1449BB63-7E05-4160-B3C2-DDB703BD0297}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1449BB63-7E05-4160-B3C2-DDB703BD0297}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1449BB63-7E05-4160-B3C2-DDB703BD0297}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1449BB63-7E05-4160-B3C2-DDB703BD0297}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -47,6 +53,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{2EAC5A46-17F0-464C-9B75-0E404F880220} = {14116D18-B73C-47DE-A8AD-9E315D304EE2}
 		{A248DCDC-2F83-4E08-8924-5386E6090865} = {14116D18-B73C-47DE-A8AD-9E315D304EE2}
+		{1449BB63-7E05-4160-B3C2-DDB703BD0297} = {14116D18-B73C-47DE-A8AD-9E315D304EE2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E3F0A011-30A1-427B-84A3-3F407C61FC46}

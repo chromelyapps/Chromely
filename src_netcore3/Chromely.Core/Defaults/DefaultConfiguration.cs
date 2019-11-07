@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Chromely.Core.Host;
 using Chromely.Core.Infrastructure;
 using Chromely.Core.RestfulService;
@@ -38,5 +39,14 @@ namespace Chromely.Core
         public Dictionary<string, string> CustomSettings { get; set; }
         public IChromelyJavaScriptExecutor JavaScriptExecutor { get; set; }
         public Dictionary<string, object> ExtensionData { get; set; }
+
+
+        public DefaultConfiguration()
+        {
+            AppName = Assembly.GetEntryAssembly()?.GetName().Name;
+            WindowTitle = AppName;
+            Platform = ChromelyRuntime.Platform;
+            AppExeLocation = AppDomain.CurrentDomain.BaseDirectory;
+        }
     }
 }

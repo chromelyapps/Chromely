@@ -22,6 +22,7 @@ using Chromely.Core.Infrastructure;
 using ICSharpCode.SharpZipLib.BZip2;
 using ICSharpCode.SharpZipLib.Tar;
 using Xilium.CefGlue;
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace Chromely.CefGlue.Loader
 {
@@ -146,12 +147,14 @@ namespace Chromely.CefGlue.Loader
             var binaryNamePattern1 = $@"""(cef_binary_[0-9]+\.{build}\.[0-9]+\.(.*)_{platformIdentifier}_client.tar.bz2)""";
             
             // cef_binary_73.1.5+g4a68f1d+chromium-73.0.3683.75_windows64_client.tar.bz2
-            var binaryNamePattern2 = $@"""(cef_binary_.*\+chromium\-[0-9]+\.[0-9]+\.{build}\.[0-9]_{platformIdentifier}_client.tar.bz2)""";
+            // cef_binary_77.1.18+g8e8d602+chromium-77.0.3865.120_windows64_client.tar.bz2
+            var binaryNamePattern2 = $@"""(cef_binary_.*(\+|%2B)chromium\-[0-9]+\.[0-9]+\.{build}\.[0-9]+_{platformIdentifier}_client.tar.bz2)""";
             
             using (var client = new WebClient())
             {
                 Logger.Instance.Log.Info($"CefLoader: Load index page {indexUrl}");
                 var cefIndex = client.DownloadString(indexUrl);
+                
                 // up to Chromium version 72
                 var found = new Regex(binaryNamePattern1).Match(cefIndex);
                 if (found.Success)
@@ -175,7 +178,9 @@ namespace Chromely.CefGlue.Loader
         private void GetDownloadUrl()
         {
             _archiveName = FindCefArchiveName(_platform, _architecture, _build);
-            _folderName = _archiveName.Replace(".tar.bz2", "");
+            _folderName = _archiveName
+                .Replace("%2B", "+")
+                .Replace(".tar.bz2", "");
             _downloadUrl = CefDownloadUrl(_archiveName);
             Logger.Instance.Log.Info($"CefLoader: Found download URL {_downloadUrl}");
         }
@@ -305,7 +310,25 @@ namespace Chromely.CefGlue.Loader
             // we have to copy the 'Release' folder to the application directory
             var srcPathRelease = Path.Combine(_tempDirectory, _folderName, "Release");
             var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            CopyDirectory(srcPathRelease, appDirectory);
+            if (_platform != ChromelyPlatform.MacOSX)
+            {
+                CopyDirectory(srcPathRelease, appDirectory);
+            }
+
+            var srcPathResources = Path.Combine(_tempDirectory, _folderName, "Resources");
+            CopyDirectory(srcPathResources, appDirectory);
+
+            if (_platform != ChromelyPlatform.MacOSX) return;
+            
+            var cefFrameworkFolder = Path.Combine(srcPathRelease, "Chromium Embedded Framework.framework");
+            // rename Chromium Embedded Framework to libcef.dylib and copy to destination folder
+            var frameworkFile = Path.Combine(cefFrameworkFolder, "Chromium Embedded Framework");
+            var libcefFile = Path.Combine(appDirectory, "libcef.dylib");
+            var libcefdylibInfo = new FileInfo(frameworkFile);
+            libcefdylibInfo.CopyTo(libcefFile, true);
+            
+            var srcPathLibraries = Path.Combine(cefFrameworkFolder, "Libraries");
+            CopyDirectory(srcPathLibraries, appDirectory);
         }
         
         private void DecompressProgressChanged(int percent)
@@ -354,9 +377,10 @@ namespace Chromely.CefGlue.Loader
                 Directory.CreateDirectory(newPath);
             }
 
-             // Copy all the files & replaces any files with the same name
+            // Copy all the files & replaces any files with the same name
             foreach (var srcFile in Directory.GetFiles(srcPath, "*.*", SearchOption.AllDirectories))
             {
+                // ReSharper disable once AssignNullToNotNullAttribute
                 var dstFile = Path.Combine(dstPath, Path.GetFileName(srcFile));
                 File.Copy(srcFile, dstFile, true);
 
