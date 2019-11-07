@@ -141,11 +141,11 @@ namespace Chromely.Core.Defaults
             {
                 {
                     "divObjective",
-                    "To build HTML5 desktop apps using embedded Chromium without WinForm or WPF. Uses Windows and Linux native GUI API. It can be extended to use WinForm or WPF. Main form of communication with Chromium rendering process is via Ajax HTTP/XHR requests using custom schemes and domains (CefGlue, CefSharp) and .NET/Javascript integration (CefSharp)."
+                    "To build HTML5 desktop apps using embedded Chromium without WinForm or WPF. Uses Windows, Linux and MacOS native GUI API. It can be extended to use WinForm or WPF. Main form of communication with Chromium rendering process is via CEF Message Router, Ajax HTTP/XHR requests using custom schemes and domains."
                 },
                 {
                     "divPlatform",
-                    "Cross-platform - Windows, Linux. Built on CefGlue, CefSharp, NET Standard 2.0, .NET Core 2.0, .NET Framework 4.61 and above."
+                    "Cross-platform - Windows, Linux, MacOS. Built on CefGlue, NET Standard 2.0, .NET Core 3.0, .NET Framework 4.61 and above."
                 },
                 { "divVersion", _config.ChromelyVersion }
             };

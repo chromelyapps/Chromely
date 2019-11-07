@@ -5,7 +5,7 @@ namespace Chromely.Core.Infrastructure
 {
     public static class AppSettingInfo
     {
-        public static string GetSettingsFilePath(ChromelyPlatform platform, string appName = "chromely")
+        public static string GetSettingsFilePath(ChromelyPlatform platform, string appName = "chromely", bool onSave = false)
         {
             try
             {
@@ -25,8 +25,15 @@ namespace Chromely.Core.Infrastructure
                         break;
                 }
 
-                Directory.CreateDirectory(appSettingsDir);
-                if (Directory.Exists(appSettingsDir))
+                if (onSave)
+                {
+                    Directory.CreateDirectory(appSettingsDir);
+                    if (Directory.Exists(appSettingsDir))
+                    {
+                        return Path.Combine(appSettingsDir, fileName);
+                    }
+                }
+                else
                 {
                     return Path.Combine(appSettingsDir, fileName);
                 }

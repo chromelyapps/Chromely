@@ -76,7 +76,7 @@ namespace Chromely.Core.Defaults
 
                 if (appSettingsFile == null)
                 {
-                    appSettingsFile = AppSettingInfo.GetSettingsFilePath(config.Platform, AppName);
+                    appSettingsFile = AppSettingInfo.GetSettingsFilePath(config.Platform, AppName, true);
                 }
 
                 if (appSettingsFile == null)
@@ -92,6 +92,8 @@ namespace Chromely.Core.Defaults
 
                     var jsonDic = JsonSerializer.Serialize(_chromelyDynamic.Dictionary, options);
                     streamWriter.Write(jsonDic);
+
+                    Logger.Instance.Log.Info("AppSettings FileName:" + appSettingsFile);
                 }
             }
             catch (Exception exception)

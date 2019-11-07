@@ -1,13 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CefGlueHttpSchemeHandler.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2019 Chromely Projects
-// </copyright>
-// <license>
-//      See the LICENSE.md file in the project root for more information.
-// </license>
-// ----------------------------------------------------------------------------------------------------------------------
-
-using System;
+﻿using System;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -19,32 +10,14 @@ using Xilium.CefGlue;
 
 namespace Chromely.CefGlue.Browser.Handlers
 {
-    /// <summary>
-    /// The CefGlue http scheme handler.
-    /// </summary>
     public class CefGlueHttpSchemeHandler : CefResourceHandler
     {
         private readonly IChromelyConfiguration _config;
         private readonly IChromelyRequestTaskRunner _requestTaskRunner;
 
-        /// <summary>
-        /// The ChromelyResponse object.
-        /// </summary>
         private ChromelyResponse _chromelyResponse;
-
-        /// <summary>
-        /// The response in bytes.
-        /// </summary>
         private byte[] _responseBytes;
-
-        /// <summary>
-        /// The completed flag.
-        /// </summary>
         private bool _completed;
-
-        /// <summary>
-        /// The total bytes read.
-        /// </summary>
         private int _totalBytesRead;
 
         public CefGlueHttpSchemeHandler(IChromelyConfiguration config, IChromelyRequestTaskRunner requestTaskRunner)
@@ -53,18 +26,7 @@ namespace Chromely.CefGlue.Browser.Handlers
             _requestTaskRunner = requestTaskRunner;
         }
 
-        /// <summary>
-        /// The process request.
-        /// </summary>
-        /// <param name="request">
-        /// The request.
-        /// </param>
-        /// <param name="callback">
-        /// The callback.
-        /// </param>
-        /// <returns>
-        /// The <see cref="bool"/>.
-        /// </returns>
+        [Obsolete]
         protected override bool ProcessRequest(CefRequest request, CefCallback callback)
         {
             var isCustomScheme = _config?.UrlSchemes?.IsUrlRegisteredCustomScheme(request.Url);
@@ -124,18 +86,6 @@ namespace Chromely.CefGlue.Browser.Handlers
             return false;
         }
 
-        /// <summary>
-        /// The get response headers.
-        /// </summary>
-        /// <param name="response">
-        /// The response.
-        /// </param>
-        /// <param name="responseLength">
-        /// The response length.
-        /// </param>
-        /// <param name="redirectUrl">
-        /// The redirect url.
-        /// </param>
         protected override void GetResponseHeaders(CefResponse response, out long responseLength, out string redirectUrl)
         {
             // unknown content-length
@@ -166,24 +116,7 @@ namespace Chromely.CefGlue.Browser.Handlers
             }
         }
 
-        /// <summary>
-        /// The read response.
-        /// </summary>
-        /// <param name="response">
-        /// The response.
-        /// </param>
-        /// <param name="bytesToRead">
-        /// The bytes to read.
-        /// </param>
-        /// <param name="bytesRead">
-        /// The bytes read.
-        /// </param>
-        /// <param name="callback">
-        /// The callback.
-        /// </param>
-        /// <returns>
-        /// The <see cref="bool"/>.
-        /// </returns>
+        [Obsolete]
         protected override bool ReadResponse(Stream response, int bytesToRead, out int bytesRead, CefCallback callback)
         {
             int currBytesRead = 0;
@@ -226,9 +159,6 @@ namespace Chromely.CefGlue.Browser.Handlers
             return true;
         }
 
-        /// <summary>
-        /// The cancel.
-        /// </summary>
         protected override void Cancel()
         {
         }

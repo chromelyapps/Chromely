@@ -17,43 +17,14 @@ using Xilium.CefGlue;
 
 namespace Chromely.CefGlue.Browser.Handlers
 {
-    /// <summary>
-    /// The CefGlue resource scheme handler.
-    /// </summary>
     public class CefGlueResourceSchemeHandler : CefResourceHandler
     {
-        /// <summary>
-        /// The file read in bytes.
-        /// </summary>
         private byte[] _fileBytes;
-
-        /// <summary>
-        /// The mime type.
-        /// </summary>
         private string _mime;
-
-        /// <summary>
-        /// The completed flag.
-        /// </summary>
         private bool _completed;
-
-        /// <summary>
-        /// The total bytes read.
-        /// </summary>
         private int _totalBytesRead;
 
-        /// <summary>
-        /// The process request.
-        /// </summary>
-        /// <param name="request">
-        /// The request.
-        /// </param>
-        /// <param name="callback">
-        /// The callback.
-        /// </param>
-        /// <returns>
-        /// The <see cref="bool"/>.
-        /// </returns>
+        [Obsolete]
         protected override bool ProcessRequest(CefRequest request, CefCallback callback)
         {
             var u = new Uri(request.Url);
@@ -63,7 +34,9 @@ namespace Chromely.CefGlue.Browser.Handlers
             _fileBytes = null;
             _completed = false;
 
-            if (File.Exists(file))
+            // Check if file exists and not empty
+            var fileInfo = new FileInfo(file);
+            if ((fileInfo.Exists) && fileInfo.Length > 0)
             {
                 Task.Run(() =>
                 {
@@ -94,18 +67,6 @@ namespace Chromely.CefGlue.Browser.Handlers
             return false;
         }
 
-        /// <summary>
-        /// The get response headers.
-        /// </summary>
-        /// <param name="response">
-        /// The response.
-        /// </param>
-        /// <param name="responseLength">
-        /// The response length.
-        /// </param>
-        /// <param name="redirectUrl">
-        /// The redirect url.
-        /// </param>
         protected override void GetResponseHeaders(CefResponse response, out long responseLength, out string redirectUrl)
         {
             // unknown content-length
@@ -133,24 +94,7 @@ namespace Chromely.CefGlue.Browser.Handlers
             }
         }
 
-        /// <summary>
-        /// The read response.
-        /// </summary>
-        /// <param name="response">
-        /// The response.
-        /// </param>
-        /// <param name="bytesToRead">
-        /// The bytes to read.
-        /// </param>
-        /// <param name="bytesRead">
-        /// The bytes read.
-        /// </param>
-        /// <param name="callback">
-        /// The callback.
-        /// </param>
-        /// <returns>
-        /// The <see cref="bool"/>.
-        /// </returns>
+        [Obsolete]
         protected override bool ReadResponse(Stream response, int bytesToRead, out int bytesRead, CefCallback callback)
         {
             int currBytesRead = 0;
@@ -193,9 +137,6 @@ namespace Chromely.CefGlue.Browser.Handlers
             return true;
         }
 
-        /// <summary>
-        /// The cancel.
-        /// </summary>
         protected override void Cancel()
         {
         }

@@ -28,6 +28,7 @@ namespace Chromely.Core
             _container = container;
             if (_container == null)
             {
+                EnsureIsDerivedType(typeof(IChromelyContainer), typeof(T));
                 _container = (T)Activator.CreateInstance(typeof(T));
             }
 
@@ -39,6 +40,7 @@ namespace Chromely.Core
             _appSettings = appSettings;
             if (_appSettings == null)
             {
+                EnsureIsDerivedType(typeof(IChromelyAppSettings), typeof(T));
                 _appSettings = (T)Activator.CreateInstance(typeof(T));
             }
 
@@ -50,6 +52,7 @@ namespace Chromely.Core
             _logger = logger;
             if (_logger == null)
             {
+                EnsureIsDerivedType(typeof(IChromelyLogger), typeof(T));
                 _logger = (T)Activator.CreateInstance(typeof(T));
             }
 
@@ -61,6 +64,7 @@ namespace Chromely.Core
             _config = config;
             if (_config == null)
             {
+                EnsureIsDerivedType(typeof(IChromelyConfiguration), typeof(T));
                 _config = (T)Activator.CreateInstance(typeof(T));
             }
 
@@ -74,14 +78,10 @@ namespace Chromely.Core
                 throw new Exception("Step 1 must be completed before step 2.");
             }
 
-            if (typeof(T).FullName.Equals(typeof(ChromelyApp).FullName, StringComparison.OrdinalIgnoreCase))
-            {
-                throw new Exception($"Type {typeof(T).Name} must implement ChromelyApp.");
-            }
-
             _chromelyApp = chromelyApp;
             if (_chromelyApp == null)
             {
+                EnsureIsDerivedType(typeof(ChromelyApp), typeof(T));
                 _chromelyApp = (T)Activator.CreateInstance(typeof(T));
             }
 
@@ -135,6 +135,19 @@ namespace Chromely.Core
             catch (Exception exception)
             {
                 Logger.Instance.Log.Error(exception);
+            }
+        }
+
+        private void EnsureIsDerivedType(Type baseType, Type derivedType)
+        {
+            if (derivedType.FullName.Equals(baseType.FullName, StringComparison.OrdinalIgnoreCase))
+            {
+                throw new Exception($"Type {derivedType.Name} must implement {baseType.Name}.");
+            }
+
+            if (!baseType.IsAssignableFrom(derivedType))
+            {
+                throw new Exception($"Type {derivedType.Name} must implement {baseType.Name}.");
             }
         }
     }
