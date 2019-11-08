@@ -63,7 +63,9 @@ namespace Chromely.CefGlue.Browser.Handlers
             _fileBytes = null;
             _completed = false;
 
-            if (File.Exists(file))
+            // Check if file exists and not empty
+            var fileInfo = new FileInfo(file);
+            if ((fileInfo.Exists) && fileInfo.Length > 0)
             {
                 Task.Run(() =>
                 {

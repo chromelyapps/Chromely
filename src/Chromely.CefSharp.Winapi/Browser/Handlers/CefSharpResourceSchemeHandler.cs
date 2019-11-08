@@ -55,7 +55,9 @@ namespace Chromely.CefSharp.Winapi.Browser.Handlers
             var u = new Uri(request.Url);
             var file = u.Authority + u.AbsolutePath;
 
-            if (File.Exists(file))
+            // Check if file exists and not empty
+            var fileInfo = new FileInfo(file);
+            if ((fileInfo.Exists) && fileInfo.Length > 0)
             {
                 Task.Run(() =>
                 {
