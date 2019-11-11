@@ -100,7 +100,7 @@ dotnet run
 
 ### Chromely Demos 
 For more info on demos - [Demos](https://github.com/chromelyapps/Chromely/wiki/Demos)
-![](https://github.com/chromelyapps/Chromely/blob/master/Screenshots/chromely_screens.gif)
+![](https://github.com/chromelyapps/Chromely/blob/master/Screenshots/chromely_screens_n3.gif)
 
 ### References
 * WinApi - https://github.com/prasannavl/WinApi
