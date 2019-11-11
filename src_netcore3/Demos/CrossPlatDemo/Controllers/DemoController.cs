@@ -46,7 +46,7 @@ namespace CrossPlatDemo.Controllers
 
         #endregion
 
-        #region CustomAttributes
+        #region CommandAttributes
 
         [Command(Route = "/externalcontroller/testcommand/one")]
         public void CommandTestOne(IDictionary<string, string> queryParameters)

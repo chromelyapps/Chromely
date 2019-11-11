@@ -22,7 +22,7 @@
   "windowCustomCreation": {
     "windowStyles": 0,
     "windowExStyles": 0,
-    "useCustomtyle": true
+    "useCustomtyle": false
   },
   "urlSchemes": [
     {
@@ -39,6 +39,14 @@
       "scheme": "http",
       "host": "chromely.com",
       "urlSchemeType": "custom",
+      "baseUrlStrict": false
+    },
+    {
+      "name": "default-command-http",
+      "baseUrl": "",
+      "scheme": "http",
+      "host": "command.com",
+      "urlSchemeType": "command",
       "baseUrlStrict": false
     },
     {

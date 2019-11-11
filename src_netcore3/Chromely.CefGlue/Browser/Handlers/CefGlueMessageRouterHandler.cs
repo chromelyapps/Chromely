@@ -7,6 +7,7 @@
 // </license>
 // ----------------------------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Chromely.Core.RestfulService;
@@ -81,7 +82,7 @@ namespace Chromely.CefGlue.Browser.Handlers
             public string id { get; set; }
             public string method { get; set; }
             public string url { get; set; }
-            public object parameters { get; set; }
+            public IDictionary<string, string> parameters { get; set; }
             public object postData { get; set; }
         }
     }

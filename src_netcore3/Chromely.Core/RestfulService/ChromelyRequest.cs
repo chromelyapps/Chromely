@@ -13,14 +13,14 @@ namespace Chromely.Core.RestfulService
 {
     public class ChromelyRequest
     {
-        public ChromelyRequest(RoutePath routePath, IDictionary<string, object> parameters, object postData)
+        public ChromelyRequest(RoutePath routePath, IDictionary<string, string> parameters, object postData)
         {
             RoutePath = routePath;
             Parameters = parameters;
             PostData = postData;
         }
 
-        public ChromelyRequest(string id, RoutePath routePath, IDictionary<string, object> parameters, object postData)
+        public ChromelyRequest(string id, RoutePath routePath, IDictionary<string, string> parameters, object postData)
         {
             Id = id;
             RoutePath = routePath;
@@ -28,7 +28,7 @@ namespace Chromely.Core.RestfulService
             PostData = postData;
         }
 
-        public ChromelyRequest(string id, RoutePath routePath, IDictionary<string, object> parameters, object postData, string rawJson)
+        public ChromelyRequest(string id, RoutePath routePath, IDictionary<string, string> parameters, object postData, string rawJson)
         {
             Id = id;
             RoutePath = routePath;
@@ -50,7 +50,7 @@ namespace Chromely.Core.RestfulService
         /// <summary>
         /// Gets or sets the parameters.
         /// </summary>
-        public IDictionary<string, object> Parameters { get; set; }
+        public IDictionary<string, string> Parameters { get; set; }
 
         /// <summary>
         /// Gets or sets the post data.

@@ -16,7 +16,7 @@ namespace Chromely.Core.Defaults
             _config = config;
         }
 
-        public ChromelyResponse Run(string method, string path, object parameters, object postData)
+        public ChromelyResponse Run(string method, string path, IDictionary<string, string> parameters, object postData)
         {
             var response = new ChromelyResponse();
             var routePath = new RoutePath(method, path);
@@ -84,7 +84,7 @@ namespace Chromely.Core.Defaults
             return ExcuteRoute(request.Id, request.RoutePath, parameters, postData, request.RawJson);
         }
 
-        public ChromelyResponse Run(string requestId, RoutePath routePath, object parameters, object postData, string requestData)
+        public ChromelyResponse Run(string requestId, RoutePath routePath, IDictionary<string, string> parameters, object postData, string requestData)
         {
             var response = new ChromelyResponse(requestId);
             if (string.IsNullOrEmpty(routePath.Path))
@@ -111,7 +111,7 @@ namespace Chromely.Core.Defaults
             return ExcuteRoute(requestId, routePath, parameters, postData, requestData);
         }
 
-        private ChromelyResponse ExcuteRoute(string requestId, RoutePath routePath, object parameters, object postData, string requestData)
+        private ChromelyResponse ExcuteRoute(string requestId, RoutePath routePath, IDictionary<string, string> parameters, object postData, string requestData)
         {
             var route = ServiceRouteProvider.GetActionRoute(_container, routePath);
 
@@ -120,7 +120,7 @@ namespace Chromely.Core.Defaults
                 throw new Exception($"Route for path = {routePath} is null or invalid.");
             }
 
-            var response = route.Invoke(requestId: requestId, routePath: routePath, parameters: parameters?.ToObjectDictionary(), postData: postData, rawJson: requestData);
+            var response = route.Invoke(requestId: requestId, routePath: routePath, parameters: parameters, postData: postData, rawJson: requestData);
             response.ReadyState = (int)ReadyState.ResponseIsReady;
             response.Status = (int)System.Net.HttpStatusCode.OK;
             response.StatusText = "OK";

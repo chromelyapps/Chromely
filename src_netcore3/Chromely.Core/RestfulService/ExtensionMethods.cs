@@ -97,7 +97,7 @@ namespace Chromely.Core.RestfulService
             return null;
         }
 
-        public static IDictionary<string, object> ToObjectDictionary(this object value)
+        public static IDictionary<string, string> ToObjectDictionary(this object value)
         {
             try
             {
@@ -105,13 +105,13 @@ namespace Chromely.Core.RestfulService
 
                 if (IsOfType<string>(value) && IsValidJson(value.ToString()))
                 {
-                    return JsonSerializer.Deserialize<IDictionary<string, object>>(value.ToString(), JsonSerializingOption);
+                    return JsonSerializer.Deserialize<IDictionary<string, string>>(value.ToString(), JsonSerializingOption);
                 }
 
                 var dict1 = value as IDictionary<string, string>;
                 if (dict1 != null)
                 {
-                    var dict1Res = new Dictionary<string, object>();
+                    var dict1Res = new Dictionary<string, string>();
                     foreach (var item in dict1)
                     {
                         dict1Res.Add(item.Key, item.Value);
@@ -119,7 +119,7 @@ namespace Chromely.Core.RestfulService
                     return dict1Res;
                 }
 
-                var dict2 = value as IDictionary<string, object>;
+                var dict2 = value as IDictionary<string, string>;
                 if (dict2 != null)
                 {
                     return dict2;
@@ -131,6 +131,18 @@ namespace Chromely.Core.RestfulService
             }
 
             return null;
+        }
+
+        private static IDictionary<string, string> JsonElementToDictionary(JsonElement jsonElement)
+        {
+            var dic = new Dictionary<string, string>();
+
+            foreach (var jsonProperty in jsonElement.EnumerateObject())
+            {
+                dic.Add(jsonProperty.Name, jsonProperty.Value.ToString());
+            }
+
+            return dic;
         }
 
         private static T2 IDictionary<T1, T2>()

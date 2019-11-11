@@ -1,9 +1,11 @@
-﻿namespace Chromely.Core.RestfulService
+﻿using System.Collections.Generic;
+
+namespace Chromely.Core.RestfulService
 {
     public interface IChromelyRequestTaskRunner
     {
         ChromelyResponse Run(ChromelyRequest request);
-        ChromelyResponse Run(string method, string path, object parameters, object postData);
-        ChromelyResponse Run(string requestId, RoutePath routePath, object parameters, object postData, string requestData);
+        ChromelyResponse Run(string method, string path, IDictionary<string, string> parameters, object postData);
+        ChromelyResponse Run(string requestId, RoutePath routePath, IDictionary<string, string> parameters, object postData, string requestData);
     }
 }

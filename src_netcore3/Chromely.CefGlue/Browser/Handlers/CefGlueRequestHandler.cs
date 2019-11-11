@@ -72,36 +72,7 @@ namespace Chromely.CefGlue.Browser.Handlers
             var isUrlExternal = _config?.UrlSchemes?.IsUrlRegisteredExternalScheme(request.Url);
             if (isUrlExternal.HasValue && isUrlExternal.Value)
             {
-                // https://brockallen.com/2016/09/24/process-start-for-urls-on-net-core/
-                try
-                {
-                    Process.Start(request.Url);
-                }
-                catch
-                {
-                    try
-                    {
-                        // hack because of this: https://github.com/dotnet/corefx/issues/10361
-                        if (CefRuntime.Platform == CefRuntimePlatform.Windows)
-                        {
-                            var url = request.Url.Replace("&", "^&");
-                            Process.Start(new ProcessStartInfo("cmd", $"/c start {url}") { CreateNoWindow = true });
-                        }
-                        else if (CefRuntime.Platform == CefRuntimePlatform.Linux)
-                        {
-                            Process.Start("xdg-open", request.Url);
-                        }
-                        else if (CefRuntime.Platform == CefRuntimePlatform.MacOSX)
-                        {
-                            Process.Start("open", request.Url);
-                        }
-                    }
-                    catch (Exception exception)
-                    {
-                        Logger.Instance.Log.Error(exception);
-                    }
-                }
-
+                BrowserLauncher.Open(_config.Platform, request.Url);
                 return true;
             }
 

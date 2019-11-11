@@ -35,7 +35,7 @@ namespace Chromely.Core.RestfulService
         public string Path { get; set; }
         public Func<ChromelyRequest, ChromelyResponse> Action { get; set; }
         public Func<ChromelyRequest, Task<ChromelyResponse>> ActionAsync { get; set; }
-        public ChromelyResponse Invoke(string requestId, RoutePath routePath, IDictionary<string, object> parameters, object postData, string rawJson = null)
+        public ChromelyResponse Invoke(string requestId, RoutePath routePath, IDictionary<string, string> parameters, object postData, string rawJson = null)
         {
             ChromelyRequest request = new ChromelyRequest(requestId, routePath, parameters, postData, rawJson);
             return Action.Invoke(request);
@@ -45,7 +45,7 @@ namespace Chromely.Core.RestfulService
             return Action.Invoke(request);
         }
 
-        public Task<ChromelyResponse> InvokeAsync(string requestId, RoutePath routePath, IDictionary<string, object> parameters, object postData, string rawJson = null)
+        public Task<ChromelyResponse> InvokeAsync(string requestId, RoutePath routePath, IDictionary<string, string> parameters, object postData, string rawJson = null)
         {
             ChromelyRequest request = new ChromelyRequest(requestId, routePath, parameters, postData, rawJson);
             return ActionAsync.Invoke(request);
