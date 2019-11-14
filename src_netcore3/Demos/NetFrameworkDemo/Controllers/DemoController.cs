@@ -13,7 +13,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using Chromely.Core.RestfulService;
 
-namespace CrossPlatDemo.Controllers
+namespace NetFrameworkDemo.Controllers
 {
     /// <summary>
     /// The demo controller.
@@ -46,7 +46,7 @@ namespace CrossPlatDemo.Controllers
 
         #endregion
 
-        #region CustomAttributes
+        #region CommandAttributes
 
         [Command(Route = "/externalcontroller/testcommand/one")]
         public void CommandTestOne(IDictionary<string, string> queryParameters)
@@ -122,7 +122,6 @@ namespace CrossPlatDemo.Controllers
             options.AllowTrailingCommas = true;
             var movies = JsonSerializer.Deserialize<List<MovieInfo>>(postDataJson, options);
             var rowsReceived = movies != null ? movies.Count : 0;
-
             response.Data = $"{DateTime.Now}: {rowsReceived} rows of data successfully saved.";
 
             return response;

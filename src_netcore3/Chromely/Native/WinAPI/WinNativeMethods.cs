@@ -672,7 +672,13 @@ namespace Chromely.Native
 
             if (!File.Exists(iconFullPath))
             {
-                return null;
+                // If local file
+                var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                iconFullPath = Path.Combine(appDirectory, iconFullPath);
+                if (!File.Exists(iconFullPath))
+                {
+                    return null;
+                }
             }
 
             return LoadImage(                                   // returns a HANDLE so we have to cast to HICON

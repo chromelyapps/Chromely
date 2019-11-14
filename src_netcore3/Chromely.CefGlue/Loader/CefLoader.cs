@@ -145,10 +145,10 @@ namespace Chromely.CefGlue.Loader
             
             // cef_binary_3.3626.1895.g7001d56_windows64_client.tar.bz2
             var binaryNamePattern1 = $@"""(cef_binary_[0-9]+\.{build}\.[0-9]+\.(.*)_{platformIdentifier}_client.tar.bz2)""";
-            
+
             // cef_binary_73.1.5+g4a68f1d+chromium-73.0.3683.75_windows64_client.tar.bz2
             // cef_binary_77.1.18+g8e8d602+chromium-77.0.3865.120_windows64_client.tar.bz2
-            var binaryNamePattern2 = $@"""(cef_binary_.*(\+|%2B)chromium\-[0-9]+\.[0-9]+\.{build}\.[0-9]+_{platformIdentifier}_client.tar.bz2)""";
+            var binaryNamePattern2 = $@"""(cef_binary_.*(\+|%2B)chromium\-[0-9]+\.[0-9]+\.{build}\.[0-9]+_{platformIdentifier}_minimal.tar.bz2)""";
             
             using (var client = new WebClient())
             {
@@ -313,22 +313,28 @@ namespace Chromely.CefGlue.Loader
             if (_platform != ChromelyPlatform.MacOSX)
             {
                 CopyDirectory(srcPathRelease, appDirectory);
+
+                var srcPathResources = Path.Combine(_tempDirectory, _folderName, "Resources");
+                CopyDirectory(srcPathResources, appDirectory);
             }
 
-            var srcPathResources = Path.Combine(_tempDirectory, _folderName, "Resources");
-            CopyDirectory(srcPathResources, appDirectory);
-
             if (_platform != ChromelyPlatform.MacOSX) return;
-            
+
             var cefFrameworkFolder = Path.Combine(srcPathRelease, "Chromium Embedded Framework.framework");
+
             // rename Chromium Embedded Framework to libcef.dylib and copy to destination folder
             var frameworkFile = Path.Combine(cefFrameworkFolder, "Chromium Embedded Framework");
             var libcefFile = Path.Combine(appDirectory, "libcef.dylib");
             var libcefdylibInfo = new FileInfo(frameworkFile);
             libcefdylibInfo.CopyTo(libcefFile, true);
-            
-            var srcPathLibraries = Path.Combine(cefFrameworkFolder, "Libraries");
-            CopyDirectory(srcPathLibraries, appDirectory);
+
+            // Copy Libraries files
+            var librariesFolder = Path.Combine(cefFrameworkFolder, "Libraries");
+            CopyDirectory(librariesFolder, appDirectory);
+
+            // Copy Resource files
+            var resourcesFolder = Path.Combine(cefFrameworkFolder, "Resources");
+            CopyDirectory(resourcesFolder, appDirectory);
         }
         
         private void DecompressProgressChanged(int percent)
@@ -361,7 +367,34 @@ namespace Chromely.CefGlue.Loader
             Logger.Instance.Log.Info($"CefLoader: Download progress = {percent}%");
         }
 
-        private void CopyDirectory(string srcPath, string dstPath)
+        private static void CopyDirectory(string sourceDirName, string destDirName)
+        {
+            // Get the subdirectories for the specified directory.
+            DirectoryInfo dirInfo = new DirectoryInfo(sourceDirName);
+            DirectoryInfo[] dirs = dirInfo.GetDirectories();
+
+            // If the destination directory doesn't exist, create it.
+            if (!Directory.Exists(destDirName))
+            {
+                Directory.CreateDirectory(destDirName);
+            }
+
+            // Get the files in the directory and copy them to the new location.
+            FileInfo[] files = dirInfo.GetFiles();
+            foreach (FileInfo file in files)
+            {
+                string temppath = Path.Combine(destDirName, file.Name);
+                file.CopyTo(temppath, true);
+            }
+
+            foreach (DirectoryInfo subdir in dirs)
+            {
+                string temppath = Path.Combine(destDirName, subdir.Name);
+                CopyDirectory(subdir.FullName, temppath);
+            }
+        }
+
+        private void CopyDirectory2(string srcPath, string dstPath)
         {
             var localesDir = string.Empty;
             // Create all of the sub-directories

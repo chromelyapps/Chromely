@@ -102,98 +102,109 @@
     </script>
 </head>
 <body>
-  <div class="col-9 centerBlock">
 
-	<!-- Nav pills -->
-	<ul class="nav nav-pills" role="tablist">
-		<li class="nav-item">
-			<a class="nav-link active" data-toggle="pill" href="#sectionI">Get 1</a>
-		</li>
-		<li class="nav-item">
-			<a class="nav-link" data-toggle="pill" href="#sectionJ">Get 2</a>
-		</li>
-		<li class="nav-item">
-			<a class="nav-link" data-toggle="pill" href="#sectionK">Post</a>
-		</li>
-	</ul>
+<div class="container justify-content-center">
+        <!-- -->
+    <div class="form-group row justify-content-center col-12">
+    <div class="row col-12">
+        <h1>Ajax  Demo</h1>
+    </div>
 
-    <div class="row" style="height:25px;"></div>
-		
-	<!-- Tab panes -->
-	<div class="tab-content">
-		<div id="sectionI" class="container tab-pane active">
-			<br>
-			<div class="row">
-				<div class="col-12">
-					Route Path:&ensp;/democontroller/movies &ensp; (Restful Service in Local Assembly&ensp;<button id="buttonAjaxRun1" type="button" class="btn btn-primary btn-sm" onclick="ajaxRun1()">Run</button>
-				</div>
-				<div style="height:100px;"></div>
-				<div class="col-12">
-					<div class='table-responsive'>
-						<table id="ajaxResult1" class='table'>
-							<thead>
-								<tr>
-									<th>Id</th>
-									<th>Title</th>
-									<th>Year</th>
-									<th>Votes</th>
-									<th>Rating</th>
-									<th>Date</th>
-									<th>RestfulAssembly</th>
-								</tr>
-							</thead>
-							<tbody>
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div id="sectionJ" class="container tab-pane fade">
-			<br>
-			<div class="row">
-				<div class="col-12">
-					Route Path:&ensp;/externalcontroller/movies &ensp; (Restful Service in External Assembly)&ensp;<button id="buttonAjaxRun2" type="button" class="btn btn-primary btn-sm" onclick="ajaxRun2()">Run</button>
-				</div>
-				<div style="height:100px;"></div>
-				<div class="col-12">
-					<div class='table-responsive'>
-						<table id="ajaxResult2" class='table'>
-							<thead>
-								<tr>
-									<th>Id</th>
-									<th>Title</th>
-									<th>Year</th>
-									<th>Votes</th>
-									<th>Rating</th>
-									<th>Date</th>
-									<th>RestfulAssembly</th>
-								</tr>
-							</thead>
-							<tbody>
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div id="sectionK" class="container tab-pane fade">
-			<br>
-			<div class="row">
-				<div class="col-12">
-					Route Path:&ensp;/democontroller/movies &ensp;(Restful Service in Local Assembly)&ensp;<button id="buttonAjaxRun3" type="button" class="btn btn-primary btn-sm" onclick="ajaxRun3()">Run</button>
-				</div>
-				<div style="height:100px;"></div>
-				<div class="col-12">
-					<div id="ajaxResult3"></div>
-				</div>
-			</div>
-		</div>
-	</div>
-  
-   </div>
+        <!-- Nav pills -->
+    <div class="row col-12">
+            <ul class="nav nav-pills" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="pill" href="#sectionI">Get 1</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="pill" href="#sectionJ">Get 2</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="pill" href="#sectionK">Post</a>
+                    </li>
+                </ul>
+            
+    </div>
 
-	</div>
+
+    <div class="row col-12">
+        <div class="row" style="height:25px;"></div>
+            
+    <!-- Tab panes -->
+    <div class="tab-content">
+            <div id="sectionI" class="container tab-pane active">
+                <br>
+                <div class="row">
+                    <div class="col-12">
+                        Route Path:&ensp;/democontroller/movies &ensp; (Restful Service in Local Assembly&ensp;<button id="buttonAjaxRun1" type="button" class="btn btn-primary btn-sm" onclick="ajaxRun1()">Run</button>
+                    </div>
+                    <div style="height:100px;"></div>
+                    <div class="col-12">
+                        <div class='table-responsive'>
+                            <table id="ajaxResult1" class='table'>
+                                <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Title</th>
+                                        <th>Year</th>
+                                        <th>Votes</th>
+                                        <th>Rating</th>
+                                        <th>Date</th>
+                                        <th>RestfulAssembly</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="sectionJ" class="container tab-pane fade">
+                <br>
+                <div class="row">
+                    <div class="col-12">
+                        Route Path:&ensp;/externalcontroller/movies &ensp; (Restful Service in External Assembly)&ensp;<button id="buttonAjaxRun2" type="button" class="btn btn-primary btn-sm" onclick="ajaxRun2()">Run</button>
+                    </div>
+                    <div style="height:100px;"></div>
+                    <div class="col-12">
+                        <div class='table-responsive'>
+                            <table id="ajaxResult2" class='table'>
+                                <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Title</th>
+                                        <th>Year</th>
+                                        <th>Votes</th>
+                                        <th>Rating</th>
+                                        <th>Date</th>
+                                        <th>RestfulAssembly</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="sectionK" class="container tab-pane fade">
+                <br>
+                <div class="row">
+                    <div class="col-12">
+                        Route Path:&ensp;/democontroller/movies &ensp;(Restful Service in Local Assembly)&ensp;<button id="buttonAjaxRun3" type="button" class="btn btn-primary btn-sm" onclick="ajaxRun3()">Run</button>
+                    </div>
+                    <div style="height:100px;"></div>
+                    <div class="col-12">
+                        <div id="ajaxResult3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+            
+</div>
+
 </body>
 </html>                            
 

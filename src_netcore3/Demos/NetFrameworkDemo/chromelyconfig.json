@@ -1,10 +1,11 @@
 {
+  "appName": "chromely_demo",
   "startUrl": {
     "url": "local://app/chromely.html",
     "loadType": "localResource"
   },
   "loadCefBinariesIfNotFound": true,
-  "silentCefBinariesLoading": true,
+  "silentCefBinariesLoading": false,
   "windowLeft": 0,
   "windowTop": 0,
   "windowWidth": 1200,
@@ -21,7 +22,7 @@
   "windowCustomCreation": {
     "windowStyles": 0,
     "windowExStyles": 0,
-    "useCustomtyle": true
+    "useCustomtyle": false
   },
   "urlSchemes": [
     {
@@ -38,6 +39,14 @@
       "scheme": "http",
       "host": "chromely.com",
       "urlSchemeType": "custom",
+      "baseUrlStrict": false
+    },
+    {
+      "name": "default-command-http",
+      "baseUrl": "",
+      "scheme": "http",
+      "host": "command.com",
+      "urlSchemeType": "command",
       "baseUrlStrict": false
     },
     {
@@ -67,7 +76,12 @@
     }
   ],
   "commandLineArgs": [
+    {
+      "name": "disable-gpu",
+      "value": "1"
+    }
   ],
   "commandLineOptions": [
+    "disable-gpu"
   ]
 }

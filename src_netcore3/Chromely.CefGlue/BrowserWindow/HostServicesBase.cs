@@ -109,6 +109,12 @@ namespace Chromely.CefGlue.BrowserWindow
         /// </summary>
         private void RegisterResourceHandlers()
         {
+            if (!CefRuntime.CurrentlyOn(CefThreadId.UI))
+            {
+                PostTask(CefThreadId.UI, RegisterResourceHandlers);
+                return;
+            }
+
             // Register resource handlers
             var resourceSchemes = _config?.UrlSchemes.GetAllResouceSchemes();
             if (resourceSchemes != null && resourceSchemes.Any())
@@ -140,6 +146,12 @@ namespace Chromely.CefGlue.BrowserWindow
         /// </summary>
         private void RegisterSchemeHandlers()
         {
+            if (!CefRuntime.CurrentlyOn(CefThreadId.UI))
+            {
+                PostTask(CefThreadId.UI, RegisterSchemeHandlers);
+                return;
+            }
+
             // Register scheme handlers
             var schemeSchemes = _config?.UrlSchemes.GetAllCustomSchemes();
             if (schemeSchemes != null && schemeSchemes.Any())

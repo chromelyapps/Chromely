@@ -1,131 +1,104 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+     <title>Chromely</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Chromely</title>
     <link rel="stylesheet" href="Content/css/bootstrap.min.css">
-    <script src="Content/js/jquery.min.js"></script>
-    <script src="Content/js/tether.min.js"></script>
-    <script src="Content/js/bootstrap.min.js"></script>
+	<script src="Content/js/jquery.min.js"></script>
+	<script src="Content/js/popper.min.js"></script>
+	<script src="Content/js/bootstrap.min.js"></script>
 	<style type="text/css">
-        body, html {
-            height: 100%;
-            display: grid;
-        }
-
-        .centerBlock {
-            display: table;
-            margin: auto;
-        }
-
-        .show {
-            display: block !important;
-        }
-
-        .hidden {
-            display: none !important;
-            visibility: hidden !important;
-        }
-
-        .invisible {
-            visibility: hidden;
-        }
-
-        .modal-dialog {
-            width: 80%;
-        }
+	.navbar {
+      background:none;
+      box-shadow: none;
+    }
+    .navbar-brand
+    {
+      font-family: 'Palatino';
+      font-style: italic;
+      color:grey;
+      font-size: 30px;
+      margin: 0px;
+    }
+	iframe, object, embed {
+        max-width: 100%;
+    }
     </style>
 	<script>
 		$(document).ready(function(){
 		
-			$('#demoTabs a').on('click', function (e) {
+			$('#nav-content a').on('click', function (e) {
 			  e.preventDefault()
 			   var url = $(this).attr("data-url"); // the remote url for content
-			   demoframe.src = url;
+			   if( url ) {
+				  demoframe.src = url;
+			   }
 			});
 		});
-		
-		function demoRun() {
-            $("#demoPage").removeClass('hidden');
-            $("#homePage").addClass('hidden');
-		}
-			
-		function backToHomePage() {
-            $("#homePage").removeClass('hidden');
-            $("#demoPage").addClass('hidden');
-	    }
 	</script>
-</head>
+  </head>
 <body>
-  <div id ="maincontainer" class="container centerBlock">
+		
+<nav class="navbar navbar-expand-sm navbar-light bg-faded">
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav-content" aria-controls="nav-content" aria-expanded="false" aria-label="Toggle navigation">
+	<span class="navbar-toggler-icon"></span>
+	</button>
 
-      <!-- Home Page -->
-      <div id="homePage" class="col-12 centerBlock">
-            <div class="col-12">
-                <div class="centerBlock">
-                    <div class="row centerBlock">
-                        <img src="./Content/img/chromely.png" class="img-rounded" alt="Cinque Terre" width="240" height="240">
-                    </div>
-                    <div class="row centerBlock">
-                        <span class="text-primary text-center"><h2>chromely</h2></span>
-                    </div>
-                    <div class="row centerBlock">
-                        <p class="text-muted text-center">Build .NET/.NET CORE HTML5 Desktop Apps</p>
-                    </div>
-                </div>
-            </div>
+	<!-- Brand -->
+	<a class="navbar-brand text-muted" href="#">Demos</a>
 
-            <div class="col-12" style='padding:20px;'>
-                <div id="runButton" class="centerBlock">
-                    <form class="form-inline">
-                        <div class="form-group">
-                            <label for="info">Demos:</label>
-                        </div>
-                        <button id="buttonDemoRun" type="button" class="btn btn-primary" onclick="demoRun()" style='margin: 5px;'>Run</button>
-                    </form>
-					<div class="row centerBlock">
-                         <a href="https://github.com/chromelyapps/Chromely" class="btn btn-default" role="button" style='margin: 5px;'>more info</a>
-                    </div>
-                </div>
+	
+	<!-- Links -->
+	<div class="collapse navbar-collapse justify-content-end" id="nav-content">   
+	<ul class="nav nav-pills">
+	  <li class="nav-item">
+		<a class="nav-link" href="#home" data-url="./pages/home.html">home</a>
+	  </li>
+	  <li class="nav-item">
+		<a class="nav-link" href="#movies" data-url="./pages/tmdbmovies.html">tmdb movies</a>
+	  </li>
+	  	<li class="nav-item">
+		<a class="nav-link" href="#todo" data-url="./pages/todolist.html">todo list</a>
+	  </li>
+	  <li class="nav-item dropdown">
+		<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">basics</a>
+		<div class="dropdown-menu dropdown-menu-right">
+		  <a class="dropdown-item" href=""#messagerouterdemo" data-url="./pages/messagerouterdemo.html">Message Router Demo</a>
+		  <a class="dropdown-item" href="#ajaxdemo" data-url="./pages/ajaxdemo.html">Ajax Demo</a>
+		  <a class="dropdown-item" href="#javascriptdemo" data-url="./pages/javascriptdemo.html">Execute JavaScript Demo</a>
+		  <div class="dropdown-divider"></div>
+		  <a class="dropdown-item" href="#html5tests"  data-url="https://html5test.com/">HTML5 Tests</a>
+		  <a class="dropdown-item" href="#html6tests"  data-url="http://html6test.com/">HTML6 Tests</a>
+		  <a class="dropdown-item" href="#shakatests" data-url="https://shaka-player-demo.appspot.com/demo/#asset=https://storage.googleapis.com/shaka-demo-assets/angel-one/dash.mpd;lang=en-US;build=uncompiled">Google Shaka Support Tests</a>
+		</div>
+	  </li>
+	</ul>
+	</div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 p-0">
+            <div class="text-center m-0  d-flex flex-column justify-content-center">
+          <iframe id="demoframe" name="alldemoframe" src="./pages/home.html" width="100%" height="800"  frameborder="0" allowfullscreen/>
             </div>
         </div>
-		
-  
-      <!-- Demo Page -->
-     <div id="demoPage" class="col-12  hidden">
-    <div class="row" style="height:25px;"></div>
+    </div>
+</div>
+	
+<!-- Initialize Bootstrap functionality -->
+<script>
+// Initialize tooltip component
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
 
-	 <!-- Demo Pages Nav -->
-	<div class="row">
-	  <div class="col-3">
-		<div class="nav flex-column nav-pills" id="demoTabs" role="tablist" aria-orientation="vertical">
-		  <div class="centerBlock">
-          <img src="./Content/img/chromely_gray.png" class="img-rounded" alt="Cinque Terre" width="90" height="90" />
-          </div>
-		  <div class="centerBlock">chromely demo panel</div>
-		  <div class="centerBlock"> <button type="button" class="btn btn-link" onclick="backToHomePage()">&#60;&#60;&#32;Back</button></div>
-		  <div class="row" style="height:50px;"></div>
-		  <a class="nav-link active"  data-toggle="tab" href="#info"  data-url="./pages/info.html"  role="tab" aria-controls="home" aria-selected="true">Info</a>
-		  <a class="nav-link" data-toggle="tab" href="#messagerouterdemo" data-url="./pages/messagerouterdemo.html" role="tab" aria-controls="settings" aria-selected="false">Message Router Demo</a>
-		  <a class="nav-link" data-toggle="tab" href="#ajaxdemo" data-url="./pages/ajaxdemo.html" role="tab" aria-controls="settings" aria-selected="false">Ajax Demo</a>
-		  <a class="nav-link" data-toggle="tab" href="#javascriptdemo" data-url="./pages/javascriptdemo.html" role="tab" aria-controls="settings" aria-selected="false">Execute JavaScript Demo</a>
-		  <a class="nav-link" data-toggle="tab" href="#html5tests" role="tab" data-url="https://html5test.com/" aria-controls="settings" aria-selected="false">HTML5 Tests</a>
-		  <a class="nav-link" data-toggle="tab" href="#html6tests" role="tab" data-url="http://html6test.com/" aria-controls="settings" aria-selected="false">HTML6 Tests</a>
-		  <a class="nav-link" data-toggle="tab" href="#shakatests" role="tab" data-url="https://shaka-player-demo.appspot.com/demo/#asset=https://storage.googleapis.com/shaka-demo-assets/angel-one/dash.mpd;lang=en-US;build=uncompiled" aria-controls="settings" aria-selected="false">Google Shaka Support Tests</a>
-		</div>
-	  </div>
-	  <div class="col-9">
-		<div class="tab-content">
-           <iframe id="demoframe" name="alldemoframe" src="./pages/info.html" width="780" height="800"  frameborder="0" />
-	    </div>
-	  </div>
-	</div>
-	<!-- End Demo Pages Nav -->
-   </div>
-   
-   
-  </div>
-</body>
-</html>                            
+// Initialize popover component
+$(function () {
+  $('[data-toggle="popover"]').popover()
+})
+</script>
+
+ </body>
+</html>

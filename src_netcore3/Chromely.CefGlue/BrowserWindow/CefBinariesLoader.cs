@@ -18,7 +18,6 @@ using System.Xml.Linq;
 using Chromely.CefGlue.Loader;
 using Chromely.Core;
 using Chromely.Core.Infrastructure;
-using Downloader;
 using Xilium.CefGlue;
 
 namespace Chromely.CefGlue.BrowserWindow

@@ -11,35 +11,38 @@
     <script src="../Content/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <div class="col-9 centerBlock">
-        <div class="row">
-            <h5>Execute JavaScript Demo</h5>
-        </div>
-        <div class="row">
-            Script:
-        </div>
-        <div class="row">
-            <div class="row col-12">
-                <textarea class="form-control" id="demoscript" rows="5"></textarea>
-            </div>
-        </div>
-        <div class="row">
-            <div class="row col-12">
-                <button id="execute" type="button" class="btn btn-primary btn-sm" onclick="executeRun()" style="margin: 5px;">Execute</button>
-            </div>
-        </div>
-        <div class="row col-12">
-            <table id="resulttable" class="table table-striped" style="margin-top: 10px;">
-                <thead>
-                <tr>
-                    <th scope="col" style="width: 100px;">Type</th>
-                    <th scope="col">Output</th>
-                </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </div>
+    <div class="container justify-content-center">
+            <!-- -->
+            <div class="form-group row justify-content-center col-12">
+                    <div class="row col-8">
+                            <h1>Execute JavaScript Demo</h1>
+                        </div>
+                        <div class="row col-8">
+                            <div class="card">
+                                <div class="card-header">Script:</div>
+                                <div class="card-body">
+                                        <div class="col-8">
+                                                <textarea class="form-control" id="demoscript" rows="5" cols="100%"></textarea>
+                                            </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row col-8">
+                                <button id="execute" type="button" class="btn btn-primary btn-sm" onclick="executeRun()" style="margin: 5px;">Execute</button>
+                            </div>
+                        <div class="row col-8">
+                            <table id="resulttable" class="table table-striped" style="margin-top: 10px;">
+                                <thead>
+                                <tr>
+                                    <th scope="col" style="width: 100px;">Type</th>
+                                    <th scope="col">Output</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                </div>
     </div>
 
 <script>

@@ -238,9 +238,9 @@ namespace Chromely.CefGlue.BrowserWindow
 
             ScanAssemblies();
             RegisterRoutes();
+            RegisterMessageRouters();
             RegisterResourceHandlers();
             RegisterSchemeHandlers();
-            RegisterMessageRouters();
 
             CreateMainWindow();
 

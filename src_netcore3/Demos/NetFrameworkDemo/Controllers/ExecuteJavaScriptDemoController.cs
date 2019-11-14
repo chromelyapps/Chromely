@@ -9,12 +9,11 @@
 
 using System;
 using System.Text.Json;
-using Chromely.CefGlue;
 using Chromely.Core;
 using Chromely.Core.Infrastructure;
 using Chromely.Core.RestfulService;
 
-namespace CrossPlatDemo.Controllers
+namespace NetFrameworkDemo.Controllers
 {
     /// <summary>
     /// The demo controller.
