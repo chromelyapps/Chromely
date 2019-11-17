@@ -138,6 +138,7 @@ namespace Chromely.Native
         public void Run()
         {
             RunMessageLoopInternal();
+            CefRuntime.Shutdown();
         }
 
         public Size GetWindowClientSize()
@@ -145,11 +146,11 @@ namespace Chromely.Native
             return GetClientSize();
         }
 
-        public void ResizeBrowser(IntPtr window, int width, int height)
+        public void ResizeBrowser(IntPtr browserWindow, int width, int height)
         {
-            if (window != IntPtr.Zero)
+            if (browserWindow != IntPtr.Zero)
             {
-                SetWindowPos(window, IntPtr.Zero, 0, 0, width, height, SetWindowPosFlags.IgnoreZOrder);
+                SetWindowPos(browserWindow, IntPtr.Zero, 0, 0, width, height, SetWindowPosFlags.IgnoreZOrder);
             }
         }
 

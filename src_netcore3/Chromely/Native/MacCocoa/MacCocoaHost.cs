@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using Chromely.Core;
 using Chromely.Core.Host;
 using Chromely.Core.Infrastructure;
+using Xilium.CefGlue;
 using static Chromely.Native.MacNativeMethods;
 
 namespace Chromely.Native
@@ -15,6 +16,8 @@ namespace Chromely.Native
         public event EventHandler<SizeChangedEventArgs> SizeChanged;
         public event EventHandler<CloseEventArgs> Close;
 
+        private delegate void RunMessageLoopCallback();
+        private delegate void CefShutdownCallback();
         private delegate void InitCallbackEvent(IntPtr app, IntPtr pool);
         private delegate void CreateCallbackEvent(IntPtr window, IntPtr view);
         private delegate void MovingCallbackEvent();
@@ -40,11 +43,13 @@ namespace Chromely.Native
         public void CreateWindow(IChromelyConfiguration config)
         {
             _config = config;
-            ChromelyParam configParam = InitParam(InitCallback,
-                                                         CreateCallback,
-                                                         MovingCallback,
-                                                         ResizeCallback,
-                                                         QuitCallback);
+            ChromelyParam configParam = InitParam(RunCallback,
+                                                    ShutdownCallback,
+                                                    InitCallback,
+                                                    CreateCallback,
+                                                    MovingCallback,
+                                                    ResizeCallback,
+                                                    QuitCallback);
 
 
             configParam.centerscreen = _config.WindowState == WindowState.Normal && _config.WindowCenterScreen ? 1 : 0;
@@ -66,7 +71,9 @@ namespace Chromely.Native
 
         #region CreateWindow
 
-        private static ChromelyParam InitParam(InitCallbackEvent initCallback,
+        private static ChromelyParam InitParam(RunMessageLoopCallback runCallback,
+                                                    CefShutdownCallback cefShutdownCallback,
+                                                    InitCallbackEvent initCallback,
                                                     CreateCallbackEvent createCallback,
                                                     MovingCallbackEvent movingCallback,
                                                     ResizeCallbackEvent resizeCallback,
@@ -74,6 +81,8 @@ namespace Chromely.Native
         {
 
             ChromelyParam configParam = new ChromelyParam();
+            configParam.runMessageLoopCallback = Marshal.GetFunctionPointerForDelegate(runCallback);
+            configParam.cefShutdownCallback = Marshal.GetFunctionPointerForDelegate(cefShutdownCallback);
             configParam.initCallback = Marshal.GetFunctionPointerForDelegate(initCallback);
             configParam.createCallback = Marshal.GetFunctionPointerForDelegate(createCallback);
             configParam.movingCallback = Marshal.GetFunctionPointerForDelegate(movingCallback);
@@ -81,6 +90,16 @@ namespace Chromely.Native
             configParam.exitCallback = Marshal.GetFunctionPointerForDelegate(quitCallback);
 
             return configParam;
+        }
+
+        private void RunCallback()
+        {
+            CefRuntime.RunMessageLoop();
+        }
+
+        private void ShutdownCallback()
+        {
+            CefRuntime.Shutdown();
         }
 
         private void InitCallback(IntPtr app, IntPtr pool)
@@ -138,21 +157,12 @@ namespace Chromely.Native
             return new Size();
         }
 
-        public void ResizeBrowser(IntPtr window, int width, int height)
+        public void ResizeBrowser(IntPtr browserWindow, int width, int height)
         {
         }
 
         public void Exit()
         {
-            try
-            {
-                quit(_appHandle, _poolHandle);
-            }
-            catch (Exception exception)
-            {
-                Logger.Instance.Log.Error("Error in MacCocoaHost::Quit");
-                Logger.Instance.Log.Error(exception);
-            }
         }
 
         public void MessageBox(string message, int type)

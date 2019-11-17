@@ -10,6 +10,7 @@ namespace Chromely.Native
         internal const string GdkLib = "libgdk-3.so.0";
         internal const string GlibLib = "libglib-2.0.so.0";
         internal const string GioLib = "libgio-2.0.so.0";
+        internal const string GdkPixBuf = "libgdk_pixbuf-2.0.so.0";
 
         [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl)]
         internal static extern void gtk_init(int argc, string[] argv);
@@ -25,6 +26,12 @@ namespace Chromely.Native
 
         [DllImport(GdkLib, CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr gdk_x11_window_get_xid(IntPtr raw);
+
+        [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern IntPtr gtk_widget_get_display(IntPtr window);
+
+        [DllImport(GdkLib, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern IntPtr gdk_x11_display_get_xdisplay(IntPtr gdkDisplay);
 
         [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl)]
         internal static extern void gtk_widget_show_all(IntPtr window);
@@ -73,5 +80,23 @@ namespace Chromely.Native
 
         [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl)]
         internal static extern void gtk_widget_destroy(IntPtr widget);
+
+        #region Icon work 
+        [DllImport(GdkPixBuf, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern IntPtr gdk_pixbuf_new_from_file_utf8(IntPtr filename, out IntPtr error);
+        #endregion
+
+        #region X11
+
+        [DllImport("libX11.so")]
+        internal static extern int XMoveWindow(IntPtr display, IntPtr w, int x, int y);
+
+        [DllImport("libX11.so")]
+        internal static extern int XResizeWindow(IntPtr display, IntPtr w, int width, int height);
+
+        [DllImport("libX11.so")]
+        internal static extern int XMoveResizeWindow(IntPtr display, IntPtr w, int x, int y, int width, int height);
+
+        #endregion
     }
 }

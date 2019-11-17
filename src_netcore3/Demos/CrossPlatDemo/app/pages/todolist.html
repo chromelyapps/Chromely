@@ -30,6 +30,10 @@
                 request: JSON.stringify(request),
                 onSuccess: function (response) {
                     populateTodoList(response);
+                    if (reqType == 'clearcompleted') {
+                        var checkBox = document.getElementById("checkboxSelectAllTodoItems");
+                        checkBox.checked = false;
+                    }
                 }, onFailure: function (err, msg) {
                     console.log(err, msg);
                 }
@@ -89,6 +93,8 @@
                 completed = 1;
             } else {
                 labelText.innerHTML = labelText.innerText;
+                var checkBox = document.getElementById("checkboxSelectAllTodoItems");
+                checkBox.checked = false;
             }
 
             var url = "http://command.com/todolistcontroller/toggleactive?id=" + itemId + "&completed=" + completed.toString();;

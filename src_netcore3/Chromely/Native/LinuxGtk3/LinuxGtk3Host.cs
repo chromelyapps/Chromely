@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using Chromely.Core;
 using Chromely.Core.Host;
 using Chromely.Core.Infrastructure;
+using Xilium.CefGlue;
 using static Chromely.Native.LinuxNativeMethods;
 
 namespace Chromely.Native
@@ -95,7 +96,8 @@ namespace Chromely.Native
         {
             try
             {
-                gtk_main();
+                CefRuntime.RunMessageLoop();
+                CefRuntime.Shutdown();
             }
             catch (Exception exception)
             {
@@ -109,28 +111,21 @@ namespace Chromely.Native
             return new Size();
         }
 
-        public void ResizeBrowser(IntPtr window, int width, int height)
+        public void ResizeBrowser(IntPtr browserWindow, int width, int height)
         {
-            /*
-              RESIZE IS NOT SUPPORTED
-
-              Resize is not available
-              CefGlue implementation is not exposing: cef_get_xdisplay
-              // See https://gitlab.com/xiliumhq/chromiumembedded/cefglue/blob/master/CefGlue/CefRuntime.cs
-
-                Developers who want to look into this further can check with is done in CefClient
-                Using libX11.so Should be something like:
-
-                ::Window xwindow = browser->GetHost()->GetWindowHandle();
-                ::Display* xdisplay = cef_get_xdisplay();
-                XWindowChanges changes = {0};
-                changes.x = x;
-                changes.y = y;
-                changes.width = static_cast<int>(width);
-                changes.height = static_cast<int>(height);
-                XConfigureWindow(xdisplay, xwindow,
-                CWX | CWY | CWHeight | CWWidth, &changes);
-             */
+            try
+            {
+                IntPtr gdkDisplay = gtk_widget_get_display(_handle);
+                Utils.AssertNotNull("ResizeBrowser:gtk_widget_get_display", gdkDisplay);
+                IntPtr x11Display = gdk_x11_display_get_xdisplay(gdkDisplay);
+                Utils.AssertNotNull("ResizeBrowser:gdk_x11_display_get_xdisplay", x11Display);
+                XMoveResizeWindow(x11Display, browserWindow, 0, 0, width, height);
+            }
+            catch (Exception exception)
+            {
+                Logger.Instance.Log.Error("Error in LinuxGtk3Host::SetWindowMaximize");
+                Logger.Instance.Log.Error(exception);
+            }
         }
 
         public void SetWindowMaximize()
@@ -163,6 +158,7 @@ namespace Chromely.Native
         {
             try
             {
+                CefRuntime.QuitMessageLoop();
                 gtk_main_quit();
             }
             catch (Exception exception)
@@ -285,23 +281,23 @@ namespace Chromely.Native
 
         private void SetAppIcon(IntPtr window, string filename)
         {
-            try
-            {
-                filename = IconHandler.IconFullPath(filename);
-                if (string.IsNullOrWhiteSpace(filename))
-                {
-                    IntPtr error = IntPtr.Zero;
-                    gtk_window_set_icon_from_file(window, filename, out error);
-                    if (error != IntPtr.Zero)
-                    {
-                        Logger.Instance.Log.Error("Icon handle not successfully freed.");
-                    }
-                }
-            }
-            catch (Exception exception)
-            {
-                Logger.Instance.Log.Error(exception);
-            }
+            //try
+            //{
+            //    filename = IconHandler.IconFullPath(filename);
+            //    if (string.IsNullOrWhiteSpace(filename))
+            //    {
+            //        IntPtr error = IntPtr.Zero;
+            //        gtk_window_set_icon_from_file(window, filename, out error);
+            //        if (error != IntPtr.Zero)
+            //        {
+            //            Logger.Instance.Log.Error("Icon handle not successfully freed.");
+            //        }
+            //    }
+            //}
+            //catch (Exception exception)
+            //{
+            //    Logger.Instance.Log.Error(exception);
+            //}
         }
 
         private void ShowWindow()

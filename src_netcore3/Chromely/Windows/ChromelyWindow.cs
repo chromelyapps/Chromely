@@ -42,34 +42,19 @@ namespace Chromely.Windows
         }
 
         /// <summary>
-        /// The platform run message loop.
+        /// The platform quit message loop.
         /// </summary>
-        protected override void RunMessageLoop()
+        protected override void Run()
         {
-            if (CefRuntime.Platform == CefRuntimePlatform.Windows)
-            {
-                /* Run the GTK3 LINUX OR COCOA MACOS main loop */
-                _mainWindow?.Run();
-            }
-            else
-            {
-                CefRuntime.RunMessageLoop();
-            }
+            _mainWindow?.Run();
         }
 
         /// <summary>
         /// The platform quit message loop.
         /// </summary>
-        protected override void QuitMessageLoop()
+        protected override void ExitWindow()
         {
-            if (CefRuntime.Platform == CefRuntimePlatform.Windows)
-            {
-                _mainWindow?.Exit();
-            }
-            else
-            {
-                CefRuntime.QuitMessageLoop();
-            }
+            _mainWindow?.Exit();
         }
 
         /// <summary>

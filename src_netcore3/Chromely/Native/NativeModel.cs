@@ -138,7 +138,7 @@ namespace Chromely.Native
                     return iconFile;
                 }
 
-                if (!File.Exists(iconFile))
+                if (!File.Exists(iconFile) || !Path.IsPathRooted(iconFile))
                 {
                     // If local file
                     var appDirectory = AppDomain.CurrentDomain.BaseDirectory;

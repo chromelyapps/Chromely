@@ -15,8 +15,11 @@ namespace Chromely.Core.Infrastructure
                 switch (platform)
                 {
                     case ChromelyPlatform.Windows:
-                    case ChromelyPlatform.Linux:
                         appSettingsDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify), "chromely");
+                        break;
+
+                    case ChromelyPlatform.Linux:
+                        appSettingsDir = Path.Combine(Environment.GetEnvironmentVariable("Home"), "chromely");
                         break;
 
                     case ChromelyPlatform.MacOSX:

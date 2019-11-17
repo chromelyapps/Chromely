@@ -5,7 +5,6 @@ using Chromely.Core;
 using Chromely.Core.Host;
 using Chromely.Core.Infrastructure;
 using Chromely.Core.RestfulService;
-using Chromely.Native;
 using Xilium.CefGlue;
 using Xilium.CefGlue.Wrapper;
 
@@ -58,11 +57,18 @@ namespace Chromely.Windows
 
         public void Dispose()
         {
-            if (Browser != null)
+            try
             {
-                Browser.Dispose();
-                Browser = null;
-                _browserWindowHandle = IntPtr.Zero;
+                if (Browser != null)
+                {
+                    Browser.Dispose();
+                    Browser = null;
+                    _browserWindowHandle = IntPtr.Zero;
+                }
+            }
+            catch (Exception exception)
+            {
+                Logger.Instance.Log.Error(exception);
             }
         }
 
@@ -94,6 +100,7 @@ namespace Chromely.Windows
 
         protected override void OnClose(object sender, CloseEventArgs closeChangedEventArgs)
         {
+            Dispose();
             chromely.App.Properties.Save(_config);
         }
 

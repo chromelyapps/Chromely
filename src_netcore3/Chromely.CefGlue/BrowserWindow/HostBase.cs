@@ -122,7 +122,7 @@ namespace Chromely.CefGlue.BrowserWindow
         public virtual void Quit()
         {
             _mainWindow?.Browser?.OnBeforeClose(new BeforeCloseEventArgs());
-            QuitMessageLoop();
+            ExitWindow();
         }
 
         /// <summary>
@@ -155,14 +155,14 @@ namespace Chromely.CefGlue.BrowserWindow
         protected abstract void Initialize();
 
         /// <summary>
-        /// The platform run message loop.
+        /// The platform quit message loop.
         /// </summary>
-        protected abstract void RunMessageLoop();
+        protected abstract void Run();
 
         /// <summary>
         /// The platform quit message loop.
         /// </summary>
-        protected abstract void QuitMessageLoop();
+        protected abstract void ExitWindow();
 
         /// <summary>
         /// The create main view.
@@ -222,16 +222,19 @@ namespace Chromely.CefGlue.BrowserWindow
             var mainArgs = new CefMainArgs(argv);
             CefApp app = new CefGlueApp(_config);
 
-            // CEF applications have multiple sub-processes (render, plugin, GPU, etc)
-            // that share the same executable. This function checks the command-line and,
-            // if this is a sub-process, executes the appropriate logic.
-            var exitCode = CefRuntime.ExecuteProcess(mainArgs, app, IntPtr.Zero);
-            if (exitCode >= 0)
+            if (_config.Platform != ChromelyPlatform.MacOSX)
             {
-                // The sub-process has completed so return here.
-                CefBinariesLoader.DeleteTempFiles(tempFiles);
-                Logger.Instance.Log.Info($"Sub process executes successfully with code: {exitCode}");
-                return exitCode;
+                // CEF applications have multiple sub-processes (render, plugin, GPU, etc)
+                // that share the same executable. This function checks the command-line and,
+                // if this is a sub-process, executes the appropriate logic.
+                var exitCode = CefRuntime.ExecuteProcess(mainArgs, app, IntPtr.Zero);
+                if (exitCode >= 0)
+                {
+                    // The sub-process has completed so return here.
+                    CefBinariesLoader.DeleteTempFiles(tempFiles);
+                    Logger.Instance.Log.Info($"Sub process executes successfully with code: {exitCode}");
+                    return exitCode;
+                }
             }
 
             CefRuntime.Initialize(mainArgs, settings, app, IntPtr.Zero);
@@ -242,16 +245,14 @@ namespace Chromely.CefGlue.BrowserWindow
             RegisterResourceHandlers();
             RegisterSchemeHandlers();
 
-            CreateMainWindow();
-
             CefBinariesLoader.DeleteTempFiles(tempFiles);
 
-            RunMessageLoop();
+            CreateMainWindow();
+
+            Run();
 
             _mainWindow.Dispose();
             _mainWindow = null;
-
-            CefRuntime.Shutdown();
 
             Shutdown();
 
@@ -277,7 +278,7 @@ namespace Chromely.CefGlue.BrowserWindow
         /// </summary>
         private void Shutdown()
         {
-            QuitMessageLoop();
+            ExitWindow();
         }
 
         /// <summary>

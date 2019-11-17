@@ -14,6 +14,8 @@ extern "C" {
 
 #define _DLL_EXPORT __attribute__((visibility("default"))) extern
 
+typedef void (*OnRunMessageLoopCallback)();
+typedef void (*OnCefShutdownCallback)();
 typedef void (*OnInitCallback)(void *app, void *pool);
 typedef void (*OnCreateCallback)(void *window, void *view);
 typedef void (*OnMovingCallback)();
@@ -40,6 +42,8 @@ struct CHROMELYPARAM {
     int nominbutton;
     int nomaxbutton;
     char title[256];
+    OnRunMessageLoopCallback runMessageLoopCallback;
+    OnCefShutdownCallback cefShutdownCallback;
     OnInitCallback initCallback;
     OnCreateCallback createCallback;
     OnMovingCallback movingCallback;

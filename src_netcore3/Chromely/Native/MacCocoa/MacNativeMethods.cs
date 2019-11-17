@@ -22,6 +22,8 @@ namespace Chromely.Native
             public int nomaxbutton;
             [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
             public string title;
+            public IntPtr runMessageLoopCallback;
+            public IntPtr cefShutdownCallback;
             public IntPtr initCallback;
             public IntPtr createCallback;
             public IntPtr movingCallback;
