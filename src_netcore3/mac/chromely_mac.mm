@@ -39,6 +39,7 @@ BOOL g_handling_send_event = false;
 }
 
 - (void)setParams:(CHROMELYPARAM)param;
+- (void)createApplication:(id)object;
 - (NSUInteger)windowCustomStyle;
 
 - (void)tryToTerminateApplication:(NSApplication*)app;
@@ -96,28 +97,22 @@ BOOL g_handling_send_event = false;
     chromelyParam = param;
 }
 
-- (NSUInteger)windowCustomStyle {
-    if (chromelyParam.fullscreen == 1)
-        return NSWindowStyleMaskFullScreen;
+// Create the application on the UI thread.
+- (void)createApplication:(id)object {
 
-    if (chromelyParam.frameless == 1)
-        return NSWindowStyleMaskBorderless;
+  // Set the delegate for application events.
+  [NSApp setDelegate:self];
 
-    NSUInteger styleMask = NSTitledWindowMask 
-                           | NSClosableWindowMask
-                           | NSMiniaturizableWindowMask;
+  [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
 
-    if (chromelyParam.noresize == 0)
-        styleMask |= NSWindowStyleMaskResizable;
+  // Create the main window.
 
-    return styleMask;
-}
+  // The CEF framework library is loaded at runtime so we need to use this
+  // mechanism for retrieving the class.
+  Class window_class = NSClassFromString(@"UnderlayOpenGLHostingWindow");
 
-- (void)applicationWillFinishLaunching:(NSNotification *)notification {
-
-    // create window programmatically
-    NSUInteger customStyleMask = [self windowCustomStyle];
-    window = [ [NSWindow alloc]             
+  NSUInteger customStyleMask = [self windowCustomStyle];
+  window = [[window_class alloc]
                initWithContentRect: NSMakeRect(chromelyParam.x, chromelyParam.y, chromelyParam.width, chromelyParam.height)
                styleMask:customStyleMask
                backing:NSBackingStoreBuffered
@@ -127,6 +122,9 @@ BOOL g_handling_send_event = false;
 	[window setTitle:title];
     [window setAcceptsMouseMovedEvents:YES];
 	[window setDelegate:self];
+	
+    // No dark mode, please
+    window.appearance = [NSAppearance appearanceNamed:NSAppearanceNameAqua];
 
     cefParentView = [window contentView];
     chromelyParam.createCallback(window, cefParentView);
@@ -142,7 +140,31 @@ BOOL g_handling_send_event = false;
 
 	[window.contentView setWantsLayer:YES];
     [window makeKeyAndOrderFront:NSApp];
+	
+	// Rely on the window delegate to clean us up rather than immediately
+	// releasing when the window gets closed. We use the delegate to do
+	// everything from the autorelease pool so the window isn't on the stack
+	// during cleanup (ie, a window close from javascript).
+	[window setReleasedWhenClosed:NO];
+	
     [NSApp activateIgnoringOtherApps:YES];
+}
+
+- (NSUInteger)windowCustomStyle {
+    if (chromelyParam.fullscreen == 1)
+        return NSWindowStyleMaskFullScreen;
+
+    if (chromelyParam.frameless == 1)
+        return NSWindowStyleMaskBorderless;
+
+    NSUInteger styleMask = NSTitledWindowMask 
+                           | NSClosableWindowMask
+                           | NSMiniaturizableWindowMask;
+
+    if (chromelyParam.noresize == 0)
+        styleMask |= NSWindowStyleMaskResizable;
+
+    return styleMask;
 }
 
 - (void) windowWillMove:(NSNotification *)notification {
@@ -191,9 +213,11 @@ void createwindow(CHROMELYPARAM* pParam) {
         NSApp = [ChromelyApplication sharedApplication];
 
         // Create the application delegate.
-        ChromelyAppDelegate* appDelegate = [[ChromelyAppDelegate alloc] init];
+        NSObject* appDelegate = [[ChromelyAppDelegate alloc] init];
         [appDelegate setParams:*pParam];
-        [NSApp setDelegate:appDelegate];
+        [appDelegate performSelectorOnMainThread:@selector(createApplication:)
+                               withObject:nil
+                               waitUntilDone:NO];
 
         // Run the CEF message loop. This will block until CefQuitMessageLoop() is
         // called.
@@ -214,9 +238,18 @@ APPDATA createwindowdata(CHROMELYPARAM* pParam) {
     NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
     NSApp = [ChromelyApplication sharedApplication];
 
-    ChromelyAppDelegate * appDelegate = [[[ChromelyAppDelegate alloc] init] autorelease];
+
+    // Create the application delegate.
+    NSObject* appDelegate = [[[ChromelyAppDelegate alloc] init] autorelease];
+    NSLog(@"Created: appDelegate appDelegate:%@", appDelegate);
+
     [appDelegate setParams:*pParam];
-    [NSApp setDelegate:appDelegate];
+    NSLog(@"appDelegate setParams set");
+
+    [appDelegate performSelectorOnMainThread:@selector(createApplication:)
+                            withObject:nil
+                            waitUntilDone:NO];
+    NSLog(@"appDelegate performSelectorOnMainThread");
 
     APPDATA appData;
     appData.app = NSApp;

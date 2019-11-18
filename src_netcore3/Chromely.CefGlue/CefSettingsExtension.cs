@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Chromely.Core;
 using Chromely.Core.Helpers;
 using Xilium.CefGlue;
 

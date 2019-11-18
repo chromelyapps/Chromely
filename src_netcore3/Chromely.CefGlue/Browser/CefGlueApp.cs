@@ -104,11 +104,10 @@ namespace Chromely.CefGlue.Browser
                 if (string.IsNullOrEmpty(processType) || processType.Contains("zygote"))
                     commandLine.AppendSwitch("no-zygote");
 
-
                 commandLine.AppendArgument("--disable-gpu");
                 commandLine.AppendArgument("--disable-software-rasterizer");
 
-                                commandLine.AppendSwitch("disable-gpu", "1");
+                commandLine.AppendSwitch("disable-gpu", "1");
                 commandLine.AppendSwitch("disable-software-rasterizer", "1");
 
                 commandLine.AppendSwitch("resources-dir-path", _config.AppExeLocation);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Chromely.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -18,6 +19,16 @@ namespace Chromely.CefGlue.Browser
         const string ArgumentType = "--type";
         const string RendererType = "renderer";
         const string ZygoteType = "zygote";
+
+        public static bool ExecuteProcess(ChromelyPlatform platform, IEnumerable<string> args)
+        {
+            if (platform != ChromelyPlatform.MacOSX)
+            {
+                return true;
+            }
+
+            return HasArgument(args, ArgumentType);
+        }
 
         public static ProcessType GetProcessType(IEnumerable<string> args)
         {

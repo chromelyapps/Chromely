@@ -222,7 +222,7 @@ namespace Chromely.CefGlue.BrowserWindow
             var mainArgs = new CefMainArgs(argv);
             CefApp app = new CefGlueApp(_config);
 
-            if (_config.Platform != ChromelyPlatform.MacOSX)
+            if (ClientAppUtils.ExecuteProcess(_config.Platform, argv))
             {
                 // CEF applications have multiple sub-processes (render, plugin, GPU, etc)
                 // that share the same executable. This function checks the command-line and,
@@ -231,7 +231,6 @@ namespace Chromely.CefGlue.BrowserWindow
                 if (exitCode >= 0)
                 {
                     // The sub-process has completed so return here.
-                    CefBinariesLoader.DeleteTempFiles(tempFiles);
                     Logger.Instance.Log.Info($"Sub process executes successfully with code: {exitCode}");
                     return exitCode;
                 }
