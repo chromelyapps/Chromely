@@ -10,32 +10,41 @@
 // include Chromely custom header
 #include "chromely_mac.h"
 
-namespace {
-
-// static NSAutoreleasePool* g_autopool = nil;
-BOOL g_handling_send_event = false;
-
-}  // namespace
-
 /*
-* ChromelyApplication manages events.
+* I1 - ChromelyApplication manages events.
 * Provide the CefAppProtocol implementation required by CEF.
 */
-@interface ChromelyApplication : NSApplication <CefAppProtocol> 
-    - (BOOL)isHandlingSendEvent;
-    - (void)setHandlingSendEvent:(BOOL)handlingSendEvent;
-    - (void)_swizzled_sendEvent:(NSEvent*)event;
-    - (void)_swizzled_terminate:(id)sender;
-
+@interface ChromelyApplication : NSApplication <CefAppProtocol> {
+ @private
+  BOOL handlingSendEvent_;
+}
 @end
 
+
+// I2 - Receives notifications from controls and the browser window. Will delete
+// itself when done.
+@interface RootWindowDelegate : NSObject <NSWindowDelegate> {
+ @private
+  NSWindow* window_;
+  CHROMELYPARAM chromelyParam_;
+  bool force_close_;
+}
+
+@property(nonatomic, readwrite) bool force_close;
+
+- (id)initWithWindow:(NSWindow*)window
+       andParams:(CHROMELYPARAM)param;
+@end  // @interface RootWindowDelegate
+
+
 /*
-* ChromelyAppDelegate manages events.
+* I3 - ChromelyAppDelegate manages events.
 */
-@interface ChromelyAppDelegate : NSObject <NSApplicationDelegate, NSWindowDelegate> {
-    NSWindow * window;
-    NSView   *cefParentView;
-    CHROMELYPARAM chromelyParam;
+@interface ChromelyAppDelegate : NSObject <NSApplicationDelegate>  {
+    NSWindow * window_;
+    RootWindowDelegate* window_delegate_;
+    NSView   *cefParentView_;
+    CHROMELYPARAM chromelyParam_;
 }
 
 - (void)setParams:(CHROMELYPARAM)param;
@@ -45,45 +54,182 @@ BOOL g_handling_send_event = false;
 - (void)tryToTerminateApplication:(NSApplication*)app;
 @end
 
+/*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+
+@implementation RootWindowDelegate
+
+@synthesize force_close = force_close_;
+
+- (id)initWithWindow:(NSWindow*)window
+        andParams:(CHROMELYPARAM)param {
+  if (self = [super init]) {
+    window_ = window;
+    chromelyParam_ = param;
+    [window_ setDelegate:self];
+    force_close_ = false;
+
+    // Register for application hide/unhide notifications.
+    [[NSNotificationCenter defaultCenter]
+        addObserver:self
+           selector:@selector(applicationDidHide:)
+               name:NSApplicationDidHideNotification
+             object:nil];
+    [[NSNotificationCenter defaultCenter]
+        addObserver:self
+           selector:@selector(applicationDidUnhide:)
+               name:NSApplicationDidUnhideNotification
+             object:nil];
+  }
+  return self;
+}
+
+- (void)dealloc {
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+#if !__has_feature(objc_arc)
+  [super dealloc];
+#endif  // !__has_feature(objc_arc)
+}
+
+// Called when we are activated (when we gain focus).
+- (void)windowDidBecomeKey:(NSNotification*)notification {
+    /// CHROMELYPARAM- function pointer?
+}
+
+// Called when we are deactivated (when we lose focus).
+- (void)windowDidResignKey:(NSNotification*)notification {
+    /// CHROMELYPARAM- function pointer?
+}
+
+// Called when we have been minimized.
+- (void)windowDidMiniaturize:(NSNotification*)notification {
+    /// CHROMELYPARAM- function pointer?
+}
+
+// Called when we have been unminimized.
+- (void)windowDidDeminiaturize:(NSNotification*)notification {
+    /// CHROMELYPARAM- function pointer?
+}
+
+// Called when the application has been hidden.
+- (void)applicationDidHide:(NSNotification*)notification {
+  // If the window is miniaturized then nothing has really changed.
+  if (![window_ isMiniaturized]) {
+    /// CHROMELYPARAM- function pointer?
+  }
+}
+
+// Called when the application has been unhidden.
+- (void)applicationDidUnhide:(NSNotification*)notification {
+  // If the window is miniaturized then nothing has really changed.
+  if (![window_ isMiniaturized]) {
+    /// CHROMELYPARAM- function pointer?
+  }
+}
+
+// Called when the window is about to close. Perform the self-destruction
+// sequence by getting rid of the window. By returning YES, we allow the window
+// to be removed from the screen.
+- (BOOL)windowShouldClose:(NSWindow*)window {
+  if (!force_close_) {
+        /// CHROMELYPARAM- function pointer?
+    }
+
+  // Don't want any more delegate callbacks after we destroy ourselves.
+  window_.delegate = nil;
+  // Delete the window.
+#if !__has_feature(objc_arc)
+  [window autorelease];
+#endif  // !__has_feature(objc_arc)
+  window_ = nil;
+
+  // Clean ourselves up after clearing the stack of anything that might have the
+  // window on it.
+  [self cleanup];
+
+  // Allow the close.
+  return YES;
+}
+
+// Deletes itself.
+- (void)cleanup {
+  // Don't want any more delegate callbacks after we destroy ourselves.
+  window_.delegate = nil;
+  window_.contentView = [[NSView alloc] initWithFrame:NSZeroRect];
+  // Delete the window.
+#if !__has_feature(objc_arc)
+  [window_ autorelease];
+#endif  // !__has_feature(objc_arc)
+  window_ = nil;
+ /// root_window_->OnNativeWindowClosed(); -     /// CHROMELYPARAM- function pointer?
+}
+
+@end  // @implementation RootWindowDelegate
+
+/*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+
 
 /*
 * ChromelyApplication manages events.
 * Provide the CefAppProtocol implementation required by CEF.
 */
+
 @implementation ChromelyApplication
-
-// This selector is called very early during the application initialization.
-+ (void)load {
-  // Swap NSApplication::sendEvent with _swizzled_sendEvent.
-  Method original = class_getInstanceMethod(self, @selector(sendEvent));
-  Method swizzled =
-      class_getInstanceMethod(self, @selector(_swizzled_sendEvent));
-  method_exchangeImplementations(original, swizzled);
-
-  Method originalTerm = class_getInstanceMethod(self, @selector(terminate:));
-  Method swizzledTerm =
-      class_getInstanceMethod(self, @selector(_swizzled_terminate:));
-  method_exchangeImplementations(originalTerm, swizzledTerm);
-}
-
 - (BOOL)isHandlingSendEvent {
-  return g_handling_send_event;
+  return handlingSendEvent_;
 }
 
 - (void)setHandlingSendEvent:(BOOL)handlingSendEvent {
-  g_handling_send_event = handlingSendEvent;
+  handlingSendEvent_ = handlingSendEvent;
 }
 
-- (void)_swizzled_sendEvent:(NSEvent*)event {
+- (void)sendEvent:(NSEvent*)event {
   CefScopedSendingEvent sendingEventScoper;
-  // Calls NSApplication::sendEvent due to the swizzling.
-  [self _swizzled_sendEvent:event];
+  [super sendEvent:event];
 }
 
-- (void)_swizzled_terminate:(id)sender {
-  [self _swizzled_terminate:sender];
+// |-terminate:| is the entry point for orderly "quit" operations in Cocoa. This
+// includes the application menu's quit menu item and keyboard equivalent, the
+// application's dock icon menu's quit menu item, "quit" (not "force quit") in
+// the Activity Monitor, and quits triggered by user logout and system restart
+// and shutdown.
+//
+// The default |-terminate:| implementation ends the process by calling exit(),
+// and thus never leaves the main run loop. This is unsuitable for Chromium
+// since Chromium depends on leaving the main run loop to perform an orderly
+// shutdown. We support the normal |-terminate:| interface by overriding the
+// default implementation. Our implementation, which is very specific to the
+// needs of Chromium, works by asking the application delegate to terminate
+// using its |-tryToTerminateApplication:| method.
+//
+// |-tryToTerminateApplication:| differs from the standard
+// |-applicationShouldTerminate:| in that no special event loop is run in the
+// case that immediate termination is not possible (e.g., if dialog boxes
+// allowing the user to cancel have to be shown). Instead, this method tries to
+// close all browsers by calling CloseBrowser(false) via
+// ClientHandler::CloseAllBrowsers. Calling CloseBrowser will result in a call
+// to ClientHandler::DoClose and execution of |-performClose:| on the NSWindow.
+// DoClose sets a flag that is used to differentiate between new close events
+// (e.g., user clicked the window close button) and in-progress close events
+// (e.g., user approved the close window dialog). The NSWindowDelegate
+// |-windowShouldClose:| method checks this flag and either calls
+// CloseBrowser(false) in the case of a new close event or destructs the
+// NSWindow in the case of an in-progress close event.
+// ClientHandler::OnBeforeClose will be called after the CEF NSView hosted in
+// the NSWindow is dealloc'ed.
+//
+// After the final browser window has closed ClientHandler::OnBeforeClose will
+// begin actual tear-down of the application by calling CefQuitMessageLoop.
+// This ends the NSApplication event loop and execution then returns to the
+// main() function for cleanup before application termination.
+//
+// The standard |-applicationShouldTerminate:| is not supported, and code paths
+// leading to it must be redirected.
+- (void)terminate:(id)sender {
+  ChromelyAppDelegate* delegate =
+      static_cast<ChromelyAppDelegate*>([NSApp delegate]);
+  [delegate tryToTerminateApplication:self];
+  // Return, don't exit. The application is responsible for exiting on its own.
 }
-
 @end
 
 
@@ -94,7 +240,7 @@ BOOL g_handling_send_event = false;
 @implementation ChromelyAppDelegate 
 
 - (void)setParams:(CHROMELYPARAM)param {
-    chromelyParam = param;
+    chromelyParam_ = param;
 }
 
 // Create the application on the UI thread.
@@ -112,81 +258,76 @@ BOOL g_handling_send_event = false;
   Class window_class = NSClassFromString(@"UnderlayOpenGLHostingWindow");
 
   NSUInteger customStyleMask = [self windowCustomStyle];
-  window = [[window_class alloc]
-               initWithContentRect: NSMakeRect(chromelyParam.x, chromelyParam.y, chromelyParam.width, chromelyParam.height)
+  window_ = [[window_class alloc]
+               initWithContentRect: NSMakeRect(chromelyParam_.x, chromelyParam_.y, chromelyParam_.width, chromelyParam_.height)
                styleMask:customStyleMask
                backing:NSBackingStoreBuffered
                defer:NO ];
 
-    NSString *title = [NSString stringWithFormat:@"%s", chromelyParam.title];
-	[window setTitle:title];
-    [window setAcceptsMouseMovedEvents:YES];
-	[window setDelegate:self];
+    NSString *title = [NSString stringWithFormat:@"%s", chromelyParam_.title];
+	[window_ setTitle:title];
+    [window_ setAcceptsMouseMovedEvents:YES];
 	
     // No dark mode, please
-    window.appearance = [NSAppearance appearanceNamed:NSAppearanceNameAqua];
+    window_.appearance = [NSAppearance appearanceNamed:NSAppearanceNameAqua];
 
-    cefParentView = [window contentView];
-    chromelyParam.createCallback(window, cefParentView);
+    // Create the delegate for browser window events.
+    window_delegate_ = [[RootWindowDelegate alloc] initWithWindow:window_
+                                                  andParams:chromelyParam_];
 
-    if (chromelyParam.centerscreen == 1)
-        [window center];
+    cefParentView_ = [window_ contentView];
+    chromelyParam_.createCallback(window_, cefParentView_);
 
-    if (chromelyParam.nominbutton == 1)
-        [[window standardWindowButton:NSWindowMiniaturizeButton] setHidden:YES];
+    if (chromelyParam_.centerscreen == 1)
+        [window_ center];
 
-    if (chromelyParam.nomaxbutton == 1)
-        [[window standardWindowButton:NSWindowZoomButton] setHidden:YES];
+    if (chromelyParam_.nominbutton == 1)
+        [[window_ standardWindowButton:NSWindowMiniaturizeButton] setHidden:YES];
 
-	[window.contentView setWantsLayer:YES];
-    [window makeKeyAndOrderFront:NSApp];
+    if (chromelyParam_.nomaxbutton == 1)
+        [[window_ standardWindowButton:NSWindowZoomButton] setHidden:YES];
+
+	[window_.contentView setWantsLayer:YES];
+    [window_ makeKeyAndOrderFront:NSApp];
 	
 	// Rely on the window delegate to clean us up rather than immediately
 	// releasing when the window gets closed. We use the delegate to do
 	// everything from the autorelease pool so the window isn't on the stack
 	// during cleanup (ie, a window close from javascript).
-	[window setReleasedWhenClosed:NO];
+	[window_ setReleasedWhenClosed:NO];
 	
     [NSApp activateIgnoringOtherApps:YES];
 }
 
 - (NSUInteger)windowCustomStyle {
-    if (chromelyParam.fullscreen == 1)
+    if (chromelyParam_.fullscreen == 1)
         return NSWindowStyleMaskFullScreen;
 
-    if (chromelyParam.frameless == 1)
+    if (chromelyParam_.frameless == 1)
         return NSWindowStyleMaskBorderless;
 
     NSUInteger styleMask = NSTitledWindowMask 
                            | NSClosableWindowMask
                            | NSMiniaturizableWindowMask;
 
-    if (chromelyParam.noresize == 0)
+    if (chromelyParam_.noresize == 0)
         styleMask |= NSWindowStyleMaskResizable;
 
     return styleMask;
 }
 
 - (void) windowWillMove:(NSNotification *)notification {
-    chromelyParam.movingCallback();
+    chromelyParam_.movingCallback();
 }
 
 - (void)windowDidResize:(NSNotification *)notification {
-    NSRect windowRect = [window frame];
-    NSRect contentRect = [window contentRectForFrameRect:windowRect];
-    chromelyParam.resizeCallback(contentRect.size.width, contentRect.size.height);
+    NSRect windowRect = [window_ frame];
+    NSRect contentRect = [window_ contentRectForFrameRect:windowRect];
+    chromelyParam_.resizeCallback(contentRect.size.width, contentRect.size.height);
 } 
 
-- (void) applicationWillTerminate:(NSNotification *)notification {
-    chromelyParam.exitCallback();
-}
-
--(BOOL) applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)notification {
-    return YES;
-}
-
 - (void)tryToTerminateApplication:(NSApplication*)app {
-    chromelyParam.exitCallback();
+    chromelyParam_.exitCallback();
 }
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:
@@ -195,12 +336,13 @@ BOOL g_handling_send_event = false;
 }
 
 - (void)dealloc {
-    [cefParentView release];
-    [window release];
+    [cefParentView_ release];
+    [window_ release];
     [super dealloc];
 }
 
 @end
+
 
 /*
 * Exported methods implementation
