@@ -161,6 +161,8 @@
 #endif  // !__has_feature(objc_arc)
   window_ = nil;
  /// root_window_->OnNativeWindowClosed(); -     /// CHROMELYPARAM- function pointer?
+
+  chromelyParam_.exitCallback();
 }
 
 @end  // @implementation RootWindowDelegate
@@ -339,6 +341,8 @@
     [cefParentView_ release];
     [window_ release];
     [super dealloc];
+
+    chromelyParam_.exitCallback();
 }
 
 @end

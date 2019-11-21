@@ -25,15 +25,18 @@ namespace Chromely.CefGlue.Browser.Handlers
             // To disable the menu then call clear
             model.Clear();
 
-            // Removing existing menu item
-            // Remove "View Source" option
-            model.Remove((int)CefMenuId.ViewSource);
-
-            if (debugging)
+            if (_config.Platform != ChromelyPlatform.MacOSX)
             {
-                // Add new custom menu items
-                model.AddItem((int)((CefMenuId)ShowDevTools), "Show DevTools");
-                model.AddItem((int)((CefMenuId)CloseDevTools), "Close DevTools");
+                // Removing existing menu item
+                // Remove "View Source" option
+                model.Remove((int)CefMenuId.ViewSource);
+
+                if (debugging)
+                {
+                    // Add new custom menu items
+                    model.AddItem((int)((CefMenuId)ShowDevTools), "Show DevTools");
+                    model.AddItem((int)((CefMenuId)CloseDevTools), "Close DevTools");
+                }
             }
         }
 
@@ -44,19 +47,22 @@ namespace Chromely.CefGlue.Browser.Handlers
 
         protected override bool OnContextMenuCommand(CefBrowser browser, CefFrame frame, CefContextMenuParams state, int commandId, CefEventFlags eventFlags)
         {
-            if (debugging)
+            if (_config.Platform != ChromelyPlatform.MacOSX)
             {
-                if (commandId == ShowDevTools)
+                if (debugging)
                 {
-                    var host = browser.GetHost();
-                    var wi = CefWindowInfo.Create();
-                    wi.SetAsPopup(IntPtr.Zero, "DevTools");
-                    host.ShowDevTools(wi, new DevToolsWebClient(), new CefBrowserSettings(), new CefPoint(0, 0));
-                }
+                    if (commandId == ShowDevTools)
+                    {
+                        var host = browser.GetHost();
+                        var wi = CefWindowInfo.Create();
+                        wi.SetAsPopup(IntPtr.Zero, "DevTools");
+                        host.ShowDevTools(wi, new DevToolsWebClient(), new CefBrowserSettings(), new CefPoint(0, 0));
+                    }
 
-                if (commandId == CloseDevTools)
-                {
-                    browser.GetHost().CloseDevTools();
+                    if (commandId == CloseDevTools)
+                    {
+                        browser.GetHost().CloseDevTools();
+                    }
                 }
             }
 

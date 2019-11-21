@@ -136,9 +136,17 @@ namespace Chromely.Native
 
         private void QuitCallback()
         {
-            Console.WriteLine("Quitting");
-            Xilium.CefGlue.CefRuntime.QuitMessageLoop();
-            Close?.Invoke(this, new CloseEventArgs());
+            try
+            {
+                CefRuntime.Shutdown();
+                Close?.Invoke(this, new CloseEventArgs());
+                Environment.Exit(0);
+            }
+            catch (Exception exception)
+            {
+                Logger.Instance.Log.Error("Error in MacCocoaHost::QuitCallback");
+                Logger.Instance.Log.Error(exception);
+            }
         }
 
         #endregion
