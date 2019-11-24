@@ -9,7 +9,7 @@
 
 using System.Reflection;
 
-namespace Chromely.Core.RestfulService
+namespace Chromely.Core.Network
 {
     /// <summary>
     /// The controller assembly info.

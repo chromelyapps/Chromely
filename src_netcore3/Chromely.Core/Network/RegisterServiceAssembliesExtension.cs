@@ -15,7 +15,7 @@ using System.Reflection;
 
 using Chromely.Core.Infrastructure;
 
-namespace Chromely.Core.RestfulService
+namespace Chromely.Core.Network
 {
     /// <summary>
     /// The registration of service assemblies extension.

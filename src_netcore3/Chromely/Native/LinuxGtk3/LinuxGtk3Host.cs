@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using System.Text;
 using Chromely.Core;
 using Chromely.Core.Host;
 using Chromely.Core.Infrastructure;
@@ -11,6 +12,9 @@ namespace Chromely.Native
 {
     public class LinuxGtk3Host : IChromelyNativeHost
     {
+        // X-Window error codes
+        // https://tronche.com/gui/x/xlib/event-handling/protocol-errors/default-handlers.html
+
         public event EventHandler<CreatedEventArgs> Created;
         public event EventHandler<MovingEventArgs> Moving;
         public event EventHandler<SizeChangedEventArgs> SizeChanged;
@@ -197,12 +201,63 @@ namespace Chromely.Native
             try
             {
                 gtk_init(argc, argv);
+                InstallX11ErrorHandlers();
             }
             catch (Exception exception)
             {
                 Logger.Instance.Log.Error("Error in LinuxGtk3Host::Init");
                 Logger.Instance.Log.Error(exception);
             }
+        }
+
+        private void InstallX11ErrorHandlers()
+        {
+            try
+            {
+                // Copied from CEF upstream cefclient.
+                // Install xlib error handlers so that the application won't be terminated
+                // on non-fatal errors. Must be done after initializing GTK.
+                XSetErrorHandler(HandleError);
+                XSetIOErrorHandler(HandleIOError);
+            }
+            catch (Exception exception)
+            {
+                Logger.Instance.Log.Error("Error in LinuxGtk3Host::InstallX11ErrorHandlers");
+                Logger.Instance.Log.Error(exception);
+            }
+        }
+
+        private short HandleError(IntPtr display, ref XErrorEvent errorEvent)
+        {
+            try
+            {
+                if (this._config.DebuggingMode)
+                {
+                    var builder = new StringBuilder();
+                    builder.AppendLine("X error received: ");
+                    builder.AppendLine("type " + errorEvent.type);
+                    builder.AppendLine("serial " + errorEvent.serial);
+                    builder.AppendLine("error_code " + errorEvent.error_code);
+                    builder.AppendLine("request_code " + errorEvent.request_code);
+                    builder.AppendLine("minor_code " + errorEvent.minor_code);
+
+                    Logger.Instance.Log.Warn(builder.ToString());
+                }
+
+                return 0;
+            }
+            catch (Exception exception)
+            {
+                Logger.Instance.Log.Error("Error in LinuxGtk3Host::HandleError");
+                Logger.Instance.Log.Error(exception);
+            }
+
+            return 0;
+        }
+
+        private short HandleIOError(IntPtr d)
+        {
+            return 0;
         }
 
         private IntPtr CreateNewWindow(int windowType)
@@ -281,23 +336,23 @@ namespace Chromely.Native
 
         private void SetAppIcon(IntPtr window, string filename)
         {
-            //try
-            //{
-            //    filename = IconHandler.IconFullPath(filename);
-            //    if (string.IsNullOrWhiteSpace(filename))
-            //    {
-            //        IntPtr error = IntPtr.Zero;
-            //        gtk_window_set_icon_from_file(window, filename, out error);
-            //        if (error != IntPtr.Zero)
-            //        {
-            //            Logger.Instance.Log.Error("Icon handle not successfully freed.");
-            //        }
-            //    }
-            //}
-            //catch (Exception exception)
-            //{
-            //    Logger.Instance.Log.Error(exception);
-            //}
+            try
+            {
+                filename = IconHandler.IconFullPath(filename);
+                if (!string.IsNullOrWhiteSpace(filename))
+                {
+                    IntPtr error = IntPtr.Zero;
+                    gtk_window_set_icon_from_file(window, filename, out error);
+                    if (error != IntPtr.Zero)
+                    {
+                        Logger.Instance.Log.Error("Icon handle not successfully freed.");
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                Logger.Instance.Log.Error(exception);
+            }
         }
 
         private void ShowWindow()

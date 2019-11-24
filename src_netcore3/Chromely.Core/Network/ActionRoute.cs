@@ -11,7 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Chromely.Core.RestfulService
+namespace Chromely.Core.Network
 {
     public class ActionRoute
     {

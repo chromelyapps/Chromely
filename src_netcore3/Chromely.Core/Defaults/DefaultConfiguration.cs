@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using Chromely.Core.Host;
 using Chromely.Core.Infrastructure;
-using Chromely.Core.RestfulService;
+using Chromely.Core.Network;
 
 namespace Chromely.Core
 {
@@ -30,15 +30,16 @@ namespace Chromely.Core
         public bool UseWindowCustomStyle { get; set; }
         public string AppExeLocation { get; set; }
         public string StartUrl { get; set; }
+        public string DevToolsUrl { get; set; }
         public bool DebuggingMode { get; set; }
         public List<UrlScheme> UrlSchemes { get; set; }
         public List<ControllerAssemblyInfo> ControllerAssemblies { get; set; }
         public List<ChromelyEventHandler<object>> EventHandlers { get; set; }
-        public List<Tuple<string, string>> CommandLineArgs { get; set; }
+        public IDictionary<string, string> CommandLineArgs { get; set; }
         public List<string> CommandLineOptions { get; set; }
-        public Dictionary<string, string> CustomSettings { get; set; }
+        public IDictionary<string, string> CustomSettings { get; set; }
         public IChromelyJavaScriptExecutor JavaScriptExecutor { get; set; }
-        public Dictionary<string, object> ExtensionData { get; set; }
+        public IDictionary<string, object> ExtensionData { get; set; }
 
 
         public DefaultConfiguration()

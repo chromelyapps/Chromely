@@ -1,0 +1,93 @@
+{
+  "appName": "chromely_demo",
+  "startUrl": {
+    "url": "local://app/chromely.html",
+    "loadType": "localResource"
+  },
+  "loadCefBinariesIfNotFound": true,
+  "silentCefBinariesLoading": false,
+  "windowLeft": 0,
+  "windowTop": 0,
+  "windowWidth": 1200,
+  "windowHeight": 900,
+  "windowNoResize": false,
+  "windowNoMinMaxBoxes": false,
+  "windowFrameless": false,
+  "windowCenterScreen": true,
+  "windowKioskMode": false,
+  "windowState": "normal",
+  "windowTitle": "chromely",
+  "windowIconFile": "chromely.ico",
+  "debuggingMode": true,
+  "windowCustomCreation": {
+    "windowStyles": 0,
+    "windowExStyles": 0,
+    "useCustomtyle": false
+  },
+  "urlSchemes": [
+    {
+      "name": "default-resource",
+      "baseUrl": "",
+      "scheme": "local",
+      "host": "",
+      "urlSchemeType": "resource",
+      "baseUrlStrict": false
+    },
+    {
+      "name": "default-custom-http",
+      "baseUrl": "",
+      "scheme": "http",
+      "host": "chromely.com",
+      "urlSchemeType": "custom",
+      "baseUrlStrict": false
+    },
+    {
+      "name": "default-command-http",
+      "baseUrl": "",
+      "scheme": "http",
+      "host": "command.com",
+      "urlSchemeType": "command",
+      "baseUrlStrict": false
+    },
+    {
+      "name": "chromely-site",
+      "baseUrl": "https://github.com/chromelyapps/Chromely",
+      "scheme": "",
+      "host": "",
+      "urlSchemeType": "external",
+      "baseUrlStrict": true
+    }
+  ],
+  "controllerAssemblies": [
+    "Chromely.External.Controllers.dll"
+  ],
+  "customSettings": [
+    {
+      "name": "cefLogFile",
+      "value": "logs\\chromely.cef.log"
+    },
+    {
+      "name": "logSeverity",
+      "value": "info"
+    },
+    {
+      "name": "locale",
+      "value": "en-US"
+    }
+  ],
+  "commandLineArgs": [
+    {
+      "name": "disable-gpu",
+      "value": "1"
+    },
+    {
+      "name": "disable-software-rasterizer",
+      "value": "1"
+    }
+  ],
+  "commandLineOptions": [
+    "no-zygote",
+    "disable-gpu",
+    "disable-software-rasterizer"
+  ]
+}

@@ -1,7 +1,7 @@
 ﻿using Chromely.CefGlue.Browser.Handlers;
 using Chromely.Core;
 using Chromely.Core.Infrastructure;
-using Chromely.Core.RestfulService;
+using Chromely.Core.Network;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;

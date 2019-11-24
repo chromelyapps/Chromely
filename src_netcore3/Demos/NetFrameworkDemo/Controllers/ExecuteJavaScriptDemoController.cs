@@ -11,7 +11,7 @@ using System;
 using System.Text.Json;
 using Chromely.Core;
 using Chromely.Core.Infrastructure;
-using Chromely.Core.RestfulService;
+using Chromely.Core.Network;
 
 namespace NetFrameworkDemo.Controllers
 {

@@ -9,7 +9,7 @@
 
 using System;
 
-namespace Chromely.Core.RestfulService
+namespace Chromely.Core.Network
 {
     /// <summary>
     /// The route path.

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Chromely.Core;
 using Chromely.Core.Helpers;
 using Xilium.CefGlue;
 
@@ -10,7 +9,7 @@ namespace Chromely.CefGlue
 {
     public static class CefSettingsExtension
     {
-        public static void Update(this CefSettings cefSettings, Dictionary<string, string> customSettings)
+        public static void Update(this CefSettings cefSettings, IDictionary<string, string> customSettings)
         {
             if (cefSettings == null || customSettings == null || !customSettings.Any())
             {

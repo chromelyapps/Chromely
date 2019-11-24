@@ -1,7 +1,7 @@
 ﻿using System;
 using Chromely;
 using Chromely.Core;
-using Chromely.Core.RestfulService;
+using Chromely.Core.Network;
 using CrossPlatDemo.Controllers;
 
 namespace CrossPlatDemo

@@ -5,7 +5,7 @@ using Chromely.CefGlue.Browser.EventParams;
 using Chromely.Core;
 using Chromely.Core.Host;
 using Chromely.Core.Infrastructure;
-using Chromely.Core.RestfulService;
+using Chromely.Core.Network;
 using Xilium.CefGlue;
 using Xilium.CefGlue.Wrapper;
 
@@ -218,6 +218,9 @@ namespace Chromely.CefGlue.BrowserWindow
 
             // Update configuration settings
             settings.Update(_config.CustomSettings);
+
+            // Set DevTools url
+            _config.DevToolsUrl = $"http://127.0.0.1:{settings.RemoteDebuggingPort}";
 
             var mainArgs = new CefMainArgs(argv);
             CefApp app = new CefGlueApp(_config);

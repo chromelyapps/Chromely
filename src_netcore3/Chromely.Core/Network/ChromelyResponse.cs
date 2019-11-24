@@ -7,7 +7,7 @@
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Chromely.Core.RestfulService
+namespace Chromely.Core.Network
 {
     /// <summary>
     /// The chromely response.

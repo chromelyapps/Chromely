@@ -13,7 +13,7 @@ using Chromely.CefGlue.Browser.EventParams;
 using Chromely.Core;
 using Chromely.Core.Host;
 using Chromely.Core.Infrastructure;
-using Chromely.Core.RestfulService;
+using Chromely.Core.Network;
 using Xilium.CefGlue;
 
 namespace Chromely.CefGlue.Browser.Handlers

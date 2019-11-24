@@ -14,7 +14,7 @@ using System.Linq;
 using System.Reflection;
 using Chromely.Core.Infrastructure;
 
-namespace Chromely.Core.RestfulService
+namespace Chromely.Core.Network
 {
     /// <summary>
     /// The route scanner.

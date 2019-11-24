@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
-using Chromely.Core.RestfulService;
+using Chromely.Core.Network;
 
 namespace Chromely.External.Controllers
 {

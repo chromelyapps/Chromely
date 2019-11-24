@@ -88,6 +88,9 @@ namespace Chromely.Native
 
         #region X11
 
+        internal delegate short XHandleXError(IntPtr display, ref XErrorEvent error_event);
+        internal delegate short XHandleXIOError(IntPtr display);
+
         [DllImport("libX11.so")]
         internal static extern int XMoveWindow(IntPtr display, IntPtr w, int x, int y);
 
@@ -96,6 +99,24 @@ namespace Chromely.Native
 
         [DllImport("libX11.so")]
         internal static extern int XMoveResizeWindow(IntPtr display, IntPtr w, int x, int y, int width, int height);
+
+        [DllImport("libX11.so")]
+        internal static extern short XSetErrorHandler(XHandleXError err);
+
+        [DllImport("libX11.so")]
+        internal static extern short XSetIOErrorHandler(XHandleXIOError err);
+
+        [StructLayout(LayoutKind.Sequential)]
+        internal struct XErrorEvent
+        {
+            internal int type;
+            internal IntPtr display;
+            internal int resourceid;
+            internal int serial;
+            internal byte error_code;
+            internal byte request_code;
+            internal byte minor_code;
+        }
 
         #endregion
     }

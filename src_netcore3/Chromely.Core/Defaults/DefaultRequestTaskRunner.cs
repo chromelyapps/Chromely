@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Chromely.Core.Infrastructure;
-using Chromely.Core.RestfulService;
+using Chromely.Core.Network;
 
 namespace Chromely.Core.Defaults
 {

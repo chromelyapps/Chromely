@@ -7,11 +7,10 @@
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using Chromely.Core.Host;
 using Chromely.Core.Infrastructure;
-using Chromely.Core.RestfulService;
+using Chromely.Core.Network;
 
 namespace Chromely.Core
 {
@@ -38,14 +37,15 @@ namespace Chromely.Core
         bool UseWindowCustomStyle { get; set; }
         string AppExeLocation { get; set; }
         string StartUrl { get; set; }
+        string DevToolsUrl { get; set; }
         bool DebuggingMode { get; set; }
         List<UrlScheme> UrlSchemes { get; set; }
         List<ControllerAssemblyInfo> ControllerAssemblies { get; set; }
         List<ChromelyEventHandler<object>> EventHandlers { get; set; }
-        List<Tuple<string, string>> CommandLineArgs { get; set; }
+        IDictionary<string, string> CommandLineArgs { get; set; }
         List<string> CommandLineOptions { get; set; }
-        Dictionary<string, string> CustomSettings { get; set; }
+        IDictionary<string, string> CustomSettings { get; set; }
         IChromelyJavaScriptExecutor JavaScriptExecutor { get; set; }
-        Dictionary<string, object> ExtensionData { get; set; }
+        IDictionary<string, object> ExtensionData { get; set; }
     }
 }

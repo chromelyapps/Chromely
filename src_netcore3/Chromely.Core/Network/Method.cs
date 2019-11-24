@@ -8,7 +8,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 // ReSharper disable InconsistentNaming
-namespace Chromely.Core.RestfulService
+namespace Chromely.Core.Network
 {
     /// <summary>
     /// The method.

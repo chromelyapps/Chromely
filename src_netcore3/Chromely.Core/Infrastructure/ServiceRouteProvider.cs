@@ -10,7 +10,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Chromely.Core.RestfulService;
+using Chromely.Core.Network;
 
 namespace Chromely.Core.Infrastructure
 {

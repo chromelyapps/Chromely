@@ -1,4 +1,4 @@
-﻿namespace Chromely.Core.RestfulService
+﻿namespace Chromely.Core.Network
 {
     public interface IChromelyCommandTaskRunner
     {

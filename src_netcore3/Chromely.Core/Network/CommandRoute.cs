@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Chromely.Core.RestfulService
+namespace Chromely.Core.Network
 {
     public class CommandRoute
     {

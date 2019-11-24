@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Chromely.Core.Infrastructure;
 
-namespace Chromely.Core.RestfulService
+namespace Chromely.Core.Network
 {
     public class ChromelyControllerFactory
     {

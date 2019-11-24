@@ -6,7 +6,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Chromely.CefGlue;
 using Chromely.Core;
-using Chromely.Core.RestfulService;
+using Chromely.Core.Network;
 
 namespace NetFrameworkDemo.Controllers
 {

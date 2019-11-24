@@ -83,7 +83,7 @@ namespace Chromely.CefGlue.Browser
             {
                 foreach (var commandArg in _config.CommandLineArgs)
                 {
-                    commandLine.AppendSwitch(commandArg.Item1 ?? string.Empty, commandArg.Item2);
+                    commandLine.AppendSwitch(commandArg.Key ?? string.Empty, commandArg.Value);
                 }
             }
 
@@ -93,25 +93,6 @@ namespace Chromely.CefGlue.Browser
                 {
                     commandLine.AppendSwitch(commmandOption ?? string.Empty);
                 }
-            }
-
-            // Currently on linux platform location of locales and pack files are determined
-            // incorrectly (relative to main module instead of libcef.so module).
-            // Once issue http://code.google.com/p/chromiumembedded/issues/detail?id=668 will be resolved
-            // this code can be removed.
-            if (CefRuntime.Platform == CefRuntimePlatform.Linux)
-            {
-                if (string.IsNullOrEmpty(processType) || processType.Contains("zygote"))
-                    commandLine.AppendSwitch("no-zygote");
-
-                commandLine.AppendArgument("--disable-gpu");
-                commandLine.AppendArgument("--disable-software-rasterizer");
-
-                commandLine.AppendSwitch("disable-gpu", "1");
-                commandLine.AppendSwitch("disable-software-rasterizer", "1");
-
-                commandLine.AppendSwitch("resources-dir-path", _config.AppExeLocation);
-                commandLine.AppendSwitch("locales-dir-path", Path.Combine(_config.AppExeLocation, "locales"));
             }
         }
 

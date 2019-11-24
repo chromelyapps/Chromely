@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Chromely.Core;
 using Chromely.Core.Infrastructure;
-using Chromely.Core.RestfulService;
+using Chromely.Core.Network;
 using Xilium.CefGlue;
 
 namespace Chromely.CefGlue.Browser.Handlers

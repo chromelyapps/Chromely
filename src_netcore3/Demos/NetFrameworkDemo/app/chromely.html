@@ -35,7 +35,15 @@
 				  demoframe.src = url;
 			   }
 			});
-		});
+        });
+
+        function showDevTools() {
+            var url = "http://command.com/democontroller/showdevtools";
+            var link = document.createElement('a');
+            link.href = url;
+            document.body.appendChild(link);
+            link.click(); 
+        }
 	</script>
   </head>
 <body>
@@ -63,15 +71,17 @@
 	  </li>
 	  <li class="nav-item dropdown">
 		<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">basics</a>
-		<div class="dropdown-menu dropdown-menu-right">
-		  <a class="dropdown-item" href=""#messagerouterdemo" data-url="./pages/messagerouterdemo.html">Message Router Demo</a>
-		  <a class="dropdown-item" href="#ajaxdemo" data-url="./pages/ajaxdemo.html">Ajax Demo</a>
-		  <a class="dropdown-item" href="#javascriptdemo" data-url="./pages/javascriptdemo.html">Execute JavaScript Demo</a>
-		  <div class="dropdown-divider"></div>
-		  <a class="dropdown-item" href="#html5tests"  data-url="https://html5test.com/">HTML5 Tests</a>
-		  <a class="dropdown-item" href="#html6tests"  data-url="http://html6test.com/">HTML6 Tests</a>
-		  <a class="dropdown-item" href="#shakatests" data-url="https://shaka-player-demo.appspot.com/demo/#asset=https://storage.googleapis.com/shaka-demo-assets/angel-one/dash.mpd;lang=en-US;build=uncompiled">Google Shaka Support Tests</a>
-		</div>
+        <div class="dropdown-menu dropdown-menu-right">
+            <a class="dropdown-item" href="" #messagerouterdemo" data-url="./pages/messagerouterdemo.html">Message Router Demo</a>
+            <a class="dropdown-item" href="#ajaxdemo" data-url="./pages/ajaxdemo.html">Ajax Demo</a>
+            <a class="dropdown-item" href="#javascriptdemo" data-url="./pages/javascriptdemo.html">Execute JavaScript Demo</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#html5tests" data-url="https://html5test.com/">HTML5 Tests</a>
+            <a class="dropdown-item" href="#html6tests" data-url="http://html6test.com/">HTML6 Tests</a>
+            <a class="dropdown-item" href="#shakatests" data-url="https://shaka-player-demo.appspot.com/demo/#asset=https://storage.googleapis.com/shaka-demo-assets/angel-one/dash.mpd;lang=en-US;build=uncompiled">Google Shaka Support Tests</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" onclick="showDevTools()">Show DevTools</a>
+        </div>
 	  </li>
 	</ul>
 	</div>

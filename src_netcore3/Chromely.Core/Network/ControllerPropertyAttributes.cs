@@ -9,7 +9,7 @@
 
 using System;
 
-namespace Chromely.Core.RestfulService
+namespace Chromely.Core.Network
 {
     [AttributeUsage(AttributeTargets.Method)]
     public class HttpAttribute : Attribute

@@ -55,7 +55,10 @@ namespace Chromely.Core.Defaults
                     }
                 }
 
-                DataPath = appSettingsFile;
+                 if (File.Exists(appSettingsFile))
+                {
+                    DataPath = appSettingsFile;
+                }
             }
             catch (Exception exception)
             {
@@ -74,7 +77,7 @@ namespace Chromely.Core.Defaults
 
                 var appSettingsFile = DataPath;
 
-                if (appSettingsFile == null)
+                if (string.IsNullOrWhiteSpace(appSettingsFile))
                 {
                     appSettingsFile = AppSettingInfo.GetSettingsFilePath(config.Platform, AppName, true);
                 }

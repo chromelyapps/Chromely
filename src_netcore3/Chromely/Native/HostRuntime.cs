@@ -10,7 +10,7 @@ namespace Chromely.Native
 {
     public static class HostRuntime
     {
-        // Only MacOS required.
+        // Required Only for MacOS.
         private static string MacOSNativeDllFile = "libchromely.dylib";
 
         public static void LoadNativeHostFile(IChromelyConfiguration config)

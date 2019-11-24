@@ -25,7 +25,7 @@ namespace Chromely.CefGlue.Browser.Handlers
             // To disable the menu then call clear
             model.Clear();
 
-            if (_config.Platform != ChromelyPlatform.MacOSX)
+            if (_config.Platform == ChromelyPlatform.Windows)
             {
                 // Removing existing menu item
                 // Remove "View Source" option
@@ -47,7 +47,7 @@ namespace Chromely.CefGlue.Browser.Handlers
 
         protected override bool OnContextMenuCommand(CefBrowser browser, CefFrame frame, CefContextMenuParams state, int commandId, CefEventFlags eventFlags)
         {
-            if (_config.Platform != ChromelyPlatform.MacOSX)
+            if (_config.Platform == ChromelyPlatform.Windows)
             {
                 if (debugging)
                 {

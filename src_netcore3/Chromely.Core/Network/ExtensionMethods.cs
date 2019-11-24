@@ -17,7 +17,7 @@ using System.Text.Json;
 using System.Web;
 using Chromely.Core.Infrastructure;
 
-namespace Chromely.Core.RestfulService
+namespace Chromely.Core.Network
 {
     class ReturnedData
     {

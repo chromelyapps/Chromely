@@ -5,7 +5,7 @@ using Caliburn.Light;
 using Chromely.Core.Defaults;
 using Chromely.Core.Host;
 using Chromely.Core.Infrastructure;
-using Chromely.Core.RestfulService;
+using Chromely.Core.Network;
 
 namespace Chromely.Core
 {
@@ -132,7 +132,7 @@ namespace Chromely.Core
 
             if (config.UrlSchemes == null) config.UrlSchemes = new List<UrlScheme>();
             if (config.ControllerAssemblies == null) config.ControllerAssemblies = new List<ControllerAssemblyInfo>();
-            if (config.CommandLineArgs == null) config.CommandLineArgs = new List<Tuple<string, string>>();
+            if (config.CommandLineArgs == null) config.CommandLineArgs = new Dictionary<string, string>();
             if (config.CommandLineOptions == null) config.CommandLineOptions = new List<string>();
             if (config.CustomSettings == null) config.CustomSettings = new Dictionary<string, string>();
         }

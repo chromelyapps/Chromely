@@ -1,4 +1,4 @@
-﻿using Chromely.Core.RestfulService;
+﻿using Chromely.Core.Network;
 using System;
 
 namespace Chromely.Core.Host

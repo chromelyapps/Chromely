@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 using Chromely.Core.Infrastructure;
+using Chromely.Core.Network;
 
-namespace Chromely.Core.RestfulService
+namespace Chromely.Core.Network
 {
     public abstract class ChromelyController
     {

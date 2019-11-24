@@ -11,7 +11,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
-using Chromely.Core.RestfulService;
+using Chromely.CefGlue;
+using Chromely.Core;
+using Chromely.Core.Network;
 
 namespace CrossPlatDemo.Controllers
 {
@@ -21,11 +23,15 @@ namespace CrossPlatDemo.Controllers
     [ControllerProperty(Name = "DemoController", Route = "democontroller")]
     public class DemoController : ChromelyController
     {
+        private readonly IChromelyConfiguration _config;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DemoController"/> class.
         /// </summary>
-        public DemoController()
+        public DemoController(IChromelyConfiguration config)
         {
+            _config = config;
+
             RegisterGetRequest("/democontroller/movies", GetMovies);
             RegisterPostRequest("/democontroller/movies", SaveMovies);
         }
@@ -48,14 +54,13 @@ namespace CrossPlatDemo.Controllers
 
         #region CommandAttributes
 
-        [Command(Route = "/externalcontroller/testcommand/one")]
-        public void CommandTestOne(IDictionary<string, string> queryParameters)
+        [Command(Route = "/democontroller/showdevtools")]
+        public void ShowDevTools(IDictionary<string, string> queryParameters)
         {
-        }
-
-        [Command(Route = "/externalcontroller/testcommand/two")]
-        public void CommandTestTwo(IDictionary<string, string> queryParameters)
-        {
+            if (_config != null && !string.IsNullOrWhiteSpace(_config.DevToolsUrl))
+            {
+                BrowserLauncher.Open(_config.Platform, _config.DevToolsUrl);
+            }
         }
 
         #endregion

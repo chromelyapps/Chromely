@@ -1,8 +1,7 @@
-﻿using Chromely.Core;
-using Chromely.Core.Helpers;
+﻿using Chromely.Core.Helpers;
 using Chromely.Core.Host;
 using Chromely.Core.Infrastructure;
-using Chromely.Core.RestfulService;
+using Chromely.Core.Network;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -263,10 +262,10 @@ namespace Chromely.Core
 
                     if (commandLineArgs != null)
                     {
-                        config.CommandLineArgs = new List<Tuple<string, string>>();
+                        config.CommandLineArgs = new Dictionary<string, string>();
                         foreach (var item in commandLineArgs)
                         {
-                            config.CommandLineArgs.Add(new Tuple<string, string>(item.name, item.value));
+                            config.CommandLineArgs.Add(item.name, item.value);
                         }
                     }
 
