@@ -51,7 +51,7 @@ For more info/documentation, please check [Chromely wiki](https://github.com/chr
 ### Demo Code
 Get started with the [demos](https://github.com/chromelyapps/demo-projects). 
 
-### Creating a Simple App (Using CefGlue with Winapi host)
+### Creating a Simple App
 For more info see - [Getting Started](https://github.com/chromelyapps/Chromely/blob/master/Documents/getting_started.md)
 
 A basic Chromely project requires:
