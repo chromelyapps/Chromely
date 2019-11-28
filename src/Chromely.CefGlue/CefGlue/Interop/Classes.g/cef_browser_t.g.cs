@@ -33,7 +33,6 @@ namespace Xilium.CefGlue.Interop
         internal IntPtr _get_frame_count;
         internal IntPtr _get_frame_identifiers;
         internal IntPtr _get_frame_names;
-        internal IntPtr _send_process_message;
         
         [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
         #if !DEBUG
@@ -178,12 +177,6 @@ namespace Xilium.CefGlue.Interop
         [SuppressUnmanagedCodeSecurity]
         #endif
         private delegate void get_frame_names_delegate(cef_browser_t* self, cef_string_list* names);
-        
-        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
-        #if !DEBUG
-        [SuppressUnmanagedCodeSecurity]
-        #endif
-        private delegate int send_process_message_delegate(cef_browser_t* self, CefProcessId target_process, cef_process_message_t* message);
         
         // AddRef
         private static IntPtr _p0;
@@ -591,23 +584,6 @@ namespace Xilium.CefGlue.Interop
                 if (_p17 == IntPtr.Zero) { _d17 = d; _p17 = p; }
             }
             d(self, names);
-        }
-        
-        // SendProcessMessage
-        private static IntPtr _p18;
-        private static send_process_message_delegate _d18;
-        
-        public static int send_process_message(cef_browser_t* self, CefProcessId target_process, cef_process_message_t* message)
-        {
-            send_process_message_delegate d;
-            var p = self->_send_process_message;
-            if (p == _p18) { d = _d18; }
-            else
-            {
-                d = (send_process_message_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(send_process_message_delegate));
-                if (_p18 == IntPtr.Zero) { _d18 = d; _p18 = p; }
-            }
-            return d(self, target_process, message);
         }
         
     }

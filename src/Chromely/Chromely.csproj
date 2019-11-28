@@ -1,0 +1,80 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Platforms>AnyCPU</Platforms>
+    <ProductVersion>5.0.77.0-pre01</ProductVersion>
+    <AssemblyVersion>5.77.0.0</AssemblyVersion>
+    <FileVersion>5.0.77.0</FileVersion>
+    <Version>5.0.77.0-pre01</Version>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Product>Chromely</Product>
+    <Authors>Chromely Projects</Authors>
+    <Company>Chromely Projects</Company>
+    <Copyright>Copyright © 2017-2019 Chromely Projects</Copyright>
+    <PackageLicenseUrl>https://github.com/chromelyapps/Chromely/blob/master/LICENSE.md</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/chromelyapps/Chromely</PackageProjectUrl>
+    <PackageIconUrl>https://github.com/chromelyapps/Chromely/blob/master/nugets/chromely.ico?raw=true</PackageIconUrl>
+    <PackageTags>Cef Chromium HTML5 Desktop Chromely CefGlue  Restful  Ajax HTTP XHR MessageRouter .NET Core</PackageTags>
+    <Description>Primary Chromely implementation library - this is in .NET Standard 2.0 as it can be used in both .NET (Windows) and .NET Core (Windows, Linux, MacOS). Chromely version naming is based Chromely and Chromium versions implemented- major.minor.chromuim version.patch e.g 1.0.70.0.</Description>
+    <PackageReleaseNotes>
+      - Breaking changes!
+      - .NET Core 3.0 and MacOS Support - https://github.com/chromelyapps/Chromely/wiki/Migration-to-.NET-Core-3-and-MacOS-Support
+    </PackageReleaseNotes>
+    <RepositoryType>Github Repository</RepositoryType>
+    <RepositoryUrl>https://github.com/chromelyapps/Chromely</RepositoryUrl>
+    <Configurations>Debug;Release;ReleaseLinux;DebugLinux</Configurations>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netstandard2.0\Chromely.CefGlue.Winapi.xml</DocumentationFile>
+    <NoWarn>1701;1702; NU5125;7035</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard2.0\Chromely.CefGlue.Winapi.xml</DocumentationFile>
+    <NoWarn>1701;1702; NU5125;7035</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'ReleaseLinux' ">
+    <Optimize>true</Optimize>
+    <NoWarn>1701;1702; NU5125;7035</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'DebugLinux' ">
+    <Optimize>true</Optimize>
+    <NoWarn>1701;1702; NU5125;7035</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Native\MacCocoa\libchromely.dylib" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Native\MacCocoa\libchromely.dylib" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Chromely.CefGlue\Chromely.CefGlue.csproj" />
+    <ProjectReference Include="..\Chromely.Core\Chromely.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(OS)' == 'Windows_NT' ">
+    <None Include="build\**" Pack="True" PackagePath="build\" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(OS)' == 'Windows_NT' ">
+    <None Update="build\Chromely.props">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="build\chromely_win_cef_downloader.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="build\chromely_win_cef_downloader.exe.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

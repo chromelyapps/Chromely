@@ -104,6 +104,7 @@ namespace Chromely.CefGlue.Browser.Handlers
         protected abstract long GetDataSize();
 
         /// <inheritdoc/>
+        [Obsolete]
         protected override bool ProcessRequest(CefRequest request, CefCallback callback)
         {
             if (!this.PrepareRequest(request))
@@ -127,15 +128,15 @@ namespace Chromely.CefGlue.Browser.Handlers
                 }
                 catch (TaskCanceledException)
                 {
-                    Log.Info("The request was canceled.");
+                    Logger.Instance.Log.Info("The request was canceled.");
                 }
                 catch (Exception ex) when (ex.Message == "The request was aborted: The request was canceled.")
                 {
-                    Log.Info("The request was canceled.");
+                    Logger.Instance.Log.Info("The request was canceled.");
                 }
                 catch (Exception ex)
                 {
-                    Log.Error(ex, "Exception thrown while loading resource");
+                    Logger.Instance.Log.Error(ex, "Exception thrown while loading resource");
                 }
                 finally
                 {
@@ -146,6 +147,7 @@ namespace Chromely.CefGlue.Browser.Handlers
         }
 
         /// <inheritdoc/>
+        [Obsolete]
         protected override bool ReadResponse(Stream response, int bytesToRead, out int bytesRead, CefCallback callback)
         {
             // if no data stream was specified, then nothing to read
@@ -190,7 +192,7 @@ namespace Chromely.CefGlue.Browser.Handlers
                 {
                     FreeResources();
                     _bytesRead = 0;
-                    Log.Warn("Cancellation requested");
+                    Logger.Instance.Log.Warn("Cancellation requested");
                 }
                 // Sometimes cef disposes object, before it is cancelled
                 // then this exception is thrown
@@ -199,14 +201,14 @@ namespace Chromely.CefGlue.Browser.Handlers
                 {
                     FreeResources();
                     _bytesRead = 0;
-                    Log.Warn("Cancellation requested");
+                    Logger.Instance.Log.Warn("Cancellation requested");
                 }
                 catch (Exception ex)
                 {
                     FreeResources();
                     _bytesRead = 0;
 
-                    Log.Error(ex, "Exception thrown while loading resource");
+                    Logger.Instance.Log.Error(ex, "Exception thrown while loading resource");
                 }
                 finally
                 {
@@ -250,15 +252,24 @@ namespace Chromely.CefGlue.Browser.Handlers
         }
 
         /// <inheritdoc/>
-        protected override bool CanGetCookie(CefCookie cookie)
+        protected override bool Open(CefRequest request, out bool handleRequest, CefCallback callback)
         {
+            handleRequest = false;
+            return false;
+        }
+
+        /// <inheritdoc/>
+        protected override bool Skip(long bytesToSkip, out long bytesSkipped, CefResourceSkipCallback callback)
+        {
+            bytesSkipped = 0;
             return true;
         }
 
         /// <inheritdoc/>
-        protected override bool CanSetCookie(CefCookie cookie)
+        protected override bool Read(IntPtr dataOut, int bytesToRead, out int bytesRead, CefResourceReadCallback callback)
         {
-            return true;
+            bytesRead = -1;
+            return false;
         }
 
         /// <inheritdoc/>

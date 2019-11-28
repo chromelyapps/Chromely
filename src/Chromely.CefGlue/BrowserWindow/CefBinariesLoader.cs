@@ -41,13 +41,13 @@ namespace Chromely.CefGlue.BrowserWindow
         /// <returns>
         /// The list of temporary files generated
         /// </returns>
-        public static List<string> Load(ChromelyConfiguration config)
+        public static List<string> Load(IChromelyConfiguration config)
         {
             try
             {
                 var platform = CefRuntime.Platform;
                 var version = CefRuntime.ChromeVersion;
-                Log.Info($"Running {platform} chromium {version}");
+                Logger.Instance.Log.Info($"Running {platform} chromium {version}");
 
                 try
                 {
@@ -55,16 +55,16 @@ namespace Chromely.CefGlue.BrowserWindow
                 }
                 catch (Exception ex)
                 {
-                    Log.Error(ex);
+                    Logger.Instance.Log.Error(ex);
                     if (config.LoadCefBinariesIfNotFound)
                     {
                         if (config.SilentCefBinariesLoading)
                         {
-                            CefLoader.Load();
+                            CefLoader.Load(config.Platform);
                         }
                         else
                         {
-                            return WarnUserOnLoad();
+                            return WarnUserOnLoad(config.Platform);
                         }
                     }
                     else
@@ -75,7 +75,7 @@ namespace Chromely.CefGlue.BrowserWindow
             }
             catch (Exception ex)
             {
-                Log.Error(ex);
+                Logger.Instance.Log.Error(ex);
                 Environment.Exit(0);
             }
 
@@ -101,9 +101,9 @@ namespace Chromely.CefGlue.BrowserWindow
                 {
                     File.Delete(file);
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-                    Console.WriteLine(e);
+                    Logger.Instance.Log.Error(ex);
                     throw;
                 }
             }
@@ -115,7 +115,7 @@ namespace Chromely.CefGlue.BrowserWindow
         /// <returns>
         /// The list of temporary files generated
         /// </returns>
-        private static List<string> WarnUserOnLoad()
+        private static List<string> WarnUserOnLoad(ChromelyPlatform platform)
         {
             var tempFiles = new List<string>();
 
@@ -127,7 +127,7 @@ namespace Chromely.CefGlue.BrowserWindow
                 var startTempFile = LaunchStartPage();
                 tempFiles.Add(startTempFile);
 
-                CefLoader.Load();
+                CefLoader.Load(platform);
 
                 stopwatch.Stop();
                 var competedTempFile = LaunchCompletedPage($"Time elapsed: {stopwatch.Elapsed}.");
@@ -141,7 +141,7 @@ namespace Chromely.CefGlue.BrowserWindow
             }
             catch (Exception ex)
             {
-                Log.Error(ex);
+                Logger.Instance.Log.Error(ex);
                 var onErrorTempFile = LaunchErrorPage(ex);
                 tempFiles.Add(onErrorTempFile);
                 Environment.Exit(0);
@@ -275,6 +275,10 @@ namespace Chromely.CefGlue.BrowserWindow
                 {
                     Process.Start("xdg-open", htmlFileName);
                 }
+                else if (CefRuntime.Platform == CefRuntimePlatform.MacOSX)
+                {
+                    Process.Start("open", htmlFileName);
+                }
                 else
                 {
                     try
@@ -298,7 +302,7 @@ namespace Chromely.CefGlue.BrowserWindow
             }
             catch (Exception e)
             {
-                Log.Error(e);
+                Logger.Instance.Log.Error(e);
                 Console.WriteLine(message);
             }
 

@@ -1,6 +1,4 @@
-﻿#pragma warning disable 1591
-// ReSharper disable once CheckNamespace
-namespace Xilium.CefGlue.Wrapper
+﻿namespace Xilium.CefGlue.Wrapper
 {
     using System;
     using System.Collections.Generic;
@@ -333,7 +331,7 @@ namespace Xilium.CefGlue.Wrapper
         /// Call from CefClient::OnProcessMessageReceived. Returns true if the message
         /// is handled by this router or false otherwise.
         /// </summary>
-        public bool OnProcessMessageReceived(CefBrowser browser, CefProcessId sourceProcess, CefProcessMessage message)
+        public bool OnProcessMessageReceived(CefBrowser browser, CefFrame frame, CefProcessId sourceProcess, CefProcessMessage message)
         {
             Helpers.RequireUIThread();
 
@@ -352,14 +350,13 @@ namespace Xilium.CefGlue.Wrapper
                 if (_handlerSet.Count == 0)
                 {
                     // No handlers so cancel the query.
-                    CancelUnhandledQuery(browser, contextId, requestId);
+                    CancelUnhandledQuery(browser, frame, contextId, requestId);
                     return true;
                 }
 
                 var browserId = browser.Identifier;
                 var queryId = _queryIdGenerator.GetNextId();
 
-                var frame = browser.GetFrame(frameId);
                 var callback = new Callback(this, browserId, queryId, persistent);
 
                 // Make a copy of the handler list in case the user adds or removes a
@@ -408,7 +405,7 @@ namespace Xilium.CefGlue.Wrapper
                     callback.Detach();
 
                     // No one chose to handle the query so cancel it.
-                    CancelUnhandledQuery(browser, contextId, requestId);
+                    CancelUnhandledQuery(browser, frame, contextId, requestId);
                 }
 
                 return true;
@@ -513,10 +510,11 @@ namespace Xilium.CefGlue.Wrapper
 
         private void SendQuerySuccess(QueryInfo info, string response)
         {
-            SendQuerySuccess(info.Browser, info.ContextId, info.RequestId, response);
+            CefFrame frame = info.Browser.GetFrame(info.FrameId);
+            SendQuerySuccess(info.Browser, frame, info.ContextId, info.RequestId, response);
         }
 
-        private void SendQuerySuccess(CefBrowser browser, int contextId, int requestId, string response)
+        private void SendQuerySuccess(CefBrowser browser, CefFrame frame, int contextId, int requestId, string response)
         {
             var message = CefProcessMessage.Create(_queryMessageName);
             var args = message.Arguments;
@@ -524,17 +522,18 @@ namespace Xilium.CefGlue.Wrapper
             args.SetInt(1, requestId);
             args.SetBool(2, true);  // Indicates a success result.
             args.SetString(3, response);
-            browser.SendProcessMessage(CefProcessId.Renderer, message);
+            frame?.SendProcessMessage(CefProcessId.Renderer, message);
             args.Dispose();
             message.Dispose();
         }
 
         private void SendQueryFailure(QueryInfo info, int errorCode, string errorMessage)
         {
-            SendQueryFailure(info.Browser, info.ContextId, info.RequestId, errorCode, errorMessage);
+            CefFrame frame = info.Browser.GetFrame(info.FrameId);
+            SendQueryFailure(info.Browser, frame, info.ContextId, info.RequestId, errorCode, errorMessage);
         }
 
-        private void SendQueryFailure(CefBrowser browser, int contextId, int requestId, int errorCode, string errorMessage)
+        private void SendQueryFailure(CefBrowser browser, CefFrame frame, int contextId, int requestId, int errorCode, string errorMessage)
         {
             var message = CefProcessMessage.Create(_queryMessageName);
             var args = message.Arguments;
@@ -543,15 +542,15 @@ namespace Xilium.CefGlue.Wrapper
             args.SetBool(2, false);  // Indicates a failure result.
             args.SetInt(3, errorCode);
             args.SetString(4, errorMessage);
-            browser.SendProcessMessage(CefProcessId.Renderer, message);
+            frame?.SendProcessMessage(CefProcessId.Renderer, message);
             args.Dispose();
             message.Dispose();
         }
 
         // Cancel a query that has not been sent to a handler.
-        private void CancelUnhandledQuery(CefBrowser browser, int contextId, int requestId)
+        private void CancelUnhandledQuery(CefBrowser browser, CefFrame frame, int contextId, int requestId)
         {
-            SendQueryFailure(browser, contextId, requestId, CefMessageRouter.CanceledErrorCode, CefMessageRouter.CanceledErrorMessage);
+            SendQueryFailure(browser, frame, contextId, requestId, CefMessageRouter.CanceledErrorCode, CefMessageRouter.CanceledErrorMessage);
         }
 
         // Cancel a query that has already been sent to a handler.

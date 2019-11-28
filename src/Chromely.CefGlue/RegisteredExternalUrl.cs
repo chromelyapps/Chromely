@@ -46,10 +46,14 @@ namespace Chromely.CefGlue
                     {
                         Process.Start("xdg-open", requestUrl);
                     }
+                    else if (CefRuntime.Platform == CefRuntimePlatform.MacOSX)
+                    {
+                        Process.Start("open", requestUrl);
+                    }
                 }
                 catch (Exception exception)
                 {
-                    Log.Error(exception);
+                    Logger.Instance.Log.Error(exception);
                 }
             }
         }

@@ -7,7 +7,6 @@
 // </license>
 // ----------------------------------------------------------------------------------------------------------------------
 
-using Chromely.Core.Infrastructure;
 using Xilium.CefGlue;
 using Xilium.CefGlue.Wrapper;
 
@@ -18,6 +17,8 @@ namespace Chromely.CefGlue.Browser
     /// </summary>
     public class CefGlueClient : CefClient
     {
+        private readonly CefMessageRouterBrowserSide _browserMessageRouter;
+
         /// <summary>
         /// The life span handler.
         /// </summary>
@@ -79,26 +80,27 @@ namespace Chromely.CefGlue.Browser
         private readonly CefFindHandler _findHandler;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CefGlueClient"/> class.
+        /// Initializes a new instance of the <see cref="CefGlueCustomHandlers"/> class.
         /// </summary>
-        /// <param name="clientParams">
+        /// <param name="handlers">
         /// The client params.
         /// </param>
-        public CefGlueClient(CefGlueClientParams clientParams)
+        public CefGlueClient(CefGlueBrowser browser, CefMessageRouterBrowserSide browserMessageRouter, CefGlueCustomHandlers handlers)
         {
-            CoreBrowser = clientParams.Browser;
-            _lifeSpanHandler = clientParams.LifeSpanHandler;
-            _loadHandler = clientParams.LoadHandler;
-            _requestHandler = clientParams.RequestHandler;
-            _displayHandler = clientParams.DisplayHandler;
-            _contextMenuHandler = clientParams.ContextMenuHandler;
-            _focusHandler = clientParams.FocusHandler;
-            _keyboardHandler = clientParams.KeyboardHandler;
-            _jsDialogHandler = clientParams.JsDialogHandler;
-            _dialogHandler = clientParams.DialogHandler;
-            _dragHandler = clientParams.DragHandler;
-            _downloadHandler = clientParams.DownloadHandler;
-            _findHandler = clientParams.FindHandler;
+            CoreBrowser = browser;
+            _browserMessageRouter = browserMessageRouter;
+            _lifeSpanHandler = handlers.LifeSpanHandler;
+            _loadHandler = handlers.LoadHandler;
+            _requestHandler = handlers.RequestHandler;
+            _displayHandler = handlers.DisplayHandler;
+            _contextMenuHandler = handlers.ContextMenuHandler;
+            _focusHandler = handlers.FocusHandler;
+            _keyboardHandler = handlers.KeyboardHandler;
+            _jsDialogHandler = handlers.JsDialogHandler;
+            _dialogHandler = handlers.DialogHandler;
+            _dragHandler = handlers.DragHandler;
+            _downloadHandler = handlers.DownloadHandler;
+            _findHandler = handlers.FindHandler;
         }
 
         /// <summary>
@@ -253,10 +255,9 @@ namespace Chromely.CefGlue.Browser
         /// <returns>
         /// The <see cref="bool"/>.
         /// </returns>
-        protected override bool OnProcessMessageReceived(CefBrowser browser, CefProcessId sourceProcess, CefProcessMessage message)
+        protected override bool OnProcessMessageReceived(CefBrowser browser, CefFrame frame, CefProcessId sourceProcess, CefProcessMessage message)
         {
-            var browserMessageRouter = IoC.GetInstance<CefMessageRouterBrowserSide>(typeof(CefMessageRouterBrowserSide).FullName);
-            return browserMessageRouter?.OnProcessMessageReceived(browser, sourceProcess, message) ?? false;
+            return _browserMessageRouter?.OnProcessMessageReceived(browser, frame, sourceProcess, message) ?? false;
         }
     }
 }

@@ -10,9 +10,10 @@
 using System;
 using System.Diagnostics;
 using Chromely.CefGlue.Browser.EventParams;
+using Chromely.Core;
 using Chromely.Core.Host;
 using Chromely.Core.Infrastructure;
-using Chromely.Core.RestfulService;
+using Chromely.Core.Network;
 using Xilium.CefGlue;
 
 namespace Chromely.CefGlue.Browser.Handlers
@@ -22,6 +23,9 @@ namespace Chromely.CefGlue.Browser.Handlers
     /// </summary>
     public class CefGlueRequestHandler : CefRequestHandler
     {
+        private readonly IChromelyConfiguration _config;
+        private readonly IChromelyCommandTaskRunner _commandTaskRunner;
+
         /// <summary>
         /// The m_browser.
         /// </summary>
@@ -30,9 +34,16 @@ namespace Chromely.CefGlue.Browser.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="CefGlueRequestHandler"/> class.
         /// </summary>
-        public CefGlueRequestHandler()
+        public CefGlueRequestHandler(IChromelyConfiguration config, IChromelyCommandTaskRunner commandTaskRunner, CefGlueBrowser browser)
         {
-            _browser = CefGlueBrowser.BrowserCore;
+            _config = config;
+            _commandTaskRunner = commandTaskRunner;
+            _browser = browser;
+        }
+
+        protected override CefResourceRequestHandler GetResourceRequestHandler(CefBrowser browser, CefFrame frame, CefRequest request, bool isNavigation, bool isDownload, string requestInitiator, ref bool disableDefaultHandling)
+        {
+            return null;
         }
 
         /// <summary>
@@ -58,42 +69,17 @@ namespace Chromely.CefGlue.Browser.Handlers
         /// </returns>
         protected override bool OnBeforeBrowse(CefBrowser browser, CefFrame frame, CefRequest request, bool userGesture, bool isRedirect)
         {
-            var isUrlExternal = UrlSchemeProvider.IsUrlRegisteredExternal(request.Url);
-            if (isUrlExternal)
+            var isUrlExternal = _config?.UrlSchemes?.IsUrlRegisteredExternalScheme(request.Url);
+            if (isUrlExternal.HasValue && isUrlExternal.Value)
             {
-                // https://brockallen.com/2016/09/24/process-start-for-urls-on-net-core/
-                try
-                {
-                    Process.Start(request.Url);
-                }
-                catch
-                {
-                    try
-                    {
-                        // hack because of this: https://github.com/dotnet/corefx/issues/10361
-                        if (CefRuntime.Platform == CefRuntimePlatform.Windows)
-                        {
-                            var url = request.Url.Replace("&", "^&");
-                            Process.Start(new ProcessStartInfo("cmd", $"/c start {url}") { CreateNoWindow = true });
-                        }
-                        else if (CefRuntime.Platform == CefRuntimePlatform.Linux)
-                        {
-                            Process.Start("xdg-open", request.Url);
-                        }
-                    }
-                    catch (Exception exception)
-                    {
-                        Log.Error(exception);
-                    }
-                }
-
+                BrowserLauncher.Open(_config.Platform, request.Url);
                 return true;
             }
 
-            var isUrlCommand = UrlSchemeProvider.IsUrlRegisteredCommand(request.Url);
-            if (isUrlCommand)
+            var isUrlCommand = _config?.UrlSchemes?.IsUrlRegisteredCommandScheme(request.Url);
+            if (isUrlCommand.HasValue && isUrlCommand.Value)
             {
-                CommandTaskRunner.RunAsync(request.Url);
+                _commandTaskRunner.RunAsync(request.Url);
                 return true;
             }
 

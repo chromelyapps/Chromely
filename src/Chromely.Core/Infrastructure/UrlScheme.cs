@@ -16,39 +16,11 @@ namespace Chromely.Core.Infrastructure
     /// </summary>
     public class UrlScheme
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UrlScheme"/> class.
-        /// </summary>
-        /// <param name="scheme">
-        /// The scheme.
-        /// </param>
-        /// <param name="host">
-        /// The host.
-        /// </param>
-        /// <param name="type">
-        /// The is external.
-        /// </param>
-        public UrlScheme(string scheme, string host, UrlSchemeType type)
+        public UrlScheme(string name, string scheme, string host, string baseUrl, UrlSchemeType type, bool baseUrlStrict = true)
         {
+            Name = name;
             Scheme = scheme;
             Host = host;
-            UrlSchemeType = type;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UrlScheme"/> class.
-        /// </summary>
-        /// <param name="baseUrl">
-        /// The base url.
-        /// </param>
-        /// <param name="type">
-        /// The is url scheme type.
-        /// </param>
-        /// <param name="baseUrlStrict">
-        /// Sets true or false, if base url must be relative to the base url.
-        /// </param>
-        public UrlScheme(string baseUrl, UrlSchemeType type, bool baseUrlStrict = true)
-        {
             BaseUrl = baseUrl;
             UrlSchemeType = type;
             BaseUrlStrict = baseUrlStrict;
@@ -61,24 +33,10 @@ namespace Chromely.Core.Infrastructure
             }
         }
 
-        /// <summary>
-        /// Gets or sets the base url.
-        /// </summary>
+        public string Name { get; set; }
         public string BaseUrl { get; set; }
-
-        /// <summary>
-        /// Gets or sets the scheme.
-        /// </summary>
         public string Scheme { get; set; }
-
-        /// <summary>
-        /// Gets or sets the host.
-        /// </summary>
         public string Host { get; set; }
-
-        /// <summary>
-        /// Gets or sets url scheme type.
-        /// </summary>
         public UrlSchemeType UrlSchemeType { get; set; }
 
         /// <summary>
@@ -89,16 +47,6 @@ namespace Chromely.Core.Infrastructure
         /// http://a.com/me/they is not  valid
         /// </summary>
         public bool BaseUrlStrict { get; set; }
-
-        /// <summary>
-        /// Check if scheme is a standard type.
-        /// </summary>
-        /// <param name="scheme">
-        /// The scheme.
-        /// </param>
-        /// <returns>
-        /// The <see cref="bool"/>.
-        /// </returns>
         public static bool IsStandardScheme(string scheme)
         {
             if (string.IsNullOrEmpty(scheme))
@@ -120,15 +68,6 @@ namespace Chromely.Core.Infrastructure
             return false;
         }
 
-        /// <summary>
-        /// Checks if url is of same scheme as the object url.
-        /// </summary>
-        /// <param name="url">
-        /// The url to check.
-        /// </param>
-        /// <returns>
-        /// The <see cref="bool"/>.
-        /// </returns>
         public bool IsUrlOfSameScheme(string url)
         {
             if (string.IsNullOrEmpty(Scheme) ||
@@ -153,6 +92,16 @@ namespace Chromely.Core.Infrastructure
             }
 
             return false;
+        }
+
+        public bool IsUrlRegisteredExternal(string url)
+        {
+            return IsUrlOfSameScheme(url) && (UrlSchemeType == UrlSchemeType.External);
+        }
+
+        public bool IsUrlRegisteredCommand(string url)
+        {
+            return IsUrlOfSameScheme(url) && (UrlSchemeType == UrlSchemeType.Command);
         }
 
         private bool IsValidUrl(string url)

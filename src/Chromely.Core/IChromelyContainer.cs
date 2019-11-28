@@ -34,6 +34,13 @@ namespace Chromely.Core
         bool IsRegistered<TService>(string key);
 
         /// <summary>
+        /// Get all keys by service.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <returns>The list of keys.</returns>
+        string[] GetKeys(Type service);
+
+        /// <summary>
         /// Registers the class so that it is created once, on first request, and the same instance is returned to all requestors thereafter.
         /// </summary>
         /// <param name="service">The service.</param>

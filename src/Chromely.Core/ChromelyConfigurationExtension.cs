@@ -32,7 +32,7 @@ namespace Chromely.Core
         /// <returns>
         /// The <see cref="bool"/> value.
         /// </returns>
-        public static bool GetBooleanValue(this ChromelyConfiguration config, string key, bool defaultValue = false)
+        public static bool GetBooleanValue(this IChromelyConfiguration config, string key, bool defaultValue = false)
         {
             try
             {
@@ -42,11 +42,6 @@ namespace Chromely.Core
                     if (value == null)
                     {
                         return defaultValue;
-                    }
-
-                    if (value is bool boolValue)
-                    {
-                        return boolValue;
                     }
 
                     if (bool.TryParse(value.ToString(), out var result))
@@ -59,7 +54,7 @@ namespace Chromely.Core
             }
             catch (Exception exception)
             {
-                Log.Error(exception);
+                Logger.Instance.Log.Error(exception);
             }
 
             return defaultValue;
@@ -69,7 +64,7 @@ namespace Chromely.Core
         /// Gets string value from custom settings dictionary.
         /// </summary>
         /// <param name="config">
-        /// The config object - instance of the <see cref="ChromelyConfiguration"/> class.
+        /// The config object - instance of the <see cref="IChromelyConfiguration"/> class.
         /// </param>
         /// <param name="key">
         /// The key.
@@ -80,7 +75,7 @@ namespace Chromely.Core
         /// <returns>
         /// The <see cref="string"/> value.
         /// </returns>
-        public static string GetStringValue(this ChromelyConfiguration config, string key, string defaultValue = "")
+        public static string GetStringValue(this IChromelyConfiguration config, string key, string defaultValue = "")
         {
             try
             {
@@ -104,7 +99,7 @@ namespace Chromely.Core
             }
             catch (Exception exception)
             {
-                Log.Error(exception);
+                Logger.Instance.Log.Error(exception);
             }
 
             return defaultValue;
@@ -125,7 +120,7 @@ namespace Chromely.Core
         /// <returns>
         /// The <see cref="int"/> value.
         /// </returns>
-        public static int GetIntegerValue(this ChromelyConfiguration config, string key, int defaultValue = 0)
+        public static int GetIntegerValue(this IChromelyConfiguration config, string key, int defaultValue = 0)
         {
             try
             {
@@ -135,11 +130,6 @@ namespace Chromely.Core
                     if (value == null)
                     {
                         return defaultValue;
-                    }
-
-                    if (value is int intValue)
-                    {
-                        return intValue;
                     }
 
                     if (int.TryParse(value.ToString(), out var result))
@@ -152,7 +142,7 @@ namespace Chromely.Core
             }
             catch (Exception exception)
             {
-                Log.Error(exception);
+                Logger.Instance.Log.Error(exception);
             }
 
             return defaultValue;

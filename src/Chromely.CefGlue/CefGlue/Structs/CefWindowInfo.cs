@@ -1,7 +1,4 @@
-﻿#pragma warning disable 1591
-
-// ReSharper disable once CheckNamespace
-namespace Xilium.CefGlue
+﻿namespace Xilium.CefGlue
 {
     using System;
     using System.Collections.Generic;
@@ -137,6 +134,19 @@ namespace Xilium.CefGlue
         /// CefBrowserSettings.background_color to an opaque value.
         /// </summary>
         public abstract bool WindowlessRenderingEnabled { get; set; }
+
+        /// <summary>
+        /// Set to <c>true</c> to enable shared textures for windowless rendering. Only
+        /// valid if windowless_rendering_enabled above is also set to true. Currently
+        /// only supported on Windows (D3D11).
+        /// </summary>
+        public abstract bool SharedTextureEnabled { get; set; }
+
+        /// <summary>
+        /// Set to <c>true</c> to enable the ability to issue BeginFrame requests from the
+        /// client application by calling CefBrowserHost::SendExternalBeginFrame.
+        /// </summary>
+        public abstract bool ExternalBeginFrameEnabled { get; set; }
 
         public void SetAsChild(IntPtr parentHandle, CefRectangle rect)
         {

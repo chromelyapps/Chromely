@@ -1,55 +1,33 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="HostBase.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2019 Chromely Projects
-// </copyright>
-// <license>
-//      See the LICENSE.md file in the project root for more information.
-// </license>
-// ----------------------------------------------------------------------------------------------------------------------
-
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
-using System.Linq;
-using System.Reflection;
 using Chromely.CefGlue.Browser;
 using Chromely.CefGlue.Browser.EventParams;
-using Chromely.CefGlue.Browser.Handlers;
-using Chromely.CefGlue.Subprocess;
 using Chromely.Core;
-using Chromely.Core.Helpers;
 using Chromely.Core.Host;
 using Chromely.Core.Infrastructure;
-using Chromely.Core.RestfulService;
+using Chromely.Core.Network;
 using Xilium.CefGlue;
 using Xilium.CefGlue.Wrapper;
 
 namespace Chromely.CefGlue.BrowserWindow
 {
-    /// <summary>
-    /// The host base.
-    /// </summary>
-    public abstract class HostBase : IChromelyWindow
+    public abstract partial class HostBase : IChromelyWindow
     {
-        /// <summary>
-        /// The main view.
-        /// </summary>
-        private IWindow _mainView;
+        protected readonly IChromelyNativeHost _nativeHost;
+        protected readonly IChromelyContainer _container;
+        protected readonly IChromelyConfiguration _config;
+        protected readonly IChromelyRequestTaskRunner _requestTaskRunner;
+        protected readonly IChromelyCommandTaskRunner _commandTaskRunner;
 
-        /// <summary>
-        /// The window created.
-        /// </summary>
-        private bool _windowCreated;
+        protected IWindow _mainWindow;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="HostBase"/> class.
-        /// </summary>
-        /// <param name="hostConfig">
-        /// The host config.
-        /// </param>
-        protected HostBase(ChromelyConfiguration hostConfig)
+        protected HostBase(IChromelyNativeHost nativeHost, IChromelyContainer container, IChromelyConfiguration config, IChromelyRequestTaskRunner requestTaskRunner, IChromelyCommandTaskRunner commandTaskRunner)
         {
-            HostConfig = hostConfig;
+            _nativeHost = nativeHost;
+            _container = container;
+            _config = config;
+            _requestTaskRunner = requestTaskRunner;
+            _commandTaskRunner = commandTaskRunner;
         }
 
         #region Destructor
@@ -64,17 +42,11 @@ namespace Chromely.CefGlue.BrowserWindow
 
         #endregion Destructor
 
-        /// <summary>
-        /// Gets the browser message router.
-        /// </summary>
         public CefMessageRouterBrowserSide BrowserMessageRouter { get; private set; }
 
         #region IChromelyWindow implementations
 
-        /// <summary>
-        /// Gets the host config.
-        /// </summary>
-        public ChromelyConfiguration HostConfig { get; }
+        public IChromelyConfiguration Config => _config;
 
         /// <summary>
         /// Gets the window handle.
@@ -83,9 +55,9 @@ namespace Chromely.CefGlue.BrowserWindow
         {
             get
             {
-                if (_mainView != null)
+                if (_mainWindow != null)
                 {
-                    return _mainView.HostHandle;
+                    return _mainWindow.HostHandle;
                 }
 
                 return IntPtr.Zero;
@@ -95,7 +67,7 @@ namespace Chromely.CefGlue.BrowserWindow
         /// <summary>
         /// Gets the browser.
         /// </summary>
-        public object Browser => _mainView?.Browser;
+        public object Browser => _mainWindow?.Browser;
 
         /// <summary>
         /// Runs the application.
@@ -119,78 +91,9 @@ namespace Chromely.CefGlue.BrowserWindow
             }
             catch (Exception exception)
             {
-                Log.Error(exception);
+                Logger.Instance.Log.Error(exception);
                 return 1;
             }
-        }
-
-        /// <summary>
-        /// The register event handler.
-        /// The event handler must be registered before calling "Run".
-        /// Alternatively this can be done before window is created during ChromelyConfiguration instantiation.
-        /// Only one type of event handler can be registered. The first one is valid, consequent registrations will be ignored.
-        /// </summary>
-        /// <param name="key">
-        /// The key.
-        /// </param>
-        /// <param name="handler">
-        /// The handler.
-        /// </param>
-        /// <typeparam name="T">
-        /// This is the event argument class - e,g - LoadErrorEventArgs, FrameLoadStartEventArgs. 
-        /// </typeparam>
-        public void RegisterEventHandler<T>(CefEventKey key, EventHandler<T> handler)
-        {
-            if (_windowCreated)
-            {
-                throw new Exception("\"RegisterEventHandler\" method must be called before \"Run\" method.");
-            }
-
-            HostConfig?.RegisterEventHandler(key, handler);
-        }
-
-        /// <summary>
-        /// The register event handler.
-        /// </summary>
-        /// <param name="key">
-        /// The key.
-        /// </param>
-        /// <param name="handler">
-        /// The handler.
-        /// </param>
-        /// <typeparam name="T">
-        /// This is the event argument class - e,g - LoadErrorEventArgs, FrameLoadStartEventArgs. 
-        /// </typeparam>
-        public void RegisterEventHandler<T>(CefEventKey key, ChromelyEventHandler<T> handler)
-        {
-            if (_windowCreated)
-            {
-                throw new Exception("\"RegisterEventHandler\" method must be called before \"Run\" method.");
-            }
-
-            HostConfig?.RegisterEventHandler(key, handler);
-        }
-
-        /// <summary>
-        /// The register custom handler. 
-        /// The custom handler must be registered before calling "Run".
-        /// Alternatively this can be done before window is created during ChromelyConfiguration instantiation.
-        /// Only one type of custom handler can be registered. The first one is valid, consequent registrations will be ignored.
-        /// </summary>
-        /// <param name="key">
-        /// The key.
-        /// </param>
-        /// <param name="implementation">
-        /// The implementation.
-        /// </param>
-        public void RegisterCustomHandler(CefHandlerKey key, Type implementation)
-        {
-            if (_windowCreated)
-            {
-                throw new Exception("\"RegisterCustomHandler\" method must be called before \"Run\" method.");
-            }
-
-            HostConfig?.RegisterCustomHandler(key, implementation);
         }
 
         /// <summary>
@@ -198,7 +101,7 @@ namespace Chromely.CefGlue.BrowserWindow
         /// </summary>
         public void Close()
         {
-            _mainView?.Exit();
+            _mainWindow?.Exit();
         }
 
         /// <summary>
@@ -206,92 +109,9 @@ namespace Chromely.CefGlue.BrowserWindow
         /// </summary>
         public void Exit()
         {
-            _mainView?.Exit();
+            _mainWindow?.Exit();
         }
 
-        #endregion
-
-        #region IChromelyServiceProvider implementations
-
-        /// <summary>
-        /// The register url scheme.
-        /// </summary>
-        /// <param name="scheme">
-        /// The scheme.
-        /// </param>
-        public void RegisterUrlScheme(UrlScheme scheme)
-        {
-            UrlSchemeProvider.RegisterScheme(scheme);
-        }
-
-        /// <summary>
-        /// The register service assembly.
-        /// </summary>
-        /// <param name="filename">
-        /// The filename.
-        /// </param>
-        public void RegisterServiceAssembly(string filename)
-        {
-            HostConfig?.ServiceAssemblies?.RegisterServiceAssembly(filename);
-        }
-
-        /// <summary>
-        /// The register service assembly.
-        /// </summary>
-        /// <param name="assembly">
-        /// The assembly.
-        /// </param>
-        public void RegisterServiceAssembly(Assembly assembly)
-        {
-            HostConfig?.ServiceAssemblies?.RegisterServiceAssembly(assembly);
-        }
-
-        /// <summary>
-        /// The register service assemblies.
-        /// </summary>
-        /// <param name="folder">
-        /// The folder.
-        /// </param>
-        public void RegisterServiceAssemblies(string folder)
-        {
-            HostConfig?.ServiceAssemblies?.RegisterServiceAssemblies(folder);
-        }
-
-        /// <summary>
-        /// The register service assemblies.
-        /// </summary>
-        /// <param name="fileNames">
-        /// The fileNames.
-        /// </param>
-        public void RegisterServiceAssemblies(List<string> fileNames)
-        {
-            HostConfig?.ServiceAssemblies?.RegisterServiceAssemblies(fileNames);
-        }
-
-        /// <summary>
-        /// The scan assemblies.
-        /// </summary>
-        public void ScanAssemblies()
-        {
-            if ((HostConfig?.ServiceAssemblies == null) || (HostConfig?.ServiceAssemblies.Count == 0))
-            {
-                return;
-            }
-
-            foreach (var assembly in HostConfig?.ServiceAssemblies)
-            {
-                if (!assembly.IsScanned)
-                {
-                    var scanner = new RouteScanner(assembly.Assembly);
-                    var currentRouteDictionary = scanner.Scan().Item1;
-                    var currentCommandDictionary = scanner.Scan().Item2;
-                    ServiceRouteProvider.MergeRoutes(currentRouteDictionary);
-                    ServiceRouteProvider.MergeCommands(currentCommandDictionary);
-
-                    assembly.IsScanned = true;
-                }
-            }
-        }
         #endregion
 
         #region Quit/IDisposable
@@ -301,8 +121,8 @@ namespace Chromely.CefGlue.BrowserWindow
         /// </summary>
         public virtual void Quit()
         {
-            _mainView?.Browser?.OnBeforeClose(new BeforeCloseEventArgs());
-            QuitMessageLoop();
+            _mainWindow?.Browser?.OnBeforeClose(new BeforeCloseEventArgs());
+            ExitWindow();
         }
 
         /// <summary>
@@ -322,7 +142,7 @@ namespace Chromely.CefGlue.BrowserWindow
         /// </param>
         public virtual void Dispose(bool disposing)
         {
-            _mainView?.Dispose();
+            _mainWindow?.Dispose();
         }
 
         #endregion
@@ -335,14 +155,14 @@ namespace Chromely.CefGlue.BrowserWindow
         protected abstract void Initialize();
 
         /// <summary>
-        /// The platform run message loop.
+        /// The platform quit message loop.
         /// </summary>
-        protected abstract void RunMessageLoop();
+        protected abstract void Run();
 
         /// <summary>
         /// The platform quit message loop.
         /// </summary>
-        protected abstract void QuitMessageLoop();
+        protected abstract void ExitWindow();
 
         /// <summary>
         /// The create main view.
@@ -354,65 +174,39 @@ namespace Chromely.CefGlue.BrowserWindow
 
         #endregion Abstract Methods
 
-        /// <summary>
-        /// The post task.
-        /// </summary>
-        /// <param name="threadId">
-        /// The thread id.
-        /// </param>
-        /// <param name="action">
-        /// The action.
-        /// </param>
         private static void PostTask(CefThreadId threadId, Action action)
         {
             CefRuntime.PostTask(threadId, new ActionTask(action));
         }
 
-        /// <summary>
-        /// The run internal.
-        /// </summary>
-        /// <param name="args">
-        /// The args.
-        /// </param>
-        /// <returns>
-        /// The <see cref="int"/>.
-        /// </returns>
         private int RunInternal(string[] args)
         {
-            var tempFiles = CefBinariesLoader.Load(HostConfig);
+            Initialize();
+
+            _config.ChromelyVersion = CefRuntime.ChromeVersion;
+
+            var tempFiles = CefBinariesLoader.Load(_config);
 
             CefRuntime.EnableHighDpiSupport();
 
-            var assembly = Assembly.GetEntryAssembly() ?? typeof(ChromelyConfiguration).Assembly;
             var settings = new CefSettings
             {
-                MultiThreadedMessageLoop = true,
-                LogSeverity = (CefLogSeverity)HostConfig.LogSeverity,
-                LogFile = HostConfig.LogFile,
-                ResourcesDirPath = Path.GetDirectoryName(new Uri(assembly.CodeBase).LocalPath)
+                MultiThreadedMessageLoop = _config.Platform == ChromelyPlatform.Windows,
+                LogSeverity = CefLogSeverity.Info,
+                LogFile = "logs\\chromely.cef_" + DateTime.Now.ToString("yyyyMMdd") + ".log",
+                ResourcesDirPath = _config.AppExeLocation
             };
 
-            if (HostConfig.HostPlacement.Frameless || HostConfig.HostPlacement.KioskMode)
+            if (_config.WindowFrameless || _config.WindowKioskMode)
             {
-                if (HostConfig.HostApi == ChromelyHostApi.Gtk)
-                {
-                    throw new NotSupportedException("Chromely currently does not support frameless windows using GTK.");
-                }
-
                 // MultiThreadedMessageLoop is not allowed to be used as it will break frameless mode
                 settings.MultiThreadedMessageLoop = false;
             }
 
             settings.LocalesDirPath = Path.Combine(settings.ResourcesDirPath, "locales");
             settings.RemoteDebuggingPort = 20480;
+            settings.Locale = "en-US";
             settings.NoSandbox = true;
-            settings.Locale = HostConfig.Locale;
-
-            if (HostConfig.UseDefaultSubprocess)
-            {
-                var subProcessExeFullPath = DefaultSubprocessExe.FulPath;
-                settings.BrowserSubprocessPath = subProcessExeFullPath ?? settings.BrowserSubprocessPath;
-            }
 
             var argv = args;
             if (CefRuntime.Platform != CefRuntimePlatform.Windows)
@@ -423,132 +217,62 @@ namespace Chromely.CefGlue.BrowserWindow
             }
 
             // Update configuration settings
-            settings.Update(HostConfig.CustomSettings);
+            settings.Update(_config.CustomSettings);
+
+            // Set DevTools url
+            _config.DevToolsUrl = $"http://127.0.0.1:{settings.RemoteDebuggingPort}";
 
             var mainArgs = new CefMainArgs(argv);
-            var app = new CefGlueApp(HostConfig);
+            CefApp app = new CefGlueApp(_config);
 
-            // CEF applications have multiple sub-processes (render, plugin, GPU, etc)
-            // that share the same executable. This function checks the command-line and,
-            // if this is a sub-process, executes the appropriate logic.
-            var exitCode = CefRuntime.ExecuteProcess(mainArgs, app, IntPtr.Zero);
-            if (exitCode >= 0)
+            if (ClientAppUtils.ExecuteProcess(_config.Platform, argv))
             {
-                // The sub-process has completed so return here.
-                CefBinariesLoader.DeleteTempFiles(tempFiles);
-                Log.Info($"Sub process executes successfully with code: {exitCode}");
-                return exitCode;
-            }
-
-            // guard if something wrong
-            foreach (var arg in args)
-            {
-                if (arg.StartsWith("--type="))
+                // CEF applications have multiple sub-processes (render, plugin, GPU, etc)
+                // that share the same executable. This function checks the command-line and,
+                // if this is a sub-process, executes the appropriate logic.
+                var exitCode = CefRuntime.ExecuteProcess(mainArgs, app, IntPtr.Zero);
+                if (exitCode >= 0)
                 {
-                    return -2;
+                    // The sub-process has completed so return here.
+                    Logger.Instance.Log.Info($"Sub process executes successfully with code: {exitCode}");
+                    return exitCode;
                 }
             }
 
             CefRuntime.Initialize(mainArgs, settings, app, IntPtr.Zero);
 
-            RegisterSchemeHandlers();
+            ScanAssemblies();
+            RegisterRoutes();
             RegisterMessageRouters();
-
-            Initialize();
-
-            _mainView = CreateMainView();
-
-            bool centerScreen = HostConfig.HostPlacement.CenterScreen;
-            if (centerScreen)
-            {
-                _mainView.CenterToScreen();
-            }
-
-            _windowCreated = true;
-            IoC.RegisterInstance(typeof(IChromelyWindow), typeof(IChromelyWindow).FullName, this);
+            RegisterResourceHandlers();
+            RegisterSchemeHandlers();
 
             CefBinariesLoader.DeleteTempFiles(tempFiles);
 
-            RunMessageLoop();
+            CreateMainWindow();
 
-            _mainView.Dispose();
-            _mainView = null;
+            Run();
 
-            CefRuntime.Shutdown();
+            _mainWindow.Dispose();
+            _mainWindow = null;
 
             Shutdown();
 
             return 0;
         }
 
-        /// <summary>
-        /// The register scheme handlers.
-        /// </summary>
-        private void RegisterSchemeHandlers()
+        private void CreateMainWindow()
         {
-            // Register scheme handlers
-            var schemeHandlerObjs = IoC.GetAllInstances(typeof(ChromelySchemeHandler));
-            if (schemeHandlerObjs != null)
+            if (_config.Platform != ChromelyPlatform.Windows)
             {
-                var schemeHandlers = schemeHandlerObjs.ToList();
-                foreach (var item in schemeHandlers)
+                if (!CefRuntime.CurrentlyOn(CefThreadId.UI))
                 {
-                    if (item is ChromelySchemeHandler handler)
-                    {
-                        if (handler.HandlerFactory == null)
-                        {
-                            if (handler.UseDefaultResource)
-                            {
-                                CefRuntime.RegisterSchemeHandlerFactory(handler.SchemeName, handler.DomainName, new CefGlueResourceSchemeHandlerFactory());
-                            }
-
-                            if (handler.UseDefaultHttp)
-                            {
-                                CefRuntime.RegisterSchemeHandlerFactory(handler.SchemeName, handler.DomainName, new CefGlueHttpSchemeHandlerFactory());
-                            }
-                        }
-                        else if (handler.HandlerFactory is CefSchemeHandlerFactory)
-                        {
-                            CefRuntime.RegisterSchemeHandlerFactory(handler.SchemeName, handler.DomainName, (CefSchemeHandlerFactory)handler.HandlerFactory);
-                        }
-                    }
+                    PostTask(CefThreadId.UI, CreateMainWindow);
+                    return;
                 }
             }
-        }
 
-        /// <summary>
-        /// The register message routers.
-        /// </summary>
-        private void RegisterMessageRouters()
-        {
-            if (!CefRuntime.CurrentlyOn(CefThreadId.UI))
-            {
-                PostTask(CefThreadId.UI, RegisterMessageRouters);
-                return;
-            }
-
-            BrowserMessageRouter = new CefMessageRouterBrowserSide(new CefMessageRouterConfig());
-            IoC.RegisterInstance(typeof(CefMessageRouterBrowserSide).FullName, BrowserMessageRouter);
-
-            // Register message router handlers
-            var messageRouterHandlers = IoC.GetAllInstances(typeof(ChromelyMessageRouter)).ToList();
-            if (messageRouterHandlers.Any())
-            {
-                var routerHandlers = messageRouterHandlers.ToList();
-
-                foreach (var item in routerHandlers)
-                {
-                    ChromelyMessageRouter routerHandler = (ChromelyMessageRouter)item;
-                    if (routerHandler.Handler is CefMessageRouterBrowserSide.Handler)
-                    {
-                        BrowserMessageRouter.AddHandler((CefMessageRouterBrowserSide.Handler)routerHandler.Handler);
-                    }
-                }
-            }
-            else
-            {
-                BrowserMessageRouter.AddHandler(new CefGlueMessageRouterHandler());
-            }
+            _mainWindow = CreateMainView();
         }
 
         /// <summary>
@@ -556,7 +280,7 @@ namespace Chromely.CefGlue.BrowserWindow
         /// </summary>
         private void Shutdown()
         {
-            QuitMessageLoop();
+            ExitWindow();
         }
 
         /// <summary>

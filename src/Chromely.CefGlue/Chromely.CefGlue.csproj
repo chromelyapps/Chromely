@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
- 
+
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Platforms>AnyCPU</Platforms>
-    <ProductVersion>4.0.70.1</ProductVersion>
-    <AssemblyVersion>4.0.70.1</AssemblyVersion>
-    <FileVersion>4.0.70.1</FileVersion>
-    <Version>4.0.70.1</Version>
+    <ProductVersion>5.0.77.0-pre01</ProductVersion>
+    <AssemblyVersion>5.77.0.0</AssemblyVersion>
+    <FileVersion>5.0.77.0</FileVersion>
+    <Version>5.0.77.0-pre01</Version>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Product>Chromely.CefGlue</Product>
@@ -16,14 +16,11 @@
     <PackageLicenseUrl>https://github.com/chromelyapps/Chromely/blob/master/LICENSE.md</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/chromelyapps/Chromely</PackageProjectUrl>
     <PackageIconUrl>https://github.com/chromelyapps/Chromely/blob/master/nugets/chromely.ico?raw=true</PackageIconUrl>
-    <PackageTags>Cef Chromium HTML5 Desktop Chromely CefGlue  Restful  Ajax HTTP XHR MessageRouter JavascriptIntegration  .NET Core</PackageTags>
-    <Description>Chromely CefGlue implementation library - this is in .NET Standard 2.0 as it can be used in both .NET (Windows) and .NET Core (Windows, Linux). Chromely.CefGlue version naming is based Chromely and Chromium versions implemented- major.minor.chromuim version.patch e.g 1.0.70.0.</Description>
+    <PackageTags>Cef Chromium HTML5 Desktop Chromely CefGlue  Restful  Ajax HTTP XHR MessageRouter .NET Core</PackageTags>
+    <Description>Chromely CefGlue implementation library - this is in .NET Standard 2.0 as it can be used in both .NET (Windows) and .NET Core (Windows, Linux, MacOS). Chromely.CefGlue version naming is based Chromely and Chromium versions implemented- major.minor.chromuim version.patch e.g 1.0.70.0.</Description>
     <PackageReleaseNotes>
       - Breaking changes!
-      - Added CefGlue Subprocess - https://github.com/chromelyapps/Chromely/wiki/Sub-Process
-      - Added WindowPlacement options - NoResize, NoMinMaxBoxes - https://github.com/chromelyapps/Chromely/wiki/Window-Flags-and-Custom-Window-Creation-Styles
-      - Added custom window creation style - https://github.com/chromelyapps/Chromely/wiki/Window-Flags-and-Custom-Window-Creation-Styles
-      - Added exposure of Window handle for custom messaging.
+      - .NET Core 3.0 and MacOS Support - https://github.com/chromelyapps/Chromely/wiki/Migration-to-.NET-Core-3-and-MacOS-Support
     </PackageReleaseNotes>
     <RepositoryType>Github Repository</RepositoryType>
     <RepositoryUrl>https://github.com/chromelyapps/Chromely</RepositoryUrl>
@@ -31,13 +28,13 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">    
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>bin\Debug\netstandard2.0\Chromely.CefGlue.xml</DocumentationFile>
     <NoWarn>1701;1702; NU5125;7035</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\netstandard2.0\Chromely.CefGlue.xml</DocumentationFile>    
+    <DocumentationFile>bin\Release\netstandard2.0\Chromely.CefGlue.xml</DocumentationFile>
     <NoWarn>1701;1702; NU5125;7035</NoWarn>
   </PropertyGroup>
 
@@ -56,16 +53,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Subprocess\win32\Chromely.CefGlue.Win.Subprocess.exe" />
-    <None Remove="Subprocess\win64\Chromely.CefGlue.Win.Subprocess.exe" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="Subprocess\win32\Chromely.CefGlue.Win.Subprocess.exe" />
-    <EmbeddedResource Include="Subprocess\win64\Chromely.CefGlue.Win.Subprocess.exe" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="System.Buffers" Version="4.5.0" />
     <PackageReference Include="System.Drawing.Common" Version="4.5.1" />
   </ItemGroup>
@@ -73,5 +60,5 @@
   <ItemGroup>
     <ProjectReference Include="..\Chromely.Core\Chromely.Core.csproj" />
   </ItemGroup>
-  
+
 </Project>

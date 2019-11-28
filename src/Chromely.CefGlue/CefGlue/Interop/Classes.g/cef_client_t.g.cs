@@ -134,7 +134,7 @@ namespace Xilium.CefGlue.Interop
         #if !DEBUG
         [SuppressUnmanagedCodeSecurity]
         #endif
-        internal delegate int on_process_message_received_delegate(cef_client_t* self, cef_browser_t* browser, CefProcessId source_process, cef_process_message_t* message);
+        internal delegate int on_process_message_received_delegate(cef_client_t* self, cef_browser_t* browser, cef_frame_t* frame, CefProcessId source_process, cef_process_message_t* message);
         
         private static int _sizeof;
         

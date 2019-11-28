@@ -7,6 +7,8 @@
 // </license>
 // ----------------------------------------------------------------------------------------------------------------------
 
+using Chromely.Core;
+using Chromely.Core.Infrastructure;
 using Xilium.CefGlue;
 using Xilium.CefGlue.Wrapper;
 
@@ -17,11 +19,14 @@ namespace Chromely.CefGlue.Browser.Handlers
     /// </summary>
     public class CefGlueRenderProcessHandler : CefRenderProcessHandler
     {
+        private readonly IChromelyConfiguration _config;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="CefGlueRenderProcessHandler"/> class.
         /// </summary>
-        public CefGlueRenderProcessHandler()
+        public CefGlueRenderProcessHandler(IChromelyConfiguration config)
         {
+            _config = config;
             MessageRouter = new CefMessageRouterRendererSide(new CefMessageRouterConfig());
         }
 
@@ -72,24 +77,9 @@ namespace Chromely.CefGlue.Browser.Handlers
             context.Dispose();
         }
 
-        /// <summary>
-        /// The on process message received.
-        /// </summary>
-        /// <param name="browser">
-        /// The browser.
-        /// </param>
-        /// <param name="sourceProcess">
-        /// The source process.
-        /// </param>
-        /// <param name="message">
-        /// The message.
-        /// </param>
-        /// <returns>
-        /// The <see cref="bool"/>.
-        /// </returns>
-        protected override bool OnProcessMessageReceived(CefBrowser browser, CefProcessId sourceProcess, CefProcessMessage message)
+        protected override bool OnProcessMessageReceived(CefBrowser browser, CefFrame frame, CefProcessId sourceProcess, CefProcessMessage message)
         {
-            var handled = MessageRouter.OnProcessMessageReceived(browser, sourceProcess, message);
+            var handled = MessageRouter.OnProcessMessageReceived(browser, frame, sourceProcess, message);
             if (handled)
             {
                 return true;

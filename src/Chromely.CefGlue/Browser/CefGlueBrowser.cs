@@ -10,10 +10,10 @@
 using System;
 using System.Reflection;
 using Chromely.CefGlue.Browser.EventParams;
-using Chromely.CefGlue.Browser.FrameHandlers;
 using Chromely.Core;
-using Chromely.Core.Infrastructure;
+using Chromely.Core.Network;
 using Xilium.CefGlue;
+using Xilium.CefGlue.Wrapper;
 
 namespace Chromely.CefGlue.Browser
 {
@@ -22,49 +22,22 @@ namespace Chromely.CefGlue.Browser
     /// </summary>
     public class CefGlueBrowser
     {
-        /// <summary>
-        /// The host config.
-        /// </summary>
-        private readonly ChromelyConfiguration _hostConfig;
-
-        /// <summary>
-        /// The CefBrowserSettings object.
-        /// </summary>
+        private readonly IChromelyContainer _container;
+        private readonly IChromelyConfiguration _config;
+        private readonly IChromelyCommandTaskRunner _commandTaskRunner;
+        private readonly CefMessageRouterBrowserSide _browserMessageRouter;
         private CefBrowserSettings _settings;
-
-        /// <summary>
-        /// The CefGlueClient object.
-        /// </summary>
         private CefGlueClient _client;
 
-        /// <summary>
-        /// The websocket started.
-        /// </summary>
-        private bool _websocketStarted;
-
-        /// <summary>
-        /// The CefGlueClientParams for this browser.
-        /// </summary>
-        public CefGlueClientParams ClientParams { get; private set; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CefGlueBrowser"/> class.
-        /// </summary>
-        /// <param name="owner">
-        /// The owner.
-        /// </param>
-        /// <param name="hostConfig">
-        /// The host config.
-        /// </param>
-        /// <param name="settings">
-        /// The settings.
-        /// </param>
-        public CefGlueBrowser(object owner, ChromelyConfiguration hostConfig, CefBrowserSettings settings)
+        public CefGlueBrowser(object owner, IChromelyContainer container, IChromelyConfiguration config, IChromelyCommandTaskRunner commandTaskRunner, CefMessageRouterBrowserSide browserMessageRouter, CefBrowserSettings settings)
         {
             Owner = owner;
-            _hostConfig = hostConfig;
+            _container = container;
+            _config = config;
+            _commandTaskRunner = commandTaskRunner;
+            _browserMessageRouter = browserMessageRouter;
             _settings = settings;
-            StartUrl = hostConfig.StartUrl;
+            StartUrl = config.StartUrl;
         }
 
         #region Events Handling Properties
@@ -142,26 +115,6 @@ namespace Chromely.CefGlue.Browser
         #endregion Events Handling Properties
 
         /// <summary>
-        /// Gets the browser core.
-        /// </summary>
-        public static CefGlueBrowser BrowserCore
-        {
-            get
-            {
-                if (IoC.IsRegistered(typeof(CefGlueBrowser), typeof(CefGlueBrowser).FullName))
-                {
-                    var instance = IoC.GetInstance(typeof(CefGlueBrowser), typeof(CefGlueBrowser).FullName);
-                    if (instance is CefGlueBrowser browser)
-                    {
-                        return browser;
-                    }
-                }
-
-                return null;
-            }
-        }
-
-        /// <summary>
         /// Gets the owner.
         /// </summary>
         public object Owner { get; }
@@ -196,9 +149,8 @@ namespace Chromely.CefGlue.Browser
         {
             if (_client == null)
             {
-                IoC.RegisterInstance(typeof(CefGlueBrowser), typeof(CefGlueBrowser).FullName, this);
-                ClientParams = CefGlueClientParams.Create(this);
-                _client = new CefGlueClient(ClientParams);
+                var handlers = CefGlueCustomHandlers.Parse(_container, _config, _commandTaskRunner, this);
+                _client = new CefGlueClient(this, _browserMessageRouter, handlers);
             }
             if (_settings == null)
             {
@@ -220,11 +172,6 @@ namespace Chromely.CefGlue.Browser
         /// </summary>
         public void Dispose()
         {
-            if (_websocketStarted)
-            {
-                WebsocketServerRunner.StopServer();
-            }
-
             unsafe
             {
                 // due we don't want to change Xilium.CefGlue.CefBrowser
@@ -258,11 +205,9 @@ namespace Chromely.CefGlue.Browser
         {
             CefBrowser = browser;
 
-            // Register browser 
-            CefGlueFrameHandler frameHandler = new CefGlueFrameHandler(browser);
-            IoC.RegisterInstance(typeof(CefGlueFrameHandler), typeof(CefGlueFrameHandler).FullName, frameHandler);
+            // Register JavaScriptExecutor
+            _config.JavaScriptExecutor = new JavaScriptExecutor(CefBrowser);
 
-            StartWebsocket();
             Created?.Invoke(this, EventArgs.Empty);
         }
 
@@ -423,24 +368,5 @@ namespace Chromely.CefGlue.Browser
         }
 
         #endregion Events Handling
-
-        /// <summary>
-        /// The start websocket.
-        /// </summary>
-        private void StartWebsocket()
-        {
-            try
-            {
-                if (_hostConfig.StartWebSocket)
-                {
-                    WebsocketServerRunner.StartServer(_hostConfig.WebsocketAddress, _hostConfig.WebsocketPort);
-                    _websocketStarted = true;
-                }
-            }
-            catch (Exception exception)
-            {
-                Log.Error(exception);
-            }
-        }
     }
 }

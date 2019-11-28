@@ -22,6 +22,8 @@ namespace Xilium.CefGlue.Interop
         internal IntPtr _set_status_text;
         internal IntPtr _get_mime_type;
         internal IntPtr _set_mime_type;
+        internal IntPtr _get_charset;
+        internal IntPtr _set_charset;
         internal IntPtr _get_header;
         internal IntPtr _get_header_map;
         internal IntPtr _set_header_map;
@@ -109,6 +111,18 @@ namespace Xilium.CefGlue.Interop
         [SuppressUnmanagedCodeSecurity]
         #endif
         private delegate void set_mime_type_delegate(cef_response_t* self, cef_string_t* mimeType);
+        
+        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
+        #if !DEBUG
+        [SuppressUnmanagedCodeSecurity]
+        #endif
+        private delegate cef_string_userfree* get_charset_delegate(cef_response_t* self);
+        
+        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
+        #if !DEBUG
+        [SuppressUnmanagedCodeSecurity]
+        #endif
+        private delegate void set_charset_delegate(cef_response_t* self, cef_string_t* charset);
         
         [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
         #if !DEBUG
@@ -361,87 +375,121 @@ namespace Xilium.CefGlue.Interop
             d(self, mimeType);
         }
         
-        // GetHeader
+        // GetCharset
         private static IntPtr _pd;
-        private static get_header_delegate _dd;
+        private static get_charset_delegate _dd;
+        
+        public static cef_string_userfree* get_charset(cef_response_t* self)
+        {
+            get_charset_delegate d;
+            var p = self->_get_charset;
+            if (p == _pd) { d = _dd; }
+            else
+            {
+                d = (get_charset_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_charset_delegate));
+                if (_pd == IntPtr.Zero) { _dd = d; _pd = p; }
+            }
+            return d(self);
+        }
+        
+        // SetCharset
+        private static IntPtr _pe;
+        private static set_charset_delegate _de;
+        
+        public static void set_charset(cef_response_t* self, cef_string_t* charset)
+        {
+            set_charset_delegate d;
+            var p = self->_set_charset;
+            if (p == _pe) { d = _de; }
+            else
+            {
+                d = (set_charset_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(set_charset_delegate));
+                if (_pe == IntPtr.Zero) { _de = d; _pe = p; }
+            }
+            d(self, charset);
+        }
+        
+        // GetHeader
+        private static IntPtr _pf;
+        private static get_header_delegate _df;
         
         public static cef_string_userfree* get_header(cef_response_t* self, cef_string_t* name)
         {
             get_header_delegate d;
             var p = self->_get_header;
-            if (p == _pd) { d = _dd; }
+            if (p == _pf) { d = _df; }
             else
             {
                 d = (get_header_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_header_delegate));
-                if (_pd == IntPtr.Zero) { _dd = d; _pd = p; }
+                if (_pf == IntPtr.Zero) { _df = d; _pf = p; }
             }
             return d(self, name);
         }
         
         // GetHeaderMap
-        private static IntPtr _pe;
-        private static get_header_map_delegate _de;
+        private static IntPtr _p10;
+        private static get_header_map_delegate _d10;
         
         public static void get_header_map(cef_response_t* self, cef_string_multimap* headerMap)
         {
             get_header_map_delegate d;
             var p = self->_get_header_map;
-            if (p == _pe) { d = _de; }
+            if (p == _p10) { d = _d10; }
             else
             {
                 d = (get_header_map_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_header_map_delegate));
-                if (_pe == IntPtr.Zero) { _de = d; _pe = p; }
+                if (_p10 == IntPtr.Zero) { _d10 = d; _p10 = p; }
             }
             d(self, headerMap);
         }
         
         // SetHeaderMap
-        private static IntPtr _pf;
-        private static set_header_map_delegate _df;
+        private static IntPtr _p11;
+        private static set_header_map_delegate _d11;
         
         public static void set_header_map(cef_response_t* self, cef_string_multimap* headerMap)
         {
             set_header_map_delegate d;
             var p = self->_set_header_map;
-            if (p == _pf) { d = _df; }
+            if (p == _p11) { d = _d11; }
             else
             {
                 d = (set_header_map_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(set_header_map_delegate));
-                if (_pf == IntPtr.Zero) { _df = d; _pf = p; }
+                if (_p11 == IntPtr.Zero) { _d11 = d; _p11 = p; }
             }
             d(self, headerMap);
         }
         
         // GetURL
-        private static IntPtr _p10;
-        private static get_url_delegate _d10;
+        private static IntPtr _p12;
+        private static get_url_delegate _d12;
         
         public static cef_string_userfree* get_url(cef_response_t* self)
         {
             get_url_delegate d;
             var p = self->_get_url;
-            if (p == _p10) { d = _d10; }
+            if (p == _p12) { d = _d12; }
             else
             {
                 d = (get_url_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_url_delegate));
-                if (_p10 == IntPtr.Zero) { _d10 = d; _p10 = p; }
+                if (_p12 == IntPtr.Zero) { _d12 = d; _p12 = p; }
             }
             return d(self);
         }
         
         // SetURL
-        private static IntPtr _p11;
-        private static set_url_delegate _d11;
+        private static IntPtr _p13;
+        private static set_url_delegate _d13;
         
         public static void set_url(cef_response_t* self, cef_string_t* url)
         {
             set_url_delegate d;
             var p = self->_set_url;
-            if (p == _p11) { d = _d11; }
+            if (p == _p13) { d = _d13; }
             else
             {
                 d = (set_url_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(set_url_delegate));
-                if (_p11 == IntPtr.Zero) { _d11 = d; _p11 = p; }
+                if (_p13 == IntPtr.Zero) { _d13 = d; _p13 = p; }
             }
             d(self, url);
         }

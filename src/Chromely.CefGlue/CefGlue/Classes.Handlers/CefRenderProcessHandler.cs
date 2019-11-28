@@ -45,21 +45,24 @@
         }
 
 
-        private void on_browser_created(cef_render_process_handler_t* self, cef_browser_t* browser)
+        private void on_browser_created(cef_render_process_handler_t* self, cef_browser_t* browser, cef_dictionary_value_t* extra_info)
         {
             CheckSelf(self);
 
             var m_browser = CefBrowser.FromNative(browser);
+            var m_extraInfo = CefDictionaryValue.FromNative(extra_info);
 
-            OnBrowserCreated(m_browser);
+            OnBrowserCreated(m_browser, m_extraInfo);
         }
 
         /// <summary>
         /// Called after a browser has been created. When browsing cross-origin a new
         /// browser will be created before the old browser with the same identifier is
-        /// destroyed.
+        /// destroyed. |extra_info| is a read-only value originating from
+        /// CefBrowserHost::CreateBrowser(), CefBrowserHost::CreateBrowserSync(),
+        /// CefLifeSpanHandler::OnBeforePopup() or CefBrowserView::CreateBrowserView().
         /// </summary>
-        protected virtual void OnBrowserCreated(CefBrowser browser)
+        protected virtual void OnBrowserCreated(CefBrowser browser, CefDictionaryValue extraInfo)
         {
         }
 
@@ -191,14 +194,15 @@
         }
 
 
-        private int on_process_message_received(cef_render_process_handler_t* self, cef_browser_t* browser, CefProcessId source_process, cef_process_message_t* message)
+        private int on_process_message_received(cef_render_process_handler_t* self, cef_browser_t* browser, cef_frame_t* frame, CefProcessId source_process, cef_process_message_t* message)
         {
             CheckSelf(self);
 
             var m_browser = CefBrowser.FromNative(browser);
+            var m_frame = CefFrame.FromNative(frame);
             var m_message = CefProcessMessage.FromNative(message);
 
-            var result = OnProcessMessageReceived(m_browser, source_process, m_message);
+            var result = OnProcessMessageReceived(m_browser, m_frame, source_process, m_message);
 
             m_message.Dispose();
 
@@ -210,7 +214,7 @@
         /// if the message was handled or false otherwise. Do not keep a reference to
         /// or attempt to access the message outside of this callback.
         /// </summary>
-        protected virtual bool OnProcessMessageReceived(CefBrowser browser, CefProcessId sourceProcess, CefProcessMessage message)
+        protected virtual bool OnProcessMessageReceived(CefBrowser browser, CefFrame frame, CefProcessId sourceProcess, CefProcessMessage message)
         {
             return false;
         }
