@@ -21,7 +21,7 @@ Have a quick question? Wanna chat? Connect on  [![Join the chat at https://gitte
 Have an app/project/tool using Chromely - [please share!](https://github.com/chromelyapps/Chromely/issues/63)
 
 ### Platforms
-Cross-platform - Windows, Linux, MacOS. Built on CefGlue, NET Standard 2.0, .NET Core 3.0, .NET Framework 4.61 and above.
+Cross-platform -**Windows**, **Linux**, **MacOS**. Built on CEF, CefGlue, NET Standard 2.0, .NET Core 3.0, .NET Framework 4.61 and above.
 
 - Windows<sup>(1)</sup> 32-bit 
 - Windows<sup>(1)</sup> 64-bit 
@@ -33,7 +33,7 @@ Cross-platform - Windows, Linux, MacOS. Built on CefGlue, NET Standard 2.0, .NET
 &nbsp;<sup>(1)</sup>&nbsp; Windows 7, Service Pack 1 and newer    
 &nbsp;<sup>(2)</sup>&nbsp; Ubuntu 16.04 and newer    
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Mono currently not working)    
-&nbsp;<sup>(3)</sup>&nbsp; Tested on macOS Mojave 10.14.6  (Other versions will likely work too) 
+&nbsp;<sup>(3)</sup>&nbsp; Tested on macOS Mojave 10.14.6  (Other versions will likely work too)     
 &nbsp;<sup>(4)</sup>&nbsp; i.e. Raspberry Pi 3+    
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(manual download of CEF builds for ARM available on http://chromely.org/cefbuilds/index.html)    
 
@@ -50,7 +50,7 @@ For more info/documentation, please check [Chromely wiki](https://github.com/chr
 Get started with the [demos](https://github.com/chromelyapps/demo-projects). 
 
 ### Creating a Simple App (Using CefGlue with Winapi host)
-For more info see - [Getting Started](https://github.com/chromelyapps/Chromely/Documents/getting_started.md)
+For more info see - [Getting Started](https://github.com/chromelyapps/Chromely/blob/master/Documents/getting_started.md)
 
 A basic Chromely project requires:
 
