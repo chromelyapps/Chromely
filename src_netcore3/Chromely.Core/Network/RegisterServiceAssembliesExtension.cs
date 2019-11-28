@@ -36,6 +36,7 @@ namespace Chromely.Core.Network
             if (!File.Exists(filename))
             {
                 Logger.Instance.Log.Error($"Assembly file: {filename} does not exist.");
+                return;
             }
 
             try

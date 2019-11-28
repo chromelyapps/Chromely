@@ -1,0 +1,21 @@
+<!-- Chromely.props 
+This is a post build cef binaries download for Chromely
+If this is not successful, developers can try running this on cmd, using help to get the options:
+
+For help:
+chromely_win_cef_downloader.exe download -h 
+-->
+
+<Project>
+ 
+   <PropertyGroup>
+     <DownloadCefBinariesExe>"$(MSBuildThisFileDirectory)\chromely_win_cef_downloader.exe"</DownloadCefBinariesExe>
+     <ChromiumVersionParameter>v77</ChromiumVersionParameter>
+    </PropertyGroup>
+
+    <Target Name="DownloadCefBinaries" AfterTargets="CoreCompile">
+      <Message Text="$(DownloadCefBinariesExe) download $(ChromiumVersionParameter) --cpu=$(Platform) --dest=&quot;$(MSBuildProjectDirectory)\$(OutputPath)&quot;"  Importance="high" />
+      <Exec Condition=" '$(OS)' == 'Windows_NT' " Command="$(DownloadCefBinariesExe) download $(ChromiumVersionParameter) --cpu=$(Platform) --dest=&quot;$(MSBuildProjectDirectory)\$(OutputPath)&quot;" ContinueOnError="WarnAndContinue"/>
+    </Target>
+
+</Project>
