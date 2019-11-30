@@ -12,8 +12,6 @@ Options of communicating (IPC) with rendering process are via:
 - Generic Message Routing ([Xilium.CefGlue](https://bitbucket.org/xilium/xilium.cefglue/wiki/Home)) - more info @ [Generic Message Routing](https://github.com/chromelyapps/Chromely.Legacy/wiki/Generic-Message-Routing).
 - Ajax HTTP/XHR ([Xilium.CefGlue](https://bitbucket.org/xilium/xilium.cefglue/wiki/Home), [CefSharp](https://github.com/cefsharp/CefSharp)) -  more info @ [Custom Scheme Handling](https://github.com/chromelyapps/Chromely.Legacy/wiki/Custom-Scheme-Handling).
 
-[<h4>Roadmap & Help Wanted</h4>](https://github.com/chromelyapps/Chromely/wiki/Roadmap-and-Help-Wanted) 
-
 ##### If you like Chromely, please give it a star - it helps! #####
 
 Have a quick question? Wanna chat? Connect on  [![Join the chat at https://gitter.im/chromely_/Lobby](https://badges.gitter.im/chromely_/Lobby.svg)](https://gitter.im/chromely_/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -46,7 +44,7 @@ Cross-platform -**Windows**, **Linux**, **MacOS**. Built on CEF, CefGlue, NET St
 <br>[![Chromely + Vue](https://img.shields.io/badge/Chromely%20Apps-Built%20with%20Vue-green.svg)](https://github.com/chromelyapps/Chromely/wiki/Chromely-Apps) 
 
 ### Demo Code
-Get started with the [demos](https://github.com/chromelyapps/demo-projects). 
+Get started with the [Demos](https://github.com/chromelyapps/demo-projects). 
 
 ### Creating a Simple App
 For more info see - [Getting Started](https://github.com/chromelyapps/Chromely/blob/master/Documents/getting_started.md)
