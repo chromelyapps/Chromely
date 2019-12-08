@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
-using Chromely.Core;
+using Chromely.Core.Configuration;
 using Chromely.Core.Host;
 using Chromely.Core.Infrastructure;
 using Xilium.CefGlue;
@@ -24,7 +24,7 @@ namespace Chromely.Native
         private delegate void ResizeCallbackEvent(int width, int height);
         private delegate void QuitCallbackEvent();
 
-        private IChromelyConfiguration _config;
+        private IWindowOptions _config;
         private IntPtr _appHandle;
         private IntPtr _poolHandle;
         private IntPtr _windowHandle;
@@ -40,9 +40,9 @@ namespace Chromely.Native
             _isInitialized = false;
         }
 
-        public void CreateWindow(IChromelyConfiguration config)
+        public void CreateWindow(IWindowOptions options, bool debugging)
         {
-            _config = config;
+            _config = options;
             ChromelyParam configParam = InitParam(RunCallback,
                                                     ShutdownCallback,
                                                     InitCallback,

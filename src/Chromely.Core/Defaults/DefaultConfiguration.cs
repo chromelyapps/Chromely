@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Chromely.Core.Configuration;
 using Chromely.Core.Host;
 using Chromely.Core.Infrastructure;
 using Chromely.Core.Network;
@@ -14,20 +15,6 @@ namespace Chromely.Core
         public string ChromelyVersion { get; set; }
         public bool LoadCefBinariesIfNotFound { get; set; }
         public bool SilentCefBinariesLoading { get; set; }
-        public int WindowLeft { get; set; }
-        public int WindowTop { get; set; }
-        public int WindowWidth { get; set; }
-        public int WindowHeight { get; set; }
-        public bool WindowNoResize { get; set; }
-        public bool WindowNoMinMaxBoxes { get; set; }
-        public bool WindowFrameless { get; set; }
-        public bool WindowCenterScreen { get; set; }
-        public bool WindowKioskMode { get; set; }
-        public WindowState WindowState { get; set; }
-        public string WindowTitle { get; set; }
-        public string WindowIconFile { get; set; }
-        public WindowCustomStyle WindowCustomStyle { get; set; }
-        public bool UseWindowCustomStyle { get; set; }
         public string AppExeLocation { get; set; }
         public string StartUrl { get; set; }
         public string DevToolsUrl { get; set; }
@@ -40,12 +27,16 @@ namespace Chromely.Core
         public IDictionary<string, string> CustomSettings { get; set; }
         public IChromelyJavaScriptExecutor JavaScriptExecutor { get; set; }
         public IDictionary<string, object> ExtensionData { get; set; }
-
+        public IWindowOptions WindowOptions { get ; set ; }
 
         public DefaultConfiguration()
         {
             AppName = Assembly.GetEntryAssembly()?.GetName().Name;
-            WindowTitle = AppName;
+            WindowOptions = new WindowOptions
+            {
+                WindowTitle = AppName
+            };
+
             Platform = ChromelyRuntime.Platform;
             AppExeLocation = AppDomain.CurrentDomain.BaseDirectory;
         }
@@ -57,22 +48,12 @@ namespace Chromely.Core
             try
             {
                 config = new DefaultConfiguration();
+
                 config.AppName = "chromely_demo";
                 config.StartUrl = "local://app/chromely.html";
                 config.LoadCefBinariesIfNotFound = true;
                 config.SilentCefBinariesLoading = false;
-                config.WindowLeft = 0;
-                config.WindowTop = 0;
-                config.WindowWidth = 1200;
-                config.WindowHeight = 900;
-                config.WindowNoResize = false;
-                config.WindowNoMinMaxBoxes = false;
-                config.WindowFrameless = false;
-                config.WindowCenterScreen = true;
-                config.WindowKioskMode = false;
-                config.WindowState = WindowState.Normal;
-                config.WindowTitle = "chromely";
-                config.WindowIconFile = "chromely.ico";
+             
                 config.DebuggingMode = true;
 
                 config.UrlSchemes = new List<UrlScheme>();
@@ -97,8 +78,8 @@ namespace Chromely.Core
                 switch (platform)
                 {
                     case ChromelyPlatform.Windows:
-                        config.WindowCustomStyle = new WindowCustomStyle(0, 0);
-                        config.UseWindowCustomStyle = false;
+                        config.WindowOptions.WindowCustomStyle = new WindowCustomStyle(0, 0);
+                        config.WindowOptions.UseWindowCustomStyle = false;
                         break;
 
                     case ChromelyPlatform.Linux:

@@ -227,25 +227,26 @@ namespace Chromely.Core
                         config.StartUrl = startUrl.GetStartUrl();
                     }
 
-                    config.WindowState = GetWindowState(windowState);
                     config.LoadCefBinariesIfNotFound = loadCefBinariesIfNotFound;
                     config.SilentCefBinariesLoading = silentCefBinariesLoading;
-                    config.WindowLeft = windowLeft;
-                    config.WindowTop = windowTop;
-                    config.WindowWidth = windowWidth;
-                    config.WindowHeight = windowHeight;
-                    config.WindowNoResize = windowNoResize;
-                    config.WindowNoMinMaxBoxes = windowNoMinMaxBoxes;
-                    config.WindowFrameless = windowFrameless;
-                    config.WindowCenterScreen = windowCenterScreen;
-                    config.WindowKioskMode = windowKioskMode;
-                    config.WindowTitle = windowTitle;
-                    config.WindowIconFile = windowIconFile;
+
+                    config.WindowOptions.WindowState = GetWindowState(windowState);
+                    config.WindowOptions.WindowLeft = windowLeft;
+                    config.WindowOptions.WindowTop = windowTop;
+                    config.WindowOptions.WindowWidth = windowWidth;
+                    config.WindowOptions.WindowHeight = windowHeight;
+                    config.WindowOptions.WindowNoResize = windowNoResize;
+                    config.WindowOptions.WindowNoMinMaxBoxes = windowNoMinMaxBoxes;
+                    config.WindowOptions.WindowFrameless = windowFrameless;
+                    config.WindowOptions.WindowCenterScreen = windowCenterScreen;
+                    config.WindowOptions.WindowKioskMode = windowKioskMode;
+                    config.WindowOptions.WindowTitle = windowTitle;
+                    config.WindowOptions.WindowIconFile = windowIconFile;
 
                     if (windowCustomCreation != null)
                     {
-                        config.WindowCustomStyle = new WindowCustomStyle(windowCustomCreation.windowStyles, windowCustomCreation.windowExStyles);
-                        config.UseWindowCustomStyle = windowCustomCreation.useCustomtyle;
+                        config.WindowOptions.WindowCustomStyle = new WindowCustomStyle(windowCustomCreation.windowStyles, windowCustomCreation.windowExStyles);
+                        config.WindowOptions.UseWindowCustomStyle = windowCustomCreation.useCustomtyle;
                     }
 
                     config.AppExeLocation = AppDomain.CurrentDomain.BaseDirectory;

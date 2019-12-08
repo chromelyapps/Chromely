@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Text;
-using Chromely.Core;
+using Chromely.Core.Configuration;
 using Chromely.Core.Host;
 using Chromely.Core.Infrastructure;
 using Xilium.CefGlue;
@@ -20,11 +20,12 @@ namespace Chromely.Native
         public event EventHandler<SizeChangedEventArgs> SizeChanged;
         public event EventHandler<CloseEventArgs> Close;
 
-        private IChromelyConfiguration _config;
+        private IWindowOptions _options;
         private IntPtr _handle;
         private IntPtr _gdkHandle;
         private IntPtr _xid;
         private bool _isInitialized;
+        private bool _debugging;
 
         public LinuxGtk3Host()
         {
@@ -34,28 +35,29 @@ namespace Chromely.Native
             _xid = IntPtr.Zero;
         }
 
-        public void CreateWindow(IChromelyConfiguration config)
+        public void CreateWindow(IWindowOptions config, bool debugging)
         {
-            _config = config;
+            _options = config;
+            _debugging = debugging;
 
             Init(0, null);
 
-            var wndType = _config.WindowFrameless
+            var wndType = _options.WindowFrameless
                 ? GtkWindowType.GtkWindowPopup
                 : GtkWindowType.GtkWindowToplevel;
 
             _handle = CreateNewWindow((int)wndType);
 
-            SetWindowTitle(_config.WindowTitle);
-            SetAppIcon(_handle, _config.WindowIconFile);
-            SetWindowDefaultSize(_config.WindowWidth, _config.WindowHeight);
+            SetWindowTitle(_options.WindowTitle);
+            SetAppIcon(_handle, _options.WindowIconFile);
+            SetWindowDefaultSize(_options.WindowWidth, _options.WindowHeight);
 
-            if (_config.WindowState == WindowState.Normal && _config.WindowCenterScreen)
+            if (_options.WindowState == WindowState.Normal && _options.WindowCenterScreen)
             {
                 SetWindowPosistion((int)GtkWindowPosition.GtkWinPosCenter);
             }
 
-            switch (_config.WindowState)
+            switch (_options.WindowState)
             {
                 case WindowState.Normal:
                     break;
@@ -231,7 +233,7 @@ namespace Chromely.Native
         {
             try
             {
-                if (this._config.DebuggingMode)
+                if (this._debugging)
                 {
                     var builder = new StringBuilder();
                     builder.AppendLine("X error received: ");

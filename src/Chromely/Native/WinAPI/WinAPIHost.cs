@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
-using Chromely.Core;
+using Chromely.Core.Configuration;
 using Chromely.Core.Host;
 using Chromely.Core.Infrastructure;
 using PInvoke.Net;
@@ -19,7 +19,7 @@ namespace Chromely.Native
 
         private static readonly LowLevelKeyboardProc _hookCallback = HookCallback;
 
-        private IChromelyConfiguration _config;
+        private IWindowOptions _options;
         private IntPtr _handle;
         private bool _isInitialized;
 
@@ -35,9 +35,9 @@ namespace Chromely.Native
             _handle = IntPtr.Zero;
         }
 
-        public void CreateWindow(IChromelyConfiguration config)
+        public void CreateWindow(IWindowOptions options, bool debugging)
         {
-            _config = config;
+            _options = options;
             _wndProc = WndProc;
             _consoleParentInstance = GetConsoleWindow();
 
@@ -61,13 +61,13 @@ namespace Chromely.Native
                 return;
              }
 
-            var styles = GetWindowStyles(_config.WindowState);
+            var styles = GetWindowStyles(_options.WindowState);
 
             WinNativeMethods.RECT rect;
-            rect.Left = _config.WindowLeft;
-            rect.Top = _config.WindowTop;
-            rect.Right = _config.WindowLeft + _config.WindowWidth;
-            rect.Bottom = _config.WindowTop + _config.WindowHeight;
+            rect.Left = _options.WindowLeft;
+            rect.Top = _options.WindowTop;
+            rect.Right = _options.WindowLeft + _options.WindowWidth;
+            rect.Bottom = _options.WindowTop + _options.WindowHeight;
 
             AdjustWindowRectEx(ref rect, styles.Item1, false, styles.Item2);
 
@@ -90,7 +90,7 @@ namespace Chromely.Native
                 return;
             }
 
-            if (_config.WindowKioskMode)
+            if (_options.WindowKioskMode)
             {
                 //// Set new window style and size.
                 var windowHDC = GetDC(hWnd);
@@ -118,7 +118,7 @@ namespace Chromely.Native
             else
             {
                 // Center window if State is Normal
-                if (_config.WindowState == WindowState.Normal && _config.WindowCenterScreen)
+                if (_options.WindowState == WindowState.Normal && _options.WindowCenterScreen)
                 {
                     CenterWindowToScreen(hWnd);
                 }
@@ -169,16 +169,16 @@ namespace Chromely.Native
         #region CreateWindow
         private IntPtr GetIconHandle()
         {
-            var hIcon = LoadIconFromFile(_config.WindowIconFile);
+            var hIcon = LoadIconFromFile(_options.WindowIconFile);
             return hIcon ?? LoadIcon(IntPtr.Zero, (IntPtr)IDI_APPLICATION);
         }
 
         private WinNativeMethods.RECT GetWindowBounds()
         {
-            var styles = GetWindowStyles(_config.WindowState);
-            var bounds = new System.Drawing.Rectangle(_config.WindowLeft, _config.WindowTop, _config.WindowWidth, _config.WindowHeight);
+            var styles = GetWindowStyles(_options.WindowState);
+            var bounds = new System.Drawing.Rectangle(_options.WindowLeft, _options.WindowTop, _options.WindowWidth, _options.WindowHeight);
 
-            switch (_config.WindowState)
+            switch (_options.WindowState)
             {
                 case WindowState.Maximize:
                 case WindowState.Normal:
@@ -202,33 +202,33 @@ namespace Chromely.Native
 
         private Tuple<WindowStyles, WindowExStyles, ShowWindowCommand> GetWindowStyles(WindowState state)
         {
-            if (_config.UseWindowCustomStyle && _config != null && _config.WindowCustomStyle.IsValid())
+            if (_options.UseWindowCustomStyle && _options != null && _options.WindowCustomStyle.IsValid())
             {
-                return GetWindowStyles(_config.WindowCustomStyle, state);
+                return GetWindowStyles(_options.WindowCustomStyle, state);
             }
 
             var styles = WindowStyles.WS_OVERLAPPEDWINDOW | WindowStyles.WS_CLIPCHILDREN | WindowStyles.WS_CLIPSIBLINGS;
             var exStyles = WindowExStyles.WS_EX_APPWINDOW | WindowExStyles.WS_EX_WINDOWEDGE;
 
-            if (_config.WindowNoResize)
+            if (_options.WindowNoResize)
             {
                 styles = WindowStyles.WS_OVERLAPPEDWINDOW & ~WindowStyles.WS_THICKFRAME | WindowStyles.WS_CLIPCHILDREN | WindowStyles.WS_CLIPSIBLINGS;
                 styles &= ~WindowStyles.WS_MAXIMIZEBOX;
             }
 
-            if (_config.WindowNoMinMaxBoxes)
+            if (_options.WindowNoMinMaxBoxes)
             {
                 styles &= ~WindowStyles.WS_MINIMIZEBOX;
                 styles &= ~WindowStyles.WS_MAXIMIZEBOX;
             }
 
-            if (_config.WindowFrameless)
+            if (_options.WindowFrameless)
             {
                 styles = WindowStyles.WS_POPUPWINDOW | WindowStyles.WS_CLIPCHILDREN | WindowStyles.WS_CLIPSIBLINGS;
                 styles |= WindowStyles.WS_SIZEBOX;
             }
 
-            if (_config.WindowKioskMode)
+            if (_options.WindowKioskMode)
             {
                 styles &= ~(WindowStyles.WS_CAPTION | WindowStyles.WS_THICKFRAME);
                 exStyles &= ~(WindowExStyles.WS_EX_DLGMODALFRAME | WindowExStyles.WS_EX_WINDOWEDGE | WindowExStyles.WS_EX_CLIENTEDGE | WindowExStyles.WS_EX_STATICEDGE);
@@ -312,7 +312,7 @@ namespace Chromely.Native
                     }
                 case WM.SYSKEYDOWN:
                     {
-                        if (_config.WindowKioskMode && (wParam == (IntPtr)Keyboard.VirtualKeyStates.VK_F4))
+                        if (_options.WindowKioskMode && (wParam == (IntPtr)Keyboard.VirtualKeyStates.VK_F4))
                         {
                             return IntPtr.Zero;
                         }
@@ -333,7 +333,7 @@ namespace Chromely.Native
                     return new IntPtr(1);
 
                 case WM.NCHITTEST:
-                    if (_config.WindowFrameless)
+                    if (_options.WindowFrameless)
                     {
                         return (IntPtr)HT_CAPTION;
                     }
@@ -395,11 +395,11 @@ namespace Chromely.Native
                     DetachKeyboardHook();
                 }
 
-                if (NativeInstance._config.WindowKioskMode && msg.message == (uint)WM.HOTKEY && msg.wParam == (IntPtr)1)
+                if (NativeInstance._options.WindowKioskMode && msg.message == (uint)WM.HOTKEY && msg.wParam == (IntPtr)1)
                 {
                     PostMessage(NativeInstance._handle, (uint)WM.CLOSE, IntPtr.Zero, IntPtr.Zero);
                 }
-                if (NativeInstance._config.WindowFrameless || NativeInstance._config.WindowKioskMode)
+                if (NativeInstance._options.WindowFrameless || NativeInstance._options.WindowKioskMode)
                 {
                     CefRuntime.DoMessageLoopWork();
                 }
