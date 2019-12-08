@@ -66,8 +66,8 @@ namespace Chromely.Native
             WinNativeMethods.RECT rect;
             rect.Left = _options.WindowLeft;
             rect.Top = _options.WindowTop;
-            rect.Right = _options.WindowLeft + _options.WindowWidth;
-            rect.Bottom = _options.WindowTop + _options.WindowHeight;
+            rect.Right = _options.WindowLeft + _options.Size.Width;
+            rect.Bottom = _options.WindowTop + _options.Size.Height;
 
             AdjustWindowRectEx(ref rect, styles.Item1, false, styles.Item2);
 
@@ -176,7 +176,7 @@ namespace Chromely.Native
         private WinNativeMethods.RECT GetWindowBounds()
         {
             var styles = GetWindowStyles(_options.WindowState);
-            var bounds = new System.Drawing.Rectangle(_options.WindowLeft, _options.WindowTop, _options.WindowWidth, _options.WindowHeight);
+            var bounds = new System.Drawing.Rectangle(_options.WindowLeft, _options.WindowTop, _options.Size.Width, _options.Size.Height);
 
             switch (_options.WindowState)
             {

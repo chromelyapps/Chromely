@@ -1,4 +1,5 @@
-﻿using Chromely.Core.Helpers;
+﻿using Chromely.Core.Configuration;
+using Chromely.Core.Helpers;
 using Chromely.Core.Host;
 using Chromely.Core.Infrastructure;
 using Chromely.Core.Network;
@@ -233,8 +234,7 @@ namespace Chromely.Core
                     config.WindowOptions.WindowState = GetWindowState(windowState);
                     config.WindowOptions.WindowLeft = windowLeft;
                     config.WindowOptions.WindowTop = windowTop;
-                    config.WindowOptions.WindowWidth = windowWidth;
-                    config.WindowOptions.WindowHeight = windowHeight;
+                    config.WindowOptions.Size = new WindowSize(windowWidth, windowHeight);
                     config.WindowOptions.WindowNoResize = windowNoResize;
                     config.WindowOptions.WindowNoMinMaxBoxes = windowNoMinMaxBoxes;
                     config.WindowOptions.WindowFrameless = windowFrameless;

@@ -28,8 +28,8 @@ namespace Chromely.Tests.Defaults
 
             Assert.Equal(configFromFile.WindowOptions.WindowLeft, configFromFileExpectedValues.WindowOptions.WindowLeft);
             Assert.Equal(configFromFile.WindowOptions.WindowTop, configFromFileExpectedValues.WindowOptions.WindowTop);
-            Assert.Equal(configFromFile.WindowOptions.WindowWidth, configFromFileExpectedValues.WindowOptions.WindowWidth);
-            Assert.Equal(configFromFile.WindowOptions.WindowHeight, configFromFileExpectedValues.WindowOptions.WindowHeight);
+            Assert.Equal(configFromFile.WindowOptions.Size.Width, configFromFileExpectedValues.WindowOptions.Size.Width);
+            Assert.Equal(configFromFile.WindowOptions.Size.Height, configFromFileExpectedValues.WindowOptions.Size.Height);
             Assert.Equal(configFromFile.WindowOptions.WindowNoResize, configFromFileExpectedValues.WindowOptions.WindowNoResize);
             Assert.Equal(configFromFile.WindowOptions.WindowNoMinMaxBoxes, configFromFileExpectedValues.WindowOptions.WindowNoMinMaxBoxes);
             Assert.Equal(configFromFile.WindowOptions.WindowFrameless, configFromFileExpectedValues.WindowOptions.WindowFrameless);
@@ -170,8 +170,7 @@ namespace Chromely.Tests.Defaults
 
                 config.WindowOptions.WindowLeft = 0;
                 config.WindowOptions.WindowTop = 0;
-                config.WindowOptions.WindowWidth = 1200;
-                config.WindowOptions.WindowHeight = 900;
+                config.WindowOptions.Size = new Core.Configuration.WindowSize(1200, 900);
                 config.WindowOptions.WindowNoResize = false;
                 config.WindowOptions.WindowNoMinMaxBoxes = false;
                 config.WindowOptions.WindowFrameless = false;

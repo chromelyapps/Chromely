@@ -63,8 +63,8 @@ namespace Chromely.Native
 
             configParam.x = _options.WindowLeft;
             configParam.y = _options.WindowTop;
-            configParam.width = _options.WindowWidth;
-            configParam.height = _options.WindowHeight;
+            configParam.width = _options.Size.Width;
+            configParam.height = _options.Size.Height;
 
             createwindow(ref configParam);
         }

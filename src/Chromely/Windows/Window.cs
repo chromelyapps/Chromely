@@ -77,7 +77,7 @@ namespace Chromely.Windows
         protected override void OnCreated(object sender, CreatedEventArgs createdEventArgs)
         {
             var windowInfo = CefWindowInfo.Create();
-            windowInfo.SetAsChild(createdEventArgs.WinXID, new CefRectangle(0, 0, _config.WindowOptions.WindowWidth, _config.WindowOptions.WindowHeight));
+            windowInfo.SetAsChild(createdEventArgs.WinXID, new CefRectangle(0, 0, _config.WindowOptions.Size.Width, _config.WindowOptions.Size.Height));
 
             Browser.Create(windowInfo);
         }

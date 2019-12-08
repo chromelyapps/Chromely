@@ -50,7 +50,7 @@ namespace Chromely.Native
 
             SetWindowTitle(_options.WindowTitle);
             SetAppIcon(_handle, _options.WindowIconFile);
-            SetWindowDefaultSize(_options.WindowWidth, _options.WindowHeight);
+            SetWindowDefaultSize(_options.Size.Width, _options.Size.Height);
 
             if (_options.WindowState == WindowState.Normal && _options.WindowCenterScreen)
             {

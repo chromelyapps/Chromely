@@ -8,7 +8,6 @@ namespace Chromely.Core.Configuration
         bool WindowCenterScreen { get; set; }
         WindowCustomStyle WindowCustomStyle { get; set; }
         bool WindowFrameless { get; set; }
-        int WindowHeight { get; set; }
         string WindowIconFile { get; set; }
         bool WindowKioskMode { get; set; }
         int WindowLeft { get; set; }
@@ -17,6 +16,7 @@ namespace Chromely.Core.Configuration
         WindowState WindowState { get; set; }
         string WindowTitle { get; set; }
         int WindowTop { get; set; }
-        int WindowWidth { get; set; }
+
+        WindowSize Size { get; set; }
     }
 }
