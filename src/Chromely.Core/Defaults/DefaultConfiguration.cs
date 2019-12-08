@@ -39,6 +39,9 @@ namespace Chromely.Core
             CefDownloadOptions = new CefDownloadOptions();
             WindowOptions = new WindowOptions();
 
+            // set default value
+            WindowOptions.Title = AppName;
+
             UrlSchemes.AddRange(new List<UrlScheme>()
             {
                 new UrlScheme("default-resource", "local", string.Empty, string.Empty, UrlSchemeType.Resource, false),
