@@ -11,23 +11,23 @@ namespace Chromely.Core
     public class DefaultConfiguration : IChromelyConfiguration
     {
         public string AppName { get; set; }
-        public ChromelyPlatform Platform { get; set; }
-        public string ChromelyVersion { get; set; }
-        public bool LoadCefBinariesIfNotFound { get; set; }
-        public bool SilentCefBinariesLoading { get; set; }
-        public string AppExeLocation { get; set; }
         public string StartUrl { get; set; }
-        public string DevToolsUrl { get; set; }
+        public string AppExeLocation { get; set; }
+        public string ChromelyVersion { get; set; }
+        public ChromelyPlatform Platform { get; set; }
         public bool DebuggingMode { get; set; }
-        public List<UrlScheme> UrlSchemes { get; set; }
-        public List<ControllerAssemblyInfo> ControllerAssemblies { get; set; }
-        public List<ChromelyEventHandler<object>> EventHandlers { get; set; }
+        public string DevToolsUrl { get; set; }
         public IDictionary<string, string> CommandLineArgs { get; set; }
         public List<string> CommandLineOptions { get; set; }
+        public List<ControllerAssemblyInfo> ControllerAssemblies { get; set; }
         public IDictionary<string, string> CustomSettings { get; set; }
-        public IChromelyJavaScriptExecutor JavaScriptExecutor { get; set; }
+        public List<ChromelyEventHandler<object>> EventHandlers { get; set; }
         public IDictionary<string, object> ExtensionData { get; set; }
-        public IWindowOptions WindowOptions { get ; set ; }
+        public IChromelyJavaScriptExecutor JavaScriptExecutor { get; set; }
+        public bool LoadCefBinariesIfNotFound { get; set; }
+        public bool SilentCefBinariesLoading { get; set; }
+        public List<UrlScheme> UrlSchemes { get; set; }
+        public IWindowOptions WindowOptions { get; set; }
 
         public DefaultConfiguration()
         {
@@ -39,7 +39,7 @@ namespace Chromely.Core
 
             Platform = ChromelyRuntime.Platform;
             AppExeLocation = AppDomain.CurrentDomain.BaseDirectory;
-        }
+        }      
 
         public static IChromelyConfiguration CreateOSDefault(ChromelyPlatform platform)
         {

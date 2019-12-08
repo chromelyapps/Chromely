@@ -16,22 +16,22 @@ namespace Chromely.Core
 {
     public interface IChromelyConfiguration
     {
-        string AppExeLocation { get; set; }
         string AppName { get; set; }
+        string StartUrl { get; set; }
+        string AppExeLocation { get; set; }
         string ChromelyVersion { get; set; }
+        ChromelyPlatform Platform { get; set; }
+        bool DebuggingMode { get; set; }
+        string DevToolsUrl { get; set; }
         IDictionary<string, string> CommandLineArgs { get; set; }
         List<string> CommandLineOptions { get; set; }
         List<ControllerAssemblyInfo> ControllerAssemblies { get; set; }
         IDictionary<string, string> CustomSettings { get; set; }
-        bool DebuggingMode { get; set; }
-        string DevToolsUrl { get; set; }
         List<ChromelyEventHandler<object>> EventHandlers { get; set; }
         IDictionary<string, object> ExtensionData { get; set; }
         IChromelyJavaScriptExecutor JavaScriptExecutor { get; set; }
         bool LoadCefBinariesIfNotFound { get; set; }
-        ChromelyPlatform Platform { get; set; }
         bool SilentCefBinariesLoading { get; set; }
-        string StartUrl { get; set; }
         List<UrlScheme> UrlSchemes { get; set; }
         IWindowOptions WindowOptions { get; set; }
     }
