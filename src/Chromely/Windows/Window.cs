@@ -2,6 +2,7 @@
 using Chromely.CefGlue.Browser;
 using Chromely.CefGlue.BrowserWindow;
 using Chromely.Core;
+using Chromely.Core.Configuration;
 using Chromely.Core.Host;
 using Chromely.Core.Infrastructure;
 using Chromely.Core.Network;
@@ -101,7 +102,7 @@ namespace Chromely.Windows
         protected override void OnClose(object sender, CloseEventArgs closeChangedEventArgs)
         {
             Dispose();
-            chromely.App.Properties.Save(_config);
+            Core.Infrastructure.Chromely.App.Properties.Save(_config);
         }
 
         private void OnBrowserCreated(object sender, EventArgs e)

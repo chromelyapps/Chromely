@@ -10,7 +10,7 @@
 using System;
 using Chromely.Core.Infrastructure;
 
-namespace Chromely.Core
+namespace Chromely.Core.Configuration
 {
     /// <summary>
     /// The chromely configuration extension.

@@ -8,7 +8,7 @@
 // ----------------------------------------------------------------------------------------------------------------------
 
 using System;
-using Chromely.Core;
+using Chromely.Core.Configuration;
 using Xilium.CefGlue;
 
 namespace Chromely.CefGlue.Browser.Handlers

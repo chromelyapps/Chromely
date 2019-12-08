@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Caliburn.Light;
+using Chromely.Core.Configuration;
 using Chromely.Core.Defaults;
 using Chromely.Core.Host;
 using Chromely.Core.Infrastructure;
@@ -83,11 +84,11 @@ namespace Chromely.Core
 
             var currentAppSettings = new CurrentAppSettings();
             currentAppSettings.Properties = appSettings;
-            chromely.App = currentAppSettings;
+            Infrastructure.Chromely.App = currentAppSettings;
 
-            chromely.App.Properties.AppName = config.AppName;
-            chromely.App.Properties.Read(config);
-            chromely.App.Properties.Settings.Config = config.UrlSchemes;
+            Infrastructure.Chromely.App.Properties.AppName = config.AppName;
+            Infrastructure.Chromely.App.Properties.Read(config);
+            Infrastructure.Chromely.App.Properties.Settings.Config = config.UrlSchemes;
 
             #endregion
 

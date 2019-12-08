@@ -1,4 +1,5 @@
 ﻿using Chromely.Core;
+using Chromely.Core.Configuration;
 using Chromely.Core.Host;
 using System;
 

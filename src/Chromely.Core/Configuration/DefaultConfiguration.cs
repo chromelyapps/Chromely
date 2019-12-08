@@ -1,12 +1,11 @@
-﻿using Chromely.Core.Configuration;
-using Chromely.Core.Host;
+﻿using Chromely.Core.Host;
 using Chromely.Core.Infrastructure;
 using Chromely.Core.Network;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace Chromely.Core
+namespace Chromely.Core.Configuration
 {
     public class DefaultConfiguration : IChromelyConfiguration
     {
@@ -97,10 +96,12 @@ namespace Chromely.Core
 
         public static IChromelyConfiguration CreateConfigurationForPlatform(ChromelyPlatform platform)
         {
-            IChromelyConfiguration config = new DefaultConfiguration();
+            IChromelyConfiguration config;
 
             try
             {
+                config = new DefaultConfiguration();
+
                 switch (platform)
                 {
                     case ChromelyPlatform.Windows:

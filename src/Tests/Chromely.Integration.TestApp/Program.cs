@@ -12,9 +12,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Chromely.CefGlue.Browser.EventParams;
 using Chromely.Core;
-using Chromely.Core.Helpers;
-using Chromely.Core.Host;
-using Chromely.Windows;
+using Chromely.Core.Configuration;
 
 namespace Chromely.Integration.TestApp
 {

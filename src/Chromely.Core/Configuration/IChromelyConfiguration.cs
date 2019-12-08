@@ -8,11 +8,10 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Collections.Generic;
-using Chromely.Core.Configuration;
 using Chromely.Core.Infrastructure;
 using Chromely.Core.Network;
 
-namespace Chromely.Core
+namespace Chromely.Core.Configuration
 {
     public interface IChromelyConfiguration
     {

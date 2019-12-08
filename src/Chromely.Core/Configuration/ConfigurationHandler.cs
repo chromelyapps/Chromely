@@ -1,5 +1,4 @@
-﻿using Chromely.Core.Configuration;
-using Chromely.Core.Helpers;
+﻿using Chromely.Core.Helpers;
 using Chromely.Core.Host;
 using Chromely.Core.Infrastructure;
 using Chromely.Core.Network;
@@ -10,7 +9,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Chromely.Core
+namespace Chromely.Core.Configuration
 {
     public class ConfigurationHandler
     {

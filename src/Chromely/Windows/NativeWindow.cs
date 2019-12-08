@@ -1,7 +1,7 @@
 ﻿using System;
 using Chromely.Native;
-using Chromely.Core;
 using Chromely.Core.Host;
+using Chromely.Core.Configuration;
 
 namespace Chromely.Windows
 {

@@ -3,6 +3,7 @@ using System.IO;
 using Chromely.CefGlue.Browser;
 using Chromely.CefGlue.Browser.EventParams;
 using Chromely.Core;
+using Chromely.Core.Configuration;
 using Chromely.Core.Host;
 using Chromely.Core.Infrastructure;
 using Chromely.Core.Network;

@@ -7,11 +7,8 @@
 // </license>
 // ----------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Diagnostics;
 using Chromely.CefGlue.Browser.EventParams;
-using Chromely.Core;
-using Chromely.Core.Host;
+using Chromely.Core.Configuration;
 using Chromely.Core.Infrastructure;
 using Chromely.Core.Network;
 using Xilium.CefGlue;
