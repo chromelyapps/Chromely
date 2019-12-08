@@ -4,8 +4,6 @@ namespace Chromely.Core.Configuration
 {
     public class WindowOptions : IWindowOptions
     {
-        public int WindowLeft { get; set; }
-        public int WindowTop { get; set; }
         public bool WindowNoResize { get; set; }
         public bool WindowNoMinMaxBoxes { get; set; }
         public bool WindowFrameless { get; set; }
@@ -17,12 +15,11 @@ namespace Chromely.Core.Configuration
         public WindowCustomStyle WindowCustomStyle { get; set; }
         public bool UseWindowCustomStyle { get; set; }
 
+        public WindowPosition Position { get; set; }
         public WindowSize Size { get; set; }
 
         public WindowOptions()
         {
-            WindowLeft = 0;
-            WindowTop = 0;
             WindowNoResize = false;
             WindowNoMinMaxBoxes = false;
             WindowFrameless = false;
@@ -33,6 +30,7 @@ namespace Chromely.Core.Configuration
             WindowIconFile = "chromely.ico";
 
             Size = new WindowSize(1200, 900);
+            Position = new WindowPosition(0, 0);
         }
     }
 }

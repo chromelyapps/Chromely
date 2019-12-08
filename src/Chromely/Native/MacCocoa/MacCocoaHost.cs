@@ -61,8 +61,8 @@ namespace Chromely.Native
 
             configParam.title = _options.WindowTitle;
 
-            configParam.x = _options.WindowLeft;
-            configParam.y = _options.WindowTop;
+            configParam.x = _options.Position.X;
+            configParam.y = _options.Position.Y;
             configParam.width = _options.Size.Width;
             configParam.height = _options.Size.Height;
 

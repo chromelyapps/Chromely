@@ -10,13 +10,12 @@ namespace Chromely.Core.Configuration
         bool WindowFrameless { get; set; }
         string WindowIconFile { get; set; }
         bool WindowKioskMode { get; set; }
-        int WindowLeft { get; set; }
         bool WindowNoMinMaxBoxes { get; set; }
         bool WindowNoResize { get; set; }
         WindowState WindowState { get; set; }
         string WindowTitle { get; set; }
-        int WindowTop { get; set; }
 
+        WindowPosition Position { get; set; }
         WindowSize Size { get; set; }
     }
 }

@@ -232,8 +232,7 @@ namespace Chromely.Core
                     config.SilentCefBinariesLoading = silentCefBinariesLoading;
 
                     config.WindowOptions.WindowState = GetWindowState(windowState);
-                    config.WindowOptions.WindowLeft = windowLeft;
-                    config.WindowOptions.WindowTop = windowTop;
+                    config.WindowOptions.Position = new WindowPosition(windowLeft, windowTop);
                     config.WindowOptions.Size = new WindowSize(windowWidth, windowHeight);
                     config.WindowOptions.WindowNoResize = windowNoResize;
                     config.WindowOptions.WindowNoMinMaxBoxes = windowNoMinMaxBoxes;

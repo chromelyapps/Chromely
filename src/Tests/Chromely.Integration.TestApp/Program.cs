@@ -59,6 +59,7 @@ namespace Chromely.Integration.TestApp
 
             var config = DefaultConfiguration.CreateOSDefault(ChromelyRuntime.Platform);
             config.LoadCefBinariesIfNotFound = true;
+            config.WindowOptions.Position = new Core.Configuration.WindowPosition(1, 2);
             config.WindowOptions.Size = new Core.Configuration.WindowSize(1000, 600);
             config.StartUrl = startUrl;
             config.DebuggingMode = true;
