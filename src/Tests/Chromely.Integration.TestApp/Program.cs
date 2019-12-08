@@ -57,7 +57,7 @@ namespace Chromely.Integration.TestApp
             CiTrace("AppDirectory", appDirectory);
             var startUrl = $"file:///{appDirectory}/index.html";
 
-            var config = DefaultConfiguration.CreateOSDefault(ChromelyRuntime.Platform);
+            var config = DefaultConfiguration.CreateConfigurationForPlatform(ChromelyRuntime.Platform);
             config.CefDownloadOptions = new Core.Configuration.CefDownloadOptions(true, false);
             config.WindowOptions.Position = new Core.Configuration.WindowPosition(1, 2);
             config.WindowOptions.Size = new Core.Configuration.WindowSize(1000, 600);

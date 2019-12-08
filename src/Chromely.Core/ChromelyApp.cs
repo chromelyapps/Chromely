@@ -66,7 +66,7 @@ namespace Chromely.Core
 
             if (config == null)
             {
-                config = DefaultConfiguration.CreateOSDefault(ChromelyRuntime.Platform);
+                config = DefaultConfiguration.CreateConfigurationForPlatform(ChromelyRuntime.Platform);
             }
 
             InitConfiguration(config);
@@ -135,6 +135,7 @@ namespace Chromely.Core
             if (config.CommandLineArgs == null) config.CommandLineArgs = new Dictionary<string, string>();
             if (config.CommandLineOptions == null) config.CommandLineOptions = new List<string>();
             if (config.CustomSettings == null) config.CustomSettings = new Dictionary<string, string>();
+            if (config.WindowOptions == null) config.WindowOptions = new Configuration.WindowOptions();
         }
 
         protected void EnsureContainerValid(IChromelyContainer container)

@@ -31,52 +31,40 @@ namespace Chromely.Core
         public DefaultConfiguration()
         {
             AppName = Assembly.GetEntryAssembly()?.GetName().Name;
-            WindowOptions = new WindowOptions()
-            {
-                Title = AppName
-            };
-
             Platform = ChromelyRuntime.Platform;
             AppExeLocation = AppDomain.CurrentDomain.BaseDirectory;
+            StartUrl = "local://app/chromely.html";
+            DebuggingMode = true;
+            UrlSchemes = new List<UrlScheme>();
+            CefDownloadOptions = new CefDownloadOptions();
+            WindowOptions = new WindowOptions();
+
+            UrlSchemes.AddRange(new List<UrlScheme>()
+            {
+                new UrlScheme("default-resource", "local", string.Empty, string.Empty, UrlSchemeType.Resource, false),
+                new UrlScheme("default-resource", "local", string.Empty, string.Empty, UrlSchemeType.Resource, false),
+                new UrlScheme("default-custom-http", "http", "chromely.com", string.Empty, UrlSchemeType.Custom, false),
+                new UrlScheme("default-command-http", "http", "command.com", string.Empty, UrlSchemeType.Command, false),
+                new UrlScheme("chromely-site", string.Empty, string.Empty, "https://github.com/chromelyapps/Chromely", UrlSchemeType.External, true)
+            });
+
+            ControllerAssemblies = new List<ControllerAssemblyInfo>();
+            ControllerAssemblies.RegisterServiceAssembly("Chromely.External.Controllers.dll");
+
+            CustomSettings = new Dictionary<string, string>()
+            {
+                ["cefLogFile"] = "logs\\chromely.cef.log",
+                ["logSeverity"] = "info",
+                ["locale"] = "en-US"
+            };
         }
 
-        public static IChromelyConfiguration CreateOSDefault(ChromelyPlatform platform)
+        public static IChromelyConfiguration CreateConfigurationForPlatform(ChromelyPlatform platform)
         {
-            IChromelyConfiguration config;
+            IChromelyConfiguration config = new DefaultConfiguration();
 
             try
             {
-                config = new DefaultConfiguration
-                {
-                    AppName = "chromely_app",
-                    StartUrl = "local://app/chromely.html",
-                    DebuggingMode = true,
-                    UrlSchemes = new List<UrlScheme>(),
-                    CefDownloadOptions = new CefDownloadOptions()
-                    {
-                        AutoDownloadWhenMissing = true,
-                        DownloadSilently = false
-                    }
-                };
-
-                var schemeDefaultResource = new UrlScheme("default-resource", "local", string.Empty, string.Empty, UrlSchemeType.Resource, false);
-                var schemeCustomHttp = new UrlScheme("default-custom-http", "http", "chromely.com", string.Empty, UrlSchemeType.Custom, false);
-                var schemeCommandHttp = new UrlScheme("default-command-http", "http", "command.com", string.Empty, UrlSchemeType.Command, false);
-                var schemeExternal1 = new UrlScheme("chromely-site", string.Empty, string.Empty, "https://github.com/chromelyapps/Chromely", UrlSchemeType.External, true);
-
-                config.UrlSchemes.Add(schemeDefaultResource);
-                config.UrlSchemes.Add(schemeCustomHttp);
-                config.UrlSchemes.Add(schemeCommandHttp);
-                config.UrlSchemes.Add(schemeExternal1);
-
-                config.ControllerAssemblies = new List<ControllerAssemblyInfo>();
-                config.ControllerAssemblies.RegisterServiceAssembly("Chromely.External.Controllers.dll");
-
-                config.CustomSettings = new Dictionary<string, string>();
-                config.CustomSettings["cefLogFile"] = "logs\\chromely.cef.log";
-                config.CustomSettings["logSeverity"] = "info";
-                config.CustomSettings["locale"] = "en-US";
-
                 switch (platform)
                 {
                     case ChromelyPlatform.Windows:
@@ -85,13 +73,17 @@ namespace Chromely.Core
                         break;
 
                     case ChromelyPlatform.Linux:
-                        config.CommandLineArgs = new Dictionary<string, string>();
-                        config.CommandLineArgs["disable-gpu"] = "1";
+                        config.CommandLineArgs = new Dictionary<string, string>
+                        {
+                            ["disable-gpu"] = "1"
+                        };
 
-                        config.CommandLineOptions = new List<string>();
-                        config.CommandLineOptions.Add("no-zygote");
-                        config.CommandLineOptions.Add("disable-gpu");
-                        config.CommandLineOptions.Add("disable-software-rasterizer");
+                        config.CommandLineOptions = new List<string>()
+                        {
+                            "no-zygote",
+                            "disable-gpu",
+                            "disable-software-rasterizer"
+                        };
                         break;
 
                     case ChromelyPlatform.MacOSX:
