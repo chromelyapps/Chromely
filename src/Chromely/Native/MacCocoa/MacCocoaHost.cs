@@ -24,7 +24,7 @@ namespace Chromely.Native
         private delegate void ResizeCallbackEvent(int width, int height);
         private delegate void QuitCallbackEvent();
 
-        private IWindowOptions _config;
+        private IWindowOptions _options;
         private IntPtr _appHandle;
         private IntPtr _poolHandle;
         private IntPtr _windowHandle;
@@ -42,7 +42,7 @@ namespace Chromely.Native
 
         public void CreateWindow(IWindowOptions options, bool debugging)
         {
-            _config = options;
+            _options = options;
             ChromelyParam configParam = InitParam(RunCallback,
                                                     ShutdownCallback,
                                                     InitCallback,
@@ -52,19 +52,19 @@ namespace Chromely.Native
                                                     QuitCallback);
 
 
-            configParam.centerscreen = _config.WindowState == WindowState.Normal && _config.WindowCenterScreen ? 1 : 0;
-            configParam.frameless = _config.WindowFrameless ? 1 : 0;
-            configParam.fullscreen = _config.WindowState == Core.Host.WindowState.Fullscreen ? 1 : 0;
-            configParam.noresize = _config.WindowNoResize ? 1 : 0;
-            configParam.nominbutton = _config.WindowNoMinMaxBoxes ? 1 : 0;
-            configParam.nomaxbutton = _config.WindowNoMinMaxBoxes ? 1 : 0;
+            configParam.centerscreen = _options.WindowState == WindowState.Normal && _options.WindowCenterScreen ? 1 : 0;
+            configParam.frameless = _options.WindowFrameless ? 1 : 0;
+            configParam.fullscreen = _options.WindowState == Core.Host.WindowState.Fullscreen ? 1 : 0;
+            configParam.noresize = _options.WindowNoResize ? 1 : 0;
+            configParam.nominbutton = _options.WindowNoMinMaxBoxes ? 1 : 0;
+            configParam.nomaxbutton = _options.WindowNoMinMaxBoxes ? 1 : 0;
 
-            configParam.title = _config.WindowTitle;
+            configParam.title = _options.WindowTitle;
 
-            configParam.x = _config.WindowLeft;
-            configParam.y = _config.WindowTop;
-            configParam.width = _config.WindowWidth;
-            configParam.height = _config.WindowHeight;
+            configParam.x = _options.WindowLeft;
+            configParam.y = _options.WindowTop;
+            configParam.width = _options.WindowWidth;
+            configParam.height = _options.WindowHeight;
 
             createwindow(ref configParam);
         }
