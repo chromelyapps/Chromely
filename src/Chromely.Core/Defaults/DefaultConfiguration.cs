@@ -47,16 +47,18 @@ namespace Chromely.Core
 
             try
             {
-                config = new DefaultConfiguration();
+                config = new DefaultConfiguration
+                {
+                    AppName = "chromely_demo",
+                    StartUrl = "local://app/chromely.html",
+                    LoadCefBinariesIfNotFound = true,
+                    SilentCefBinariesLoading = false,
 
-                config.AppName = "chromely_demo";
-                config.StartUrl = "local://app/chromely.html";
-                config.LoadCefBinariesIfNotFound = true;
-                config.SilentCefBinariesLoading = false;
-             
-                config.DebuggingMode = true;
+                    DebuggingMode = true,
 
-                config.UrlSchemes = new List<UrlScheme>();
+                    UrlSchemes = new List<UrlScheme>()
+                };
+
                 var schemeDefaultResource = new UrlScheme("default-resource", "local", string.Empty, string.Empty, UrlSchemeType.Resource, false);
                 var schemeCustomHttp = new UrlScheme("default-custom-http", "http", "chromely.com", string.Empty, UrlSchemeType.Custom, false);
                 var schemeCommandHttp = new UrlScheme("default-command-http", "http", "command.com", string.Empty, UrlSchemeType.Command, false);

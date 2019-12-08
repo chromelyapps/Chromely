@@ -1,4 +1,5 @@
 using Chromely.Core;
+using Chromely.Core.Configuration;
 using Chromely.Core.Host;
 using Chromely.Core.Infrastructure;
 using Chromely.Core.Network;
@@ -161,27 +162,33 @@ namespace Chromely.Tests.Defaults
         {
             get
             {
-                var config = new DefaultConfiguration();
-                config.AppName = "chromely_demo";
-                config.StartUrl = "local://app/chromely.html";
-                config.LoadCefBinariesIfNotFound = true;
-                config.SilentCefBinariesLoading = false;
-                config.DebuggingMode = true;
+                var config = new DefaultConfiguration
+                {
+                    AppName = "chromely_demo",
+                    StartUrl = "local://app/chromely.html",
+                    LoadCefBinariesIfNotFound = true,
+                    SilentCefBinariesLoading = false,
+                    DebuggingMode = true,
 
-                config.WindowOptions.Size = new Core.Configuration.WindowSize(1200, 900);
-                config.WindowOptions.Position = new Core.Configuration.WindowPosition(1, 2);
-                config.WindowOptions.DisableResizing = false;
-                config.WindowOptions.DisableMinMaximizeControls = false;
-                config.WindowOptions.WindowFrameless = false;
-                config.WindowOptions.StartCentered = true;
-                config.WindowOptions.KioskMode = false;
-                config.WindowOptions.WindowState = WindowState.Normal;
-                config.WindowOptions.Title = "chromely";
-                config.WindowOptions.RelativePathToIconFile = "chromely.ico";
-                config.WindowOptions.CustomStyle = new WindowCustomStyle(0, 0);
-                config.WindowOptions.UseCustomStyle = false;
+                    WindowOptions = new WindowOptions
+                    {
+                        Size = new WindowSize(1200, 900),
+                        Position = new WindowPosition(1, 2),
+                        DisableResizing = false,
+                        DisableMinMaximizeControls = false,
+                        WindowFrameless = false,
+                        StartCentered = true,
+                        KioskMode = false,
+                        WindowState = WindowState.Normal,
+                        Title = "chromely",
+                        RelativePathToIconFile = "chromely.ico",
+                        CustomStyle = new WindowCustomStyle(0, 0),
+                        UseCustomStyle = false
+                    },
 
-                config.UrlSchemes = new List<UrlScheme>();
+                    UrlSchemes = new List<UrlScheme>()
+                };
+
                 var schemeDefaultResource = new UrlScheme("default-resource", "local", string.Empty, string.Empty, UrlSchemeType.Resource, false);
                 var schemeCustomHttp = new UrlScheme("default-custom-http", "http", "chromely.com", string.Empty, UrlSchemeType.Custom, false);
                 var schemeCommandHttp = new UrlScheme("default-command-http", "http", "command.com", string.Empty, UrlSchemeType.Command, false);
