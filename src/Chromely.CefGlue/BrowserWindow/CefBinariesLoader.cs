@@ -17,6 +17,7 @@ using System.Xml;
 using System.Xml.Linq;
 using Chromely.CefGlue.Loader;
 using Chromely.Core;
+using Chromely.Core.Configuration;
 using Chromely.Core.Infrastructure;
 using Xilium.CefGlue;
 
@@ -35,13 +36,13 @@ namespace Chromely.CefGlue.BrowserWindow
         /// <summary>
         /// The load.
         /// </summary>
-        /// <param name="config">
+        /// <param name="options">
         /// The config.
         /// </param>
         /// <returns>
         /// The list of temporary files generated
         /// </returns>
-        public static List<string> Load(IChromelyConfiguration config)
+        public static List<string> Load(ICefDownloadOptions options, ChromelyPlatform chromelyPlatform)
         {
             try
             {
@@ -56,15 +57,15 @@ namespace Chromely.CefGlue.BrowserWindow
                 catch (Exception ex)
                 {
                     Logger.Instance.Log.Error(ex);
-                    if (config.LoadCefBinariesIfNotFound)
+                    if (options.AutoDownloadWhenMissing)
                     {
-                        if (config.SilentCefBinariesLoading)
+                        if (options.DownloadSilently)
                         {
-                            CefLoader.Load(config.Platform);
+                            CefLoader.Load(chromelyPlatform);
                         }
                         else
                         {
-                            return WarnUserOnLoad(config.Platform);
+                            return WarnUserOnLoad(chromelyPlatform);
                         }
                     }
                     else

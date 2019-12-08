@@ -1,5 +1,5 @@
 {
-  "appName": "chromely_demo",
+  "appName": "chromely_test",
   "startUrl": {
     "url": "local://app/chromely.html",
     "loadType": "localResource"

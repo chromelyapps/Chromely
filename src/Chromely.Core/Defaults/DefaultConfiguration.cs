@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using Chromely.Core.Configuration;
+﻿using Chromely.Core.Configuration;
 using Chromely.Core.Host;
 using Chromely.Core.Infrastructure;
 using Chromely.Core.Network;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace Chromely.Core
 {
@@ -24,22 +24,21 @@ namespace Chromely.Core
         public List<ChromelyEventHandler<object>> EventHandlers { get; set; }
         public IDictionary<string, object> ExtensionData { get; set; }
         public IChromelyJavaScriptExecutor JavaScriptExecutor { get; set; }
-        public bool LoadCefBinariesIfNotFound { get; set; }
-        public bool SilentCefBinariesLoading { get; set; }
         public List<UrlScheme> UrlSchemes { get; set; }
+        public CefDownloadOptions CefDownloadOptions { get; set; }
         public IWindowOptions WindowOptions { get; set; }
 
         public DefaultConfiguration()
         {
             AppName = Assembly.GetEntryAssembly()?.GetName().Name;
-            WindowOptions = new WindowOptions
+            WindowOptions = new WindowOptions()
             {
                 Title = AppName
             };
 
             Platform = ChromelyRuntime.Platform;
             AppExeLocation = AppDomain.CurrentDomain.BaseDirectory;
-        }      
+        }
 
         public static IChromelyConfiguration CreateOSDefault(ChromelyPlatform platform)
         {
@@ -49,14 +48,15 @@ namespace Chromely.Core
             {
                 config = new DefaultConfiguration
                 {
-                    AppName = "chromely_demo",
+                    AppName = "chromely_app",
                     StartUrl = "local://app/chromely.html",
-                    LoadCefBinariesIfNotFound = true,
-                    SilentCefBinariesLoading = false,
-
                     DebuggingMode = true,
-
-                    UrlSchemes = new List<UrlScheme>()
+                    UrlSchemes = new List<UrlScheme>(),
+                    CefDownloadOptions = new CefDownloadOptions()
+                    {
+                        AutoDownloadWhenMissing = true,
+                        DownloadSilently = false
+                    }
                 };
 
                 var schemeDefaultResource = new UrlScheme("default-resource", "local", string.Empty, string.Empty, UrlSchemeType.Resource, false);

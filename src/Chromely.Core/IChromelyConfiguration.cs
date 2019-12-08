@@ -30,9 +30,8 @@ namespace Chromely.Core
         List<ChromelyEventHandler<object>> EventHandlers { get; set; }
         IDictionary<string, object> ExtensionData { get; set; }
         IChromelyJavaScriptExecutor JavaScriptExecutor { get; set; }
-        bool LoadCefBinariesIfNotFound { get; set; }
-        bool SilentCefBinariesLoading { get; set; }
         List<UrlScheme> UrlSchemes { get; set; }
+        CefDownloadOptions CefDownloadOptions { get; set; }
         IWindowOptions WindowOptions { get; set; }
     }
 }

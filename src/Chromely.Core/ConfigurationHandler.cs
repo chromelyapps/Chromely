@@ -228,9 +228,7 @@ namespace Chromely.Core
                         config.StartUrl = startUrl.GetStartUrl();
                     }
 
-                    config.LoadCefBinariesIfNotFound = loadCefBinariesIfNotFound;
-                    config.SilentCefBinariesLoading = silentCefBinariesLoading;
-
+                    config.CefDownloadOptions = new CefDownloadOptions(loadCefBinariesIfNotFound, silentCefBinariesLoading);
                     config.WindowOptions.WindowState = GetWindowState(windowState);
                     config.WindowOptions.Position = new WindowPosition(windowLeft, windowTop);
                     config.WindowOptions.Size = new WindowSize(windowWidth, windowHeight);

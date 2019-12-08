@@ -12,8 +12,7 @@ namespace Chromely.Core.Configuration
         bool StartCentered { get; set; }
         bool WindowFrameless { get; set; }
         bool UseCustomStyle { get; set; }
-        WindowCustomStyle CustomStyle { get; set; }       
-
+        WindowCustomStyle CustomStyle { get; set; }
         WindowPosition Position { get; set; }
         WindowSize Size { get; set; }
         WindowState WindowState { get; set; }

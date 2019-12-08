@@ -23,8 +23,8 @@ namespace Chromely.Tests.Defaults
 
             Assert.Equal(configFromFile.AppName, configFromFileExpectedValues.AppName);
             Assert.Equal(configFromFile.StartUrl, configFromFileExpectedValues.StartUrl);
-            Assert.Equal(configFromFile.LoadCefBinariesIfNotFound, configFromFileExpectedValues.LoadCefBinariesIfNotFound);
-            Assert.Equal(configFromFile.SilentCefBinariesLoading, configFromFileExpectedValues.SilentCefBinariesLoading);
+            Assert.Equal(configFromFile.CefDownloadOptions.AutoDownloadWhenMissing, configFromFileExpectedValues.CefDownloadOptions.AutoDownloadWhenMissing);
+            Assert.Equal(configFromFile.CefDownloadOptions.DownloadSilently, configFromFileExpectedValues.CefDownloadOptions.DownloadSilently);
             Assert.Equal(configFromFile.DebuggingMode, configFromFileExpectedValues.DebuggingMode);
 
             Assert.Equal(configFromFile.WindowOptions.Position.X, configFromFileExpectedValues.WindowOptions.Position.X);
@@ -164,11 +164,14 @@ namespace Chromely.Tests.Defaults
             {
                 var config = new DefaultConfiguration
                 {
-                    AppName = "chromely_demo",
+                    AppName = "chromely_test",
                     StartUrl = "local://app/chromely.html",
-                    LoadCefBinariesIfNotFound = true,
-                    SilentCefBinariesLoading = false,
                     DebuggingMode = true,
+                    CefDownloadOptions = new CefDownloadOptions()
+                    {
+                        AutoDownloadWhenMissing = true,
+                        DownloadSilently = false
+                    },
 
                     WindowOptions = new WindowOptions
                     {
