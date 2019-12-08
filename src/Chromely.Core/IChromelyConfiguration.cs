@@ -16,36 +16,36 @@ namespace Chromely.Core
 {
     public interface IChromelyConfiguration
     {
-        string AppName { get; set; }
-        ChromelyPlatform Platform { get; set; }
-        string ChromelyVersion { get; set; }
-        bool LoadCefBinariesIfNotFound { get; set; }
-        bool SilentCefBinariesLoading { get; set; }
-        int WindowLeft { get; set; }
-        int WindowTop { get; set; }
-        int WindowWidth { get; set; }
-        int WindowHeight { get; set; }
-        bool WindowNoResize { get; set; }
-        bool WindowNoMinMaxBoxes { get; set; }
-        bool WindowFrameless { get; set; }
-        bool WindowCenterScreen { get; set; }
-        bool WindowKioskMode { get; set; }
-        WindowState WindowState { get; set; }
-        string WindowTitle { get; set; }
-        string WindowIconFile { get; set; }
-        WindowCustomStyle WindowCustomStyle { get; set; }
-        bool UseWindowCustomStyle { get; set; }
         string AppExeLocation { get; set; }
-        string StartUrl { get; set; }
-        string DevToolsUrl { get; set; }
-        bool DebuggingMode { get; set; }
-        List<UrlScheme> UrlSchemes { get; set; }
-        List<ControllerAssemblyInfo> ControllerAssemblies { get; set; }
-        List<ChromelyEventHandler<object>> EventHandlers { get; set; }
+        string AppName { get; set; }
+        string ChromelyVersion { get; set; }
         IDictionary<string, string> CommandLineArgs { get; set; }
         List<string> CommandLineOptions { get; set; }
+        List<ControllerAssemblyInfo> ControllerAssemblies { get; set; }
         IDictionary<string, string> CustomSettings { get; set; }
-        IChromelyJavaScriptExecutor JavaScriptExecutor { get; set; }
+        bool DebuggingMode { get; set; }
+        string DevToolsUrl { get; set; }
+        List<ChromelyEventHandler<object>> EventHandlers { get; set; }
         IDictionary<string, object> ExtensionData { get; set; }
+        IChromelyJavaScriptExecutor JavaScriptExecutor { get; set; }
+        bool LoadCefBinariesIfNotFound { get; set; }
+        ChromelyPlatform Platform { get; set; }
+        bool SilentCefBinariesLoading { get; set; }
+        string StartUrl { get; set; }
+        List<UrlScheme> UrlSchemes { get; set; }
+        bool UseWindowCustomStyle { get; set; }
+        bool WindowCenterScreen { get; set; }
+        WindowCustomStyle WindowCustomStyle { get; set; }
+        bool WindowFrameless { get; set; }
+        int WindowHeight { get; set; }
+        string WindowIconFile { get; set; }
+        bool WindowKioskMode { get; set; }
+        int WindowLeft { get; set; }
+        bool WindowNoMinMaxBoxes { get; set; }
+        bool WindowNoResize { get; set; }
+        WindowState WindowState { get; set; }
+        string WindowTitle { get; set; }
+        int WindowTop { get; set; }
+        int WindowWidth { get; set; }
     }
 }
