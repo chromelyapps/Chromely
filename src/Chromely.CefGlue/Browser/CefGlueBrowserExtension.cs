@@ -22,12 +22,9 @@ namespace Chromely.CefGlue.Browser
     /// </summary>
     public static class CefGlueBrowserExtension
     {
-        /// <summary>
-        /// The set event handlers.
-        /// </summary>
-        /// <param name="browser">
-        /// The browser.
-        /// </param>
+        /// <summary>The set event handlers.</summary>
+        /// <param name="browser">The browser.</param>
+        /// <param name="container">The container.</param>
         public static void SetEventHandlers(this CefGlueBrowser browser, IChromelyContainer container)
         {
             try
