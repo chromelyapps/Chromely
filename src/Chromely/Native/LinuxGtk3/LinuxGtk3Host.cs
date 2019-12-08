@@ -48,11 +48,11 @@ namespace Chromely.Native
 
             _handle = CreateNewWindow((int)wndType);
 
-            SetWindowTitle(_options.WindowTitle);
-            SetAppIcon(_handle, _options.WindowIconFile);
+            SetWindowTitle(_options.Title);
+            SetAppIcon(_handle, _options.RelativePathToIconFile);
             SetWindowDefaultSize(_options.Size.Width, _options.Size.Height);
 
-            if (_options.WindowState == WindowState.Normal && _options.WindowCenterScreen)
+            if (_options.WindowState == WindowState.Normal && _options.StartCentered)
             {
                 SetWindowPosistion((int)GtkWindowPosition.GtkWinPosCenter);
             }

@@ -30,21 +30,21 @@ namespace Chromely.Tests.Defaults
             Assert.Equal(configFromFile.WindowOptions.Position.Y, configFromFileExpectedValues.WindowOptions.Position.Y);
             Assert.Equal(configFromFile.WindowOptions.Size.Width, configFromFileExpectedValues.WindowOptions.Size.Width);
             Assert.Equal(configFromFile.WindowOptions.Size.Height, configFromFileExpectedValues.WindowOptions.Size.Height);
-            Assert.Equal(configFromFile.WindowOptions.WindowNoResize, configFromFileExpectedValues.WindowOptions.WindowNoResize);
-            Assert.Equal(configFromFile.WindowOptions.WindowNoMinMaxBoxes, configFromFileExpectedValues.WindowOptions.WindowNoMinMaxBoxes);
+            Assert.Equal(configFromFile.WindowOptions.DisableResizing, configFromFileExpectedValues.WindowOptions.DisableResizing);
+            Assert.Equal(configFromFile.WindowOptions.DisableMinMaximizeControls, configFromFileExpectedValues.WindowOptions.DisableMinMaximizeControls);
             Assert.Equal(configFromFile.WindowOptions.WindowFrameless, configFromFileExpectedValues.WindowOptions.WindowFrameless);
-            Assert.Equal(configFromFile.WindowOptions.WindowCenterScreen, configFromFileExpectedValues.WindowOptions.WindowCenterScreen);
-            Assert.Equal(configFromFile.WindowOptions.WindowKioskMode, configFromFileExpectedValues.WindowOptions.WindowKioskMode);
+            Assert.Equal(configFromFile.WindowOptions.StartCentered, configFromFileExpectedValues.WindowOptions.StartCentered);
+            Assert.Equal(configFromFile.WindowOptions.KioskMode, configFromFileExpectedValues.WindowOptions.KioskMode);
             Assert.Equal(configFromFile.WindowOptions.WindowState, configFromFileExpectedValues.WindowOptions.WindowState);
-            Assert.Equal(configFromFile.WindowOptions.WindowTitle, configFromFileExpectedValues.WindowOptions.WindowTitle);
-            Assert.Equal(configFromFile.WindowOptions.WindowIconFile, configFromFileExpectedValues.WindowOptions.WindowIconFile);
+            Assert.Equal(configFromFile.WindowOptions.Title, configFromFileExpectedValues.WindowOptions.Title);
+            Assert.Equal(configFromFile.WindowOptions.RelativePathToIconFile, configFromFileExpectedValues.WindowOptions.RelativePathToIconFile);
 
-            Assert.NotNull(configFromFile.WindowOptions.WindowCustomStyle);
-            Assert.NotNull(configFromFileExpectedValues.WindowOptions.WindowCustomStyle);
+            Assert.NotNull(configFromFile.WindowOptions.CustomStyle);
+            Assert.NotNull(configFromFileExpectedValues.WindowOptions.CustomStyle);
 
-            Assert.Equal(configFromFile.WindowOptions.UseWindowCustomStyle, configFromFileExpectedValues.WindowOptions.UseWindowCustomStyle);
-            Assert.Equal(configFromFile.WindowOptions.WindowCustomStyle.WindowStyles, configFromFileExpectedValues.WindowOptions.WindowCustomStyle.WindowStyles);
-            Assert.Equal(configFromFile.WindowOptions.WindowCustomStyle.WindowExStyles, configFromFileExpectedValues.WindowOptions.WindowCustomStyle.WindowExStyles);
+            Assert.Equal(configFromFile.WindowOptions.UseCustomStyle, configFromFileExpectedValues.WindowOptions.UseCustomStyle);
+            Assert.Equal(configFromFile.WindowOptions.CustomStyle.WindowStyles, configFromFileExpectedValues.WindowOptions.CustomStyle.WindowStyles);
+            Assert.Equal(configFromFile.WindowOptions.CustomStyle.WindowExStyles, configFromFileExpectedValues.WindowOptions.CustomStyle.WindowExStyles);
 
             Assert.NotNull(configFromFile.UrlSchemes);
             Assert.NotNull(configFromFileExpectedValues.UrlSchemes);
@@ -134,7 +134,7 @@ namespace Chromely.Tests.Defaults
             // Assert
             Assert.NotNull(config);
             Assert.Equal(appName, config.AppName);
-            Assert.Equal(windowTitle, config.WindowOptions.WindowTitle);
+            Assert.Equal(windowTitle, config.WindowOptions.Title);
             Assert.Equal(platform, config.Platform);
             Assert.Equal(appExeLocation, config.AppExeLocation);
         }
@@ -170,16 +170,16 @@ namespace Chromely.Tests.Defaults
 
                 config.WindowOptions.Size = new Core.Configuration.WindowSize(1200, 900);
                 config.WindowOptions.Position = new Core.Configuration.WindowPosition(1, 2);
-                config.WindowOptions.WindowNoResize = false;
-                config.WindowOptions.WindowNoMinMaxBoxes = false;
+                config.WindowOptions.DisableResizing = false;
+                config.WindowOptions.DisableMinMaximizeControls = false;
                 config.WindowOptions.WindowFrameless = false;
-                config.WindowOptions.WindowCenterScreen = true;
-                config.WindowOptions.WindowKioskMode = false;
+                config.WindowOptions.StartCentered = true;
+                config.WindowOptions.KioskMode = false;
                 config.WindowOptions.WindowState = WindowState.Normal;
-                config.WindowOptions.WindowTitle = "chromely";
-                config.WindowOptions.WindowIconFile = "chromely.ico";
-                config.WindowOptions.WindowCustomStyle = new WindowCustomStyle(0, 0);
-                config.WindowOptions.UseWindowCustomStyle = false;
+                config.WindowOptions.Title = "chromely";
+                config.WindowOptions.RelativePathToIconFile = "chromely.ico";
+                config.WindowOptions.CustomStyle = new WindowCustomStyle(0, 0);
+                config.WindowOptions.UseCustomStyle = false;
 
                 config.UrlSchemes = new List<UrlScheme>();
                 var schemeDefaultResource = new UrlScheme("default-resource", "local", string.Empty, string.Empty, UrlSchemeType.Resource, false);

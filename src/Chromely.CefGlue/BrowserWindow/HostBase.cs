@@ -197,7 +197,7 @@ namespace Chromely.CefGlue.BrowserWindow
                 ResourcesDirPath = _config.AppExeLocation
             };
 
-            if (_config.WindowOptions.WindowFrameless || _config.WindowOptions.WindowKioskMode)
+            if (_config.WindowOptions.WindowFrameless || _config.WindowOptions.KioskMode)
             {
                 // MultiThreadedMessageLoop is not allowed to be used as it will break frameless mode
                 settings.MultiThreadedMessageLoop = false;

@@ -52,14 +52,14 @@ namespace Chromely.Native
                                                     QuitCallback);
 
 
-            configParam.centerscreen = _options.WindowState == WindowState.Normal && _options.WindowCenterScreen ? 1 : 0;
+            configParam.centerscreen = _options.WindowState == WindowState.Normal && _options.StartCentered ? 1 : 0;
             configParam.frameless = _options.WindowFrameless ? 1 : 0;
             configParam.fullscreen = _options.WindowState == Core.Host.WindowState.Fullscreen ? 1 : 0;
-            configParam.noresize = _options.WindowNoResize ? 1 : 0;
-            configParam.nominbutton = _options.WindowNoMinMaxBoxes ? 1 : 0;
-            configParam.nomaxbutton = _options.WindowNoMinMaxBoxes ? 1 : 0;
+            configParam.noresize = _options.DisableResizing ? 1 : 0;
+            configParam.nominbutton = _options.DisableMinMaximizeControls ? 1 : 0;
+            configParam.nomaxbutton = _options.DisableMinMaximizeControls ? 1 : 0;
 
-            configParam.title = _options.WindowTitle;
+            configParam.title = _options.Title;
 
             configParam.x = _options.Position.X;
             configParam.y = _options.Position.Y;

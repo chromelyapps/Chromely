@@ -34,7 +34,7 @@ namespace Chromely.Core
             AppName = Assembly.GetEntryAssembly()?.GetName().Name;
             WindowOptions = new WindowOptions
             {
-                WindowTitle = AppName
+                Title = AppName
             };
 
             Platform = ChromelyRuntime.Platform;
@@ -78,8 +78,8 @@ namespace Chromely.Core
                 switch (platform)
                 {
                     case ChromelyPlatform.Windows:
-                        config.WindowOptions.WindowCustomStyle = new WindowCustomStyle(0, 0);
-                        config.WindowOptions.UseWindowCustomStyle = false;
+                        config.WindowOptions.CustomStyle = new WindowCustomStyle(0, 0);
+                        config.WindowOptions.UseCustomStyle = false;
                         break;
 
                     case ChromelyPlatform.Linux:

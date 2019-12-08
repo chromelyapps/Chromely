@@ -234,18 +234,18 @@ namespace Chromely.Core
                     config.WindowOptions.WindowState = GetWindowState(windowState);
                     config.WindowOptions.Position = new WindowPosition(windowLeft, windowTop);
                     config.WindowOptions.Size = new WindowSize(windowWidth, windowHeight);
-                    config.WindowOptions.WindowNoResize = windowNoResize;
-                    config.WindowOptions.WindowNoMinMaxBoxes = windowNoMinMaxBoxes;
+                    config.WindowOptions.DisableResizing = windowNoResize;
+                    config.WindowOptions.DisableMinMaximizeControls = windowNoMinMaxBoxes;
                     config.WindowOptions.WindowFrameless = windowFrameless;
-                    config.WindowOptions.WindowCenterScreen = windowCenterScreen;
-                    config.WindowOptions.WindowKioskMode = windowKioskMode;
-                    config.WindowOptions.WindowTitle = windowTitle;
-                    config.WindowOptions.WindowIconFile = windowIconFile;
+                    config.WindowOptions.StartCentered = windowCenterScreen;
+                    config.WindowOptions.KioskMode = windowKioskMode;
+                    config.WindowOptions.Title = windowTitle;
+                    config.WindowOptions.RelativePathToIconFile = windowIconFile;
 
                     if (windowCustomCreation != null)
                     {
-                        config.WindowOptions.WindowCustomStyle = new WindowCustomStyle(windowCustomCreation.windowStyles, windowCustomCreation.windowExStyles);
-                        config.WindowOptions.UseWindowCustomStyle = windowCustomCreation.useCustomtyle;
+                        config.WindowOptions.CustomStyle = new WindowCustomStyle(windowCustomCreation.windowStyles, windowCustomCreation.windowExStyles);
+                        config.WindowOptions.UseCustomStyle = windowCustomCreation.useCustomtyle;
                     }
 
                     config.AppExeLocation = AppDomain.CurrentDomain.BaseDirectory;
