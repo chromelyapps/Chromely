@@ -61,11 +61,11 @@ namespace Chromely.CefGlue.BrowserWindow
                     {
                         if (options.DownloadSilently)
                         {
-                            CefLoader.Load(chromelyPlatform);
+                            CefLoader.Download(chromelyPlatform);
                         }
                         else
                         {
-                            return WarnUserOnLoad(chromelyPlatform);
+                            return DownloadAndNotifyUser(chromelyPlatform);
                         }
                     }
                     else
@@ -116,7 +116,7 @@ namespace Chromely.CefGlue.BrowserWindow
         /// <returns>
         /// The list of temporary files generated
         /// </returns>
-        private static List<string> WarnUserOnLoad(ChromelyPlatform platform)
+        private static List<string> DownloadAndNotifyUser(ChromelyPlatform platform)
         {
             var tempFiles = new List<string>();
 
@@ -125,13 +125,13 @@ namespace Chromely.CefGlue.BrowserWindow
                 var stopwatch = new Stopwatch();
                 stopwatch.Start();
 
-                var startTempFile = LaunchStartPage();
+                var startTempFile = ShowDownloadStartedPage();
                 tempFiles.Add(startTempFile);
 
-                CefLoader.Load(platform);
+                CefLoader.Download(platform);
 
                 stopwatch.Stop();
-                var competedTempFile = LaunchCompletedPage($"Time elapsed: {stopwatch.Elapsed}.");
+                var competedTempFile = ShowDownloadCompletedPage($"Time elapsed: {stopwatch.Elapsed}.");
 
                 if (competedTempFile != null)
                 {
@@ -143,7 +143,7 @@ namespace Chromely.CefGlue.BrowserWindow
             catch (Exception ex)
             {
                 Logger.Instance.Log.Error(ex);
-                var onErrorTempFile = LaunchErrorPage(ex);
+                var onErrorTempFile = ShowErrorPage(ex);
                 tempFiles.Add(onErrorTempFile);
                 Environment.Exit(0);
             }
@@ -152,23 +152,23 @@ namespace Chromely.CefGlue.BrowserWindow
         }
 
         /// <summary>
-        /// The launch start page.
+        /// Shows a page to notify the user that the download has started.
         /// </summary>
         /// <returns>
         /// The temporary file created.
         /// </returns>
-        private static string LaunchStartPage()
+        private static string ShowDownloadStartedPage()
         {
             var message = new Tuple<string, string, string>(
                 "CEF binaries download started.",
                 "Note that depending on your network, this might take up to 4 minutes to complete.",
                 "Please wait...");
 
-            return LaunchHtmlWarningPage(message);
+            return ShowPageWithCustomMessage(message);
         }
 
         /// <summary>
-        /// The launch completed page.
+        /// Shows a page to notify the user that the download was completed.
         /// </summary>
         /// <param name="durationInfo">
         /// The duration info.
@@ -176,18 +176,18 @@ namespace Chromely.CefGlue.BrowserWindow
         /// <returns>
         /// The temporary file created.
         /// </returns>
-        private static string LaunchCompletedPage(string durationInfo)
+        private static string ShowDownloadCompletedPage(string durationInfo)
         {
             var message = new Tuple<string, string, string>(
                 "CEF binaries download completed successfully.",
                 durationInfo,
                 "Please close.");
 
-            return LaunchHtmlWarningPage(message);
+            return ShowPageWithCustomMessage(message);
         }
 
         /// <summary>
-        /// The launch error page.
+        /// Shows a page to notify the user that the download has failed.
         /// </summary>
         /// <param name="ex">
         /// The exception.
@@ -195,18 +195,18 @@ namespace Chromely.CefGlue.BrowserWindow
         /// <returns>
         /// The temporary file created.
         /// </returns>
-        private static string LaunchErrorPage(Exception ex)
+        private static string ShowErrorPage(Exception ex)
         {
             var message = new Tuple<string, string, string>(
                 "CEF binaries download completed with error.",
                 "Error message: " + ex.Message,
                 "Please close.");
 
-            return LaunchHtmlWarningPage(message);
+            return ShowPageWithCustomMessage(message);
         }
 
         /// <summary>
-        /// The launch html warning page.
+        /// Shows a page to notify the user.
         /// </summary>
         /// <param name="message">
         /// The message.
@@ -214,7 +214,7 @@ namespace Chromely.CefGlue.BrowserWindow
         /// <returns>
         /// The temporary file created.
         /// </returns>
-        private static string LaunchHtmlWarningPage(Tuple<string, string, string> message)
+        private static string ShowPageWithCustomMessage(Tuple<string, string, string> message)
         {
             try
             {

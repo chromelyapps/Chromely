@@ -48,10 +48,10 @@ namespace Chromely.CefGlue.Loader
         public int DownloadTimeoutMinutes { get; set; } = 10;
 
         /// <summary>
-        /// Load CEF runtime files.
+        /// Download CEF runtime files.
         /// </summary>
         /// <exception cref="Exception"></exception>
-        public static void Load(ChromelyPlatform platform)
+        public static void Download(ChromelyPlatform platform)
         {
             Logger.Instance.Log.Info("CefLoader: Installing CEF runtime from " + CefBuildsDownloadUrl);
 
