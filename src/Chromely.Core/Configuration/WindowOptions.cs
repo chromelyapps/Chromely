@@ -4,7 +4,7 @@ namespace Chromely.Core.Configuration
 {
     public class WindowOptions : IWindowOptions
     {
-        /// <summary>Gets or sets the title of the window.</summary>
+        /// <summary>Gets or sets the title of the window. If you leave them blank than the AppName will be used</summary>
         public string Title { get; set; }
 
         /// <summary>Gets or sets the relative path to icon that will be displayed on the window.</summary>
