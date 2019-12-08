@@ -23,7 +23,6 @@ namespace Chromely.Native
         private IntPtr _handle;
         private bool _isInitialized;
 
-        private static string AppName = "Chromely";
         private static string ClassName = "chromelywindow";
         private static IntPtr _consoleParentInstance;
         private WndProc _wndProc;
@@ -73,7 +72,7 @@ namespace Chromely.Native
 
             var hWnd = CreateWindowEx(styles.Item2,
                         ClassName,
-                        AppName,
+                        _options.Title,
                         styles.Item1,
                         rect.Left,
                         rect.Top,
