@@ -18,7 +18,7 @@ using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Chromely.Core;
-using Chromely.Core.Infrastructure;
+using Chromely.Core.Logging;
 using ICSharpCode.SharpZipLib.BZip2;
 using ICSharpCode.SharpZipLib.Tar;
 using Xilium.CefGlue;

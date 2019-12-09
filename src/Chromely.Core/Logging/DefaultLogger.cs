@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Chromely.Core.Infrastructure
+﻿namespace Chromely.Core.Logging
 {
     public class DefaultLogger : Logger
     {

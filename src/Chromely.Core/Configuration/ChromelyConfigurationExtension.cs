@@ -8,7 +8,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
-using Chromely.Core.Infrastructure;
+using Chromely.Core.Logging;
 
 namespace Chromely.Core.Configuration
 {

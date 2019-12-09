@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Chromely.Core.Logging;
+using System;
 using System.IO;
 
 namespace Chromely.Core.Infrastructure

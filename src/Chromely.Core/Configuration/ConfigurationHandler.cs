@@ -1,6 +1,7 @@
 ﻿using Chromely.Core.Helpers;
 using Chromely.Core.Host;
 using Chromely.Core.Infrastructure;
+using Chromely.Core.Logging;
 using Chromely.Core.Network;
 using System;
 using System.Collections.Generic;

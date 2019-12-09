@@ -1,5 +1,5 @@
 ﻿using Chromely.Core.Configuration;
-using Chromely.Core.Infrastructure;
+using Chromely.Core.Logging;
 using System;
 
 namespace Chromely.Core

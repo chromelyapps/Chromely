@@ -12,7 +12,7 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using Chromely.Core.Helpers;
-using Chromely.Core.Infrastructure;
+using Chromely.Core.Logging;
 using Xilium.CefGlue;
 
 namespace Chromely.CefGlue.Browser.Handlers

@@ -13,7 +13,7 @@ using System;
 using Chromely.CefGlue.Browser.EventParams;
 using Chromely.Core;
 using Chromely.Core.Helpers;
-using Chromely.Core.Infrastructure;
+using Chromely.Core.Logging;
 
 namespace Chromely.CefGlue.Browser
 {

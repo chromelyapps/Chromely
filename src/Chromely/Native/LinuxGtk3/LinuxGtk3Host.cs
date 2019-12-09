@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Chromely.Core.Configuration;
 using Chromely.Core.Host;
-using Chromely.Core.Infrastructure;
+using Chromely.Core.Logging;
 using Xilium.CefGlue;
 using static Chromely.Native.LinuxNativeMethods;
 

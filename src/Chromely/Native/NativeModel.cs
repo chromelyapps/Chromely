@@ -1,4 +1,4 @@
-﻿using Chromely.Core.Infrastructure;
+﻿using Chromely.Core.Logging;
 using System;
 using System.IO;
 using System.Runtime.InteropServices;

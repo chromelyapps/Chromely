@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
-using Chromely.Core.Infrastructure;
-using Chromely.Core.Network;
+using Chromely.Core.Logging;
 
 namespace Chromely.Core.Network
 {

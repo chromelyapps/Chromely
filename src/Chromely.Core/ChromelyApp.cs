@@ -6,6 +6,7 @@ using Chromely.Core.Configuration;
 using Chromely.Core.Defaults;
 using Chromely.Core.Host;
 using Chromely.Core.Infrastructure;
+using Chromely.Core.Logging;
 using Chromely.Core.Network;
 
 namespace Chromely.Core

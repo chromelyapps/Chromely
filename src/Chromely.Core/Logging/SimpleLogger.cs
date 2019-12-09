@@ -12,7 +12,7 @@ using System.IO;
 using System.Text;
 
 // ReSharper disable InconsistentNaming
-namespace Chromely.Core.Infrastructure
+namespace Chromely.Core.Logging
 {
     /// <summary>
     /// The simple logger.

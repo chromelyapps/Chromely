@@ -18,7 +18,7 @@ using System.Xml.Linq;
 using Chromely.CefGlue.Loader;
 using Chromely.Core;
 using Chromely.Core.Configuration;
-using Chromely.Core.Infrastructure;
+using Chromely.Core.Logging;
 using Xilium.CefGlue;
 
 namespace Chromely.CefGlue.BrowserWindow

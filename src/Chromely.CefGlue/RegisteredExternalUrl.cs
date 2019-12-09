@@ -9,7 +9,7 @@
 
 using System;
 using System.Diagnostics;
-using Chromely.Core.Infrastructure;
+using Chromely.Core.Logging;
 using Xilium.CefGlue;
 
 namespace Chromely.CefGlue

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Chromely.Core;
-using Chromely.Core.Infrastructure;
+using Chromely.Core.Logging;
 using Xilium.CefGlue;
 
 namespace Chromely.CefGlue

@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using Chromely.Core.Configuration;
 using Chromely.Core.Host;
-using Chromely.Core.Infrastructure;
+using Chromely.Core.Logging;
 using PInvoke.Net;
 using Xilium.CefGlue;
 using static Chromely.Native.WinNativeMethods;
