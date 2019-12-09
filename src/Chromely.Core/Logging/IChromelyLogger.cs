@@ -9,6 +9,7 @@
         void Critial(string message);
         void Fatal(string message);
         void Error(string message);
-        void Error(System.Exception exception, string message = null);
+        void Error(System.Exception exception);
+        void Error(System.Exception exception, string message);
     }
 }
