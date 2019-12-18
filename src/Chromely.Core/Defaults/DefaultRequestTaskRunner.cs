@@ -42,7 +42,7 @@ namespace Chromely.Core.Defaults
                 throw new Exception($"Route for path = {routePath.Path} is null or invalid.");
             }
 
-            return ExcuteRoute(string.Empty, routePath, parameters, postData, string.Empty);
+            return ExecuteRoute(string.Empty, routePath, parameters, postData, string.Empty);
         }
 
         public ChromelyResponse Run(ChromelyRequest request)
@@ -81,7 +81,7 @@ namespace Chromely.Core.Defaults
             var parameters = request.Parameters ?? request.RoutePath.Path.GetParameters()?.ToObjectDictionary();
             var postData = request.PostData;
 
-            return ExcuteRoute(request.Id, request.RoutePath, parameters, postData, request.RawJson);
+            return ExecuteRoute(request.Id, request.RoutePath, parameters, postData, request.RawJson);
         }
 
         public ChromelyResponse Run(string requestId, RoutePath routePath, IDictionary<string, string> parameters, object postData, string requestData)
@@ -108,10 +108,10 @@ namespace Chromely.Core.Defaults
                 throw new Exception($"Route for path = {routePath} is null or invalid.");
             }
 
-            return ExcuteRoute(requestId, routePath, parameters, postData, requestData);
+            return ExecuteRoute(requestId, routePath, parameters, postData, requestData);
         }
 
-        private ChromelyResponse ExcuteRoute(string requestId, RoutePath routePath, IDictionary<string, string> parameters, object postData, string requestData)
+        private ChromelyResponse ExecuteRoute(string requestId, RoutePath routePath, IDictionary<string, string> parameters, object postData, string requestData)
         {
             var route = ServiceRouteProvider.GetActionRoute(_container, routePath);
 
