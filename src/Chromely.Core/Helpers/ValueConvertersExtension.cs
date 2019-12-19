@@ -1,6 +1,5 @@
-﻿
-using System;
-using Chromely.Core.Infrastructure;
+﻿using System;
+using Chromely.Core.Logging;
 
 namespace Chromely.Core.Helpers
 {

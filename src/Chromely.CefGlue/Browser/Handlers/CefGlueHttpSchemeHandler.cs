@@ -3,8 +3,9 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using Chromely.Core;
+using Chromely.Core.Configuration;
 using Chromely.Core.Infrastructure;
+using Chromely.Core.Logging;
 using Chromely.Core.Network;
 using Xilium.CefGlue;
 

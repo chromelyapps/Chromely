@@ -7,7 +7,7 @@
 // </license>
 // ----------------------------------------------------------------------------------------------------------------------
 
-using Chromely.Core.Infrastructure;
+using Chromely.Core.Logging;
 using System;
 using System.Collections.Specialized;
 using System.IO;

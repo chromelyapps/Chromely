@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Chromely.Core.Infrastructure
+﻿namespace Chromely.Core.Infrastructure
 {
-    public abstract class chromely
+    public abstract class Chromely
     {
-        private static chromely instance;
-        public static chromely App
+        private static Chromely instance;
+        public static Chromely App
         {
             get
             {
@@ -26,7 +22,6 @@ namespace Chromely.Core.Infrastructure
         }
 
         public virtual IChromelyAppSettings Properties { get; set; }
-        
     }
 }
 

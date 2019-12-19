@@ -1,4 +1,5 @@
 using Chromely.Core;
+using Chromely.Core.Configuration;
 using Chromely.Core.Host;
 using Chromely.Core.Infrastructure;
 using Chromely.Core.Network;
@@ -22,28 +23,29 @@ namespace Chromely.Tests.Defaults
 
             Assert.Equal(configFromFile.AppName, configFromFileExpectedValues.AppName);
             Assert.Equal(configFromFile.StartUrl, configFromFileExpectedValues.StartUrl);
-            Assert.Equal(configFromFile.LoadCefBinariesIfNotFound, configFromFileExpectedValues.LoadCefBinariesIfNotFound);
-            Assert.Equal(configFromFile.SilentCefBinariesLoading, configFromFileExpectedValues.SilentCefBinariesLoading);
-            Assert.Equal(configFromFile.WindowLeft, configFromFileExpectedValues.WindowLeft);
-            Assert.Equal(configFromFile.WindowTop, configFromFileExpectedValues.WindowTop);
-            Assert.Equal(configFromFile.WindowWidth, configFromFileExpectedValues.WindowWidth);
-            Assert.Equal(configFromFile.WindowHeight, configFromFileExpectedValues.WindowHeight);
-            Assert.Equal(configFromFile.WindowNoResize, configFromFileExpectedValues.WindowNoResize);
-            Assert.Equal(configFromFile.WindowNoMinMaxBoxes, configFromFileExpectedValues.WindowNoMinMaxBoxes);
-            Assert.Equal(configFromFile.WindowFrameless, configFromFileExpectedValues.WindowFrameless);
-            Assert.Equal(configFromFile.WindowCenterScreen, configFromFileExpectedValues.WindowCenterScreen);
-            Assert.Equal(configFromFile.WindowKioskMode, configFromFileExpectedValues.WindowKioskMode);
-            Assert.Equal(configFromFile.WindowState, configFromFileExpectedValues.WindowState);
-            Assert.Equal(configFromFile.WindowTitle, configFromFileExpectedValues.WindowTitle);
-            Assert.Equal(configFromFile.WindowIconFile, configFromFileExpectedValues.WindowIconFile);
+            Assert.Equal(configFromFile.CefDownloadOptions.AutoDownloadWhenMissing, configFromFileExpectedValues.CefDownloadOptions.AutoDownloadWhenMissing);
+            Assert.Equal(configFromFile.CefDownloadOptions.DownloadSilently, configFromFileExpectedValues.CefDownloadOptions.DownloadSilently);
             Assert.Equal(configFromFile.DebuggingMode, configFromFileExpectedValues.DebuggingMode);
 
-            Assert.NotNull(configFromFile.WindowCustomStyle);
-            Assert.NotNull(configFromFileExpectedValues.WindowCustomStyle);
+            Assert.Equal(configFromFile.WindowOptions.Position.X, configFromFileExpectedValues.WindowOptions.Position.X);
+            Assert.Equal(configFromFile.WindowOptions.Position.Y, configFromFileExpectedValues.WindowOptions.Position.Y);
+            Assert.Equal(configFromFile.WindowOptions.Size.Width, configFromFileExpectedValues.WindowOptions.Size.Width);
+            Assert.Equal(configFromFile.WindowOptions.Size.Height, configFromFileExpectedValues.WindowOptions.Size.Height);
+            Assert.Equal(configFromFile.WindowOptions.DisableResizing, configFromFileExpectedValues.WindowOptions.DisableResizing);
+            Assert.Equal(configFromFile.WindowOptions.DisableMinMaximizeControls, configFromFileExpectedValues.WindowOptions.DisableMinMaximizeControls);
+            Assert.Equal(configFromFile.WindowOptions.WindowFrameless, configFromFileExpectedValues.WindowOptions.WindowFrameless);
+            Assert.Equal(configFromFile.WindowOptions.StartCentered, configFromFileExpectedValues.WindowOptions.StartCentered);
+            Assert.Equal(configFromFile.WindowOptions.KioskMode, configFromFileExpectedValues.WindowOptions.KioskMode);
+            Assert.Equal(configFromFile.WindowOptions.WindowState, configFromFileExpectedValues.WindowOptions.WindowState);
+            Assert.Equal(configFromFile.WindowOptions.Title, configFromFileExpectedValues.WindowOptions.Title);
+            Assert.Equal(configFromFile.WindowOptions.RelativePathToIconFile, configFromFileExpectedValues.WindowOptions.RelativePathToIconFile);
 
-            Assert.Equal(configFromFile.UseWindowCustomStyle, configFromFileExpectedValues.UseWindowCustomStyle);
-            Assert.Equal(configFromFile.WindowCustomStyle.WindowStyles, configFromFileExpectedValues.WindowCustomStyle.WindowStyles);
-            Assert.Equal(configFromFile.WindowCustomStyle.WindowExStyles, configFromFileExpectedValues.WindowCustomStyle.WindowExStyles);
+            Assert.NotNull(configFromFile.WindowOptions.CustomStyle);
+            Assert.NotNull(configFromFileExpectedValues.WindowOptions.CustomStyle);
+
+            Assert.Equal(configFromFile.WindowOptions.UseCustomStyle, configFromFileExpectedValues.WindowOptions.UseCustomStyle);
+            Assert.Equal(configFromFile.WindowOptions.CustomStyle.WindowStyles, configFromFileExpectedValues.WindowOptions.CustomStyle.WindowStyles);
+            Assert.Equal(configFromFile.WindowOptions.CustomStyle.WindowExStyles, configFromFileExpectedValues.WindowOptions.CustomStyle.WindowExStyles);
 
             Assert.NotNull(configFromFile.UrlSchemes);
             Assert.NotNull(configFromFileExpectedValues.UrlSchemes);
@@ -133,7 +135,7 @@ namespace Chromely.Tests.Defaults
             // Assert
             Assert.NotNull(config);
             Assert.Equal(appName, config.AppName);
-            Assert.Equal(windowTitle, config.WindowTitle);
+            Assert.Equal(windowTitle, config.WindowOptions.Title);
             Assert.Equal(platform, config.Platform);
             Assert.Equal(appExeLocation, config.AppExeLocation);
         }
@@ -160,29 +162,36 @@ namespace Chromely.Tests.Defaults
         {
             get
             {
-                var config = new DefaultConfiguration();
-                config.AppName = "chromely_demo";
-                config.StartUrl = "local://app/chromely.html";
-                config.LoadCefBinariesIfNotFound = true;
-                config.SilentCefBinariesLoading = false;
-                config.WindowLeft = 0;
-                config.WindowTop = 0;
-                config.WindowWidth = 1200;
-                config.WindowHeight = 900;
-                config.WindowNoResize = false;
-                config.WindowNoMinMaxBoxes = false;
-                config.WindowFrameless = false;
-                config.WindowCenterScreen = true;
-                config.WindowKioskMode = false;
-                config.WindowState = WindowState.Normal;
-                config.WindowTitle = "chromely";
-                config.WindowIconFile = "chromely.ico";
-                config.DebuggingMode = true;
+                var config = new DefaultConfiguration
+                {
+                    AppName = "chromely_test",
+                    StartUrl = "local://app/chromely.html",
+                    DebuggingMode = true,
+                    CefDownloadOptions = new CefDownloadOptions()
+                    {
+                        AutoDownloadWhenMissing = true,
+                        DownloadSilently = false
+                    },
 
-                config.WindowCustomStyle = new WindowCustomStyle(0, 0);
-                config.UseWindowCustomStyle = false;
+                    WindowOptions = new WindowOptions
+                    {
+                        Size = new WindowSize(1200, 900),
+                        Position = new WindowPosition(1, 2),
+                        DisableResizing = false,
+                        DisableMinMaximizeControls = false,
+                        WindowFrameless = false,
+                        StartCentered = true,
+                        KioskMode = false,
+                        WindowState = WindowState.Normal,
+                        Title = "chromely",
+                        RelativePathToIconFile = "chromely.ico",
+                        CustomStyle = new WindowCustomStyle(0, 0),
+                        UseCustomStyle = false
+                    },
 
-                config.UrlSchemes = new List<UrlScheme>();
+                    UrlSchemes = new List<UrlScheme>()
+                };
+
                 var schemeDefaultResource = new UrlScheme("default-resource", "local", string.Empty, string.Empty, UrlSchemeType.Resource, false);
                 var schemeCustomHttp = new UrlScheme("default-custom-http", "http", "chromely.com", string.Empty, UrlSchemeType.Custom, false);
                 var schemeCommandHttp = new UrlScheme("default-command-http", "http", "command.com", string.Empty, UrlSchemeType.Command, false);

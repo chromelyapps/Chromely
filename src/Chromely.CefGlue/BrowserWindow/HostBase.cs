@@ -3,8 +3,9 @@ using System.IO;
 using Chromely.CefGlue.Browser;
 using Chromely.CefGlue.Browser.EventParams;
 using Chromely.Core;
+using Chromely.Core.Configuration;
 using Chromely.Core.Host;
-using Chromely.Core.Infrastructure;
+using Chromely.Core.Logging;
 using Chromely.Core.Network;
 using Xilium.CefGlue;
 using Xilium.CefGlue.Wrapper;
@@ -185,7 +186,7 @@ namespace Chromely.CefGlue.BrowserWindow
 
             _config.ChromelyVersion = CefRuntime.ChromeVersion;
 
-            var tempFiles = CefBinariesLoader.Load(_config);
+            var tempFiles = CefBinariesLoader.Load(_config.CefDownloadOptions, _config.Platform);
 
             CefRuntime.EnableHighDpiSupport();
 
@@ -197,7 +198,7 @@ namespace Chromely.CefGlue.BrowserWindow
                 ResourcesDirPath = _config.AppExeLocation
             };
 
-            if (_config.WindowFrameless || _config.WindowKioskMode)
+            if (_config.WindowOptions.WindowFrameless || _config.WindowOptions.KioskMode)
             {
                 // MultiThreadedMessageLoop is not allowed to be used as it will break frameless mode
                 settings.MultiThreadedMessageLoop = false;

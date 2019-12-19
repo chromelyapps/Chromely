@@ -11,7 +11,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Chromely.Core.Infrastructure;
+using Chromely.Core.Logging;
 
 namespace Chromely.Core
 {
@@ -21,15 +21,8 @@ namespace Chromely.Core
     /// </summary>
     public static class ChromelyRuntime
     {
-        /// <summary>
-        /// The get expected chromium build number.
-        /// </summary>
-        /// <param name="wrapper">
-        /// The wrapper.
-        /// </param>
-        /// <returns>
-        /// The <see cref="int"/>.
-        /// </returns>
+        /// <summary>The get expected chromium build number.</summary>
+        /// <returns>The <see cref="int" />.</returns>
         public static int GetExpectedChromiumBuildNumber()
         {
             try

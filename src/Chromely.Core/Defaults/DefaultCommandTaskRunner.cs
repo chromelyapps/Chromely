@@ -14,6 +14,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using Chromely.Core.Infrastructure;
+using Chromely.Core.Logging;
 using Chromely.Core.Network;
 
 namespace Chromely.Core.Defaults

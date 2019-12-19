@@ -13,7 +13,7 @@ using System;
 using Chromely.CefGlue.Browser.EventParams;
 using Chromely.Core;
 using Chromely.Core.Helpers;
-using Chromely.Core.Infrastructure;
+using Chromely.Core.Logging;
 
 namespace Chromely.CefGlue.Browser
 {
@@ -22,12 +22,9 @@ namespace Chromely.CefGlue.Browser
     /// </summary>
     public static class CefGlueBrowserExtension
     {
-        /// <summary>
-        /// The set event handlers.
-        /// </summary>
-        /// <param name="browser">
-        /// The browser.
-        /// </param>
+        /// <summary>The set event handlers.</summary>
+        /// <param name="browser">The browser.</param>
+        /// <param name="container">The container.</param>
         public static void SetEventHandlers(this CefGlueBrowser browser, IChromelyContainer container)
         {
             try

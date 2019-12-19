@@ -7,8 +7,7 @@
 // </license>
 // ----------------------------------------------------------------------------------------------------------------------
 
-using Chromely.Core;
-using Chromely.Core.Infrastructure;
+using Chromely.Core.Configuration;
 using Xilium.CefGlue;
 using Xilium.CefGlue.Wrapper;
 

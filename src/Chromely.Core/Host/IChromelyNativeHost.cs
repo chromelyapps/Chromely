@@ -1,4 +1,5 @@
 ﻿using Chromely.Core;
+using Chromely.Core.Configuration;
 using System;
 using System.Drawing;
 
@@ -11,7 +12,7 @@ namespace Chromely.Core.Host
         event EventHandler<SizeChangedEventArgs> SizeChanged;
         event EventHandler<CloseEventArgs> Close;
 
-        void CreateWindow(IChromelyConfiguration config);
+        void CreateWindow(IWindowOptions options, bool debugging);
         IntPtr GetNativeHandle();
         void Run();
         Size GetWindowClientSize();

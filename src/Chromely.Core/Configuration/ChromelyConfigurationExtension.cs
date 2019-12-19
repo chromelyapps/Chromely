@@ -8,30 +8,20 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
-using Chromely.Core.Infrastructure;
+using Chromely.Core.Logging;
 
-namespace Chromely.Core
+namespace Chromely.Core.Configuration
 {
     /// <summary>
     /// The chromely configuration extension.
     /// </summary>
     public static class ChromelyConfigurationExtension
     {
-        /// <summary>
-        /// Gets boolean value from custom settings dictionary.
-        /// </summary>
-        /// <param name="config">
-        /// The config object - instance of the <see cref="ChromelyConfiguration"/> class.
-        /// </param>
-        /// <param name="key">
-        /// The key.
-        /// </param>
-        /// <param name="defaultValue">
-        /// The default value.
-        /// </param>
-        /// <returns>
-        /// The <see cref="bool"/> value.
-        /// </returns>
+        /// <summary>Gets boolean value from custom settings dictionary.</summary>
+        /// <param name="config">The config object - instance of the <see cref="IChromelyConfiguration" /> class.</param>
+        /// <param name="key">The key.</param>
+        /// <param name="defaultValue">The default value.</param>
+        /// <returns>The <see cref="bool" /> value.</returns>
         public static bool GetBooleanValue(this IChromelyConfiguration config, string key, bool defaultValue = false)
         {
             try
@@ -105,21 +95,11 @@ namespace Chromely.Core
             return defaultValue;
         }
 
-        /// <summary>
-        /// Gets integer value from custom settings dictionary.
-        /// </summary>
-        /// <param name="config">
-        /// The config object - instance of the <see cref="ChromelyConfiguration"/> class.
-        /// </param>
-        /// <param name="key">
-        /// The key.
-        /// </param>
-        /// <param name="defaultValue">
-        /// The default value.
-        /// </param>
-        /// <returns>
-        /// The <see cref="int"/> value.
-        /// </returns>
+        /// <summary>Gets integer value from custom settings dictionary.</summary>
+        /// <param name="config">The config object - instance of the <see cref="IChromelyConfiguration" /> class.</param>
+        /// <param name="key">The key.</param>
+        /// <param name="defaultValue">The default value.</param>
+        /// <returns>The <see cref="int" /> value.</returns>
         public static int GetIntegerValue(this IChromelyConfiguration config, string key, int defaultValue = 0)
         {
             try

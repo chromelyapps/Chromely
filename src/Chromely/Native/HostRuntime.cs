@@ -4,7 +4,8 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Chromely.Core;
-using Chromely.Core.Infrastructure;
+using Chromely.Core.Configuration;
+using Chromely.Core.Logging;
 
 namespace Chromely.Native
 {

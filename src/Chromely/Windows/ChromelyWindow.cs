@@ -1,9 +1,9 @@
 ﻿using Chromely.CefGlue.BrowserWindow;
 using Chromely.Core;
+using Chromely.Core.Configuration;
 using Chromely.Core.Host;
 using Chromely.Core.Network;
 using Chromely.Native;
-using Xilium.CefGlue;
 
 namespace Chromely.Windows
 {

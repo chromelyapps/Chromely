@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Chromely.Core.Configuration;
 using Chromely.Core.Infrastructure;
 using Chromely.Core.Network;
 

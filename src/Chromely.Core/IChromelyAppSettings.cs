@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using Chromely.Core.Configuration;
 
 namespace Chromely.Core
 {

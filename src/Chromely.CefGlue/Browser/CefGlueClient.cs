@@ -79,12 +79,10 @@ namespace Chromely.CefGlue.Browser
         /// </summary>
         private readonly CefFindHandler _findHandler;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CefGlueCustomHandlers"/> class.
-        /// </summary>
-        /// <param name="handlers">
-        /// The client params.
-        /// </param>
+        /// <summary>Initializes a new instance of the <see cref="CefGlueCustomHandlers" /> class.</summary>
+        /// <param name="browser">The browser.</param>
+        /// <param name="browserMessageRouter">The browser message router.</param>
+        /// <param name="handlers">The client params.</param>
         public CefGlueClient(CefGlueBrowser browser, CefMessageRouterBrowserSide browserMessageRouter, CefGlueCustomHandlers handlers)
         {
             CoreBrowser = browser;
@@ -240,21 +238,12 @@ namespace Chromely.CefGlue.Browser
             return _findHandler;
         }
 
-        /// <summary>
-        /// The on process message received.
-        /// </summary>
-        /// <param name="browser">
-        /// The browser.
-        /// </param>
-        /// <param name="sourceProcess">
-        /// The source process.
-        /// </param>
-        /// <param name="message">
-        /// The message.
-        /// </param>
-        /// <returns>
-        /// The <see cref="bool"/>.
-        /// </returns>
+        /// <summary>The on process message received.</summary>
+        /// <param name="browser">The browser.</param>
+        /// <param name="frame"></param>
+        /// <param name="sourceProcess">The source process.</param>
+        /// <param name="message">The message.</param>
+        /// <returns>The <see cref="bool" />.</returns>
         protected override bool OnProcessMessageReceived(CefBrowser browser, CefFrame frame, CefProcessId sourceProcess, CefProcessMessage message)
         {
             return _browserMessageRouter?.OnProcessMessageReceived(browser, frame, sourceProcess, message) ?? false;

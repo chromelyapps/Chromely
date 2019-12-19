@@ -1,4 +1,5 @@
-﻿using Chromely.Core.Infrastructure;
+﻿using Chromely.Core.Configuration;
+using Chromely.Core.Logging;
 using System;
 
 namespace Chromely.Core
@@ -75,7 +76,7 @@ namespace Chromely.Core
         {
             if (_stepCompleted != 1)
             {
-                throw new Exception("Step 1 must be completed before step 2.");
+                throw new Exception("Invalid order: step 1 must be completed before step 2.");
             }
 
             _chromelyApp = chromelyApp;
@@ -93,7 +94,7 @@ namespace Chromely.Core
         {
             if (_stepCompleted != 2)
             {
-                throw new Exception("Step 2 must be completed before step 3.");
+                throw new Exception("Invalid order: step 2 must be completed before step 3.");
             }
 
             if (_chromelyApp == null)
@@ -115,7 +116,7 @@ namespace Chromely.Core
         {
             if (_stepCompleted != 3)
             {
-                throw new Exception("Step 1 must be completed before step 4.");
+                throw new Exception("Invalid order: step 1 must be completed before step 4.");
             }
 
             try

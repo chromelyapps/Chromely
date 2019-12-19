@@ -1,10 +1,11 @@
-﻿using Chromely.Core.Helpers;
+﻿using Chromely.Core.Configuration;
+using Chromely.Core.Helpers;
 using Chromely.Core.Infrastructure;
+using Chromely.Core.Logging;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Text.Json;
 
 namespace Chromely.Core.Defaults

@@ -12,7 +12,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Chromely.Core.Infrastructure;
+using Chromely.Core.Logging;
 
 namespace Chromely.Core.Network
 {
@@ -28,12 +28,9 @@ namespace Chromely.Core.Network
         /// </summary>
         private readonly Assembly _assembly;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RouteScanner"/> class.
-        /// </summary>
-        /// <param name="assembly">
-        /// The assembly.
-        /// </param>
+        /// <summary>Initializes a new instance of the <see cref="RouteScanner" /> class.</summary>
+        /// <param name="assembly">The assembly.</param>
+        /// <param name="container">The container.</param>
         public RouteScanner(Assembly assembly, IChromelyContainer container)
         {
             _assembly = assembly;

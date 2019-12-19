@@ -7,9 +7,8 @@
 // </license>
 // ----------------------------------------------------------------------------------------------------------------------
 
-using System.IO;
 using Chromely.CefGlue.Browser.Handlers;
-using Chromely.Core;
+using Chromely.Core.Configuration;
 using Chromely.Core.Infrastructure;
 using Xilium.CefGlue;
 

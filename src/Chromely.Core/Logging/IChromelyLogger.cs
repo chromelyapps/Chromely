@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Chromely.Core
+﻿namespace Chromely.Core.Logging
 {
     public interface IChromelyLogger
     {
@@ -11,6 +9,7 @@ namespace Chromely.Core
         void Critial(string message);
         void Fatal(string message);
         void Error(string message);
-        void Error(Exception exception, string message = null);
+        void Error(System.Exception exception);
+        void Error(System.Exception exception, string message);
     }
 }

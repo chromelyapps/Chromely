@@ -1,7 +1,7 @@
 ﻿using System;
 using Chromely.Native;
-using Chromely.Core;
 using Chromely.Core.Host;
+using Chromely.Core.Configuration;
 
 namespace Chromely.Windows
 {
@@ -32,7 +32,7 @@ namespace Chromely.Windows
 
         public virtual void ShowWindow()
         {
-            _nativeHost?.CreateWindow(_config);
+            _nativeHost?.CreateWindow(_config.WindowOptions, _config.DebuggingMode);
         }
 
         public virtual void SetWindowPosition()

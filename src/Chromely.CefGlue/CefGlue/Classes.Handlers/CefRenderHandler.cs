@@ -310,7 +310,7 @@
 
         /// <summary>
         /// Called when the web view wants to update the mouse cursor during a
-        /// drag & drop operation. |operation| describes the allowed operation
+        /// drag'n drop operation. |operation| describes the allowed operation
         /// (none, move, copy, link).
         /// </summary>
         protected virtual void UpdateDragCursor(CefBrowser browser, CefDragOperationsMask operation)

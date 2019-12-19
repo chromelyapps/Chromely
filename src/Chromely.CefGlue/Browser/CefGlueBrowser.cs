@@ -11,6 +11,7 @@ using System;
 using System.Reflection;
 using Chromely.CefGlue.Browser.EventParams;
 using Chromely.Core;
+using Chromely.Core.Configuration;
 using Chromely.Core.Network;
 using Xilium.CefGlue;
 using Xilium.CefGlue.Wrapper;

@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using Caliburn.Light;
+using Chromely.Core.Configuration;
 using Chromely.Core.Defaults;
 using Chromely.Core.Host;
 using Chromely.Core.Infrastructure;
+using Chromely.Core.Logging;
 using Chromely.Core.Network;
 
 namespace Chromely.Core
@@ -66,7 +68,7 @@ namespace Chromely.Core
 
             if (config == null)
             {
-                config = DefaultConfiguration.CreateOSDefault(ChromelyRuntime.Platform);
+                config = DefaultConfiguration.CreateConfigurationForPlatform(ChromelyRuntime.Platform);
             }
 
             InitConfiguration(config);
@@ -83,11 +85,11 @@ namespace Chromely.Core
 
             var currentAppSettings = new CurrentAppSettings();
             currentAppSettings.Properties = appSettings;
-            chromely.App = currentAppSettings;
+            Infrastructure.Chromely.App = currentAppSettings;
 
-            chromely.App.Properties.AppName = config.AppName;
-            chromely.App.Properties.Read(config);
-            chromely.App.Properties.Settings.Config = config.UrlSchemes;
+            Infrastructure.Chromely.App.Properties.AppName = config.AppName;
+            Infrastructure.Chromely.App.Properties.Read(config);
+            Infrastructure.Chromely.App.Properties.Settings.Config = config.UrlSchemes;
 
             #endregion
 
@@ -135,6 +137,7 @@ namespace Chromely.Core
             if (config.CommandLineArgs == null) config.CommandLineArgs = new Dictionary<string, string>();
             if (config.CommandLineOptions == null) config.CommandLineOptions = new List<string>();
             if (config.CustomSettings == null) config.CustomSettings = new Dictionary<string, string>();
+            if (config.WindowOptions == null) config.WindowOptions = new Configuration.WindowOptions();
         }
 
         protected void EnsureContainerValid(IChromelyContainer container)

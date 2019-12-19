@@ -12,9 +12,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Chromely.CefGlue.Browser.EventParams;
 using Chromely.Core;
-using Chromely.Core.Helpers;
-using Chromely.Core.Host;
-using Chromely.Windows;
+using Chromely.Core.Configuration;
 
 namespace Chromely.Integration.TestApp
 {
@@ -57,10 +55,10 @@ namespace Chromely.Integration.TestApp
             CiTrace("AppDirectory", appDirectory);
             var startUrl = $"file:///{appDirectory}/index.html";
 
-            var config = DefaultConfiguration.CreateOSDefault(ChromelyRuntime.Platform);
-            config.LoadCefBinariesIfNotFound = true;
-            config.WindowWidth = 1000;
-            config.WindowHeight = 600;
+            var config = DefaultConfiguration.CreateConfigurationForPlatform(ChromelyRuntime.Platform);
+            config.CefDownloadOptions = new Core.Configuration.CefDownloadOptions(true, false);
+            config.WindowOptions.Position = new Core.Configuration.WindowPosition(1, 2);
+            config.WindowOptions.Size = new Core.Configuration.WindowSize(1000, 600);
             config.StartUrl = startUrl;
             config.DebuggingMode = true;
 

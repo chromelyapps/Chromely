@@ -1,6 +1,7 @@
 ﻿using Chromely.Core.Helpers;
 using Chromely.Core.Host;
 using Chromely.Core.Infrastructure;
+using Chromely.Core.Logging;
 using Chromely.Core.Network;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Chromely.Core
+namespace Chromely.Core.Configuration
 {
     public class ConfigurationHandler
     {
@@ -227,25 +228,22 @@ namespace Chromely.Core
                         config.StartUrl = startUrl.GetStartUrl();
                     }
 
-                    config.WindowState = GetWindowState(windowState);
-                    config.LoadCefBinariesIfNotFound = loadCefBinariesIfNotFound;
-                    config.SilentCefBinariesLoading = silentCefBinariesLoading;
-                    config.WindowLeft = windowLeft;
-                    config.WindowTop = windowTop;
-                    config.WindowWidth = windowWidth;
-                    config.WindowHeight = windowHeight;
-                    config.WindowNoResize = windowNoResize;
-                    config.WindowNoMinMaxBoxes = windowNoMinMaxBoxes;
-                    config.WindowFrameless = windowFrameless;
-                    config.WindowCenterScreen = windowCenterScreen;
-                    config.WindowKioskMode = windowKioskMode;
-                    config.WindowTitle = windowTitle;
-                    config.WindowIconFile = windowIconFile;
+                    config.CefDownloadOptions = new CefDownloadOptions(loadCefBinariesIfNotFound, silentCefBinariesLoading);
+                    config.WindowOptions.WindowState = GetWindowState(windowState);
+                    config.WindowOptions.Position = new WindowPosition(windowLeft, windowTop);
+                    config.WindowOptions.Size = new WindowSize(windowWidth, windowHeight);
+                    config.WindowOptions.DisableResizing = windowNoResize;
+                    config.WindowOptions.DisableMinMaximizeControls = windowNoMinMaxBoxes;
+                    config.WindowOptions.WindowFrameless = windowFrameless;
+                    config.WindowOptions.StartCentered = windowCenterScreen;
+                    config.WindowOptions.KioskMode = windowKioskMode;
+                    config.WindowOptions.Title = windowTitle;
+                    config.WindowOptions.RelativePathToIconFile = windowIconFile;
 
                     if (windowCustomCreation != null)
                     {
-                        config.WindowCustomStyle = new WindowCustomStyle(windowCustomCreation.windowStyles, windowCustomCreation.windowExStyles);
-                        config.UseWindowCustomStyle = windowCustomCreation.useCustomtyle;
+                        config.WindowOptions.CustomStyle = new WindowCustomStyle(windowCustomCreation.windowStyles, windowCustomCreation.windowExStyles);
+                        config.WindowOptions.UseCustomStyle = windowCustomCreation.useCustomtyle;
                     }
 
                     config.AppExeLocation = AppDomain.CurrentDomain.BaseDirectory;
