@@ -13,8 +13,8 @@ chromely_win_cef_downloader.exe download -h
      <ChromiumVersionParameter>v77</ChromiumVersionParameter>
     </PropertyGroup>
 
-    <Target Name="DownloadCefBinaries" AfterTargets="CoreCompile">
-      <Message Text="$(DownloadCefBinariesExe) download $(ChromiumVersionParameter) --cpu=$(Platform) --dest=&quot;$(MSBuildProjectDirectory)\$(OutputPath)&quot;"  Importance="high" />
+    <Target Condition=" '$(OS)' == 'Windows_NT' " Name="DownloadCefBinaries" AfterTargets="CoreCompile">
+      <Message Condition=" '$(OS)' == 'Windows_NT' " Text="$(DownloadCefBinariesExe) download $(ChromiumVersionParameter) --cpu=$(Platform) --dest=&quot;$(MSBuildProjectDirectory)\$(OutputPath)&quot;"  Importance="high" />
       <Exec Condition=" '$(OS)' == 'Windows_NT' " Command="$(DownloadCefBinariesExe) download $(ChromiumVersionParameter) --cpu=$(Platform) --dest=&quot;$(MSBuildProjectDirectory)\$(OutputPath)&quot;" ContinueOnError="WarnAndContinue"/>
     </Target>
 
