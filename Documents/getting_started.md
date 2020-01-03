@@ -78,7 +78,7 @@ To create a Chromely application, a custom application class (and instance) is r
 
 #### IOC Conatainer Class - optional
 
-Chromely provides a default IOC container - [SimpleContainer](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/Infrastructure/SimpleContainer.cs). This is a copy of [Caliburn.Micro SimpleContainer](https://caliburnmicro.com/documentation/simple-container) with slight modification. Developers can provide a different container, but must implement [IChromelyContainer](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/IChromelyContainer.cs).
+Chromely provides a default IOC container - [SimpleContainer](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/Infrastructure/SimpleContainer.cs). This is a copy of [Caliburn.Micro SimpleContainer](https://caliburnmicro.com/documentation/simple-container) with slight modifications. Developers can provide a different container, but must implement [IChromelyContainer](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/IChromelyContainer.cs).
 
 
 #### App/User Settings Class - optional

@@ -17,11 +17,11 @@ The configuration of an IPC workflow involves:
 
 1. Create a Controller class
 2. Register an Action method in the Controller class
-2. Register the Controller class
-3. Register a scheme (http, custom, etc)
-4. Create a JavaScript request in the Renderer html
+3. Register the Controller class
+4. Register a scheme (http, custom, etc)
+5. Create a JavaScript request in the Renderer html
 
-##  Create a Controller class
+##  1.  Create a Controller class
 
 Every IPC workflow requires a Controller class. The class must inherit [ChromelyController](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/RestfulService/ChromelyController.cs).
 
@@ -32,18 +32,64 @@ public class CustomController : ChromelyController
 }
 ````
 
-##  Register an Action method in the Controller class
+##  2.  Register an Action method in the Controller class
+
+An action method can be registered in the custom controller constructor or as an attribute decorated method.
+
+- Constructor type
+````csharp
+public DemoController()
+{
+	RegisterGetRequest("/democontroller/movies", GetMovies);
+	RegisterPostRequest("/democontroller/movies", SaveMovies);
+	RegisterCommand("/democontroller/showdevtools", ShowDevTools);
+}
+
+private ChromelyResponse GetMovies(ChromelyRequest request)
+{
+}
+
+
+private ChromelyResponse SaveMovies(ChromelyRequest request)
+{
+}
 
 
 
+public void ShowDevTools(IDictionary<string, string> queryParameters)
+{
+}
 
-##  Register the Controller class
+````
+
+- Attribute decorated type
+````csharp
+[HttpGet(Route = "/democontroller/movies")]
+public ChromelyResponse GetMovies(ChromelyRequest request)
+{
+}
+
+[HttpPost(Route = "/democontroller/movies")]
+public ChromelyResponse SaveMovies(ChromelyRequest request)
+{
+}
+
+	  
+[Command(Route = "/democontroller/showdevtools")]
+public void ShowDevTools(IDictionary<string, string> queryParameters)
+{
+}
+````
+
+
+
+##  3.  Register the Controller class
 
 The class CustomController must be registered. Registration can be done either by registering the Assembly where the class is created or registering via the Container
 
-Registering the assembly class can be done in 2 ways:
+- Registering the assembly class can be done in 2 ways:
 
-- Adding the fullpath of the assembly in the configuration config file 
+1.  Adding the fullpath of the assembly in the configuration config file 
 
 ````javascript
   "controllerAssemblies": [
@@ -51,7 +97,7 @@ Registering the assembly class can be done in 2 ways:
   ],
 ````
 
-- Adding it in the configuration object.
+2. Adding it in the configuration object.
 
 ````csharp
 
@@ -61,7 +107,7 @@ Registering the assembly class can be done in 2 ways:
 
 ````
 
-To register the Controller class via the Container:
+- Register the Controller class via the Container:
 
 ````csharp
 
@@ -75,4 +121,32 @@ public class DemoChromelyApp : BasicChromelyApp
         }
     }
 
+````
+### 4. Register a scheme (http, custom, etc)
+
+For details on registering a custom scheme plese see [Custom Http Registration](https://github.com/chromelyapps/Chromely/blob/master/Documents/registering_scheme_handlers.md). 
+
+### 5. Create a JavaScript request in the Renderer html
+
+To trigger an actual request, an event must must be set up in the HTML file.
+
+A sample:
+
+````javascript
+function getMovies() {
+        var request = {
+            "method": "GET",
+            "url": "/democontroller/movies",
+            "parameters": null,
+            "postData": null
+        };
+        window.cefQuery({
+            request: JSON.stringify(request),
+            onSuccess: function (response) {
+        -               -- process response
+            }, onFailure: function (err, msg) {
+                console.log(err, msg);
+            }
+        });
+}
 ````
