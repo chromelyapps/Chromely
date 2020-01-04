@@ -5,7 +5,7 @@ Chromely is a lightweight alternative to <a href="https://github.com/ElectronNET
 
 Chromely is a .NET/.NET Core HTML5 Chromium desktop framework. It is focused on building apps based on [Xilium.CefGlue](https://bitbucket.org/xilium/xilium.cefglue/wiki/Home), ~~[CefSharp](https://github.com/chromelyapps/Chromely.Legacy)~~ implementations of  embedded Chromium ([CEF](https://bitbucket.org/chromiumembedded/cef)) **without WinForms or WPF**, but can be extended to use WinForms or WPF. Chromely uses **Windows**, **Linux** and **MacOS** native GUI API as "thin" chromium hosts.
 
-With Chromely you can build Single Page Application (SPA) HTML5 desktop apps with or without Node/npm. Building SPA apps using javascript frameworks like Angular, React, Vue or similar is easy. You can use Visual Studio Code or any IDE you are familiar with as long as Chromely knows the entry html file from the compiled/bundled files. For more info please see - [Chromely-Apps](https://github.com/chromelyapps/Chromely.Legacy/wiki/Chromely-Apps).
+With Chromely you can build Single Page Application (SPA) HTML5 desktop apps with or without Node/npm. Building SPA apps using javascript frameworks like Angular, React, Vue or similar is easy. You can use Visual Studio Code or any IDE you are familiar with as long as Chromely knows the entry html file from the compiled/bundled files. For more info please see - [Chromely-Apps](https://github.com/chromelyapps/demo-projects/tree/master/angular-react-vue).
 
 Options of communicating (IPC) with rendering process are via:
 
@@ -39,9 +39,9 @@ Cross-platform -**Windows**, **Linux**, **MacOS**. Built on CEF, CefGlue, NET St
 [![Chromely.Core](http://img.shields.io/nuget/vpre/Chromely.CefGlue.svg?style=flat&label=Chromely.CefGlue)](https://www.nuget.org/packages/Chromely.CefGlue)
 [![Chromely.Core](http://img.shields.io/nuget/vpre/Chromely.svg?style=flat&label=Chromely)](https://www.nuget.org/packages/Chromely)
 
-[![Chromely + Angular](https://img.shields.io/badge/Chromely%20Apps-Built%20with%20Angular%202%2B-green.svg)](https://github.com/chromelyapps/Chromely/wiki/Chromely-Apps)
-<br>[![Chromely + React](https://img.shields.io/badge/Chromely%20Apps-Built%20with%20React-green.svg)](https://github.com/chromelyapps/Chromely/wiki/Chromely-Apps)
-<br>[![Chromely + Vue](https://img.shields.io/badge/Chromely%20Apps-Built%20with%20Vue-green.svg)](https://github.com/chromelyapps/Chromely/wiki/Chromely-Apps) 
+[![Chromely + Angular](https://img.shields.io/badge/Chromely%20Apps-Built%20with%20Angular%202%2B-green.svg)](https://github.com/chromelyapps/demo-projects/tree/master/angular-react-vue/ChromelyAngular)
+<br>[![Chromely + React](https://img.shields.io/badge/Chromely%20Apps-Built%20with%20React-green.svg)](https://github.com/chromelyapps/demo-projects/tree/master/angular-react-vue/ChromelyReact)
+<br>[![Chromely + Vue](https://img.shields.io/badge/Chromely%20Apps-Built%20with%20Vue-green.svg)](https://github.com/chromelyapps/demo-projects/tree/master/angular-react-vue/ChromelyVue) 
 
 ### Demo Code
 Get started with the [Demos](https://github.com/chromelyapps/demo-projects). 
