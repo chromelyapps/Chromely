@@ -68,7 +68,7 @@ namespace Chromely.Core
 
             if (config == null)
             {
-                config = DefaultConfiguration.CreateConfigurationForPlatform(ChromelyRuntime.Platform);
+                config = DefaultConfiguration.CreateForRuntimePlatform();
             }
 
             InitConfiguration(config);

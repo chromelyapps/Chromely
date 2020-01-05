@@ -95,7 +95,12 @@ namespace Chromely.Core.Configuration
             };
         }
 
-        public static IChromelyConfiguration CreateConfigurationForPlatform(ChromelyPlatform platform)
+        public static IChromelyConfiguration CreateForRuntimePlatform()
+        {
+            return CreateForPlatform(ChromelyRuntime.Platform);
+        }
+
+        public static IChromelyConfiguration CreateForPlatform(ChromelyPlatform platform)
         {
             IChromelyConfiguration config;
 

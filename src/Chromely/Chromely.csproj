@@ -3,10 +3,10 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Platforms>AnyCPU</Platforms>
-    <ProductVersion>5.0.77.0-pre02</ProductVersion>
+    <ProductVersion>5.0.77.0-pre03</ProductVersion>
     <AssemblyVersion>5.77.0.0</AssemblyVersion>
     <FileVersion>5.0.77.0</FileVersion>
-    <Version>5.0.77.0-pre02</Version>
+    <Version>5.0.77.0-pre03</Version>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Product>Chromely</Product>
