@@ -24,6 +24,7 @@ namespace Chromely.Native
         private delegate void ResizeCallbackEvent(int width, int height);
         private delegate void QuitCallbackEvent();
 
+        private ChromelyParam _configParam;
         private IWindowOptions _options;
         private IntPtr _appHandle;
         private IntPtr _poolHandle;
@@ -43,7 +44,7 @@ namespace Chromely.Native
         public void CreateWindow(IWindowOptions options, bool debugging)
         {
             _options = options;
-            ChromelyParam configParam = InitParam(RunCallback,
+            _configParam = InitParam(RunCallback,
                                                     ShutdownCallback,
                                                     InitCallback,
                                                     CreateCallback,
@@ -52,21 +53,21 @@ namespace Chromely.Native
                                                     QuitCallback);
 
 
-            configParam.centerscreen = _options.WindowState == WindowState.Normal && _options.StartCentered ? 1 : 0;
-            configParam.frameless = _options.WindowFrameless ? 1 : 0;
-            configParam.fullscreen = _options.WindowState == Core.Host.WindowState.Fullscreen ? 1 : 0;
-            configParam.noresize = _options.DisableResizing ? 1 : 0;
-            configParam.nominbutton = _options.DisableMinMaximizeControls ? 1 : 0;
-            configParam.nomaxbutton = _options.DisableMinMaximizeControls ? 1 : 0;
+            _configParam.centerscreen = _options.WindowState == WindowState.Normal && _options.StartCentered ? 1 : 0;
+            _configParam.frameless = _options.WindowFrameless ? 1 : 0;
+            _configParam.fullscreen = _options.WindowState == Core.Host.WindowState.Fullscreen ? 1 : 0;
+            _configParam.noresize = _options.DisableResizing ? 1 : 0;
+            _configParam.nominbutton = _options.DisableMinMaximizeControls ? 1 : 0;
+            _configParam.nomaxbutton = _options.DisableMinMaximizeControls ? 1 : 0;
 
-            configParam.title = _options.Title;
+            _configParam.title = _options.Title;
 
-            configParam.x = _options.Position.X;
-            configParam.y = _options.Position.Y;
-            configParam.width = _options.Size.Width;
-            configParam.height = _options.Size.Height;
+            _configParam.x = _options.Position.X;
+            _configParam.y = _options.Position.Y;
+            _configParam.width = _options.Size.Width;
+            _configParam.height = _options.Size.Height;
 
-            createwindow(ref configParam);
+            createwindow(ref _configParam);
         }
 
         #region CreateWindow

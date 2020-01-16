@@ -4,6 +4,7 @@ using Chromely.Core.Logging;
 using Chromely.Core.Network;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 
 namespace Chromely.Core.Configuration
@@ -85,7 +86,13 @@ namespace Chromely.Core.Configuration
             });
 
             ControllerAssemblies = new List<ControllerAssemblyInfo>();
-            ControllerAssemblies.RegisterServiceAssembly("Chromely.External.Controllers.dll");
+
+            var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            var externaControllerFile = Path.Combine(appDirectory, "Chromely.External.Controllers.dll");
+            if (File.Exists(externaControllerFile))
+            {
+                ControllerAssemblies.RegisterServiceAssembly("Chromely.External.Controllers.dll");
+            }
 
             CustomSettings = new Dictionary<string, string>()
             {
@@ -124,8 +131,7 @@ namespace Chromely.Core.Configuration
                         config.CommandLineOptions = new List<string>()
                         {
                             "no-zygote",
-                            "disable-gpu",
-                            "disable-software-rasterizer"
+                            "disable-gpu"
                         };
                         break;
 

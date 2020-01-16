@@ -22,17 +22,40 @@ namespace Chromely.Native
 
         private IWindowOptions _options;
         private IntPtr _handle;
-        private IntPtr _gdkHandle;
         private IntPtr _xid;
         private bool _isInitialized;
         private bool _debugging;
+
+        private RealizeCallback _onRealizedDelegate;
+        private SizeAllocateCallback _onSizeAllocateDelegate;
+        private ResizeCallback _onResizeDelegate;
+        private DestroyCallback _onDestroyDelegate;
+
+        private IntPtr _onRealizedSignal;
+        private IntPtr _onSizeAllocateSignal;
+        private IntPtr _onResizeSignal;
+        private IntPtr _onDestroySignal;
+
+        private GClosureNotify _onFreeNotify;
+
+        private XHandleXError _onHandleErrorDelegate;
+        private XHandleXIOError _onHandleIOErrorDelegate;
 
         public LinuxGtk3Host()
         {
             _isInitialized = false;
             _handle = IntPtr.Zero;
-            _gdkHandle = IntPtr.Zero;
             _xid = IntPtr.Zero;
+
+            _onRealizedDelegate = new RealizeCallback(OnRealized);
+            _onSizeAllocateDelegate = new SizeAllocateCallback(OnSizeAllocate);
+            _onResizeDelegate = new ResizeCallback(OnResize);
+            _onDestroyDelegate = new DestroyCallback(OnDestroy);
+
+            _onFreeNotify = new GClosureNotify(FreeData);
+
+            _onHandleErrorDelegate = new XHandleXError(HandleError);
+            _onHandleIOErrorDelegate = new XHandleXIOError(HandleIOError);
         }
 
         public void CreateWindow(IWindowOptions config, bool debugging)
@@ -71,10 +94,12 @@ namespace Chromely.Native
                     break;
             }
 
-            ConnectRealizeSignal(OnRealized, FreeData);
-            ConnectSizeAllocateSignal(OnSizeAllocate, FreeData);
-            ConnectResizeSignal(OnResize, FreeData);
-            ConnectDestroySignal(OnDestroy, FreeData);
+            ConnectRealizeSignal(_onRealizedDelegate, _onFreeNotify);
+            ConnectSizeAllocateSignal(_onSizeAllocateDelegate, _onFreeNotify);
+            ConnectResizeSignal(_onResizeDelegate, _onFreeNotify);
+            ConnectDestroySignal(_onDestroyDelegate, _onFreeNotify);
+
+            SetDefaultWindowVisual(_handle);
 
             ShowWindow();
         }
@@ -83,11 +108,11 @@ namespace Chromely.Native
         {
             try
             {
-                _gdkHandle = gtk_widget_get_window(_handle);
-                Utils.AssertNotNull("GetNativeHandle:gtk_widget_get_window", _gdkHandle);
-                _xid = gdk_x11_window_get_xid(_gdkHandle);
-                Utils.AssertNotNull("GetNativeHandle:gdk_x11_window_get_xid", _xid);
-                return _xid;
+                IntPtr gdkHandle = gtk_widget_get_window(_handle);
+                Utils.AssertNotNull("GetNativeHandle:gtk_widget_get_window", gdkHandle);
+                IntPtr  xid = gdk_x11_window_get_xid(gdkHandle);
+                Utils.AssertNotNull("GetNativeHandle:gdk_x11_window_get_xid", xid);
+                return xid;
             }
             catch (Exception exception)
             {
@@ -198,6 +223,9 @@ namespace Chromely.Native
         private delegate bool DestroyCallback(IntPtr window, IntPtr data);
         private delegate void QuitCallback();
 
+        private delegate short HandleErrorCallback(IntPtr display, ref XErrorEvent errorEven);
+        private delegate short HandleIOErrorCallback(IntPtr d);
+
         private void Init(int argc, string[] argv)
         {
             try
@@ -219,8 +247,8 @@ namespace Chromely.Native
                 // Copied from CEF upstream cefclient.
                 // Install xlib error handlers so that the application won't be terminated
                 // on non-fatal errors. Must be done after initializing GTK.
-                XSetErrorHandler(HandleError);
-                XSetIOErrorHandler(HandleIOError);
+                XSetErrorHandler(_onHandleErrorDelegate);
+                XSetIOErrorHandler(_onHandleIOErrorDelegate);
             }
             catch (Exception exception)
             {
@@ -233,17 +261,12 @@ namespace Chromely.Native
         {
             try
             {
-                if (this._debugging)
+                if (this._debugging && errorEvent.request_code > 0 && errorEvent.error_code > 0)
                 {
-                    var builder = new StringBuilder();
-                    builder.AppendLine("X error received: ");
-                    builder.AppendLine("type " + errorEvent.type);
-                    builder.AppendLine("serial " + errorEvent.serial);
-                    builder.AppendLine("error_code " + errorEvent.error_code);
-                    builder.AppendLine("request_code " + errorEvent.request_code);
-                    builder.AppendLine("minor_code " + errorEvent.minor_code);
-
-                    Logger.Instance.Log.Warn(builder.ToString());
+                    var errorMsgSb = new StringBuilder(160);
+                    XGetErrorText(display, errorEvent.error_code, errorMsgSb, errorMsgSb.Capacity);
+                    var requestType = GetRequestType(errorEvent.request_code);
+                    Logger.Instance.Log.Warn($"Request Code: {errorEvent.request_code}\tRequest Type: {requestType}\tX11 Error: {errorMsgSb.ToString()}");
                 }
 
                 return 0;
@@ -280,22 +303,6 @@ namespace Chromely.Native
             return IntPtr.Zero;
         }
 
-        private IntPtr GetGdkHandle()
-        {
-            try
-            {
-                _gdkHandle = gtk_widget_get_window(_handle);
-                Utils.AssertNotNull("GetGdkHandle", _gdkHandle);
-                return _gdkHandle;
-            }
-            catch (Exception exception)
-            {
-                Logger.Instance.Log.Error("Error in LinuxGtk3Host::GetGdkHandle");
-                Logger.Instance.Log.Error(exception);
-            }
-
-            return IntPtr.Zero;
-        }
         private void SetWindowTitle(string title)
         {
             try
@@ -438,9 +445,11 @@ namespace Chromely.Native
 
         private void ConnectRealizeSignal(RealizeCallback callback, GClosureNotify destroyData)
         {
+            _onRealizedSignal = Marshal.GetFunctionPointerForDelegate(callback);
+
             RegisterHandler(
                 "realize",
-                Marshal.GetFunctionPointerForDelegate(callback),
+                _onRealizedSignal,
                 destroyData,
                 GConnectFlags.GConnectAfter,
                 IntPtr.Zero);
@@ -448,9 +457,11 @@ namespace Chromely.Native
 
         private void ConnectSizeAllocateSignal(SizeAllocateCallback callback, GClosureNotify destroyData)
         {
+            _onSizeAllocateSignal = Marshal.GetFunctionPointerForDelegate(callback);
+
             RegisterHandler(
                 "size-allocate",
-                Marshal.GetFunctionPointerForDelegate(callback),
+                _onSizeAllocateSignal,
                 destroyData,
                 GConnectFlags.GConnectAfter,
                 IntPtr.Zero);
@@ -458,9 +469,11 @@ namespace Chromely.Native
 
         private void ConnectResizeSignal(ResizeCallback callback, GClosureNotify destroyData)
         {
+            _onResizeSignal = Marshal.GetFunctionPointerForDelegate(callback);
+
             RegisterHandler(
                 "configure-event",
-                Marshal.GetFunctionPointerForDelegate(callback),
+                _onResizeSignal,
                 destroyData,
                 GConnectFlags.GConnectAfter,
                 IntPtr.Zero);
@@ -468,19 +481,11 @@ namespace Chromely.Native
 
         private void ConnectDestroySignal(DestroyCallback callback, GClosureNotify destroyData)
         {
+            _onDestroySignal = Marshal.GetFunctionPointerForDelegate(callback);
+
             RegisterHandler(
                 "delete-event",
-                Marshal.GetFunctionPointerForDelegate(callback),
-                destroyData,
-                GConnectFlags.GConnectAfter,
-                IntPtr.Zero);
-        }
-
-        private void ConnectQuitSignal(QuitCallback callback, GClosureNotify destroyData)
-        {
-            RegisterHandler(
-                "destroy",
-                Marshal.GetFunctionPointerForDelegate(callback),
+                _onDestroySignal,
                 destroyData,
                 GConnectFlags.GConnectAfter,
                 IntPtr.Zero);
