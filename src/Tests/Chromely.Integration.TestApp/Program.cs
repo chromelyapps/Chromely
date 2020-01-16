@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using Chromely.CefGlue.Browser.EventParams;
 using Chromely.Core;
 using Chromely.Core.Configuration;
+using Chromely.Core.Helpers;
 
 namespace Chromely.Integration.TestApp
 {
@@ -56,9 +57,9 @@ namespace Chromely.Integration.TestApp
             var startUrl = $"file:///{appDirectory}/index.html";
 
             var config = DefaultConfiguration.CreateForRuntimePlatform();
-            config.CefDownloadOptions = new Core.Configuration.CefDownloadOptions(true, false);
-            config.WindowOptions.Position = new Core.Configuration.WindowPosition(1, 2);
-            config.WindowOptions.Size = new Core.Configuration.WindowSize(1000, 600);
+            config.CefDownloadOptions = new CefDownloadOptions(true, false);
+            config.WindowOptions.Position = new WindowPosition(1, 2);
+            config.WindowOptions.Size = new WindowSize(1000, 600);
             config.StartUrl = startUrl;
             config.DebuggingMode = true;
 
@@ -80,19 +81,20 @@ namespace Chromely.Integration.TestApp
             CiTrace("Application", "Done");
             return 0;
         }
-        private static void OnBeforeClose(object sender, BeforeCloseEventArgs e)
+
+        internal static void OnBeforeClose(object sender, BeforeCloseEventArgs e)
         {
             CiTrace("OnBeforeClose", "called");
         }
 
-        private static void OnFrameLoaded(object sender, FrameLoadEndEventArgs e)
+        internal static void OnFrameLoaded(object sender, FrameLoadEndEventArgs e)
         {
             var hWnd = Process.GetCurrentProcess().MainWindowHandle;
             CiTrace("NativeMainWindowHandle", hWnd.ToString());
         }
 
 
-        private static void OnWebBrowserConsoleMessage(object sender, ConsoleMessageEventArgs e)
+        internal static void OnConsoleMessage(object sender, ConsoleMessageEventArgs e)
         {
             _startupTimer.Stop();
             CiTrace("Content", "Loaded");
@@ -103,17 +105,33 @@ namespace Chromely.Integration.TestApp
             Task.Run(async () =>
             {
                 await Task.Delay(TimeSpan.FromSeconds(1));
-                Environment.Exit(0);
+                //Environment.Exit(0);
             });
         }
     }
 
     public class ChromelyTestApp : BasicChromelyApp
     {
+        public override void RegisterEvents(IChromelyContainer container)
+        {
+            EnsureContainerValid(container);
+
+            RegisterEventHandler(container, CefEventKey.FrameLoadEnd, new ChromelyEventHandler<FrameLoadEndEventArgs>(CefEventKey.FrameLoadEnd, Program.OnFrameLoaded));
+            RegisterEventHandler(container, CefEventKey.ConsoleMessage, new ChromelyEventHandler<ConsoleMessageEventArgs>(CefEventKey.ConsoleMessage, Program.OnConsoleMessage));
+            RegisterEventHandler(container, CefEventKey.BeforeClose, new ChromelyEventHandler<BeforeCloseEventArgs>(CefEventKey.FrameLoadEnd, Program.OnBeforeClose));
+        }
+
         public override void Configure(IChromelyContainer container)
         {
             base.Configure(container);
         }
+        
+        private void RegisterEventHandler<T>(IChromelyContainer container, CefEventKey key, ChromelyEventHandler<T> handler)
+        {
+            var service = CefEventHandlerTypes.GetHandlerType(key);
+            container.RegisterInstance(service, handler.Key, handler);
+        }
+
     }
 }
 
