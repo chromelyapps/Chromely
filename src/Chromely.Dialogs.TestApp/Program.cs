@@ -1,14 +1,16 @@
 ﻿using System;
 using System.IO;
 using System.Runtime.InteropServices;
-using Chromely.CefGlue;
+using Chromely.CefGlue.Browser.EventParams;
 using Chromely.Core;
+using Chromely.Core.Configuration;
+using Chromely.Core.Helpers;
 using Chromely.Core.Host;
+using Chromely.Windows;
 using IctBaden.Stonehenge3.Hosting;
 using IctBaden.Stonehenge3.Kestrel;
 using IctBaden.Stonehenge3.Resources;
 using IctBaden.Stonehenge3.Vue;
-using Xilium.CefGlue;
 
 namespace Chromely.Dialogs.TestApp
 {
@@ -21,11 +23,6 @@ namespace Chromely.Dialogs.TestApp
 
             Console.WriteLine($"Running on {RuntimeEnvironment.GetRuntimeDirectory()}, CLR {RuntimeEnvironment.GetSystemVersion()}");
             Console.WriteLine();
-
-            // ensure CEF runtime files are present
-            Console.WriteLine("Check CEF framework is installed in the correct version");
-            var path = AppDomain.CurrentDomain.BaseDirectory;
-            Directory.SetCurrentDirectory(path);
 
             // Starting stonehenge backend
             Console.WriteLine("Starting stonehenge backend");
@@ -48,29 +45,26 @@ namespace Chromely.Dialogs.TestApp
             Console.WriteLine("Starting chromely frontend");
             var startUrl = host.BaseUrl;
 
-            var config = ChromelyConfiguration
-                .Create()
-                .WithLoadingCefBinariesIfNotFound(true)
-                .WithSilentCefBinariesLoading(true)
-                .WithHostMode(WindowState.Normal)
-                .WithHostTitle(options.Title)
-                .WithAppArgs(args)
-                .WithHostBounds(1000, 600)
-                .RegisterCustomerUrlScheme("http", "localhost")
-                .WithDebuggingMode(true)
-                .WithStartUrl(startUrl);
+            var config = DefaultConfiguration.CreateForRuntimePlatform();
+            config.CefDownloadOptions = new CefDownloadOptions(true, false);
+            config.WindowOptions.Position = new WindowPosition(1, 2);
+            config.WindowOptions.Size = new WindowSize(1000, 600);
+            config.StartUrl = startUrl;
+            config.DebuggingMode = true;
 
-            using (var window = ChromelyWindow.Create(config))
-            {
-                ChromelyDialogs.Init(window);
-                var exitCode = window.Run(args);
-                if (exitCode != 0)
-                {
-                    Console.WriteLine("Failed to start chromely frontend: code " + exitCode);
-                }
-            }
+            var builder = AppBuilder.Create();
+            builder = builder.UseApp<ChromelyDialogsTestApp>();
+            builder = builder.UseConfiguration<DefaultConfiguration>(config);
+            builder = builder.Build();
+            builder.Run(args);
             
             Console.WriteLine("Sample done.");
         }
+        
+        public class ChromelyDialogsTestApp : BasicChromelyApp
+        {
+        }
+        
+        
     }
 }
