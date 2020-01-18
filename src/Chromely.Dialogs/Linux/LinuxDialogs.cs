@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -151,7 +152,7 @@ namespace Chromely.Dialogs.Linux
 
                 if (options.MustExist)
                 {
-                    Log.Error("FileOpen option MustExist not supported.");
+                    Trace.TraceError("FileOpen option MustExist not supported.");
                 }
 
                 foreach (var fileFilter in options.Filters)
