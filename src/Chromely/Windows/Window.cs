@@ -1,5 +1,6 @@
 ﻿using System;
 using Chromely.CefGlue.Browser;
+using Chromely.CefGlue.Browser.EventParams;
 using Chromely.CefGlue.BrowserWindow;
 using Chromely.Core;
 using Chromely.Core.Configuration;
@@ -28,10 +29,11 @@ namespace Chromely.Windows
             _commandTaskRunner = commandTaskRunner;
             _browserMessageRouter = browserMessageRouter;
             Browser = new CefGlueBrowser(this, _container, config, _commandTaskRunner, _browserMessageRouter, new CefBrowserSettings());
-            Browser.Created += OnBrowserCreated;
-
+            
             // Set event handler
             Browser.SetEventHandlers(_container);
+
+            Browser.Created += OnBrowserCreated;
 
             ShowWindow();
         }
@@ -62,6 +64,8 @@ namespace Chromely.Windows
             {
                 if (Browser != null)
                 {
+                    Browser.InvokeAsyncIfPossible(() => Browser.OnBeforeClose(new BeforeCloseEventArgs()));
+
                     Browser.Dispose();
                     Browser = null;
                     _browserWindowHandle = IntPtr.Zero;

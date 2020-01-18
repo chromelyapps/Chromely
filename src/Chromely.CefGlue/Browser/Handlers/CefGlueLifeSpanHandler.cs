@@ -44,11 +44,12 @@ namespace Chromely.CefGlue.Browser.Handlers
 
         protected override void OnBeforeClose(CefBrowser browser)
         {
-            _browser.InvokeAsyncIfPossible(() => _browser.OnBeforeClose(new BeforeCloseEventArgs()));
         }
 
         protected override bool OnBeforePopup(CefBrowser browser, CefFrame frame, string targetUrl, string targetFrameName, CefWindowOpenDisposition targetDisposition, bool userGesture, CefPopupFeatures popupFeatures, CefWindowInfo windowInfo, ref CefClient client, CefBrowserSettings settings, ref CefDictionaryValue extraInfo, ref bool noJavascriptAccess)
         {
+            _browser.InvokeAsyncIfPossible(() => _browser.OnBeforePopup(new BeforePopupEventArgs(frame, targetUrl, targetFrameName)));
+
             var isUrlExternal = _config?.UrlSchemes?.IsUrlRegisteredExternalScheme(targetUrl);
             if (isUrlExternal.HasValue && isUrlExternal.Value)
             {
