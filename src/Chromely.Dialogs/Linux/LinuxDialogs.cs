@@ -15,14 +15,16 @@ namespace Chromely.Dialogs.Linux
     {
         private IChromelyWindow _window;
 
-        private IntPtr MainWindowHandle => _window?.Handle ?? IntPtr.Zero;
+        //private IntPtr MainWindowHandle => _window?.Handle ?? IntPtr.Zero;
+        private IntPtr MainWindowHandle => IntPtr.Zero;
         
         public void Init(IChromelyWindow window)
         {
             _window = window;
 
             GtkInterop.XInitThreads();
-            GtkInterop.gtk_init(0, new string[0]);
+            //GtkInterop.gtk_init(0, new string[0]);
+            GtkInterop.g_type_init();
         }
 
         public DialogResponse MessageBox(string message, DialogOptions options)
@@ -48,20 +50,25 @@ namespace Chromely.Dialogs.Linux
                     break;
             }
 
-            const GtkInterop.ButtonsType bt = GtkInterop.ButtonsType.GTK_BUTTONS_OK;
+            const GtkInterop.ButtonsType button = GtkInterop.ButtonsType.GTK_BUTTONS_OK;
 
             var title = GtkInterop.AllocGtkString(options.Title);
             var widget = IntPtr.Zero;
             var response = GtkInterop.ResponseType.GTK_RESPONSE_OK;
             try
             {
-                widget = GtkInterop.gtk_message_dialog_new(MainWindowHandle, flags, type, bt, title, IntPtr.Zero);
+                Console.WriteLine("#1");
+                widget = GtkInterop.gtk_message_dialog_new(MainWindowHandle, flags, type, button, IntPtr.Zero, IntPtr.Zero);
+                Console.WriteLine("#2");
                 GtkInterop.gtk_message_dialog_format_secondary_text(widget, message);
+                Console.WriteLine("#3");
                 response = GtkInterop.gtk_dialog_run(widget);
+                Console.WriteLine("#4");
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
+                Console.WriteLine("#5");
+                Console.WriteLine("MessageBox: " + ex.Message);
             }
             finally
             {
@@ -87,7 +94,7 @@ namespace Chromely.Dialogs.Linux
             var folder = "";
             try
             {
-                Console.WriteLine("#2");
+                Console.WriteLine($"#2 MainWindowHandle={MainWindowHandle}");
                 widget = GtkInterop.gtk_file_chooser_dialog_new(
                     options.Title,
                     MainWindowHandle, 
@@ -137,6 +144,7 @@ namespace Chromely.Dialogs.Linux
             var fileName = "";
             try
             {
+                Console.WriteLine("#1");
                 widget = GtkInterop.gtk_file_chooser_dialog_new(
                     options.Title, 
                     MainWindowHandle,
@@ -163,11 +171,13 @@ namespace Chromely.Dialogs.Linux
                     GtkInterop.gtk_file_chooser_add_filter(widget, filter);
                 }
 
+                Console.WriteLine("#2");
                 response = GtkInterop.gtk_dialog_run(widget);
                 if (response == GtkInterop.ResponseType.GTK_RESPONSE_OK)
                 {
                     fileName = Uri.UnescapeDataString(GtkInterop.gtk_file_chooser_get_filename(widget));
                 }
+                Console.WriteLine("#3");
             }
             catch (Exception ex)
             {

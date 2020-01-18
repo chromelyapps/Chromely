@@ -6,6 +6,7 @@ using Chromely.Core;
 using Chromely.Core.Configuration;
 using Chromely.Core.Helpers;
 using Chromely.Core.Host;
+using Chromely.Core.Logging;
 using Chromely.Windows;
 using IctBaden.Stonehenge3.Hosting;
 using IctBaden.Stonehenge3.Kestrel;
@@ -63,6 +64,11 @@ namespace Chromely.Dialogs.TestApp
         
         public class ChromelyDialogsTestApp : BasicChromelyApp
         {
+            public override void Initialize(IChromelyContainer container, IChromelyAppSettings appSettings, IChromelyConfiguration config,
+                IChromelyLogger chromelyLogger)
+            {
+                base.Initialize(container, appSettings, config, chromelyLogger);
+            }
         }
         
         

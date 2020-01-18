@@ -21,6 +21,9 @@ namespace Chromely.Dialogs.Linux
         [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, ExactSpelling = false)]
         internal static extern void gtk_init(int argc, string[] argv);
 
+        [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, ExactSpelling = false)]
+        internal static extern void g_type_init();
+
 
         [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, ExactSpelling = false)]
         internal static extern void gdk_threads_enter();
@@ -94,8 +97,8 @@ namespace Chromely.Dialogs.Linux
 
 
         [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Auto, ExactSpelling = false)]
-        internal static extern IntPtr gtk_message_dialog_new(IntPtr parent_window, DialogFlags flags, MessageType type,
-            ButtonsType bt, IntPtr msg, IntPtr args);
+        internal static extern IntPtr gtk_message_dialog_new(IntPtr parent_window, 
+            DialogFlags flags, MessageType type, ButtonsType bt, IntPtr msg, IntPtr args);
 
         [DllImport(GtkLib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Auto, ExactSpelling = false)]
         internal static extern void gtk_message_dialog_format_secondary_text(IntPtr message_dialog, string message);
