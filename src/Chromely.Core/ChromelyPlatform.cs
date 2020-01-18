@@ -7,7 +7,6 @@
 // </license>
 // --------------------------------------------------------------------------------------------------------------------
 
-#pragma warning disable 1591
 namespace Chromely.Core
 {
     /// <summary>
@@ -16,10 +15,8 @@ namespace Chromely.Core
     public enum ChromelyPlatform
     {
         NotSupported,
-
         Windows,
         Linux,
-        // ReSharper disable once InconsistentNaming
         MacOSX
     }
 }

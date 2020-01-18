@@ -125,19 +125,16 @@
         }
 
         /// <summary>
-        /// Returns the default cookie manager for this object. This will be the global
-        /// cookie manager if this object is the global request context. Otherwise,
-        /// this will be the default cookie manager used when this request context does
-        /// not receive a value via CefRequestContextHandler::GetCookieManager(). If
-        /// |callback| is non-NULL it will be executed asnychronously on the IO thread
-        /// after the manager's storage has been initialized.
+        /// Returns the cookie manager for this object. If |callback| is non-NULL it
+        /// will be executed asnychronously on the IO thread after the manager's
+        /// storage has been initialized.
         /// </summary>
-        public CefCookieManager GetDefaultCookieManager(CefCompletionCallback callback)
+        public CefCookieManager GetCookieManager(CefCompletionCallback callback)
         {
             var n_callback = callback != null ? callback.ToNative() : null;
 
             return CefCookieManager.FromNativeOrNull(
-                cef_request_context_t.get_default_cookie_manager(_self, n_callback)
+                cef_request_context_t.get_cookie_manager(_self, n_callback)
                 );
         }
 
@@ -285,6 +282,17 @@
         }
 
         /// <summary>
+        /// Clears all HTTP authentication credentials that were added as part of
+        /// handling GetAuthCredentials. If |callback| is non-NULL it will be executed
+        /// on the UI thread after completion.
+        /// </summary>
+        public void ClearHttpAuthCredentials(CefCompletionCallback callback)
+        {
+            var n_callback = callback != null ? callback.ToNative() : null;
+            cef_request_context_t.clear_http_auth_credentials(_self, n_callback);
+        }
+
+        /// <summary>
         /// Clears all active and idle connections that Chromium currently has.
         /// This is only recommended if you have released all other CEF objects but
         /// don't yet want to call CefShutdown(). If |callback| is non-NULL it will be
@@ -310,27 +318,6 @@
                 var n_origin = new cef_string_t(origin_str, origin != null ? origin.Length : 0);
                 var n_callback = callback.ToNative();
                 cef_request_context_t.resolve_host(_self, &n_origin, n_callback);
-            }
-        }
-
-        /// <summary>
-        /// Attempts to resolve |origin| to a list of associated IP addresses using
-        /// cached data. |resolved_ips| will be populated with the list of resolved IP
-        /// addresses or empty if no cached data is available. Returns ERR_NONE on
-        /// success. This method must be called on the browser process IO thread.
-        /// </summary>
-        public CefErrorCode ResolveHostCached(string origin, out string[] resolvedIps)
-        {
-            if (string.IsNullOrEmpty(origin)) throw new ArgumentNullException("origin");
-
-            fixed (char* origin_str = origin)
-            {
-                var n_origin = new cef_string_t(origin_str, origin != null ? origin.Length : 0);
-                var n_resolved_ips = libcef.string_list_alloc();
-                var result = cef_request_context_t.resolve_host_cached(_self, &n_origin, n_resolved_ips);
-                resolvedIps = cef_string_list.ToArray(n_resolved_ips);
-                libcef.string_list_free(n_resolved_ips);
-                return result;
             }
         }
 

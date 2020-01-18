@@ -26,7 +26,7 @@ namespace Chromely.CefGlue.Browser.Handlers
             return false;
         }
 
-        protected override void OnDraggableRegionsChanged(CefBrowser browser, CefDraggableRegion[] regions)
+        protected override void OnDraggableRegionsChanged(CefBrowser browser, CefFrame frame, CefDraggableRegion[] regions)
         {
             if (!browser.IsPopup)
             {

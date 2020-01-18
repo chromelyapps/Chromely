@@ -1,8 +1,8 @@
-﻿#pragma warning disable 1591
-// ReSharper disable once CheckNamespace
-namespace Xilium.CefGlue
+﻿namespace Xilium.CefGlue
 {
     using System;
+    using System.Collections.Generic;
+    using System.Text;
 
     public class CefRuntimeException : Exception
     {

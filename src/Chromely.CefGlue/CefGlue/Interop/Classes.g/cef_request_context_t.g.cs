@@ -18,7 +18,7 @@ namespace Xilium.CefGlue.Interop
         internal IntPtr _is_global;
         internal IntPtr _get_handler;
         internal IntPtr _get_cache_path;
-        internal IntPtr _get_default_cookie_manager;
+        internal IntPtr _get_cookie_manager;
         internal IntPtr _register_scheme_handler_factory;
         internal IntPtr _clear_scheme_handler_factories;
         internal IntPtr _purge_plugin_list_cache;
@@ -28,9 +28,9 @@ namespace Xilium.CefGlue.Interop
         internal IntPtr _can_set_preference;
         internal IntPtr _set_preference;
         internal IntPtr _clear_certificate_exceptions;
+        internal IntPtr _clear_http_auth_credentials;
         internal IntPtr _close_all_connections;
         internal IntPtr _resolve_host;
-        internal IntPtr _resolve_host_cached;
         internal IntPtr _load_extension;
         internal IntPtr _did_load_extension;
         internal IntPtr _has_extension;
@@ -107,7 +107,7 @@ namespace Xilium.CefGlue.Interop
         #if !DEBUG
         [SuppressUnmanagedCodeSecurity]
         #endif
-        private delegate cef_cookie_manager_t* get_default_cookie_manager_delegate(cef_request_context_t* self, cef_completion_callback_t* callback);
+        private delegate cef_cookie_manager_t* get_cookie_manager_delegate(cef_request_context_t* self, cef_completion_callback_t* callback);
         
         [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
         #if !DEBUG
@@ -167,6 +167,12 @@ namespace Xilium.CefGlue.Interop
         #if !DEBUG
         [SuppressUnmanagedCodeSecurity]
         #endif
+        private delegate void clear_http_auth_credentials_delegate(cef_request_context_t* self, cef_completion_callback_t* callback);
+        
+        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
+        #if !DEBUG
+        [SuppressUnmanagedCodeSecurity]
+        #endif
         private delegate void close_all_connections_delegate(cef_request_context_t* self, cef_completion_callback_t* callback);
         
         [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
@@ -174,12 +180,6 @@ namespace Xilium.CefGlue.Interop
         [SuppressUnmanagedCodeSecurity]
         #endif
         private delegate void resolve_host_delegate(cef_request_context_t* self, cef_string_t* origin, cef_resolve_callback_t* callback);
-        
-        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
-        #if !DEBUG
-        [SuppressUnmanagedCodeSecurity]
-        #endif
-        private delegate CefErrorCode resolve_host_cached_delegate(cef_request_context_t* self, cef_string_t* origin, cef_string_list* resolved_ips);
         
         [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
         #if !DEBUG
@@ -364,18 +364,18 @@ namespace Xilium.CefGlue.Interop
             return d(self);
         }
         
-        // GetDefaultCookieManager
+        // GetCookieManager
         private static IntPtr _p9;
-        private static get_default_cookie_manager_delegate _d9;
+        private static get_cookie_manager_delegate _d9;
         
-        public static cef_cookie_manager_t* get_default_cookie_manager(cef_request_context_t* self, cef_completion_callback_t* callback)
+        public static cef_cookie_manager_t* get_cookie_manager(cef_request_context_t* self, cef_completion_callback_t* callback)
         {
-            get_default_cookie_manager_delegate d;
-            var p = self->_get_default_cookie_manager;
+            get_cookie_manager_delegate d;
+            var p = self->_get_cookie_manager;
             if (p == _p9) { d = _d9; }
             else
             {
-                d = (get_default_cookie_manager_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_default_cookie_manager_delegate));
+                d = (get_cookie_manager_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_cookie_manager_delegate));
                 if (_p9 == IntPtr.Zero) { _d9 = d; _p9 = p; }
             }
             return d(self, callback);
@@ -534,55 +534,55 @@ namespace Xilium.CefGlue.Interop
             d(self, callback);
         }
         
-        // CloseAllConnections
+        // ClearHttpAuthCredentials
         private static IntPtr _p13;
-        private static close_all_connections_delegate _d13;
+        private static clear_http_auth_credentials_delegate _d13;
         
-        public static void close_all_connections(cef_request_context_t* self, cef_completion_callback_t* callback)
+        public static void clear_http_auth_credentials(cef_request_context_t* self, cef_completion_callback_t* callback)
         {
-            close_all_connections_delegate d;
-            var p = self->_close_all_connections;
+            clear_http_auth_credentials_delegate d;
+            var p = self->_clear_http_auth_credentials;
             if (p == _p13) { d = _d13; }
             else
             {
-                d = (close_all_connections_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(close_all_connections_delegate));
+                d = (clear_http_auth_credentials_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(clear_http_auth_credentials_delegate));
                 if (_p13 == IntPtr.Zero) { _d13 = d; _p13 = p; }
             }
             d(self, callback);
         }
         
-        // ResolveHost
+        // CloseAllConnections
         private static IntPtr _p14;
-        private static resolve_host_delegate _d14;
+        private static close_all_connections_delegate _d14;
+        
+        public static void close_all_connections(cef_request_context_t* self, cef_completion_callback_t* callback)
+        {
+            close_all_connections_delegate d;
+            var p = self->_close_all_connections;
+            if (p == _p14) { d = _d14; }
+            else
+            {
+                d = (close_all_connections_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(close_all_connections_delegate));
+                if (_p14 == IntPtr.Zero) { _d14 = d; _p14 = p; }
+            }
+            d(self, callback);
+        }
+        
+        // ResolveHost
+        private static IntPtr _p15;
+        private static resolve_host_delegate _d15;
         
         public static void resolve_host(cef_request_context_t* self, cef_string_t* origin, cef_resolve_callback_t* callback)
         {
             resolve_host_delegate d;
             var p = self->_resolve_host;
-            if (p == _p14) { d = _d14; }
-            else
-            {
-                d = (resolve_host_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(resolve_host_delegate));
-                if (_p14 == IntPtr.Zero) { _d14 = d; _p14 = p; }
-            }
-            d(self, origin, callback);
-        }
-        
-        // ResolveHostCached
-        private static IntPtr _p15;
-        private static resolve_host_cached_delegate _d15;
-        
-        public static CefErrorCode resolve_host_cached(cef_request_context_t* self, cef_string_t* origin, cef_string_list* resolved_ips)
-        {
-            resolve_host_cached_delegate d;
-            var p = self->_resolve_host_cached;
             if (p == _p15) { d = _d15; }
             else
             {
-                d = (resolve_host_cached_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(resolve_host_cached_delegate));
+                d = (resolve_host_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(resolve_host_delegate));
                 if (_p15 == IntPtr.Zero) { _d15 = d; _p15 = p; }
             }
-            return d(self, origin, resolved_ips);
+            d(self, origin, callback);
         }
         
         // LoadExtension

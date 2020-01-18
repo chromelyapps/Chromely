@@ -1,4 +1,4 @@
-﻿namespace Xilium.CefGlue
+namespace Xilium.CefGlue
 {
     using System;
     using System.Collections.Generic;
@@ -8,6 +8,25 @@
 
     public abstract unsafe partial class CefClient
     {
+        //
+        // Feature removed since CEF 77.
+        //
+        //private cef_audio_handler_t* get_audio_handler(cef_client_t* self)
+        //{
+        //    CheckSelf(self);
+        //    var result = GetAudioHandler();
+        //    return result != null ? result.ToNative() : null;
+        //}
+        //
+        ///// <summary>
+        ///// Return the handler for audio rendering events.
+        ///// </summary>
+        //protected virtual CefAudioHandler GetAudioHandler()
+        //{
+        //    return null;
+        //}
+
+
         private cef_context_menu_handler_t* get_context_menu_handler(cef_client_t* self)
         {
             CheckSelf(self);
@@ -231,16 +250,16 @@
         }
 
 
-        private int on_process_message_received(cef_client_t* self, cef_browser_t* browser, CefProcessId source_process, cef_process_message_t* message)
+        private int on_process_message_received(cef_client_t* self, cef_browser_t* browser, cef_frame_t* frame, CefProcessId source_process, cef_process_message_t* message)
         {
             CheckSelf(self);
 
             var m_browser = CefBrowser.FromNative(browser);
+            var m_frame = CefFrame.FromNative(frame);
             var m_message = CefProcessMessage.FromNative(message);
 
-            var result = OnProcessMessageReceived(m_browser, source_process, m_message);
+            var result = OnProcessMessageReceived(m_browser, m_frame, source_process, m_message);
 
-            // m_browser.Dispose();
             m_message.Dispose();
 
             return result ? 1 : 0;
@@ -251,7 +270,7 @@
         /// if the message was handled or false otherwise. Do not keep a reference to
         /// or attempt to access the message outside of this callback.
         /// </summary>
-        protected virtual bool OnProcessMessageReceived(CefBrowser browser, CefProcessId sourceProcess, CefProcessMessage message)
+        protected virtual bool OnProcessMessageReceived(CefBrowser browser, CefFrame frame, CefProcessId sourceProcess, CefProcessMessage message)
         {
             return false;
         }

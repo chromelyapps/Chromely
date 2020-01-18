@@ -8,7 +8,7 @@
 // ----------------------------------------------------------------------------------------------------------------------
 
 using Chromely.CefGlue.Browser.EventParams;
-using Chromely.Core.Host;
+using Chromely.Core.Configuration;
 using Xilium.CefGlue;
 
 namespace Chromely.CefGlue.Browser.Handlers
@@ -18,6 +18,8 @@ namespace Chromely.CefGlue.Browser.Handlers
     /// </summary>
     public class CefGlueLoadHandler : CefLoadHandler
     {
+        private readonly IChromelyConfiguration _config;
+
         /// <summary>
         /// The CefGlueBrowser object.
         /// </summary>
@@ -26,9 +28,10 @@ namespace Chromely.CefGlue.Browser.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="CefGlueLoadHandler"/> class.
         /// </summary>
-        public CefGlueLoadHandler()
+        public CefGlueLoadHandler(IChromelyConfiguration config, CefGlueBrowser browser)
         {
-            _browser = CefGlueBrowser.BrowserCore;
+            _config = config;
+            _browser = browser;
         }
 
         /// <summary>

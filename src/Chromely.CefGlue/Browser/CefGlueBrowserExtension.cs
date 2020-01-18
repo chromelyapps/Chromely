@@ -13,7 +13,7 @@ using System;
 using Chromely.CefGlue.Browser.EventParams;
 using Chromely.Core;
 using Chromely.Core.Helpers;
-using Chromely.Core.Infrastructure;
+using Chromely.Core.Logging;
 
 namespace Chromely.CefGlue.Browser
 {
@@ -22,32 +22,29 @@ namespace Chromely.CefGlue.Browser
     /// </summary>
     public static class CefGlueBrowserExtension
     {
-        /// <summary>
-        /// The set event handlers.
-        /// </summary>
-        /// <param name="browser">
-        /// The browser.
-        /// </param>
-        public static void SetEventHandlers(this CefGlueBrowser browser)
+        /// <summary>The set event handlers.</summary>
+        /// <param name="browser">The browser.</param>
+        /// <param name="container">The container.</param>
+        public static void SetEventHandlers(this CefGlueBrowser browser, IChromelyContainer container)
         {
             try
             {
-                foreach (var enumKey in CefEventHandlerFakeTypes.GetAllEventHandlerKeys())
+                foreach (var enumKey in CefEventHandlerTypes.GetAllEventHandlerKeys())
                 {
                     object instance = null;
 
-                    var service = CefEventHandlerFakeTypes.GetHandlerType(enumKey);
+                    var service = CefEventHandlerTypes.GetHandlerType(enumKey);
                     var keyStr = enumKey.EnumToString();
                     try
                     {
-                        if (IoC.IsRegistered(service, keyStr))
+                        if (container.IsRegistered(service, keyStr))
                         {
-                            instance = IoC.GetInstance(service, keyStr);
+                            instance = container.GetInstance(service, keyStr);
                         }
                     }
                     catch (Exception exception)
                     {
-                        Log.Error(exception);
+                        Logger.Instance.Log.Error(exception);
                     }
 
                     switch (enumKey)
@@ -163,7 +160,7 @@ namespace Chromely.CefGlue.Browser
             }
             catch (Exception exception)
             {
-                Log.Error(exception);
+                Logger.Instance.Log.Error(exception);
             }
         }
     }

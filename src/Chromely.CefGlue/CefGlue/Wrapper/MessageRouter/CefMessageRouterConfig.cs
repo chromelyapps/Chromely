@@ -1,6 +1,4 @@
-﻿#pragma warning disable 1591
-// ReSharper disable once CheckNamespace
-namespace Xilium.CefGlue.Wrapper
+﻿namespace Xilium.CefGlue.Wrapper
 {
     using System;
     using System.Collections.Generic;

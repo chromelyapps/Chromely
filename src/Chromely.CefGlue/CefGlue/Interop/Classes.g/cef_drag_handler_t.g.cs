@@ -50,7 +50,7 @@ namespace Xilium.CefGlue.Interop
         #if !DEBUG
         [SuppressUnmanagedCodeSecurity]
         #endif
-        internal delegate void on_draggable_regions_changed_delegate(cef_drag_handler_t* self, cef_browser_t* browser, UIntPtr regionsCount, cef_draggable_region_t* regions);
+        internal delegate void on_draggable_regions_changed_delegate(cef_drag_handler_t* self, cef_browser_t* browser, cef_frame_t* frame, UIntPtr regionsCount, cef_draggable_region_t* regions);
         
         private static int _sizeof;
         

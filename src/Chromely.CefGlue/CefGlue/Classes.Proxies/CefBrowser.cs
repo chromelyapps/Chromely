@@ -207,16 +207,5 @@
             libcef.string_list_free(list);
             return result;
         }
-
-        /// <summary>
-        /// Send a message to the specified |target_process|. Returns true if the
-        /// message was sent successfully.
-        /// </summary>
-        public bool SendProcessMessage(CefProcessId target, CefProcessMessage message)
-        {
-            if (message == null) throw new ArgumentNullException("message");
-
-            return cef_browser_t.send_process_message(_self, target, message.ToNative()) != 0;
-        }
     }
 }

@@ -7,7 +7,7 @@
     using Xilium.CefGlue.Interop;
     using Xilium.CefGlue.Platform.Windows;
 
-    internal unsafe sealed class CefWindowInfoWindowsImpl : CefWindowInfo
+    internal sealed unsafe class CefWindowInfoWindowsImpl : CefWindowInfo
     {
         private cef_window_info_t_windows* _self;
 
@@ -107,6 +107,18 @@
         {
             get { ThrowIfDisposed(); return _self->windowless_rendering_enabled != 0; }
             set { ThrowIfDisposed(); _self->windowless_rendering_enabled = value ? 1 : 0; }
+        }
+
+        public override bool SharedTextureEnabled
+        {
+            get { ThrowIfDisposed(); return _self->shared_texture_enabled != 0; }
+            set { ThrowIfDisposed(); _self->shared_texture_enabled = value ? 1 : 0; }
+        }
+
+        public override bool ExternalBeginFrameEnabled
+        {
+            get { ThrowIfDisposed(); return _self->external_begin_frame_enabled != 0; }
+            set { ThrowIfDisposed(); _self->external_begin_frame_enabled = value ? 1 : 0; }
         }
     }
 }

@@ -2,8 +2,6 @@
 // This file manually written from cef/include/internal/cef_types.h.
 // C API name: cef_ssl_version_t.
 //
-#pragma warning disable 1591
-// ReSharper disable once CheckNamespace
 namespace Xilium.CefGlue
 {
     /// <summary>
@@ -21,7 +19,7 @@ namespace Xilium.CefGlue
         Tls1 = 3,
         Tls1_1 = 4,
         Tls1_2 = 5,
-        // Reserve 6 for TLS 1.3.
+        Tls1_3 = 6,
         Quic = 7,
     }
 }

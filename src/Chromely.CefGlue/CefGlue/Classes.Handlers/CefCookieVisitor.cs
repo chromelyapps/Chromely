@@ -8,7 +8,7 @@
 
     /// <summary>
     /// Interface to implement for visiting cookie values. The methods of this class
-    /// will always be called on the IO thread.
+    /// will always be called on the UI thread.
     /// </summary>
     public abstract unsafe partial class CefCookieVisitor
     {

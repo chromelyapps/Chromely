@@ -1,4 +1,12 @@
-﻿// The below classes implement support for routing aynchronous messages between
+﻿// Starting from version 75 this code is obsolete.
+// Note, this implementation had been manually written very long time ago,
+// and never used actively, so has some bugs. At this moment it should
+// route requests to frames instead to browser (to reflect CEF 75 changes).
+// If you want, you can fix and/or re-enable in build.
+// Feel free to open issue if you miss this feature.
+
+
+// The below classes implement support for routing aynchronous messages between
 // JavaScript running in the renderer process and C++ running in the browser
 // process. An application interacts with the router by passing it data from
 // standard CEF C++ callbacks (OnBeforeBrowse, OnProcessMessageRecieved,

@@ -1,0 +1,32 @@
+Building and Testing libchromely.dylib
+-------------------------------------------------
+g++ -dynamiclib -finput-charset=UTF-8 -framework Cocoa -x objective-c++ -current_version 1.0  -o libchromely.dylib chromely_mac.mm
+
+Check build:
+file  libchromely.dylib
+
+build demo -
+---------------
+g++ -v -framework Cocoa -x objective-c++ -L. -lchromely -o demo main.mm
+
+Note that -lchromely is short for libchromely.dylib
+
+run demo
+-----------------
+export DYLD_PRINT_LIBRARIES=1
+./demo
+
+Notes:
+-----
+To avoid error: source file is not valid utf-8 
+
+First convert all files to UTF-8
+(printf "\357\273\277";cat inputfile) > outputfile;
+https://stackoverflow.com/questions/28380191/how-to-convert-a-file-from-ascii-to-utf-8
+
+1st:
+iconv -f us-ascii -t utf-16 yourfile > youfileinutf16.*
+
+2nd:
+iconv -f utf-16le -t utf-8 yourfileinutf16 > yourfileinutf8.*
+https://stackoverflow.com/questions/11303405/force-encode-from-us-ascii-to-utf-8-iconv

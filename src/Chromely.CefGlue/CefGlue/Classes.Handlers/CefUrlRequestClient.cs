@@ -106,8 +106,11 @@
         /// |isProxy| indicates whether the host is a proxy server. |host| contains the
         /// hostname and |port| contains the port number. Return true to continue the
         /// request and call CefAuthCallback::Continue() when the authentication
-        /// information is available. Return false to cancel the request. This method
-        /// will only be called for requests initiated from the browser process.
+        /// information is available. If the request has an associated browser/frame
+        /// then returning false will result in a call to GetAuthCredentials on the
+        /// CefRequestHandler associated with that browser, if any. Otherwise,
+        /// returning false will cancel the request immediately. This method will only
+        /// be called for requests initiated from the browser process.
         /// </summary>
         protected virtual bool GetAuthCredentials(bool isProxy, string host, int port, string realm, string scheme, CefAuthCallback callback)
         {

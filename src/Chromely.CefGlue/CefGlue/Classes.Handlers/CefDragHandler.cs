@@ -34,11 +34,12 @@
 
         private static readonly CefDraggableRegion[] EmptyDraggableRegion = new CefDraggableRegion[0];
 
-        private void on_draggable_regions_changed(cef_drag_handler_t* self, cef_browser_t* browser, UIntPtr regionsCount, cef_draggable_region_t* regions)
+        private void on_draggable_regions_changed(cef_drag_handler_t* self, cef_browser_t* browser, cef_frame_t* frame, UIntPtr regionsCount, cef_draggable_region_t* regions)
         {
             CheckSelf(self);
 
             var m_browser = CefBrowser.FromNative(browser);
+            var m_frame = CefFrame.FromNative(frame);
             CefDraggableRegion[] m_regions;
             var m_count = (int)regionsCount;
             if (m_count == 0) m_regions = EmptyDraggableRegion;
@@ -51,7 +52,7 @@
                 }
             }
 
-            OnDraggableRegionsChanged(m_browser, m_regions);
+            OnDraggableRegionsChanged(m_browser, m_frame, m_regions);
         }
 
         /// <summary>
@@ -61,6 +62,6 @@
         /// never be called. If the last draggable region is removed from a document
         /// this method will be called with an empty vector.
         /// </summary>
-        protected abstract void OnDraggableRegionsChanged(CefBrowser browser, CefDraggableRegion[] regions);
+        protected abstract void OnDraggableRegionsChanged(CefBrowser browser, CefFrame frame, CefDraggableRegion[] regions);
     }
 }

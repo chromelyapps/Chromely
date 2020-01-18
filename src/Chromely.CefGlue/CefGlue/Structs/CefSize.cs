@@ -1,8 +1,4 @@
-﻿// ReSharper disable ConvertToAutoProperty
-#pragma warning disable 1591
-
-// ReSharper disable once CheckNamespace
-namespace Xilium.CefGlue
+﻿namespace Xilium.CefGlue
 {
     using System;
     using System.Collections.Generic;
@@ -22,14 +18,14 @@ namespace Xilium.CefGlue
 
         public int Width
         {
-            get => _width;
-            set => _width = value;
+            get { return _width; }
+            set { _width = value; }
         }
 
         public int Height
         {
-            get => _height;
-            set => _height = value;
+            get { return _height; }
+            set { _height = value; }
         }
     }
 }

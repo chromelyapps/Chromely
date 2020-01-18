@@ -7,7 +7,7 @@
 // </license>
 // ----------------------------------------------------------------------------------------------------------------------
 
-using Chromely.Core.Infrastructure;
+using Chromely.Core.Logging;
 using System;
 using System.Collections.Specialized;
 using System.IO;
@@ -135,7 +135,7 @@ namespace Chromely.CefGlue.Browser.Handlers
             catch (Exception ex)
             {
                 response.Error = CefErrorCode.Failed;
-                Log.Error(ex, "Exception thrown while processing request");
+                Logger.Instance.Log.Error(ex, "Exception thrown while processing request");
             }
         }
 

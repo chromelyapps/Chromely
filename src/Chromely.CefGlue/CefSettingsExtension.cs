@@ -1,37 +1,17 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CefSettingsExtension.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2019 Chromely Projects
-// </copyright>
-// <license>
-//      See the LICENSE.md file in the project root for more information.
-// </license>
-// --------------------------------------------------------------------------------------------------------------------
-
+﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using Chromely.Core.Helpers;
 using Xilium.CefGlue;
 
 namespace Chromely.CefGlue
 {
-    /// <summary>
-    /// The cef settings extension.
-    /// </summary>
     public static class CefSettingsExtension
     {
-        /// <summary>
-        /// The update.
-        /// </summary>
-        /// <param name="cefSettings">
-        /// The cef settings.
-        /// </param>
-        /// <param name="customSettings">
-        /// The custom settings.
-        /// </param>
-        public static void Update(this CefSettings cefSettings, Dictionary<string, object> customSettings)
+        public static void Update(this CefSettings cefSettings, IDictionary<string, string> customSettings)
         {
-            if (cefSettings == null || 
-                customSettings == null ||
-                customSettings.Count == 0)
+            if (cefSettings == null || customSettings == null || !customSettings.Any())
             {
                 return;
             }
@@ -40,11 +20,15 @@ namespace Chromely.CefGlue
             {
                 bool boolResult;
                 int intResult;
-                string strResult;
 
-                switch (setting.Key)
+                if (string.IsNullOrWhiteSpace(setting.Value))
                 {
-                    case CefSettingKeys.NoSandbox:
+                    continue;
+                }
+
+                switch (setting.Key.ToUpper())
+                {
+                    case CefSettingKeys.NOSANDBOX:
                         if (setting.Value.TryParseBoolean(out boolResult))
                         {
                             cefSettings.NoSandbox = boolResult;
@@ -52,15 +36,11 @@ namespace Chromely.CefGlue
 
                         break;
 
-                    case CefSettingKeys.BrowserSubprocessPath:
-                        if (setting.Value.TryParseString(out strResult))
-                        {
-                            cefSettings.BrowserSubprocessPath = strResult;
-                        }
-
+                    case CefSettingKeys.BROWSERSUBPROCESSPATH:
+                        cefSettings.BrowserSubprocessPath = setting.Value;
                         break;
 
-                    case CefSettingKeys.MultiThreadedMessageLoop:
+                    case CefSettingKeys.MULTITHREADEDMESSAGELOOP:
                         if (setting.Value.TryParseBoolean(out boolResult))
                         {
                             cefSettings.MultiThreadedMessageLoop = boolResult;
@@ -68,7 +48,7 @@ namespace Chromely.CefGlue
 
                         break;
 
-                    case CefSettingKeys.ExternalMessagePump:
+                    case CefSettingKeys.EXTERNALMESSAGEPUMP:
                         if (setting.Value.TryParseBoolean(out boolResult))
                         {
                             cefSettings.ExternalMessagePump = boolResult;
@@ -76,7 +56,7 @@ namespace Chromely.CefGlue
 
                         break;
 
-                    case CefSettingKeys.WindowlessRenderingEnabled:
+                    case CefSettingKeys.WINDOWLESSRENDERINGENABLED:
                         if (setting.Value.TryParseBoolean(out boolResult))
                         {
                             cefSettings.WindowlessRenderingEnabled = boolResult;
@@ -84,7 +64,7 @@ namespace Chromely.CefGlue
 
                         break;
 
-                    case CefSettingKeys.CommandLineArgsDisabled:
+                    case CefSettingKeys.COMMANDLINEARGSDISABLED:
                         if (setting.Value.TryParseBoolean(out boolResult))
                         {
                             cefSettings.CommandLineArgsDisabled = boolResult;
@@ -92,23 +72,15 @@ namespace Chromely.CefGlue
 
                         break;
 
-                    case CefSettingKeys.CachePath:
-                        if (setting.Value.TryParseString(out strResult))
-                        {
-                            cefSettings.CachePath = strResult;
-                        }
-
+                    case CefSettingKeys.CACHEPATH:
+                        cefSettings.CachePath = setting.Value;
                         break;
 
-                    case CefSettingKeys.UserDataPath:
-                        if (setting.Value.TryParseString(out strResult))
-                        {
-                            cefSettings.UserDataPath = strResult;
-                        }
-
+                    case CefSettingKeys.USERDATAPATH:
+                         cefSettings.UserDataPath = setting.Value;
                         break;
 
-                    case CefSettingKeys.PersistSessionCookies:
+                    case CefSettingKeys.PERSISTSESSIONCOOKIES:
                         if (setting.Value.TryParseBoolean(out boolResult))
                         {
                             cefSettings.PersistSessionCookies = boolResult;
@@ -116,7 +88,7 @@ namespace Chromely.CefGlue
 
                         break;
 
-                    case CefSettingKeys.PersistUserPreferences:
+                    case CefSettingKeys.PERSISTUSERPREFERENCES:
                         if (setting.Value.TryParseBoolean(out boolResult))
                         {
                             cefSettings.PersistUserPreferences = boolResult;
@@ -124,71 +96,66 @@ namespace Chromely.CefGlue
 
                         break;
 
-                    case CefSettingKeys.UserAgent:
-                        if (setting.Value.TryParseString(out strResult))
+                    case CefSettingKeys.USERAGENT:
+                        cefSettings.UserAgent = setting.Value;
+                        break;
+
+                    case CefSettingKeys.PRODUCTVERSION:
+                        cefSettings.ProductVersion = setting.Value;
+                        break;
+
+                    case CefSettingKeys.LOCALE:
+                        cefSettings.Locale = setting.Value;
+                        break;
+
+                    case CefSettingKeys.CEFLOGFILE:
+                    case CefSettingKeys.LOGFILE:
+                        var ext = Path.GetExtension(setting.Value);
+                        var name = setting.Value.Substring(0, setting.Value.Length - ext.Length);
+                        cefSettings.LogFile = $"{name}_{DateTime.Now.ToString("yyyyMMdd")}{ext}";
+                        break;
+
+                    case CefSettingKeys.LOGSEVERITY:
+                        switch (setting.Value.ToUpper())
                         {
-                            cefSettings.UserAgent = strResult;
+                            case LogSeverityOption.DEFAULT:
+                                cefSettings.LogSeverity = CefLogSeverity.Default;
+                                break;
+                            case LogSeverityOption.VERBOSE:
+                                cefSettings.LogSeverity = CefLogSeverity.Verbose;
+                                break;
+                            case LogSeverityOption.INFO:
+                                cefSettings.LogSeverity = CefLogSeverity.Info;
+                                break;
+                            case LogSeverityOption.ERROR:
+                                cefSettings.LogSeverity = CefLogSeverity.Warning;
+                                break;
+                            case LogSeverityOption.EXTERNAL:
+                                cefSettings.LogSeverity = CefLogSeverity.Error;
+                                break;
+                            case LogSeverityOption.FATAL:
+                                cefSettings.LogSeverity = CefLogSeverity.Fatal;
+                                break;
+                            case LogSeverityOption.DISABLE:
+                                cefSettings.LogSeverity = CefLogSeverity.Disable;
+                                break;
                         }
 
                         break;
 
-                    case CefSettingKeys.ProductVersion:
-                        if (setting.Value.TryParseString(out strResult))
-                        {
-                            cefSettings.ProductVersion = strResult;
-                        }
-
+                    case CefSettingKeys.JAVASCRIPTFLAGS:
+                        cefSettings.JavaScriptFlags = setting.Value;
                         break;
 
-                    case CefSettingKeys.Locale:
-                        if (setting.Value.TryParseString(out strResult))
-                        {
-                            cefSettings.Locale = strResult;
-                        }
-
+                    case CefSettingKeys.RESOURCESDIRPATH:
+                        cefSettings.ResourcesDirPath = setting.Value;
                         break;
 
-                    case CefSettingKeys.LogFile:
-                        if (setting.Value.TryParseString(out strResult))
-                        {
-                            cefSettings.LogFile = strResult;
-                        }
-
+                    case CefSettingKeys.LOCALESDIRPATH:
+                        cefSettings.LocalesDirPath = setting.Value;
                         break;
 
-                    case CefSettingKeys.LogSeverity:
-                        if (setting.Value.TryParseInteger(out intResult))
-                        {
-                            cefSettings.LogSeverity = (CefLogSeverity)intResult;
-                        }
-
-                        break;
-
-                    case CefSettingKeys.JavaScriptFlags:
-                        if (setting.Value.TryParseString(out strResult))
-                        {
-                            cefSettings.JavaScriptFlags = strResult;
-                        }
-
-                        break;
-
-                    case CefSettingKeys.ResourcesDirPath:
-                        if (setting.Value.TryParseString(out strResult))
-                        {
-                            cefSettings.ResourcesDirPath = strResult;
-                        }
-
-                        break;
-
-                    case CefSettingKeys.LocalesDirPath:
-                        if (setting.Value.TryParseString(out strResult))
-                        {
-                            cefSettings.LocalesDirPath = strResult;
-                        }
-
-                        break;
-
-                    case CefSettingKeys.PackLoadingDisabled:
+                    case CefSettingKeys.PACKLOADINGDISABLED:
                         if (setting.Value.TryParseBoolean(out boolResult))
                         {
                             cefSettings.PackLoadingDisabled = boolResult;
@@ -196,7 +163,7 @@ namespace Chromely.CefGlue
 
                         break;
 
-                    case CefSettingKeys.RemoteDebuggingPort:
+                    case CefSettingKeys.REMOTEDEBUGGINGPORT:
                         if (setting.Value.TryParseInteger(out intResult))
                         {
                             cefSettings.RemoteDebuggingPort = intResult;
@@ -204,7 +171,7 @@ namespace Chromely.CefGlue
 
                         break;
 
-                    case CefSettingKeys.UncaughtExceptionStackSize:
+                    case CefSettingKeys.UNCAUGHTEXCEPTIONSTACKSIZE:
                         if (setting.Value.TryParseInteger(out intResult))
                         {
                             cefSettings.UncaughtExceptionStackSize = intResult;
@@ -212,7 +179,7 @@ namespace Chromely.CefGlue
 
                         break;
 
-                    case CefSettingKeys.IgnoreCertificateErrors:
+                    case CefSettingKeys.IGNORECERTIFICATEERRORS:
                         if (setting.Value.TryParseBoolean(out boolResult))
                         {
                             cefSettings.IgnoreCertificateErrors = boolResult;
@@ -220,7 +187,7 @@ namespace Chromely.CefGlue
 
                         break;
 
-                    case CefSettingKeys.EnableNetSecurityExpiration:
+                    case CefSettingKeys.ENABLENETSECURITYEXPIRATION:
                         if (setting.Value.TryParseBoolean(out boolResult))
                         {
                             cefSettings.EnableNetSecurityExpiration = boolResult;
@@ -228,16 +195,12 @@ namespace Chromely.CefGlue
 
                         break;
 
-                    case CefSettingKeys.AcceptLanguageList:
-                        if (setting.Value.TryParseString(out strResult))
-                        {
-                            cefSettings.AcceptLanguageList = strResult;
-                        }
-
+                    case CefSettingKeys.ACCEPTLANGUAGELIST:
+                        cefSettings.AcceptLanguageList = setting.Value;
                         break;
 
                     // Not supported by CefGlue
-                    case CefSettingKeys.FocusedNodeChangedEnabled:
+                    case CefSettingKeys.FOCUSEDNODECHANGEDENABLED:
                         break;
                 }
             }
