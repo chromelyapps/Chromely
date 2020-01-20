@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Threading;
 using Chromely.CefGlue.Browser.EventParams;
 using Chromely.Core;
 using Chromely.Core.Configuration;
@@ -21,7 +23,7 @@ namespace Chromely.Dialogs.TestApp
         {
             Console.WriteLine("Sample showing Chromely.Dialogs");
             Console.WriteLine();
-
+            
             Console.WriteLine($"Running on {RuntimeEnvironment.GetRuntimeDirectory()}, CLR {RuntimeEnvironment.GetSystemVersion()}");
             Console.WriteLine();
 
@@ -53,6 +55,9 @@ namespace Chromely.Dialogs.TestApp
             config.StartUrl = startUrl;
             config.DebuggingMode = true;
 
+            Console.WriteLine($"Main PID={Process.GetCurrentProcess().Id}, THREAD={Thread.CurrentThread.ManagedThreadId}");
+            //ChromelyDialogs.Init(null);
+                
             var builder = AppBuilder.Create();
             builder = builder.UseApp<ChromelyDialogsTestApp>();
             builder = builder.UseConfiguration<DefaultConfiguration>(config);
@@ -62,13 +67,38 @@ namespace Chromely.Dialogs.TestApp
             Console.WriteLine("Sample done.");
         }
         
+        internal static void OnFrameLoaded(object sender, FrameLoadEndEventArgs e)
+        {
+            Console.WriteLine($"OnFrameLoaded PID={Process.GetCurrentProcess().Id}, THREAD={Thread.CurrentThread.ManagedThreadId}");
+            
+            ChromelyDialogs.Init(null);
+            // ChromelyDialogs.MessageBox("Test");
+        }
+
         public class ChromelyDialogsTestApp : BasicChromelyApp
         {
+            public override void RegisterEvents(IChromelyContainer container)
+            {
+                EnsureContainerValid(container);
+
+                RegisterEventHandler(container, CefEventKey.FrameLoadEnd, new ChromelyEventHandler<FrameLoadEndEventArgs>(CefEventKey.FrameLoadEnd, Program.OnFrameLoaded));
+            }
+
+            private void RegisterEventHandler<T>(IChromelyContainer container, CefEventKey key, ChromelyEventHandler<T> handler)
+            {
+                var service = CefEventHandlerTypes.GetHandlerType(key);
+                container.RegisterInstance(service, handler.Key, handler);
+            }
+
             public override void Initialize(IChromelyContainer container, IChromelyAppSettings appSettings, IChromelyConfiguration config,
                 IChromelyLogger chromelyLogger)
             {
+                Console.WriteLine($"Initialize PID={Process.GetCurrentProcess().Id}, THREAD={Thread.CurrentThread.ManagedThreadId}");
                 base.Initialize(container, appSettings, config, chromelyLogger);
+                
             }
+
+
         }
         
         

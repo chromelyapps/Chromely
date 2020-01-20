@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using IctBaden.Stonehenge3.Core;
 using IctBaden.Stonehenge3.ViewModel;
 // ReSharper disable UnusedMember.Global
@@ -37,6 +39,8 @@ namespace Chromely.Dialogs.TestApp.ViewModels
         [ActionMethod]
         public void TestMessageBox()
         {
+            //ChromelyDialogs.Init(null);
+            Console.WriteLine($"TestMessageBox PID={Process.GetCurrentProcess().Id}, THREAD={Thread.CurrentThread.ManagedThreadId}");
             Response = ChromelyDialogs.MessageBox(MessageText, Options);
             NotifyPropertyChanged(nameof(Response));
         }

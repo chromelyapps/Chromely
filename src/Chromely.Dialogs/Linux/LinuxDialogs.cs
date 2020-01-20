@@ -24,11 +24,13 @@ namespace Chromely.Dialogs.Linux
 
             GtkInterop.XInitThreads();
             //GtkInterop.gtk_init(0, new string[0]);
-            GtkInterop.g_type_init();
+            //GtkInterop.g_type_init();
         }
 
         public DialogResponse MessageBox(string message, DialogOptions options)
         {
+            Console.WriteLine($"MessageBox PID={Process.GetCurrentProcess().Id}, THREAD={Thread.CurrentThread.ManagedThreadId}");
+            
             GtkInterop.gdk_threads_enter();
 
             const GtkInterop.DialogFlags flags = GtkInterop.DialogFlags.GTK_DIALOG_DESTROY_WITH_PARENT;
