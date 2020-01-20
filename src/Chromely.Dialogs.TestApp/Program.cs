@@ -24,6 +24,8 @@ namespace Chromely.Dialogs.TestApp
             Console.WriteLine("Sample showing Chromely.Dialogs");
             Console.WriteLine();
             
+            ChromelyDialogs.Init(null);
+
             Console.WriteLine($"Running on {RuntimeEnvironment.GetRuntimeDirectory()}, CLR {RuntimeEnvironment.GetSystemVersion()}");
             Console.WriteLine();
 
@@ -56,23 +58,29 @@ namespace Chromely.Dialogs.TestApp
             config.DebuggingMode = true;
 
             Console.WriteLine($"Main PID={Process.GetCurrentProcess().Id}, THREAD={Thread.CurrentThread.ManagedThreadId}");
-            //ChromelyDialogs.Init(null);
                 
             var builder = AppBuilder.Create();
             builder = builder.UseApp<ChromelyDialogsTestApp>();
             builder = builder.UseConfiguration<DefaultConfiguration>(config);
             builder = builder.Build();
+
             builder.Run(args);
             
             Console.WriteLine("Sample done.");
         }
         
-        internal static void OnFrameLoaded(object sender, FrameLoadEndEventArgs e)
+        private static void OnFrameStartLoading(object? sender, FrameLoadEndEventArgs e)
+        {
+            Console.WriteLine($"OnFrameStartLoading PID={Process.GetCurrentProcess().Id}, THREAD={Thread.CurrentThread.ManagedThreadId}");
+            //ChromelyDialogs.MessageBox("Test");
+        }
+
+        private static void OnFrameLoaded(object sender, FrameLoadEndEventArgs e)
         {
             Console.WriteLine($"OnFrameLoaded PID={Process.GetCurrentProcess().Id}, THREAD={Thread.CurrentThread.ManagedThreadId}");
             
-            ChromelyDialogs.Init(null);
-            // ChromelyDialogs.MessageBox("Test");
+            //ChromelyDialogs.Init(null);
+            //ChromelyDialogs.MessageBox("Test");
         }
 
         public class ChromelyDialogsTestApp : BasicChromelyApp
@@ -81,6 +89,7 @@ namespace Chromely.Dialogs.TestApp
             {
                 EnsureContainerValid(container);
 
+                RegisterEventHandler(container, CefEventKey.FrameLoadStart, new ChromelyEventHandler<FrameLoadEndEventArgs>(CefEventKey.FrameLoadStart, Program.OnFrameStartLoading));
                 RegisterEventHandler(container, CefEventKey.FrameLoadEnd, new ChromelyEventHandler<FrameLoadEndEventArgs>(CefEventKey.FrameLoadEnd, Program.OnFrameLoaded));
             }
 
@@ -95,12 +104,11 @@ namespace Chromely.Dialogs.TestApp
             {
                 Console.WriteLine($"Initialize PID={Process.GetCurrentProcess().Id}, THREAD={Thread.CurrentThread.ManagedThreadId}");
                 base.Initialize(container, appSettings, config, chromelyLogger);
-                
+                //ChromelyDialogs.Init(null);
             }
 
 
         }
-        
-        
+
     }
 }

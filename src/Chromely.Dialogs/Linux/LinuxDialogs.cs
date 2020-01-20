@@ -4,6 +4,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
+using Chromely.CefGlue.Browser;
 using Chromely.Core.Helpers;
 using Chromely.Core.Host;
 using Chromely.Core.Infrastructure;
@@ -13,21 +14,35 @@ namespace Chromely.Dialogs.Linux
 {
     public class LinuxDialogs : IChromelyDialogs
     {
+        private bool isInitialized;
         private IChromelyWindow _window;
+        private ExecutionContext _executionContext;
 
         //private IntPtr MainWindowHandle => _window?.Handle ?? IntPtr.Zero;
         private IntPtr MainWindowHandle => IntPtr.Zero;
         
         public void Init(IChromelyWindow window)
         {
+            if (isInitialized) return;
+            
             _window = window;
 
-            GtkInterop.XInitThreads();
+            //GtkInterop.XInitThreads();
             //GtkInterop.gtk_init(0, new string[0]);
             //GtkInterop.g_type_init();
+
+            _executionContext = Thread.CurrentThread.ExecutionContext.CreateCopy();
+            isInitialized = true;
         }
 
         public DialogResponse MessageBox(string message, DialogOptions options)
+        {
+            var result = new DialogResponse();
+            _executionContext.InvokeAsyncIfPossible(() => { result = MessageBoxIntl(message, options); });
+            return result;
+        }
+
+        public DialogResponse MessageBoxIntl(string message, DialogOptions options)
         {
             Console.WriteLine($"MessageBox PID={Process.GetCurrentProcess().Id}, THREAD={Thread.CurrentThread.ManagedThreadId}");
             
