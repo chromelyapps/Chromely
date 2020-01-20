@@ -10,11 +10,11 @@ namespace Chromely
         {
             EnsureContainerValid(container);
 
-            RegisterEventHandler(container, CefEventKey.FrameLoadStart, new ChromelyEventHandler<FrameLoadStartEventArgs>(CefEventKey.FrameLoadEnd, OnFrameLoadStart));
+            RegisterEventHandler(container, CefEventKey.FrameLoadStart, new ChromelyEventHandler<FrameLoadStartEventArgs>(CefEventKey.FrameLoadStart, OnFrameLoadStart));
             RegisterEventHandler(container, CefEventKey.FrameLoadEnd, new ChromelyEventHandler<FrameLoadEndEventArgs>(CefEventKey.FrameLoadEnd, OnFrameLoadEnd));
             RegisterEventHandler(container, CefEventKey.ConsoleMessage, new ChromelyEventHandler<ConsoleMessageEventArgs>(CefEventKey.ConsoleMessage, OnConsoleMessage));
-            RegisterEventHandler(container, CefEventKey.StatusMessage, new ChromelyEventHandler<StatusMessageEventArgs>(CefEventKey.FrameLoadEnd, OnStatusMessage));
-            RegisterEventHandler(container, CefEventKey.BeforeClose, new ChromelyEventHandler<BeforeCloseEventArgs>(CefEventKey.FrameLoadEnd, OnBeforeClose));
+            RegisterEventHandler(container, CefEventKey.StatusMessage, new ChromelyEventHandler<StatusMessageEventArgs>(CefEventKey.StatusMessage, OnStatusMessage));
+            RegisterEventHandler(container, CefEventKey.BeforeClose, new ChromelyEventHandler<BeforeCloseEventArgs>(CefEventKey.BeforeClose, OnBeforeClose));
         }
 
         public virtual void OnFrameLoadStart(object sender, FrameLoadStartEventArgs e)

@@ -1,4 +1,5 @@
-﻿using Chromely.Core.Host;
+﻿using Chromely.Core.Helpers;
+using Chromely.Core.Host;
 using Chromely.Core.Infrastructure;
 using Chromely.Core.Logging;
 using Chromely.Core.Network;
@@ -78,11 +79,10 @@ namespace Chromely.Core.Configuration
 
             UrlSchemes.AddRange(new List<UrlScheme>()
             {
-                new UrlScheme("default-resource", "local", string.Empty, string.Empty, UrlSchemeType.Resource, false),
-                new UrlScheme("default-resource", "local", string.Empty, string.Empty, UrlSchemeType.Resource, false),
-                new UrlScheme("default-custom-http", "http", "chromely.com", string.Empty, UrlSchemeType.Custom, false),
-                new UrlScheme("default-command-http", "http", "command.com", string.Empty, UrlSchemeType.Command, false),
-                new UrlScheme("chromely-site", string.Empty, string.Empty, "https://github.com/chromelyapps/Chromely", UrlSchemeType.External, true)
+                new UrlScheme(DefaultSchemeName.RESOURCE, "local", string.Empty, string.Empty, UrlSchemeType.Resource, false),
+                new UrlScheme(DefaultSchemeName.CUSTOM, "http", "chromely.com", string.Empty, UrlSchemeType.Custom, false),
+                new UrlScheme(DefaultSchemeName.COMMAND, "http", "command.com", string.Empty, UrlSchemeType.Command, false),
+                new UrlScheme(DefaultSchemeName.GITHUBSITE, string.Empty, string.Empty, "https://github.com/chromelyapps/Chromely", UrlSchemeType.External, true)
             });
 
             ControllerAssemblies = new List<ControllerAssemblyInfo>();
@@ -92,6 +92,8 @@ namespace Chromely.Core.Configuration
             if (File.Exists(externaControllerFile))
             {
                 ControllerAssemblies.RegisterServiceAssembly("Chromely.External.Controllers.dll");
+                var assemblyOptions = new AssemblyOptions(externaControllerFile, null, "app");
+                UrlSchemes.Add(new UrlScheme(DefaultSchemeName.ASSEMBLYRESOURCE, "assembly", "app", string.Empty, UrlSchemeType.AssemblyResource, false, assemblyOptions));
             }
 
             CustomSettings = new Dictionary<string, string>()

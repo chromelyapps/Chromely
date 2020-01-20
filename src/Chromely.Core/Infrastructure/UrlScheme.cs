@@ -16,7 +16,7 @@ namespace Chromely.Core.Infrastructure
     /// </summary>
     public class UrlScheme
     {
-        public UrlScheme(string name, string scheme, string host, string baseUrl, UrlSchemeType type, bool baseUrlStrict = true)
+        public UrlScheme(string name, string scheme, string host, string baseUrl, UrlSchemeType type, bool baseUrlStrict = true, AssemblyOptions assemblyOptions = null)
         {
             Name = name;
             Scheme = scheme;
@@ -24,6 +24,7 @@ namespace Chromely.Core.Infrastructure
             BaseUrl = baseUrl;
             UrlSchemeType = type;
             BaseUrlStrict = baseUrlStrict;
+            AssemblyOptions = assemblyOptions;
 
             if (!string.IsNullOrEmpty(BaseUrl))
             {
@@ -38,6 +39,7 @@ namespace Chromely.Core.Infrastructure
         public string Scheme { get; set; }
         public string Host { get; set; }
         public UrlSchemeType UrlSchemeType { get; set; }
+        public AssemblyOptions AssemblyOptions { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether url must be relative to base.

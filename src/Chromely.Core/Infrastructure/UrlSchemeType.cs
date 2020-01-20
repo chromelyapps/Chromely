@@ -4,6 +4,7 @@
     {
         None,
         Resource,
+        AssemblyResource,
         Custom,
         Command,
         External

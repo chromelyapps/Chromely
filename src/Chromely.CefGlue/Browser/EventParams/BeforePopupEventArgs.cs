@@ -65,6 +65,37 @@ namespace Chromely.CefGlue.Browser.EventParams
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="BeforePopupEventArgs"/> class.
+        /// </summary>
+        /// <param name="frame">
+        /// The frame.
+        /// </param>
+        /// <param name="targetUrl">
+        /// The target url.
+        /// </param>
+        /// <param name="targetFrameName">
+        /// The target frame name.
+        /// </param>
+        /// <param name="popupFeatures">
+        /// The popup features.
+        /// </param>
+        /// <param name="windowInfo">
+        /// The window info.
+        /// </param>
+        /// The no javascript access.
+        /// </param>
+        public BeforePopupEventArgs(
+            CefFrame frame,
+            string targetUrl,
+            string targetFrameName)
+        {
+            this.Frame = frame;
+            this.TargetUrl = targetUrl;
+            this.TargetFrameName = targetFrameName;
+        }
+
+
+        /// <summary>
         /// Gets or sets a value indicating whether no javascript access.
         /// </summary>
         public bool NoJavascriptAccess { get; set; }
