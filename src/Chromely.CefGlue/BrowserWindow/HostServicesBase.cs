@@ -135,7 +135,14 @@ namespace Chromely.CefGlue.BrowserWindow
 
                     if (isDefault)
                     {
-                        CefRuntime.RegisterSchemeHandlerFactory(item.Scheme, item.Host, new CefGlueResourceSchemeHandlerFactory());
+                        if (item.UrlSchemeType == UrlSchemeType.Resource)
+                        {
+                            CefRuntime.RegisterSchemeHandlerFactory(item.Scheme, item.Host, new CefGlueResourceSchemeHandlerFactory());
+                        }
+                        else if (item.UrlSchemeType == UrlSchemeType.AssemblyResource)
+                        {
+                            CefRuntime.RegisterSchemeHandlerFactory(item.Scheme, item.Host, new CefGlueAssemblyResourceSchemeHandlerFactory(_config));
+                        }
                     }
                 }
             }

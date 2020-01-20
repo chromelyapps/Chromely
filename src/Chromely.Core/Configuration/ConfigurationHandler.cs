@@ -79,6 +79,7 @@ namespace Chromely.Core.Configuration
                 {
                     case StartUrlOption.ABSOLUTE:
                     case StartUrlOption.LOCALRESOURCE:
+                    case StartUrlOption.ASSEMBLYRESOURCE:
                         return url;
                     case StartUrlOption.FILEPROTOCOL:
                         var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
@@ -167,6 +168,7 @@ namespace Chromely.Core.Configuration
                 {
                     case UrlSchemeOption.NONE: return UrlSchemeType.None;
                     case UrlSchemeOption.RESOURCE: return UrlSchemeType.Resource;
+                    case UrlSchemeOption.ASSEMBLYRESOURCE: return UrlSchemeType.AssemblyResource;
                     case UrlSchemeOption.COMMAND: return UrlSchemeType.Command;
                     case UrlSchemeOption.CUSTOM: return UrlSchemeType.Custom;
                     case UrlSchemeOption.EXTERNAL: return UrlSchemeType.External;

@@ -4,6 +4,7 @@
     {
         public const string ABSOLUTE = nameof(ABSOLUTE);
         public const string LOCALRESOURCE = nameof(LOCALRESOURCE);
+        public const string ASSEMBLYRESOURCE = nameof(ASSEMBLYRESOURCE);
         public const string FILEPROTOCOL = nameof(FILEPROTOCOL);
     }
 
@@ -18,11 +19,20 @@
     {
         public const string NONE = nameof(NONE);
         public const string RESOURCE = nameof(RESOURCE);
+        public const string ASSEMBLYRESOURCE = nameof(ASSEMBLYRESOURCE);
         public const string COMMAND = nameof(COMMAND);
         public const string CUSTOM = nameof(CUSTOM);
         public const string EXTERNAL = nameof(EXTERNAL);
     }
 
+    public static class DefaultSchemeName
+    {
+        public const string RESOURCE = "default-resource";
+        public const string ASSEMBLYRESOURCE = "default-assembly-resource";
+        public const string CUSTOM = "default-custom-http";
+        public const string COMMAND = "default-command-http";
+        public const string GITHUBSITE = "chromely-site";
+    }
     public static class LogSeverityOption
     {
         public const string DEFAULT = nameof(DEFAULT);
