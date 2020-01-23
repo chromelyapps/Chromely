@@ -3,13 +3,13 @@
 
 Chromely via CefGlue provides 2 different ways of Interprocess Communication (IPC) between the Renderer and the Browser.
 
-- Generic Message Routing - more info @ [Generic Message Routing](https://github.com/chromelyapps/Chromely/wiki/Generic-Message-Routing).
-- Ajax HTTP/XHR  -  more info @ [Custom Scheme Handling](https://github.com/chromelyapps/Chromely/wiki/Custom-Scheme-Handling).
+- Generic Message Routing - more info @ [Generic Message Routing](https://github.com/chromelyapps/Chromely.Legacy/wiki/Generic-Message-Routing).
+- Ajax HTTP/XHR  -  more info @ [Custom Scheme Handling](https://github.com/chromelyapps/Chromely.Legacy/wiki/Custom-Scheme-Handling).
 
 
 These allow Chromely to receieve JavaScript requests initated by the Renderer, processed by the Browser (C#) and returned Json data response to the Renderer. 
 
-Additionally via [Commands](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/RestfulService/CommandRoute.cs), Chromely provides a **fire-and-forget** scenarias - JavaScript requests are sent from the Renderer and processed by the Browser but no response returned to the Renderer.
+Additionally via [Commands](https://github.com/chromelyapps/Chromely/tree/master/src/Chromely.Core/Network/CommandRoute.cs), Chromely provides a **fire-and-forget** scenarias - JavaScript requests are sent from the Renderer and processed by the Browser but no response returned to the Renderer.
 
 ## Configuring Network Scheme/Request Endpoint
 
@@ -23,7 +23,7 @@ The configuration of an IPC workflow involves:
 
 ##  1.  Create a Controller class
 
-Every IPC workflow requires a Controller class. The class must inherit [ChromelyController](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/RestfulService/ChromelyController.cs).
+Every IPC workflow requires a Controller class. The class must inherit [ChromelyController](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/Network/ChromelyController.cs).
 
 
 ````csharp

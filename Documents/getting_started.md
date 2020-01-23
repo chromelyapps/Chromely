@@ -89,13 +89,13 @@ A default AppSetting class - []() is provided. Developers can provide a custom s
 
 #### Logger Class - optional
 
-Application wide logging is provided via a logger class that implements [IChromelyLogger](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/IChromelyLogger.cs). Chromely provides a default, simple logging class - [SimpleLogger](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/Infrastructure/SimpleLogger.cs). This can be replaced by a different logger, but the logger must implement - [IChromelyLogger](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/IChromelyLogger.cs).
+Application wide logging is provided via a logger class that implements [IChromelyLogger](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/Logging/IChromelyLogger.cs). Chromely provides a default, simple logging class - [SimpleLogger](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/Logging/SimpleLogger.cs). This can be replaced by a different logger, but the logger must implement - [IChromelyLogger](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/Logging/IChromelyLogger.cs).
 
 
 
 #### Configuration Class - optional
 
-The Chromely configuration is equivalent to Desktop App.config or Web project Web.config/appsettings.config. To create Chromely application, the Configuration class is not required. A custom configuration class must implement - [IChromelyConfiguration](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/IChromelyConfiguration.cs). If a custom configuration class is not provided, the options used are
+The Chromely configuration is equivalent to Desktop App.config or Web project Web.config/appsettings.config. To create Chromely application, the Configuration class is not required. A custom configuration class must implement - [IChromelyConfiguration](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/Configuration/IChromelyConfiguration.cs). If a custom configuration class is not provided, the options used are
 
-- It checks the application folder for [chromelyconfig.config](https://github.com/chromelyapps/Chromely/blob/master/src/Demos/CrossPlatDemo/chromelyconfig.json). If it finds one it is parsed using [ConfigurationHandler](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/ConfigurationHandler.cs) and used.
+- It checks the application folder for [chromelyconfig.config](https://github.com/chromelyapps/demo-projects/blob/master/regular-chromely/CrossPlatDemo/chromelyconfig.json). If it finds one it is parsed using [ConfigurationHandler](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/Configuration/ConfigurationHandler.cs) and used.
 - If no configuraton file is found, it uses the default - [DefaultConfiguration](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/Configuration/DefaultConfiguration.cs).
