@@ -87,10 +87,6 @@ namespace Chromely.Core
             currentAppSettings.Properties = appSettings;
             Infrastructure.Chromely.App = currentAppSettings;
 
-            Infrastructure.Chromely.App.Properties.AppName = config.AppName;
-            Infrastructure.Chromely.App.Properties.Read(config);
-            Infrastructure.Chromely.App.Properties.Settings.Config = config.UrlSchemes;
-
             #endregion
 
             #region Logger

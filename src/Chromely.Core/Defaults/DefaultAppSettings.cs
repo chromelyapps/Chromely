@@ -71,7 +71,10 @@ namespace Chromely.Core.Defaults
         {
             try
             {
-                if (_chromelyDynamic == null || _chromelyDynamic.Empty)
+                if (_chromelyDynamic == null || 
+                    _chromelyDynamic.Empty ||
+                    _chromelyDynamic.Dictionary == null ||
+                    _chromelyDynamic.Dictionary.Count == 0)
                 {
                     return;
                 }
@@ -90,14 +93,22 @@ namespace Chromely.Core.Defaults
 
                 using (StreamWriter streamWriter = File.CreateText(appSettingsFile))
                 {
-                    var options = new JsonSerializerOptions();
-                    options.ReadCommentHandling = JsonCommentHandling.Skip;
-                    options.AllowTrailingCommas = true;
+                    try 
+                    {
+                        var options = new JsonSerializerOptions();
+                        options.ReadCommentHandling = JsonCommentHandling.Skip;
+                        options.AllowTrailingCommas = true;
 
-                    var jsonDic = JsonSerializer.Serialize(_chromelyDynamic.Dictionary, options);
-                    streamWriter.Write(jsonDic);
+                        var jsonDic = JsonSerializer.Serialize(_chromelyDynamic.Dictionary, options);
+                        streamWriter.Write(jsonDic);
 
-                    Logger.Instance.Log.Info("AppSettings FileName:" + appSettingsFile);
+                        Logger.Instance.Log.Info("AppSettings FileName:" + appSettingsFile);
+                    }
+                    catch (Exception exception)
+                    {
+                        Logger.Instance.Log.Warn(exception.ToString());
+                        Logger.Instance.Log.Warn("If this is about cycle was detecttion please see - https://github.com/dotnet/corefx/issues/41288");
+                    }
                 }
             }
             catch (Exception exception)

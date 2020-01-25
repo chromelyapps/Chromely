@@ -88,12 +88,15 @@ namespace Chromely.Core.Configuration
             ControllerAssemblies = new List<ControllerAssemblyInfo>();
 
             var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            var externaControllerFile = Path.Combine(appDirectory, "Chromely.External.Controllers.dll");
-            if (File.Exists(externaControllerFile))
+            var externalControllerFile = Path.Combine(appDirectory, "Chromely.External.Controllers.dll");
+            if (File.Exists(externalControllerFile))
             {
                 ControllerAssemblies.RegisterServiceAssembly("Chromely.External.Controllers.dll");
-                var assemblyOptions = new AssemblyOptions(externaControllerFile, null, "app");
+                var assemblyOptions = new AssemblyOptions(externalControllerFile, null, "app");
                 UrlSchemes.Add(new UrlScheme(DefaultSchemeName.ASSEMBLYRESOURCE, "assembly", "app", string.Empty, UrlSchemeType.AssemblyResource, false, assemblyOptions));
+
+                var mixAssemblyOptions = new AssemblyOptions(externalControllerFile, null, "appresources");
+                UrlSchemes.Add(new UrlScheme(DefaultSchemeName.MIXASSEMBLYRESOURCE, "mixassembly", "app", string.Empty, UrlSchemeType.AssemblyResource, false, mixAssemblyOptions));
             }
 
             CustomSettings = new Dictionary<string, string>()
