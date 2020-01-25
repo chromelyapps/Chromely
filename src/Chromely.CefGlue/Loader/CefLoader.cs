@@ -85,6 +85,11 @@ namespace Chromely.CefGlue.Loader
                     File.Delete(loader._tempBz2File);
                 }
 
+                if (!string.IsNullOrEmpty(loader._tempTarStream))
+                {
+                    File.Delete(loader._tempTarStream);
+                }
+                
                 if (!string.IsNullOrEmpty(loader._tempTarFile))
                 {
                     File.Delete(loader._tempTarFile);
@@ -101,6 +106,7 @@ namespace Chromely.CefGlue.Loader
         private readonly Architecture _architecture;
         private readonly int _build;
 
+        private readonly string _tempTarStream;
         private readonly string _tempBz2File;
         private readonly string _tempTarFile;
         private readonly string _tempDirectory;
@@ -122,7 +128,8 @@ namespace Chromely.CefGlue.Loader
 
             _lastPercent = 0;
             _numberOfParallelDownloads = Environment.ProcessorCount;
-            
+
+            _tempTarStream = Path.GetTempFileName();
             _tempBz2File = Path.GetTempFileName();
             _tempTarFile = Path.GetTempFileName();
             _tempDirectory = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
@@ -286,7 +293,7 @@ namespace Chromely.CefGlue.Loader
         private void DecompressArchive()
         {
             Logger.Instance.Log.Info("CefLoader: Decompressing BZ2 archive");
-            using (var tarStream = new MemoryStream())
+            using (var tarStream = new FileStream(_tempTarStream, FileMode.Create, FileAccess.ReadWrite))
             {
                 using (var inStream = new FileStream(_tempBz2File, FileMode.Open, FileAccess.Read, FileShare.None))
                 {
