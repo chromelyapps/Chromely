@@ -84,7 +84,7 @@ Chromely provides a default IOC container - [SimpleContainer](https://github.com
 #### App/User Settings Class - optional
 
 Chromely provides storing and retrieval of application/user preferences settings.
-A default AppSetting class - []() is provided. Developers can provide a custom settings class, but the class must implement [IChromelyAppSettings](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/IChromelyAppSettings.cs). If none is provided it uses the default - [DefaultAppSettings](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/Defaults/DefaultAppSettings.cs).
+Developers can provide a custom settings class, but the class must implement [IChromelyAppSettings](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/IChromelyAppSettings.cs). If none is provided it uses the default - [DefaultAppSettings](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/Defaults/DefaultAppSettings.cs).
 
 
 #### Logger Class - optional

@@ -9,8 +9,8 @@ With Chromely you can build Single Page Application (SPA) HTML5 desktop apps wit
 
 Options of communicating (IPC) with rendering process are via:
 
-- Generic Message Routing - more info @ [Generic Message Routing](https://github.com/chromelyapps/Chromely.Legacy/wiki/Generic-Message-Routing).
-- Ajax HTTP/XHR -  more info @ [Custom Scheme Handling](https://github.com/chromelyapps/Chromely.Legacy/wiki/Custom-Scheme-Handling).
+- Generic Message Routing - more info @ [Generic Message Routing](https://github.com/chromelyapps/Chromely/blob/master/Documents/generic_message_routing.md).
+- Ajax HTTP/XHR -  more info @ [Custom Scheme Handling](https://github.com/chromelyapps/Chromely/blob/master/Documents/ajax_xhr_request_handling.md).
 
 ##### If you like Chromely, please give it a star - it helps! #####
 

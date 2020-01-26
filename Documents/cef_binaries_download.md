@@ -1,4 +1,4 @@
-### CEF Binaries Download
+# CEF Binaries Download
 
 Note: This description is for 64-bit. The guide will also work for 32-bit - the right binaries need to be downloaded.
 

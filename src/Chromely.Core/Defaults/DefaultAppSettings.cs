@@ -16,6 +16,11 @@ namespace Chromely.Core.Defaults
         public string AppName { get; set; }
         public string DataPath { get; set; }
 
+        public DefaultAppSettings(string appName = "chromely")
+        {
+            AppName = appName;
+        }
+
         public dynamic Settings 
         { 
             get

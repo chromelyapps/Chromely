@@ -4,7 +4,7 @@
 Chromely html loading (start url) can be done in [3 different](https://github.com/chromelyapps/Chromely/blob/5086087dfc03d27cbd84699359cd4891024cfcd1/src/Chromely.Core/Helpers/ConfigKeys.cs#L3) ways.
 
 - A real website URL
-- Local Resource Loading
+- Local/Embedded Resource Loading
 - File Protocol
 
 ## A Real Website URL

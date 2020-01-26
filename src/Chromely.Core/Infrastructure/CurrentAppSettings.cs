@@ -2,7 +2,7 @@
 
 namespace Chromely.Core.Infrastructure
 {
-    public class CurrentAppSettings : Chromely
+    public class CurrentAppSettings : ChromelyAppUser
     {
         private IChromelyAppSettings appSettings;
 

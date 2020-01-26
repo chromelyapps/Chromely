@@ -3,8 +3,8 @@
 
 Chromely via CefGlue provides 2 different ways of Interprocess Communication (IPC) between the Renderer and the Browser.
 
-- Generic Message Routing - more info @ [Generic Message Routing](https://github.com/chromelyapps/Chromely.Legacy/wiki/Generic-Message-Routing).
-- Ajax HTTP/XHR  -  more info @ [Custom Scheme Handling](https://github.com/chromelyapps/Chromely.Legacy/wiki/Custom-Scheme-Handling).
+- Generic Message Routing - more info @ [Generic Message Routing](https://github.com/chromelyapps/Chromely/blob/master/Documents/generic_message_routing.md).
+- Ajax HTTP/XHR  -  more info @ [Custom Scheme Handling](https://github.com/chromelyapps/Chromely/blob/master/Documents/ajax_xhr_request_handling.md).
 
 
 These allow Chromely to receieve JavaScript requests initated by the Renderer, processed by the Browser (C#) and returned Json data response to the Renderer. 
@@ -128,25 +128,67 @@ For details on registering a custom scheme plese see [Custom Http Registration](
 
 ### 5. Create a JavaScript request in the Renderer html
 
-To trigger an actual request, an event must must be set up in the HTML file.
+To trigger an actual request, an event must must be set up in the HTML file. 
 
-A sample:
+Developers have 2 options to do this:
+- Using Message Routing:
 
-````javascript
-function getMovies() {
-        var request = {
-            "method": "GET",
-            "url": "/democontroller/movies",
-            "parameters": null,
-            "postData": null
-        };
-        window.cefQuery({
-            request: JSON.stringify(request),
-            onSuccess: function (response) {
-        -               -- process response
-            }, onFailure: function (err, msg) {
-                console.log(err, msg);
+        ````javascript
+        function getMovies() {
+                var request = {
+                    "method": "GET",
+                    "url": "/democontroller/movies",
+                    "parameters": null,
+                    "postData": null
+                };
+                window.cefQuery({
+                    request: JSON.stringify(request),
+                    onSuccess: function (response) {
+                -               -- process response
+                    }, onFailure: function (err, msg) {
+                        console.log(err, msg);
+                    }
+                });
+        }
+        ````
+
+- Using Ajax XMLHttpRequest (XHR):
+
+        ````javascript
+        var http = new XMLHttpRequest();
+        var url = "http://chromely.com/democontroller/movies";
+        http.open("GET", url, true);
+
+        http.onreadystatechange = function () {
+        if (http.readyState == 4 && http.status == 200) {
+            var jsonData = JSON.parse(http.responseText);
+            ..... process response
             }
-        });
-}
-````
+        }
+        http.send();
+        ````
+
+        #### UI - A typical XHR Post request:
+        ````javascript
+        var moviesJson = [
+            { Id: 1, Title: "The Shawshank Redemption", Year: 1994, Votes: 678790, Rating: 9.2 },
+            { Id: 2, Title: "The Godfather", Year: 1972, votes: 511495, Rating: 9.2 },
+            { Id: 3, Title: "The Godfather: Part II", Year: 1974, Votes: 319352, Rating: 9.0 },
+            { Id: 4, Title: "The Good, the Bad and the Ugly", Year: 1966, Votes: 213030, Rating: 8.9 },
+            { Id: 5, Title: "My Fair Lady", Year: 1964, Votes: 533848, Rating: 8.9 },
+            { Id: 6, Title: "12 Angry Men", Year: 1957, Votes: 164558, Rating: 8.9 }
+        ];
+
+        var http = new XMLHttpRequest();
+        var url = "http://chromely.com/democontroller/savemovies";
+        http.open("POST", url, true);
+        http.setRequestHeader("Content-type", "application/json");
+
+        http.onreadystatechange = function () {
+        if (http.readyState == 4 && http.status == 200) {
+            var jsonData = JSON.parse(http.responseText);
+            ..... process response
+            }
+        }
+        http.send(JSON.stringify(moviesJson));
+        ````

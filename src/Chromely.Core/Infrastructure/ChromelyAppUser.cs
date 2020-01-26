@@ -1,9 +1,9 @@
 ﻿namespace Chromely.Core.Infrastructure
 {
-    public abstract class Chromely
+    public abstract class ChromelyAppUser
     {
-        private static Chromely instance;
-        public static Chromely App
+        private static ChromelyAppUser instance;
+        public static ChromelyAppUser App
         {
             get
             {

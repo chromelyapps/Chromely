@@ -80,12 +80,13 @@ namespace Chromely.Core
 
             if (appSettings == null)
             {
-                appSettings = new DefaultAppSettings();
+                appSettings = new DefaultAppSettings(config.AppName);
             }
 
             var currentAppSettings = new CurrentAppSettings();
             currentAppSettings.Properties = appSettings;
-            Infrastructure.Chromely.App = currentAppSettings;
+            ChromelyAppUser.App = currentAppSettings;
+            ChromelyAppUser.App.Properties.Read(config);
 
             #endregion
 
