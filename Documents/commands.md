@@ -57,7 +57,7 @@ public void ShowDevTools(IDictionary<string, string> queryParameters)
 {
 }
 
-````
+````  
 
 - Attribute decorated type
 ````csharp

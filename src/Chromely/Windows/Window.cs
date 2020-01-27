@@ -106,7 +106,7 @@ namespace Chromely.Windows
         protected override void OnClose(object sender, CloseEventArgs closeChangedEventArgs)
         {
             Dispose();
-            Core.Infrastructure.Chromely.App.Properties.Save(_config);
+            Core.Infrastructure.ChromelyAppUser.App.Properties.Save(_config);
         }
 
         private void OnBrowserCreated(object sender, EventArgs e)

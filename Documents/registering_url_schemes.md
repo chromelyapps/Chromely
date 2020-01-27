@@ -9,7 +9,7 @@ There are [4 types](https://github.com/chromelyapps/Chromely/blob/master/src/Chr
 - Command
 - External
 
- Every scheme is registered via a [UrlScheme]() object.
+ Every scheme is registered via a [UrlScheme](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/Infrastructure/UrlScheme.cs) object.
 
 | __Property__ | __Description__ | __Comment__ |
 |-------------|------------|------------|

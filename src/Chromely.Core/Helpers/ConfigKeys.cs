@@ -29,6 +29,7 @@
     {
         public const string RESOURCE = "default-resource";
         public const string ASSEMBLYRESOURCE = "default-assembly-resource";
+        public const string MIXASSEMBLYRESOURCE = "default-mix-assembly-resource";
         public const string CUSTOM = "default-custom-http";
         public const string COMMAND = "default-command-http";
         public const string GITHUBSITE = "chromely-site";

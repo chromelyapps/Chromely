@@ -40,7 +40,6 @@ namespace Chromely.CefGlue.Browser.Handlers
         protected override bool ProcessRequest(CefRequest request, CefCallback callback)
         {
             var u = new Uri(request.Url);
-            var urlScheme = _config?.UrlSchemes?.GetScheme(request.Url, UrlSchemeType.AssemblyResource);
             var fileAbsolutePath = u.AbsolutePath;
             var file = u.Authority + fileAbsolutePath;
             if (string.IsNullOrEmpty(Path.GetFileName(file)))
@@ -52,49 +51,16 @@ namespace Chromely.CefGlue.Browser.Handlers
             _fileBytes = null;
             _completed = false;
 
-            // Check the configured url scheme
-            if (urlScheme != null && !string.IsNullOrWhiteSpace(fileAbsolutePath))
+            if (ProcessAssmblyEmbeddedFile(request.Url, file, fileAbsolutePath, callback))
             {
-                var option = urlScheme.AssemblyOptions;
-                if (option != null && option.TargetAssembly != null)
-                {
-                    var manifestName = string.Join(".", option.DefaultNamespace, option.RootFolder, _regex.Replace(fileAbsolutePath, ".")).Replace("..", ".").Replace("..", ".");
-                    var stream = option.TargetAssembly.GetManifestResourceStream(manifestName);
-                    if (stream != null && stream.Length > 0)
-                    {
-                        Task.Run(() =>
-                        {
-                            using (callback)
-                            {
-                                try
-                                {
-                                    _fileBytes = new byte[stream.Length];
-                                    stream.Read(_fileBytes, 0, (int)stream.Length);
-                                    stream.Flush();
-                                    stream.Dispose();
-                                    string extension = Path.GetExtension(file);
-                                    _mime = MimeMapper.GetMimeType(extension);
-                                }
-                                catch (Exception exception)
-                                {
-                                    Logger.Instance.Log.Error(exception);
-                                }
-                                finally
-                                {
-                                    callback.Continue();
-                                }
-                            }
-                        });
-
-                        return true;
-                    }
-                    else
-                    {
-                        if (stream != null)
-                            stream.Dispose();
-                    }
-                }
+                return true;
             }
+
+            if (ProcessLocalFile(file, callback))
+            {
+                return true;
+            }
+
             callback.Dispose();
             return false;
         }
@@ -190,5 +156,88 @@ namespace Chromely.CefGlue.Browser.Handlers
             bytesRead = -1;
             return false;
         }
+
+        private bool ProcessLocalFile(string file, CefCallback callback)
+        {
+            // Check if file exists and not empty
+            var fileInfo = new FileInfo(file);
+            if ((fileInfo.Exists) && fileInfo.Length > 0)
+            {
+                Task.Run(() =>
+                {
+                    using (callback)
+                    {
+                        try
+                        {
+                            _fileBytes = File.ReadAllBytes(file);
+
+                            string extension = Path.GetExtension(file);
+                            _mime = MimeMapper.GetMimeType(extension);
+                        }
+                        catch (Exception exception)
+                        {
+                            Logger.Instance.Log.Error(exception);
+                        }
+                        finally
+                        {
+                            callback.Continue();
+                        }
+                    }
+                });
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool ProcessAssmblyEmbeddedFile(string url, string file, string fileAbsolutePath, CefCallback callback)
+        {
+            var urlScheme = _config?.UrlSchemes?.GetScheme(url, UrlSchemeType.AssemblyResource);
+            var option = urlScheme.AssemblyOptions;
+            if (option == null || option.TargetAssembly == null)
+            {
+                return false;
+            }
+
+            var manifestName = string.Join(".", option.DefaultNamespace, option.RootFolder, _regex.Replace(fileAbsolutePath, ".")).Replace("..", ".").Replace("..", ".");
+            var stream = option.TargetAssembly.GetManifestResourceStream(manifestName);
+            if (stream != null && stream.Length > 0)
+            {
+                Task.Run(() =>
+                {
+                    using (callback)
+                    {
+                        try
+                        {
+                            _fileBytes = new byte[stream.Length];
+                            stream.Read(_fileBytes, 0, (int)stream.Length);
+                            stream.Flush();
+                            stream.Dispose();
+                            string extension = Path.GetExtension(file);
+                            _mime = MimeMapper.GetMimeType(extension);
+                        }
+                        catch (Exception exception)
+                        {
+                            Logger.Instance.Log.Error(exception);
+                        }
+                        finally
+                        {
+                            callback.Continue();
+                        }
+                    }
+                });
+
+                return true;
+            }
+            else
+            {
+                if (stream != null)
+                    stream.Dispose();
+            }
+
+            return false;
+        }
+
     }
 }
