@@ -27,8 +27,8 @@ namespace Chromely.Windows
             _nativeHost.Close += OnClose;
         }
 
-        public IntPtr Handle { get; private set; }
-        public IntPtr WinXID { get; private set; }
+        public IntPtr Handle { get; set; }
+        public IntPtr WinXID { get; set; }
 
         public virtual void ShowWindow()
         {
@@ -70,6 +70,11 @@ namespace Chromely.Windows
 
         protected virtual void OnCreated(object sender, CreatedEventArgs createdEventArgs)
         {
+            if (createdEventArgs != null)
+            {
+                Handle = createdEventArgs.Window;
+                WinXID = createdEventArgs.WinXID;
+            }
         }
 
         protected virtual void OnMoving(object sender, MovingEventArgs movingEventArgs)

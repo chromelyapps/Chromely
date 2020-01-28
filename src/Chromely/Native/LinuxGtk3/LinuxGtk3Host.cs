@@ -58,6 +58,8 @@ namespace Chromely.Native
             _onHandleIOErrorDelegate = new XHandleXIOError(HandleIOError);
         }
 
+        public IntPtr Handle => _handle;
+
         public void CreateWindow(IWindowOptions config, bool debugging)
         {
             _options = config;

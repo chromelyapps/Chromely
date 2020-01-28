@@ -40,6 +40,7 @@ namespace Chromely.Native
             _viewHandle = IntPtr.Zero;
             _isInitialized = false;
         }
+        public IntPtr Handle => _windowHandle;
 
         public void CreateWindow(IWindowOptions options, bool debugging)
         {

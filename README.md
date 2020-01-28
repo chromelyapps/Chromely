@@ -71,7 +71,7 @@ For more info on demos - [Demos](https://github.com/chromelyapps/Chromely/wiki/D
 ![](https://github.com/chromelyapps/Chromely/blob/master/Screenshots/chromely_screens_n3.gif)
 
 ### References
-* Cef - https://bitbucket.org/chromiumembedded/cef
+* CEF - https://bitbucket.org/chromiumembedded/cef
 * Xilium.CefGlue - https://gitlab.com/xiliumhq/chromiumembedded/cefglue
 * Caliburn.Light Container - https://caliburnmicro.com/documentation/simple-container
 

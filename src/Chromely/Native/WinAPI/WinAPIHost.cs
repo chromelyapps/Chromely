@@ -34,6 +34,8 @@ namespace Chromely.Native
             _handle = IntPtr.Zero;
         }
 
+        public IntPtr Handle => _handle;
+
         public void CreateWindow(IWindowOptions options, bool debugging)
         {
             _options = options;

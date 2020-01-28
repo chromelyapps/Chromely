@@ -11,7 +11,7 @@ namespace Chromely.Core.Host
         event EventHandler<MovingEventArgs> Moving;
         event EventHandler<SizeChangedEventArgs> SizeChanged;
         event EventHandler<CloseEventArgs> Close;
-
+        IntPtr Handle { get; }
         void CreateWindow(IWindowOptions options, bool debugging);
         IntPtr GetNativeHandle();
         void Run();
