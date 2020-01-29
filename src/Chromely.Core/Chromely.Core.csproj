@@ -15,7 +15,7 @@
     <Copyright>Copyright © 2017-2020 Chromely Projects</Copyright>
     <PackageLicenseUrl>https://github.com/chromelyapps/Chromely/blob/master/LICENSE.md</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/chromelyapps/Chromely</PackageProjectUrl>
-    <PackageIconUrl>https://github.com/chromelyapps/Chromely/blob/master/nugets/chromely.ico?raw=true</PackageIconUrl>
+    <PackageIcon>chromely.ico</PackageIcon>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageReleaseNotes>
@@ -53,5 +53,9 @@
     <PackageReference Include="Microsoft.CSharp" Version="4.6.0" />
     <PackageReference Include="System.Text.Json" Version="4.6.0" />
   </ItemGroup>
-  
+
+  <ItemGroup>
+    <None Include="chromely.ico" Pack="true" Visible="false" PackagePath="" />
+  </ItemGroup>
+
 </Project>
