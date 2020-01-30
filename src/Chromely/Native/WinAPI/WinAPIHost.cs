@@ -168,13 +168,13 @@ namespace Chromely.Native
         }
 
         #region CreateWindow
-        protected IntPtr GetIconHandle()
+        protected virtual IntPtr GetIconHandle()
         {
             var hIcon = LoadIconFromFile(_options.RelativePathToIconFile);
             return hIcon ?? LoadIcon(IntPtr.Zero, (IntPtr)IDI_APPLICATION);
         }
 
-        protected WinNativeMethods.RECT GetWindowBounds()
+        protected virtual WinNativeMethods.RECT GetWindowBounds()
         {
             var styles = GetWindowStyles(_options.WindowState);
             var bounds = new System.Drawing.Rectangle(_options.Position.X, _options.Position.Y, _options.Size.Width, _options.Size.Height);
@@ -201,7 +201,7 @@ namespace Chromely.Native
             return rect;
         }
 
-        protected Tuple<WindowStyles, WindowExStyles, ShowWindowCommand> GetWindowStyles(WindowState state)
+        protected virtual Tuple<WindowStyles, WindowExStyles, ShowWindowCommand> GetWindowStyles(WindowState state)
         {
             if (_options.UseCustomStyle && _options != null && _options.CustomStyle.IsValid())
             {
@@ -257,7 +257,7 @@ namespace Chromely.Native
             return new Tuple<WindowStyles, WindowExStyles, ShowWindowCommand>(styles, exStyles, ShowWindowCommand.SW_SHOWNORMAL);
         }
 
-        protected Tuple<WindowStyles, WindowExStyles, ShowWindowCommand> GetWindowStyles(WindowCustomStyle customCreationStyle, WindowState state)
+        protected virtual Tuple<WindowStyles, WindowExStyles, ShowWindowCommand> GetWindowStyles(WindowCustomStyle customCreationStyle, WindowState state)
         {
             var styles = (WindowStyles)customCreationStyle.WindowStyles;
             var exStyles = (WindowExStyles)customCreationStyle.WindowExStyles;
@@ -277,7 +277,7 @@ namespace Chromely.Native
             return new Tuple<WindowStyles, WindowExStyles, ShowWindowCommand>(styles, exStyles, ShowWindowCommand.SW_SHOWNORMAL);
         }
 
-        protected ShowWindowCommand GetShowWindowCommand(WindowState state)
+        protected virtual ShowWindowCommand GetShowWindowCommand(WindowState state)
         {
             switch (state)
             {
@@ -296,7 +296,7 @@ namespace Chromely.Native
 
         #region WndProc
 
-        protected IntPtr WndProc(IntPtr hWnd, uint message, IntPtr wParam, IntPtr lParam)
+        protected virtual IntPtr WndProc(IntPtr hWnd, uint message, IntPtr wParam, IntPtr lParam)
         {
 
             WM msg = (WM)message;
@@ -370,7 +370,7 @@ namespace Chromely.Native
           
         }
 
-        protected Size GetClientSize()
+        protected virtual Size GetClientSize()
         {
             var size = new Size();
             if (_handle != IntPtr.Zero)

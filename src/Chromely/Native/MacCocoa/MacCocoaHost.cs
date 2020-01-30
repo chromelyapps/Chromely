@@ -100,24 +100,24 @@ namespace Chromely.Native
 
         #region CreateWindow
 
-        protected void RunCallback()
+        protected virtual void RunCallback()
         {
             CefRuntime.RunMessageLoop();
         }
 
-        protected void ShutdownCallback()
+        protected virtual void ShutdownCallback()
         {
             CefRuntime.Shutdown();
         }
 
-        protected void InitCallback(IntPtr app, IntPtr pool)
+        protected virtual void InitCallback(IntPtr app, IntPtr pool)
         {
             _appHandle = app;
             _poolHandle = pool;
             Console.WriteLine($"{DateTime.Now.ToLocalTime().ToString()}:initCallback");
         }
 
-        protected void CreateCallback(IntPtr window, IntPtr view)
+        protected virtual void CreateCallback(IntPtr window, IntPtr view)
         {
             _windowHandle = window;
             _viewHandle = view;
@@ -126,7 +126,7 @@ namespace Chromely.Native
             _isInitialized = true;
         }
 
-        protected void MovingCallback()
+        protected virtual void MovingCallback()
         {
             if (_viewHandle != IntPtr.Zero && _isInitialized)
             {
@@ -134,7 +134,7 @@ namespace Chromely.Native
             }
         }
 
-        protected void ResizeCallback(int width, int height)
+        protected virtual void ResizeCallback(int width, int height)
         {
             if (_viewHandle != IntPtr.Zero && _isInitialized)
             {
@@ -142,7 +142,7 @@ namespace Chromely.Native
             }
         }
 
-        protected void QuitCallback()
+        protected virtual void QuitCallback()
         {
             try
             {

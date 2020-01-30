@@ -191,7 +191,7 @@ namespace Chromely.Native
             }
         }
 
-        protected void SetWindowMaximize()
+        protected virtual void SetWindowMaximize()
         {
             try
             {
@@ -204,7 +204,7 @@ namespace Chromely.Native
             }
         }
 
-        protected void SetFullscreen()
+        protected virtual void SetFullscreen()
         {
             try
             {
@@ -228,7 +228,7 @@ namespace Chromely.Native
         protected delegate short HandleErrorCallback(IntPtr display, ref XErrorEvent errorEven);
         protected delegate short HandleIOErrorCallback(IntPtr d);
 
-        protected void Init(int argc, string[] argv)
+        protected virtual void Init(int argc, string[] argv)
         {
             try
             {
@@ -242,7 +242,7 @@ namespace Chromely.Native
             }
         }
 
-        protected void InstallX11ErrorHandlers()
+        protected virtual void InstallX11ErrorHandlers()
         {
             try
             {
@@ -259,7 +259,7 @@ namespace Chromely.Native
             }
         }
 
-        protected short HandleError(IntPtr display, ref XErrorEvent errorEvent)
+        protected virtual short HandleError(IntPtr display, ref XErrorEvent errorEvent)
         {
             try
             {
@@ -282,12 +282,12 @@ namespace Chromely.Native
             return 0;
         }
 
-        protected short HandleIOError(IntPtr d)
+        protected virtual short HandleIOError(IntPtr d)
         {
             return 0;
         }
 
-        protected IntPtr CreateNewWindow(int windowType)
+        protected virtual IntPtr CreateNewWindow(int windowType)
         {
             try
             {
@@ -305,7 +305,7 @@ namespace Chromely.Native
             return IntPtr.Zero;
         }
 
-        protected void SetWindowTitle(string title)
+        protected virtual void SetWindowTitle(string title)
         {
             try
             {
@@ -318,7 +318,7 @@ namespace Chromely.Native
             }
         }
 
-        protected void SetWindowDefaultSize(int width, int height)
+        protected virtual void SetWindowDefaultSize(int width, int height)
         {
             try
             {
@@ -331,7 +331,7 @@ namespace Chromely.Native
             }
         }
 
-        protected void SetWindowPosistion(int windowPosition)
+        protected virtual void SetWindowPosistion(int windowPosition)
         {
             try
             {
@@ -345,7 +345,7 @@ namespace Chromely.Native
             }
         }
 
-        protected void SetAppIcon(IntPtr window, string filename)
+        protected virtual void SetAppIcon(IntPtr window, string filename)
         {
             try
             {
@@ -366,7 +366,7 @@ namespace Chromely.Native
             }
         }
 
-        protected void ShowWindow()
+        protected virtual void ShowWindow()
         {
             try
             {
@@ -379,7 +379,7 @@ namespace Chromely.Native
             }
         }
 
-        protected Size GetWindowSize()
+        protected virtual Size GetWindowSize()
         {
             try
             {
@@ -395,7 +395,7 @@ namespace Chromely.Native
             return new Size();
         }
 
-        protected void OnRealized(IntPtr window)
+        protected virtual void OnRealized(IntPtr window)
         {
             try
             {
@@ -416,7 +416,7 @@ namespace Chromely.Native
             }
         }
 
-        protected void OnSizeAllocate(IntPtr window, IntPtr allocation, int baseline)
+        protected virtual void OnSizeAllocate(IntPtr window, IntPtr allocation, int baseline)
         {
             if (_handle != IntPtr.Zero && _isInitialized)
             {
@@ -425,7 +425,7 @@ namespace Chromely.Native
             }
         }
 
-        protected bool OnResize(IntPtr window, GtkEvent gtkEvent, IntPtr data)
+        protected virtual bool OnResize(IntPtr window, GtkEvent gtkEvent, IntPtr data)
         {
             if (_handle != IntPtr.Zero && _isInitialized)
             {
@@ -434,7 +434,7 @@ namespace Chromely.Native
             return false;
         }
 
-        protected bool OnDestroy(IntPtr window, IntPtr data)
+        protected virtual bool OnDestroy(IntPtr window, IntPtr data)
         {
             Xilium.CefGlue.CefRuntime.QuitMessageLoop();
             if (_handle != IntPtr.Zero && _isInitialized)
@@ -445,7 +445,7 @@ namespace Chromely.Native
             return false;
         }
 
-        protected void ConnectRealizeSignal(RealizeCallback callback, GClosureNotify destroyData)
+        protected virtual void ConnectRealizeSignal(RealizeCallback callback, GClosureNotify destroyData)
         {
             _onRealizedSignal = Marshal.GetFunctionPointerForDelegate(callback);
 
@@ -457,7 +457,7 @@ namespace Chromely.Native
                 IntPtr.Zero);
         }
 
-        protected void ConnectSizeAllocateSignal(SizeAllocateCallback callback, GClosureNotify destroyData)
+        protected virtual void ConnectSizeAllocateSignal(SizeAllocateCallback callback, GClosureNotify destroyData)
         {
             _onSizeAllocateSignal = Marshal.GetFunctionPointerForDelegate(callback);
 
@@ -469,7 +469,7 @@ namespace Chromely.Native
                 IntPtr.Zero);
         }
 
-        protected void ConnectResizeSignal(ResizeCallback callback, GClosureNotify destroyData)
+        protected virtual void ConnectResizeSignal(ResizeCallback callback, GClosureNotify destroyData)
         {
             _onResizeSignal = Marshal.GetFunctionPointerForDelegate(callback);
 
@@ -481,7 +481,7 @@ namespace Chromely.Native
                 IntPtr.Zero);
         }
 
-        protected void ConnectDestroySignal(DestroyCallback callback, GClosureNotify destroyData)
+        protected virtual void ConnectDestroySignal(DestroyCallback callback, GClosureNotify destroyData)
         {
             _onDestroySignal = Marshal.GetFunctionPointerForDelegate(callback);
 
@@ -493,7 +493,7 @@ namespace Chromely.Native
                 IntPtr.Zero);
         }
 
-        protected void RegisterHandler(string signalName, IntPtr handler, GClosureNotify destroyData, GConnectFlags connectFlags = GConnectFlags.GConnectAfter, IntPtr data = default(IntPtr))
+        protected virtual void RegisterHandler(string signalName, IntPtr handler, GClosureNotify destroyData, GConnectFlags connectFlags = GConnectFlags.GConnectAfter, IntPtr data = default(IntPtr))
         {
             try
             {
@@ -506,7 +506,7 @@ namespace Chromely.Native
             }
         }
 
-        protected void FreeData()
+        protected virtual void FreeData()
         {
         }
 
