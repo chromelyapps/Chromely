@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 
 namespace Chromely.Native
 {
-    internal class WinNativeMethods
+    public class WinNativeMethods
     {
         #region "user32.dll"
 
@@ -637,7 +637,7 @@ namespace Chromely.Native
         public static extern IntPtr LoadIcon(IntPtr hInstance, IntPtr lpIconName);
 
         [DllImport(User32DLL, SetLastError = true, CharSet = CharSet.Auto)]
-        static extern IntPtr LoadImage(IntPtr hinst, string lpszName, uint uType, int cxDesired, int cyDesired, uint fuLoad);
+        public static extern IntPtr LoadImage(IntPtr hinst, string lpszName, uint uType, int cxDesired, int cyDesired, uint fuLoad);
 
         [DllImport(User32DLL, CharSet = CharSet.Auto)]
         public static extern MessageBoxResult MessageBox(IntPtr hWnd, String text, String caption, int options);
@@ -703,7 +703,7 @@ namespace Chromely.Native
         private const int CCHDEVICENAME = 32;
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-        internal struct MONITORINFOEX
+        public struct MONITORINFOEX
         {
             public int cbSize;
             public RectStruct monitor;
@@ -865,7 +865,7 @@ namespace Chromely.Native
         }
 
         [DllImport(User32DLL, CharSet = CharSet.Auto, SetLastError = true)]
-        private static extern IntPtr SetWindowsHookEx(int idHook, LowLevelKeyboardProc lpfn, IntPtr hMod, uint dwThreadId);
+        public static extern IntPtr SetWindowsHookEx(int idHook, LowLevelKeyboardProc lpfn, IntPtr hMod, uint dwThreadId);
 
         [DllImport(User32DLL, CharSet = CharSet.Auto, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]

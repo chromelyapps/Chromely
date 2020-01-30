@@ -36,7 +36,7 @@ namespace Chromely.Native
 
         public IntPtr Handle => _handle;
 
-        public void CreateWindow(IWindowOptions options, bool debugging)
+        public virtual void CreateWindow(IWindowOptions options, bool debugging)
         {
             _options = options;
             _wndProc = WndProc;
@@ -131,23 +131,23 @@ namespace Chromely.Native
             RegisterHotKey(IntPtr.Zero, 1, (uint)KeyModifiers.Control, (uint)Keyboard.VirtualKeyStates.L);
         }
 
-        public IntPtr GetNativeHandle()
+        public virtual IntPtr GetNativeHandle()
         {
             return IntPtr.Zero;
         }
 
-        public void Run()
+        public virtual void Run()
         {
             RunMessageLoopInternal();
             CefRuntime.Shutdown();
         }
 
-        public Size GetWindowClientSize()
+        public virtual Size GetWindowClientSize()
         {
             return GetClientSize();
         }
 
-        public void ResizeBrowser(IntPtr browserWindow, int width, int height)
+        public virtual void ResizeBrowser(IntPtr browserWindow, int width, int height)
         {
             if (browserWindow != IntPtr.Zero)
             {
@@ -155,7 +155,7 @@ namespace Chromely.Native
             }
         }
 
-        public void Exit()
+        public virtual void Exit()
         {
             if (_handle != IntPtr.Zero)
             {
@@ -163,18 +163,18 @@ namespace Chromely.Native
             }
         }
 
-        public void MessageBox(string message, int type)
+        public virtual void MessageBox(string message, int type)
         {
         }
 
         #region CreateWindow
-        private IntPtr GetIconHandle()
+        protected IntPtr GetIconHandle()
         {
             var hIcon = LoadIconFromFile(_options.RelativePathToIconFile);
             return hIcon ?? LoadIcon(IntPtr.Zero, (IntPtr)IDI_APPLICATION);
         }
 
-        private WinNativeMethods.RECT GetWindowBounds()
+        protected WinNativeMethods.RECT GetWindowBounds()
         {
             var styles = GetWindowStyles(_options.WindowState);
             var bounds = new System.Drawing.Rectangle(_options.Position.X, _options.Position.Y, _options.Size.Width, _options.Size.Height);
@@ -201,7 +201,7 @@ namespace Chromely.Native
             return rect;
         }
 
-        private Tuple<WindowStyles, WindowExStyles, ShowWindowCommand> GetWindowStyles(WindowState state)
+        protected Tuple<WindowStyles, WindowExStyles, ShowWindowCommand> GetWindowStyles(WindowState state)
         {
             if (_options.UseCustomStyle && _options != null && _options.CustomStyle.IsValid())
             {
@@ -257,7 +257,7 @@ namespace Chromely.Native
             return new Tuple<WindowStyles, WindowExStyles, ShowWindowCommand>(styles, exStyles, ShowWindowCommand.SW_SHOWNORMAL);
         }
 
-        private Tuple<WindowStyles, WindowExStyles, ShowWindowCommand> GetWindowStyles(WindowCustomStyle customCreationStyle, WindowState state)
+        protected Tuple<WindowStyles, WindowExStyles, ShowWindowCommand> GetWindowStyles(WindowCustomStyle customCreationStyle, WindowState state)
         {
             var styles = (WindowStyles)customCreationStyle.WindowStyles;
             var exStyles = (WindowExStyles)customCreationStyle.WindowExStyles;
@@ -277,7 +277,7 @@ namespace Chromely.Native
             return new Tuple<WindowStyles, WindowExStyles, ShowWindowCommand>(styles, exStyles, ShowWindowCommand.SW_SHOWNORMAL);
         }
 
-        private ShowWindowCommand GetShowWindowCommand(WindowState state)
+        protected ShowWindowCommand GetShowWindowCommand(WindowState state)
         {
             switch (state)
             {
@@ -296,7 +296,7 @@ namespace Chromely.Native
 
         #region WndProc
 
-        private IntPtr WndProc(IntPtr hWnd, uint message, IntPtr wParam, IntPtr lParam)
+        protected IntPtr WndProc(IntPtr hWnd, uint message, IntPtr wParam, IntPtr lParam)
         {
 
             WM msg = (WM)message;
@@ -370,7 +370,7 @@ namespace Chromely.Native
           
         }
 
-        private Size GetClientSize()
+        protected Size GetClientSize()
         {
             var size = new Size();
             if (_handle != IntPtr.Zero)
@@ -387,7 +387,7 @@ namespace Chromely.Native
 
         #region Message Loop
 
-        private static void RunMessageLoopInternal()
+        protected static void RunMessageLoopInternal()
         {
             while (GetMessage(out MSG msg, IntPtr.Zero, 0, 0) != 0)
             {
@@ -411,12 +411,5 @@ namespace Chromely.Native
         }
 
         #endregion
-
-        /// <summary>
-        /// The win.
-        /// </summary>
-        private static class NativeMethods
-        {
-        }
     }
 }

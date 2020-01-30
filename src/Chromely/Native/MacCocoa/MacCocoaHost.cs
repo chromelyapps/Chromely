@@ -40,9 +40,9 @@ namespace Chromely.Native
             _viewHandle = IntPtr.Zero;
             _isInitialized = false;
         }
-        public IntPtr Handle => _windowHandle;
+        public virtual IntPtr Handle => _windowHandle;
 
-        public void CreateWindow(IWindowOptions options, bool debugging)
+        public virtual void CreateWindow(IWindowOptions options, bool debugging)
         {
             _options = options;
             _configParam = InitParam(RunCallback,
@@ -71,7 +71,92 @@ namespace Chromely.Native
             createwindow(ref _configParam);
         }
 
+        public virtual IntPtr GetNativeHandle()
+        {
+            return _viewHandle;
+        }
+
+        public virtual void Run()
+        {
+        }
+
+        public virtual Size GetWindowClientSize()
+        {
+            return new Size();
+        }
+
+        public virtual void ResizeBrowser(IntPtr browserWindow, int width, int height)
+        {
+        }
+
+        public virtual void Exit()
+        {
+        }
+
+        public virtual void MessageBox(string message, int type)
+        {
+            throw new NotImplementedException();
+        }
+
         #region CreateWindow
+
+        protected void RunCallback()
+        {
+            CefRuntime.RunMessageLoop();
+        }
+
+        protected void ShutdownCallback()
+        {
+            CefRuntime.Shutdown();
+        }
+
+        protected void InitCallback(IntPtr app, IntPtr pool)
+        {
+            _appHandle = app;
+            _poolHandle = pool;
+            Console.WriteLine($"{DateTime.Now.ToLocalTime().ToString()}:initCallback");
+        }
+
+        protected void CreateCallback(IntPtr window, IntPtr view)
+        {
+            _windowHandle = window;
+            _viewHandle = view;
+            var createdEvent = new CreatedEventArgs(IntPtr.Zero, _windowHandle, _viewHandle);
+            Created?.Invoke(this, createdEvent);
+            _isInitialized = true;
+        }
+
+        protected void MovingCallback()
+        {
+            if (_viewHandle != IntPtr.Zero && _isInitialized)
+            {
+                Moving?.Invoke(this, new MovingEventArgs());
+            }
+        }
+
+        protected void ResizeCallback(int width, int height)
+        {
+            if (_viewHandle != IntPtr.Zero && _isInitialized)
+            {
+                SizeChanged?.Invoke(this, new SizeChangedEventArgs(width, height));
+            }
+        }
+
+        protected void QuitCallback()
+        {
+            try
+            {
+                CefRuntime.Shutdown();
+                Close?.Invoke(this, new CloseEventArgs());
+                Environment.Exit(0);
+            }
+            catch (Exception exception)
+            {
+                Logger.Instance.Log.Error("Error in MacCocoaHost::QuitCallback");
+                Logger.Instance.Log.Error(exception);
+            }
+        }
+
 
         private static ChromelyParam InitParam(RunMessageLoopCallback runCallback,
                                                     CefShutdownCallback cefShutdownCallback,
@@ -94,90 +179,7 @@ namespace Chromely.Native
             return configParam;
         }
 
-        private void RunCallback()
-        {
-            CefRuntime.RunMessageLoop();
-        }
-
-        private void ShutdownCallback()
-        {
-            CefRuntime.Shutdown();
-        }
-
-        private void InitCallback(IntPtr app, IntPtr pool)
-        {
-            _appHandle = app;
-            _poolHandle = pool;
-            Console.WriteLine($"{DateTime.Now.ToLocalTime().ToString()}:initCallback");
-        }
-
-        private void CreateCallback(IntPtr window, IntPtr view)
-        {
-            _windowHandle = window;
-            _viewHandle = view;
-            var createdEvent = new CreatedEventArgs(IntPtr.Zero, _windowHandle, _viewHandle);
-            Created?.Invoke(this, createdEvent);
-            _isInitialized = true;
-        }
-
-        private void MovingCallback()
-        {
-            if (_viewHandle != IntPtr.Zero && _isInitialized)
-            {
-                Moving?.Invoke(this, new MovingEventArgs());
-            }
-        }
-
-        private void ResizeCallback(int width, int height)
-        {
-            if (_viewHandle != IntPtr.Zero && _isInitialized)
-            {
-                SizeChanged?.Invoke(this, new SizeChangedEventArgs(width, height));
-            }
-        }
-
-        private void QuitCallback()
-        {
-            try
-            {
-                CefRuntime.Shutdown();
-                Close?.Invoke(this, new CloseEventArgs());
-                Environment.Exit(0);
-            }
-            catch (Exception exception)
-            {
-                Logger.Instance.Log.Error("Error in MacCocoaHost::QuitCallback");
-                Logger.Instance.Log.Error(exception);
-            }
-        }
-
         #endregion
 
-        public IntPtr GetNativeHandle()
-        {
-            return _viewHandle;
-        }
-
-        public void Run()
-        {
-        }
-
-        public Size GetWindowClientSize()
-        {
-            return new Size();
-        }
-
-        public void ResizeBrowser(IntPtr browserWindow, int width, int height)
-        {
-        }
-
-        public void Exit()
-        {
-        }
-
-        public void MessageBox(string message, int type)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

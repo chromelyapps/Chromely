@@ -58,9 +58,9 @@ namespace Chromely.Native
             _onHandleIOErrorDelegate = new XHandleXIOError(HandleIOError);
         }
 
-        public IntPtr Handle => _handle;
+        public virtual IntPtr Handle => _handle;
 
-        public void CreateWindow(IWindowOptions config, bool debugging)
+        public virtual void CreateWindow(IWindowOptions config, bool debugging)
         {
             _options = config;
             _debugging = debugging;
@@ -106,7 +106,7 @@ namespace Chromely.Native
             ShowWindow();
         }
 
-        public IntPtr GetNativeHandle()
+        public virtual IntPtr GetNativeHandle()
         {
             try
             {
@@ -125,7 +125,7 @@ namespace Chromely.Native
             return IntPtr.Zero;
         }
 
-        public void Run()
+        public virtual void Run()
         {
             try
             {
@@ -139,12 +139,12 @@ namespace Chromely.Native
             }
         }
 
-        public Size GetWindowClientSize()
+        public virtual Size GetWindowClientSize()
         {
             return new Size();
         }
 
-        public void ResizeBrowser(IntPtr browserWindow, int width, int height)
+        public virtual void ResizeBrowser(IntPtr browserWindow, int width, int height)
         {
             try
             {
@@ -161,33 +161,7 @@ namespace Chromely.Native
             }
         }
 
-        public void SetWindowMaximize()
-        {
-            try
-            {
-                gtk_window_maximize(_handle);
-            }
-            catch (Exception exception)
-            {
-                Logger.Instance.Log.Error("Error in LinuxGtk3Host::SetWindowMaximize");
-                Logger.Instance.Log.Error(exception);
-            }
-        }
-
-        public void SetFullscreen()
-        {
-            try
-            {
-                gtk_window_fullscreen(_handle);
-            }
-            catch (Exception exception)
-            {
-                Logger.Instance.Log.Error("Error in LinuxGtk3Host::SetFullscreen");
-                Logger.Instance.Log.Error(exception);
-            }
-        }
-
-        public void Exit()
+        public virtual void Exit()
         {
             try
             {
@@ -201,7 +175,7 @@ namespace Chromely.Native
             }
         }
 
-        public void MessageBox(string message, int type)
+        public virtual void MessageBox(string message, int type)
         {
             try
             {
@@ -217,18 +191,44 @@ namespace Chromely.Native
             }
         }
 
+        protected void SetWindowMaximize()
+        {
+            try
+            {
+                gtk_window_maximize(_handle);
+            }
+            catch (Exception exception)
+            {
+                Logger.Instance.Log.Error("Error in LinuxGtk3Host::SetWindowMaximize");
+                Logger.Instance.Log.Error(exception);
+            }
+        }
+
+        protected void SetFullscreen()
+        {
+            try
+            {
+                gtk_window_fullscreen(_handle);
+            }
+            catch (Exception exception)
+            {
+                Logger.Instance.Log.Error("Error in LinuxGtk3Host::SetFullscreen");
+                Logger.Instance.Log.Error(exception);
+            }
+        }
+
         #region CreateWindow
 
-        private delegate void SizeAllocateCallback(IntPtr window, IntPtr allocation, int baseline);
-        private delegate bool ResizeCallback(IntPtr window, GtkEvent gtkEvent, IntPtr data);
-        private delegate void RealizeCallback(IntPtr window);
-        private delegate bool DestroyCallback(IntPtr window, IntPtr data);
-        private delegate void QuitCallback();
+        protected delegate void SizeAllocateCallback(IntPtr window, IntPtr allocation, int baseline);
+        protected delegate bool ResizeCallback(IntPtr window, GtkEvent gtkEvent, IntPtr data);
+        protected delegate void RealizeCallback(IntPtr window);
+        protected delegate bool DestroyCallback(IntPtr window, IntPtr data);
+        protected delegate void QuitCallback();
 
-        private delegate short HandleErrorCallback(IntPtr display, ref XErrorEvent errorEven);
-        private delegate short HandleIOErrorCallback(IntPtr d);
+        protected delegate short HandleErrorCallback(IntPtr display, ref XErrorEvent errorEven);
+        protected delegate short HandleIOErrorCallback(IntPtr d);
 
-        private void Init(int argc, string[] argv)
+        protected void Init(int argc, string[] argv)
         {
             try
             {
@@ -242,7 +242,7 @@ namespace Chromely.Native
             }
         }
 
-        private void InstallX11ErrorHandlers()
+        protected void InstallX11ErrorHandlers()
         {
             try
             {
@@ -259,7 +259,7 @@ namespace Chromely.Native
             }
         }
 
-        private short HandleError(IntPtr display, ref XErrorEvent errorEvent)
+        protected short HandleError(IntPtr display, ref XErrorEvent errorEvent)
         {
             try
             {
@@ -282,12 +282,12 @@ namespace Chromely.Native
             return 0;
         }
 
-        private short HandleIOError(IntPtr d)
+        protected short HandleIOError(IntPtr d)
         {
             return 0;
         }
 
-        private IntPtr CreateNewWindow(int windowType)
+        protected IntPtr CreateNewWindow(int windowType)
         {
             try
             {
@@ -305,7 +305,7 @@ namespace Chromely.Native
             return IntPtr.Zero;
         }
 
-        private void SetWindowTitle(string title)
+        protected void SetWindowTitle(string title)
         {
             try
             {
@@ -318,7 +318,7 @@ namespace Chromely.Native
             }
         }
 
-        private void SetWindowDefaultSize(int width, int height)
+        protected void SetWindowDefaultSize(int width, int height)
         {
             try
             {
@@ -331,7 +331,7 @@ namespace Chromely.Native
             }
         }
 
-        private void SetWindowPosistion(int windowPosition)
+        protected void SetWindowPosistion(int windowPosition)
         {
             try
             {
@@ -345,7 +345,7 @@ namespace Chromely.Native
             }
         }
 
-        private void SetAppIcon(IntPtr window, string filename)
+        protected void SetAppIcon(IntPtr window, string filename)
         {
             try
             {
@@ -366,7 +366,7 @@ namespace Chromely.Native
             }
         }
 
-        private void ShowWindow()
+        protected void ShowWindow()
         {
             try
             {
@@ -379,7 +379,7 @@ namespace Chromely.Native
             }
         }
 
-        private Size GetWindowSize()
+        protected Size GetWindowSize()
         {
             try
             {
@@ -395,7 +395,7 @@ namespace Chromely.Native
             return new Size();
         }
 
-        private void OnRealized(IntPtr window)
+        protected void OnRealized(IntPtr window)
         {
             try
             {
@@ -416,7 +416,7 @@ namespace Chromely.Native
             }
         }
 
-        private void OnSizeAllocate(IntPtr window, IntPtr allocation, int baseline)
+        protected void OnSizeAllocate(IntPtr window, IntPtr allocation, int baseline)
         {
             if (_handle != IntPtr.Zero && _isInitialized)
             {
@@ -425,7 +425,7 @@ namespace Chromely.Native
             }
         }
 
-        private bool OnResize(IntPtr window, GtkEvent gtkEvent, IntPtr data)
+        protected bool OnResize(IntPtr window, GtkEvent gtkEvent, IntPtr data)
         {
             if (_handle != IntPtr.Zero && _isInitialized)
             {
@@ -434,7 +434,7 @@ namespace Chromely.Native
             return false;
         }
 
-        private bool OnDestroy(IntPtr window, IntPtr data)
+        protected bool OnDestroy(IntPtr window, IntPtr data)
         {
             Xilium.CefGlue.CefRuntime.QuitMessageLoop();
             if (_handle != IntPtr.Zero && _isInitialized)
@@ -445,7 +445,7 @@ namespace Chromely.Native
             return false;
         }
 
-        private void ConnectRealizeSignal(RealizeCallback callback, GClosureNotify destroyData)
+        protected void ConnectRealizeSignal(RealizeCallback callback, GClosureNotify destroyData)
         {
             _onRealizedSignal = Marshal.GetFunctionPointerForDelegate(callback);
 
@@ -457,7 +457,7 @@ namespace Chromely.Native
                 IntPtr.Zero);
         }
 
-        private void ConnectSizeAllocateSignal(SizeAllocateCallback callback, GClosureNotify destroyData)
+        protected void ConnectSizeAllocateSignal(SizeAllocateCallback callback, GClosureNotify destroyData)
         {
             _onSizeAllocateSignal = Marshal.GetFunctionPointerForDelegate(callback);
 
@@ -469,7 +469,7 @@ namespace Chromely.Native
                 IntPtr.Zero);
         }
 
-        private void ConnectResizeSignal(ResizeCallback callback, GClosureNotify destroyData)
+        protected void ConnectResizeSignal(ResizeCallback callback, GClosureNotify destroyData)
         {
             _onResizeSignal = Marshal.GetFunctionPointerForDelegate(callback);
 
@@ -481,7 +481,7 @@ namespace Chromely.Native
                 IntPtr.Zero);
         }
 
-        private void ConnectDestroySignal(DestroyCallback callback, GClosureNotify destroyData)
+        protected void ConnectDestroySignal(DestroyCallback callback, GClosureNotify destroyData)
         {
             _onDestroySignal = Marshal.GetFunctionPointerForDelegate(callback);
 
@@ -493,7 +493,7 @@ namespace Chromely.Native
                 IntPtr.Zero);
         }
 
-        private void RegisterHandler(string signalName, IntPtr handler, GClosureNotify destroyData, GConnectFlags connectFlags = GConnectFlags.GConnectAfter, IntPtr data = default(IntPtr))
+        protected void RegisterHandler(string signalName, IntPtr handler, GClosureNotify destroyData, GConnectFlags connectFlags = GConnectFlags.GConnectAfter, IntPtr data = default(IntPtr))
         {
             try
             {
@@ -506,7 +506,7 @@ namespace Chromely.Native
             }
         }
 
-        private void FreeData()
+        protected void FreeData()
         {
         }
 
