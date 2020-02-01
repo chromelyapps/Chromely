@@ -16,5 +16,6 @@ namespace Chromely.Core.Configuration
         WindowPosition Position { get; set; }
         WindowSize Size { get; set; }
         WindowState WindowState { get; set; }
+        FramelessOption FramelessOption { get; set; }
     }
 }

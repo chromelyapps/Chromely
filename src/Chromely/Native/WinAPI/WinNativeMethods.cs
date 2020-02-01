@@ -541,6 +541,35 @@ namespace Chromely.Native
             ShowWindow = 0x0040,
         }
 
+        public enum HitTestValues
+        {
+            HTERROR = -2,
+            HTTRANSPARENT = -1,
+            HTNOWHERE = 0,
+            HTCLIENT = 1,
+            HTCAPTION = 2,
+            HTSYSMENU = 3,
+            HTGROWBOX = 4,
+            HTMENU = 5,
+            HTHSCROLL = 6,
+            HTVSCROLL = 7,
+            HTMINBUTTON = 8,
+            HTMAXBUTTON = 9,
+            HTLEFT = 10,
+            HTRIGHT = 11,
+            HTTOP = 12,
+            HTTOPLEFT = 13,
+            HTTOPRIGHT = 14,
+            HTBOTTOM = 15,
+            HTBOTTOMLEFT = 16,
+            HTBOTTOMRIGHT = 17,
+            HTBORDER = 18,
+            HTOBJECT = 19,
+            HTCLOSE = 20,
+            HTHELP = 21
+        }
+
+
         [DllImport(User32DLL)]
         public static extern bool ShowWindow(IntPtr hWnd, ShowWindowCommand nCmdShow);
 
@@ -560,8 +589,15 @@ namespace Chromely.Native
         public static extern bool AdjustWindowRectEx(ref RECT lpRect, WindowStyles dwStyle, bool bMenu, WindowExStyles dwExStyle);
 
         [return: MarshalAs(UnmanagedType.Bool)]
+        [DllImport(User32DLL)]
+        public static extern bool GetCursorPos(out POINT lpPoint);
+
+        [return: MarshalAs(UnmanagedType.Bool)]
         [DllImport(User32DLL, SetLastError = true, CharSet = CharSet.Auto)]
         public static extern bool PostMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+
+        [DllImport(User32DLL)]
+        public static extern bool ScreenToClient(IntPtr hWnd, ref POINT lpPoint);
 
         [DllImport(User32DLL)]
         public static extern sbyte GetMessage(out MSG lpMsg, IntPtr hWnd, uint wMsgFilterMin,
@@ -584,6 +620,12 @@ namespace Chromely.Native
 
         [DllImport(User32DLL)]
         public static extern IntPtr DefWindowProc(IntPtr hWnd, uint uMsg, IntPtr wParam, IntPtr lParam);
+
+        [DllImport(User32DLL)]
+        public static extern IntPtr CallWindowProc(WndProc lpPrevWndFunc, IntPtr hWnd, uint uMsg, IntPtr wParam,IntPtr lParam);
+
+        [DllImport(User32DLL)]
+        public static extern IntPtr CallWindowProc(IntPtr lpPrevWndFunc, IntPtr hWnd, uint uMsg, IntPtr wParam,IntPtr lParam);
 
         [DllImport(User32DLL, SetLastError = true)]
         public static extern IntPtr GetDC(IntPtr hWnd);

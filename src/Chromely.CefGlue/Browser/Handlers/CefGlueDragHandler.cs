@@ -7,6 +7,7 @@
 // </license>
 // ----------------------------------------------------------------------------------------------------------------------
 
+using Chromely.Core.Configuration;
 using System.Drawing;
 using Xilium.CefGlue;
 
@@ -14,11 +15,12 @@ namespace Chromely.CefGlue.Browser.Handlers
 {
     public class CefGlueDragHandler : CefDragHandler
     {
-        public Region DragRegion { get; private set; }
+        private static readonly object objLock = new object();
+        private readonly IChromelyConfiguration _config;
 
-        public CefGlueDragHandler()
+        public CefGlueDragHandler(IChromelyConfiguration config)
         {
-            DragRegion = new Region(new Rectangle(0, 0, 0, 0));
+            _config = config;
         }
 
         protected override bool OnDragEnter(CefBrowser browser, CefDragData dragData, CefDragOperationsMask mask)
@@ -26,24 +28,70 @@ namespace Chromely.CefGlue.Browser.Handlers
             return false;
         }
 
+        /*
+            <html>
+            <head>
+                <title>Draggable Regions Test</title>
+                <style>
+                    .titlebar {
+                        -webkit-app-region: drag;
+                        -webkit-user-select: none;
+                        position: absolute;
+                        top: 0px;
+                        left: 50px;
+                        width: 100%;
+                        height: 32px;
+                    }
+
+                    .titlebar-button {
+                        -webkit-app-region: no-drag;
+                        position: absolute;
+                        top: 0px;
+                        width: 140px;
+                        height: 32px;
+                    }
+                </style>
+            </head>
+            <body bgcolor="white">
+                Draggable regions can be defined using the -webkit-app-region CSS property.
+                <br />In the below example the red region is draggable and the blue sub-region is non-draggable.
+                <br />Windows can be resized by default and closed using JavaScript <a href="#" onClick="window.close(); return false;">window.close()</a>.
+                <div class="titlebar">
+                    <div class="titlebar-button"></div>
+                </div>
+            </body>
+            </html>
+         */
         protected override void OnDraggableRegionsChanged(CefBrowser browser, CefFrame frame, CefDraggableRegion[] regions)
         {
+            var framelessOption = _config?.WindowOptions?.FramelessOption;
+            if (framelessOption == null ||
+                !framelessOption.UseWebkitAppRegions)
+            {
+                return;
+            }
+
             if (!browser.IsPopup)
             {
-                lock (DragRegion)
+                lock (objLock)
                 {
-                    DragRegion = new Region(new Rectangle(0, 0, 0, 0));
                     foreach (var region in regions)
                     {
                         var rect = new Rectangle(region.Bounds.X, region.Bounds.Y, region.Bounds.Width, region.Bounds.Height);
 
                         if (region.Draggable)
                         {
-                            DragRegion.Union(rect);
+                            // This will use the -webkit-app-region: drag parameter 
+                            // For example if above sample is used will be set to
+                            // framelessOption.DraggableHeight- 32
+                            framelessOption.DraggableHeight = rect.Height;
                         }
                         else
                         {
-                            DragRegion.Exclude(rect);
+                            // This will use the -webkit-app-region: no-dragparameter 
+                            // For example if above sample is used will be set to
+                            // framelessOption.NonDraggableRightOffsetWidth - 140
+                            framelessOption.NonDraggableRightOffsetWidth = rect.Width;
                         }
                     }
                 }

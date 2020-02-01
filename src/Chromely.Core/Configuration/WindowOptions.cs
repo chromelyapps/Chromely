@@ -40,6 +40,9 @@ namespace Chromely.Core.Configuration
         /// <summary>Gets or sets the WindowState of the window.</summary>
         public WindowState WindowState { get; set; }
 
+        /// <summary>Gets or sets the FramelessOption of the borderless window.</summary>
+        public FramelessOption FramelessOption { get; set; }
+
         public WindowOptions()
         {
             DisableResizing = false;
@@ -53,6 +56,7 @@ namespace Chromely.Core.Configuration
 
             Size = new WindowSize(1200, 900);
             Position = new WindowPosition(0, 0);
+            FramelessOption = new FramelessOption();
         }
     }
 }
