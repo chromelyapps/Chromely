@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using Chromely.Core.Configuration;
 using Chromely.Core.Host;
 using Chromely.Core.Logging;
@@ -17,16 +19,16 @@ namespace Chromely.Native
         public event EventHandler<SizeChangedEventArgs> SizeChanged;
         public event EventHandler<CloseEventArgs> Close;
 
-        private static readonly LowLevelKeyboardProc _hookCallback = HookCallback;
+        protected static readonly LowLevelKeyboardProc _hookCallback = HookCallback;
 
-        private IWindowOptions _options;
-        private IntPtr _handle;
-        private bool _isInitialized;
+        protected IWindowOptions _options;
+        protected IntPtr _handle;
+        protected bool _isInitialized;
 
-        private static string ClassName = "chromelywindow";
-        private static IntPtr _consoleParentInstance;
-        private WndProc _wndProc;
-        private IntPtr _hookID = IntPtr.Zero;
+        protected static string ClassName = "chromelywindow";
+        protected static IntPtr _consoleParentInstance;
+        protected WndProc _wndProc;
+        protected IntPtr _hookID = IntPtr.Zero;
 
         public WinAPIHost()
         {
@@ -159,7 +161,22 @@ namespace Chromely.Native
         {
             if (_handle != IntPtr.Zero)
             {
-                SendMessage(_handle, (int)WM.SYSCOMMAND, (IntPtr)SysCommand.SC_CLOSE, IntPtr.Zero);
+                try
+                {
+                    ShowWindow(_handle, ShowWindowCommand.SW_HIDE);
+                    CefRuntime.Shutdown();
+                    Task.Run(() =>
+                    {
+                        int excelProcessId = -1;
+                        GetWindowThreadProcessId(_handle, ref excelProcessId);
+                        var process = Process.GetProcessById(excelProcessId);
+                        if (process != null)
+                        {
+                            process.Kill();
+                        }
+                    });
+                }
+                catch {}
             }
         }
 

@@ -64,9 +64,9 @@ namespace Chromely.Windows
             {
                 if (Browser != null)
                 {
-                    Browser.InvokeAsyncIfPossible(() => Browser.OnBeforeClose(new BeforeCloseEventArgs()));
+                    Browser?.InvokeAsyncIfPossible(() => Browser?.OnBeforeClose(new BeforeCloseEventArgs()));
 
-                    Browser.Dispose();
+                    Browser?.Dispose();
                     Browser = null;
                     _browserWindowHandle = IntPtr.Zero;
                 }
@@ -83,6 +83,7 @@ namespace Chromely.Windows
         {
             Handle = createdEventArgs.Window;
             WinXID = createdEventArgs.WinXID;
+            Browser.HostHandle = createdEventArgs.Window;
 
             var windowInfo = CefWindowInfo.Create();
             windowInfo.SetAsChild(createdEventArgs.WinXID, new CefRectangle(0, 0, _config.WindowOptions.Size.Width, _config.WindowOptions.Size.Height));

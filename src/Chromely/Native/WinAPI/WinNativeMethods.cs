@@ -23,6 +23,7 @@ namespace Chromely.Native
         public const int CW_USEDEFAULT = unchecked((int)0x80000000);
 
         public delegate IntPtr WndProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
+        public delegate bool EnumWindowProc(IntPtr hWnd, IntPtr lParam);
 
         [Flags]
         public enum WindowExStyles : uint
@@ -99,6 +100,36 @@ namespace Chromely.Native
             DWLP_MSGRESULT = 0x0,
             DWLP_DLGPROC = 0x4
         }
+
+        [Flags]
+        public enum WindowSizeFlag : int
+        {
+            /// <summary>
+            ///     Message is sent to all pop-up windows when some other window is maximized.
+            /// </summary>
+            SIZE_MAXHIDE = 4,
+
+            /// <summary>
+            ///     The window has been maximized.
+            /// </summary>
+            SIZE_MAXIMIZED = 2,
+
+            /// <summary>
+            ///     Message is sent to all pop-up windows when some other window has been restored to its former size.
+            /// </summary>
+            SIZE_MAXSHOW = 3,
+
+            /// <summary>
+            ///     The window has been minimized.
+            /// </summary>
+            SIZE_MINIMIZED = 1,
+
+            /// <summary>
+            ///     The window has been resized, but neither the SIZE_MINIMIZED nor SIZE_MAXIMIZED value applies.
+            /// </summary>
+            SIZE_RESTORED = 0
+        }
+
 
         [Flags]
         public enum ImageStyles : uint
@@ -287,6 +318,48 @@ namespace Chromely.Native
             {
                 return string.Format(System.Globalization.CultureInfo.CurrentCulture, "{{Left={0},Top={1},Right={2},Bottom={3}}}", Left, Top, Right, Bottom);
             }
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct WindowPosition
+        {
+            public IntPtr Hwnd;
+            public IntPtr HwndZOrderInsertAfter;
+            public int X;
+            public int Y;
+            public int Width;
+            public int Height;
+            public SetWindowPosFlags Flags;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public unsafe struct NcCalcSizeParams
+        {
+            public NcCalcSizeRegionUnion Region;
+            public WindowPosition* Position;
+        }
+
+        [StructLayout(LayoutKind.Explicit)]
+        public struct NcCalcSizeRegionUnion
+        {
+            [FieldOffset(0)] public NcCalcSizeInput Input;
+            [FieldOffset(0)] public NcCalcSizeOutput Output;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct NcCalcSizeInput
+        {
+            public RECT TargetWindowRect;
+            public RECT CurrentWindowRect;
+            public RECT CurrentClientRect;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct NcCalcSizeOutput
+        {
+            public RECT TargetClientRect;
+            public RECT DestRect;
+            public RECT SrcRect;
         }
 
         public enum WM : uint
@@ -541,7 +614,8 @@ namespace Chromely.Native
             ShowWindow = 0x0040,
         }
 
-        public enum HitTestValues
+        [Flags]
+        public enum HitTestValue : int
         {
             HTERROR = -2,
             HTTRANSPARENT = -1,
@@ -598,6 +672,15 @@ namespace Chromely.Native
 
         [DllImport(User32DLL)]
         public static extern bool ScreenToClient(IntPtr hWnd, ref POINT lpPoint);
+
+        [DllImport(User32DLL)]
+        public static extern IntPtr SetCapture(IntPtr hWnd);
+
+        [DllImport(User32DLL)]
+        public static extern bool ReleaseCapture();
+
+        [DllImport(User32DLL)]
+        public static extern bool ClientToScreen(IntPtr hWnd, ref Point lpPoint);
 
         [DllImport(User32DLL)]
         public static extern sbyte GetMessage(out MSG lpMsg, IntPtr hWnd, uint wMsgFilterMin,
@@ -673,6 +756,10 @@ namespace Chromely.Native
         }
 
         [DllImport(User32DLL)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool EnumChildWindows(IntPtr hWnd, EnumWindowProc callback, IntPtr lParam);
+
+        [DllImport(User32DLL)]
         public static extern IntPtr LoadCursor(IntPtr hInstance, int lpCursorName);
 
         [DllImport(User32DLL)]
@@ -704,6 +791,9 @@ namespace Chromely.Native
 
         [DllImport(User32DLL)]
         public static extern bool UnregisterClass(string lpClassName, IntPtr hInstance);
+
+        [DllImport(User32DLL)]
+        public static extern int GetWindowThreadProcessId(IntPtr hwnd, ref int lpdwProcessId);
 
         public static IntPtr? LoadIconFromFile(string iconFullPath)
         {

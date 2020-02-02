@@ -10,8 +10,10 @@
 using System;
 using System.Reflection;
 using Chromely.CefGlue.Browser.EventParams;
+using Chromely.CefGlue.BrowserWindow;
 using Chromely.Core;
 using Chromely.Core.Configuration;
+using Chromely.Core.Host;
 using Chromely.Core.Network;
 using Xilium.CefGlue;
 using Xilium.CefGlue.Wrapper;
@@ -27,8 +29,10 @@ namespace Chromely.CefGlue.Browser
         private readonly IChromelyConfiguration _config;
         private readonly IChromelyCommandTaskRunner _commandTaskRunner;
         private readonly CefMessageRouterBrowserSide _browserMessageRouter;
+        private IChromelyFramelessController _framelessController;
         private CefBrowserSettings _settings;
         private CefGlueClient _client;
+        private bool _isFramelessControllerInitialized = false;
 
         public CefGlueBrowser(object owner, IChromelyContainer container, IChromelyConfiguration config, IChromelyCommandTaskRunner commandTaskRunner, CefMessageRouterBrowserSide browserMessageRouter, CefBrowserSettings settings)
         {
@@ -119,6 +123,11 @@ namespace Chromely.CefGlue.Browser
         /// Gets the owner.
         /// </summary>
         public object Owner { get; }
+
+        /// <summary>
+        /// Gets or sets the HostHandle.
+        /// </summary>
+        public IntPtr HostHandle { get; set; }
 
         /// <summary>
         /// Gets or sets the start url.
@@ -310,6 +319,25 @@ namespace Chromely.CefGlue.Browser
         /// </param>
         public virtual void OnFrameLoadStart(FrameLoadStartEventArgs eventArgs)
         {
+            if (!_isFramelessControllerInitialized && CefBrowser != null && HostHandle != IntPtr.Zero)
+            {
+                if (_config.Platform == ChromelyPlatform.Windows)
+                {
+                    var windowFrameless = _config.WindowOptions == null ? false : _config.WindowOptions.WindowFrameless;
+                    var framelessOption = _config.WindowOptions?.FramelessOption;
+                    windowFrameless = true;
+                    if (windowFrameless &&
+                        framelessOption != null &&
+                        framelessOption.IsDraggable &&
+                        framelessOption.UseDefaultFramelessController)
+                    {
+                        _isFramelessControllerInitialized = true;
+                        var browserHandle = CefBrowser.GetHost().GetWindowHandle();
+                        _framelessController = new WindowMessageInterceptor(_config, browserHandle, HostHandle);
+                    }
+                }
+            }
+
             FrameLoadStart?.Invoke(this, eventArgs);
         }
 
