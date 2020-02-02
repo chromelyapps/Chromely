@@ -325,7 +325,7 @@ namespace Chromely.CefGlue.Browser
                 {
                     var windowFrameless = _config.WindowOptions == null ? false : _config.WindowOptions.WindowFrameless;
                     var framelessOption = _config.WindowOptions?.FramelessOption;
-                    windowFrameless = true;
+
                     if (windowFrameless &&
                         framelessOption != null &&
                         framelessOption.IsDraggable &&
