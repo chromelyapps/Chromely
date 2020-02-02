@@ -23,6 +23,11 @@ namespace Chromely.Native
                     return new LinuxGtk3Host(); 
 
                 case ChromelyPlatform.Windows:
+                    if (config.WindowOptions != null && config.WindowOptions.WindowFrameless)
+                    {
+                        return new FramelessWinAPIHost();
+                    }
+
                     return new WinAPIHost();
 
                 default:

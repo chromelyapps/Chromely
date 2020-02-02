@@ -32,8 +32,7 @@ namespace Chromely.CefGlue.Browser
         private IChromelyFramelessController _framelessController;
         private CefBrowserSettings _settings;
         private CefGlueClient _client;
-        private bool _isFramelessControllerInitialized = false;
-
+   
         public CefGlueBrowser(object owner, IChromelyContainer container, IChromelyConfiguration config, IChromelyCommandTaskRunner commandTaskRunner, CefMessageRouterBrowserSide browserMessageRouter, CefBrowserSettings settings)
         {
             Owner = owner;
@@ -319,25 +318,6 @@ namespace Chromely.CefGlue.Browser
         /// </param>
         public virtual void OnFrameLoadStart(FrameLoadStartEventArgs eventArgs)
         {
-            if (!_isFramelessControllerInitialized && CefBrowser != null && HostHandle != IntPtr.Zero)
-            {
-                if (_config.Platform == ChromelyPlatform.Windows)
-                {
-                    var windowFrameless = _config.WindowOptions == null ? false : _config.WindowOptions.WindowFrameless;
-                    var framelessOption = _config.WindowOptions?.FramelessOption;
-
-                    if (windowFrameless &&
-                        framelessOption != null &&
-                        framelessOption.IsDraggable &&
-                        framelessOption.UseDefaultFramelessController)
-                    {
-                        _isFramelessControllerInitialized = true;
-                        var browserHandle = CefBrowser.GetHost().GetWindowHandle();
-                        _framelessController = new WindowMessageInterceptor(_config, browserHandle, HostHandle);
-                    }
-                }
-            }
-
             FrameLoadStart?.Invoke(this, eventArgs);
         }
 
