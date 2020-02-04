@@ -5,7 +5,7 @@
         <RuntimeIdentifiers>win7-x86;win7-x64;linux-x64</RuntimeIdentifiers>
         <Configurations>Debug;Release;ReleaseLinux;DebugLinux</Configurations>
         <Platforms>x64</Platforms>
-        <TargetFramework>netcoreapp3.0</TargetFramework>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

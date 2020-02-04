@@ -29,7 +29,7 @@ To use the [default handler](https://github.com/mattkol/Chromely/blob/master/src
 For custom handlers, developers need to register one:
 
 ````csharp
-    public class CusomChromelyApp : BasicChromelyApp
+    public class CusomChromelyApp : ChromelyBasicApp
     {
         public override void Configure(IChromelyContainer container)
         {

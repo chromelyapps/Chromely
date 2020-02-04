@@ -1,7 +1,8 @@
 # DevTool
 
-- [DevTools On Windows](#devtoolswin)
-- [DevTools on All Platforms](#devtoolsall)
+- [DevTool](#devtool)
+  - [DevTools On Windows](#devtools-on-windows)
+  - [DevTools on All Platforms](#devtools-on-all-platforms)
 
 
 <div id='devtoolswin'/>
@@ -33,7 +34,7 @@ The context menu is provided via CEF/CefGlue's [ContextMenuHandler](https://gith
 To conigure the DevTools menu, register a new custom ContextMenuHandler:
 
 ````csharp
-    public class CusomChromelyApp : BasicChromelyApp
+    public class CusomChromelyApp : ChromelyBasicApp
     {
         public override void Configure(IChromelyContainer container)
         {

@@ -4,8 +4,19 @@ using Chromely.Core.Helpers;
 
 namespace Chromely
 {
-    public abstract class ChromelyEventedApp : BasicChromelyApp
+    /// <summary>
+    /// Chromely app implementation handler for some events
+    /// to be overwritten by.
+    /// </summary>
+    // ReSharper disable once UnusedType.Global
+    public class ChromelyEventedApp : ChromelyBasicApp
     {
+        /// <summary>
+        /// Registers the events
+        /// FrameLoadStart, FrameLoadEnd, ConsoleMessage, StatusMessage and BeforeClose
+        /// to call overridable methods.
+        /// </summary>
+        /// <param name="container"></param>
         public override void RegisterEvents(IChromelyContainer container)
         {
             EnsureContainerValid(container);
@@ -17,27 +28,52 @@ namespace Chromely
             RegisterEventHandler(container, CefEventKey.BeforeClose, new ChromelyEventHandler<BeforeCloseEventArgs>(CefEventKey.BeforeClose, OnBeforeClose));
         }
 
-        public virtual void OnFrameLoadStart(object sender, FrameLoadStartEventArgs e)
+        /// <summary>
+        /// Override to handle FrameLoadStart event.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
+        protected virtual void OnFrameLoadStart(object sender, FrameLoadStartEventArgs eventArgs)
         {
         }
 
-        public virtual void OnFrameLoadEnd(object sender, FrameLoadEndEventArgs e)
+        /// <summary>
+        /// Override to handle FrameLoadEnd event.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
+        protected virtual void OnFrameLoadEnd(object sender, FrameLoadEndEventArgs eventArgs)
         {
         }
 
-        public virtual void OnConsoleMessage(object sender, ConsoleMessageEventArgs e)
+        /// <summary>
+        /// Override to handle ConsoleMessage event.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
+        protected virtual void OnConsoleMessage(object sender, ConsoleMessageEventArgs eventArgs)
         {
         }
 
-        public virtual void OnStatusMessage(object sender, StatusMessageEventArgs e)
+        /// <summary>
+        /// Override to handle StatusMessage event.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
+        protected virtual void OnStatusMessage(object sender, StatusMessageEventArgs eventArgs)
         {
         }
 
-        public virtual void OnBeforeClose(object sender, BeforeCloseEventArgs e)
+        /// <summary>
+        /// Override to handle BeforeClose event.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
+        protected virtual void OnBeforeClose(object sender, BeforeCloseEventArgs eventArgs)
         {
         }
 
-        private void RegisterEventHandler<T>(IChromelyContainer container, CefEventKey key, ChromelyEventHandler<T> handler)
+        private static void RegisterEventHandler<T>(IChromelyContainer container, CefEventKey key, ChromelyEventHandler<T> handler)
         {
             var service = CefEventHandlerTypes.GetHandlerType(key);
             container.RegisterInstance(service, handler.Key, handler);

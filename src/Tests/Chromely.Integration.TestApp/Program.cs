@@ -68,7 +68,7 @@ namespace Chromely.Integration.TestApp
             try
             {
                 var builder = AppBuilder.Create();
-                builder = builder.UseApp<ChromelyTestApp>();
+                builder = builder.UseApp<TestApp>();
                 builder = builder.UseConfiguration<DefaultConfiguration>(config);
                 builder = builder.Build();
                 builder.Run(args);
@@ -110,28 +110,24 @@ namespace Chromely.Integration.TestApp
         }
     }
 
-    public class ChromelyTestApp : BasicChromelyApp
+    // ReSharper disable once ClassNeverInstantiated.Global
+    public class TestApp : ChromelyEventedApp
     {
-        public override void RegisterEvents(IChromelyContainer container)
+        protected override void OnFrameLoadEnd(object sender, FrameLoadEndEventArgs eventArgs)
         {
-            EnsureContainerValid(container);
-
-            RegisterEventHandler(container, CefEventKey.FrameLoadEnd, new ChromelyEventHandler<FrameLoadEndEventArgs>(CefEventKey.FrameLoadEnd, Program.OnFrameLoaded));
-            RegisterEventHandler(container, CefEventKey.ConsoleMessage, new ChromelyEventHandler<ConsoleMessageEventArgs>(CefEventKey.ConsoleMessage, Program.OnConsoleMessage));
-            RegisterEventHandler(container, CefEventKey.BeforeClose, new ChromelyEventHandler<BeforeCloseEventArgs>(CefEventKey.BeforeClose, Program.OnBeforeClose));
+            Program.OnFrameLoaded(sender, eventArgs);
         }
 
-        public override void Configure(IChromelyContainer container)
+        protected override void OnConsoleMessage(object sender, ConsoleMessageEventArgs eventArgs)
         {
-            base.Configure(container);
-        }
-        
-        private void RegisterEventHandler<T>(IChromelyContainer container, CefEventKey key, ChromelyEventHandler<T> handler)
-        {
-            var service = CefEventHandlerTypes.GetHandlerType(key);
-            container.RegisterInstance(service, handler.Key, handler);
+            Program.OnConsoleMessage(sender, eventArgs);
         }
 
+        protected override void OnBeforeClose(object sender, BeforeCloseEventArgs eventArgs)
+        {
+            Program.OnBeforeClose(sender, eventArgs);
+        }
     }
+    
 }
 
