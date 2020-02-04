@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
 using Chromely.CefGlue.Browser.EventParams;
@@ -9,8 +8,6 @@ using Chromely.Core.Configuration;
 using Chromely.Core.Helpers;
 using Chromely.Core.Host;
 using Chromely.Core.Logging;
-using Chromely.Native;
-using Chromely.Windows;
 using IctBaden.Stonehenge3.Hosting;
 using IctBaden.Stonehenge3.Kestrel;
 using IctBaden.Stonehenge3.Resources;
@@ -18,10 +15,11 @@ using IctBaden.Stonehenge3.Vue;
 
 namespace Chromely.Dialogs.TestApp
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     internal class Program
     {
         [STAThread]
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             Console.WriteLine("Sample showing Chromely.Dialogs");
             Console.WriteLine();
@@ -72,7 +70,7 @@ namespace Chromely.Dialogs.TestApp
             Console.WriteLine("Sample done.");
         }
         
-        private static void OnFrameStartLoading(object? sender, FrameLoadEndEventArgs e)
+        private static void OnFrameStartLoading(object sender, FrameLoadEndEventArgs e)
         {
             Console.WriteLine($"OnFrameStartLoading PID={Process.GetCurrentProcess().Id}, THREAD={Thread.CurrentThread.ManagedThreadId}");
             //ChromelyDialogs.MessageBox("Test");
@@ -86,7 +84,8 @@ namespace Chromely.Dialogs.TestApp
             //ChromelyDialogs.MessageBox("Test");
         }
 
-        public class ChromelyDialogsTestApp : BasicChromelyApp
+        // ReSharper disable once ClassNeverInstantiated.Local
+        private class ChromelyDialogsTestApp : ChromelyBasicApp
         {
             public override void RegisterEvents(IChromelyContainer container)
             {
