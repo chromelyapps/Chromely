@@ -14,7 +14,7 @@ jobs:
       with:
         dotnet-version: 3.1.100
     - name: Build with dotnet
-      run: dotnet build --configuration Release
+      run: dotnet build --configuration Release ./src/ChromelySolution.sln
     - name: Test with dotnet
-      run: dotnet test --configuration Release
+      run: dotnet test --configuration Release ./src/ChromelySolution.sln
       
