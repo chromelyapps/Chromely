@@ -111,7 +111,7 @@ The class CustomController must be registered. Registration can be done either b
 
 ````csharp
 
-public class DemoChromelyApp : BasicChromelyApp
+public class DemoChromelyApp : ChromelyBasicApp
     {
         public override void Configure(IChromelyContainer container)
         {

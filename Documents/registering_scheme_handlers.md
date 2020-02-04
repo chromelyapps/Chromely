@@ -84,7 +84,7 @@ Custom scheme handler factory:
 Handler factory registration:
 
 ````csharp
-    public class DemoChromelyApp : BasicChromelyApp
+    public class DemoChromelyApp : ChromelyBasicApp
     {
         public override void Configure(IChromelyContainer container)
         {
