@@ -10,8 +10,10 @@
 using System;
 using System.Reflection;
 using Chromely.CefGlue.Browser.EventParams;
+using Chromely.CefGlue.BrowserWindow;
 using Chromely.Core;
 using Chromely.Core.Configuration;
+using Chromely.Core.Host;
 using Chromely.Core.Network;
 using Xilium.CefGlue;
 using Xilium.CefGlue.Wrapper;
@@ -27,9 +29,10 @@ namespace Chromely.CefGlue.Browser
         private readonly IChromelyConfiguration _config;
         private readonly IChromelyCommandTaskRunner _commandTaskRunner;
         private readonly CefMessageRouterBrowserSide _browserMessageRouter;
+        private IChromelyFramelessController _framelessController;
         private CefBrowserSettings _settings;
         private CefGlueClient _client;
-
+   
         public CefGlueBrowser(object owner, IChromelyContainer container, IChromelyConfiguration config, IChromelyCommandTaskRunner commandTaskRunner, CefMessageRouterBrowserSide browserMessageRouter, CefBrowserSettings settings)
         {
             Owner = owner;
@@ -119,6 +122,11 @@ namespace Chromely.CefGlue.Browser
         /// Gets the owner.
         /// </summary>
         public object Owner { get; }
+
+        /// <summary>
+        /// Gets or sets the HostHandle.
+        /// </summary>
+        public IntPtr HostHandle { get; set; }
 
         /// <summary>
         /// Gets or sets the start url.

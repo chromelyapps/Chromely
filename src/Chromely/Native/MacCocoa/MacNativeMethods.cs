@@ -3,12 +3,12 @@ using System.Runtime.InteropServices;
 
 namespace Chromely.Native
 {
-    internal class MacNativeMethods
+    public class MacNativeMethods
     {
         internal const string ChromelyMacLib = "libchromely.dylib";
 
         [StructLayout(LayoutKind.Sequential)]
-        internal struct ChromelyParam
+        public struct ChromelyParam
         {
             public int x;
             public int y;
@@ -32,12 +32,12 @@ namespace Chromely.Native
         }
 
         [DllImport(ChromelyMacLib, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void createwindow(ref ChromelyParam chromelyParam);
+        public static extern void createwindow(ref ChromelyParam chromelyParam);
 
         [DllImport(ChromelyMacLib, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void run(IntPtr application);
+        public static extern void run(IntPtr application);
 
         [DllImport(ChromelyMacLib, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void quit(IntPtr application, IntPtr pool);
+        public static extern void quit(IntPtr application, IntPtr pool);
     }
 }

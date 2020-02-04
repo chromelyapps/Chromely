@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Chromely.Native
 {
-    internal partial class LinuxNativeMethods
+    public partial class LinuxNativeMethods
     {
         public static void SetDefaultWindowVisual(IntPtr widget)
         {
@@ -65,69 +65,69 @@ namespace Chromely.Native
         #region X11
 
         [StructLayout(LayoutKind.Sequential)]
-        internal struct XVisualInfo
+        public struct XVisualInfo
         {
-            internal IntPtr visual;
-            internal IntPtr visualid;
-            internal int screen;
-            internal uint depth;
-            internal int klass;
-            internal IntPtr red_mask;
-            internal IntPtr green_mask;
-            internal IntPtr blue_mask;
-            internal int colormap_size;
-            internal int bits_per_rgb;
+            public IntPtr visual;
+            public IntPtr visualid;
+            public int screen;
+            public uint depth;
+            public int klass;
+            public IntPtr red_mask;
+            public IntPtr green_mask;
+            public IntPtr blue_mask;
+            public int colormap_size;
+            public int bits_per_rgb;
         }
 
-        internal delegate short XHandleXError(IntPtr display, ref XErrorEvent error_event);
-        internal delegate short XHandleXIOError(IntPtr display);
+        public delegate short XHandleXError(IntPtr display, ref XErrorEvent error_event);
+        public delegate short XHandleXIOError(IntPtr display);
 
         [DllImport(Library.X11Lib)]
-        internal static extern int XMoveWindow(IntPtr display, IntPtr w, int x, int y);
+        public static extern int XMoveWindow(IntPtr display, IntPtr w, int x, int y);
 
         [DllImport(Library.X11Lib)]
-        internal static extern int XResizeWindow(IntPtr display, IntPtr w, int width, int height);
+        public static extern int XResizeWindow(IntPtr display, IntPtr w, int width, int height);
 
         [DllImport(Library.X11Lib)]
-        internal static extern int XMoveResizeWindow(IntPtr display, IntPtr w, int x, int y, int width, int height);
+        public static extern int XMoveResizeWindow(IntPtr display, IntPtr w, int x, int y, int width, int height);
 
         [DllImport(Library.X11Lib)]
-        internal static extern IntPtr XOpenDisplay(IntPtr display);
+        public static extern IntPtr XOpenDisplay(IntPtr display);
 
         [DllImport(Library.X11Lib)]
-        internal static extern int XCloseDisplay(IntPtr display);
+        public static extern int XCloseDisplay(IntPtr display);
 
         [DllImport(Library.X11Lib)]
-        internal static extern int XDefaultScreen(IntPtr display);
+        public static extern int XDefaultScreen(IntPtr display);
 
         [DllImport(Library.X11Lib)]
-        internal static extern IntPtr XDefaultVisual(IntPtr display, int screen);
+        public static extern IntPtr XDefaultVisual(IntPtr display, int screen);
 
         [DllImport(Library.X11Lib)]
-        internal static extern IntPtr XVisualIDFromVisual(IntPtr visual);
+        public static extern IntPtr XVisualIDFromVisual(IntPtr visual);
 
         [DllImport(Library.X11Lib)]
-        internal static extern short XSetErrorHandler(XHandleXError err);
+        public static extern short XSetErrorHandler(XHandleXError err);
 
         [DllImport(Library.X11Lib)]
-        internal static extern short XSetIOErrorHandler(XHandleXIOError err);
+        public static extern short XSetIOErrorHandler(XHandleXIOError err);
 
         [DllImport(Library.X11Lib)]
-        internal extern static IntPtr XGetErrorText(IntPtr display, byte code, StringBuilder buffer, int length);
+        public extern static IntPtr XGetErrorText(IntPtr display, byte code, StringBuilder buffer, int length);
 
         [StructLayout(LayoutKind.Sequential)]
-        internal struct XErrorEvent
+        public struct XErrorEvent
         {
-            internal int type;
-            internal IntPtr display;
-            internal int resourceid;
-            internal int serial;
-            internal byte error_code;
-            internal byte request_code;
-            internal byte minor_code;
+            public int type;
+            public IntPtr display;
+            public int resourceid;
+            public int serial;
+            public byte error_code;
+            public byte request_code;
+            public byte minor_code;
         }
 
-        internal static string GetRequestType(int requestId)
+        public static string GetRequestType(int requestId)
         {
             switch (requestId)
             {
@@ -257,6 +257,5 @@ namespace Chromely.Native
         }
 
         #endregion
-
     }
 }

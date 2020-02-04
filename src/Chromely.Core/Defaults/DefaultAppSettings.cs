@@ -109,7 +109,7 @@ namespace Chromely.Core.Defaults
 
                         Logger.Instance.Log.Info("AppSettings FileName:" + appSettingsFile);
                     }
-                    catch (Exception exception)
+                    catch (Exception exception)  
                     {
                         Logger.Instance.Log.Warn(exception.ToString());
                         Logger.Instance.Log.Warn("If this is about cycle was detecttion please see - https://github.com/dotnet/corefx/issues/41288");

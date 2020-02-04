@@ -76,14 +76,6 @@ namespace Chromely.CefGlue.Browser.EventParams
         /// <param name="targetFrameName">
         /// The target frame name.
         /// </param>
-        /// <param name="popupFeatures">
-        /// The popup features.
-        /// </param>
-        /// <param name="windowInfo">
-        /// The window info.
-        /// </param>
-        /// The no javascript access.
-        /// </param>
         public BeforePopupEventArgs(
             CefFrame frame,
             string targetUrl,

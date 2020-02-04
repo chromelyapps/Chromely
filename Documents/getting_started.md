@@ -71,7 +71,7 @@ class Program
 #### Custom Application Class - required
 
 To create a Chromely application, a custom application class (and instance) is required. The class can inherit from any of the abstract class implementations:
-- [BasicChromelyAp](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely/BasicChromelyApp.cs) 
+- [BasicChromelyApp](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely/BasicChromelyApp.cs) 
 - [ChromelyEventedApp](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely/ChromelyEventedApp.cs) 
 - [ChromelyApp](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/ChromelyApp.cs) 
 

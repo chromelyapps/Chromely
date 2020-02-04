@@ -73,6 +73,6 @@ namespace Chromely.Native
                 UnhookWindowsHookEx(NativeInstance._hookID);
         }
 
-        internal static WinAPIHost NativeInstance { get; set; }
+        public static WinAPIHost NativeInstance { get; set; }
     }
 }

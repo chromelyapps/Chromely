@@ -7,6 +7,7 @@ using Chromely.Core.Configuration;
 using Chromely.Core.Host;
 using Chromely.Core.Logging;
 using Chromely.Core.Network;
+using Chromely.Native;
 using Xilium.CefGlue;
 using Xilium.CefGlue.Wrapper;
 
@@ -19,7 +20,9 @@ namespace Chromely.Windows
         private readonly IChromelyCommandTaskRunner _commandTaskRunner;
         private readonly CefMessageRouterBrowserSide _browserMessageRouter;
 
+        private IChromelyFramelessController _framelessController;
         private IntPtr _browserWindowHandle;
+        private bool _isFramelessControllerInitialized = false;
 
         public Window(IChromelyNativeHost nativeHost, IChromelyContainer container, IChromelyConfiguration config, IChromelyCommandTaskRunner commandTaskRunner, CefMessageRouterBrowserSide browserMessageRouter)
             : base(nativeHost, config)
@@ -64,9 +67,9 @@ namespace Chromely.Windows
             {
                 if (Browser != null)
                 {
-                    Browser.InvokeAsyncIfPossible(() => Browser.OnBeforeClose(new BeforeCloseEventArgs()));
+                    Browser?.InvokeAsyncIfPossible(() => Browser?.OnBeforeClose(new BeforeCloseEventArgs()));
 
-                    Browser.Dispose();
+                    Browser?.Dispose();
                     Browser = null;
                     _browserWindowHandle = IntPtr.Zero;
                 }
@@ -81,6 +84,10 @@ namespace Chromely.Windows
 
         protected override void OnCreated(object sender, CreatedEventArgs createdEventArgs)
         {
+            Handle = createdEventArgs.Window;
+            WinXID = createdEventArgs.WinXID;
+            Browser.HostHandle = createdEventArgs.Window;
+
             var windowInfo = CefWindowInfo.Create();
             windowInfo.SetAsChild(createdEventArgs.WinXID, new CefRectangle(0, 0, _config.WindowOptions.Size.Width, _config.WindowOptions.Size.Height));
 
@@ -114,6 +121,24 @@ namespace Chromely.Windows
             _browserWindowHandle = Browser.CefBrowser.GetHost().GetWindowHandle();
             if (_browserWindowHandle != IntPtr.Zero)
             {
+                if (!_isFramelessControllerInitialized)
+                {
+                    if (_config.Platform == ChromelyPlatform.Windows)
+                    {
+                        var windowFrameless = _config.WindowOptions == null ? false : _config.WindowOptions.WindowFrameless;
+                        var framelessOption = _config.WindowOptions?.FramelessOption;
+
+                        if (windowFrameless &&
+                            framelessOption != null &&
+                            framelessOption.IsDraggable &&
+                            framelessOption.UseDefaultFramelessController)
+                        {
+                            _isFramelessControllerInitialized = true;
+                            _framelessController = new WindowMessageInterceptor(_config, _browserWindowHandle, Handle);
+                        }
+                    }
+                }
+
                 ResizeBrowser(_browserWindowHandle);
             }
         }
