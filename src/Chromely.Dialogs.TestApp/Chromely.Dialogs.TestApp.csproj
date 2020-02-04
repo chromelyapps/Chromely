@@ -11,7 +11,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="IctBaden.Stonehenge3" Version="3.9.4" />
+      <PackageReference Include="IctBaden.Stonehenge3" Version="3.10.2" />
     </ItemGroup>
 
     <ItemGroup>

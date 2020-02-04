@@ -9,6 +9,7 @@ using Chromely.Core.Configuration;
 using Chromely.Core.Helpers;
 using Chromely.Core.Host;
 using Chromely.Core.Logging;
+using Chromely.Native;
 using Chromely.Windows;
 using IctBaden.Stonehenge3.Hosting;
 using IctBaden.Stonehenge3.Kestrel;
@@ -17,14 +18,16 @@ using IctBaden.Stonehenge3.Vue;
 
 namespace Chromely.Dialogs.TestApp
 {
-    class Program
+    internal class Program
     {
+        [STAThread]
         static void Main(string[] args)
         {
             Console.WriteLine("Sample showing Chromely.Dialogs");
             Console.WriteLine();
             
             ChromelyDialogs.Init(null);
+            //ChromelyDialogs.MessageBox("Test");
 
             Console.WriteLine($"Running on {RuntimeEnvironment.GetRuntimeDirectory()}, CLR {RuntimeEnvironment.GetSystemVersion()}");
             Console.WriteLine();
@@ -91,6 +94,8 @@ namespace Chromely.Dialogs.TestApp
 
                 RegisterEventHandler(container, CefEventKey.FrameLoadStart, new ChromelyEventHandler<FrameLoadEndEventArgs>(CefEventKey.FrameLoadStart, Program.OnFrameStartLoading));
                 RegisterEventHandler(container, CefEventKey.FrameLoadEnd, new ChromelyEventHandler<FrameLoadEndEventArgs>(CefEventKey.FrameLoadEnd, Program.OnFrameLoaded));
+                
+                //ChromelyDialogs.Init(null);
             }
 
             private void RegisterEventHandler<T>(IChromelyContainer container, CefEventKey key, ChromelyEventHandler<T> handler)
@@ -107,7 +112,13 @@ namespace Chromely.Dialogs.TestApp
                 //ChromelyDialogs.Init(null);
             }
 
-
+            public override IChromelyWindow CreateWindow()
+            {
+                var wnd = base.CreateWindow();
+                //ChromelyDialogs.Init(wnd);
+                return wnd;
+            }
+            
         }
 
     }
