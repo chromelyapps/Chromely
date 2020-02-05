@@ -116,11 +116,32 @@ namespace Chromely.Native
             private bool IsForwardedArea()
             {
                 GetCursorPos(out var point);
-                ScreenToClient(_nativeHost.Handle, ref point);
-                GetClientRect(_nativeHost.Handle, out var mainClientRect);
+                DpiScreenToClient(_nativeHost.Handle, ref point);
                 return _framelessOption.IsDraggable(_nativeHost, new System.Drawing.Point(point.X, point.Y));
             }
-        }
 
+            /// <summary>
+            /// Gets the correct point for the scaled window.
+            /// </summary>
+            private void DpiScreenToClient(IntPtr hWnd, ref POINT point)
+            {
+                const int StandardDpi = 96;
+                float scale = 1;
+                var hdc = GetDC(hWnd);
+                try
+                {
+                    var dpi = GetDeviceCaps(hdc, (int)DeviceCap.LOGPIXELSY);
+                    scale = (float)dpi / StandardDpi;
+                }
+                finally
+                {
+                    ReleaseDC(hWnd, hdc);
+                }
+
+                ScreenToClient(_nativeHost.Handle, ref point);
+                point.X = (int)(point.X / scale);
+                point.Y = (int)(point.Y / scale);
+            }
+        }
     }
 }
