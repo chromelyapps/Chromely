@@ -76,10 +76,16 @@ namespace Chromely.CefGlue.Browser.Handlers
             {
                 lock (objLock)
                 {
-                    // TODO: Must cut out regions of overlay elements (e.g. children, higher z-index).
-                    // Even better approach can be hittest-like, based on the elements under cursor.
                     framelessOption.IsDraggable = (nativeHost, point) =>
-                        regions.Any(r => r.Draggable && ContainsPoint(r, point));
+                    {
+                        var hitNoDrag = regions.Any(r => !r.Draggable && ContainsPoint(r, point));
+                        if (hitNoDrag)
+                        {
+                            return false;
+                        }
+
+                        return regions.Any(r => r.Draggable && ContainsPoint(r, point));
+                    };
                 }
             }
         }
