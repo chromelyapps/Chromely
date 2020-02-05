@@ -38,6 +38,10 @@ namespace Chromely.Windows
 
             Browser.Created += OnBrowserCreated;
 
+            // 'Created' event sometimes tries to attach interceptors too early, while all windows is not created yet,
+            // so it's better to use 'FrameLoadStart'.
+            Browser.FrameLoadStart += OnFrameLoadStart;
+
             ShowWindow();
         }
 
@@ -121,24 +125,30 @@ namespace Chromely.Windows
             _browserWindowHandle = Browser.CefBrowser.GetHost().GetWindowHandle();
             if (_browserWindowHandle != IntPtr.Zero)
             {
-                if (!_isFramelessControllerInitialized)
-                {
-                    if (_config.Platform == ChromelyPlatform.Windows)
-                    {
-                        var windowFrameless = _config.WindowOptions == null ? false : _config.WindowOptions.WindowFrameless;
-                        var framelessOption = _config.WindowOptions?.FramelessOption;
-
-                        if (windowFrameless &&
-                            framelessOption != null &&
-                            framelessOption.UseDefaultFramelessController)
-                        {
-                            _isFramelessControllerInitialized = true;
-                            _framelessController = new WindowMessageInterceptor(_config, _browserWindowHandle, _nativeHost);
-                        }
-                    }
-                }
 
                 ResizeBrowser(_browserWindowHandle);
+            }
+        }
+
+        private void OnFrameLoadStart(object sender, EventArgs e)
+        {
+            if (_isFramelessControllerInitialized)
+            {
+                return;
+            }
+
+            if (_config.Platform == ChromelyPlatform.Windows)
+            {
+                var windowFrameless = _config.WindowOptions == null ? false : _config.WindowOptions.WindowFrameless;
+                var framelessOption = _config.WindowOptions?.FramelessOption;
+
+                if (windowFrameless &&
+                    framelessOption != null &&
+                    framelessOption.UseDefaultFramelessController)
+                {
+                    _isFramelessControllerInitialized = true;
+                    _framelessController = new WindowMessageInterceptor(_config, _browserWindowHandle, _nativeHost);
+                }
             }
         }
     }
