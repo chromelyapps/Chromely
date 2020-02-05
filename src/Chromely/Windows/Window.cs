@@ -130,11 +130,10 @@ namespace Chromely.Windows
 
                         if (windowFrameless &&
                             framelessOption != null &&
-                            framelessOption.IsDraggable &&
                             framelessOption.UseDefaultFramelessController)
                         {
                             _isFramelessControllerInitialized = true;
-                            _framelessController = new WindowMessageInterceptor(_config, _browserWindowHandle, Handle);
+                            _framelessController = new WindowMessageInterceptor(_config, _browserWindowHandle, _nativeHost);
                         }
                     }
                 }

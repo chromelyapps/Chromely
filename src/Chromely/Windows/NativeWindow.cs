@@ -8,7 +8,7 @@ namespace Chromely.Windows
     public abstract class NativeWindow
     {
         private readonly IChromelyConfiguration _config;
-        private readonly IChromelyNativeHost _nativeHost;
+        protected readonly IChromelyNativeHost _nativeHost;
 
         public NativeWindow(IChromelyNativeHost nativeHost, IChromelyConfiguration config)
         {

@@ -14,7 +14,7 @@ namespace Chromely.Native
         private readonly IChromelyConfiguration _config;
         private readonly ForwardMesssageHandler[] _hitTestReplacers;
 
-        public WindowMessageInterceptor(IChromelyConfiguration config, IntPtr browserHandle, IntPtr windowHandle)
+        public WindowMessageInterceptor(IChromelyConfiguration config, IntPtr browserHandle, IChromelyNativeHost nativeHost)
         {
             _config = config;
             var framelessOption = _config?.WindowOptions?.FramelessOption ?? new FramelessOption();
@@ -22,7 +22,7 @@ namespace Chromely.Native
             var childHandles = GetAllChildHandles(browserHandle);
             _hitTestReplacers = childHandles
                 .Concat(new[] { browserHandle })
-                .Select(h => new ForwardMesssageHandler(h, windowHandle, framelessOption, h == browserHandle))
+                .Select(h => new ForwardMesssageHandler(h, nativeHost, framelessOption, h == browserHandle))
                 .ToArray();
         }
 
@@ -62,16 +62,16 @@ namespace Chromely.Native
         private class ForwardMesssageHandler
         {
             private readonly IntPtr _handle;
-            private readonly IntPtr _mainHandle;
+            private readonly IChromelyNativeHost _nativeHost;
             private readonly bool _isHost;
             private readonly IntPtr _originalWndProc;
             private readonly WndProc _wndProc;
             private readonly FramelessOption _framelessOption;
 
-            public ForwardMesssageHandler(IntPtr handle, IntPtr mainHandle, FramelessOption framelessOption, bool isHost)
+            public ForwardMesssageHandler(IntPtr handle, IChromelyNativeHost nativeHost, FramelessOption framelessOption, bool isHost)
             {
                 _handle = handle;
-                _mainHandle = mainHandle;
+                _nativeHost = nativeHost;
                 _framelessOption = framelessOption ?? new FramelessOption();
                 _isHost = isHost;
                 _originalWndProc = GetWindowLongPtr(_handle, (int)WindowLongFlags.GWL_WNDPROC);
@@ -85,7 +85,7 @@ namespace Chromely.Native
                 var isForwardedArea = IsForwardedArea();
                 if (isForwardedArea)
                 {
-                    SendMessage(_mainHandle, (int)message, wParam, lParam);
+                    SendMessage(_nativeHost.Handle, (int)message, wParam, lParam);
                 }
 
                 var msg = (WM)message;
@@ -116,11 +116,9 @@ namespace Chromely.Native
             private bool IsForwardedArea()
             {
                 GetCursorPos(out var point);
-                ScreenToClient(_mainHandle, ref point);
-                GetClientRect(_mainHandle, out var mainClientRect);
-                var right = mainClientRect.Width - point.X;
-
-                return point.Y <= _framelessOption.DraggableHeight && right > _framelessOption.NonDraggableRightOffsetWidth;
+                ScreenToClient(_nativeHost.Handle, ref point);
+                GetClientRect(_nativeHost.Handle, out var mainClientRect);
+                return _framelessOption.IsDraggable(_nativeHost, new System.Drawing.Point(point.X, point.Y));
             }
         }
 

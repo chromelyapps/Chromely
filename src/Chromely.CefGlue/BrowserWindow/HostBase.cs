@@ -47,6 +47,7 @@ namespace Chromely.CefGlue.BrowserWindow
 
         #region IChromelyWindow implementations
 
+        public IChromelyNativeHost NativeHost => _nativeHost;
         public IChromelyConfiguration Config => _config;
 
         /// <summary>

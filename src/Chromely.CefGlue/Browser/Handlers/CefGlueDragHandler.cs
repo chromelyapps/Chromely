@@ -9,6 +9,7 @@
 
 using Chromely.Core.Configuration;
 using System.Drawing;
+using System.Linq;
 using Xilium.CefGlue;
 
 namespace Chromely.CefGlue.Browser.Handlers
@@ -75,27 +76,18 @@ namespace Chromely.CefGlue.Browser.Handlers
             {
                 lock (objLock)
                 {
-                    foreach (var region in regions)
-                    {
-                        var rect = new Rectangle(region.Bounds.X, region.Bounds.Y, region.Bounds.Width, region.Bounds.Height);
-
-                        if (region.Draggable)
-                        {
-                            // This will use the -webkit-app-region: drag parameter 
-                            // For example if above sample is used will be set to
-                            // framelessOption.DraggableHeight- 32
-                            framelessOption.DraggableHeight = rect.Height;
-                        }
-                        else
-                        {
-                            // This will use the -webkit-app-region: no-dragparameter 
-                            // For example if above sample is used will be set to
-                            // framelessOption.NonDraggableRightOffsetWidth - 140
-                            framelessOption.NonDraggableRightOffsetWidth = rect.Width;
-                        }
-                    }
+                    // TODO: Must cut out regions of overlay elements (e.g. children, higher z-index).
+                    // Even better approach can be hittest-like, based on the elements under cursor.
+                    framelessOption.IsDraggable = (nativeHost, point) =>
+                        regions.Any(r => r.Draggable && ContainsPoint(r, point));
                 }
             }
+        }
+
+        private bool ContainsPoint(CefDraggableRegion region, Point point)
+        {
+            return point.X >= region.Bounds.X && point.X <= (region.Bounds.X + region.Bounds.Width)
+                && point.Y >= region.Bounds.Y && point.Y <= (region.Bounds.Y + region.Bounds.Height);
         }
     }
 }
