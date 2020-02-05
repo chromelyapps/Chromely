@@ -39,9 +39,6 @@ namespace Chromely.Native
 
         protected override IntPtr WndProc(IntPtr hWnd, uint message, IntPtr wParam, IntPtr lParam)
         {
-            // TODO: Find out how to calculate the caption size.
-            const int CaptionHeight = 7;
-
             WM msg = (WM)message;
             switch (msg)
             {
@@ -105,9 +102,15 @@ namespace Chromely.Native
                     }
                 case WM.NCCALCSIZE:
                     {
+                        var captionHeight = GetSystemMetrics(SystemMetrics.CYCAPTION);
+                        var menuHeight = GetSystemMetrics(SystemMetrics.CYMENU);
+                        var padderBorder = GetSystemMetrics(SystemMetrics.CXPADDEDBORDER);
+                        // NB: 'menuHeight' substraction probably may broke it if window will have a Title in a caption.
+                        var topFrameHeight = captionHeight - menuHeight + padderBorder;
+
                         var result = DefWindowProc(hWnd, message, wParam, lParam);
                         var csp = (NcCalcSizeParams)Marshal.PtrToStructure(lParam, typeof(NcCalcSizeParams));
-                        csp.Region.Input.TargetWindowRect.Top -= _maximized ? 0 : CaptionHeight;
+                        csp.Region.Input.TargetWindowRect.Top -= _maximized ? 0 : topFrameHeight;
                         Marshal.StructureToPtr(csp, lParam, false);
                         return result;
                     }
