@@ -186,6 +186,43 @@ namespace Chromely.CefGlue.BrowserWindow
         }
 
         /// <summary>
+        /// The register external scheme handlers.
+        /// </summary>
+        private void RegisterExternalSchemeHandlers()
+        {
+            if (!CefRuntime.CurrentlyOn(CefThreadId.UI))
+            {
+                PostTask(CefThreadId.UI, RegisterExternalSchemeHandlers);
+                return;
+            }
+
+            // Register external scheme handlers
+            var schemeSchemes = _config?.UrlSchemes.GetAllExternalSchemes();
+            if (schemeSchemes != null && schemeSchemes.Any())
+            {
+                foreach (var item in schemeSchemes)
+                {
+                    bool isDefault = true;
+                    if (!string.IsNullOrWhiteSpace(item.Name))
+                    {
+                        var schemeObj = _container.GetInstance(typeof(IChromelySchemeHandlerFactory), item.Name);
+                        var schemeHandlerFactory = schemeObj as CefSchemeHandlerFactory;
+                        if (schemeHandlerFactory != null)
+                        {
+                            isDefault = false;
+                            CefRuntime.RegisterSchemeHandlerFactory(item.Scheme, item.Host, schemeHandlerFactory);
+                        }
+                    }
+
+                    if (isDefault)
+                    {
+                        CefRuntime.RegisterSchemeHandlerFactory(item.Scheme, item.Host, new ExternalRequestSchemeHandlerFactory());
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// The register message routers.
         /// </summary>
         private void RegisterMessageRouters()

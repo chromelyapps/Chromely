@@ -52,6 +52,14 @@ namespace Chromely.Core.Infrastructure
             return urlSchemes.Where(x => x.UrlSchemeType == UrlSchemeType.Custom);
         }
 
+        public static IEnumerable<UrlScheme> GetAllExternalSchemes(this List<UrlScheme> urlSchemes)
+        {
+            if (urlSchemes == null || !urlSchemes.Any())
+                return new List<UrlScheme>();
+
+            return urlSchemes.Where(x => x.UrlSchemeType == UrlSchemeType.External);
+        }
+
         public static List<UrlScheme> GetSchemeList(this List<UrlScheme> urlSchemes, string url, UrlSchemeType type)
         {
             if (urlSchemes == null ||
