@@ -24,8 +24,6 @@ namespace Chromely.Native
         };
 
         private bool _maximized;
-        private bool _hasCapture;
-        private POINT _dragPoint;
 
         protected override Tuple<WindowStyles, WindowExStyles, ShowWindowCommand> GetWindowStyles(WindowState state)
         {
@@ -42,50 +40,6 @@ namespace Chromely.Native
             WM msg = (WM)message;
             switch (msg)
             {
-                case WM.LBUTTONDOWN:
-                    {
-                        if (!_maximized)
-                        {
-                            GetCursorPos(out var point);
-                            ScreenToClient(hWnd, ref point);
-
-                            // TODO: For some reason it only works when called twice in a row. Try to resolve it later.
-                            SetCapture(hWnd);
-                            SetCapture(hWnd);
-                            _dragPoint = point;
-                        }
-                        break;
-                    }
-                case WM.CAPTURECHANGED:
-                    {
-                        _hasCapture = lParam == hWnd;
-                        break;
-                    }
-                case WM.MOUSEMOVE:
-                    {
-                        if (_hasCapture)
-                        {
-                            var currentPoint = new System.Drawing.Point((int)lParam);
-                            var current = new Point(currentPoint.X, currentPoint.Y);
-                            ClientToScreen(hWnd, ref current);
-
-                            var position = new Point(current.X - _dragPoint.X, current.Y - _dragPoint.Y);
-                            SetWindowPos(hWnd, IntPtr.Zero, position.X, position.Y, 0, 0,
-                                SetWindowPosFlags.DoNotActivate
-                                | SetWindowPosFlags.IgnoreZOrder
-                                | SetWindowPosFlags.DoNotChangeOwnerZOrder
-                                | SetWindowPosFlags.IgnoreResize);
-                        }
-                        break;
-                    }
-                case WM.LBUTTONUP:
-                    {
-                        if (_hasCapture)
-                        {
-                            ReleaseCapture();
-                        }
-                        break;
-                    }
                 case WM.CREATE:
                     _handle = hWnd;
                     break;

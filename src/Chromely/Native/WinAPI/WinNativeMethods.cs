@@ -857,6 +857,31 @@ namespace Chromely.Native
             return Environment.Is64BitProcess ? GetWindowLongPtr64(hWnd, nIndex) : GetWindowLongPtr32(hWnd, nIndex);
         }
 
+        public enum ShowWindowCommands : int
+        {
+            Hide = 0,
+            Normal = 1,
+            Minimized = 2,
+            Maximized = 3,
+        }
+
+        [Serializable]
+        [StructLayout(LayoutKind.Sequential)]
+        public struct WINDOWPLACEMENT
+        {
+            public int Length;
+            public int Flags;
+            public ShowWindowCommands ShowCmd;
+            public System.Drawing.Point PtMinPosition;
+            public System.Drawing.Point PtMaxPosition;
+            public System.Drawing.Rectangle RcNormalPosition;
+        }
+
+
+        [DllImport(User32DLL, SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool GetWindowPlacement(IntPtr hWnd, ref WINDOWPLACEMENT lpwndpl);
+
         [DllImport(User32DLL)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool EnumChildWindows(IntPtr hWnd, EnumWindowProc callback, IntPtr lParam);

@@ -2,6 +2,7 @@
 using Chromely.Core.Host;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using static Chromely.Native.WinNativeMethods;
@@ -12,7 +13,7 @@ namespace Chromely.Native
     {
         public delegate IntPtr WndProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
         private readonly IChromelyConfiguration _config;
-        private readonly ForwardMesssageHandler[] _hitTestReplacers;
+        private readonly DragWindowHandler[] _dragWindowHandlers;
 
         public WindowMessageInterceptor(IChromelyConfiguration config, IntPtr browserHandle, IChromelyNativeHost nativeHost)
         {
@@ -20,9 +21,9 @@ namespace Chromely.Native
             var framelessOption = _config?.WindowOptions?.FramelessOption ?? new FramelessOption();
 
             var childHandles = GetAllChildHandles(browserHandle);
-            _hitTestReplacers = childHandles
+            _dragWindowHandlers = childHandles
                 .Concat(new[] { browserHandle })
-                .Select(h => new ForwardMesssageHandler(h, nativeHost, framelessOption, h == browserHandle))
+                .Select(h => new DragWindowHandler(h, nativeHost, framelessOption, h == browserHandle))
                 .ToArray();
         }
 
@@ -59,7 +60,7 @@ namespace Chromely.Native
             return true;
         }
 
-        private class ForwardMesssageHandler
+        private class DragWindowHandler
         {
             private readonly IntPtr _handle;
             private readonly IChromelyNativeHost _nativeHost;
@@ -67,8 +68,10 @@ namespace Chromely.Native
             private readonly IntPtr _originalWndProc;
             private readonly WndProc _wndProc;
             private readonly FramelessOption _framelessOption;
+            private bool _hasCapture;
+            private POINT _dragPoint;
 
-            public ForwardMesssageHandler(IntPtr handle, IChromelyNativeHost nativeHost, FramelessOption framelessOption, bool isHost)
+            public DragWindowHandler(IntPtr handle, IChromelyNativeHost nativeHost, FramelessOption framelessOption, bool isHost)
             {
                 _handle = handle;
                 _nativeHost = nativeHost;
@@ -82,48 +85,93 @@ namespace Chromely.Native
 
             private IntPtr WndProc(IntPtr hWnd, uint message, IntPtr wParam, IntPtr lParam)
             {
-                var isForwardedArea = IsForwardedArea();
-                if (isForwardedArea)
-                {
-                    SendMessage(_nativeHost.Handle, (int)message, wParam, lParam);
-                }
-
                 var msg = (WM)message;
+                var isDraggableArea = IsDraggableArea(msg, lParam);
+
                 switch (msg)
                 {
-                    case WM.NCHITTEST:
+                    case WM.LBUTTONDOWN:
+                    {
+                        if (!isDraggableArea)
                         {
-                            if (isForwardedArea && _isHost)
-                            {
-                                return (IntPtr)HitTestValue.HTNOWHERE;
-                            }
                             break;
                         }
-                    default:
+
+                        var maximized = IsWindowMaximized(_nativeHost.Handle);
+                        if (maximized)
                         {
-                            if (isForwardedArea)
-                            {
-                                return IntPtr.Zero;
-                            }
                             break;
                         }
+
+                        GetCursorPos(out var point);
+                        ScreenToClient(_nativeHost.Handle, ref point);
+                        _dragPoint = point;
+
+                        // TODO: For some reason it only works when called twice in a row. Try to resolve it later.
+                        SetCapture(hWnd);
+                        SetCapture(hWnd);
+                        return IntPtr.Zero;
+                    }
+                case WM.CAPTURECHANGED:
+                    {
+                        _hasCapture = lParam == hWnd;
+                        return IntPtr.Zero;
+                    }
+                case WM.MOUSEMOVE:
+                    {
+                        if (_hasCapture)
+                        {
+                            var currentPoint = new Point((int)lParam);
+                            var current = new Point(currentPoint.X, currentPoint.Y);
+                            ClientToScreen(_nativeHost.Handle, ref current);
+
+                            var position = new Point(current.X - _dragPoint.X, current.Y - _dragPoint.Y);
+                            SetWindowPos(_nativeHost.Handle, IntPtr.Zero, position.X, position.Y, 0, 0,
+                                SetWindowPosFlags.DoNotActivate
+                                | SetWindowPosFlags.IgnoreZOrder
+                                | SetWindowPosFlags.DoNotChangeOwnerZOrder
+                                | SetWindowPosFlags.IgnoreResize);
+                            return IntPtr.Zero;
+                        }
+                        break;
+                    }
+                case WM.LBUTTONUP:
+                    {
+                        if (_hasCapture)
+                        {
+                            ReleaseCapture();
+                        }
+                        break;
+                    }
                 }
 
                 return CallWindowProc(_originalWndProc, hWnd, message, wParam, lParam);
             }
 
-            // TODO: Enchance to configurable region.
-            private bool IsForwardedArea()
+            private bool IsDraggableArea(WM message, IntPtr lParam)
             {
-                GetCursorPos(out var point);
-                DpiScreenToClient(_nativeHost.Handle, ref point);
-                return _framelessOption.IsDraggable(_nativeHost, new System.Drawing.Point(point.X, point.Y));
+                if (message != WM.LBUTTONDOWN)
+                {
+                    return false;
+                }
+
+                var point = new Point((int)lParam);
+                AdjustPointDpi(_nativeHost.Handle, ref point);
+                return _framelessOption.IsDraggable(_nativeHost, point);
+            }
+
+            private bool IsWindowMaximized(IntPtr hWnd)
+            {
+                WINDOWPLACEMENT placement = new WINDOWPLACEMENT();
+                placement.Length = Marshal.SizeOf(placement);
+                GetWindowPlacement(hWnd, ref placement);
+                return placement.ShowCmd == ShowWindowCommands.Maximized;
             }
 
             /// <summary>
             /// Gets the correct point for the scaled window.
             /// </summary>
-            private void DpiScreenToClient(IntPtr hWnd, ref POINT point)
+            private void AdjustPointDpi(IntPtr hWnd, ref Point point)
             {
                 const int StandardDpi = 96;
                 float scale = 1;
@@ -138,7 +186,6 @@ namespace Chromely.Native
                     ReleaseDC(hWnd, hdc);
                 }
 
-                ScreenToClient(_nativeHost.Handle, ref point);
                 point.X = (int)(point.X / scale);
                 point.Y = (int)(point.Y / scale);
             }
