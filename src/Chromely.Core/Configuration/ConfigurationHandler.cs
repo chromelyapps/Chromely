@@ -172,6 +172,7 @@ namespace Chromely.Core.Configuration
                     case UrlSchemeOption.COMMAND: return UrlSchemeType.Command;
                     case UrlSchemeOption.CUSTOM: return UrlSchemeType.Custom;
                     case UrlSchemeOption.EXTERNAL: return UrlSchemeType.External;
+                    case UrlSchemeOption.AJAX: return UrlSchemeType.Ajax;
                 }
 
                 return UrlSchemeType.None;

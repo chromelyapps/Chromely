@@ -248,6 +248,7 @@ namespace Chromely.CefGlue.BrowserWindow
             RegisterMessageRouters();
             RegisterResourceHandlers();
             RegisterSchemeHandlers();
+            RegisterAjaxSchemeHandlers();
 
             CefBinariesLoader.DeleteTempFiles(tempFiles);
 

@@ -7,6 +7,7 @@
         AssemblyResource,
         Custom,
         Command,
-        External
+        External,
+        Ajax
     }
 }
