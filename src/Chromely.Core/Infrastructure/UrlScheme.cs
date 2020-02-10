@@ -106,6 +106,11 @@ namespace Chromely.Core.Infrastructure
             return IsUrlOfSameScheme(url) && (UrlSchemeType == UrlSchemeType.Command);
         }
 
+        public bool IsUrlRegisteredAjax(string url)
+        {
+            return IsUrlOfSameScheme(url) && (UrlSchemeType == UrlSchemeType.Ajax);
+        }
+
         private bool IsValidUrl(string url)
         {
             if (BaseUrlStrict &&

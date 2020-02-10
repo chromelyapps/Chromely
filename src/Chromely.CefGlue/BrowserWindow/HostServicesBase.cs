@@ -186,18 +186,18 @@ namespace Chromely.CefGlue.BrowserWindow
         }
 
         /// <summary>
-        /// The register external scheme handlers.
+        /// The register AJAX scheme handlers.
         /// </summary>
-        private void RegisterExternalSchemeHandlers()
+        private void RegisterAjaxSchemeHandlers()
         {
             if (!CefRuntime.CurrentlyOn(CefThreadId.UI))
             {
-                PostTask(CefThreadId.UI, RegisterExternalSchemeHandlers);
+                PostTask(CefThreadId.UI, RegisterAjaxSchemeHandlers);
                 return;
             }
 
-            // Register external scheme handlers
-            var schemeSchemes = _config?.UrlSchemes.GetAllExternalSchemes();
+            // Register AJAX scheme handlers
+            var schemeSchemes = _config?.UrlSchemes.GetAllAjaxSchemes();
             if (schemeSchemes != null && schemeSchemes.Any())
             {
                 foreach (var item in schemeSchemes)
