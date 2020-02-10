@@ -3,10 +3,10 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Platforms>AnyCPU</Platforms>
-    <ProductVersion>5.0.0.0-pre03</ProductVersion>
+    <ProductVersion>5.0.0.0-pre04</ProductVersion>
     <AssemblyVersion>5.0.0.0</AssemblyVersion>
     <FileVersion>5.0.0.0</FileVersion>
-    <Version>5.0.0.0-pre03</Version>
+    <Version>5.0.0.0-pre04</Version>
     <Product>Chromely.Core</Product>
     <Authors>Chromely Projects</Authors>
     <Company>Chromely Projects</Company>
@@ -15,7 +15,7 @@
     <Copyright>Copyright © 2017-2020 Chromely Projects</Copyright>
     <PackageLicenseUrl>https://github.com/chromelyapps/Chromely/blob/master/LICENSE.md</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/chromelyapps/Chromely</PackageProjectUrl>
-    <PackageIcon>chromely.ico</PackageIcon>
+    <PackageIcon>chromely.png</PackageIcon>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageReleaseNotes>
@@ -55,7 +55,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="chromely.ico" Pack="true" Visible="false" PackagePath="" />
+    <None Include="chromely.png" Pack="true" PackagePath=""/>
   </ItemGroup>
-
+  
 </Project>
