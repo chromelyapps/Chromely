@@ -13,7 +13,7 @@ namespace Chromely.Native
     {
         public delegate IntPtr WndProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
         private readonly IChromelyConfiguration _config;
-        private readonly ForwardMesssageHandler[] _hitTestReplacers;
+        private readonly DragWindowHandler[] _dragWindowHandlers;
 
         public WindowMessageInterceptor(IChromelyConfiguration config, IntPtr browserHandle, IChromelyNativeHost nativeHost)
         {
@@ -21,9 +21,9 @@ namespace Chromely.Native
             var framelessOption = _config?.WindowOptions?.FramelessOption ?? new FramelessOption();
 
             var childHandles = GetAllChildHandles(browserHandle);
-            _hitTestReplacers = childHandles
+            _dragWindowHandlers = childHandles
                 .Concat(new[] { browserHandle })
-                .Select(h => new ForwardMesssageHandler(h, nativeHost, framelessOption, h == browserHandle))
+                .Select(h => new DragWindowHandler(h, nativeHost, framelessOption, h == browserHandle))
                 .ToArray();
         }
 
@@ -60,7 +60,7 @@ namespace Chromely.Native
             return true;
         }
 
-        private class ForwardMesssageHandler
+        private class DragWindowHandler
         {
             private readonly IntPtr _handle;
             private readonly IChromelyNativeHost _nativeHost;
@@ -71,7 +71,7 @@ namespace Chromely.Native
             private bool _hasCapture;
             private POINT _dragPoint;
 
-            public ForwardMesssageHandler(IntPtr handle, IChromelyNativeHost nativeHost, FramelessOption framelessOption, bool isHost)
+            public DragWindowHandler(IntPtr handle, IChromelyNativeHost nativeHost, FramelessOption framelessOption, bool isHost)
             {
                 _handle = handle;
                 _nativeHost = nativeHost;
