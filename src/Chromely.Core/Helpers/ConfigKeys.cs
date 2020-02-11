@@ -23,6 +23,7 @@
         public const string COMMAND = nameof(COMMAND);
         public const string CUSTOM = nameof(CUSTOM);
         public const string EXTERNAL = nameof(EXTERNAL);
+        public const string AJAX = nameof(AJAX);
     }
 
     public static class DefaultSchemeName

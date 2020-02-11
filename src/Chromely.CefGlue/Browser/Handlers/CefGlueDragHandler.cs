@@ -9,6 +9,7 @@
 
 using Chromely.Core.Configuration;
 using System.Drawing;
+using System.Linq;
 using Xilium.CefGlue;
 
 namespace Chromely.CefGlue.Browser.Handlers
@@ -75,27 +76,24 @@ namespace Chromely.CefGlue.Browser.Handlers
             {
                 lock (objLock)
                 {
-                    foreach (var region in regions)
+                    framelessOption.IsDraggable = (nativeHost, point) =>
                     {
-                        var rect = new Rectangle(region.Bounds.X, region.Bounds.Y, region.Bounds.Width, region.Bounds.Height);
+                        var hitNoDrag = regions.Any(r => !r.Draggable && ContainsPoint(r, point));
+                        if (hitNoDrag)
+                        {
+                            return false;
+                        }
 
-                        if (region.Draggable)
-                        {
-                            // This will use the -webkit-app-region: drag parameter 
-                            // For example if above sample is used will be set to
-                            // framelessOption.DraggableHeight- 32
-                            framelessOption.DraggableHeight = rect.Height;
-                        }
-                        else
-                        {
-                            // This will use the -webkit-app-region: no-dragparameter 
-                            // For example if above sample is used will be set to
-                            // framelessOption.NonDraggableRightOffsetWidth - 140
-                            framelessOption.NonDraggableRightOffsetWidth = rect.Width;
-                        }
-                    }
+                        return regions.Any(r => r.Draggable && ContainsPoint(r, point));
+                    };
                 }
             }
+        }
+
+        private bool ContainsPoint(CefDraggableRegion region, Point point)
+        {
+            return point.X >= region.Bounds.X && point.X <= (region.Bounds.X + region.Bounds.Width)
+                && point.Y >= region.Bounds.Y && point.Y <= (region.Bounds.Y + region.Bounds.Height);
         }
     }
 }

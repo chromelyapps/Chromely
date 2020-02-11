@@ -3,10 +3,10 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Platforms>AnyCPU</Platforms>
-    <ProductVersion>5.0.77.0-pre03</ProductVersion>
+    <ProductVersion>5.0.77.0-pre04</ProductVersion>
     <AssemblyVersion>5.77.0.0</AssemblyVersion>
     <FileVersion>5.0.77.0</FileVersion>
-    <Version>5.0.77.0-pre03</Version>
+    <Version>5.0.77.0-pre04</Version>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Product>Chromely.CefGlue</Product>
@@ -15,7 +15,7 @@
     <Copyright>Copyright © 2017-2020 Chromely Projects</Copyright>
     <PackageLicenseUrl>https://github.com/chromelyapps/Chromely/blob/master/LICENSE.md</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/chromelyapps/Chromely</PackageProjectUrl>
-    <PackageIcon>chromely.ico</PackageIcon>
+    <PackageIcon>chromely.png</PackageIcon>
     <PackageTags>Cef Chromium HTML5 Desktop Chromely CefGlue  Restful  Ajax HTTP XHR MessageRouter .NET Core</PackageTags>
     <Description>Chromely CefGlue implementation library - this is in .NET Standard 2.0 as it can be used in both .NET (Windows) and .NET Core (Windows, Linux, MacOS). Chromely.CefGlue version naming is based Chromely and Chromium versions implemented- major.minor.chromuim version.patch e.g 1.0.70.0.</Description>
     <PackageReleaseNotes>
@@ -62,8 +62,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="chromely.ico" Pack="true" Visible="false" PackagePath="" />
+    <None Include="chromely.png" Pack="true" PackagePath=""/>
   </ItemGroup>
-
 
 </Project>

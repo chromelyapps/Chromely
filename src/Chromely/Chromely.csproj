@@ -3,10 +3,10 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Platforms>AnyCPU</Platforms>
-    <ProductVersion>5.0.77.0-pre03</ProductVersion>
+    <ProductVersion>5.0.77.0-pre04</ProductVersion>
     <AssemblyVersion>5.77.0.0</AssemblyVersion>
     <FileVersion>5.0.77.0</FileVersion>
-    <Version>5.0.77.0-pre03</Version>
+    <Version>5.0.77.0-pre04</Version>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Product>Chromely</Product>
@@ -15,7 +15,7 @@
     <Copyright>Copyright © 2017-2020 Chromely Projects</Copyright>
     <PackageLicenseUrl>https://github.com/chromelyapps/Chromely/blob/master/LICENSE.md</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/chromelyapps/Chromely</PackageProjectUrl>
-    <PackageIcon>chromely.ico</PackageIcon>
+    <PackageIcon>chromely.png</PackageIcon>
     <PackageTags>Cef Chromium HTML5 Desktop Chromely CefGlue  Restful  Ajax HTTP XHR MessageRouter .NET Core</PackageTags>
     <Description>Primary Chromely implementation library - this is in .NET Standard 2.0 as it can be used in both .NET (Windows) and .NET Core (Windows, Linux, MacOS). Chromely version naming is based Chromely and Chromium versions implemented- major.minor.chromuim version.patch e.g 1.0.70.0.</Description>
     <PackageReleaseNotes>
@@ -48,6 +48,10 @@
     <NoWarn>1701;1702; NU5125;7035</NoWarn>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Include="chromely.png" Pack="true" PackagePath=""/>
+  </ItemGroup>
+  
   <ItemGroup>
     <None Remove="Native\MacCocoa\libchromely.dylib" />
   </ItemGroup>

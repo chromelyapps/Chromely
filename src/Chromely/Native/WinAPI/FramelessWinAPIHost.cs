@@ -24,8 +24,6 @@ namespace Chromely.Native
         };
 
         private bool _maximized;
-        private bool _dragging;
-        private POINT _dragPoint;
 
         protected override Tuple<WindowStyles, WindowExStyles, ShowWindowCommand> GetWindowStyles(WindowState state)
         {
@@ -39,50 +37,9 @@ namespace Chromely.Native
 
         protected override IntPtr WndProc(IntPtr hWnd, uint message, IntPtr wParam, IntPtr lParam)
         {
-            // TODO: Find out how to calculate the caption size.
-            const int CaptionHeight = 7;
-
             WM msg = (WM)message;
             switch (msg)
             {
-                case WM.LBUTTONDOWN:
-                    {
-                        GetCursorPos(out var point);
-                        ScreenToClient(hWnd, ref point);
-
-                        // TODO: For some reason it only works when called twice in a row. Try to resolve it later.
-                        SetCapture(hWnd);
-                        SetCapture(hWnd);
-                        _dragPoint = point;
-                        break;
-                    }
-                case WM.CAPTURECHANGED:
-                    {
-                        _dragging = lParam == hWnd;
-                        break;
-                    }
-                case WM.MOUSEMOVE:
-                    {
-                        if (_dragging)
-                        {
-                            var currentPoint = new System.Drawing.Point((int)lParam);
-                            var current = new Point(currentPoint.X, currentPoint.Y);
-                            ClientToScreen(hWnd, ref current);
-
-                            var position = new Point(current.X - _dragPoint.X, current.Y - _dragPoint.Y);
-                            SetWindowPos(hWnd, IntPtr.Zero, position.X, position.Y, 0, 0,
-                                SetWindowPosFlags.DoNotActivate
-                                | SetWindowPosFlags.IgnoreZOrder
-                                | SetWindowPosFlags.DoNotChangeOwnerZOrder
-                                | SetWindowPosFlags.IgnoreResize);
-                        }
-                        break;
-                    }
-                case WM.LBUTTONUP:
-                    {
-                        ReleaseCapture();
-                        break;
-                    }
                 case WM.CREATE:
                     _handle = hWnd;
                     break;
@@ -92,23 +49,22 @@ namespace Chromely.Native
                     return DefWindowProc(hWnd, message, wParam, new IntPtr(-1));
                 case WM.SIZE:
                     {
-                        if (wParam == (IntPtr)WindowSizeFlag.SIZE_MAXIMIZED)
-                        {
-                            _maximized = true;
-                            ForceRedraw(hWnd);
-                        }
-                        if (wParam == (IntPtr)WindowSizeFlag.SIZE_RESTORED)
-                        {
-                            _maximized = false;
-                            ForceRedraw(hWnd);
-                        }
+                        _maximized = wParam == (IntPtr)WindowSizeFlag.SIZE_MAXIMIZED
+                            || wParam ==(IntPtr)WindowSizeFlag.SIZE_MAXSHOW;
+                        ForceRedraw(hWnd);
                         break;
                     }
                 case WM.NCCALCSIZE:
                     {
+                        var captionHeight = GetSystemMetrics(SystemMetrics.CYCAPTION);
+                        var menuHeight = GetSystemMetrics(SystemMetrics.CYMENU);
+                        var padderBorder = GetSystemMetrics(SystemMetrics.CXPADDEDBORDER);
+                        // NB: 'menuHeight' substraction probably may broke it if window will have a Title in a caption.
+                        var topFrameHeight = captionHeight - menuHeight + padderBorder;
+
                         var result = DefWindowProc(hWnd, message, wParam, lParam);
                         var csp = (NcCalcSizeParams)Marshal.PtrToStructure(lParam, typeof(NcCalcSizeParams));
-                        csp.Region.Input.TargetWindowRect.Top -= _maximized ? 0 : CaptionHeight;
+                        csp.Region.Input.TargetWindowRect.Top -= _maximized ? 0 : topFrameHeight;
                         Marshal.StructureToPtr(csp, lParam, false);
                         return result;
                     }
