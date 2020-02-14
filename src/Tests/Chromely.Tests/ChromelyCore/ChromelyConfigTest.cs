@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
-namespace Chromely.Tests.Defaults
+namespace Chromely.Tests.ChromelyCore
 {
     public class ChromelyConfigTests
     {
