@@ -62,6 +62,7 @@ namespace Chromely.Integration.TestApp
             config.WindowOptions.Size = new WindowSize(1000, 600);
             config.StartUrl = startUrl;
             config.DebuggingMode = true;
+            config.WindowOptions.RelativePathToIconFile = "chromely.ico";
 
             CiTrace("Configuration", "Created");
 

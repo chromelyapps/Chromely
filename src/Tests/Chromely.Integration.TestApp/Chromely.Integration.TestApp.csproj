@@ -33,6 +33,8 @@
       <Content Include="index.html">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
+      <None Remove="chromely.ico" />
+      <EmbeddedResource Include="chromely.ico" />
     </ItemGroup>
 
     <ItemGroup>

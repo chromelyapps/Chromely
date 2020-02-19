@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Chromely.Core.Configuration;
@@ -62,7 +65,7 @@ namespace Chromely.Native
             {
                 Logger.Instance.Log.Error("chromelywindow registration failed");
                 return;
-             }
+            }
 
             var styles = GetWindowStyles(_options.WindowState);
 
@@ -185,9 +188,34 @@ namespace Chromely.Native
         }
 
         #region CreateWindow
-        protected virtual IntPtr GetIconHandle()
+
+        private IntPtr GetIconHandle()
         {
             var hIcon = LoadIconFromFile(_options.RelativePathToIconFile);
+            try
+            {
+                if (hIcon == null)
+                {
+                    var assembly = Assembly.GetEntryAssembly();
+                    var iconAsResource = assembly?.GetManifestResourceNames()
+                        .FirstOrDefault(res => res.EndsWith(_options.RelativePathToIconFile));
+                    if (iconAsResource != null)
+                    {
+                        using (var resStream = assembly.GetManifestResourceStream(iconAsResource))
+                        {
+                            using(var fileStream = new FileStream(_options.RelativePathToIconFile, FileMode.Create))
+                            {
+                                resStream?.CopyTo(fileStream);
+                            }
+                        }
+                    }
+                    hIcon = LoadIconFromFile(_options.RelativePathToIconFile);
+                }
+            }
+            catch
+            {
+                // ignore
+            }
             return hIcon ?? LoadIcon(IntPtr.Zero, (IntPtr)IDI_APPLICATION);
         }
 
