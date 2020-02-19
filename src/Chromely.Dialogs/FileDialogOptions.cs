@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Threading;
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Local
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace Chromely.Dialogs
 {
@@ -8,7 +10,7 @@ namespace Chromely.Dialogs
         public bool MustExist { get; set; }
         public bool ConfirmOverwrite { get; set; }
         public string Directory { get; set; }
-        public List<FileFilter> Filters { get; set; }
+        public List<FileFilter> Filters { get; private set; }
 
         public FileDialogOptions()
         {
@@ -17,7 +19,7 @@ namespace Chromely.Dialogs
                 ? "Alle Dateien (*.*)"
                 : "All files (*.*)";
             // ReSharper restore StringLiteralTypo
-            Filters = new List<FileFilter> {new FileFilter {Name = allFiles, Extension = "*"}};
+            Filters = new List<FileFilter> {new FileFilter {Name = allFiles, Patterns = new []{ "*.* "} }};
         }
     }
 }

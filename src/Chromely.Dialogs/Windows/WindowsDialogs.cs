@@ -1,10 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using Chromely.Core.Host;
+// ReSharper disable MemberCanBePrivate.Global
 
 // ReSharper disable CommentTypo
 
@@ -130,6 +132,29 @@ namespace Chromely.Dialogs.Windows
             return new DialogResponse { Value = sb.ToString() };
         }
 
+        private static string ExtPattern(IEnumerable<string> patterns)
+        {
+            var filters = new List<string>();
+
+            foreach (var pattern in patterns.Select(p => p.Trim()))
+            {
+                if (pattern.StartsWith("."))
+                {
+                    filters.Add("*" + pattern);
+                }
+                else if (!pattern.StartsWith("*"))
+                {
+                    filters.Add("*." + pattern);
+                }
+                else
+                {
+                    filters.Add(pattern);
+                }
+            }
+
+            return string.Join(";", filters);
+        }
+
         public DialogResponse FileOpen(string message, FileDialogOptions options)
         {
             return Environment.Is64BitProcess
@@ -146,8 +171,14 @@ namespace Chromely.Dialogs.Windows
                 ofn.lpstrInitialDir = options.Directory;
             }
 
+            // The first string in each pair is a display string that describes the filter (for example, "Text Files"),
+            // and the second string specifies the filter pattern (for example, ".TXT").
+            // To specify multiple filter patterns for a single display string,
+            // use a semicolon to separate the patterns (for example, ".TXT;.DOC;.BAK").
+            // A pattern string can be a combination of valid file name characters and the asterisk (*) wildcard character.
+            // Do not include spaces in the pattern string.
             ofn.lpstrFilter = options.Filters
-                                  .Select(f => $"{f.Name}\0*.{f.Extension}\0")
+                                  .Select(f => $"{f.Name}\0{ExtPattern(f.Patterns)}\0")
                                   .Aggregate("", (s1, s2) => s1 + s2)
                               + "\0";
 
@@ -166,7 +197,8 @@ namespace Chromely.Dialogs.Windows
             var ok = WindowsInterop.GetOpenFileName32(ofn);
             return new DialogResponse { IsCanceled = !ok, Value = ofn.lpstrFile };
         }
-        public DialogResponse FileOpen64(string message, FileDialogOptions options)
+
+        public static DialogResponse FileOpen64(string message, FileDialogOptions options)
         {
             var ofn = new WindowsInterop.OPENFILENAME_64();
             ofn.lstructSize = Marshal.SizeOf(ofn);
@@ -177,7 +209,7 @@ namespace Chromely.Dialogs.Windows
             }
 
             ofn.lpstrFilter = options.Filters
-                .Select(f => $"{f.Name}\0*.{f.Extension}\0")
+                .Select(f => $"{f.Name}\0{ExtPattern(f.Patterns)}\0")
                 .Aggregate("", (s1, s2) => s1 + s2)
                 + "\0";
 
@@ -203,7 +235,7 @@ namespace Chromely.Dialogs.Windows
                 ? FileSave64(message, fileName, options)
                 : FileSave32(message, fileName, options);
         }
-        public DialogResponse FileSave32(string message, string fileName, FileDialogOptions options)
+        public static DialogResponse FileSave32(string message, string fileName, FileDialogOptions options)
         {
             var ofn = new WindowsInterop.OPENFILENAME_32();
             ofn.lstructSize = Marshal.SizeOf(ofn);
@@ -214,7 +246,7 @@ namespace Chromely.Dialogs.Windows
             }
 
             ofn.lpstrFilter = options.Filters
-                                  .Select(f => $"{f.Name}\0*.{f.Extension}\0")
+                                  .Select(f => $"{f.Name}\0{ExtPattern(f.Patterns)}\0")
                                   .Aggregate("", (s1, s2) => s1 + s2)
                               + "\0";
 
@@ -237,7 +269,7 @@ namespace Chromely.Dialogs.Windows
             var ok = WindowsInterop.GetSaveFileName32(ofn);
             return new DialogResponse { IsCanceled = !ok, Value = ofn.lpstrFile };
         }
-        public DialogResponse FileSave64(string message, string fileName, FileDialogOptions options)
+        public static DialogResponse FileSave64(string message, string fileName, FileDialogOptions options)
         {
             var ofn = new WindowsInterop.OPENFILENAME_64();
             ofn.lstructSize = Marshal.SizeOf(ofn);
@@ -248,7 +280,7 @@ namespace Chromely.Dialogs.Windows
             }
 
             ofn.lpstrFilter = options.Filters
-                                  .Select(f => $"{f.Name}\0*.{f.Extension}\0")
+                                  .Select(f => $"{f.Name}\0{ExtPattern(f.Patterns)}\0")
                                   .Aggregate("", (s1, s2) => s1 + s2)
                               + "\0";
 

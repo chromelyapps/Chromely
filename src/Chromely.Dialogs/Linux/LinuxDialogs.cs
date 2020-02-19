@@ -1,20 +1,14 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Runtime.InteropServices;
 using System.Threading;
-using System.Threading.Tasks;
-using Chromely.CefGlue.Browser;
-using Chromely.Core.Helpers;
 using Chromely.Core.Host;
-using Chromely.Core.Infrastructure;
-using Xilium.CefGlue;
 
 namespace Chromely.Dialogs.Linux
 {
     public class LinuxDialogs : IChromelyDialogs
     {
-        private bool isInitialized;
+        private bool _isInitialized;
         private IChromelyWindow _window;
         private ExecutionContext _executionContext;
 
@@ -23,7 +17,7 @@ namespace Chromely.Dialogs.Linux
         
         public void Init(IChromelyWindow window)
         {
-            if (isInitialized) return;
+            if (_isInitialized) return;
             
             _window = window;
 
@@ -32,17 +26,10 @@ namespace Chromely.Dialogs.Linux
             //GtkInterop.g_type_init();
 
             _executionContext = Thread.CurrentThread.ExecutionContext.CreateCopy();
-            isInitialized = true;
+            _isInitialized = true;
         }
 
         public DialogResponse MessageBox(string message, DialogOptions options)
-        {
-            var result = new DialogResponse();
-            _executionContext.InvokeAsyncIfPossible(() => { result = MessageBoxIntl(message, options); });
-            return result;
-        }
-
-        public DialogResponse MessageBoxIntl(string message, DialogOptions options)
         {
             Console.WriteLine($"MessageBox PID={Process.GetCurrentProcess().Id}, THREAD={Thread.CurrentThread.ManagedThreadId}");
             
@@ -184,7 +171,7 @@ namespace Chromely.Dialogs.Linux
                 {
                     var filter = GtkInterop.gtk_file_filter_new();
                     GtkInterop.gtk_file_filter_set_name(filter, fileFilter.Name);
-                    GtkInterop.gtk_file_filter_add_pattern(filter, $"*.{fileFilter.Extension}");
+                    GtkInterop.gtk_file_filter_add_pattern(filter, $"{string.Join("|", fileFilter.Patterns)}");
                     GtkInterop.gtk_file_chooser_add_filter(widget, filter);
                 }
 
@@ -254,7 +241,7 @@ namespace Chromely.Dialogs.Linux
                 {
                     var filter = GtkInterop.gtk_file_filter_new();
                     GtkInterop.gtk_file_filter_set_name(filter, fileFilter.Name);
-                    GtkInterop.gtk_file_filter_add_pattern(filter, $"*.{fileFilter.Extension}");
+                    GtkInterop.gtk_file_filter_add_pattern(filter, $"{string.Join("|", fileFilter.Patterns)}");
                     GtkInterop.gtk_file_chooser_add_filter(widget, filter);
                 }
 

@@ -6,14 +6,31 @@ using IctBaden.Stonehenge3.ViewModel;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Local
 
 namespace Chromely.Dialogs.TestApp.ViewModels
 {
     // ReSharper disable once UnusedMember.Global
+    // ReSharper disable once UnusedType.Global
     public class FoldersFilesVm : ActiveViewModel
     {
         public string MessageText { get; set; }
-        public FileDialogOptions Options { get; set; }
+
+
+        private readonly FileDialogOptions _options;
+
+        public string OptionsTitle
+        {
+            get => _options.Title;
+            set => _options.Title = value;
+        }
+        public string OptionsDirectory
+        {
+            get => _options.Directory;
+            set => _options.Directory = value;
+        }
+        
 
         public List<KeyValuePair<int, string>> DialogIcons { get; }
 
@@ -27,11 +44,16 @@ namespace Chromely.Dialogs.TestApp.ViewModels
         {
             MessageText = "Hello Chromely !";
             FileName = "Test.txt";
-            Options = new FileDialogOptions
+            _options = new FileDialogOptions
             {
                 Title = "Dialog Title",
                 Directory = AppDomain.CurrentDomain.BaseDirectory
             };
+            _options.Filters.Add(new FileFilter
+            {
+                Name = "Excel files", 
+                Patterns = new []{ "csv", ".xls", "*.xslx" }
+            });
             DialogIcons = Enumerable.Range(0, 100)
                 .Zip(Enum.GetNames(typeof(DialogIcon)), (ix, name) => new KeyValuePair<int, string>(ix, name))
                 .ToList();
@@ -41,21 +63,21 @@ namespace Chromely.Dialogs.TestApp.ViewModels
         [ActionMethod]
         public void TestSelectFolder()
         {
-            Response = ChromelyDialogs.SelectFolder(MessageText, Options);
+            Response = ChromelyDialogs.SelectFolder(MessageText, _options);
             NotifyPropertyChanged(nameof(Response));
         }
 
         [ActionMethod]
         public void TestFileOpen()
         {
-            Response = ChromelyDialogs.FileOpen(MessageText, Options);
+            Response = ChromelyDialogs.FileOpen(MessageText, _options);
             NotifyPropertyChanged(nameof(Response));
         }
 
         [ActionMethod]
         public void TestFileSave()
         {
-            Response = ChromelyDialogs.FileSave(MessageText, FileName, Options);
+            Response = ChromelyDialogs.FileSave(MessageText, FileName, _options);
             NotifyPropertyChanged(nameof(Response));
         }
 

@@ -3,6 +3,7 @@ using Chromely.Core;
 using Chromely.Core.Host;
 using Chromely.Dialogs.Linux;
 using Chromely.Dialogs.Windows;
+
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedMember.Global
 
@@ -25,7 +26,7 @@ namespace Chromely.Dialogs
                 case ChromelyPlatform.MacOSX:
                     break;
             }
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public static void Init(IChromelyWindow window)
