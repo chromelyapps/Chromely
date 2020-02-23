@@ -43,9 +43,6 @@ Cross-platform -**Windows**, **Linux**, **MacOS**. Built on CEF, CefGlue, NET St
 <br>[![Chromely + React](https://img.shields.io/badge/Chromely%20Apps-Built%20with%20React-green.svg)](https://github.com/chromelyapps/demo-projects/tree/master/angular-react-vue/ChromelyReact)
 <br>[![Chromely + Vue](https://img.shields.io/badge/Chromely%20Apps-Built%20with%20Vue-green.svg)](https://github.com/chromelyapps/demo-projects/tree/master/angular-react-vue/ChromelyVue) 
 
-### Demo Code
-Get started with the [Demos](https://github.com/chromelyapps/demo-projects). 
-
 ### Creating a Simple App
 For more info see - [Getting Started](https://github.com/chromelyapps/Chromely/blob/master/Documents/getting_started.md)
 
@@ -67,7 +64,7 @@ class Program
 ````
 
 ### Chromely Demos 
-For more info on demos - [Demos](https://github.com/chromelyapps/Chromely/wiki/Demos)
+Get started with our [demos](https://github.com/chromelyapps/demo-projects). 
 ![](https://github.com/chromelyapps/Chromely/blob/master/Screenshots/chromely_screens_n3.gif)
 
 ### References
