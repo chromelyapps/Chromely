@@ -6,26 +6,51 @@
     <ProductVersion>5.0.77.0-pre04</ProductVersion>
     <AssemblyVersion>5.77.0.0</AssemblyVersion>
     <FileVersion>5.0.77.0</FileVersion>
-    <Version>5.0.77.0-pre04</Version>
+    <Version>5.0.77.0</Version>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Product>Chromely.CefGlue</Product>
     <Authors>Chromely Projects</Authors>
     <Company>Chromely Projects</Company>
     <Copyright>Copyright © 2017-2020 Chromely Projects</Copyright>
-    <PackageLicenseUrl>https://github.com/chromelyapps/Chromely/blob/master/LICENSE.md</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/chromelyapps/Chromely</PackageProjectUrl>
     <PackageIcon>chromely.png</PackageIcon>
     <PackageTags>Cef Chromium HTML5 Desktop Chromely CefGlue  Restful  Ajax HTTP XHR MessageRouter .NET Core</PackageTags>
     <Description>Chromely CefGlue implementation library - this is in .NET Standard 2.0 as it can be used in both .NET (Windows) and .NET Core (Windows, Linux, MacOS). Chromely.CefGlue version naming is based Chromely and Chromium versions implemented- major.minor.chromuim version.patch e.g 1.0.70.0.</Description>
     <PackageReleaseNotes>
-      - Breaking changes!
-      - .NET Core 3.0 and MacOS Support - https://github.com/chromelyapps/Chromely/wiki/Migration-to-.NET-Core-3-and-MacOS-Support
-    </PackageReleaseNotes>
+Projects Structure
+- All projects are now .NET Standard 2.0
+- Chromely.Core - no dependencies.
+- Chromely.CefGlue - depends on Chromely.Core and embeds CefGlue source code and CefGlue default handlers.
+- Chromely - primary - depends on Chromely.CefGlue and includes native gui implementation for Win, Linux and MacOS. All other non-CefGlue customization will be done here.
+
+New Features
+- MacOS support using native Cocoa API
+- Full IOC - #106
+- MVC- styled controller actions as discussed in #91
+- LitJson was replaced by System.Text.Json.
+- Optional configuration file - chromelyconfig.json
+- Storable App/User settings - IChromelyAppSettings.
+- Configuration has received a facelift (see more info link below for more info).
+
+Fixes
+- Fixed WinAPIHost not respecting WindowTitle (Windows)
+- ToolTips (html-title) working and positioned correctly. (Linux)
+
+Deprecation &amp; Discontinued
+- Winapi was removed in favour of .NET Core 3. Win32 pinvoke functionalities will be sourced in pinvoke.net, shintadono's Win32 and other MIT licensed projects.
+- CefSharp is no longer supported.
+- Default Sup-process was removed for Windows. Sub-process is configurable and developers who need it can include sub-process fullpath in configuration.
+- Real-time with Websocket server was removed.
+
+For more info please see
+https://github.com/chromelyapps/Chromely/releases/tag/v5.0.0
+</PackageReleaseNotes>
     <RepositoryType>Github Repository</RepositoryType>
     <RepositoryUrl>https://github.com/chromelyapps/Chromely</RepositoryUrl>
     <Configurations>Debug;Release;ReleaseLinux;DebugLinux</Configurations>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -62,7 +87,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="chromely.png" Pack="true" PackagePath=""/>
+    <None Include="chromely.png" Pack="true" PackagePath="" />
   </ItemGroup>
 
 </Project>
