@@ -5,7 +5,7 @@ Chromely is a lightweight alternative to <a href="https://github.com/ElectronNET
 
 Chromely is a .NET/.NET Core HTML5 Chromium desktop framework. It is focused on building apps based on [Xilium.CefGlue](https://gitlab.com/xiliumhq/chromiumembedded/cefglue), ~~[CefSharp](https://github.com/chromelyapps/Chromely.Legacy)~~ implementations of  embedded Chromium ([CEF](https://bitbucket.org/chromiumembedded/cef)) **without WinForms or WPF**, but can be extended to use WinForms or WPF. Chromely uses **Windows**, **Linux** and **MacOS** native GUI API as "thin" chromium hosts.
 
-With Chromely you can build Single Page Application (SPA) HTML5 desktop apps with or without Node/npm. Building SPA apps using javascript frameworks like Angular, React, Vue or similar is easy. You can use Visual Studio Code or any IDE you are familiar with as long as Chromely knows the entry html file from the compiled/bundled files. For more info please see - [Chromely-Apps](https://github.com/chromelyapps/demo-projects/tree/master/angular-react-vue).
+With Chromely you can build Single Page Application (SPA) HTML5 desktop apps with or without Node/npm. Building SPA apps using javascript frameworks like Blazor, Angular, React, Vue or similar is easy. You can use Visual Studio Code or any IDE you are familiar with as long as Chromely knows the entry html file from the compiled/bundled files. For more info please see - [Blazor Demos](https://github.com/chromelyapps/demo-projects/tree/master/blazor) and [Chromely-Apps](https://github.com/chromelyapps/demo-projects/tree/master/angular-react-vue).
 
 Options of communicating (IPC) with rendering process are via:
 
