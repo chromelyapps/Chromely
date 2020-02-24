@@ -14,7 +14,6 @@ namespace Xilium.CefGlue.Interop
         public int persist_session_cookies;
         public int persist_user_preferences;
         public int ignore_certificate_errors;
-        public int enable_net_security_expiration;
         public cef_string_t accept_language_list;
 
         #region Alloc & Free

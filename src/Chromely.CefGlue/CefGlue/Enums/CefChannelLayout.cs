@@ -1,4 +1,4 @@
-//
+﻿//
 // Feature removed since CEF 77.
 //
 /*

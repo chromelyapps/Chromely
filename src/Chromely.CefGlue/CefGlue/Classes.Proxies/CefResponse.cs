@@ -114,15 +114,33 @@
         /// <summary>
         /// Get the value for the specified response header field.
         /// </summary>
-        public string GetHeader(string name)
+        public string GetHeaderByName(string name)
         {
             if (name == null) throw new ArgumentNullException("name");
 
             fixed (char* name_str = name)
             {
                 var n_name = new cef_string_t(name_str, name.Length);
-                var n_result = cef_response_t.get_header(_self, &n_name);
+                var n_result = cef_response_t.get_header_by_name(_self, &n_name);
                 return cef_string_userfree.ToString(n_result);
+            }
+        }
+
+        /// <summary>
+        /// Set the header |name| to |value|. If |overwrite| is true any existing
+        /// values will be replaced with the new value. If |overwrite| is false any
+        /// existing values will not be overwritten.
+        /// </summary>
+        public void SetHeaderByName(string name, string value, bool overwrite)
+        {
+            if (name == null) throw new ArgumentNullException(nameof(name));
+
+            fixed (char* name_str = name)
+            fixed (char* value_str = value)
+            {
+                var n_name = new cef_string_t(name_str, name.Length);
+                var n_value = new cef_string_t(value_str, value != null ? value.Length : 0);
+                cef_response_t.set_header_by_name(_self, &n_name, &n_value, overwrite ? 1 : 0);
             }
         }
 
