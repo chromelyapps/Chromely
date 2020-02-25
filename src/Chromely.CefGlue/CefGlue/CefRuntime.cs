@@ -1020,23 +1020,14 @@
         #region cef_ssl_info
 
         /// <summary>
-        /// Returns true if the certificate status has any error, major or minor.
+        /// Returns true if the certificate status represents an error.
         /// </summary>
         public static bool IsCertStatusError(CefCertStatus status)
         {
             return libcef.is_cert_status_error(status) != 0;
         }
 
-        /// <summary>
-        /// Returns true if the certificate status represents only minor errors
-        /// (e.g. failure to verify certificate revocation).
-        /// </summary>
-        public static bool IsCertStatusMinorError(CefCertStatus status)
-        {
-            return libcef.is_cert_status_minor_error(status) != 0;
-        }
-
-    #endregion
+        #endregion
 
         #region cef_crash_util
 

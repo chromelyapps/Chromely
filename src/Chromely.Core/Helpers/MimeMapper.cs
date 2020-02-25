@@ -2275,6 +2275,10 @@ namespace Chromely.Core.Helpers
                                      {
                                          ".zip",
                                          "application/x-zip-compressed"
+                                     },
+                                     {
+                                         ".wasm",
+                                         "application/wasm"
                                      }
 
                                      // Combination of values from Windows 7 Registry and  C:\Windows\System32\inetsrv\config\applicationHost.config

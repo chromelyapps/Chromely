@@ -1,4 +1,4 @@
-namespace Xilium.CefGlue
+﻿namespace Xilium.CefGlue
 {
     using System;
     using System.Collections.Generic;
@@ -246,19 +246,6 @@ namespace Xilium.CefGlue
         public bool IgnoreCertificateErrors { get; set; }
 
         /// <summary>
-        /// Set to true (1) to enable date-based expiration of built in network
-        /// security information (i.e. certificate transparency logs, HSTS preloading
-        /// and pinning information). Enabling this option improves network security
-        /// but may cause HTTPS load failures when using CEF binaries built more than
-        /// 10 weeks in the past. See https://www.certificate-transparency.org/ and
-        /// https://www.chromium.org/hsts for details. Also configurable using the
-        /// "enable-net-security-expiration" command-line switch. Can be overridden for
-        /// individual CefRequestContext instances via the
-        /// CefRequestContextSettings.enable_net_security_expiration value.
-        /// </summary>
-        public bool EnableNetSecurityExpiration { get; set; }
-
-        /// <summary>
         /// Background color used for the browser before a document is loaded and when
         /// no document color is specified. The alpha component must be either fully
         /// opaque (0xFF) or fully transparent (0x00). If the alpha component is fully
@@ -316,7 +303,6 @@ namespace Xilium.CefGlue
             ptr->remote_debugging_port = RemoteDebuggingPort;
             ptr->uncaught_exception_stack_size = UncaughtExceptionStackSize;
             ptr->ignore_certificate_errors = IgnoreCertificateErrors ? 1 : 0;
-            ptr->enable_net_security_expiration = EnableNetSecurityExpiration ? 1 : 0;
             ptr->background_color = BackgroundColor.ToArgb();
             cef_string_t.Copy(AcceptLanguageList, &ptr->accept_language_list);
             cef_string_t.Copy(ApplicationClientIdForFileScanning, &ptr->application_client_id_for_file_scanning);

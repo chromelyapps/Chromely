@@ -134,7 +134,7 @@ namespace Xilium.CefGlue
         NETWORK_CHANGED = -21,
 
         /// <summary>
-        /// The request was blocked by the URL blacklist configured by the domain
+        /// The request was blocked by the URL block list configured by the domain
         /// administrator.
         /// </summary>
         BLOCKED_BY_ADMINISTRATOR = -22,
@@ -170,11 +170,7 @@ namespace Xilium.CefGlue
         /// </summary>
         BLOCKED_BY_RESPONSE = -27,
 
-        /// <summary>
-        /// The request failed after the response was received, based on client-side
-        /// heuristics that point to the possiblility of a cross-site scripting attack.
-        /// </summary>
-        BLOCKED_BY_XSS_AUDITOR = -28,
+        // Error -28 was removed (BLOCKED_BY_XSS_AUDITOR).
 
         /// <summary>
         /// The request was blocked by system policy disallowing some or all cleartext
@@ -762,13 +758,16 @@ namespace Xilium.CefGlue
         /// </summary>
         CERT_SYMANTEC_LEGACY = -215,
 
+        // -216 was QUIC_CERT_ROOT_NOT_KNOWN which has been renumbered to not be in the
+        // certificate error range.
+
         // Add new certificate error codes here.
         //
         // Update the value of CERT_END whenever you add a new certificate error
         // code.
 
         // The value immediately past the last certificate error code.
-        //CERT_END = -216,
+        //CERT_END = -217,
 
         /// <summary>
         /// The URL is invalid.
@@ -840,10 +839,7 @@ namespace Xilium.CefGlue
         /// </summary>
         RESPONSE_HEADERS_TOO_BIG = -325,
 
-        /// <summary>
-        /// The PAC requested by HTTP did not have a valid status code (non-200).
-        /// </summary>
-        PAC_STATUS_NOT_OK = -326,
+        // Error -326 was removed (PAC_STATUS_NOT_OK)
 
         /// <summary>
         /// The evaluation of the PAC script failed.
@@ -1119,6 +1115,22 @@ namespace Xilium.CefGlue
         HTTP2_PUSHED_RESPONSE_DOES_NOT_MATCH = -378,
 
         /// <summary>
+        /// The server returned a non-2xx HTTP response code.
+        ///
+        /// Not that this error is only used by certain APIs that interpret the HTTP
+        /// response itself. URLRequest for instance just passes most non-2xx
+        /// response back as success.
+        /// </summary>
+        HTTP_RESPONSE_CODE_FAILURE = -379,
+
+        /// <summary>
+        /// The certificate presented on a QUIC connection does not chain to a known root
+        /// and the origin connected to is not on a list of domains where unknown roots
+        /// are allowed.
+        /// </summary>
+        QUIC_CERT_ROOT_NOT_KNOWN = -380,
+
+        /// <summary>
         /// The cache does not have the requested entry.
         /// </summary>
         CACHE_MISS = -400,
@@ -1219,6 +1231,11 @@ namespace Xilium.CefGlue
         /// An error occurred while handling a signed exchange.
         /// </summary>
         INVALID_SIGNED_EXCHANGE = -504,
+
+        /// <summary>
+        /// An error occurred while handling a bundled-exchanges source.
+        /// </summary>
+        INVALID_BUNDLED_EXCHANGES = -505,
 
         // *** Code -600 is reserved (was FTP_PASV_COMMAND_FAILED). ***
 
@@ -1369,7 +1386,10 @@ namespace Xilium.CefGlue
         DNS_TIMED_OUT = -803,
 
         /// <summary>
-        /// The entry was not found in cache, for cache-only lookups.
+        /// The entry was not found in cache or other local sources, for lookups where
+        /// only local sources were queried.
+        /// TODO(ericorth): Consider renaming to DNS_LOCAL_MISS or something like that as
+        /// the cache is not necessarily queried either.
         /// </summary>
         DNS_CACHE_MISS = -804,
 

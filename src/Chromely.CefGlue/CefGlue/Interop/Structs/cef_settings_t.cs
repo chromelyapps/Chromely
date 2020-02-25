@@ -1,4 +1,4 @@
-//
+﻿//
 // This file manually written from cef/include/internal/cef_types.h.
 // C API name: cef_settings_t.
 //
@@ -41,7 +41,6 @@ namespace Xilium.CefGlue.Interop
         public int remote_debugging_port;
         public int uncaught_exception_stack_size;
         public int ignore_certificate_errors;
-        public int enable_net_security_expiration;
         public uint background_color;
         public cef_string_t accept_language_list;
         public cef_string_t application_client_id_for_file_scanning;

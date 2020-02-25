@@ -187,14 +187,6 @@ namespace Chromely.CefGlue
 
                         break;
 
-                    case CefSettingKeys.ENABLENETSECURITYEXPIRATION:
-                        if (setting.Value.TryParseBoolean(out boolResult))
-                        {
-                            cefSettings.EnableNetSecurityExpiration = boolResult;
-                        }
-
-                        break;
-
                     case CefSettingKeys.ACCEPTLANGUAGELIST:
                         cefSettings.AcceptLanguageList = setting.Value;
                         break;

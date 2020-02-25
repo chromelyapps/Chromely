@@ -1,4 +1,4 @@
-namespace Xilium.CefGlue
+﻿namespace Xilium.CefGlue
 {
     using System;
     using System.Collections.Generic;

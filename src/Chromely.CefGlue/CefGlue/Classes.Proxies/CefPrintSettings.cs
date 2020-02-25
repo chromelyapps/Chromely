@@ -46,16 +46,6 @@
         }
 
         /// <summary>
-        /// Returns a writable copy of this object.
-        /// </summary>
-        public CefPrintSettings Copy()
-        {
-            return CefPrintSettings.FromNative(
-                cef_print_settings_t.copy(_self)
-                );
-        }
-
-        /// <summary>
         /// Set the page orientation.
         /// </summary>
         public void SetOrientation(bool landscape)

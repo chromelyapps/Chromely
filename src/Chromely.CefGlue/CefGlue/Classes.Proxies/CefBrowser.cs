@@ -183,15 +183,25 @@
         public long[] GetFrameIdentifiers()
         {
             var frameCount = FrameCount;
-            var identifiers = new long[frameCount];
+            var identifiers = new long[frameCount * 2];
             UIntPtr n_count = (UIntPtr)frameCount;
 
             fixed (long* identifiers_ptr = identifiers)
             {
                 cef_browser_t.get_frame_identifiers(_self, &n_count, identifiers_ptr);
-
-                if ((int)n_count != frameCount) throw new InvalidOperationException(); // FIXME: ...
             }
+
+            if ((int)n_count < 0)
+            {
+                throw new InvalidOperationException("Invalid number of frames.");
+            }
+
+            if ((int)n_count > identifiers.Length)
+            {
+                throw new InvalidOperationException("Number of returned frames are too big.");
+            }
+
+            Array.Resize(ref identifiers, (int)n_count);
 
             return identifiers;
         }
