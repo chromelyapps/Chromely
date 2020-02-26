@@ -26,14 +26,14 @@ Cross-platform -**Windows**, **Linux**, **MacOS**. Built on CEF, CefGlue, NET St
 - Linux<sup>(2)</sup> 32-bit   
 - Linux<sup>(2)</sup> 64-bit   
 - MacOSX<sup>(3)</sup> 64-bit  
-- Linux ARM<sup>(4)</sup>      
+- Linux ARM<sup>(4)</sup>  [Raspberry Pi](Documents/raspberrry_pi.md)      
 
 &nbsp;<sup>(1)</sup>&nbsp; Windows 7, Service Pack 1 and newer    
 &nbsp;<sup>(2)</sup>&nbsp; Ubuntu 16.04 and newer    
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Mono currently not working)    
 &nbsp;<sup>(3)</sup>&nbsp; Tested on macOS Mojave 10.14.6  (Other versions will likely work too)     
-&nbsp;<sup>(4)</sup>&nbsp; i.e. Raspberry Pi 3+    
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(manual download of CEF builds for ARM available on http://chromely.org/cefbuilds/index.html) 
+&nbsp;<sup>(4)</sup>&nbsp; i.e. Raspberry Pi 3+   (starting with v5.x)    
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(for v4.x - manual download of CEF builds for ARM required,  available on http://chromely.org/cefbuilds/index.html) 
 
 [![Chromely.Core](http://img.shields.io/nuget/vpre/Chromely.Core.svg?style=flat&label=Chromely.Core)](https://www.nuget.org/packages/Chromely.Core)
 [![Chromely.Core](http://img.shields.io/nuget/vpre/Chromely.CefGlue.svg?style=flat&label=Chromely.CefGlue)](https://www.nuget.org/packages/Chromely.CefGlue)

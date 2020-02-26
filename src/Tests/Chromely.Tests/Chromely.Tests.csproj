@@ -28,9 +28,4 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="ChromelyCefGlue\" />
-    <Folder Include="Chromely\" />
-  </ItemGroup>
-
 </Project>

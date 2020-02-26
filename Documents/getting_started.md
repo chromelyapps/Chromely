@@ -3,7 +3,7 @@
 
 When creating a new project, you want to create a .NET Core 3 Console Project (for all platforms - Windows, Linux, MacOS) or a .NET Framework Console Project for Windows. 
 
-Visual Studio 2019 or Visual Studio Code is preferred but any Editor can be used.
+Visual Studio 2019, JetBrains Rider or Visual Studio Code is preferred but any Editor can be used.
 
 Chromely ONLY supports x64 application. Developers can try x86 too but will not be supported.
 

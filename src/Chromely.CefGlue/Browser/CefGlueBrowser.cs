@@ -10,13 +10,15 @@
 using System;
 using System.Reflection;
 using Chromely.CefGlue.Browser.EventParams;
-using Chromely.CefGlue.BrowserWindow;
 using Chromely.Core;
 using Chromely.Core.Configuration;
-using Chromely.Core.Host;
 using Chromely.Core.Network;
 using Xilium.CefGlue;
 using Xilium.CefGlue.Wrapper;
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
+// ReSharper disable UnusedMember.Global
 
 namespace Chromely.CefGlue.Browser
 {
@@ -29,10 +31,18 @@ namespace Chromely.CefGlue.Browser
         private readonly IChromelyConfiguration _config;
         private readonly IChromelyCommandTaskRunner _commandTaskRunner;
         private readonly CefMessageRouterBrowserSide _browserMessageRouter;
-        private IChromelyFramelessController _framelessController;
         private CefBrowserSettings _settings;
         private CefGlueClient _client;
    
+        /// <summary>
+        /// Creates the CefGlue browser.
+        /// </summary>
+        /// <param name="owner"></param>
+        /// <param name="container"></param>
+        /// <param name="config"></param>
+        /// <param name="commandTaskRunner"></param>
+        /// <param name="browserMessageRouter"></param>
+        /// <param name="settings"></param>
         public CefGlueBrowser(object owner, IChromelyContainer container, IChromelyConfiguration config, IChromelyCommandTaskRunner commandTaskRunner, CefMessageRouterBrowserSide browserMessageRouter, CefBrowserSettings settings)
         {
             Owner = owner;
@@ -210,7 +220,7 @@ namespace Chromely.CefGlue.Browser
         /// <param name="browser">
         /// The browser.
         /// </param>
-        public virtual void OnBrowserAfterCreated(CefBrowser browser)
+        public void OnBrowserAfterCreated(CefBrowser browser)
         {
             CefBrowser = browser;
 
@@ -226,7 +236,7 @@ namespace Chromely.CefGlue.Browser
         /// <param name="eventArgs">
         /// The event args.
         /// </param>
-        public virtual void OnTitleChanged(TitleChangedEventArgs eventArgs)
+        public void OnTitleChanged(TitleChangedEventArgs eventArgs)
         {
             Title = eventArgs.Title;
             TitleChanged?.Invoke(this, eventArgs);
@@ -238,7 +248,7 @@ namespace Chromely.CefGlue.Browser
         /// <param name="eventArgs">
         /// The event args.
         /// </param>
-        public virtual void OnAddressChanged(AddressChangedEventArgs eventArgs)
+        public void OnAddressChanged(AddressChangedEventArgs eventArgs)
         {
             Address = eventArgs.Address;
             AddressChanged?.Invoke(this, eventArgs);
@@ -250,7 +260,7 @@ namespace Chromely.CefGlue.Browser
         /// <param name="eventArgs">
         /// The event args.
         /// </param>
-        public virtual void OnStatusMessage(StatusMessageEventArgs eventArgs)
+        public void OnStatusMessage(StatusMessageEventArgs eventArgs)
         {
             StatusMessage?.Invoke(this, eventArgs);
         }
@@ -261,7 +271,7 @@ namespace Chromely.CefGlue.Browser
         /// <param name="eventArgs">
         /// The event args.
         /// </param>
-        public virtual void OnConsoleMessage(ConsoleMessageEventArgs eventArgs)
+        public void OnConsoleMessage(ConsoleMessageEventArgs eventArgs)
         {
             ConsoleMessage?.Invoke(this, eventArgs);
         }
@@ -272,7 +282,7 @@ namespace Chromely.CefGlue.Browser
         /// <param name="eventArgs">
         /// The event args.
         /// </param>
-        public virtual void OnLoadingStateChange(LoadingStateChangedEventArgs eventArgs)
+        public void OnLoadingStateChange(LoadingStateChangedEventArgs eventArgs)
         {
             LoadingStateChanged?.Invoke(this, eventArgs);
         }
@@ -283,7 +293,7 @@ namespace Chromely.CefGlue.Browser
         /// <param name="eventArgs">
         /// The event args.
         /// </param>
-        public virtual void OnTooltip(TooltipEventArgs eventArgs)
+        public void OnTooltip(TooltipEventArgs eventArgs)
         {
             TooltipChanged?.Invoke(this, eventArgs);
         }
@@ -294,7 +304,7 @@ namespace Chromely.CefGlue.Browser
         /// <param name="eventArgs">
         /// The event args.
         /// </param>
-        public virtual void OnBeforeClose(BeforeCloseEventArgs eventArgs)
+        public void OnBeforeClose(BeforeCloseEventArgs eventArgs)
         {
             BeforeClose?.Invoke(this, eventArgs);
         }
@@ -305,7 +315,7 @@ namespace Chromely.CefGlue.Browser
         /// <param name="eventArgs">
         /// The event args.
         /// </param>
-        public virtual void OnBeforePopup(BeforePopupEventArgs eventArgs)
+        public void OnBeforePopup(BeforePopupEventArgs eventArgs)
         {
             BeforePopup?.Invoke(this, eventArgs);
         }
@@ -316,7 +326,7 @@ namespace Chromely.CefGlue.Browser
         /// <param name="eventArgs">
         /// The event args.
         /// </param>
-        public virtual void OnFrameLoadStart(FrameLoadStartEventArgs eventArgs)
+        public void OnFrameLoadStart(FrameLoadStartEventArgs eventArgs)
         {
             FrameLoadStart?.Invoke(this, eventArgs);
         }
@@ -327,7 +337,7 @@ namespace Chromely.CefGlue.Browser
         /// <param name="eventArgs">
         /// The event args.
         /// </param>
-        public virtual void OnFrameLoadEnd(FrameLoadEndEventArgs eventArgs)
+        public void OnFrameLoadEnd(FrameLoadEndEventArgs eventArgs)
         {
             FrameLoadEnd?.Invoke(this, eventArgs);
         }
@@ -338,7 +348,7 @@ namespace Chromely.CefGlue.Browser
         /// <param name="eventArgs">
         /// The event args.
         /// </param>
-        public virtual void OnLoadError(LoadErrorEventArgs eventArgs)
+        public void OnLoadError(LoadErrorEventArgs eventArgs)
         {
             LoadError?.Invoke(this, eventArgs);
         }
@@ -349,7 +359,7 @@ namespace Chromely.CefGlue.Browser
         /// <param name="eventArgs">
         /// The event args.
         /// </param>
-        public virtual void OnLoadStart(FrameLoadStartEventArgs eventArgs)
+        public void OnLoadStart(FrameLoadStartEventArgs eventArgs)
         {
             FrameLoadStart?.Invoke(this, eventArgs);
         }
@@ -360,7 +370,7 @@ namespace Chromely.CefGlue.Browser
         /// <param name="eventArgs">
         /// The event args.
         /// </param>
-        public virtual void OnPluginCrashed(PluginCrashedEventArgs eventArgs)
+        public void OnPluginCrashed(PluginCrashedEventArgs eventArgs)
         {
             PluginCrashed?.Invoke(this, eventArgs);
         }
@@ -371,7 +381,7 @@ namespace Chromely.CefGlue.Browser
         /// <param name="eventArgs">
         /// The event args.
         /// </param>
-        public virtual void OnRenderProcessTerminated(RenderProcessTerminatedEventArgs eventArgs)
+        public void OnRenderProcessTerminated(RenderProcessTerminatedEventArgs eventArgs)
         {
             RenderProcessTerminated?.Invoke(this, eventArgs);
         }

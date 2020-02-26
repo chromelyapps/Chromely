@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 using Chromely.CefGlue.Browser.EventParams;
 using Chromely.Core;
 using Chromely.Core.Configuration;
-using Chromely.Core.Helpers;
+// ReSharper disable UnusedParameter.Global
 
 namespace Chromely.Integration.TestApp
 {
@@ -57,7 +57,7 @@ namespace Chromely.Integration.TestApp
             var startUrl = $"file:///{appDirectory}/index.html";
 
             var config = DefaultConfiguration.CreateForRuntimePlatform();
-            config.CefDownloadOptions = new CefDownloadOptions(true, false);
+            config.CefDownloadOptions = new CefDownloadOptions(true, true);
             config.WindowOptions.Position = new WindowPosition(1, 2);
             config.WindowOptions.Size = new WindowSize(1000, 600);
             config.StartUrl = startUrl;
