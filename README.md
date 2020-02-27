@@ -56,7 +56,7 @@ class Program
    {
        AppBuilder
        .Create()
-       .UseApp<DemoChromelyApp>()
+       .UseApp<ChromelyBasicApp>()
        .Build()
        .Run(args);
     }
