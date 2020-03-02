@@ -10,21 +10,15 @@
 // include Chromely custom header
 #include "chromely_mac.h"
 
-namespace {
-
-// static NSAutoreleasePool* g_autopool = nil;
-BOOL g_handling_send_event = false;
-
-}  // namespace
-
 /*
 * I1 - ChromelyApplication manages events.
 * Provide the CefAppProtocol implementation required by CEF.
 */
 @interface ChromelyApplication : NSApplication <CefAppProtocol>
-
-- (BOOL)isHandlingSendEvent;
-- (void)setHandlingSendEvent:(BOOL)handlingSendEvent;
+{
+ @private
+  BOOL handlingSendEvent_;
+}
 - (void)_swizzled_sendEvent:(NSEvent*)event;
 - (void)_swizzled_terminate:(id)sender;
 
@@ -202,20 +196,25 @@ BOOL g_handling_send_event = false;
 }
 
 - (BOOL)isHandlingSendEvent {
-  return g_handling_send_event;
+  NSLog(@"isHandlingSendEvent");
+  return handlingSendEvent_;
 }
 
 - (void)setHandlingSendEvent:(BOOL)handlingSendEvent {
-  g_handling_send_event = handlingSendEvent;
+  NSLog(@"setHandlingSendEvent");
+  handlingSendEvent_ = handlingSendEvent;
 }
 
 - (void)_swizzled_sendEvent:(NSEvent*)event {
+  NSLog(@"_swizzled_sendEvent");
+
   CefScopedSendingEvent sendingEventScoper;
   // Calls NSApplication::sendEvent due to the swizzling.
   [self _swizzled_sendEvent:event];
 }
 
 - (void)_swizzled_terminate:(id)sender {
+   NSLog(@"_swizzled_terminate");
   [self _swizzled_terminate:sender];
 }
 
@@ -235,9 +234,10 @@ BOOL g_handling_send_event = false;
 - (void)createApplication:(id)object {
 
   // Set the delegate for application events.
-  [NSApp setDelegate:self];
+  NSApplication* application = [NSApplication sharedApplication];
+  [application setDelegate:self];
 
-  [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
+  [application setActivationPolicy:NSApplicationActivationPolicyRegular];
 
   // Create the main window.
 
@@ -347,8 +347,8 @@ BOOL g_handling_send_event = false;
 void createwindow(CHROMELYPARAM* pParam) {
 
       @autoreleasepool {
-        // Initialize the SimpleApplication instance.
-        NSApp = [ChromelyApplication sharedApplication];
+        // Initialize the ChromelyApplication instance.
+        [ChromelyApplication sharedApplication];
 
         // Create the application delegate.
         NSObject* appDelegate = [[ChromelyAppDelegate alloc] init];
