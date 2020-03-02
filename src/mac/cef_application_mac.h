@@ -45,12 +45,17 @@
 - (void)setHandlingSendEvent:(BOOL)handlingSendEvent;
 @end
 
+// Copy of definition from ui/base/cocoa/underlay_opengl_hosting_window.h.
+// Common base class for windows that host a OpenGL surface that renders under
+// the window. Contains methods relating to hole punching so that the OpenGL
+// surface is visible through the window.
+@interface UnderlayOpenGLHostingWindow : NSWindow
+@end
 
 // All CEF client applications must subclass NSApplication and implement this
 // protocol.
 @protocol CefAppProtocol<CrAppControlProtocol>
 @end
-
 
 // Controls the state of |isHandlingSendEvent| in the event loop so that it is
 // reset properly.
