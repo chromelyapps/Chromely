@@ -10,15 +10,15 @@
 // include Chromely custom header
 #include "chromely_mac.h"
 
+namespace {
+  bool g_handling_send_event = false;
+}  // namespace
+
 /*
 * I1 - ChromelyApplication manages events.
 * Provide the CefAppProtocol implementation required by CEF.
 */
-@interface ChromelyApplication : NSApplication <CefAppProtocol>
-{
- @private
-  BOOL handlingSendEvent_;
-}
+@interface NSApplication (ChromelyApplication) <CefAppProtocol>
 - (void)_swizzled_sendEvent:(NSEvent*)event;
 - (void)_swizzled_terminate:(id)sender;
 
@@ -179,7 +179,7 @@
 * Provide the CefAppProtocol implementation required by CEF.
 */
 
-@implementation ChromelyApplication
+@implementation NSApplication (ChromelyApplication)
 
 // This selector is called very early during the application initialization.
 + (void)load {
@@ -196,25 +196,20 @@
 }
 
 - (BOOL)isHandlingSendEvent {
-  NSLog(@"isHandlingSendEvent");
-  return handlingSendEvent_;
+   return g_handling_send_event;
 }
 
 - (void)setHandlingSendEvent:(BOOL)handlingSendEvent {
-  NSLog(@"setHandlingSendEvent");
-  handlingSendEvent_ = handlingSendEvent;
+  g_handling_send_event = handlingSendEvent;
 }
 
 - (void)_swizzled_sendEvent:(NSEvent*)event {
-  NSLog(@"_swizzled_sendEvent");
-
   CefScopedSendingEvent sendingEventScoper;
   // Calls NSApplication::sendEvent due to the swizzling.
   [self _swizzled_sendEvent:event];
 }
 
 - (void)_swizzled_terminate:(id)sender {
-   NSLog(@"_swizzled_terminate");
   [self _swizzled_terminate:sender];
 }
 
@@ -348,7 +343,7 @@ void createwindow(CHROMELYPARAM* pParam) {
 
       @autoreleasepool {
         // Initialize the ChromelyApplication instance.
-        [ChromelyApplication sharedApplication];
+        [NSApplication sharedApplication];
 
         // Create the application delegate.
         NSObject* appDelegate = [[ChromelyAppDelegate alloc] init];
@@ -374,7 +369,7 @@ void createwindow(CHROMELYPARAM* pParam) {
 
 APPDATA createwindowdata(CHROMELYPARAM* pParam) {
     NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-    NSApp = [ChromelyApplication sharedApplication];
+    NSApp = [NSApplication sharedApplication];
 
 
     // Create the application delegate.
