@@ -20,15 +20,21 @@ namespace Chromely.CefGlue.Browser.Handlers
     /// </summary>
     public class CefGlueLifeSpanHandler : CefLifeSpanHandler
     {
-        private readonly IChromelyConfiguration _config;
-        private readonly IChromelyCommandTaskRunner _commandTaskRunner;
-        private readonly CefGlueBrowser _browser;
+        protected readonly IChromelyConfiguration _config;
+        protected readonly IChromelyCommandTaskRunner _commandTaskRunner;
+        protected CefGlueBrowser _browser;
 
         public CefGlueLifeSpanHandler(IChromelyConfiguration config, IChromelyCommandTaskRunner commandTaskRunner, CefGlueBrowser browser)
         {
             _config = config;
             _commandTaskRunner = commandTaskRunner;
             _browser = browser;
+        }
+
+        public CefGlueBrowser Browser
+        {
+            get { return _browser; }
+            set { _browser = value; }
         }
 
         protected override void OnAfterCreated(CefBrowser browser)
@@ -54,15 +60,17 @@ namespace Chromely.CefGlue.Browser.Handlers
             if (isUrlExternal.HasValue && isUrlExternal.Value)
             {
                 RegisteredExternalUrl.Launch(targetUrl);
+                return true;
             }
 
             var isUrlCommand = _config?.UrlSchemes?.IsUrlRegisteredCommandScheme(targetUrl);
             if (isUrlCommand.HasValue && isUrlCommand.Value)
             {
                 _commandTaskRunner.RunAsync(targetUrl);
+                return true;
             }
 
-            return true;
+            return false;
         }
     }
 }

@@ -52,10 +52,42 @@ namespace Chromely.CefGlue.Browser
                 {
                     foreach (var handler in customHandlers)
                     {
-                        if (handler is CefLifeSpanHandler spanHandler) { handlers.LifeSpanHandler = spanHandler; }
-                        if (handler is CefLoadHandler loadHandler) { handlers.LoadHandler = loadHandler; }
-                        if (handler is CefRequestHandler requestHandler) { handlers.RequestHandler = requestHandler; }
-                        if (handler is CefDisplayHandler displayHandler) { handlers.DisplayHandler = displayHandler; }
+                        if (handler is CefLifeSpanHandler spanHandler) 
+                        { 
+                            if (spanHandler is CefGlueLifeSpanHandler)
+                            {
+                                ((CefGlueLifeSpanHandler)spanHandler).Browser = browser;
+                            }
+                            handlers.LifeSpanHandler = spanHandler; 
+                        }
+
+                        if (handler is CefLoadHandler loadHandler) 
+                        {
+                            if (loadHandler is CefGlueLoadHandler)
+                            {
+                                ((CefGlueLoadHandler)loadHandler).Browser = browser;
+                            }
+                            handlers.LoadHandler = loadHandler; 
+                        }
+
+                        if (handler is CefRequestHandler requestHandler) 
+                        {
+                            if (requestHandler is CefGlueRequestHandler)
+                            {
+                                ((CefGlueRequestHandler)requestHandler).Browser = browser;
+                            }
+                            handlers.RequestHandler = requestHandler; 
+                        }
+
+                        if (handler is CefDisplayHandler displayHandler) 
+                        {
+                            if (displayHandler is CefGlueDisplayHandler)
+                            {
+                                ((CefGlueDisplayHandler)displayHandler).Browser = browser;
+                            }
+                            handlers.DisplayHandler = displayHandler; 
+                        }
+
                         if (handler is CefContextMenuHandler menuHandler) { handlers.ContextMenuHandler = menuHandler; }
                         if (handler is CefFocusHandler focusHandler) { handlers.FocusHandler = focusHandler; }
                         if (handler is CefKeyboardHandler keyboardHandler) { handlers.KeyboardHandler = keyboardHandler; }

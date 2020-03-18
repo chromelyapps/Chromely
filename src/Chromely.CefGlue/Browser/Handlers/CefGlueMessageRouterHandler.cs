@@ -21,8 +21,7 @@ namespace Chromely.CefGlue.Browser.Handlers
     /// </summary>
     public class CefGlueMessageRouterHandler : CefMessageRouterBrowserSide.Handler
     {
-        private readonly IChromelyRequestTaskRunner _requestTaskRunner;
-
+        protected readonly IChromelyRequestTaskRunner _requestTaskRunner;
 
         public CefGlueMessageRouterHandler(IChromelyRequestTaskRunner requestTaskRunner)
         {

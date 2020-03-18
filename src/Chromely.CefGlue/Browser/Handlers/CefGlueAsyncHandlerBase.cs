@@ -22,15 +22,15 @@ namespace Chromely.CefGlue.Browser.Handlers
     /// </summary>
     public abstract class CefGlueAsyncHandlerBase : CefResourceHandler, IDisposable
     {
-        private bool _disposed;
-        private const int _bufferSize = 32 * 1024;
+        protected bool _disposed;
+        protected const int _bufferSize = 32 * 1024;
 
-        private Stream _dataStream;
-        private long _totalRead;
-        private int _bytesRead = -1;
+        protected Stream _dataStream;
+        protected long _totalRead;
+        protected int _bytesRead = -1;
 
-        private CancellationTokenSource _cancellationTokenSource;
-        private byte[] _rentedBuffer;
+        protected CancellationTokenSource _cancellationTokenSource;
+        protected byte[] _rentedBuffer;
 
 
         /// <summary>

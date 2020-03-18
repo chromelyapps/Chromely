@@ -20,13 +20,13 @@ namespace Chromely.CefGlue.Browser.Handlers
     /// </summary>
     public class CefGlueRequestHandler : CefRequestHandler
     {
-        private readonly IChromelyConfiguration _config;
-        private readonly IChromelyCommandTaskRunner _commandTaskRunner;
+        protected readonly IChromelyConfiguration _config;
+        protected readonly IChromelyCommandTaskRunner _commandTaskRunner;
 
         /// <summary>
         /// The m_browser.
         /// </summary>
-        private readonly CefGlueBrowser _browser;
+        protected CefGlueBrowser _browser;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CefGlueRequestHandler"/> class.
@@ -36,6 +36,12 @@ namespace Chromely.CefGlue.Browser.Handlers
             _config = config;
             _commandTaskRunner = commandTaskRunner;
             _browser = browser;
+        }
+
+        public CefGlueBrowser Browser
+        {
+            get { return _browser; }
+            set { _browser = value; }
         }
 
         protected override CefResourceRequestHandler GetResourceRequestHandler(CefBrowser browser, CefFrame frame, CefRequest request, bool isNavigation, bool isDownload, string requestInitiator, ref bool disableDefaultHandling)

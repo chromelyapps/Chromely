@@ -6,14 +6,19 @@ namespace Chromely.CefGlue.Browser.Handlers
 {
     public class CefGlueDisplayHandler : CefDisplayHandler
     {
-        private readonly IChromelyConfiguration _config;
-
-        private readonly CefGlueBrowser _browser;
+        protected readonly IChromelyConfiguration _config;
+        protected CefGlueBrowser _browser;
 
         public CefGlueDisplayHandler(IChromelyConfiguration config, CefGlueBrowser browser)
         {
             _config = config;
             _browser = browser;
+        }
+
+        public CefGlueBrowser Browser
+        {
+            get { return _browser; }
+            set { _browser = value; }
         }
 
         protected override void OnTitleChange(CefBrowser browser, string title)

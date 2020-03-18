@@ -23,13 +23,13 @@ namespace Chromely.CefGlue.Browser.Handlers
 {
     public class CefGlueAssemblyResourceSchemeHandler : CefResourceHandler
     {
-        private readonly IChromelyConfiguration _config;
-        private Regex _regex = new Regex("[/]");
+        protected readonly IChromelyConfiguration _config;
+        protected Regex _regex = new Regex("[/]");
 
-        private byte[] _fileBytes;
-        private string _mime;
-        private bool _completed;
-        private int _totalBytesRead;
+        protected byte[] _fileBytes;
+        protected string _mime;
+        protected bool _completed;
+        protected int _totalBytesRead;
 
         public CefGlueAssemblyResourceSchemeHandler(IChromelyConfiguration config)
         {

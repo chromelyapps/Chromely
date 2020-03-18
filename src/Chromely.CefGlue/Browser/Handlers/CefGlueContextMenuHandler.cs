@@ -7,13 +7,10 @@ namespace Chromely.CefGlue.Browser.Handlers
 {
     public class CefGlueContextMenuHandler : CefContextMenuHandler
     {
-        private readonly IChromelyConfiguration _config;
-
-        private const int ShowDevTools = 26501;
-
-        private const int CloseDevTools = 26502;
-
-        private readonly bool debugging;
+        protected readonly IChromelyConfiguration _config;
+        protected const int ShowDevTools = 26501;
+        protected const int CloseDevTools = 26502;
+        protected readonly bool debugging;
 
         public CefGlueContextMenuHandler(IChromelyConfiguration config)
         {

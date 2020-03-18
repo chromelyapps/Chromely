@@ -16,8 +16,8 @@ namespace Chromely.CefGlue.Browser.Handlers
 {
     public class CefGlueDragHandler : CefDragHandler
     {
-        private static readonly object objLock = new object();
-        private readonly IChromelyConfiguration _config;
+        protected static readonly object objLock = new object();
+        protected readonly IChromelyConfiguration _config;
 
         public CefGlueDragHandler(IChromelyConfiguration config)
         {

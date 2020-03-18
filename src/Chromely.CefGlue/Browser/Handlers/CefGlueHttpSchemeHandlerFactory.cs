@@ -18,8 +18,8 @@ namespace Chromely.CefGlue.Browser.Handlers
     /// </summary>
     public class CefGlueHttpSchemeHandlerFactory : CefSchemeHandlerFactory
     {
-        private readonly IChromelyConfiguration _config;
-        private readonly IChromelyRequestTaskRunner _requestTaskRunner;
+        protected readonly IChromelyConfiguration _config;
+        protected readonly IChromelyRequestTaskRunner _requestTaskRunner;
 
         public CefGlueHttpSchemeHandlerFactory(IChromelyConfiguration config, IChromelyRequestTaskRunner requestTaskRunner)
         {

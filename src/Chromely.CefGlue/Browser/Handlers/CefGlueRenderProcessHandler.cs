@@ -18,7 +18,7 @@ namespace Chromely.CefGlue.Browser.Handlers
     /// </summary>
     public class CefGlueRenderProcessHandler : CefRenderProcessHandler
     {
-        private readonly IChromelyConfiguration _config;
+        protected readonly IChromelyConfiguration _config;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CefGlueRenderProcessHandler"/> class.

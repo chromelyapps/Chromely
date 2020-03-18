@@ -18,7 +18,7 @@ namespace Chromely.CefGlue.Browser.Handlers
     /// </summary>
     public class CefGlueBrowserProcessHandler : CefBrowserProcessHandler
     {
-        private readonly IChromelyConfiguration _config;
+        protected readonly IChromelyConfiguration _config;
 
         public CefGlueBrowserProcessHandler(IChromelyConfiguration config)
         {

@@ -25,10 +25,10 @@ namespace Chromely.CefGlue.Browser.Handlers
     /// </summary>
     public class ExternalRequestSchemeHandler : CefGlueAsyncHandlerBase
     {
-        private readonly HttpClient _httpClient;
-        private HttpRequestMessage _httpRequest;
-        private HttpResponseMessage _httpResponseMessage;
-        private long _responseLenght;
+        protected readonly HttpClient _httpClient;
+        protected HttpRequestMessage _httpRequest;
+        protected HttpResponseMessage _httpResponseMessage;
+        protected long _responseLenght;
 
         /// <summary>
         /// Initializes a new instance of the Chromely.CefGlue.Browser.Handlers.ExternalRequestSchemeHandler class.

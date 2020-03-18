@@ -19,10 +19,10 @@ namespace Chromely.CefGlue.Browser.Handlers
 {
     public class CefGlueResourceSchemeHandler : CefResourceHandler
     {
-        private byte[] _fileBytes;
-        private string _mime;
-        private bool _completed;
-        private int _totalBytesRead;
+        protected byte[] _fileBytes;
+        protected string _mime;
+        protected bool _completed;
+        protected int _totalBytesRead;
 
         [Obsolete]
         protected override bool ProcessRequest(CefRequest request, CefCallback callback)

@@ -17,7 +17,7 @@ namespace Chromely.CefGlue.Browser.Handlers
     /// </summary>
     public class CefGlueAssemblyResourceSchemeHandlerFactory : CefSchemeHandlerFactory
     {
-        private readonly IChromelyConfiguration _config;
+        protected readonly IChromelyConfiguration _config;
 
         public CefGlueAssemblyResourceSchemeHandlerFactory(IChromelyConfiguration config)
         {

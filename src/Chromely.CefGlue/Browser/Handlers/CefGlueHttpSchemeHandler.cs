@@ -13,13 +13,13 @@ namespace Chromely.CefGlue.Browser.Handlers
 {
     public class CefGlueHttpSchemeHandler : CefResourceHandler
     {
-        private readonly IChromelyConfiguration _config;
-        private readonly IChromelyRequestTaskRunner _requestTaskRunner;
+        protected readonly IChromelyConfiguration _config;
+        protected readonly IChromelyRequestTaskRunner _requestTaskRunner;
 
-        private ChromelyResponse _chromelyResponse;
-        private byte[] _responseBytes;
-        private bool _completed;
-        private int _totalBytesRead;
+        protected ChromelyResponse _chromelyResponse;
+        protected byte[] _responseBytes;
+        protected bool _completed;
+        protected int _totalBytesRead;
 
         public CefGlueHttpSchemeHandler(IChromelyConfiguration config, IChromelyRequestTaskRunner requestTaskRunner)
         {

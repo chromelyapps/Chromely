@@ -18,12 +18,12 @@ namespace Chromely.CefGlue.Browser.Handlers
     /// </summary>
     public class CefGlueLoadHandler : CefLoadHandler
     {
-        private readonly IChromelyConfiguration _config;
+        protected readonly IChromelyConfiguration _config;
 
         /// <summary>
         /// The CefGlueBrowser object.
         /// </summary>
-        private readonly CefGlueBrowser _browser;
+        protected CefGlueBrowser _browser;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CefGlueLoadHandler"/> class.
@@ -32,6 +32,12 @@ namespace Chromely.CefGlue.Browser.Handlers
         {
             _config = config;
             _browser = browser;
+        }
+
+        public CefGlueBrowser Browser
+        {
+            get { return _browser; }
+            set { _browser = value; }
         }
 
         /// <summary>

@@ -22,15 +22,15 @@ namespace Chromely.CefGlue.Browser.Handlers
     /// </summary>
     public class CefPostDataStream : Stream
     {
-        readonly int _length;       // Number of bytes within the memory stream
+        protected int _length;       // Number of bytes within the memory stream
 
-        int _currentElementIndex;
-        int _currentElementPosition;
-        CefPostDataElement[] _postDataElements;
-        byte[] _currentElementBytes;
+        protected int _currentElementIndex;
+        protected int _currentElementPosition;
+        protected CefPostDataElement[] _postDataElements;
+        protected byte[] _currentElementBytes;
 
-        private int _position;     // read/write head.
-        private bool _isOpen;      // Is this stream open or closed?
+        protected int _position;     // read/write head.
+        protected bool _isOpen;      // Is this stream open or closed?
 
         /// <summary>
         /// Initializes a new instance of the Chromely.CefGlue.Browser.Handlers.CefPostDataStream class.
