@@ -7,6 +7,7 @@ Custom handlers can be registered in [ChromelyApp](https://github.com/chromelyap
 
 The following handlers can be customized and registered:
 
+- [CefLifeSpanHandler](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.CefGlue/CefGlue/Classes.Handlers/CefLifeSpanHandler.cs)
 - [CefLoadHandler](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.CefGlue/CefGlue/Classes.Handlers/CefLoadHandler.cs)
 - [CefRequestHandler](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.CefGlue/CefGlue/Classes.Handlers/CefRequestHandler.cs)
 - [CefDisplayHandler](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.CefGlue/CefGlue/Classes.Handlers/CefDisplayHandler.cs)
