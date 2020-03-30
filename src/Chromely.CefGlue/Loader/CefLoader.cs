@@ -14,10 +14,12 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Chromely.Core;
+using Chromely.Core.Configuration;
 using Chromely.Core.Logging;
 using ICSharpCode.SharpZipLib.BZip2;
 using ICSharpCode.SharpZipLib.Tar;
@@ -39,8 +41,12 @@ namespace Chromely.CefGlue.Loader
         private const string CefBuildsDownloadUrl = "http://opensource.spotify.com/cefbuilds";
         private static string CefBuildsDownloadIndex(string platform) => $"http://opensource.spotify.com/cefbuilds/index.html#{platform}_builds";
         private static string CefDownloadUrl(string name) => $"http://opensource.spotify.com/cefbuilds/{name}";
+        
+        private static string MacOSConfigFile = "Info.plist";
+        
+        private static string MacOSDefaultAppName = "Chromium Embedded Framework";
 
-         /// <summary>
+        /// <summary>
         /// Gets or sets the timeout for the CEF download in minutes.
         /// </summary>
         // ReSharper disable once MemberCanBePrivate.Global
@@ -180,6 +186,34 @@ namespace Chromely.CefGlue.Loader
             }
             
             return "";
+        }
+
+        public static void SetMacOSAppName(IChromelyConfiguration config)
+        {
+            if (config.Platform != ChromelyPlatform.MacOSX)
+            {
+                Task.Run(() =>
+                {
+                    try
+                    {
+                        var appName = config.AppName;
+                        if (string.IsNullOrWhiteSpace(appName))
+                        {
+                            appName = Assembly.GetEntryAssembly()?.GetName().Name;
+                        }
+
+                        var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                        var pInfoFile = Path.Combine(appDirectory, MacOSConfigFile);
+                        if (File.Exists(pInfoFile))
+                        {
+                            var pInfoFileText = File.ReadAllText(pInfoFile);
+                            pInfoFileText = pInfoFileText.Replace(MacOSDefaultAppName, appName);
+                            File.WriteAllText(MacOSConfigFile, pInfoFileText);
+                        }
+                    }
+                    catch { }
+                });
+            }
         }
 
         private void GetDownloadUrl()

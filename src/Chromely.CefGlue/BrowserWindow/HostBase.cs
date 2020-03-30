@@ -187,7 +187,7 @@ namespace Chromely.CefGlue.BrowserWindow
 
             _config.ChromelyVersion = CefRuntime.ChromeVersion;
 
-            var tempFiles = CefBinariesLoader.Load(_config.CefDownloadOptions, _config.Platform);
+            var tempFiles = CefBinariesLoader.Load(_config);
 
             CefRuntime.EnableHighDpiSupport();
 
