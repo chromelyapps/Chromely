@@ -190,7 +190,7 @@ namespace Chromely.CefGlue.Loader
 
         public static void SetMacOSAppName(IChromelyConfiguration config)
         {
-            if (config.Platform != ChromelyPlatform.MacOSX)
+            if (config.Platform == ChromelyPlatform.MacOSX)
             {
                 Task.Run(() =>
                 {
