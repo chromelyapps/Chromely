@@ -16,7 +16,7 @@ namespace Chromely.Core.Host
         IntPtr GetNativeHandle();
         void Run();
         Size GetWindowClientSize();
-        Size GetWindowClientSizeScaled();
+        float GetWindowDpiScalingFactor();
         void ResizeBrowser(IntPtr browserWindow, int width, int height);
         void Exit();
         void MessageBox(string message, int type);

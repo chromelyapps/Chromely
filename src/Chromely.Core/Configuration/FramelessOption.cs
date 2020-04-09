@@ -47,15 +47,17 @@ namespace Chromely.Core.Configuration
             DragZoneTopOffset = 0;
             DragZoneLeftOffset = 0;
             DragZoneRightOffset = 140;
-            IsDraggable = (nativeHost, point) =>
-            {
-                var size = nativeHost.GetWindowClientSizeScaled();
-                var right = size.Width - point.X;
+            IsDraggable = (nativeHost, point) => {
+                var scalingfactor = nativeHost.GetWindowDpiScalingFactor();
+                var size = nativeHost.GetWindowClientSize();
+
+                var scaledpoint = new Point((int) (point.X * scalingfactor), (int) (point.Y * scalingfactor));
+                var right = size.Width - scaledpoint.X;
 
                 // Define a bounding box for the drag area
-                return point.Y <= (DragZoneHeight + DragZoneTopOffset) && 
-                       point.Y >= DragZoneTopOffset &&
-                       point.X >= DragZoneLeftOffset &&
+                return scaledpoint.Y <= (DragZoneHeight + DragZoneTopOffset) &&
+                       scaledpoint.Y >= DragZoneTopOffset &&
+                       scaledpoint.X >= DragZoneLeftOffset &&
                        right > DragZoneRightOffset;
             };
         }

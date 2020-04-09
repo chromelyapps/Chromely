@@ -152,18 +152,14 @@ namespace Chromely.Native
             return GetClientSize();
         }
 
-        /// <summary> Gets the size of the window after scaling under windows. </summary>
-        /// <returns> The window client size after scaling. </returns>
-        public virtual Size GetWindowClientSizeScaled() 
-        {
-            var winsize = GetClientSize();
-
+        /// <summary>
+        ///     Under windows the x / y click events can be scaled based on the dpi / scaling setting.
+        /// </summary>
+        /// <returns> The window scaling factor. </returns>
+        public virtual float GetWindowDpiScalingFactor() {
             // The returned value is the dpi, dividing by 96f results in the scale
             var windowscale = GetDpiForWindow(_handle) / 96f;
-
-            winsize.Width = (int)(winsize.Width / windowscale);
-            winsize.Height = (int)(winsize.Height / windowscale);
-            return winsize;
+            return windowscale;
         }
 
         public virtual void ResizeBrowser(IntPtr browserWindow, int width, int height)
