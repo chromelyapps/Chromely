@@ -85,6 +85,10 @@ namespace Chromely.Native
             return new Size();
         }
 
+        public virtual Size GetWindowClientSizeScaled() {
+            return GetWindowClientSize();
+        }
+
         public virtual void ResizeBrowser(IntPtr browserWindow, int width, int height)
         {
         }
