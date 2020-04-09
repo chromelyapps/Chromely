@@ -144,7 +144,8 @@ namespace Chromely.Native
             return new Size();
         }
 
-        public virtual Size GetWindowClientSizeScaled() {
+        public virtual Size GetWindowClientSizeScaled() 
+        {
             return GetWindowClientSize();
         }
 
