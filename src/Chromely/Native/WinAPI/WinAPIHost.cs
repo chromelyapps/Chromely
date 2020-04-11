@@ -152,6 +152,21 @@ namespace Chromely.Native
             return GetClientSize();
         }
 
+        public virtual float GetWindowDpiScale()
+        {
+            const int StandardDpi = 96;
+            float scale = 1;
+            var hdc = GetDC(_handle);
+            try {
+                var dpi = GetDeviceCaps(hdc, (int)DeviceCap.LOGPIXELSY);
+                scale = (float)dpi / StandardDpi;
+            }
+            finally {
+                ReleaseDC(_handle, hdc);
+            }
+            return scale;
+        }
+
         public virtual void ResizeBrowser(IntPtr browserWindow, int width, int height)
         {
             if (browserWindow != IntPtr.Zero)

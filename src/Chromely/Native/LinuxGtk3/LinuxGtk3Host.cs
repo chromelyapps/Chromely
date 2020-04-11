@@ -144,6 +144,10 @@ namespace Chromely.Native
             return new Size();
         }
 
+        public virtual float GetWindowDpiScale() {
+            return 1.0f;
+        }
+
         public virtual void ResizeBrowser(IntPtr browserWindow, int width, int height)
         {
             try
