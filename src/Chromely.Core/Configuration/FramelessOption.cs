@@ -16,6 +16,10 @@ namespace Chromely.Core.Configuration
         /// <value> True if the click point is within the draggable area. </value>
         public Func<IChromelyNativeHost, Point, bool> IsDraggable { get; set; }
 
+        /// <summary> Callback function on double click events from the drag region. </summary>
+        /// <value> The double click callback. </value>
+        public Action<IChromelyNativeHost> DblClick { get; set; }
+
         /// <summary> List of draggable areas. </summary>
         /// <value> The drag zones. </value>
         public List<DragZoneConfiguration> DragZones { get; set; }
@@ -28,6 +32,7 @@ namespace Chromely.Core.Configuration
             DragZones = new List<DragZoneConfiguration>();
             DragZones.Add(new DragZoneConfiguration(32,0,0,140));
             IsDraggable = IsDraggableCallbackFunc;
+            DblClick = DblClickCallbackFunc;
         }
 
         /// <summary>
@@ -48,5 +53,15 @@ namespace Chromely.Core.Configuration
             }
             return in_zone;
         }
+
+        /// <summary> Doubleclick callback function. </summary>
+        /// <param name="nativeHost"> The Chromely native host interface. </param>
+        public void DblClickCallbackFunc(IChromelyNativeHost nativeHost) {
+
+            // TODO as a default this should probably toggle the maximise / restore state of the window
+            // For now we leave this to the user as we lack a platform independent way of doing this
+
+        }
+
     }
 }

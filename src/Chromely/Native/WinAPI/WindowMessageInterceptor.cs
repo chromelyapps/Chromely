@@ -143,14 +143,21 @@ namespace Chromely.Native
                         }
                         break;
                     }
+                case WM.LBUTTONDBLCLK:
+                    {
+                        if (!isDraggableArea) {
+                            break;
+                        }
+                        _framelessOption.DblClick(_nativeHost);
+                        break;
+                    }
                 }
-
                 return CallWindowProc(_originalWndProc, hWnd, message, wParam, lParam);
             }
 
             private bool IsDraggableArea(WM message, IntPtr lParam)
             {
-                if (message != WM.LBUTTONDOWN)
+                if (message != WM.LBUTTONDOWN && message != WM.LBUTTONDBLCLK)
                 {
                     return false;
                 }
