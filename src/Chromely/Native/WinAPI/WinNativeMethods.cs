@@ -713,6 +713,9 @@ namespace Chromely.Native
         [DllImport(User32DLL, SetLastError = true)]
         public static extern IntPtr GetDC(IntPtr hWnd);
 
+        [DllImport(User32DLL, SetLastError = true, CharSet = CharSet.Unicode)]
+        public static extern uint GetDpiForWindow(IntPtr hwnd);
+
         public enum SystemMetrics
         {
             CXSCREEN = 0,
