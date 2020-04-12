@@ -14,7 +14,7 @@ namespace Chromely.CefGlue.BrowserWindow
 {
     public abstract partial class HostBase : IChromelyWindow
     {
-        protected readonly IChromelyNativeHost _nativeHost;
+        protected IChromelyNativeHost _nativeHost;
         protected readonly IChromelyContainer _container;
         protected readonly IChromelyConfiguration _config;
         protected readonly IChromelyRequestTaskRunner _requestTaskRunner;

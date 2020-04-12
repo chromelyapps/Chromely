@@ -13,7 +13,7 @@ namespace Chromely.Windows
     public class ChromelyWindow : HostBase
     {
         public ChromelyWindow(IChromelyNativeHost nativeHost, IChromelyContainer container, IChromelyConfiguration config, IChromelyRequestTaskRunner requestTaskRunner, IChromelyCommandTaskRunner commandTaskRunner)
-            : base(nativeHost, container, config, requestTaskRunner, commandTaskRunner)
+            : base(nativeHost ?? NativeHostFactory.GetNativeHost(config), container, config, requestTaskRunner, commandTaskRunner)
         {
         }
 
