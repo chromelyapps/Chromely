@@ -97,7 +97,7 @@ namespace Chromely.Native
                             break;
                         }
 
-                        var maximized = IsWindowMaximized(_nativeHost.Handle);
+                        var maximized = _nativeHost.GetWindowIsMaximized();
                         if (maximized)
                         {
                             break;
@@ -164,14 +164,6 @@ namespace Chromely.Native
 
                 var point = new Point((int)lParam);
                 return _framelessOption.IsDraggable(_nativeHost, point);
-            }
-
-            private bool IsWindowMaximized(IntPtr hWnd)
-            {
-                WINDOWPLACEMENT placement = new WINDOWPLACEMENT();
-                placement.Length = Marshal.SizeOf(placement);
-                GetWindowPlacement(hWnd, ref placement);
-                return placement.ShowCmd == ShowWindowCommands.Maximized;
             }
         }
     }

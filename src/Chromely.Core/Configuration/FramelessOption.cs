@@ -57,11 +57,14 @@ namespace Chromely.Core.Configuration
         /// <summary> Doubleclick callback function. </summary>
         /// <param name="nativeHost"> The Chromely native host interface. </param>
         public void DblClickCallbackFunc(IChromelyNativeHost nativeHost) {
-
-            // TODO as a default this should probably toggle the maximise / restore state of the window
-            // For now we leave this to the user as we lack a platform independent way of doing this
-
+            // Toggle between normal (restore) and maximized
+            var maximised = nativeHost.GetWindowIsMaximized();
+            if (maximised) {
+                nativeHost.SetWindowState(WindowState.Normal);
+            }
+            else {
+                nativeHost.SetWindowState(WindowState.Maximize);
+            }
         }
-
     }
 }

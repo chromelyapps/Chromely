@@ -167,6 +167,38 @@ namespace Chromely.Native
             return scale;
         }
 
+        /// <summary> Determines if the window is maximised. </summary>
+        /// <returns> True if maximised. </returns>
+        public virtual bool GetWindowIsMaximized() {
+            var placement = new WINDOWPLACEMENT();
+            placement.Length = Marshal.SizeOf(placement);
+            GetWindowPlacement(_handle, ref placement);
+            return placement.ShowCmd == ShowWindowCommands.Maximized;
+        }
+
+        /// <summary> Sets window state. Maximise / Minimize / Restore. </summary>
+        /// <param name="state"> The state to set. </param>
+        /// <returns> True if it succeeds, false if it fails. </returns>
+        public virtual bool SetWindowState(WindowState state) {
+            switch (state)
+            {
+                case WindowState.Normal:
+                    // Restore the window
+                    return ShowWindow(_handle, ShowWindowCommand.SW_RESTORE);
+                case WindowState.Minimize:
+                    // Minimize the window
+                    return ShowWindow(_handle, ShowWindowCommand.SW_SHOWMINIMIZED);
+                case WindowState.Maximize:
+                    // Maximize the window
+                    return ShowWindow(_handle, ShowWindowCommand.SW_SHOWMAXIMIZED);
+
+                    // TODO full screen support
+                    // try moving the fullscreen code from CreateWindow / kiosk mode
+                    // into its own function
+            }
+            return false;
+        }
+
         public virtual void ResizeBrowser(IntPtr browserWindow, int width, int height)
         {
             if (browserWindow != IntPtr.Zero)

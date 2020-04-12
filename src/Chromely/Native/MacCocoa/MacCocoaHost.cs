@@ -89,6 +89,21 @@ namespace Chromely.Native
             return 1.0f;
         }
 
+        /// <summary> Determines if the window is maximised. </summary>
+        /// <returns> True if maximised. </returns>
+        public virtual bool GetWindowIsMaximized() {
+            // TODO required for frameless Maccocoa mode
+            return false;
+        }
+
+        /// <summary> Sets window state. Maximise / Minimize / Restore. </summary>
+        /// <param name="state"> The state to set. </param>
+        /// <returns> True if it succeeds, false if it fails. </returns>
+        public bool SetWindowState(WindowState state) {
+            // TODO required for frameless Maccocoa mode
+            return false;
+        }
+
         public virtual void ResizeBrowser(IntPtr browserWindow, int width, int height)
         {
         }
