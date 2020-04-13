@@ -167,14 +167,22 @@ namespace Chromely.Native
             return scale;
         }
 
-        /// <summary> Determines if the window is maximised. </summary>
-        /// <returns> True if maximised. </returns>
-        public virtual bool GetWindowIsMaximized() {
+        public virtual WindowState GetWindowState() {
             var placement = new WINDOWPLACEMENT();
             placement.Length = Marshal.SizeOf(placement);
             GetWindowPlacement(_handle, ref placement);
-            return placement.ShowCmd == ShowWindowCommands.Maximized;
+            switch (placement.ShowCmd) {
+                case ShowWindowCommands.Maximized:
+                    return WindowState.Maximize;
+                case ShowWindowCommands.Minimized:
+                    return WindowState.Minimize;
+                case ShowWindowCommands.Normal:
+                    return WindowState.Normal;
+            }
+            // If unknown
+            return WindowState.Normal;
         }
+
 
         /// <summary> Sets window state. Maximise / Minimize / Restore. </summary>
         /// <param name="state"> The state to set. </param>

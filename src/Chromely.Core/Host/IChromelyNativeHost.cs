@@ -21,9 +21,9 @@ namespace Chromely.Core.Host
         void Exit();
         void MessageBox(string message, int type);
 
-        /// <summary> Determines if the window is maximized. </summary>
-        /// <returns> True if maximized. </returns>
-        bool GetWindowIsMaximized();
+        /// <summary> Gets the current window state Maximised / Normal / Minimised etc. </summary>
+        /// <returns> The window state. </returns>
+        WindowState GetWindowState();
 
         /// <summary> Sets window state. Maximise / Minimize / Restore. </summary>
         /// <param name="state"> The state to set. </param>

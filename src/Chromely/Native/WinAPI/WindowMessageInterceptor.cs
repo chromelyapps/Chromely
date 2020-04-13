@@ -97,8 +97,8 @@ namespace Chromely.Native
                             break;
                         }
 
-                        var maximized = _nativeHost.GetWindowIsMaximized();
-                        if (maximized)
+                        var state = _nativeHost.GetWindowState();
+                        if (state == WindowState.Maximize)
                         {
                             break;
                         }
