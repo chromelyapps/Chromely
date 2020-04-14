@@ -12,6 +12,6 @@ namespace Chromely.Native
         internal const string GlibLib = "libglib-2.0.so.0";
         internal const string GioLib = "libgio-2.0.so.0";
         internal const string GdkPixBuf = "libgdk_pixbuf-2.0.so.0";
-        internal const string X11Lib = "libX11.so";
+        internal const string X11Lib = "libX11.so.6";
     }
 }
