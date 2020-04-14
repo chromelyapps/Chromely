@@ -85,6 +85,25 @@ namespace Chromely.Native
             return new Size();
         }
 
+        public virtual float GetWindowDpiScale() {
+            return 1.0f;
+        }
+
+        /// <summary> Gets the current window state Maximised / Normal / Minimised etc. </summary>
+        /// <returns> The window state. </returns>
+        public virtual WindowState GetWindowState() {
+            // TODO required for frameless Maccocoa mode
+            return WindowState.Normal;
+        }
+
+        /// <summary> Sets window state. Maximise / Minimize / Restore. </summary>
+        /// <param name="state"> The state to set. </param>
+        /// <returns> True if it succeeds, false if it fails. </returns>
+        public bool SetWindowState(WindowState state) {
+            // TODO required for frameless Maccocoa mode
+            return false;
+        }
+
         public virtual void ResizeBrowser(IntPtr browserWindow, int width, int height)
         {
         }

@@ -97,8 +97,8 @@ namespace Chromely.Native
                             break;
                         }
 
-                        var maximized = IsWindowMaximized(_nativeHost.Handle);
-                        if (maximized)
+                        var state = _nativeHost.GetWindowState();
+                        if (state == WindowState.Maximize)
                         {
                             break;
                         }
@@ -143,51 +143,27 @@ namespace Chromely.Native
                         }
                         break;
                     }
+                case WM.LBUTTONDBLCLK:
+                    {
+                        if (!isDraggableArea) {
+                            break;
+                        }
+                        _framelessOption.DblClick(_nativeHost);
+                        break;
+                    }
                 }
-
                 return CallWindowProc(_originalWndProc, hWnd, message, wParam, lParam);
             }
 
             private bool IsDraggableArea(WM message, IntPtr lParam)
             {
-                if (message != WM.LBUTTONDOWN)
+                if (message != WM.LBUTTONDOWN && message != WM.LBUTTONDBLCLK)
                 {
                     return false;
                 }
 
                 var point = new Point((int)lParam);
-                AdjustPointDpi(_nativeHost.Handle, ref point);
                 return _framelessOption.IsDraggable(_nativeHost, point);
-            }
-
-            private bool IsWindowMaximized(IntPtr hWnd)
-            {
-                WINDOWPLACEMENT placement = new WINDOWPLACEMENT();
-                placement.Length = Marshal.SizeOf(placement);
-                GetWindowPlacement(hWnd, ref placement);
-                return placement.ShowCmd == ShowWindowCommands.Maximized;
-            }
-
-            /// <summary>
-            /// Gets the correct point for the scaled window.
-            /// </summary>
-            private void AdjustPointDpi(IntPtr hWnd, ref Point point)
-            {
-                const int StandardDpi = 96;
-                float scale = 1;
-                var hdc = GetDC(hWnd);
-                try
-                {
-                    var dpi = GetDeviceCaps(hdc, (int)DeviceCap.LOGPIXELSY);
-                    scale = (float)dpi / StandardDpi;
-                }
-                finally
-                {
-                    ReleaseDC(hWnd, hdc);
-                }
-
-                point.X = (int)(point.X / scale);
-                point.Y = (int)(point.Y / scale);
             }
         }
     }
