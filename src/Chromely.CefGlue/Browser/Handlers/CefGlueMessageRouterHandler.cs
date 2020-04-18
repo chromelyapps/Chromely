@@ -10,6 +10,8 @@
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Chromely.Core;
+using Chromely.Core.Infrastructure;
 using Chromely.Core.Network;
 using Xilium.CefGlue;
 using Xilium.CefGlue.Wrapper;
@@ -21,10 +23,12 @@ namespace Chromely.CefGlue.Browser.Handlers
     /// </summary>
     public class CefGlueMessageRouterHandler : CefMessageRouterBrowserSide.Handler
     {
+        protected readonly IChromelyContainer _container;
         protected readonly IChromelyRequestTaskRunner _requestTaskRunner;
 
-        public CefGlueMessageRouterHandler(IChromelyRequestTaskRunner requestTaskRunner)
+        public CefGlueMessageRouterHandler(IChromelyContainer container, IChromelyRequestTaskRunner requestTaskRunner)
         {
+            _container = container;
             _requestTaskRunner = requestTaskRunner;
         }
 
@@ -39,19 +43,38 @@ namespace Chromely.CefGlue.Browser.Handlers
 
             if (RoutePath.ValidMethod(method))
             {
-                new Task(() =>
+                var id = requestData.id ?? string.Empty;
+                var path = requestData.url ?? string.Empty;
+                var routePath = new RoutePath(method, path);
+
+                bool isRequestAsync = ServiceRouteProvider.IsActionRouteAsync(_container, routePath);
+
+                if (isRequestAsync)
                 {
-                    var id = requestData.id ??  string.Empty;
-                    var path = requestData.url ?? string.Empty;
-                    var parameters = requestData.parameters;
-                    var postData = requestData.postData;
+                    Task.Run(async () =>
+                    {
+                        var parameters = requestData.parameters;
+                        var postData = requestData.postData;
 
-                    var routePath = new RoutePath(method, path);
-                    var response = _requestTaskRunner.Run(id, routePath, parameters, postData, request);
-                    var jsonResponse = response.ToJson();
+                        var response = await _requestTaskRunner.RunAsync(id, routePath, parameters, postData, request);
+                        var jsonResponse = response.ToJson();
 
-                    callback.Success(jsonResponse);
-                }).Start();
+                        callback.Success(jsonResponse);
+                    });
+                }
+                else
+                {
+                    Task.Run(() =>
+                    {
+                        var parameters = requestData.parameters;
+                        var postData = requestData.postData;
+
+                        var response = _requestTaskRunner.Run(id, routePath, parameters, postData, request);
+                        var jsonResponse = response.ToJson();
+
+                        callback.Success(jsonResponse);
+                    });
+                }
 
                 return true;
             }

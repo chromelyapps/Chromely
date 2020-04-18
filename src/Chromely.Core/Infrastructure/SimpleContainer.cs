@@ -126,7 +126,7 @@ namespace Caliburn.Light
         }
 
         /// <summary>
-        /// Registers the class so that it is created once, on first request, and the same instance is returned to all requestors thereafter.
+        /// Registers or replaces the class so that it is created once, on first request, and the same instance is returned to all requestors thereafter.
         /// </summary>
         /// <param name="service">The service.</param>
         /// <param name="key">The key.</param>
@@ -144,11 +144,21 @@ namespace Caliburn.Light
             }
 
             object singleton = null;
-            GetOrCreateEntry(service, key)?.Add(c => singleton ?? (singleton = c.BuildInstance(implementation)));
+            GetOnCreateOrReplaceEntry(service, key)?.Add(c => singleton ?? (singleton = c.BuildInstance(implementation)));
         }
 
         /// <summary>
-        /// Registers the class so that it is created once, on first request, and the same instance is returned to all requestors thereafter.
+        /// Registers or replaces the class - using type name as key - so that it is created once, on first request, and the same instance is returned to all requestors thereafter.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="implementation">The implementation.</param>
+        public void RegisterByTypeSingleton(Type service, Type implementation)
+        {
+            RegisterSingleton(service, service.Name, implementation);
+        }
+
+        /// <summary>
+        /// Registers or replaces the class so that it is created once, on first request, and the same instance is returned to all requestors thereafter.
         /// </summary>
         /// <typeparam name="TImplementation">The type of the implementation.</typeparam>
         /// <param name="key">The key.</param>
@@ -163,14 +173,23 @@ namespace Caliburn.Light
         /// <typeparam name="TService">The type of the service.</typeparam>
         /// <typeparam name="TImplementation">The type of the implementation.</typeparam>
         /// <param name="key">The key.</param>
-        public void RegisterSingleton<TService, TImplementation>(string key = null)
-            where TImplementation : TService
+        public void RegisterSingleton<TService, TImplementation>(string key = null) where TImplementation : TService
         {
             RegisterSingleton(typeof(TService), key, typeof(TImplementation));
         }
 
         /// <summary>
-        /// Registers the class so that it is created once, on first request, and the same instance is returned to all requestors thereafter.
+        /// Registers or replaces the class  - using type name as key - so that it is created once, on first request, and the same instance is returned to all requestors thereafter.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <typeparam name="TImplementation">The type of the implementation.</typeparam>
+        public void RegisterByTypeSingleton<TService, TImplementation>() where TImplementation : TService
+        {
+            RegisterSingleton(typeof(TService), typeof(TService).Name, typeof(TImplementation));
+        }
+
+        /// <summary>
+        /// Registers or replaces the class so that it is created once, on first request, and the same instance is returned to all requestors thereafter.
         /// </summary>
         /// <typeparam name="TService">The type of the service.</typeparam>
         /// <param name="handler">The handler.</param>
@@ -183,7 +202,7 @@ namespace Caliburn.Light
             }
 
             object singleton = null;
-            GetOrCreateEntry(typeof(TService), key)?.Add(c => singleton ?? (singleton = handler(c)));
+            GetOnCreateOrReplaceEntry(typeof(TService), key)?.Add(c => singleton ?? (singleton = handler(c)));
         }
 
         /// <summary>
@@ -503,6 +522,34 @@ namespace Caliburn.Light
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// The get on create or replace entry.
+        /// </summary>
+        /// <param name="service">
+        /// The service.
+        /// </param>
+        /// <param name="key">
+        /// The key.
+        /// </param>
+        /// <returns>
+        /// The <see cref="ContainerEntry"/>.
+        /// </returns>
+        private ContainerEntry GetOnCreateOrReplaceEntry(Type service, string key)
+        {
+            lock (_entries)
+            {
+                var entry = _entries.FirstOrDefault(x => x.Service == service && x.Key == key);
+                if (entry != null)
+                {
+                    _entries.Remove(entry);
+                }
+
+                entry = new ContainerEntry { Service = service, Key = key };
+                _entries.Add(entry);
+                return entry;
+            }
         }
 
         /// <summary>

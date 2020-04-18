@@ -7,6 +7,7 @@
 // </license>
 // ----------------------------------------------------------------------------------------------------------------------
 
+using Chromely.Core;
 using Chromely.Core.Configuration;
 using Chromely.Core.Network;
 using Xilium.CefGlue;
@@ -18,18 +19,20 @@ namespace Chromely.CefGlue.Browser.Handlers
     /// </summary>
     public class CefGlueHttpSchemeHandlerFactory : CefSchemeHandlerFactory
     {
+        protected readonly IChromelyContainer _container;
         protected readonly IChromelyConfiguration _config;
         protected readonly IChromelyRequestTaskRunner _requestTaskRunner;
 
-        public CefGlueHttpSchemeHandlerFactory(IChromelyConfiguration config, IChromelyRequestTaskRunner requestTaskRunner)
+        public CefGlueHttpSchemeHandlerFactory(IChromelyContainer container, IChromelyConfiguration config, IChromelyRequestTaskRunner requestTaskRunner)
         {
+            _container = container;
             _config = config;
             _requestTaskRunner = requestTaskRunner;
         }
 
         protected override CefResourceHandler Create(CefBrowser browser, CefFrame frame, string schemeName, CefRequest request)
         {
-            return new CefGlueHttpSchemeHandler(_config, _requestTaskRunner);
+            return new CefGlueHttpSchemeHandler(_container, _config, _requestTaskRunner);
         }
     }
 }

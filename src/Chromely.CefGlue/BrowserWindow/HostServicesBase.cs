@@ -179,7 +179,7 @@ namespace Chromely.CefGlue.BrowserWindow
 
                     if (isDefault)
                     {
-                        CefRuntime.RegisterSchemeHandlerFactory(item.Scheme, item.Host, new CefGlueHttpSchemeHandlerFactory(_config, _requestTaskRunner));
+                        CefRuntime.RegisterSchemeHandlerFactory(item.Scheme, item.Host, new CefGlueHttpSchemeHandlerFactory(_container,_config, _requestTaskRunner));
                     }
                 }
             }
@@ -250,7 +250,7 @@ namespace Chromely.CefGlue.BrowserWindow
             }
             else
             {
-                BrowserMessageRouter.AddHandler(new CefGlueMessageRouterHandler(_requestTaskRunner));
+                BrowserMessageRouter.AddHandler(new CefGlueMessageRouterHandler(_container,_requestTaskRunner));
             }
         }
 

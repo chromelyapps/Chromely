@@ -41,7 +41,7 @@ namespace Chromely.Core
         string[] GetKeys(Type service);
 
         /// <summary>
-        /// Registers the class so that it is created once, on first request, and the same instance is returned to all requestors thereafter.
+        /// Registers or replaces the class so that it is created once, on first request, and the same instance is returned to all requestors thereafter.
         /// </summary>
         /// <param name="service">The service.</param>
         /// <param name="key">The key.</param>
@@ -49,19 +49,33 @@ namespace Chromely.Core
         void RegisterSingleton(Type service, string key, Type implementation);
 
         /// <summary>
-        /// Registers the class so that it is created once, on first request, and the same instance is returned to all requestors thereafter.
+        /// Registers or replaces the class - using type name as key - so that it is created once, on first request, and the same instance is returned to all requestors thereafter.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="implementation">The implementation.</param>
+        void RegisterByTypeSingleton(Type service, Type implementation);
+
+        /// <summary>
+        /// Registers or replaces the class so that it is created once, on first request, and the same instance is returned to all requestors thereafter.
         /// </summary>
         /// <typeparam name="TImplementation">The type of the implementation.</typeparam>
         /// <param name="key">The key.</param>
         void RegisterSingleton<TImplementation>(string key);
 
         /// <summary>
-        /// Registers the class so that it is created once, on first request, and the same instance is returned to all requestors thereafter.
+        /// Registers or replaces the class so that it is created once, on first request, and the same instance is returned to all requestors thereafter.
         /// </summary>
         /// <typeparam name="TService">The type of the service.</typeparam>
         /// <typeparam name="TImplementation">The type of the implementation.</typeparam>
         /// <param name="key">The key.</param>
         void RegisterSingleton<TService, TImplementation>(string key) where TImplementation : TService;
+
+        /// <summary>
+        ///  Registers or replaces the class - using type name as key - so that it is created once, on first request, and the same instance is returned to all requestors thereafter.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <typeparam name="TImplementation">The type of the implementation.</typeparam>
+        void RegisterByTypeSingleton<TService, TImplementation>() where TImplementation : TService;
 
         /// <summary>
         /// Registers an instance with the container.

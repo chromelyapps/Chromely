@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Threading.Tasks;
 using Chromely.Core.Logging;
 
 namespace Chromely.Core.Network
@@ -44,12 +45,21 @@ namespace Chromely.Core.Network
             foreach (var item in methodInfos)
             {
                 var httpAttributeDelegate = CreateDelegate(controller, item) as Func<ChromelyRequest, ChromelyResponse>;
+                var asyncHttpAttributeDelegate = CreateDelegate(controller, item) as Func<ChromelyRequest, Task<ChromelyResponse>>;
                 var attribute = item.GetCustomAttribute<HttpAttribute>();
 
+                // Sync
                 if (httpAttributeDelegate != null && attribute != null)
                 {
                     var routhPath = new RoutePath(attribute.Method, attribute.Route);
                     result[routhPath.Key] = new ActionRoute(attribute.Method, attribute.Route, httpAttributeDelegate);
+                }
+
+                // Async
+                if (asyncHttpAttributeDelegate != null && attribute != null)
+                {
+                    var routhPath = new RoutePath(attribute.Method, attribute.Route);
+                    result[routhPath.Key] = new ActionRoute(attribute.Method, attribute.Route, asyncHttpAttributeDelegate);
                 }
             }
 

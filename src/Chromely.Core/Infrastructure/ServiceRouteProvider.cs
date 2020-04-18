@@ -50,25 +50,37 @@ namespace Chromely.Core.Infrastructure
 
         public static ActionRoute GetActionRoute(IChromelyContainer container, RoutePath routePath)
         {
-            object routeObj = container.GetInstance(typeof(ActionRoute), routePath.Key);
-            if ((routeObj == null) || !(routeObj is ActionRoute))
+            var route = container.GetInstance(typeof(ActionRoute), routePath.Key) as ActionRoute;
+            if (route == null)
             {
                 throw new Exception($"No route found for method:{routePath.Method} route path:{routePath.Path}.");
             }
 
-            return (ActionRoute)routeObj;
+            return route;
         }
 
         public static CommandRoute GetCommandRoute(IChromelyContainer container, string commandPath)
         {
             var key = CommandRoute.GetKeyFromPath(commandPath);
-            object commandObj = container.GetInstance(typeof(CommandRoute), key);
-            if ((commandObj == null) || !(commandObj is CommandRoute))
+            var command = container.GetInstance(typeof(CommandRoute), key) as CommandRoute;
+            if (command == null)
             {
                 throw new Exception($"No route found for command with key:{key}.");
             }
 
-            return (CommandRoute)commandObj;
+            return command;
+        }
+
+        public static bool IsActionRouteAsync(IChromelyContainer container, RoutePath routePath)
+        {
+            try
+            {
+                var route = container.GetInstance(typeof(ActionRoute), routePath.Key) as ActionRoute;
+                return route == null ? false : route.IsAsync;
+            }
+            catch {}
+
+            return false;
         }
     }
 }

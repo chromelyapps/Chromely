@@ -114,8 +114,8 @@ namespace Chromely.Core
         {
             EnsureContainerValid(container);
 
-            container.RegisterSingleton(typeof(IChromelyRequestTaskRunner), typeof(IChromelyRequestTaskRunner).Name, typeof(DefaultRequestTaskRunner));
-            container.RegisterSingleton(typeof(IChromelyCommandTaskRunner), typeof(IChromelyCommandTaskRunner).Name, typeof(DefaultCommandTaskRunner));
+            container.RegisterByTypeSingleton(typeof(IChromelyRequestTaskRunner), typeof(DefaultRequestTaskRunner));
+            container.RegisterByTypeSingleton(typeof(IChromelyCommandTaskRunner), typeof(DefaultCommandTaskRunner));
         }
 
         public abstract void RegisterEvents(IChromelyContainer container);

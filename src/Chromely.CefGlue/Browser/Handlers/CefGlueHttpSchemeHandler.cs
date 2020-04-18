@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Chromely.Core;
 using Chromely.Core.Configuration;
 using Chromely.Core.Infrastructure;
 using Chromely.Core.Logging;
@@ -13,6 +14,7 @@ namespace Chromely.CefGlue.Browser.Handlers
 {
     public class CefGlueHttpSchemeHandler : CefResourceHandler
     {
+        protected readonly IChromelyContainer _container;
         protected readonly IChromelyConfiguration _config;
         protected readonly IChromelyRequestTaskRunner _requestTaskRunner;
 
@@ -21,8 +23,9 @@ namespace Chromely.CefGlue.Browser.Handlers
         protected bool _completed;
         protected int _totalBytesRead;
 
-        public CefGlueHttpSchemeHandler(IChromelyConfiguration config, IChromelyRequestTaskRunner requestTaskRunner)
+        public CefGlueHttpSchemeHandler(IChromelyContainer container, IChromelyConfiguration config, IChromelyRequestTaskRunner requestTaskRunner)
         {
+            _container = container;
             _config = config;
             _requestTaskRunner = requestTaskRunner;
         }
@@ -33,15 +36,36 @@ namespace Chromely.CefGlue.Browser.Handlers
             var isCustomScheme = _config?.UrlSchemes?.IsUrlRegisteredCustomScheme(request.Url);
             if (isCustomScheme.HasValue && isCustomScheme.Value)
             {
+                var uri = new Uri(request.Url);
+                var path = uri.LocalPath;
+
+                bool isRequestAsync = ServiceRouteProvider.IsActionRouteAsync(_container, new RoutePath(request.Method, path));
+                if (isRequestAsync)
+                {
+                    ProcessRequestAsync(path);
+                }
+                else
+                {
+                    ProcessRequest(path);
+                }
+
+                return true;
+            }
+
+            Logger.Instance.Log.Error($"Url {request.Url} is not of a registered custom scheme.");
+            callback.Dispose();
+            return false;
+
+            #region Process Request
+
+            void ProcessRequest(string path)
+            {
                 Task.Run(() =>
                 {
                     using (callback)
                     {
                         try
                         {
-                            var uri = new Uri(request.Url);
-                            var path = uri.LocalPath;
-
                             var response = new ChromelyResponse();
                             if (string.IsNullOrEmpty(path))
                             {
@@ -67,10 +91,10 @@ namespace Chromely.CefGlue.Browser.Handlers
 
                             _chromelyResponse =
                                 new ChromelyResponse
-                                    {
-                                        Status = (int)HttpStatusCode.BadRequest,
-                                        Data = "An error occured."
-                                    };
+                                {
+                                    Status = (int)HttpStatusCode.BadRequest,
+                                    Data = "An error occured."
+                                };
                         }
                         finally
                         {
@@ -78,13 +102,59 @@ namespace Chromely.CefGlue.Browser.Handlers
                         }
                     }
                 });
-
-                return true;
             }
 
-            Logger.Instance.Log.Error($"Url {request.Url} is not of a registered custom scheme.");
-            callback.Dispose();
-            return false;
+            #endregion
+
+            #region Process Request Async
+
+            void ProcessRequestAsync(string path)
+            {
+                Task.Run(async () =>
+                {
+                    using (callback)
+                    {
+                        try
+                        {
+                            var response = new ChromelyResponse();
+                            if (string.IsNullOrEmpty(path))
+                            {
+                                response.ReadyState = (int)ReadyState.ResponseIsReady;
+                                response.Status = (int)System.Net.HttpStatusCode.BadRequest;
+                                response.StatusText = "Bad Request";
+
+                                _chromelyResponse = response;
+                            }
+                            else
+                            {
+                                var parameters = request.Url.GetParameters();
+                                var postData = GetPostData(request);
+
+                                _chromelyResponse = await _requestTaskRunner.RunAsync(request.Method, path, parameters, postData);
+                                string jsonData = _chromelyResponse.Data.EnsureResponseDataIsJsonFormat();
+                                _responseBytes = Encoding.UTF8.GetBytes(jsonData);
+                            }
+                        }
+                        catch (Exception exception)
+                        {
+                            Logger.Instance.Log.Error(exception);
+
+                            _chromelyResponse =
+                                new ChromelyResponse
+                                {
+                                    Status = (int)HttpStatusCode.BadRequest,
+                                    Data = "An error occured."
+                                };
+                        }
+                        finally
+                        {
+                            callback.Continue();
+                        }
+                    }
+                });
+            }
+
+            #endregion
         }
 
         protected override void GetResponseHeaders(CefResponse response, out long responseLength, out string redirectUrl)

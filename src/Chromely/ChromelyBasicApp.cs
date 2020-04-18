@@ -17,7 +17,7 @@ namespace Chromely
         public override void Configure(IChromelyContainer container)
         {
             base.Configure(container);
-            container.RegisterSingleton(typeof(IChromelyWindow), typeof(IChromelyWindow).Name, typeof(ChromelyWindow));
+            container.RegisterByTypeSingleton(typeof(IChromelyWindow), typeof(ChromelyWindow));
         }
 
         /// <summary>

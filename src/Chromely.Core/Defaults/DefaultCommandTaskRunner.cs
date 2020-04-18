@@ -32,30 +32,30 @@ namespace Chromely.Core.Defaults
         {
             Task.Run(() =>
             {
-                try
-                {
-                    var commandPath = GetPathFromUrl(url);
-                    var command = ServiceRouteProvider.GetCommandRoute(_container, commandPath);
-
-                    if (command == null)
-                    {
-                        Logger.Instance.Log.Error($"Command for path = {commandPath} is null or invalid.");
-                        return;
-                    }
-
-                    var queryParameters = GetQueryParameters(url);
-                    command.Invoke(queryParameters);
-                }
-                catch (Exception exception)
-                {
-                    Logger.Instance.Log.Error(exception);
-                }
+                Run(url);
             });
         }
 
         public void Run(string url)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var commandPath = GetPathFromUrl(url);
+                var command = ServiceRouteProvider.GetCommandRoute(_container, commandPath);
+
+                if (command == null)
+                {
+                    Logger.Instance.Log.Error($"Command for path = {commandPath} is null or invalid.");
+                    return;
+                }
+
+                var queryParameters = GetQueryParameters(url);
+                command.Invoke(queryParameters);
+            }
+            catch (Exception exception)
+            {
+                Logger.Instance.Log.Error(exception);
+            }
         }
 
         private static string GetPathFromUrl(string url)
