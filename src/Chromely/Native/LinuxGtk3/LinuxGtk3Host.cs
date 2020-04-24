@@ -43,6 +43,8 @@ namespace Chromely.Native
 
         public LinuxGtk3Host()
         {
+            gdk_set_allowed_backends("x11");
+
             _isInitialized = false;
             _handle = IntPtr.Zero;
             _xid = IntPtr.Zero;
