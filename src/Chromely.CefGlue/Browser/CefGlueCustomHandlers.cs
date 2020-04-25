@@ -45,6 +45,7 @@ namespace Chromely.CefGlue.Browser
                 handlers.DisplayHandler = new CefGlueDisplayHandler(config, browser);
                 handlers.ContextMenuHandler = new CefGlueContextMenuHandler(config);
                 handlers.DragHandler = new CefGlueDragHandler(config);
+                handlers.DownloadHandler = new CefGlueDownloadHandler();
 
                 // Update custom handlers
                 var customHandlers = container.GetAllInstances(typeof(IChromelyCustomHandler));
