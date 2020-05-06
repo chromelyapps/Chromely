@@ -11,7 +11,7 @@ For manual download please these follow steps:
      #### Versions Map 
     | Chromely.CefGlue| Chromely.Unofficial.CefGlue.NetStd | Required CEF Binary |
     | :---         | :---         | :--- |
-    | 5.0.77.* | 78.0.3904.108 | 77.1.14%2Bg4fb61d2%2Bchromium-77.0.3865.120 |
+    | 5.0.77.* | 79.0.3945.130 | 77.1.14%2Bg4fb61d2%2Bchromium-77.0.3865.120 |
 
     For instance binaries download for Chromely v5 will be url links: 
     ```` 
