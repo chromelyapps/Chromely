@@ -212,6 +212,19 @@ namespace Chromely.Native
             }
         }
 
+        public virtual void SetWindowTitle(string title)
+        {
+            try
+            {
+                gtk_window_set_title(_handle, title);
+            }
+            catch (Exception exception)
+            {
+                Logger.Instance.Log.Error("Error in LinuxGtk3Host::SetWindowTitle");
+                Logger.Instance.Log.Error(exception);
+            }
+        }
+
         protected virtual void SetWindowMaximize()
         {
             try
@@ -324,19 +337,6 @@ namespace Chromely.Native
             }
 
             return IntPtr.Zero;
-        }
-
-        protected virtual void SetWindowTitle(string title)
-        {
-            try
-            {
-                gtk_window_set_title(_handle, title);
-            }
-            catch (Exception exception)
-            {
-                Logger.Instance.Log.Error("Error in LinuxGtk3Host::SetWindowTitle");
-                Logger.Instance.Log.Error(exception);
-            }
         }
 
         protected virtual void SetWindowDefaultSize(int width, int height)

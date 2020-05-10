@@ -242,6 +242,14 @@ namespace Chromely.Native
         {
         }
 
+        public void SetWindowTitle(string title)
+        {
+            if (_handle != IntPtr.Zero)
+            {
+                SetWindowText(_handle, title);
+            }
+        }
+
         #region CreateWindow
 
         private IntPtr GetIconHandle()

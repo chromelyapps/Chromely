@@ -812,6 +812,9 @@ namespace Chromely.Native
             SYSTEMDOCKED = 0x2004,
         }
 
+        [DllImport(User32DLL, SetLastError = true)]
+        public static extern bool SetWindowText(IntPtr hwnd, String lpString);
+
         [DllImport(User32DLL)]
         public static extern int GetSystemMetrics(SystemMetrics smIndex);
 

@@ -117,6 +117,11 @@ namespace Chromely.Native
             throw new NotImplementedException();
         }
 
+        public virtual void SetWindowTitle(string title)
+        {
+            Logger.Instance.Log.Info("MacCocoaHost::SetWindowTitle is not implemented yet!");
+        }
+
         #region CreateWindow
 
         protected virtual void RunCallback()
@@ -199,6 +204,5 @@ namespace Chromely.Native
         }
 
         #endregion
-
     }
 }
