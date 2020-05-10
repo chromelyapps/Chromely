@@ -6,6 +6,9 @@ namespace Chromely.Native
 {
     public partial class LinuxNativeMethods
     {
+        [DllImport(Library.GdkLib, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void gdk_set_allowed_backends(string backend);
+
         [DllImport(Library.GtkLib, CallingConvention = CallingConvention.Cdecl)]
         public static extern void gtk_init(int argc, string[] argv);
 
