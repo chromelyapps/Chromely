@@ -18,34 +18,8 @@
     <PackageTags>Cef Chromium HTML5 Desktop Chromely CefGlue  Restful  Ajax HTTP XHR MessageRouter .NET Core</PackageTags>
     <Description>Primary Chromely implementation library - this is in .NET Standard 2.0 as it can be used in both .NET (Windows) and .NET Core (Windows, Linux, MacOS). Chromely version naming is based Chromely and Chromium versions implemented- major.minor.chromuim version.patch e.g 1.0.70.0.</Description>
     <PackageReleaseNotes>
-Projects Structure
-- All projects are now .NET Standard 2.0
-- Chromely.Core - no dependencies.
-- Chromely.CefGlue - depends on Chromely.Core and embeds CefGlue source code and CefGlue default handlers.
-- Chromely - primary - depends on Chromely.CefGlue and includes native gui implementation for Win, Linux and MacOS. All other non-CefGlue customization will be done here.
-
-New Features
-- MacOS support using native Cocoa API
-- Full IOC - #106
-- MVC- styled controller actions as discussed in #91
-- LitJson was replaced by System.Text.Json.
-- Optional configuration file - chromelyconfig.json
-- Storable App/User settings - IChromelyAppSettings.
-- Configuration has received a facelift (see more info link below for more info).
-
-Fixes
-- Fixed WinAPIHost not respecting WindowTitle (Windows)
-- ToolTips (html-title) working and positioned correctly. (Linux)
-
-Deprecation &amp; Discontinued
-- Winapi was removed in favour of .NET Core 3. Win32 pinvoke functionalities will be sourced in pinvoke.net, shintadono's Win32 and other MIT licensed projects.
-- CefSharp is no longer supported.
-- Default Sup-process was removed for Windows. Sub-process is configurable and developers who need it can include sub-process fullpath in configuration.
-- Real-time with Websocket server was removed.
-
-For more info please see
-https://github.com/chromelyapps/Chromely/releases/tag/v5.0.0
-</PackageReleaseNotes>
+      Upgrade to Chromium v79 - 79.1.36+g90301bd+chromium-79.0.3945.130.
+    </PackageReleaseNotes>
     <RepositoryType>Github Repository</RepositoryType>
     <RepositoryUrl>https://github.com/chromelyapps/Chromely</RepositoryUrl>
     <Configurations>Debug;Release;ReleaseLinux;DebugLinux</Configurations>
