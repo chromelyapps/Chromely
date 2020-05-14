@@ -37,6 +37,7 @@ namespace Chromely.CefGlue.Browser.Handlers
         public ExternalRequestSchemeHandler(HttpClient httpClient)
         {
             _httpClient = httpClient;
+            _httpResponseMessage = new HttpResponseMessage(HttpStatusCode.BadRequest);
         }
 
         /// <summary>
@@ -111,8 +112,6 @@ namespace Chromely.CefGlue.Browser.Handlers
 
             try
             {
-                if (_httpResponseMessage == null)
-                    return;
                 var headers = response.GetHeaderMap();
                 headers.Clear();
 
