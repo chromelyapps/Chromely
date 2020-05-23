@@ -71,7 +71,8 @@ namespace Chromely.Windows
             {
                 if (Browser != null)
                 {
-                    Browser?.InvokeAsyncIfPossible(() => Browser?.OnBeforeClose(new BeforeCloseEventArgs()));
+                    // A hack - until fix is found for why OnBeforeClose is not called in CefGlueLifeHandler.cs
+                    Browser?.OnBeforeClose();
 
                     Browser?.Dispose();
                     Browser = null;

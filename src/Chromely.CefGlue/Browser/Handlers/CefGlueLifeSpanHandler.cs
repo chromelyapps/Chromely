@@ -50,6 +50,7 @@ namespace Chromely.CefGlue.Browser.Handlers
 
         protected override void OnBeforeClose(CefBrowser browser)
         {
+            _browser.InvokeAsyncIfPossible(() => _browser.OnBeforeClose());
         }
 
         protected override bool OnBeforePopup(CefBrowser browser, CefFrame frame, string targetUrl, string targetFrameName, CefWindowOpenDisposition targetDisposition, bool userGesture, CefPopupFeatures popupFeatures, CefWindowInfo windowInfo, ref CefClient client, CefBrowserSettings settings, ref CefDictionaryValue extraInfo, ref bool noJavascriptAccess)

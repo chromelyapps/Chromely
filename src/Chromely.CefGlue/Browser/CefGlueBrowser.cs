@@ -301,12 +301,9 @@ namespace Chromely.CefGlue.Browser
         /// <summary>
         /// The on before close.
         /// </summary>
-        /// <param name="eventArgs">
-        /// The event args.
-        /// </param>
-        public void OnBeforeClose(BeforeCloseEventArgs eventArgs)
+        public void OnBeforeClose()
         {
-            BeforeClose?.Invoke(this, eventArgs);
+            BeforeClose?.Invoke(this, null);
         }
 
         /// <summary>

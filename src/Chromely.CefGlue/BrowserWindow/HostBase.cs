@@ -123,7 +123,6 @@ namespace Chromely.CefGlue.BrowserWindow
         /// </summary>
         public virtual void Quit()
         {
-            _mainWindow?.Browser?.OnBeforeClose(new BeforeCloseEventArgs());
             ExitWindow();
         }
 
