@@ -112,6 +112,12 @@ namespace Chromely.CefGlue.Browser.Handlers
 
             try
             {
+                if (_httpResponseMessage == null)
+                {
+                    response.Error = CefErrorCode.Failed;
+                    return;
+                }
+
                 var headers = response.GetHeaderMap();
                 headers.Clear();
 
