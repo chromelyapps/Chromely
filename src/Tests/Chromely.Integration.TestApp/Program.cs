@@ -13,6 +13,9 @@ using System.Threading.Tasks;
 using Chromely.CefGlue.Browser.EventParams;
 using Chromely.Core;
 using Chromely.Core.Configuration;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+
 // ReSharper disable UnusedParameter.Global
 
 namespace Chromely.Integration.TestApp
@@ -48,8 +51,17 @@ namespace Chromely.Integration.TestApp
             _startupTimer = new Stopwatch();
             _startupTimer.Start();
 
+            // Set default JSON serialization properties
+            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+                {
+                    NamingStrategy = new CamelCaseNamingStrategy()
+                } 
+            };
+            
             var core = typeof(IChromelyConfiguration).Assembly;
-            CiTrace("Chromely.Core", core.GetName().Version.ToString());
+            CiTrace("Chromely.Core", $"{core.GetName().Version}");
             CiTrace("Platform", ChromelyRuntime.Platform.ToString());
 
             var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
