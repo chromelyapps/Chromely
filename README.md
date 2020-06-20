@@ -44,7 +44,7 @@ Cross-platform -**Windows**, **Linux**, **MacOS**. Built on CEF, CefGlue, NET St
 <br>[![Chromely + Vue](https://img.shields.io/badge/Chromely%20Apps-Built%20with%20Vue-green.svg)](https://github.com/chromelyapps/demo-projects/tree/master/angular-react-vue/ChromelyVue) 
 
 ### Creating a Simple App
-For more info see - [Getting Started](https://github.com/chromelyapps/Chromely/blob/master/Documents/getting_started.md)
+For more info see - [Getting Started](https://github.com/chromelyapps/Chromely/blob/master/Documents/getting_started.md) or [Wiki](https://github.com/chromelyapps/Chromely/wiki)
 
 A basic Chromely project requires:
 
