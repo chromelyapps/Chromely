@@ -12,8 +12,18 @@ To register a custom exeuctor:
     public class CustomJavaScriptExecutor : IChromelyJavaScriptExecutor
     {
     }
-````
 
+    public class DemoChromelyApp : ChromelyBasicApp
+    {
+        public override void Configure(IChromelyContainer container)
+        {
+            base.Configure(container);
+            container.RegisterSingleton(typeof(IChromelyJavaScriptExecutor), Guid.NewGuid().ToString(), typeof(CustomJavaScriptExecutor));
+
+        }
+    }
+
+````
 To "Execute" a script on the main frame, a "frameName" is not required. To "Execute" on an **iframe** a "frameName" is required. To get the "frameName", the developer will have to declare that in the  **iframe** object.
 
 ````javascript
