@@ -169,7 +169,7 @@ namespace Chromely.CefGlue.Browser
             if (_client == null)
             {
                 var handlers = CefGlueCustomHandlers.Parse(_container, _config, _commandTaskRunner, this);
-                _client = new CefGlueClient(this, _browserMessageRouter, handlers);
+                _client = new CefGlueClient(_browserMessageRouter, handlers);
             }
             if (_settings == null)
             {

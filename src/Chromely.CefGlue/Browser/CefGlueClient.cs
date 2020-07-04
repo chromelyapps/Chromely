@@ -80,12 +80,10 @@ namespace Chromely.CefGlue.Browser
         private readonly CefFindHandler _findHandler;
 
         /// <summary>Initializes a new instance of the <see cref="CefGlueCustomHandlers" /> class.</summary>
-        /// <param name="browser">The browser.</param>
         /// <param name="browserMessageRouter">The browser message router.</param>
         /// <param name="handlers">The client params.</param>
-        public CefGlueClient(CefGlueBrowser browser, CefMessageRouterBrowserSide browserMessageRouter, CefGlueCustomHandlers handlers)
+        public CefGlueClient(CefMessageRouterBrowserSide browserMessageRouter, CefGlueCustomHandlers handlers)
         {
-            CoreBrowser = browser;
             _browserMessageRouter = browserMessageRouter;
             _lifeSpanHandler = handlers.LifeSpanHandler;
             _loadHandler = handlers.LoadHandler;
@@ -100,11 +98,6 @@ namespace Chromely.CefGlue.Browser
             _downloadHandler = handlers.DownloadHandler;
             _findHandler = handlers.FindHandler;
         }
-
-        /// <summary>
-        /// Gets the core browser.
-        /// </summary>
-        public CefGlueBrowser CoreBrowser { get; }
 
         /// <summary>
         /// The get life span handler.
