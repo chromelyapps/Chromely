@@ -20,6 +20,7 @@ namespace Chromely.Core.Network
         public ChromelyResponse()
         {
             RequestId = string.Empty;
+            StatusText = string.Empty;
         }
 
         /// <summary>
@@ -31,6 +32,7 @@ namespace Chromely.Core.Network
         public ChromelyResponse(string requestId)
         {
             RequestId = requestId;
+            StatusText = string.Empty;
         }
 
         /// <summary>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using Chromely.Core.Configuration;
 using Chromely.Core.Infrastructure;
@@ -175,8 +176,8 @@ namespace Chromely.Core.Defaults
 
             var response = route.Invoke(requestId: requestId, routePath: routePath, parameters: parameters, postData: postData, rawJson: requestData);
             response.ReadyState = (int)ReadyState.ResponseIsReady;
-            response.Status = (response.Status == 0) ? (int)System.Net.HttpStatusCode.OK : response.Status;
-            response.StatusText = (string.IsNullOrWhiteSpace(response.StatusText)) ? "OK" : response.StatusText;
+            response.Status = (response.Status == 0) ? (int)HttpStatusCode.OK : response.Status;
+            response.StatusText = (string.IsNullOrWhiteSpace(response.StatusText) && (response.Status == (int)HttpStatusCode.OK)) ? "OK" : response.StatusText;
 
             return response;
         }
@@ -201,8 +202,8 @@ namespace Chromely.Core.Defaults
             }
 
             response.ReadyState = (int)ReadyState.ResponseIsReady;
-            response.Status = (response.Status == 0 ) ? (int)System.Net.HttpStatusCode.OK : response.Status;
-            response.StatusText = (string.IsNullOrWhiteSpace(response.StatusText)) ? "OK" : response.StatusText;
+            response.Status = (response.Status == 0 ) ? (int)HttpStatusCode.OK : response.Status;
+            response.StatusText = (string.IsNullOrWhiteSpace(response.StatusText) && (response.Status == (int)HttpStatusCode.OK)) ? "OK" : response.StatusText;
 
             return response;
         }
@@ -224,8 +225,8 @@ namespace Chromely.Core.Defaults
             };
 
             response.ReadyState = (int)ReadyState.ResponseIsReady;
-            response.Status = (response.Status == 0) ? (int)System.Net.HttpStatusCode.OK : response.Status;
-            response.StatusText = (string.IsNullOrWhiteSpace(response.StatusText)) ? "OK" : response.StatusText;
+            response.Status = (int)HttpStatusCode.OK;
+            response.StatusText = "OK";
             response.Data = infoItemDic;
 
             return response;
