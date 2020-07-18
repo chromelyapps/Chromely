@@ -13,5 +13,6 @@ namespace Xilium.CefGlue.Interop
         public uint color;
         public uint background_color;
         public int thick;
+        public CefCompositionUnderlineStyle style;
     }
 }

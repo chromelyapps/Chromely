@@ -54,19 +54,8 @@ namespace Xilium.CefGlue
         UrlSpecialCharsExceptPathSeparators = 1 << 3,
 
         /// <summary>
-        /// Unescapes characters that can be used in spoofing attempts (such as LOCK)
-        /// and control characters (such as BiDi control characters and %01).  This
-        /// INCLUDES NULLs.  This is used for rare cases such as data: URL decoding
-        /// where the result is binary data.
-        ///
-        /// DO NOT use UU_SPOOFING_AND_CONTROL_CHARS if the URL is going to be
-        /// displayed in the UI for security reasons.
-        /// </summary>
-        SpoofingAndControlChars = 1 << 4,
-
-        /// <summary>
         /// URL queries use "+" for space. This flag controls that replacement.
         /// </summary>
-        ReplacePlusWithSpace = 1 << 5,
+        ReplacePlusWithSpace = 1 << 4,
     }
 }

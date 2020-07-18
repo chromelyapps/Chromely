@@ -18,6 +18,7 @@ namespace Xilium.CefGlue.Interop
         public cef_string_t origin;
         public cef_string_t path;
         public cef_string_t query;
+        public cef_string_t fragment;
 
         internal static void Clear(cef_urlparts_t* self)
         {
@@ -30,6 +31,7 @@ namespace Xilium.CefGlue.Interop
             libcef.string_clear(&self->origin);
             libcef.string_clear(&self->path);
             libcef.string_clear(&self->query);
+            libcef.string_clear(&self->fragment);
         }
     }
 }

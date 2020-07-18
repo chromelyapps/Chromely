@@ -14,10 +14,10 @@ namespace Xilium.CefGlue.Interop
         public int page_width;
         public int page_height;
         public int scale_factor;
-        public double margin_top;
-        public double margin_right;
-        public double margin_bottom;
-        public double margin_left;
+        public int margin_top;
+        public int margin_right;
+        public int margin_bottom;
+        public int margin_left;
         public CefPdfPrintMarginType margin_type;
         public int header_footer_enabled;
         public int selection_only;

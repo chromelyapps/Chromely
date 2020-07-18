@@ -59,6 +59,11 @@
         /// </summary>
         public string Query { get; set; }
 
+        /// <summary>
+        /// Fragment (hash) identifier component (i.e., the string following the '#').
+        /// </summary>
+        public string Fragment { get; set; }
+
         internal static unsafe CefUrlParts FromNative(cef_urlparts_t* n_parts)
         {
             var result = new CefUrlParts();
@@ -71,6 +76,7 @@
             result.Origin = cef_string_t.ToString(&n_parts->origin);
             result.Path = cef_string_t.ToString(&n_parts->path);
             result.Query = cef_string_t.ToString(&n_parts->query);
+            result.Fragment = cef_string_t.ToString(&n_parts->fragment);
             return result;
         }
 
@@ -86,6 +92,7 @@
             cef_string_t.Copy(Origin, &result.origin);
             cef_string_t.Copy(Path, &result.path);
             cef_string_t.Copy(Query, &result.query);
+            cef_string_t.Copy(Fragment, &result.fragment);
             return result;
         }
     }

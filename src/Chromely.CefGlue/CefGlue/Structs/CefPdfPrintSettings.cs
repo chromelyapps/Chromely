@@ -33,13 +33,13 @@
         public int ScaleFactor { get; set; }
 
         /// <summary>
-        /// Margins in millimeters. Only used if |margin_type| is set to
+        /// Margins in points. Only used if |margin_type| is set to PDF_PRINT_MARGIN_CUSTOM.
         /// PDF_PRINT_MARGIN_CUSTOM.
         /// </summary>
-        public double MarginTop { get; set; }
-        public double MarginRight { get; set; }
-        public double MarginBottom { get; set; }
-        public double MarginLeft { get; set; }
+        public int MarginTop { get; set; }
+        public int MarginRight { get; set; }
+        public int MarginBottom { get; set; }
+        public int MarginLeft { get; set; }
 
         /// <summary>
         /// Margin type.

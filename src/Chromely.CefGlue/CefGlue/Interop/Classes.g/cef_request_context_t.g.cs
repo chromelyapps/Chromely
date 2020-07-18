@@ -36,6 +36,7 @@ namespace Xilium.CefGlue.Interop
         internal IntPtr _has_extension;
         internal IntPtr _get_extensions;
         internal IntPtr _get_extension;
+        internal IntPtr _get_media_router;
         
         // GetGlobalContext
         [DllImport(libcef.DllName, EntryPoint = "cef_request_context_get_global_context", CallingConvention = libcef.CEF_CALL)]
@@ -210,6 +211,12 @@ namespace Xilium.CefGlue.Interop
         [SuppressUnmanagedCodeSecurity]
         #endif
         private delegate cef_extension_t* get_extension_delegate(cef_request_context_t* self, cef_string_t* extension_id);
+        
+        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
+        #if !DEBUG
+        [SuppressUnmanagedCodeSecurity]
+        #endif
+        private delegate cef_media_router_t* get_media_router_delegate(cef_request_context_t* self);
         
         // AddRef
         private static IntPtr _p0;
@@ -668,6 +675,23 @@ namespace Xilium.CefGlue.Interop
                 if (_p1a == IntPtr.Zero) { _d1a = d; _p1a = p; }
             }
             return d(self, extension_id);
+        }
+        
+        // GetMediaRouter
+        private static IntPtr _p1b;
+        private static get_media_router_delegate _d1b;
+        
+        public static cef_media_router_t* get_media_router(cef_request_context_t* self)
+        {
+            get_media_router_delegate d;
+            var p = self->_get_media_router;
+            if (p == _p1b) { d = _d1b; }
+            else
+            {
+                d = (get_media_router_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_media_router_delegate));
+                if (_p1b == IntPtr.Zero) { _d1b = d; _p1b = p; }
+            }
+            return d(self);
         }
         
     }

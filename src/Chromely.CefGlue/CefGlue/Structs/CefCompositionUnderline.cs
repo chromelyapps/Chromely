@@ -29,6 +29,11 @@
         /// </summary>
         public bool Thick { get; set; }
 
+        /// <summary>
+        /// Style.
+        /// </summary>
+        public CefCompositionUnderlineStyle Style { get; set; }
+
         internal cef_composition_underline_t ToNative()
         {
             cef_composition_underline_t result;
@@ -36,6 +41,7 @@
             result.color = Color.ToArgb();
             result.background_color = BackgroundColor.ToArgb();
             result.thick = Thick ? 1 : 0;
+            result.style = Style;
             return result;
         }
     }

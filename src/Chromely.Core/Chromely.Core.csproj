@@ -3,10 +3,10 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Platforms>AnyCPU</Platforms>
-    <ProductVersion>5.0.0.4</ProductVersion>
-    <AssemblyVersion>5.0.0.4</AssemblyVersion>
-    <FileVersion>5.0.0.4</FileVersion>
-    <Version>5.0.0.4</Version>
+    <ProductVersion>5.0.0.5</ProductVersion>
+    <AssemblyVersion>5.0.0.5</AssemblyVersion>
+    <FileVersion>5.0.0.5</FileVersion>
+    <Version>5.0.0.5</Version>
     <Product>Chromely.Core</Product>
     <Authors>Chromely Projects</Authors>
     <Company>Chromely Projects</Company>
@@ -18,7 +18,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageReleaseNotes>
-      Upgrade to Chromium v79 - 79.1.36+g90301bd+chromium-79.0.3945.130.
+      Upgrade to Chromium v81 - 81.2.21+ge864886+chromium-81.0.4044.113.
     </PackageReleaseNotes>
     <RepositoryUrl>https://github.com/chromelyapps/Chromely</RepositoryUrl>
     <RepositoryType>Github Repository</RepositoryType>

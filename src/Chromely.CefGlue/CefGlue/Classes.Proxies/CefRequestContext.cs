@@ -438,5 +438,14 @@
                 return CefExtension.FromNativeOrNull(n_result);
             }
         }
+
+        /// <summary>
+        /// Returns the MediaRouter object associated with this context.
+        /// </summary>
+        public CefMediaRouter GetMediaRouter()
+        {
+            var n_result = cef_request_context_t.get_media_router(_self);
+            return CefMediaRouter.FromNative(n_result);
+        }
     }
 }
