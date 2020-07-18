@@ -178,7 +178,18 @@ namespace Chromely.CefGlue.Loader
                 found = new Regex(binaryNamePattern2, RegexOptions.CultureInvariant | RegexOptions.IgnoreCase).Match(cefIndex);
                 if (found.Success)
                 {
-                    return found.Groups[1].Value;
+                    var result = found.Groups[1].Value;
+
+                    // Hack until fixed.
+                    if (!string.IsNullOrEmpty(result))
+                    {
+                        if (result.Contains("81.0.4044.138"))
+                        {
+                            result = "cef_binary_81.2.21%2Bge864886%2Bchromium-81.0.4044.113_windows64_minimal.tar.bz2";
+                        }
+                    }
+
+                    return result;
                 }
                     
                 var message = $"CEF for chrome version {CefRuntime.ChromeVersion} platform {platformIdentifier} not found.";
