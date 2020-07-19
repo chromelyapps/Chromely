@@ -23,7 +23,7 @@ namespace Chromely.Core
     {
         /// <summary>The get expected chromium build number.</summary>
         /// <returns>The <see cref="int" />.</returns>
-        public static int GetExpectedChromiumBuildNumber()
+        public static ChromiumBuildNumber GetExpectedChromiumBuild()
         {
             try
             {
@@ -34,8 +34,8 @@ namespace Chromely.Core
                 var type = types.FirstOrDefault(t => t.Name == "CefRuntime");
                 var versionProperty = type?.GetProperty("ChromeVersion");
                 var version = versionProperty?.GetValue(null).ToString();
-                if (!string.IsNullOrEmpty(version)
-                    && int.TryParse(version.Split('.')[2], out var build))
+                var build = ChromiumBuildNumber.Parse(version);
+                if(build != null)
                 {
                     return build;
                 }
@@ -52,7 +52,7 @@ namespace Chromely.Core
             {
                 Logger.Instance.Log.Error("Could not get expected chromium build number: " + ex.Message);
             }
-            return 0;
+            return new ChromiumBuildNumber(0,0,0,0);
         }
 
         /// <summary>
