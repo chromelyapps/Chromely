@@ -110,7 +110,7 @@ namespace Chromely.CefGlue.Loader
 
         private readonly ChromelyPlatform _platform;
         private readonly Architecture _architecture;
-        private readonly ChromiumBuildNumber _build;
+        private readonly CefBuildNumbers _build;
 
         private readonly string _tempTarStream;
         private readonly string _tempBz2File;
@@ -129,7 +129,7 @@ namespace Chromely.CefGlue.Loader
         {
             _platform = platform;
             _architecture = RuntimeInformation.ProcessArchitecture;
-            _build = ChromelyRuntime.GetExpectedChromiumBuild();
+            _build = ChromelyRuntime.GetExpectedCefBuild();
             Logger.Instance.Log.Info($"CefLoader: Load CEF for {_platform} {_architecture}, version {_build}");
 
             _lastPercent = 0;
@@ -148,7 +148,7 @@ namespace Chromely.CefGlue.Loader
         /// <param name="processArchitecture"></param>
         /// <param name="build"></param>
         /// <returns></returns>
-        public string FindCefArchiveName(ChromelyPlatform platform, Architecture processArchitecture, ChromiumBuildNumber build)
+        public string FindCefArchiveName(ChromelyPlatform platform, Architecture processArchitecture, CefBuildNumbers build)
         {
             var arch = processArchitecture.ToString()
                 .Replace("X64", "64")
@@ -161,7 +161,8 @@ namespace Chromely.CefGlue.Loader
 
             // cef_binary_73.1.5+g4a68f1d+chromium-73.0.3683.75_windows64_client.tar.bz2
             // cef_binary_77.1.18+g8e8d602+chromium-77.0.3865.120_windows64_client.tar.bz2
-            var binaryNamePattern2 = $@"""(cef_binary_.*(\+|%2B)chromium\-[0-9]+\.[0-9]+\.{build.Build}\.{build.Patch}_{platformIdentifier}_minimal.tar.bz2)""";
+            var versionPattern = build.CefVersion.Replace("+", "%2B");
+            var binaryNamePattern2 = $@"""(cef_binary_{versionPattern}_{platformIdentifier}_minimal.tar.bz2)""";
             
             using (var client = new WebClient())
             {
