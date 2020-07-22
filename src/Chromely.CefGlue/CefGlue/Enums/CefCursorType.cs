@@ -56,6 +56,12 @@ namespace Xilium.CefGlue
         ZoomOut,
         Grab,
         Grabbing,
+        MiddlePanningVertical,
+        MiddlePanningHorizontal,
         Custom,
+        DragAndDropNone,
+        DragAndDropMove,
+        DragAndDropCopy,
+        DragAndDropLink,
     }
 }

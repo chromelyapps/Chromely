@@ -36,7 +36,7 @@
         /// <summary>
         /// Returns a display-friendly version of the URL.
         /// </summary>
-        public string GetDisplayUrl
+        public string DisplayUrl
         {
             get
             {

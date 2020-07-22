@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <Platforms>AnyCPU</Platforms>
-    <ProductVersion>5.0.81.0</ProductVersion>
-    <AssemblyVersion>5.0.81.0</AssemblyVersion>
-    <FileVersion>5.0.81.0</FileVersion>
-    <Version>5.0.81.0</Version>
+    <ProductVersion>5.0.83.0</ProductVersion>
+    <AssemblyVersion>5.0.83.0</AssemblyVersion>
+    <FileVersion>5.0.83.0</FileVersion>
+    <Version>5.0.83.0</Version>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Product>Chromely</Product>
@@ -18,7 +18,7 @@
     <PackageTags>Cef Chromium HTML5 Desktop Chromely CefGlue  Restful  Ajax HTTP XHR MessageRouter .NET Core</PackageTags>
     <Description>Primary Chromely implementation library - this is in .NET Standard 2.0 as it can be used in both .NET (Windows) and .NET Core (Windows, Linux, MacOS). Chromely version naming is based Chromely and Chromium versions implemented- major.minor.chromuim version.patch e.g 1.0.70.0.</Description>
     <PackageReleaseNotes>
-      Upgrade to Chromium v81 - 81.2.21+ge864886+chromium-81.0.4044.113.
+      Upgrade to Chromium v83 - 83.5.0+gbf03589+chromium-83.0.4103.106.
     </PackageReleaseNotes>
     <RepositoryType>Github Repository</RepositoryType>
     <RepositoryUrl>https://github.com/chromelyapps/Chromely</RepositoryUrl>
@@ -28,12 +28,12 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\netstandard2.0\Chromely.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\netstandard2.1\Chromely.xml</DocumentationFile>
     <NoWarn>1701;1702; NU5125;7035</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\netstandard2.0\Chromely.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\netstandard2.1\Chromely.xml</DocumentationFile>
     <NoWarn>1701;1702; NU5125;7035</NoWarn>
   </PropertyGroup>
 

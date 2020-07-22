@@ -33,6 +33,7 @@ namespace Xilium.CefGlue
         private cef_request_handler_t.on_plugin_crashed_delegate _dsb;
         private cef_request_handler_t.on_render_view_ready_delegate _dsc;
         private cef_request_handler_t.on_render_process_terminated_delegate _dsd;
+        private cef_request_handler_t.on_document_available_in_main_frame_delegate _dse;
         
         protected CefRequestHandler()
         {
@@ -66,6 +67,8 @@ namespace Xilium.CefGlue
             _self->_on_render_view_ready = Marshal.GetFunctionPointerForDelegate(_dsc);
             _dsd = new cef_request_handler_t.on_render_process_terminated_delegate(on_render_process_terminated);
             _self->_on_render_process_terminated = Marshal.GetFunctionPointerForDelegate(_dsd);
+            _dse = new cef_request_handler_t.on_document_available_in_main_frame_delegate(on_document_available_in_main_frame);
+            _self->_on_document_available_in_main_frame = Marshal.GetFunctionPointerForDelegate(_dse);
         }
         
         ~CefRequestHandler()

@@ -1,13 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CefGlueBrowser.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2019 Chromely Projects
-// </copyright>
-// <license>
-//      See the LICENSE.md file in the project root for more information.
-// </license>
-// ----------------------------------------------------------------------------------------------------------------------
-
-using System;
+﻿using System;
 using System.Reflection;
 using Chromely.CefGlue.Browser.EventParams;
 using Chromely.Core;
@@ -15,10 +6,6 @@ using Chromely.Core.Configuration;
 using Chromely.Core.Network;
 using Xilium.CefGlue;
 using Xilium.CefGlue.Wrapper;
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedAutoPropertyAccessor.Global
-// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
-// ReSharper disable UnusedMember.Global
 
 namespace Chromely.CefGlue.Browser
 {

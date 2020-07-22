@@ -23,6 +23,7 @@ namespace Xilium.CefGlue.Interop
         internal IntPtr _on_plugin_crashed;
         internal IntPtr _on_render_view_ready;
         internal IntPtr _on_render_process_terminated;
+        internal IntPtr _on_document_available_in_main_frame;
         
         [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
         #if !DEBUG
@@ -107,6 +108,12 @@ namespace Xilium.CefGlue.Interop
         [SuppressUnmanagedCodeSecurity]
         #endif
         internal delegate void on_render_process_terminated_delegate(cef_request_handler_t* self, cef_browser_t* browser, CefTerminationStatus status);
+        
+        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
+        #if !DEBUG
+        [SuppressUnmanagedCodeSecurity]
+        #endif
+        internal delegate void on_document_available_in_main_frame_delegate(cef_request_handler_t* self, cef_browser_t* browser);
         
         private static int _sizeof;
         

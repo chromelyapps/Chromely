@@ -1245,6 +1245,19 @@ namespace Xilium.CefGlue
         /// </summary>
         INVALID_WEB_BUNDLE = -505,
 
+        /// <summary>
+        /// A Trust Tokens protocol operation-executing request failed for one of a
+        /// number of reasons (precondition failure, internal error, bad response).
+        /// </summary>
+        TRUST_TOKEN_OPERATION_FAILED = -506,
+
+        /// <summary>
+        /// When handling a Trust Tokens protocol operation-executing request, the system
+        /// found that the request's desired Trust Tokens results were already present in
+        /// a local cache; as a result, the main request was cancelled.
+        /// </summary>
+        TRUST_TOKEN_OPERATION_CACHE_HIT = -507,
+
         // *** Code -600 is reserved (was FTP_PASV_COMMAND_FAILED). ***
 
         /// <summary>

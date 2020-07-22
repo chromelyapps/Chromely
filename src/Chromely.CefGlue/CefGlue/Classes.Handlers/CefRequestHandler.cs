@@ -307,5 +307,23 @@
         protected virtual void OnRenderProcessTerminated(CefBrowser browser, CefTerminationStatus status)
         {
         }
+
+
+        private void on_document_available_in_main_frame(cef_request_handler_t* self, cef_browser_t* browser)
+        {
+            CheckSelf(self);
+
+            var m_browser = CefBrowser.FromNative(browser);
+
+            OnDocumentAvailableInMainFrame(m_browser);
+        }
+
+        /// <summary>
+        /// Called on the browser process UI thread when the window.document object of
+        /// the main frame has been created.
+        /// </summary>
+        protected virtual void OnDocumentAvailableInMainFrame(CefBrowser browser)
+        {
+        }
     }
 }

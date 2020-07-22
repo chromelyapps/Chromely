@@ -19,6 +19,8 @@ namespace Xilium.CefGlue.Interop
         public cef_time_t last_access;
         public int has_expires;
         public cef_time_t expires;
+        public CefCookieSameSite same_site;
+        public CefCookiePriority priority;
 
         internal static void Clear(cef_cookie_t* ptr)
         {
