@@ -23,7 +23,7 @@ namespace Chromely.Core
     {
         /// <summary>The get expected chromium build number.</summary>
         /// <returns>The <see cref="int" />.</returns>
-        public static int GetExpectedChromiumBuildNumber()
+        public static CefBuildNumbers GetExpectedCefBuild()
         {
             try
             {
@@ -32,27 +32,17 @@ namespace Chromely.Core
                 var assembly = Assembly.LoadFrom(dllName);
                 var types = assembly.GetTypes();
                 var type = types.FirstOrDefault(t => t.Name == "CefRuntime");
-                var versionProperty = type?.GetProperty("ChromeVersion");
-                var version = versionProperty?.GetValue(null).ToString();
-                if (!string.IsNullOrEmpty(version)
-                    && int.TryParse(version.Split('.')[2], out var build))
-                {
-                    return build;
-                }
-                if (type == null)
-                {
-                    Logger.Instance.Log.Error("Could not get expected chromium build number: Unable to load CefRuntime.ChromeVersion"); 
-                }
-                else
-                {
-                    Logger.Instance.Log.Error($"Could not parse chromium build number '{version}'");
-                }
+                var versionProperty = type?.GetProperty("CefVersion");
+                var cefVersion = versionProperty?.GetValue(null).ToString();
+                versionProperty = type?.GetProperty("ChromeVersion");
+                var chromiumVersion = versionProperty?.GetValue(null).ToString();
+                return new CefBuildNumbers(cefVersion, chromiumVersion);
             }
             catch (Exception ex)
             {
                 Logger.Instance.Log.Error("Could not get expected chromium build number: " + ex.Message);
             }
-            return 0;
+            return new CefBuildNumbers("","");
         }
 
         /// <summary>
