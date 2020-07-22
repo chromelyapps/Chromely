@@ -115,13 +115,8 @@
 
         public static string CefVersion => libcef.CEF_VERSION;
 
-        public static string ChromeVersion
-        {
-            get
-            {
-                return string.Format("{0}.{1}.{2}.{3}", libcef.CHROME_VERSION_MAJOR, libcef.CHROME_VERSION_MINOR, libcef.CHROME_VERSION_BUILD, libcef.CHROME_VERSION_PATCH);
-            }
-        }
+        public static string ChromeVersion =>
+            $"{libcef.CHROME_VERSION_MAJOR}.{libcef.CHROME_VERSION_MINOR}.{libcef.CHROME_VERSION_BUILD}.{libcef.CHROME_VERSION_PATCH}";
 
         private static void CheckVersion()
         {
