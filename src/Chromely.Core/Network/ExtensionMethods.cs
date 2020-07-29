@@ -65,7 +65,7 @@ namespace Chromely.Core.Network
 
                 if (IsValidJson(value.ToString()))
                 {
-                    return JsonSerializer.Serialize(value, JsonSerializingOption);
+                    return value.ToString();
                 }
 
                 var returnData = new ReturnedData() { Data = value };
