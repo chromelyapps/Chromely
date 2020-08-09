@@ -15,13 +15,15 @@ namespace Chromely.Browser
         private readonly CefBrowserProcessHandler _browserProcessHandler;
         private readonly IChromelyConfiguration _config;
         private readonly IChromelyRequestSchemeProvider _requestSchemeProvider;
+        private readonly ChromelyHandlersResolver _handlersResolver;
 
-        public CefBrowserApp(IChromelyConfiguration config, IChromelyRequestSchemeProvider requestSchemeProvider)
+        public CefBrowserApp(IChromelyConfiguration config, IChromelyRequestSchemeProvider requestSchemeProvider, ChromelyHandlersResolver handlersResolver)
         {
             _config = config;
             _requestSchemeProvider = requestSchemeProvider;
-            _renderProcessHandler = new DefaultRenderProcessHandler(_config);
-            _browserProcessHandler = new DefaultBrowserProcessHandler(_config);
+            _handlersResolver = handlersResolver;
+            _renderProcessHandler = RenderProcessHandler;
+            _browserProcessHandler = BrowserProcessHandler;
         }
 
         /// <summary>
@@ -96,6 +98,34 @@ namespace Chromely.Browser
         protected override CefBrowserProcessHandler GetBrowserProcessHandler()
         {
             return _browserProcessHandler;
+        }
+
+        private CefRenderProcessHandler RenderProcessHandler
+        {
+            get
+            {
+                var handler = _handlersResolver.GetCustomOrDefaultHandler(typeof(CefRenderProcessHandler));
+                if (handler is CefRenderProcessHandler renderProcessHandler)
+                {
+                    return renderProcessHandler;
+                }
+
+                return new DefaultRenderProcessHandler(_config);
+            }
+        }
+
+        private CefBrowserProcessHandler BrowserProcessHandler
+        {
+            get
+            {
+                var handler = _handlersResolver.GetCustomOrDefaultHandler(typeof(CefBrowserProcessHandler));
+                if (handler is CefBrowserProcessHandler browserProcesHandler)
+                {
+                    return browserProcesHandler;
+                }
+
+                return new DefaultBrowserProcessHandler(_config);
+            }
         }
     }
 }

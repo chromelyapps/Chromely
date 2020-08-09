@@ -105,7 +105,7 @@ namespace Chromely
             ResolveHandlers();
 
             var mainArgs = new CefMainArgs(argv);
-            CefApp app = new CefBrowserApp(_config, _requestSchemeProvider);
+            CefApp app = new CefBrowserApp(_config, _requestSchemeProvider, _handlersResolver);
 
             if (ClientAppUtils.ExecuteProcess(_config.Platform, argv))
             {
