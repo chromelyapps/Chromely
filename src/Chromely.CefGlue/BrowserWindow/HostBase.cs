@@ -224,7 +224,7 @@ namespace Chromely.CefGlue.BrowserWindow
             _config.DevToolsUrl = $"http://127.0.0.1:{settings.RemoteDebuggingPort}";
 
             var mainArgs = new CefMainArgs(argv);
-            CefApp app = new CefGlueApp(_config);
+            CefApp app = new CefGlueApp(_container, _config);
 
             if (ClientAppUtils.ExecuteProcess(_config.Platform, argv))
             {
