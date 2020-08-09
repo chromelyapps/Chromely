@@ -120,28 +120,28 @@ namespace Chromely.CefGlue.Browser
             return _browserProcessHandler;
         }
 
-        private CefGlueRenderProcessHandler RenderProcessHandler
+        private CefRenderProcessHandler RenderProcessHandler
         {
             get
             {
-                var handler = GetCustomHandler(typeof(CefGlueRenderProcessHandler)) as CefGlueRenderProcessHandler;
+                var handler = GetCustomHandler(typeof(CefRenderProcessHandler));
                 if (handler != null)
                 {
-                    return handler;
+                    return (CefRenderProcessHandler)handler;
                 }
 
                 return new CefGlueRenderProcessHandler(_config);
             }
         }
 
-        private CefGlueBrowserProcessHandler BrowserProcessHandler
+        private CefBrowserProcessHandler BrowserProcessHandler
         {
             get
             {
-                var handler = GetCustomHandler(typeof(CefGlueBrowserProcessHandler)) as CefGlueBrowserProcessHandler;
+                var handler = GetCustomHandler(typeof(CefBrowserProcessHandler));
                 if (handler != null)
                 {
-                    return handler;
+                    return (CefBrowserProcessHandler)handler;
                 }
 
                 return new CefGlueBrowserProcessHandler(_config);
@@ -152,7 +152,7 @@ namespace Chromely.CefGlue.Browser
             var customHandlers = _container.GetAllInstances(typeof(IChromelyCustomHandler));
             if (customHandlers != null && customHandlers.Any())
             {
-                return customHandlers.FirstOrDefault(x => x.GetType() == handlerType);
+                return customHandlers.FirstOrDefault(x => handlerType.IsAssignableFrom(x.GetType()));
             }
 
             return null;
