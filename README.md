@@ -38,8 +38,7 @@ Cross-platform -**Windows**, **Linux**, **MacOS**. Built on CEF, CefGlue, NET St
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(for v4.x - manual download of CEF builds for ARM required,  available on http://chromely.org/cefbuilds/index.html) 
 
 [![Chromely.Core](http://img.shields.io/nuget/vpre/Chromely.Core.svg?style=flat&label=Chromely.Core)](https://www.nuget.org/packages/Chromely.Core)
-[![Chromely.Core](http://img.shields.io/nuget/vpre/Chromely.CefGlue.svg?style=flat&label=Chromely.CefGlue)](https://www.nuget.org/packages/Chromely.CefGlue)
-[![Chromely.Core](http://img.shields.io/nuget/vpre/Chromely.svg?style=flat&label=Chromely)](https://www.nuget.org/packages/Chromely)
+[![Chromely](http://img.shields.io/nuget/vpre/Chromely.svg?style=flat&label=Chromely)](https://www.nuget.org/packages/Chromely)
 
 [![Chromely + Angular](https://img.shields.io/badge/Chromely%20Apps-Built%20with%20Angular%202%2B-green.svg)](https://github.com/chromelyapps/demo-projects/tree/master/angular-react-vue/ChromelyAngular)
 <br>[![Chromely + React](https://img.shields.io/badge/Chromely%20Apps-Built%20with%20React-green.svg)](https://github.com/chromelyapps/demo-projects/tree/master/angular-react-vue/ChromelyReact)
