@@ -1,13 +1,14 @@
-﻿using System;
+﻿// Copyright © 2017-2020 Chromely Projects. All rights reserved.
+// Use of this source code is governed by MIT license that can be found in the LICENSE file.
+
 using System.Collections.Generic;
-using System.Text;
 
 namespace Chromely.Core
 {
     public interface IChromelyJavaScriptExecutor
     {
-        void ExecuteScript(string frameName, string script);
-        void ExecuteScript(string script);
+        object ExecuteScript(string frameName, string script);
+        object ExecuteScript(string script);
         object GetBrowser();
         object GetMainFrame();
         object GetFrame(string frameName);

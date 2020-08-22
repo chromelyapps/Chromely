@@ -1,11 +1,5 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IChromelyConfiguration.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2019 Chromely Projects
-// </copyright>
-// <license>
-//      See the LICENSE.md file in the project root for more information.
-// </license>
-// --------------------------------------------------------------------------------------------------------------------
+﻿// Copyright © 2017-2020 Chromely Projects. All rights reserved.
+// Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
 using System.Collections.Generic;
 using Chromely.Core.Infrastructure;
@@ -22,12 +16,10 @@ namespace Chromely.Core.Configuration
         ChromelyPlatform Platform { get; set; }
         bool DebuggingMode { get; set; }
         string DevToolsUrl { get; set; }
-        IDictionary<string, string> CommandLineArgs { get; set; }
+        Dictionary<string, string> CommandLineArgs { get; set; }
         List<string> CommandLineOptions { get; set; }
-        List<ControllerAssemblyInfo> ControllerAssemblies { get; set; }
-        IDictionary<string, string> CustomSettings { get; set; }
-        List<ChromelyEventHandler<object>> EventHandlers { get; set; }
-        IDictionary<string, object> ExtensionData { get; set; }
+        Dictionary<string, string> CustomSettings { get; set; }
+        Dictionary<string, object> ExtensionData { get; set; }
         IChromelyJavaScriptExecutor JavaScriptExecutor { get; set; }
         List<UrlScheme> UrlSchemes { get; set; }
         CefDownloadOptions CefDownloadOptions { get; set; }

@@ -1,93 +1,79 @@
+﻿// Copyright © 2017-2020 Chromely Projects. All rights reserved.
+// Use of this source code is governed by MIT license that can be found in the LICENSE file.
+
+using Chromely.Core.Logging;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
-using Chromely.Core.Logging;
 
 namespace Chromely.Core.Network
 {
     public class ChromelyControllerFactory
     {
-        private readonly IChromelyContainer _container;
-
-        public ChromelyControllerFactory(IChromelyContainer container)
-        {
-            _container = container;
-        }
-
-        /// <summary>
-        /// Creates an instance of a chromely controller of given type.
-        /// Ctor dependency injection is done using the global IoC container.
-        /// </summary>
-        /// <param name="type">Controller type to be created.</param>
-        /// <returns>Instance reference or null if failed.</returns>
-        public ChromelyController CreateControllerInstance(Type type)
-        {
-            var instance = CreateType(type);
-            return instance as ChromelyController;
-        }
-
-        public IDictionary<string, ActionRoute> GetHttpAttributeRoutes(ChromelyController controller)
+        public IDictionary<string, RequestActionRoute> GetActionAttributeRoutes(ChromelyController controller)
         {
             if (controller == null)
             {
                 return null;
             }
 
-            var result = new Dictionary<string, ActionRoute>();
+            var result = new Dictionary<string, RequestActionRoute>();
 
             var methodInfos = controller.GetType().GetMethods()
-             .Where(m => m.GetCustomAttributes(typeof(HttpAttribute), false).Length > 0)
+             .Where(m => m.GetCustomAttributes(typeof(RequestActionAttribute), false).Length > 0)
              .ToArray();
 
             foreach (var item in methodInfos)
             {
-                var httpAttributeDelegate = CreateDelegate(controller, item) as Func<ChromelyRequest, ChromelyResponse>;
-                var asyncHttpAttributeDelegate = CreateDelegate(controller, item) as Func<ChromelyRequest, Task<ChromelyResponse>>;
-                var attribute = item.GetCustomAttribute<HttpAttribute>();
+                var actionAttributeDelegate = CreateDelegate(controller, item) as Func<IChromelyRequest, IChromelyResponse>;
+                var asyncActionAttributeDelegate = CreateDelegate(controller, item) as Func<IChromelyRequest, Task<IChromelyResponse>>;
+                var attribute = item.GetCustomAttribute<RequestActionAttribute>();
+
+                var key = RouteKey.CreateRequestKey(attribute.RouteKey);
 
                 // Sync
-                if (httpAttributeDelegate != null && attribute != null)
+                if (actionAttributeDelegate != null && attribute != null)
                 {
-                    var routhPath = new RoutePath(attribute.Method, attribute.Route);
-                    result[routhPath.Key] = new ActionRoute(attribute.Method, attribute.Route, httpAttributeDelegate);
+                    result[key] = new RequestActionRoute(attribute.RouteKey, actionAttributeDelegate, attribute.Description);
                 }
 
                 // Async
-                if (asyncHttpAttributeDelegate != null && attribute != null)
+                if (asyncActionAttributeDelegate != null && attribute != null)
                 {
-                    var routhPath = new RoutePath(attribute.Method, attribute.Route);
-                    result[routhPath.Key] = new ActionRoute(attribute.Method, attribute.Route, asyncHttpAttributeDelegate);
+                    result[key] = new RequestActionRoute(attribute.RouteKey, asyncActionAttributeDelegate, attribute.Description);
                 }
             }
 
             return result;
         }
 
-        public IDictionary<string, CommandRoute>  GetCommandAttributeRoutes(ChromelyController controller)
+        public IDictionary<string, CommandActionRoute> GetCommandAttributeRoutes(ChromelyController controller)
         {
             if (controller == null)
             {
                 return null;
             }
 
-            var result = new Dictionary<string, CommandRoute>();
+            var result = new Dictionary<string, CommandActionRoute>();
 
             var methodInfos = controller.GetType().GetMethods()
-             .Where(m => m.GetCustomAttributes(typeof(CommandAttribute), false).Length > 0)
+             .Where(m => m.GetCustomAttributes(typeof(CommandActionAttribute), false).Length > 0)
              .ToArray();
 
             foreach (var item in methodInfos)
             {
                 var customAttributeDelegate = CreateDelegate(controller, item) as Action<IDictionary<string, string>>;
-                var attribute = item.GetCustomAttribute<CommandAttribute>();
-
+                var attribute = item.GetCustomAttribute<CommandActionAttribute>();
+                
                 if (customAttributeDelegate != null && attribute != null)
                 {
-                    var commandRoute = new CommandRoute(attribute.Route, customAttributeDelegate);
-                    result[commandRoute.Key] = commandRoute;
+                    var key = RouteKey.CreateCommandKey(attribute.RouteKey);
+                    var commandRoute = new CommandActionRoute(attribute.RouteKey, customAttributeDelegate, attribute.Description);
+                    result[key] = commandRoute;
                 }
             }
 
@@ -111,9 +97,7 @@ namespace Chromely.Core.Network
                 for (var ix = 0; ix < parameters.Length; ix++)
                 {
                     var parameterInfo = parameters[ix];
-
-                    var iocInstance = _container.GetAllInstances(parameterInfo.ParameterType).FirstOrDefault();
-                    var parameterInstance = iocInstance ?? CreateType(parameterInfo.ParameterType);
+                    var parameterInstance = CreateType(parameterInfo.ParameterType);
 
                     paramValues[ix] = parameterInstance;
                 }
@@ -125,7 +109,7 @@ namespace Chromely.Core.Network
                 }
                 catch (Exception ex)
                 {
-                    Logger.Instance.Log.Error(ex.Message);
+                    Logger.Instance.Log.LogError(ex, ex.Message);
                 }
             }
 

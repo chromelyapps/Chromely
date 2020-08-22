@@ -1,8 +1,10 @@
-﻿using System;
+﻿// Copyright © 2017-2020 Chromely Projects. All rights reserved.
+// Use of this source code is governed by MIT license that can be found in the LICENSE file.
+
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
-using Chromely.Core.Configuration;
 using Chromely.Core.Infrastructure;
 using Chromely.Core.Network;
 
@@ -10,171 +12,171 @@ namespace Chromely.Core.Defaults
 {
     public class DefaultRequestTaskRunner : IChromelyRequestTaskRunner
     {
-        private readonly IChromelyContainer _container;
-        private readonly IChromelyConfiguration _config;
+        protected readonly IChromelyRouteProvider _routeProvider;
+        protected readonly IChromelyInfo _chromelyInfo;
 
-        public DefaultRequestTaskRunner(IChromelyContainer container, IChromelyConfiguration config)
+        public DefaultRequestTaskRunner(IChromelyRouteProvider routeProvider, IChromelyInfo chromelyInfo)
         {
-            _container = container;
-            _config = config;
+            _routeProvider = routeProvider;
+            _chromelyInfo = chromelyInfo;
         }
 
-        public ChromelyResponse Run(string method, string path, IDictionary<string, string> parameters, object postData)
+        public IChromelyResponse Run(string routeUrl, IDictionary<string, string> parameters, object postData)
         {
-            var routePath = new RoutePath(method, path);
-            if (routePath == null || string.IsNullOrWhiteSpace(routePath?.Path))
+            if (string.IsNullOrWhiteSpace(routeUrl))
             {
                 return GetBadRequestResponse(null);
             }
 
-            if (routePath.Path.ToLower().Equals("/info"))
+            if (routeUrl.ToLower().Equals("/info"))
             {
-                return GetInfo(string.Empty);
+                return _chromelyInfo?.GetInfo(string.Empty);
             }
 
-            var route = ServiceRouteProvider.GetActionRoute(_container, routePath);
+            var route = _routeProvider.GetActionRoute(routeUrl);
 
             if (route == null)
             {
-                throw new Exception($"Route for path = {routePath.Path} is null or invalid.");
+                throw new Exception($"Route for path = {routeUrl} is null or invalid.");
             }
 
-            return ExecuteRoute(string.Empty, routePath, parameters, postData, string.Empty);
+            return ExecuteRoute(string.Empty, routeUrl, parameters, postData, string.Empty);
         }
 
-        public ChromelyResponse Run(ChromelyRequest request)
+        public IChromelyResponse Run(IChromelyRequest request)
         {
-            if (request.RoutePath == null)
+            if (request.RouteUrl == null)
             {
                 return GetBadRequestResponse(request.Id);
             }
 
-            if (string.IsNullOrEmpty(request.RoutePath.Path))
+            if (string.IsNullOrEmpty(request.RouteUrl))
             {
                 return GetBadRequestResponse(request.Id);
             }
 
-            if (request.RoutePath.Path.ToLower().Equals("/info"))
+            if (request.RouteUrl.ToLower().Equals("/info"))
             {
-                return GetInfo(request.Id);
+                return _chromelyInfo?.GetInfo(request.Id);
             }
 
-            var route = ServiceRouteProvider.GetActionRoute(_container, request.RoutePath);
+            var route = _routeProvider.GetActionRoute(request.RouteUrl);
             if (route == null)
             {
-                throw new Exception($"Route for path = {request.RoutePath} is null or invalid.");
+                throw new Exception($"Route for path = {request.RouteUrl} is null or invalid.");
             }
 
-            var parameters = request.Parameters ?? request.RoutePath.Path.GetParameters()?.ToObjectDictionary();
+            var temp = request.Parameters ?? request.RouteUrl.GetParameters();
+            var parameters = temp?.ToDictionary();
             var postData = request.PostData;
 
-            return ExecuteRoute(request.Id, request.RoutePath, parameters, postData, request.RawJson);
+            return ExecuteRoute(request.Id, request.RouteUrl, parameters, postData, request.RawJson);
         }
 
-        public ChromelyResponse Run(string requestId, RoutePath routePath, IDictionary<string, string> parameters, object postData, string requestData)
+        public IChromelyResponse Run(string requestId, string routeUrl, IDictionary<string, string> parameters, object postData, string requestData)
         {
-            if (string.IsNullOrEmpty(routePath.Path))
+            if (string.IsNullOrEmpty(routeUrl))
             {
                 return GetBadRequestResponse(requestId);
             }
 
-            if (routePath.Path.ToLower().Equals("/info"))
+            if (routeUrl.ToLower().Equals("/info"))
             {
-                return GetInfo(requestId);
+                return _chromelyInfo?.GetInfo(requestId);
             }
 
-            var route = ServiceRouteProvider.GetActionRoute(_container, routePath);
+            var route = _routeProvider.GetActionRoute(routeUrl);
             if (route == null)
             {
-                throw new Exception($"Route for path = {routePath} is null or invalid.");
+                throw new Exception($"Route for path = {routeUrl} is null or invalid.");
             }
 
-            return ExecuteRoute(requestId, routePath, parameters, postData, requestData);
+            return ExecuteRoute(requestId, routeUrl, parameters, postData, requestData);
         }
 
-        public async Task<ChromelyResponse> RunAsync(string method, string path, IDictionary<string, string> parameters, object postData)
+        public async Task<IChromelyResponse> RunAsync(string routeUrl, IDictionary<string, string> parameters, object postData)
         {
-            var routePath = new RoutePath(method, path);
-            if (routePath == null || string.IsNullOrWhiteSpace(routePath?.Path))
+            if (string.IsNullOrWhiteSpace(routeUrl))
             {
                 return GetBadRequestResponse(null);
             }
 
-            if (routePath.Path.ToLower().Equals("/info"))
+            if (routeUrl.ToLower().Equals("/info"))
             {
-                return GetInfo(string.Empty);
+                return _chromelyInfo?.GetInfo(string.Empty);
             }
 
-            var route = ServiceRouteProvider.GetActionRoute(_container, routePath);
+            var route = _routeProvider.GetActionRoute(routeUrl);
 
             if (route == null)
             {
-                throw new Exception($"Route for path = {routePath.Path} is null or invalid.");
+                throw new Exception($"Route for path = {routeUrl} is null or invalid.");
             }
 
-            return await ExecuteRouteAsync(string.Empty, routePath, parameters, postData, string.Empty);
+            return await ExecuteRouteAsync(string.Empty, routeUrl, parameters, postData, string.Empty);
         }
 
-        public async Task<ChromelyResponse> RunAsync(ChromelyRequest request)
+        public async Task<IChromelyResponse> RunAsync(IChromelyRequest request)
         {
-            if (request.RoutePath == null)
+            if (request.RouteUrl == null)
             {
                 return GetBadRequestResponse(request.Id);
             }
 
-            if (string.IsNullOrEmpty(request.RoutePath.Path))
+            if (string.IsNullOrEmpty(request.RouteUrl))
             {
                 return GetBadRequestResponse(request.Id);
             }
 
-            if (request.RoutePath.Path.ToLower().Equals("/info"))
+            if (request.RouteUrl.ToLower().Equals("/info"))
             {
-                return GetInfo(request.Id);
+                return _chromelyInfo?.GetInfo(request.Id);
             }
 
-            var route = ServiceRouteProvider.GetActionRoute(_container, request.RoutePath);
+            var route = _routeProvider.GetActionRoute(request.RouteUrl);
             if (route == null)
             {
-                throw new Exception($"Route for path = {request.RoutePath} is null or invalid.");
+                throw new Exception($"Route for path = {request.RouteUrl} is null or invalid.");
             }
 
-            var parameters = request.Parameters ?? request.RoutePath.Path.GetParameters()?.ToObjectDictionary();
+            var temp = request.Parameters ?? request.RouteUrl.GetParameters();
+            var parameters = temp?.ToDictionary();
             var postData = request.PostData;
 
-            return await ExecuteRouteAsync(request.Id, request.RoutePath, parameters, postData, request.RawJson);
+            return await ExecuteRouteAsync(request.Id, request.RouteUrl, parameters, postData, request.RawJson);
         }
 
-        public async Task<ChromelyResponse> RunAsync(string requestId, RoutePath routePath, IDictionary<string, string> parameters, object postData, string requestData)
+        public async Task<IChromelyResponse> RunAsync(string requestId, string routeUrl, IDictionary<string, string> parameters, object postData, string requestData)
         {
-            if (string.IsNullOrEmpty(routePath.Path))
+            if (string.IsNullOrEmpty(routeUrl))
             {
                 return GetBadRequestResponse(requestId);
             }
 
-            if (routePath.Path.ToLower().Equals("/info"))
+            if (routeUrl.ToLower().Equals("/info"))
             {
-                return GetInfo(requestId);
+                return _chromelyInfo?.GetInfo(requestId);
             }
 
-            var route = ServiceRouteProvider.GetActionRoute(_container, routePath);
+            var route = _routeProvider.GetActionRoute(routeUrl);
             if (route == null)
             {
-                throw new Exception($"Route for path = {routePath} is null or invalid.");
+                throw new Exception($"Route for path = {routeUrl} is null or invalid.");
             }
 
-            return await ExecuteRouteAsync(requestId, routePath, parameters, postData, requestData);
+            return await ExecuteRouteAsync(requestId, routeUrl, parameters, postData, requestData);
         }
 
-        private ChromelyResponse ExecuteRoute(string requestId, RoutePath routePath, IDictionary<string, string> parameters, object postData, string requestData)
+        private IChromelyResponse ExecuteRoute(string requestId, string routeUrl, IDictionary<string, string> parameters, object postData, string requestData)
         {
-            var route = ServiceRouteProvider.GetActionRoute(_container, routePath);
+            var route = _routeProvider.GetActionRoute(routeUrl);
 
             if (route == null)
             {
-                throw new Exception($"Route for path = {routePath} is null or invalid.");
+                return GetBadRequestResponse(requestId, $"Route for path = {routeUrl} is null or invalid.");
             }
 
-            var response = route.Invoke(requestId: requestId, routePath: routePath, parameters: parameters, postData: postData, rawJson: requestData);
+            var response = route.Invoke(requestId: requestId, routeUrl: routeUrl, parameters: parameters, postData: postData, rawJson: requestData);
             response.ReadyState = (int)ReadyState.ResponseIsReady;
             response.Status = (response.Status == 0) ? (int)HttpStatusCode.OK : response.Status;
             response.StatusText = (string.IsNullOrWhiteSpace(response.StatusText) && (response.Status == (int)HttpStatusCode.OK)) ? "OK" : response.StatusText;
@@ -182,64 +184,40 @@ namespace Chromely.Core.Defaults
             return response;
         }
 
-        private async Task<ChromelyResponse> ExecuteRouteAsync(string requestId, RoutePath routePath, IDictionary<string, string> parameters, object postData, string requestData)
+        private async Task<IChromelyResponse> ExecuteRouteAsync(string requestId, string routeUrl, IDictionary<string, string> parameters, object postData, string requestData)
         {
-            var route = ServiceRouteProvider.GetActionRoute(_container, routePath);
+            var route = _routeProvider.GetActionRoute(routeUrl);
 
             if (route == null)
             {
-                throw new Exception($"Route for path = {routePath} is null or invalid.");
+                return GetBadRequestResponse(requestId, $"Route for path = {routeUrl} is null or invalid.");
             }
 
-            ChromelyResponse response;
+            IChromelyResponse response;
             if (route.IsAsync)
             {
-                response = await route.InvokeAsync(requestId: requestId, routePath: routePath, parameters: parameters, postData: postData, rawJson: requestData);
+                response = await route.InvokeAsync(requestId: requestId, routeUrl: routeUrl, parameters: parameters, postData: postData, rawJson: requestData);
             }
             else
             {
-                response = route.Invoke(requestId: requestId, routePath: routePath, parameters: parameters, postData: postData, rawJson: requestData);
+                response = route.Invoke(requestId: requestId, routeUrl: routeUrl, parameters: parameters, postData: postData, rawJson: requestData);
             }
 
             response.ReadyState = (int)ReadyState.ResponseIsReady;
-            response.Status = (response.Status == 0 ) ? (int)HttpStatusCode.OK : response.Status;
+            response.Status = (response.Status == 0) ? (int)HttpStatusCode.OK : response.Status;
             response.StatusText = (string.IsNullOrWhiteSpace(response.StatusText) && (response.Status == (int)HttpStatusCode.OK)) ? "OK" : response.StatusText;
 
             return response;
         }
 
-        private ChromelyResponse GetInfo(string requestId)
-        {
-            var response = new ChromelyResponse(requestId);
-            var infoItemDic = new Dictionary<string, string>
-            {
-                {
-                    "divObjective",
-                    "To build HTML5 desktop apps using embedded Chromium without WinForm or WPF. Uses Windows, Linux and MacOS native GUI API. It can be extended to use WinForm or WPF. Main form of communication with Chromium rendering process is via CEF Message Router, Ajax HTTP/XHR requests using custom schemes and domains."
-                },
-                {
-                    "divPlatform",
-                    "Cross-platform - Windows, Linux, MacOS. Built on CefGlue, NET Standard 2.0, .NET Core 3.0, .NET Framework 4.61 and above."
-                },
-                { "divVersion", _config.ChromelyVersion }
-            };
-
-            response.ReadyState = (int)ReadyState.ResponseIsReady;
-            response.Status = (int)HttpStatusCode.OK;
-            response.StatusText = "OK";
-            response.Data = infoItemDic;
-
-            return response;
-        }
-
-        private ChromelyResponse GetBadRequestResponse(string requestId)
+        private IChromelyResponse GetBadRequestResponse(string requestId, string reason = null)
         {
             return new ChromelyResponse
             {
                 RequestId = requestId,
                 ReadyState = (int)ReadyState.ResponseIsReady,
                 Status = (int)System.Net.HttpStatusCode.BadRequest,
-                StatusText = "Bad Request"
+                StatusText = string.IsNullOrWhiteSpace(reason) ? "Bad Request" : reason
             };
         }
     }

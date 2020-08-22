@@ -1,26 +1,22 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ChromelyResponse.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2019 Chromely Projects
-// </copyright>
-// <license>
-//      See the LICENSE.md file in the project root for more information.
-// </license>
-// --------------------------------------------------------------------------------------------------------------------
+﻿// Copyright © 2017-2020 Chromely Projects. All rights reserved.
+// Use of this source code is governed by MIT license that can be found in the LICENSE file.
+
+using System;
 
 namespace Chromely.Core.Network
 {
     /// <summary>
-    /// The chromely response.
+    /// The Chromely response.
     /// </summary>
-    public class ChromelyResponse
+    public class ChromelyResponse : IChromelyResponse
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ChromelyResponse"/> class.
         /// </summary>
         public ChromelyResponse()
         {
-            RequestId = string.Empty;
-            StatusText = string.Empty;
+            RequestId = Guid.NewGuid().ToString();
+            Error = string.Empty;
         }
 
         /// <summary>
@@ -32,7 +28,7 @@ namespace Chromely.Core.Network
         public ChromelyResponse(string requestId)
         {
             RequestId = requestId;
-            StatusText = string.Empty;
+            Error = string.Empty;
         }
 
         /// <summary>
@@ -59,5 +55,15 @@ namespace Chromely.Core.Network
         /// Gets or sets the data.
         /// </summary>
         public object Data { get; set; }
+
+        public bool HasError
+        {
+            get
+            {
+                return string.IsNullOrWhiteSpace(Error) || Status != (int)System.Net.HttpStatusCode.OK;
+            }
+        }
+
+        public string Error { get; set; }
     }
 }

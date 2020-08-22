@@ -1,11 +1,5 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DefaultCommandTaskRunner.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2019 Chromely Projects
-// </copyright>
-// <license>
-//      See the LICENSE.md file in the project root for more information.
-// </license>
-// --------------------------------------------------------------------------------------------------------------------
+﻿// Copyright © 2017-2020 Chromely Projects. All rights reserved.
+// Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
 using System;
 using System.Collections.Generic;
@@ -13,19 +7,19 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
-using Chromely.Core.Infrastructure;
 using Chromely.Core.Logging;
 using Chromely.Core.Network;
+using Microsoft.Extensions.Logging;
 
 namespace Chromely.Core.Defaults
 {
     public class DefaultCommandTaskRunner : IChromelyCommandTaskRunner
     {
-        private readonly IChromelyContainer _container;
+        protected readonly IChromelyRouteProvider _routeProvider;
 
-        public DefaultCommandTaskRunner(IChromelyContainer container)
+        public DefaultCommandTaskRunner(IChromelyRouteProvider routeProvider)
         {
-            _container = container;
+            _routeProvider = routeProvider;
         }
 
         public void RunAsync(string url)
@@ -41,11 +35,11 @@ namespace Chromely.Core.Defaults
             try
             {
                 var commandPath = GetPathFromUrl(url);
-                var command = ServiceRouteProvider.GetCommandRoute(_container, commandPath);
+                var command = _routeProvider.GetCommandRoute(commandPath);
 
                 if (command == null)
                 {
-                    Logger.Instance.Log.Error($"Command for path = {commandPath} is null or invalid.");
+                    Logger.Instance.Log.LogError($"Command for path = {commandPath} is null or invalid.");
                     return;
                 }
 
@@ -54,7 +48,7 @@ namespace Chromely.Core.Defaults
             }
             catch (Exception exception)
             {
-                Logger.Instance.Log.Error(exception);
+                Logger.Instance.Log.LogError("DefaultCommandTaskRunner:Run", exception);
             }
         }
 

@@ -3,10 +3,10 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <Platforms>AnyCPU</Platforms>
-    <ProductVersion>5.0.83.0</ProductVersion>
-    <AssemblyVersion>5.0.83.0</AssemblyVersion>
-    <FileVersion>5.0.83.0</FileVersion>
-    <Version>5.0.83.0</Version>
+    <ProductVersion>5.1.83.0-pre01</ProductVersion>
+    <AssemblyVersion>5.1.83.0</AssemblyVersion>
+    <FileVersion>5.1.83.0</FileVersion>
+    <Version>5.1.83.0-pre01</Version>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Product>Chromely</Product>
@@ -18,7 +18,7 @@
     <PackageTags>Cef Chromium HTML5 Desktop Chromely CefGlue  Restful  Ajax HTTP XHR MessageRouter .NET Core</PackageTags>
     <Description>Primary Chromely implementation library - this is in .NET Standard 2.0 as it can be used in both .NET (Windows) and .NET Core (Windows, Linux, MacOS). Chromely version naming is based Chromely and Chromium versions implemented- major.minor.chromuim version.patch e.g 1.0.70.0.</Description>
     <PackageReleaseNotes>
-      Upgrade to Chromium v83 - 83.5.0+gbf03589+chromium-83.0.4103.106.
+      Upgrade to v5.1 - https://github.com/chromelyapps/Chromely/issues/225.
     </PackageReleaseNotes>
     <RepositoryType>Github Repository</RepositoryType>
     <RepositoryUrl>https://github.com/chromelyapps/Chromely</RepositoryUrl>
@@ -50,17 +50,24 @@
   <ItemGroup>
     <None Include="chromely.png" Pack="true" PackagePath="" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="NativeHosts\MacHost\libchromely.dylib" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="NativeHosts\MacHost\libchromely.dylib" />
+  </ItemGroup>
   
   <ItemGroup>
-    <None Remove="Native\MacCocoa\libchromely.dylib" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.5" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.5" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.5" />
+    <PackageReference Include="System.Text.Json" Version="4.7.2" />
+    <PackageReference Include="System.Drawing.Common" Version="4.5.1" />
   </ItemGroup>
-
+  
   <ItemGroup>
-    <EmbeddedResource Include="Native\MacCocoa\libchromely.dylib" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Chromely.CefGlue\Chromely.CefGlue.csproj" />
     <ProjectReference Include="..\Chromely.Core\Chromely.Core.csproj" />
   </ItemGroup>
 

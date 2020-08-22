@@ -3,10 +3,10 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <Platforms>AnyCPU</Platforms>
-    <ProductVersion>5.0.0.6</ProductVersion>
-    <AssemblyVersion>5.0.0.6</AssemblyVersion>
-    <FileVersion>5.0.0.6</FileVersion>
-    <Version>5.0.0.6</Version>
+    <ProductVersion>5.1.0.0-pre01</ProductVersion>
+    <AssemblyVersion>5.1.0.0</AssemblyVersion>
+    <FileVersion>5.1.0.0</FileVersion>
+    <Version>5.1.0.0-pre01</Version>
     <Product>Chromely.Core</Product>
     <Authors>Chromely Projects</Authors>
     <Company>Chromely Projects</Company>
@@ -18,7 +18,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageReleaseNotes>
-      Upgrade to Chromium v83 - 83.5.0+gbf03589+chromium-83.0.4103.106.
+      Upgrade to v5.1 - https://github.com/chromelyapps/Chromely/issues/225.
     </PackageReleaseNotes>
     <RepositoryUrl>https://github.com/chromelyapps/Chromely</RepositoryUrl>
     <RepositoryType>Github Repository</RepositoryType>
@@ -49,8 +49,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.5" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.5" />
     <PackageReference Include="Microsoft.CSharp" Version="4.6.0" />
-    <PackageReference Include="System.Text.Json" Version="4.6.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.5" />
+    <PackageReference Include="System.Text.Json" Version="4.7.2" />
   </ItemGroup>
 
   <ItemGroup>

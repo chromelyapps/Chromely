@@ -1,20 +1,32 @@
-﻿using Chromely.Core.Configuration;
+﻿// Copyright © 2017-2020 Chromely Projects. All rights reserved.
+// Use of this source code is governed by MIT license that can be found in the LICENSE file.
+
+using Chromely.Core.Configuration;
+using Chromely.Core.Host;
 using Chromely.Core.Logging;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Logging;
 using System;
+using System.Reflection;
 
 namespace Chromely.Core
 {
     public sealed class AppBuilder
     {
-        private IChromelyContainer _container;
-        private IChromelyConfiguration _config;
-        private IChromelyAppSettings _appSettings;
-        private IChromelyLogger _logger;
+        private ServiceProvider _serviceProvider;
         private ChromelyApp _chromelyApp;
+        private IChromelyConfiguration _config;
+        private IChromelyWindow _chromelyWindow;
+        private Type _chromelyUseConfigType;
+        private Type _chromelyUseWindowType;
         private int _stepCompleted;
 
         private AppBuilder()
         {
+            _config = null;
+            _chromelyUseConfigType = null;
+            _chromelyUseWindowType = null;
             _stepCompleted = 1;
         }
 
@@ -24,77 +36,56 @@ namespace Chromely.Core
             return appBuilder;
         }
 
-        public AppBuilder UseContainer<T>(IChromelyContainer container = null) where T : IChromelyContainer
+        public AppBuilder UseConfig<TService>(IChromelyConfiguration config = null) where TService : IChromelyConfiguration
         {
-            _container = container;
-            if (_container == null)
+            if (config != null)
             {
-                EnsureIsDerivedType(typeof(IChromelyContainer), typeof(T));
-                _container = (T)Activator.CreateInstance(typeof(T));
+                _config = config;
+            }
+            else
+            {
+                _chromelyUseConfigType = null;
+                EnsureIsDerivedType(typeof(IChromelyConfiguration), typeof(TService));
+                _chromelyUseConfigType = typeof(TService);
             }
 
             return this;
         }
 
-        public AppBuilder UseAppSettings<T>(IChromelyAppSettings appSettings = null) where T : IChromelyAppSettings
+        public AppBuilder UseWindow<TService>(IChromelyWindow chromelyWindow = null) where TService : IChromelyWindow
         {
-            _appSettings = appSettings;
-            if (_appSettings == null)
+            if (chromelyWindow != null)
             {
-                EnsureIsDerivedType(typeof(IChromelyAppSettings), typeof(T));
-                _appSettings = (T)Activator.CreateInstance(typeof(T));
+                _chromelyWindow = chromelyWindow;
+            }
+            else
+            {
+                _chromelyUseWindowType = null;
+                EnsureIsDerivedType(typeof(IChromelyWindow), typeof(TService));
+                _chromelyUseWindowType = typeof(TService);
             }
 
             return this;
         }
 
-        public AppBuilder UseLogger<T>(IChromelyLogger logger = null) where T : IChromelyLogger
+        public AppBuilder UseApp<T>(ChromelyApp ChromelyApp = null) where T : ChromelyApp
         {
-            _logger = logger;
-            if (_logger == null)
-            {
-                EnsureIsDerivedType(typeof(IChromelyLogger), typeof(T));
-                _logger = (T)Activator.CreateInstance(typeof(T));
-            }
-
-            return this;
-        }
-
-        public AppBuilder UseConfiguration<T>(IChromelyConfiguration config = null) where T : IChromelyConfiguration
-        {
-            _config = config;
-            if (_config == null)
-            {
-                EnsureIsDerivedType(typeof(IChromelyConfiguration), typeof(T));
-                _config = (T)Activator.CreateInstance(typeof(T));
-            }
-
-            return this;
-        }
-
-        public AppBuilder UseApp<T>(ChromelyApp chromelyApp = null) where T : ChromelyApp
-        {
-            if (_stepCompleted != 1)
-            {
-                throw new Exception("Invalid order: step 1: Contructor must be completed before step 2.");
-            }
-
-            _chromelyApp = chromelyApp;
+            _chromelyApp = ChromelyApp;
             if (_chromelyApp == null)
             {
                 EnsureIsDerivedType(typeof(ChromelyApp), typeof(T));
                 _chromelyApp = (T)Activator.CreateInstance(typeof(T));
             }
 
-            _stepCompleted = 2;
+            _stepCompleted = 1;
             return this;
         }
 
         public AppBuilder Build()
         {
-            if (_stepCompleted != 2)
+            if (_stepCompleted != 1)
             {
-                throw new Exception("Invalid order: step 2: UseApp must be completed before step 3.");
+                throw new Exception("Invalid order: Step 1: UseApp must be completed before Step 2: Build.");
             }
 
             if (_chromelyApp == null)
@@ -102,40 +93,59 @@ namespace Chromely.Core
                 throw new Exception($"ChromelyApp {nameof(_chromelyApp)} cannot be null.");
             }
 
-            _chromelyApp.Initialize(_container, _appSettings, _config, _logger);
-            _container = _chromelyApp.Container;
-            _config = _chromelyApp.Configuration;
-            _chromelyApp.Configure(_container);
-            _chromelyApp.RegisterEvents(_container);
+            var serviceCollection = new ServiceCollection();
+            _chromelyApp.ConfigureServices(serviceCollection);
 
-            _stepCompleted = 3;
+            // This must be done before registring core services
+            RegisterUseComponents(serviceCollection);
+
+            _chromelyApp.ConfigureCoreServices(serviceCollection);
+            _chromelyApp.ConfigureServiceResolvers(serviceCollection);
+            _chromelyApp.ConfigureDefaultHandlers(serviceCollection);
+            _serviceProvider = serviceCollection.BuildServiceProvider();
+            _chromelyApp.Initialize(_serviceProvider);
+            _chromelyApp.RegisterControllerRoutes(_serviceProvider);
+
+            _stepCompleted = 2;
             return this;
         }
 
         public void Run(string[] args)
         {
-            if (_stepCompleted != 3)
+            if (_stepCompleted != 2)
             {
-                throw new Exception("Invalid order: step 3: Build must be completed before step 4.");
+                throw new Exception("Invalid order: Step 2: Build must be completed before Step 3: Run.");
+            }
+
+            if (_serviceProvider == null)
+            {
+                throw new Exception("ServiceProvider is not initialized.");
             }
 
             try
             {
-                using (var window = _chromelyApp.CreateWindow())
+                var appName = Assembly.GetEntryAssembly()?.GetName().Name;
+                var windowController = _serviceProvider.GetService<ChromelyWindowController>();
+                try
                 {
-                    try
-                    {
-                        window.Run(args);
-                    }
-                    catch (Exception exception)
-                    {
-                        Logger.Instance.Log.Error(exception);
-                    }
+                    Logger.Instance.Log.LogInformation($"Running application:{appName}.");
+                    windowController.Run(args);
                 }
+                catch (Exception exception)
+                {
+                    Logger.Instance.Log.LogError(exception, $"Error running application:{appName}.");
+                }
+                finally
+                {
+                    windowController.Dispose();
+                    _serviceProvider.Dispose();
+                }
+
             }
             catch (Exception exception)
             {
-                Logger.Instance.Log.Error(exception);
+                var appName = Assembly.GetEntryAssembly()?.GetName().Name;
+                Logger.Instance.Log.LogError(exception, $"Error running application:{appName}.");
             }
         }
 
@@ -154,6 +164,27 @@ namespace Chromely.Core
             if (derivedType.IsAbstract || derivedType.IsInterface)
             {
                 throw new Exception($"Type {derivedType.Name} cannot be an interface or abstract class.");
+            }
+        }
+
+        private void RegisterUseComponents(ServiceCollection services)
+        {
+            if (_config != null)
+            {
+                services.TryAddSingleton<IChromelyConfiguration>(_config);
+            }
+            else if (_chromelyUseConfigType != null)
+            {
+                services.TryAddSingleton(typeof(IChromelyConfiguration), _chromelyUseConfigType);
+            }
+
+            if (_chromelyWindow != null)
+            {
+                services.TryAddSingleton<IChromelyWindow>(_chromelyWindow);
+            }
+            else if (_chromelyUseWindowType != null)
+            {
+                services.TryAddSingleton(typeof(IChromelyWindow), _chromelyUseWindowType);
             }
         }
     }

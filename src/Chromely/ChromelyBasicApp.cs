@@ -1,6 +1,11 @@
-﻿using Chromely.Core;
+﻿// Copyright © 2017-2020 Chromely Projects. All rights reserved.
+// Use of this source code is governed by MIT license that can be found in the LICENSE file.
+
 using Chromely.Core.Host;
-using Chromely.Windows;
+using Chromely.Core.Infrastructure;
+using Chromely.NativeHost;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Chromely
 {
@@ -8,34 +13,32 @@ namespace Chromely
     /// Simplest Chromely app implementation.
     /// Be sure to call base implementations on derived implementations.
     /// </summary>
-    public class ChromelyBasicApp: ChromelyApp
+    public class ChromelyBasicApp: ChromelyAppBase
     {
-        /// <summary>
-        /// Configure IoC container contents.
-        /// </summary>
-        /// <param name="container"></param>
-        public override void Configure(IChromelyContainer container)
+        public sealed override void ConfigureCoreServices(ServiceCollection services)
         {
-            base.Configure(container);
-            container.RegisterByTypeSingleton(typeof(IChromelyWindow), typeof(ChromelyWindow));
-        }
+            base.ConfigureCoreServices(services);
 
-        /// <summary>
-        /// Override to register Chromely events
-        /// or use ChromelyEventedApp which already registers some events.
-        /// </summary>
-        /// <param name="container"></param>
-        public override void RegisterEvents(IChromelyContainer container)
-        {
-        }
+            var platform = ChromelyRuntime.Platform;
 
-        /// <summary>
-        /// Creates the main window.
-        /// </summary>
-        /// <returns></returns>
-        public override IChromelyWindow CreateWindow()
-        {
-            return (IChromelyWindow)Container.GetInstance(typeof(IChromelyWindow), typeof(IChromelyWindow).Name);
+            switch (platform)
+            {
+                case ChromelyPlatform.MacOSX:
+                    services.TryAddSingleton<IChromelyNativeHost, ChromelyMacHost>();
+                    break;
+
+                case ChromelyPlatform.Linux:
+                    services.TryAddSingleton<IChromelyNativeHost, ChromelyLinuxHost>();
+                    break;
+
+                case ChromelyPlatform.Windows:
+                    services.TryAddSingleton<IChromelyNativeHost, ChromelyWinHost>();
+                    break;
+
+                default:
+                    services.TryAddSingleton<IChromelyNativeHost, ChromelyWinHost>();
+                    break;
+            }
         }
     }
 }

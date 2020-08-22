@@ -1,23 +1,28 @@
-﻿namespace Chromely.Core.Logging
+﻿// Copyright © 2017-2020 Chromely Projects. All rights reserved.
+// Use of this source code is governed by MIT license that can be found in the LICENSE file.
+
+using Microsoft.Extensions.Logging;
+
+namespace Chromely.Core.Logging
 {
     public class DefaultLogger : Logger
     {
-        private IChromelyLogger chromelyLogger;
+        private ILogger _ChromelyLogger;
 
-        public override IChromelyLogger Log
+        public override ILogger Log
         {
             get 
             { 
-                if (chromelyLogger == null)
+                if (_ChromelyLogger == null)
                 {
-                    chromelyLogger = new SimpleLogger();
+                    _ChromelyLogger = new SimpleLogger();
                 }
 
-                return chromelyLogger; 
+                return _ChromelyLogger; 
             }
             set
             {
-                chromelyLogger = value;
+                _ChromelyLogger = value;
             }
         }
     }
