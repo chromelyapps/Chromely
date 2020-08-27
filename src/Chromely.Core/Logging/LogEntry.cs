@@ -1,15 +1,9 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SimpleLogger.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2019 Chromely Projects
-// </copyright>
-// <license>
-//      See the LICENSE.md file in the project root for more information.
-// </license>
-// --------------------------------------------------------------------------------------------------------------------
+﻿// Copyright © 2017-2020 Chromely Projects. All rights reserved.
+// Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
+using Microsoft.Extensions.Logging;
 using System;
 
-// ReSharper disable InconsistentNaming
 namespace Chromely.Core.Logging
 {
     internal class LogEntry
@@ -75,40 +69,28 @@ namespace Chromely.Core.Logging
             string levelText;
             switch (LogLevel)
             {
-                case LogLevel.TRACE:
+                case LogLevel.Trace:
                     levelText = "[TRACE]";
                     break;
 
-                case LogLevel.INFO:
+                case LogLevel.Information:
                     levelText = "[INFO]";
                     break;
 
-                case LogLevel.VERBOSE:
-                    levelText = "[VERBOSE]";
-                    break;
-
-                case LogLevel.DEBUG:
+                case LogLevel.Debug:
                     levelText = "[DEBUG]";
                     break;
 
-                case LogLevel.WARN:
+                case LogLevel.Warning:
                     levelText = "[WARNING]";
                     break;
 
-                case LogLevel.ERROR:
+                case LogLevel.Error:
                     levelText = "[ERROR]";
                     break;
 
-                case LogLevel.FATAL:
-                    levelText = "[FATAL]";
-                    break;
-
-                case LogLevel.CRITICAL:
-                    levelText = "[CRITICAL]";
-                    break;
-
                 default:
-                    levelText = string.Empty;
+                    levelText = "[UNKNOWN LEVEL]";
                     break;
             }
 

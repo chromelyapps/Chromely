@@ -1,11 +1,5 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ControllerAssemblyInfo.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2019 Chromely Projects
-// </copyright>
-// <license>
-//      See the LICENSE.md file in the project root for more information.
-// </license>
-// --------------------------------------------------------------------------------------------------------------------
+﻿// Copyright © 2017-2020 Chromely Projects. All rights reserved.
+// Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
 using System.Reflection;
 

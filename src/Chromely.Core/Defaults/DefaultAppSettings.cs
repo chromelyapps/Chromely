@@ -1,7 +1,10 @@
-﻿using Chromely.Core.Configuration;
-using Chromely.Core.Helpers;
+﻿// Copyright © 2017-2020 Chromely Projects. All rights reserved.
+// Use of this source code is governed by MIT license that can be found in the LICENSE file.
+
+using Chromely.Core.Configuration;
 using Chromely.Core.Infrastructure;
 using Chromely.Core.Logging;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -68,7 +71,7 @@ namespace Chromely.Core.Defaults
             }
             catch (Exception exception)
             {
-                Logger.Instance.Log.Error(exception);
+                Logger.Instance.Log.LogError(exception, exception.Message);
             }
         }
 
@@ -107,18 +110,18 @@ namespace Chromely.Core.Defaults
                         var jsonDic = JsonSerializer.Serialize(_chromelyDynamic.Dictionary, options);
                         streamWriter.Write(jsonDic);
 
-                        Logger.Instance.Log.Info("AppSettings FileName:" + appSettingsFile);
+                        Logger.Instance.Log.LogInformation("AppSettings FileName:" + appSettingsFile);
                     }
                     catch (Exception exception)  
                     {
-                        Logger.Instance.Log.Warn(exception.ToString());
-                        Logger.Instance.Log.Warn("If this is about cycle was detecttion please see - https://github.com/dotnet/corefx/issues/41288");
+                        Logger.Instance.Log.LogWarning(exception.ToString());
+                        Logger.Instance.Log.LogWarning("If this is about cycle was detecttion please see - https://github.com/dotnet/corefx/issues/41288");
                     }
                 }
             }
             catch (Exception exception)
             {
-                Logger.Instance.Log.Error(exception);
+                Logger.Instance.Log.LogError(exception, exception.Message);
             }
         }
 

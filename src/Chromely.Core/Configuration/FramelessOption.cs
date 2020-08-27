@@ -1,29 +1,33 @@
-﻿using System.Drawing;
-using Chromely.Core.Host;
+﻿// Copyright © 2017-2020 Chromely Projects. All rights reserved.
+// Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
-namespace Chromely.Core.Configuration
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+
+namespace Chromely.Core.Configuration 
 {
+    /// <summary> Options associated with the Frameless mode. </summary>
     public class FramelessOption
     {
-        public delegate bool IsDraggableCallback(IChromelyNativeHost nativeHost, Point point);
+        public bool UseWebkitAppRegions { get; set; }
 
+        /// <summary> Callback function to determine if the point is within the draggable area. </summary>
+        /// <value> True if the click point is within the draggable area. </value>
+        public Func<Point, bool> IsDraggable { get; set; }
+
+        /// <summary> List of draggable areas. </summary>
+        /// <value> The drag zones. </value>
+        public List<DragZoneConfiguration> DragZones { get; set; }
+        public int ResizeGrip { get; set; }
+
+        /// <summary> Default constructor. </summary>
         public FramelessOption()
         {
-            UseDefaultFramelessController = true;
+            ResizeGrip = 1;
             UseWebkitAppRegions = false;
-            IsDraggable = (nativeHost, point) =>
-            {
-                const int DraggableHeight = 32;
-                const int NonDraggableRightOffsetWidth = 140;
-
-                var size = nativeHost.GetWindowClientSize();
-                var right = size.Width - point.X;
-                return point.Y <= DraggableHeight && right > NonDraggableRightOffsetWidth;
-            };
+            IsDraggable = null;
+            DragZones = new List<DragZoneConfiguration>();
         }
-
-        public bool UseDefaultFramelessController { get; set; }
-        public bool UseWebkitAppRegions { get; set; }
-        public IsDraggableCallback IsDraggable { get; set; }
     }
 }

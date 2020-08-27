@@ -1,4 +1,8 @@
-﻿using Chromely.Core.Logging;
+﻿// Copyright © 2017-2020 Chromely Projects. All rights reserved.
+// Use of this source code is governed by MIT license that can be found in the LICENSE file.
+
+using Chromely.Core.Logging;
+using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
 
@@ -44,7 +48,7 @@ namespace Chromely.Core.Infrastructure
             }
             catch (Exception exception)
             {
-                Logger.Instance.Log.Error(exception);
+                Logger.Instance.Log.LogError(exception, exception.Message);
             }
 
             return null;

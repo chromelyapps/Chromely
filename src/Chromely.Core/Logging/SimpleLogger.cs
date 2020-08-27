@@ -1,26 +1,20 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SimpleLogger.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2019 Chromely Projects
-// </copyright>
-// <license>
-//      See the LICENSE.md file in the project root for more information.
-// </license>
-// --------------------------------------------------------------------------------------------------------------------
+﻿// Copyright © 2017-2020 Chromely Projects. All rights reserved.
+// Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
+using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
+using System.Reflection;
 using System.Text;
 
-// ReSharper disable InconsistentNaming
 namespace Chromely.Core.Logging
 {
-    public class SimpleLogger : IChromelyLogger
+    public class SimpleLogger : ILogger
     {
+        private readonly string _location;
         private readonly string _filename;
-
+        private readonly string _backupFilename;
         private readonly int _maxSizeInKiloBytes;
-
-        private readonly bool _logToConsole;
 
         private readonly object _lockObj = new object();
 
@@ -33,71 +27,56 @@ namespace Chromely.Core.Logging
             if (string.IsNullOrEmpty(fullFilePath))
             {
                 var exeLocation = AppDomain.CurrentDomain.BaseDirectory;
-                var fileName = DateTime.Now.ToString("yyyyMMdd") + ".log";
-                fullFilePath = Path.Combine(exeLocation, "Logs", "chromely_" + fileName);
+                var appName = Assembly.GetEntryAssembly()?.GetName().Name;
+                appName = string.IsNullOrWhiteSpace(appName) ? Guid.NewGuid().ToString() : appName;
+                _backupFilename = appName;
+                var fileName = $"{appName}.log";
+                _location = Path.Combine(exeLocation, "Logs");
+                fullFilePath = Path.Combine(_location, fileName);
+            }
+            else
+            {
+                _backupFilename = Path.GetFileNameWithoutExtension(fullFilePath);
+                _location = Path.GetDirectoryName(fullFilePath);
             }
 
             _filename = fullFilePath;
-            _logToConsole = logToConsole;
 
             // 10 MB Max size before creating backup - not set
             maxFileSizeBeforeLogRotation = (maxFileSizeBeforeLogRotation < -0) ? 10 : maxFileSizeBeforeLogRotation;
             _maxSizeInKiloBytes = 1000 * maxFileSizeBeforeLogRotation; 
         }
 
-        /// <summary>Logs an info message type.</summary>
-        public void Info(string message)
+        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
         {
-            Log(new LogEntry(LogLevel.INFO, message));
+            if (!IsEnabled(logLevel))
+            {
+                return;
+            }
+
+            var builder = new StringBuilder();
+            if (formatter != null)
+            {
+                builder.Append(formatter(state, exception));
+            }
+
+            if (exception != null)
+            {
+                builder.Append(" ");
+                builder.Append(exception.ToString());
+            }
+
+            Log(new LogEntry(logLevel, builder.ToString()));
         }
 
-        /// <summary>Logs a debug message type.</summary>
-        public void Debug(string message)
+        public bool IsEnabled(LogLevel logLevel)
         {
-            Log(new LogEntry(LogLevel.DEBUG, message));
+            return true;
         }
 
-        /// <summary>Logs a verbose message type.</summary>
-        /// <param name="message">The message.</param>
-        public void Verbose(string message)
+        public IDisposable BeginScope<TState>(TState state)
         {
-            Log(new LogEntry(LogLevel.VERBOSE, message));
-        }
-
-        /// <summary>Logs a warning message type.</summary>
-        public void Warn(string message)
-        {
-            Log(new LogEntry(LogLevel.WARN, message));
-        }
-
-        /// <summary>Logs an error message type.</summary>
-        public void Error(string message)
-        {
-            Log(new LogEntry(LogLevel.ERROR, message));
-        }
-
-        /// <summary>Logs an error message type.</summary>
-        public void Error(Exception exception)
-        {
-            Log(new LogEntry(LogLevel.ERROR, exception));
-        }
-
-        /// <summary>Logs an error message type.</summary>
-        public void Error(Exception exception, string message)
-        {
-            Log(new LogEntry(LogLevel.ERROR, message, exception));
-        }
-
-        /// <summary>Logs a fatal message type.</summary>
-        public void Fatal(string message)
-        {
-            Log(new LogEntry(LogLevel.FATAL, message));
-        }
-
-        /// <summary>Logs a critical message type.</summary>
-        public void Critial(string message)
-        {
-            Log(new LogEntry(LogLevel.CRITICAL, message));
+            return null;
         }
 
         private void Log(LogEntry entry)
@@ -108,11 +87,6 @@ namespace Chromely.Core.Logging
                 {
                     if (entry != null)
                     {
-                        if (_logToConsole)
-                        {
-                            WriteToConsole(entry.ToString());
-                        }
-
                         WriteToFile(entry.ToString());
                     }
                 }
@@ -137,7 +111,7 @@ namespace Chromely.Core.Logging
             }
 
             var fileInfo = new FileInfo(_filename);
-            if (fileInfo.Exists && (fileInfo.Length / 1024 >= _maxSizeInKiloBytes))
+            if (fileInfo.Exists && ((fileInfo.Length / 1024) >= _maxSizeInKiloBytes))
             {
                 CreateCopyOfCurrentLogFile(_filename);
             }
@@ -148,22 +122,28 @@ namespace Chromely.Core.Logging
             writer.Dispose();
         }
 
-        private void WriteToConsole(string text)
-        {
-            Console.WriteLine(text);
-        }
-
         private void CreateCopyOfCurrentLogFile(string filePath)
         {
-            for (var i = 1; i < 999; i++)
+            try
             {
-                var possibleFilePath = $"{filePath}.{i:000}";
-                if (!File.Exists(possibleFilePath))
+                for (var i = 1; i < 999; i++)
                 {
-                    File.Move(filePath, possibleFilePath);
-                    break;
+                    var backupPath = Path.Combine(_location, "backup");
+                    if (!Directory.Exists(backupPath))
+                    {
+                        Directory.CreateDirectory(backupPath);
+                    }
+
+                    var backupFile = $"{_backupFilename}_{DateTime.Now.ToString("yyyyMMdd")}_{i}.backup";
+                    var possibleFilePath = Path.Combine(backupPath, backupFile);
+                    if (!File.Exists(possibleFilePath))
+                    {
+                        File.Move(filePath, possibleFilePath);
+                        break;
+                    }
                 }
             }
+            catch {}
         }
     }
 }

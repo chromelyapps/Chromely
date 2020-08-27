@@ -1,14 +1,9 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ChromelyConfigurationExtension.cs" company="Chromely Projects">
-//   Copyright (c) 2017-2019 Chromely Projects
-// </copyright>
-// <license>
-//      See the LICENSE.md file in the project root for more information.
-// </license>
-// --------------------------------------------------------------------------------------------------------------------
+﻿// Copyright © 2017-2020 Chromely Projects. All rights reserved.
+// Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
 using System;
 using Chromely.Core.Logging;
+using Microsoft.Extensions.Logging;
 
 namespace Chromely.Core.Configuration
 {
@@ -44,7 +39,7 @@ namespace Chromely.Core.Configuration
             }
             catch (Exception exception)
             {
-                Logger.Instance.Log.Error(exception);
+                Logger.Instance.Log.LogError(exception, exception.Message);
             }
 
             return defaultValue;
@@ -89,7 +84,7 @@ namespace Chromely.Core.Configuration
             }
             catch (Exception exception)
             {
-                Logger.Instance.Log.Error(exception);
+                Logger.Instance.Log.LogError(exception, exception.Message);
             }
 
             return defaultValue;
@@ -122,7 +117,7 @@ namespace Chromely.Core.Configuration
             }
             catch (Exception exception)
             {
-                Logger.Instance.Log.Error(exception);
+                Logger.Instance.Log.LogError(exception, exception.Message);
             }
 
             return defaultValue;

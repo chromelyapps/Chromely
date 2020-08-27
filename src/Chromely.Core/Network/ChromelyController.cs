@@ -1,8 +1,12 @@
-﻿using System;
+﻿// Copyright © 2017-2020 Chromely Projects. All rights reserved.
+// Use of this source code is governed by MIT license that can be found in the LICENSE file.
+
+using Chromely.Core.Logging;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
-using Chromely.Core.Logging;
 
 namespace Chromely.Core.Network
 {
@@ -10,161 +14,85 @@ namespace Chromely.Core.Network
     {
         protected ChromelyController()
         {
-            ActionRouteDictionary = new Dictionary<string, ActionRoute>();
-            CommandRouteDictionary = new Dictionary<string, CommandRoute>();
+            ActionRouteDictionary = new Dictionary<string, RequestActionRoute>();
+            CommandRouteDictionary = new Dictionary<string, CommandActionRoute>();
         }
 
-        public Dictionary<string, ActionRoute> ActionRouteDictionary { get; }
-        public Dictionary<string, CommandRoute> CommandRouteDictionary { get; }
-        public string RouteName
+        private string _name;
+        private string _description;
+
+        public string Name
         {
             get
             {
-                var attributeInfo = GetAttributeInfo();
-                if (attributeInfo != null)
+                if (string.IsNullOrWhiteSpace(_name))
                 {
-                    return attributeInfo.Item1;
+                    SetAttributeInfo();
                 }
 
-                return string.Empty;
+                return _name;
             }
         }
 
-        public string Path
+        public string Description
         {
             get
             {
-                var attributeInfo = GetAttributeInfo();
-                if (attributeInfo != null)
+                if (string.IsNullOrWhiteSpace(_description))
                 {
-                    return attributeInfo.Item2;
+                    SetAttributeInfo();
                 }
 
-                return string.Empty;
+                return _description;
             }
         }
 
-        protected void RegisterGetRequest(string path, Func<ChromelyRequest, ChromelyResponse> action)
+        public Dictionary<string, RequestActionRoute> ActionRouteDictionary { get; }
+        public Dictionary<string, CommandActionRoute> CommandRouteDictionary { get; }
+
+        protected void RegisterRequest(string path, Func<IChromelyRequest, IChromelyResponse> action, string description = null)
         {
-            AddRoute(Method.GET, path, new ActionRoute(Method.GET, path, action));
+            AddRoute(path, new RequestActionRoute(path, action, description));
         }
 
-        protected void RegisterGetRequestAsync(string path, Func<ChromelyRequest, Task<ChromelyResponse>> action)
+        protected void RegisterRequestAsync(string path, Func<IChromelyRequest, Task<IChromelyResponse>> action, string description = null)
         {
-            AddRoute(Method.GET, path, new ActionRoute(Method.GET, path, action));
+            AddRoute(path, new RequestActionRoute(path, action, description));
         }
 
-        protected void RegisterPostRequest(string path, Func<ChromelyRequest, ChromelyResponse> action)
-        {
-            AddRoute(Method.POST, path, new ActionRoute(Method.POST, path, action));
-        }
-
-        protected void RegisterPostRequestAsync(string path, Func<ChromelyRequest, Task<ChromelyResponse>> action)
-        {
-            AddRoute(Method.POST, path, new ActionRoute(Method.POST, path, action));
-        }
-
-        protected void RegisterPutRequest(string path, Func<ChromelyRequest, ChromelyResponse> action)
-        {
-            AddRoute(Method.PUT, path, new ActionRoute(Method.PUT, path, action));
-        }
-
-        protected void RegisterPutRequestAsync(string path, Func<ChromelyRequest, Task<ChromelyResponse>> action)
-        {
-            AddRoute(Method.PUT, path, new ActionRoute(Method.PUT, path, action));
-        }
-
-        protected void RegisterDeleteRequest(string path, Func<ChromelyRequest, ChromelyResponse> action)
-        {
-            AddRoute(Method.DELETE, path, new ActionRoute(Method.DELETE, path, action));
-        }
-
-        protected void RegisterDeleteRequestAsync(string path, Func<ChromelyRequest, Task<ChromelyResponse>> action)
-        {
-            AddRoute(Method.DELETE, path, new ActionRoute(Method.DELETE, path, action));
-        }
-
-        protected void RegisterHeadRequest(string path, Func<ChromelyRequest, ChromelyResponse> action)
-        {
-            AddRoute(Method.HEAD, path, new ActionRoute(Method.HEAD, path, action));
-        }
-
-        protected void RegisterHeadRequestAsync(string path, Func<ChromelyRequest, Task<ChromelyResponse>> action)
-        {
-            AddRoute(Method.HEAD, path, new ActionRoute(Method.HEAD, path, action));
-        }
-
-        protected void RegisterOptionsRequest(string path, Func<ChromelyRequest, ChromelyResponse> action)
-        {
-            AddRoute(Method.OPTIONS, path, new ActionRoute(Method.OPTIONS, path, action));
-        }
-
-        protected void RegisterOptionsRequestAsync(string path, Func<ChromelyRequest, Task<ChromelyResponse>> action)
-        {
-            AddRoute(Method.OPTIONS, path, new ActionRoute(Method.OPTIONS, path, action));
-        }
-
-        protected void RegisterPatchRequest(string path, Func<ChromelyRequest, ChromelyResponse> action)
-        {
-            AddRoute(Method.PATCH, path, new ActionRoute(Method.PATCH, path, action));
-        }
-
-        protected void RegisterPatchRequestAsync(string path, Func<ChromelyRequest, Task<ChromelyResponse>> action)
-        {
-            AddRoute(Method.PATCH, path, new ActionRoute(Method.PATCH, path, action));
-        }
-
-        protected void RegisterMergeRequest(string path, Func<ChromelyRequest, ChromelyResponse> action)
-        {
-            AddRoute(Method.MERGE, path, new ActionRoute(Method.MERGE, path, action));
-        }
-
-        protected void RegisterMergeRequestAsync(string path, Func<ChromelyRequest, Task<ChromelyResponse>> action)
-        {
-            AddRoute(Method.MERGE, path, new ActionRoute(Method.MERGE, path, action));
-        }
-
-        protected void RegisterCommand(string path, Action<IDictionary<string, string>> action)
+        protected void RegisterCommand(string path, Action<IDictionary<string, string>> action, string description = null)
         {
             if (string.IsNullOrWhiteSpace(path) || action == null)
             {
                 return;
             }
-            
-            var command = new CommandRoute(path, action);
-            CommandRouteDictionary[command.Key] = command;
+
+            var commandKey = RouteKey.CreateCommandKey(path);
+            var command = new CommandActionRoute(path, action, description);
+            CommandRouteDictionary[commandKey] = command;
         }
 
-        protected void AddRoute(Method method, string path, ActionRoute route)
+        private void AddRoute(string path, RequestActionRoute route)
         {
-            var routhPath = new RoutePath(method, path);
-            ActionRouteDictionary[routhPath.Key] = route;
+            var actionKey = RouteKey.CreateRequestKey(path);
+            ActionRouteDictionary[actionKey] = route;
         }
 
-        protected void AddRoute(string method, string path, ActionRoute route)
-        {
-            var routhPath = new RoutePath(method, path);
-            ActionRouteDictionary[routhPath.Key] = route;
-        }
-
-        private Tuple<string, string> GetAttributeInfo()
+        private void SetAttributeInfo()
         {
             try
             {
                 var attribute = GetType().GetCustomAttribute<ControllerPropertyAttribute>(true);
                 if (attribute != null)
                 {
-                    return new Tuple<string, string>(attribute.Name, attribute.Route);
+                    _name = attribute.Name;
+                    _description = attribute.Description;
                 }
-
-                return null;
             }
             catch (Exception exception)
             {
-                Logger.Instance.Log.Error(exception);
+                Logger.Instance.Log.LogError("ChromelyController:SetAttributeInfo", exception);
             }
-
-            return null;
         }
     }
 }

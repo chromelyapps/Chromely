@@ -1,4 +1,8 @@
-﻿using Chromely.Core.Host;
+﻿// Copyright © 2017-2020 Chromely Projects. All rights reserved.
+// Use of this source code is governed by MIT license that can be found in the LICENSE file.
+
+using Chromely.Core.Host;
+using System.Drawing;
 
 namespace Chromely.Core.Configuration
 {
@@ -22,11 +26,17 @@ namespace Chromely.Core.Configuration
         /// <summary>Gets or sets a value indicating whether the window should be centered when starting up for the first time.</summary>
         public bool StartCentered { get; set; }
 
+        /// <summary>Gets or sets a value indicating whether fullscreen is enabled or not.</summary>
+        public bool Fullscreen { get; set; }
+
         //TODO write summary for WindowFrameless prop
         public bool WindowFrameless { get; set; }
 
         /// <summary>Gets or sets a value indicating whether a custom style will be used.</summary>
         public bool UseCustomStyle { get; set; }
+
+        public Size MinimumSize { get; set; }
+        public Size MaximumSize { get; set; }
 
         /// <summary>Gets or sets the custom style.</summary>
         public WindowCustomStyle CustomStyle { get; set; }

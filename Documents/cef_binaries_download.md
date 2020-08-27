@@ -11,9 +11,10 @@ For manual download please these follow steps:
      #### Versions Map 
     | Chromely.CefGlue| Chromely.Unofficial.CefGlue.NetStd | Required CEF Binary |
     | :---         | :---         | :--- |
-    | 5.0.77.* | 78.0.3904.108 | 77.1.14%2Bg4fb61d2%2Bchromium-77.0.3865.120 |
-
-    For instance binaries download for Chromely v5 will be url links: 
+    | 5.0.77.* | 77.0.3865.120 | 77.1.14%2Bg4fb61d2%2Bchromium-77.0.3865.120 |
+    | 5.0.79.* | 79.0.3945.130 | 79.1.36+g90301bd+chromium-79.0.3945.130 |
+    
+    For instance binaries download for Chromely 5.0.77.* will be url links: 
     ```` 
     http://opensource.spotify.com/cefbuilds/cef_binary_77.1.14%2Bg4fb61d2%2Bchromium-77.0.3865.120_windows64_minimal.tar.bz2
 

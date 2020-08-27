@@ -1,4 +1,9 @@
-﻿namespace Chromely.Core.Logging
+﻿// Copyright © 2017-2020 Chromely Projects. All rights reserved.
+// Use of this source code is governed by MIT license that can be found in the LICENSE file.
+
+using Microsoft.Extensions.Logging;
+
+namespace Chromely.Core.Logging
 {
     public abstract class Logger
     {
@@ -21,7 +26,7 @@
             }
         }
 
-        public virtual IChromelyLogger Log { get; set; }
+        public virtual ILogger Log { get; set; }
     }
 }
 

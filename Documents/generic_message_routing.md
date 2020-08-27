@@ -22,6 +22,7 @@ window.cefQueryCancel(request_id)
 For Chromely CefGlue message routing, the following must be done:
 - Use default message router handler or register a new one.
 - Add appropriate cefQuery Javascript function in the UI.
+- Add C# Controller/Action functionality to handle requests.
 
 #### Register Message Router Handler
 To use the [default handler](https://github.com/mattkol/Chromely/blob/master/src/Chromely.CefGlue/Browser/Handlers/CefGlueMessageRouterHandler.cs) nothing needs to be done. 
@@ -93,3 +94,22 @@ Where:
    On success callback function: messageRouterResult 
 ````
 
+#### C# Controller/Action
+A sample Controller
+````charp
+    [ControllerProperty(Name = "DemoController", Route = "democontroller")]
+    public class DemoController : ChromelyController
+    {
+        public DemoController()
+        {
+            RegisterGetRequest("/democontroller/movies", GetMovies);
+        }
+		
+        private ChromelyResponse GetMovies(ChromelyRequest request)
+        {
+		    return new ChromelyResponse();
+        }
+	}
+ 
+ Note that the route path: /democontroller/movies matches url in the UI.
+````

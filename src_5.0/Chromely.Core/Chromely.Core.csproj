@@ -1,0 +1,60 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <Platforms>AnyCPU</Platforms>
+    <ProductVersion>5.0.0.6</ProductVersion>
+    <AssemblyVersion>5.0.0.6</AssemblyVersion>
+    <FileVersion>5.0.0.6</FileVersion>
+    <Version>5.0.0.6</Version>
+    <Product>Chromely.Core</Product>
+    <Authors>Chromely Projects</Authors>
+    <Company>Chromely Projects</Company>
+    <PackageTags>Cef Chromium HTML5 Desktop Chromely CefGlue Restful Ajax HTTP XHR MessageRouter NetStandard .NET Core</PackageTags>
+    <Description>This is a .NET Standard library. It is the base/core library required to build Chromely CefGlue apps on Windows, Linux and MacOS.</Description>
+    <Copyright>Copyright © 2017-2020 Chromely Projects</Copyright>
+    <PackageProjectUrl>https://github.com/chromelyapps/Chromely</PackageProjectUrl>
+    <PackageIcon>chromely.png</PackageIcon>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageReleaseNotes>
+      Upgrade to Chromium v83 - 83.5.0+gbf03589+chromium-83.0.4103.106.
+    </PackageReleaseNotes>
+    <RepositoryUrl>https://github.com/chromelyapps/Chromely</RepositoryUrl>
+    <RepositoryType>Github Repository</RepositoryType>
+    <Configurations>Debug;Release;ReleaseLinux;DebugLinux</Configurations>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netstandard2.1\Chromely.Core.xml</DocumentationFile>
+    <WarningsAsErrors>NU1605</WarningsAsErrors>
+    <NoWarn>1701;1702; NU5125</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard2.1\Chromely.Core.xml</DocumentationFile>
+    <NoWarn>1701;1702; NU5125;7035</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'ReleaseLinux' ">
+    <Optimize>true</Optimize>
+    <NoWarn>1701;1702; NU5125;7035</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'DebugLinux' ">
+    <Optimize>true</Optimize>
+    <NoWarn>1701;1702; NU5125;7035</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CSharp" Version="4.6.0" />
+    <PackageReference Include="System.Text.Json" Version="4.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="chromely.png" Pack="true" PackagePath="" />
+  </ItemGroup>
+  
+</Project>

@@ -1,0 +1,67 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <Platforms>AnyCPU</Platforms>
+    <ProductVersion>5.0.83.0</ProductVersion>
+    <AssemblyVersion>5.0.83.0</AssemblyVersion>
+    <FileVersion>5.0.83.0</FileVersion>
+    <Version>5.0.83.0</Version>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Product>Chromely.CefGlue</Product>
+    <Authors>Chromely Projects</Authors>
+    <Company>Chromely Projects</Company>
+    <Copyright>Copyright © 2017-2020 Chromely Projects</Copyright>
+    <PackageProjectUrl>https://github.com/chromelyapps/Chromely</PackageProjectUrl>
+    <PackageIcon>chromely.png</PackageIcon>
+    <PackageTags>Cef Chromium HTML5 Desktop Chromely CefGlue  Restful  Ajax HTTP XHR MessageRouter .NET Core</PackageTags>
+    <Description>Chromely CefGlue implementation library - this is in .NET Standard 2.0 as it can be used in both .NET (Windows) and .NET Core (Windows, Linux, MacOS). Chromely.CefGlue version naming is based Chromely and Chromium versions implemented- major.minor.chromuim version.patch e.g 1.0.70.0.</Description>
+    <PackageReleaseNotes>
+      Upgrade to Chromium v83 - 83.5.0+gbf03589+chromium-83.0.4103.106.
+    </PackageReleaseNotes>
+    <RepositoryType>Github Repository</RepositoryType>
+    <RepositoryUrl>https://github.com/chromelyapps/Chromely</RepositoryUrl>
+    <Configurations>Debug;Release;ReleaseLinux;DebugLinux</Configurations>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netstandard2.1\Chromely.CefGlue.xml</DocumentationFile>
+    <NoWarn>1701;1702; NU5125;7035</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard2.1\Chromely.CefGlue.xml</DocumentationFile>
+    <NoWarn>1701;1702; NU5125;7035</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'ReleaseLinux' ">
+    <Optimize>true</Optimize>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <NoWarn>1701;1702; NU5125;7035</NoWarn>
+    <DefineConstants>TRACE;RELEASE;NETSTANDARD;NETSTANDARD2_0</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'DebugLinux' ">
+    <Optimize>false</Optimize>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <NoWarn>1701;1702; NU5125;7035</NoWarn>
+    <DefineConstants>TRACE;DEBUG;NETSTANDARD;NETSTANDARD2_0</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Buffers" Version="4.5.0" />
+    <PackageReference Include="System.Drawing.Common" Version="4.5.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Chromely.Core\Chromely.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="chromely.png" Pack="true" PackagePath="" />
+  </ItemGroup>
+
+</Project>

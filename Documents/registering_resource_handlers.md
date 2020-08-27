@@ -34,6 +34,7 @@ You can register a url scheme either in config file or via C# code.
 ````
 - Using C# code
 
+Sample 1 - usual file resources
 ````csharp
     public class DefaultConfiguration : IChromelyConfiguration
     {
@@ -46,6 +47,25 @@ You can register a url scheme either in config file or via C# code.
           
         }
     }
+````
+
+Sample 2 - embedded file resources.
+````csharp
+    public class DefaultConfiguration : IChromelyConfiguration
+    {
+        public DefaultConfiguration()
+        {
+            UrlSchemes.AddRange(new List<UrlScheme>()
+            {
+                var assemblyOptions = new AssemblyOptions("embeddedAssemblyName.dll", null, "app");
+                UrlSchemes.Add(new UrlScheme(DefaultSchemeName.ASSEMBLYRESOURCE, "assembly", "app", string.Empty,   UrlSchemeType.AssemblyResource, false, assemblyOptions));
+            });
+          
+        }
+    }
+ where:
+    Name of assembley: embeddedAssemblyName.dll
+    Folder where resources are: app
 ````
 
 ### 2. Registration of a custom resource handler factory

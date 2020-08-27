@@ -1,90 +1,108 @@
-﻿using System;
+﻿// Copyright © 2017-2020 Chromely Projects. All rights reserved.
+// Use of this source code is governed by MIT license that can be found in the LICENSE file.
+
+using System;
 using System.Collections.Generic;
 using System.IO;
-using Caliburn.Light;
+using System.Linq;
+using System.Reflection;
 using Chromely.Core.Configuration;
 using Chromely.Core.Defaults;
-using Chromely.Core.Host;
 using Chromely.Core.Infrastructure;
 using Chromely.Core.Logging;
 using Chromely.Core.Network;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Logging;
 
 namespace Chromely.Core
 {
     public abstract class ChromelyApp
     {
-        protected IChromelyContainer _container;
+        protected bool _servicesConfigured;
+        protected bool _coreServicesConfigured;
+        protected bool _servicesInitialized;
+        protected bool _resolversConfigured;
+        protected bool _defaultHandlersConfigured;
 
-        public virtual IChromelyContainer Container 
+        public virtual void ConfigureServices(ServiceCollection services)
         {
-            get
-            {
-                EnsureContainerValid(_container);
-                return _container;
-            }
+            _servicesConfigured = true;
         }
 
-        public virtual IChromelyConfiguration Configuration
+        public virtual void ConfigureCoreServices(ServiceCollection services)
         {
-            get
+            if (!_servicesConfigured)
             {
-                EnsureContainerValid(Container);
-                var config = Container.GetInstance(typeof(IChromelyConfiguration), typeof(IChromelyConfiguration).Name) as IChromelyConfiguration;
-                return config; 
+                throw new Exception("Custom services must be configured before core default services are set.");
             }
+
+            // Add core services if not already added.
+            // Expected core services are -
+            // IChromelyAppSettings, IChromelyConfiguration, IChromelyLogger, IChromelyRouteProvider
+            // DefaultAppSettings  DefaultConfiguration SimpleLogger, DefaultRouteProvider
+            // Logger is added in Initialize method
+
+            services.TryAddSingleton<IChromelyConfiguration>(DefaultConfiguration.CreateForRuntimePlatform());
+            services.TryAddSingleton<IChromelySerializerUtil, DefaultSerializerUtil>();
+            services.TryAddSingleton<IChromelyAppSettings, DefaultAppSettings>();
+
+            _coreServicesConfigured = true;
         }
 
-        public virtual IChromelyWindow Window
+        public virtual void ConfigureServiceResolvers(ServiceCollection services)
         {
-            get
+            /*  Collection service resolvers for types: 
+                IChromelyJsBindingHandler
+                IChromelyCustomHandler
+                IChromelyResourceHandlerFactory
+                IChromelySchemeHandlerFactory
+             */
+            services.AddTransient<ChromelyHandlersResolver>(serviceProvider => (serviceType) =>
             {
-                EnsureContainerValid(Container);
-                var window = Container.GetInstance(typeof(IChromelyWindow), typeof(IChromelyWindow).Name) as IChromelyWindow;
-                return window;
-            }
+                return serviceProvider.GetServices(serviceType);
+            });
+
+            _resolversConfigured = true;
         }
 
-        public virtual void Initialize(IChromelyContainer container, IChromelyAppSettings appSettings, IChromelyConfiguration config, IChromelyLogger chromelyLogger)
+        public virtual void ConfigureDefaultHandlers(ServiceCollection services)
         {
-            EnsureExpectedWorkingDirectory();
+            _defaultHandlersConfigured = true;
+        }
 
-            #region Container
-
-            _container = container;
-            if (_container == null)
+        public virtual void Initialize(ServiceProvider serviceProvider)
+        {
+            if (!_servicesConfigured || !_coreServicesConfigured || !_resolversConfigured || !_defaultHandlersConfigured)
             {
-                _container = new SimpleContainer();
+                throw new Exception("Services must be configured before application is initialized.");
             }
 
-            #endregion
+            #region Configuration
 
-            #region Configuration 
-
-            if (config == null)
-            {
-                var configurator = new ConfigurationHandler();
-                config = configurator.Parse<DefaultConfiguration>();
-            }
-
+            var config = serviceProvider.GetService<IChromelyConfiguration>();
             if (config == null)
             {
                 config = DefaultConfiguration.CreateForRuntimePlatform();
             }
 
             InitConfiguration(config);
-            config.Platform = ChromelyRuntime.Platform;
 
-            #endregion
+            #endregion Configuration
 
             #region Application/User Settings
 
+            var appSettings = serviceProvider.GetService<IChromelyAppSettings>();
             if (appSettings == null)
             {
-                appSettings = new DefaultAppSettings(config.AppName);
+                appSettings = new DefaultAppSettings();
             }
 
-            var currentAppSettings = new CurrentAppSettings();
-            currentAppSettings.Properties = appSettings;
+            var currentAppSettings = new CurrentAppSettings
+            {
+                Properties = appSettings
+            };
+
             ChromelyAppUser.App = currentAppSettings;
             ChromelyAppUser.App.Properties.Read(config);
 
@@ -92,57 +110,100 @@ namespace Chromely.Core
 
             #region Logger
 
-            if (chromelyLogger == null)
+            var logger = GetCurrentLogger(serviceProvider);
+            if (logger == null)
             {
-                chromelyLogger = new SimpleLogger();
+                logger = new SimpleLogger();
             }
 
             var defaultLogger = new DefaultLogger();
-            defaultLogger.Log = chromelyLogger;
+            defaultLogger.Log = logger;
             Logger.Instance = defaultLogger;
 
             #endregion
 
-            // Register all primary objects
-            _container.RegisterInstance(typeof(IChromelyContainer), typeof(IChromelyContainer).Name, _container);
-            _container.RegisterInstance(typeof(IChromelyAppSettings), typeof(IChromelyAppSettings).Name, appSettings);
-            _container.RegisterInstance(typeof(IChromelyConfiguration), typeof(IChromelyConfiguration).Name, config);
-            _container.RegisterInstance(typeof(IChromelyLogger), typeof(IChromelyLogger).Name, chromelyLogger);
+            EnsureExpectedWorkingDirectory();
+
+            _servicesInitialized = true;
         }
 
-        public virtual void Configure(IChromelyContainer container)
+        public virtual void RegisterControllerRoutes(ServiceProvider serviceProvider)
         {
-            EnsureContainerValid(container);
-
-            container.RegisterSingleton(typeof(IChromelyRequestTaskRunner), typeof(IChromelyRequestTaskRunner).Name, typeof(DefaultRequestTaskRunner));
-            container.RegisterSingleton(typeof(IChromelyCommandTaskRunner), typeof(IChromelyCommandTaskRunner).Name, typeof(DefaultCommandTaskRunner));
-        }
-
-        public abstract void RegisterEvents(IChromelyContainer container);
-
-        public abstract IChromelyWindow CreateWindow();
-
-        protected void InitConfiguration(IChromelyConfiguration config)
-        {
-            if (config == null)
+            if (!_servicesInitialized)
             {
-                throw new Exception("Configuration cannot be null.");
+                throw new Exception("Services must be initialized before controller assemblies are scanned.");
             }
 
-            if (config.UrlSchemes == null) config.UrlSchemes = new List<UrlScheme>();
-            if (config.ControllerAssemblies == null) config.ControllerAssemblies = new List<ControllerAssemblyInfo>();
-            if (config.CommandLineArgs == null) config.CommandLineArgs = new Dictionary<string, string>();
-            if (config.CommandLineOptions == null) config.CommandLineOptions = new List<string>();
-            if (config.CustomSettings == null) config.CustomSettings = new Dictionary<string, string>();
-            if (config.WindowOptions == null) config.WindowOptions = new Configuration.WindowOptions();
+            var routeProvider = serviceProvider.GetService<IChromelyRouteProvider>();
+            if (routeProvider != null)
+            {
+                var controllers = serviceProvider.GetServices<ChromelyController>();
+                routeProvider.RegisterAllRoutes(controllers?.ToList());
+            }
         }
 
-        protected void EnsureContainerValid(IChromelyContainer container)
+        public virtual void RegisterControllerAssembly(ServiceCollection services, string assemblyFullPath)
         {
-            if (container == null)
+            if (string.IsNullOrWhiteSpace(assemblyFullPath))
             {
-                throw new Exception("Container cannot be null. Initialize method must be called first.");
+                return;
             }
+
+            try
+            {
+                if (File.Exists(assemblyFullPath))
+                {
+                    var assembly = Assembly.LoadFrom(assemblyFullPath);
+                    RegisterControllerAssembly(services, assembly);
+                }
+            }
+            catch (Exception exception)
+            {
+                Logger.Instance.Log.LogError(exception, "ChromelyApp:RegisterControllerAssembly");
+            }
+
+        }
+
+        public virtual void RegisterControllerAssembly(ServiceCollection services, Assembly assembly)
+        {
+            if (assembly == null)
+            {
+                return;
+            }
+
+            try
+            {
+                services.RegisterAssembly(assembly, ServiceLifetime.Singleton);
+            }
+            catch (Exception exception)
+            {
+                Logger.Instance.Log.LogError(exception, "ChromelyApp:RegisterControllerAssembly");
+            }
+
+        }
+
+        protected virtual ILogger GetCurrentLogger(ServiceProvider serviceProvider)
+        {
+            var logger = serviceProvider.GetService<ILogger>();
+            if (logger != null)
+            {
+                return logger;
+            }
+
+            var appName = Assembly.GetEntryAssembly()?.GetName().Name;
+            var loggerFactory = serviceProvider.GetService<ILoggerFactory>();
+            if (loggerFactory != null)
+            {
+                return loggerFactory.CreateLogger(appName);
+            }
+
+            var loggerProvider = serviceProvider.GetService<ILoggerProvider>();
+            if (loggerProvider != null)
+            {
+                return loggerProvider.CreateLogger(appName);
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -161,8 +222,22 @@ namespace Chromely.Core
             }
             catch (Exception exception)
             {
-                Logger.Instance.Log.Error(exception);
+                Logger.Instance.Log.LogError(exception, "ChromelyApp:EnsureExpectedWorkingDirectory");
             }
+        }
+
+        protected void InitConfiguration(IChromelyConfiguration config)
+        {
+            if (config == null)
+            {
+                throw new Exception("Configuration cannot be null.");
+            }
+
+            if (config.UrlSchemes == null) config.UrlSchemes = new List<UrlScheme>();
+            if (config.CommandLineArgs == null) config.CommandLineArgs = new Dictionary<string, string>();
+            if (config.CommandLineOptions == null) config.CommandLineOptions = new List<string>();
+            if (config.CustomSettings == null) config.CustomSettings = new Dictionary<string, string>();
+            if (config.WindowOptions == null) config.WindowOptions = new Configuration.WindowOptions();
         }
     }
 }
