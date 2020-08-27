@@ -65,12 +65,6 @@ namespace Chromely
                 ResourcesDirPath = _config.AppExeLocation
             };
 
-            if (_config.WindowOptions.WindowFrameless || _config.WindowOptions.KioskMode)
-            {
-                // MultiThreadedMessageLoop is not allowed to be used as it will break frameless mode
-                _settings.MultiThreadedMessageLoop = false;
-            }
-
             _settings.LocalesDirPath = Path.Combine(_settings.ResourcesDirPath, "locales");
             _settings.RemoteDebuggingPort = 20480;
             _settings.Locale = "en-US";
