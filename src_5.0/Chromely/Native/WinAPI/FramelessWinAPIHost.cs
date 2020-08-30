@@ -11,10 +11,9 @@ namespace Chromely.Native
     {
         private static readonly HitTestValue[] BorderHitTestResults =
         {
-            // TODO: Resizing from the top border causes glitches.
-            // HitTestValue.HTTOP,
-            // HitTestValue.HTTOPLEFT,
-            // HitTestValue.HTTOPRIGHT,
+            HitTestValue.HTTOP,
+            HitTestValue.HTTOPLEFT,
+            HitTestValue.HTTOPRIGHT,
             HitTestValue.HTBOTTOM,
             HitTestValue.HTBOTTOMLEFT,
             HitTestValue.HTBOTTOMRIGHT,
