@@ -29,17 +29,17 @@ Debug mode in config code:
     config.DebuggingMode = true;
 ````
 
-The context menu is provided via CEF/CefGlue's [ContextMenuHandler](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely/CefGlue/Classes.Handlers/CefContextMenuHandler.cs). Chromely provides a [default implementation of ContextMenuHandler](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely/Browser/Handlers/DefaultContextMenuHandler.cs) but it is configurable.
+The context menu is provided via CEF/CefGlue's [ContextMenuHandler](https://github.com/chromelyapps/Chromely/blob/master/src_5.0/Chromely.CefGlue/CefGlue/Classes.Handlers/CefContextMenuHandler.cs). Chromely provides a [default implementation of ContextMenuHandler](https://github.com/chromelyapps/Chromely/blob/master/src_5.0/Chromely.CefGlue/Browser/Handlers/CefGlueContextMenuHandler.cs) but it is configurable.
 
 To conigure the DevTools menu, register a new custom ContextMenuHandler:
 
 ````csharp
     public class CusomChromelyApp : ChromelyBasicApp
     {
-          public override void ConfigureServices(ServiceCollection services)
+        public override void Configure(IChromelyContainer container)
         {
-            base.ConfigureServices(services);
-            services.AddSingleton<CefContextMenuHandler, CustomCustomContextMenuHandlerDragHandler>();
+            base.Configure(container);
+            container.RegisterSingleton(typeof(IChromelyCustomHandler), Guid.NewGuid().ToString(), typeof(CustomContextMenuHandler));
         }
     }
 
@@ -61,7 +61,7 @@ The default handler screenshots:
 
 The DevTools context menu is not available on Linux and MacOS. **Developers who are interested can look into developing one for Linux or MacOS but will not be supported**. 
 
-For all platforms the [Demo](https://github.com/chromelyapps/demo-projects/blob/5d075a31d335ca7b64750555e4765eb1b854b203/regular-chromely/CrossPlatDemo/app/chromely.html#L83), [Demo-Angular](https://github.com/chromelyapps/demo-projects/blob/5d075a31d335ca7b64750555e4765eb1b854b203/angular-react-vue/ChromelyAngular/angularapp/src/components/app.component.html#L33), [Demo-React](https://github.com/chromelyapps/demo-projects/blob/5d075a31d335ca7b64750555e4765eb1b854b203/angular-react-vue/ChromelyReact/reactapp/src/App.jsx#L56) and [Demo-Vue](https://github.com/chromelyapps/demo-projects/blob/5d075a31d335ca7b64750555e4765eb1b854b203/angular-react-vue/ChromelyVue/vueapp/src/App.vue#L35) provide ways to launch the DevTools window in the OS default browser.
+For all platforms the [Demo](https://github.com/chromelyapps/demo-projects/blob/5d075a31d335ca7b64750555e4765eb1b854b203/regular-chromely/CrossPlatDemo/app/chromely.html#L83), [Demo-Angular](https://github.com/chromelyapps/demo-projects/blob/5d075a31d335ca7b64750555e4765eb1b854b203/angular-react-vue/ChromelyAngular/angularapp/src_5.0/components/app.component.html#L33), [Demo-React](https://github.com/chromelyapps/demo-projects/blob/5d075a31d335ca7b64750555e4765eb1b854b203/angular-react-vue/ChromelyReact/reactapp/src_5.0/App.jsx#L56) and [Demo-Vue](https://github.com/chromelyapps/demo-projects/blob/5d075a31d335ca7b64750555e4765eb1b854b203/angular-react-vue/ChromelyVue/vueapp/src_5.0/App.vue#L35) provide ways to launch the DevTools window in the OS default browser.
 
 This requires a [Command implementation](https://github.com/chromelyapps/Chromely/blob/master/Documents/commands.md):
 

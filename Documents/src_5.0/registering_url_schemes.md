@@ -3,13 +3,13 @@
 
 Chromely centralizes and control all url requests via a url scheme. A registered url determines what Chromely does with it. An unregistered scheme will follow default behavior or a behavior pre-programmed by the developer. 
 
-There are [4 types](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/Infrastructure/UrlSchemeType.cs) of schemes
+There are [4 types](https://github.com/chromelyapps/Chromely/blob/master/src_5.0/Chromely.Core/Infrastructure/UrlSchemeType.cs) of schemes
 - Resource
 - Custom (usually http used for IPC)
 - Command
 - External
 
- Every scheme is registered via a [UrlScheme](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/Infrastructure/UrlScheme.cs) object.
+ Every scheme is registered via a [UrlScheme](https://github.com/chromelyapps/Chromely/blob/master/src_5.0/Chromely.Core/Infrastructure/UrlScheme.cs) object.
 
 | __Property__ | __Description__ | __Comment__ |
 |-------------|------------|------------|
@@ -23,6 +23,46 @@ There are [4 types](https://github.com/chromelyapps/Chromely/blob/master/src/Chr
 ### Registration of a url scheme
 
 You can register a url scheme either in config file or via C# code.
+
+- Using config file
+
+````javascript
+ "urlSchemes": [
+        {
+        "name": "default-resource",
+        "baseUrl": "",
+        "scheme": "local",
+        "host": "",
+        "urlSchemeType": "resource",
+        "baseUrlStrict": false
+        },
+        {
+        "name": "default-custom-http",
+        "baseUrl": "",
+        "scheme": "http",
+        "host": "chromely.com",
+        "urlSchemeType": "custom",
+        "baseUrlStrict": false
+        },
+        {
+        "name": "default-command-http",
+        "baseUrl": "",
+        "scheme": "http",
+        "host": "command.com",
+        "urlSchemeType": "command",
+        "baseUrlStrict": false
+        },
+        {
+        "name": "chromely-site",
+        "baseUrl": "https://github.com/chromelyapps/Chromely",
+        "scheme": "",
+        "host": "",
+        "urlSchemeType": "external",
+        "baseUrlStrict": true
+        }
+  ]
+````
+- Using C# code
 
 ````csharp
     public class DefaultConfiguration : IChromelyConfiguration

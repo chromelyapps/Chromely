@@ -2,15 +2,15 @@
 # App/User Settings
 
 Chromely provides storing and retrieval of application/user preferences settings.
-Developers can provide a custom settings class, but the class must implement [IChromelyAppSettings](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/IChromelyAppSettings.cs). If none is provided it uses the default - [DefaultAppSettings](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/Defaults/DefaultAppSettings.cs).
+Developers can provide a custom settings class, but the class must implement [IChromelyAppSettings](https://github.com/chromelyapps/Chromely/blob/master/src_5.0/Chromely.Core/IChromelyAppSettings.cs). If none is provided it uses the default - [DefaultAppSettings](https://github.com/chromelyapps/Chromely/blob/master/src_5.0/Chromely.Core/Defaults/DefaultAppSettings.cs).
 
-The default implementation of [IChromelyAppSettings](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/IChromelyAppSettings.cs) has the following features:
+The default implementation of [IChromelyAppSettings](https://github.com/chromelyapps/Chromely/blob/master/src_5.0/Chromely.Core/IChromelyAppSettings.cs) has the following features:
 
 - Property - AppName
     - Current application name
 
  - Property - DataPath
-    - This is the full path of where the settings values are saved. If none is supplied it uses the [OS SpecialFolder ApplicationFolder](https://github.com/chromelyapps/Chromely/blob/1a358986894377da8cffe87e00ce0d5893db690b/src/Chromely.Core/Infrastructure/AppSettingInfo.cs).
+    - This is the full path of where the settings values are saved. If none is supplied it uses the [OS SpecialFolder ApplicationFolder](https://github.com/chromelyapps/Chromely/blob/1a358986894377da8cffe87e00ce0d5893db690b/src_5.0/Chromely.Core/Infrastructure/AppSettingInfo.cs).
     - The filename is in the format: "{AppName}_appsettings.config";
 
 - Property - Settings 
@@ -44,7 +44,8 @@ class Program
    {
       AppBuilder
       .Create()
-      .UseApp<CustomChromelyApp>()
+      .UseAppSettings<CustomAppSetting>()
+      .UseApp<CustomChromelyApp>(new CustomChromelyApp())
       .Build()
       .Run(args);
    }
@@ -53,13 +54,26 @@ class Program
 public class CustomAppSettings : IChromelyAppSettings
 {
 }
+````
 
-public class CustomChromelyApp : ChromelyBasicApp
+Or:
+
+````csharp
+class Program
 {
-   public override void ConfigureServices(ServiceCollection services)
+   [STAThread]
+   static void Main(string[] args)
    {
-      base.ConfigureServices(services);
-      services.AddSingleton<IChromelyAppSettings, CustomAppSettings>();
+      AppBuilder
+      .Create()
+      .UseAppSettings<CustomAppSetting>(new CustomAppSetting())
+      .UseApp<CustomChromelyApp>(new CustomChromelyApp())
+      .Build()
+      .Run(args);
    }
+}
+
+public class CustomAppSettings : IChromelyAppSettings
+{
 }
 ````

@@ -23,24 +23,6 @@ Registration of a custom scheme handler requires 2 steps:
 
 ### 1. Registration of a url scheme
 
-You can register a url scheme either in config file or via C# code.
-
-- Using config file
-
-````javascript
-  "urlSchemes": [
-    {
-      "name": "custom-01",
-      "baseUrl": "",
-      "scheme": "http",
-      "host": "chromely.com",
-      "urlSchemeType": "custom",
-      "baseUrlStrict": false
-    },
-  ]
-````
-- Using C# code
-
 ````csharp
     public class DefaultConfiguration : IChromelyConfiguration
     {
@@ -59,42 +41,24 @@ You can register a url scheme either in config file or via C# code.
 
 A registered url scheme must be matched to custom scheme handler. If no custom handler is provided, Chromely uses the provided [default handler](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.CefGlue/Browser/Handlers/CefGlueHttpSchemeHandler.cs).
 
-Registering a custom scheme requires creating both a custom scheme handler and custom scheme handler factory. The factory is then registered with the IOC container.
-
-Custom scheme handler:
-
-````csharp
-    public class CustomHttpSchemeHandler : CefResourceHandler
-    {
-    }
-````
-
-Custom scheme handler factory:
-
-````csharp
-    public class CustomHttpSchemeHandlerFactory : CefSchemeHandlerFactory
-    {
-        protected override CefResourceHandler Create(CefBrowser browser, CefFrame frame, string schemeName, CefRequest request)
-        {
-            return new CustomHttpSchemeHandler();
-        }
-    }
-````
-
 Handler factory registration:
 
 ````csharp
-    public class DemoChromelyApp : ChromelyBasicApp
+    public class CusomChromelyApp : ChromelyBasicApp
     {
-        public override void Configure(IChromelyContainer container)
+          public override void ConfigureServices(ServiceCollection services)
         {
-            base.Configure(container);
-            container.RegisterSingleton(typeof(IChromelySchemeHandlerFactory), "custom-01", typeof(CustomHttpSchemeHandlerFactory));
+            base.ConfigureServices(services);
+            services.AddSingleton<IChromelySchemeHandler, CustomRequestSchemeHandler>();
         }
+    }
+
+    public class CustomRequestSchemeHandler : IChromelySchemeHandler
+    {
     }
 ````
 
-Notes:
-- Interface [IChromelySchemeHandlerFactory](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/IChromelySchemeHandlerFactory.cs) is just a placeholder and should not be implemented.
-- The name "custom-01" used in url scheme must match the key used in factory registration.
-- Sample [CustomHttpSchemeHandler](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.CefGlue/Browser/Handlers/CefGlueHttpSchemeHandler.cs) and [CustomHttpSchemeHandlerFactory](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.CefGlue/Browser/Handlers/CefGlueHttpSchemeHandlerFactory.cs).
+Note the detail:
+- Interface [IChromelySchemeHandler](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/IChromelySchemeHandler.cs)
+
+

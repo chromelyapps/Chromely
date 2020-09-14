@@ -1,7 +1,7 @@
 
 # Loading Html
 
-Chromely html loading (start url) can be done in [3 different](https://github.com/chromelyapps/Chromely/blob/5086087dfc03d27cbd84699359cd4891024cfcd1/src/Chromely.Core/Helpers/ConfigKeys.cs#L3) ways.
+Chromely html loading (start url) can be done in [3 different](https://github.com/chromelyapps/Chromely/blob/5086087dfc03d27cbd84699359cd4891024cfcd1/src_5.0/Chromely.Core/Helpers/ConfigKeys.cs#L3) ways.
 
 - A real website URL
 - Local/Embedded Resource Loading
@@ -38,8 +38,14 @@ This is the preferred way of loading local HTML5 files.
 
 Loading html and associated files via LocalResource needs a custom resource scheme handler. For more info on scheme handling, please see [Registering Resource Handlers](https://github.com/chromelyapps/Chromely/blob/master/Documents/registering_resource_handlers.md).
 
-To load start url and its assets, you can do it in configuration object:
+To load start url and its assets, you can do it either in config file or configuration object:
 
+````javascript
+  "startUrl": {
+    "url": "local://app/chromely.html",
+    "loadType": "localResource"
+  }
+````
 
 ````csharp
     public class DefaultConfiguration : IChromelyConfiguration
@@ -56,7 +62,14 @@ To load start url and its assets, you can do it in configuration object:
 
 Local HTML5 files can also be loaded using file protocol (**file:///**). Using file protocol (**file:///**) is discouraged for security reasons. One issue might be Cross-Origin domain. Although not the preferred way, it is useful if HTML/Ajax XHR requests are required. 
 
-To load start url and its assets, you can do it in configuration object:
+To load start url and its assets, you can do it either in config file or configuration object:
+
+````javascript
+  "startUrl": {
+    "url": "app/chromely.html",
+    "loadType": "fileprotocol"
+  }
+````
 
 ````csharp
     public class DefaultConfiguration : IChromelyConfiguration

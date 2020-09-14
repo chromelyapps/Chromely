@@ -2,9 +2,8 @@
 
 Chromely configuration is equivalent to Desktop App.config or Web project Web.config/appsettings.config. Most required CEF/Chromely configurations are done via [IChromelyConfiguration](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/Configuration/IChromelyConfiguration.cs) implementation. Configuration provides default values that can be used as-is or with new/custom properties set. 
 
-To create Chromely application, the Configuration class is not required. A custom configuration class must implement - [IChromelyConfiguration](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/Configuration/IChromelyConfiguration.cs). If a custom configuration class is not provided, the options used are
+To create Chromely application, the Configuration class is not required. A custom configuration class must implement - [IChromelyConfiguration](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/Configuration/IChromelyConfiguration.cs). 
 
-- It checks the application folder for [chromelyconfig.config](https://github.com/chromelyapps/demo-projects/blob/master/regular-chromely/CrossPlatDemo/chromelyconfig.json). If it finds one it is parsed using [ConfigurationHandler](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/Configuration/ConfigurationHandler.cs) and used.
 - If no configuraton file is found, it uses the default - [DefaultConfiguration](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/Configuration/DefaultConfiguration.cs).
 
 The default implementation of [IChromelyConfiguration](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/Configuration/IChromelyConfiguration.cs) has the following features:
@@ -96,26 +95,6 @@ The default implementation of [IChromelyConfiguration](https://github.com/chrome
               };
           ````
 
-- List - ControllerAssemblies      
-    - Used to register current and external assemblies that contain [Controller](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/Network/ChromelyController.cs) implementations.
-    - Can be set in both config file or C# code
-    - Configuration:
-      -   ````javascript
-          "controllerAssemblies": [
-            "Chromely.External.Controllers.dll"
-          ]
-          ````
-      -  ````csharp
-            var config = DefaultConfiguration.CreateForRuntimePlatform();
-              config.ControllerAssemblies.RegisterServiceAssembly("Chromely.External.Controllers.dll");
-          ````
-
-- List - EventHandlers       
-    - Used to register [ChromelyEventHandler](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/ChromelyEventHandler.cs) implementations.
-    - Cannot be set in config file. Only in code.
-    - [ChromelyEventedApp](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely/ChromelyEventedApp.cs) sets default event handlers if used, must methods must be overriden.
-    - Samples can be found [here](https://github.com/chromelyapps/Chromely/blob/master/src/Tests/Chromely.Integration.TestApp/Program.cs)
-
 - Interface/object - IChromelyJavaScriptExecutor        
     - For more info, please see [JavaScript Execution](https://github.com/chromelyapps/Chromely/blob/master/Documents/javascript_execution.md) 
 
@@ -135,31 +114,6 @@ The default implementation of [IChromelyConfiguration](https://github.com/chrome
     -  System.Text.Json provides extra storage facility via [ExtensionData](https://docs.microsoft.com/en-us/dotnet/api/system.text.json.serialization.jsonextensiondataattribute?view=netcore-3.1)
     - This is implemented as-is provided by System.Text.Json.
 
-### Basic Usage
-
-Using [chromelyconfig.json](https://github.com/chromelyapps/demo-projects/blob/master/regular-chromely/CrossPlatDemo/chromelyconfig.json) :
-
-````javascript
-{
-  "appName": "chromely_demo",
-  "startUrl": {
-    "url": "local://app/chromely.html",
-    "loadType": "localResource"
-  },
-  },
-  "urlSchemes": [
-  ],
-  "controllerAssemblies": [
-  ],
-  "customSettings": [
-  ],
-  "commandLineArgs": [
-  ],
-  "commandLineOptions": [
-  ]
-}
-````
-- Using C# code
 
 ````csharp
 class Program
@@ -171,7 +125,7 @@ class Program
 
       AppBuilder
       .Create()
-      .UseConfiguration<DefaultConfiguration>()
+      .UseConfig<DefaultConfiguration>()
       .UseApp<CustomChromelyApp>(config)
       .Build()
       .Run(args);
@@ -190,7 +144,7 @@ class Program
    {
       AppBuilder
       .Create()
-      .UseConfiguration<CustomConfiguraton>()  
+      .UseConfig<CustomConfiguraton>()  
       .UseApp<CustomChromelyApp>(new CustomChromelyApp())
       .Build()
       .Run(args);
@@ -212,7 +166,7 @@ class Program
    {
       AppBuilder
       .Create()
-      .UseConfiguration<CustomConfiguraton>(new Customfiguraton())
+      .UseConfig<CustomConfiguraton>(new Customfiguraton())
       .UseApp<CustomChromelyApp>(new CustomChromelyApp())
       .Build()
       .Run(args);
@@ -223,11 +177,4 @@ public class Customfiguraton: ICCustomConfiguraton
 {
 }
 ````
-
-### Demo coniguration file options:
-- [Default for Windows](https://github.com/chromelyapps/demo-projects/blob/master/regular-chromely/CrossPlatDemo/config/chromelyconfig_win.json).          
-- [Default for Linux](https://github.com/chromelyapps/demo-projects/blob/master/regular-chromely/CrossPlatDemo/config/chromelyconfig_linux.json).         
-- [Default for MaOS](https://github.com/chromelyapps/demo-projects/blob/master/regular-chromely/CrossPlatDemo/config/chromelyconfig_mac.json).   
-- [Config options](https://github.com/chromelyapps/demo-projects/blob/master/regular-chromely/CrossPlatDemo/config/config_option.json).        
-
 
