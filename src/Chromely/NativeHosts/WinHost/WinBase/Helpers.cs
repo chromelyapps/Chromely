@@ -2,6 +2,7 @@
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
 using Chromely.Core.Configuration;
+using Chromely.Core.Host;
 using Chromely.Core.Logging;
 using Microsoft.Extensions.Logging;
 using System;
@@ -55,17 +56,9 @@ namespace Chromely.NativeHost
         public static WS NormalStyles = WS.OVERLAPPEDWINDOW | WS.CLIPCHILDREN | WS.CLIPSIBLINGS;
         public static WS_EX NormalExStyles = WS_EX.APPWINDOW | WS_EX.WINDOWEDGE;
 
-        public WindowStylePlacement()
-        {
-            RECT = new RECT(0, 0, 1200, 800);
-            WindowPlacement = new WINDOWPLACEMENT();
-            Styles = WS.OVERLAPPEDWINDOW | WS.CLIPCHILDREN | WS.CLIPSIBLINGS;
-            ExStyles = WS_EX.APPWINDOW;
-        }
-
         public WindowStylePlacement(IWindowOptions options)
         {
-            RECT = new System.Drawing.Rectangle(options.Position.X, options.Position.Y, options.Size.Width, options.Size.Height);
+            RECT = new Rectangle(options.Position.X, options.Position.Y, options.Size.Width, options.Size.Height);
             WindowPlacement = new WINDOWPLACEMENT();
             if (options.CustomStyle != null && 
                 options.CustomStyle.WindowStyles != 0 &&
@@ -79,13 +72,15 @@ namespace Chromely.NativeHost
                 Styles = NormalStyles;
                 ExStyles = NormalExStyles;
             }
+
+            State = options.WindowState;
         }
 
+        public WindowState State { get; set; }
         public WS Styles { get; set; }
         public WS_EX ExStyles { get; set; }
         public RECT RECT { get; set; }
         public SW ShowCommand { get; set; }
-        public Size FullscreenSize { get; set; }
         public WINDOWPLACEMENT WindowPlacement { get; set; }
         public WS FullscreenStyles 
         { 

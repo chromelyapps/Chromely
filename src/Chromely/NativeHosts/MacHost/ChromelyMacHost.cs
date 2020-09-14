@@ -124,6 +124,11 @@ namespace Chromely.NativeHost
             Logger.Instance.Log.LogInformation("ChromelyMacHost::SetWindowTitle is not implemented yet!");
         }
 
+
+        public virtual void ToggleFullscreen(IntPtr hWnd)
+        {
+        }
+
         #region CreateWindow
 
         protected virtual void RunCallback()
@@ -140,7 +145,6 @@ namespace Chromely.NativeHost
         {
             _appHandle = app;
             _poolHandle = pool;
-            Console.WriteLine($"{DateTime.Now.ToLocalTime().ToString()}:initCallback");
         }
 
         protected virtual void CreateCallback(IntPtr window, IntPtr view)
@@ -182,7 +186,6 @@ namespace Chromely.NativeHost
                 Logger.Instance.Log.LogError(exception, exception.Message);
             }
         }
-
 
         private static ChromelyParam InitParam(RunMessageLoopCallback runCallback,
                                                     CefShutdownCallback cefShutdownCallback,

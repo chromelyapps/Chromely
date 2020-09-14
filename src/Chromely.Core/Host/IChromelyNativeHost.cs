@@ -31,5 +31,7 @@ namespace Chromely.Core.Host
         /// <param name="state"> The state to set. </param>
         /// <returns> True if it succeeds, false if it fails. </returns>
         bool SetWindowState(WindowState state);
+
+        void ToggleFullscreen(IntPtr hWnd);
     }
 }

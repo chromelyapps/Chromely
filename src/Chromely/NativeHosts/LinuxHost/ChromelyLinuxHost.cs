@@ -216,6 +216,10 @@ namespace Chromely.NativeHost
             }
         }
 
+        public virtual void ToggleFullscreen(IntPtr hWnd)
+        {
+        }
+
         protected virtual void SetWindowMaximize()
         {
             try
@@ -241,6 +245,7 @@ namespace Chromely.NativeHost
                 Logger.Instance.Log.LogError(exception, exception.Message);
             }
         }
+
 
         #region CreateWindow
 

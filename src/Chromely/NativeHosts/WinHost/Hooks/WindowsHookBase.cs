@@ -31,7 +31,7 @@ namespace Chromely.NativeHost
 
 		protected IntPtr CoreHookProc(int code, IntPtr wParam, IntPtr lParam)
 		{
-			if (code < 0)
+			if (code < 0 || code == (int)HC.NOREMOVE)
 			{
 				return CallNextHookEx(_hookID, (HC)code, wParam, lParam);
 			}
