@@ -41,6 +41,40 @@ namespace Chromely.NativeHost
             _dwmFramelessController.HandleThemechanged();
         }
 
+        protected override WindowStylePlacement GetWindowStylePlacement(WindowState state)
+        {
+            WindowStylePlacement windowStyle = new WindowStylePlacement(_options);
+            if (_options.UseCustomStyle && _options != null && _options.CustomStyle.IsValid())
+            {
+                return GetWindowStyles(_options.CustomStyle, state);
+            }
+
+            var styles = WS.OVERLAPPEDWINDOW | WS.CLIPCHILDREN | WS.CLIPSIBLINGS;
+            var exStyles = WS_EX.APPWINDOW | WS_EX.WINDOWEDGE | WS_EX.TRANSPARENT;
+
+            windowStyle.Styles = styles;
+            windowStyle.ExStyles = exStyles;
+            windowStyle.RECT = GetWindowBounds();
+
+            switch (state)
+            {
+                case WindowState.Normal:
+                    windowStyle.ShowCommand = SW.SHOWNORMAL;
+                    break;
+
+                case WindowState.Maximize:
+                    windowStyle.Styles |= WS.MAXIMIZE;
+                    windowStyle.ShowCommand = SW.SHOWMAXIMIZED;
+                    break;
+
+                default:
+                    windowStyle.ShowCommand = SW.SHOWNORMAL;
+                    break;
+            }
+
+            return windowStyle;
+        }
+
         public override void ResizeBrowser(IntPtr browserHande, int width, int height)
         {
             var noResize = (_options == null) ? false : _options.DisableResizing;
