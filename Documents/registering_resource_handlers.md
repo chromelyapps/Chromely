@@ -18,22 +18,6 @@ Registration of a resource handler requires 2 steps:
 
 You can register a url scheme either in config file or via C# code.
 
-- Using config file
-
-````javascript
-  "urlSchemes": [
-    {
-      "name": "custom-01",
-      "baseUrl": "",
-      "scheme": "local",
-      "host": "",
-      "urlSchemeType": "resource",
-      "baseUrlStrict": false
-    },
-  ]
-````
-- Using C# code
-
 Sample 1 - usual file resources
 ````csharp
     public class DefaultConfiguration : IChromelyConfiguration
@@ -64,23 +48,15 @@ Sample 2 - embedded file resources.
         }
     }
  where:
-    Name of assembley: embeddedAssemblyName.dll
+    Name of assembly: embeddedAssemblyName.dll
     Folder where resources are: app
 ````
 
 ### 2. Registration of a custom resource handler factory
 
-A registered url scheme must be matched to custom resource handler. If no resource handler is provided, Chromely uses the provided [default handler](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.CefGlue/Browser/Handlers/CefGlueResourceSchemeHandler.cs).
+A registered url scheme must be matched to custom resource handler. If no resource handler is provided, Chromely uses the provided [default handler](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely/Browser/Handlers/DefaultResourceSchemeHandler.cs).
 
 Registering a custom scheme requires creating both a custom scheme handler and custom scheme handler factory. The factory is then registered with the IOC container.
-
-Custom scheme handler:
-
-````csharp
-    public class CustomResourceSchemeHandler : CefResourceHandler
-    {
-    }
-````
 
 Custom scheme handler factory:
 
@@ -94,21 +70,28 @@ Custom scheme handler factory:
     }
 ````
 
-Handler factory registration:
+Custom scheme handler:
+
+````csharp
+    public class CustomResourceSchemeHandler : IChromelySchemeHandler
+    {
+       public CustomResourceSchemeHandler()
+       {
+           Scheme  = new DefaultConfiguration();
+           HandlerFactory = new CustomResourceSchemeHandlerFactory();
+       }
+    }
+````
+
+Handler registration:
 
 ````csharp
     public class DemoChromelyApp : ChromelyBasicApp
     {
-        public override void Configure(IChromelyContainer container)
+        public override void ConfigureServices(ServiceCollection services)
         {
-            base.Configure(container);
-            container.RegisterSingleton(typeof(IChromelyResourceHandlerFactory), "custom-01", typeof(CustomResourceSchemeHandlerFactory));
+            base.ConfigureServices(services);
+            container.RegisterSingleton(typeof(IChromelySchemeHandler),  typeof(CustomResourceSchemeHandlerFactory));
         }
     }
 ````
-
-Notes:
-- Interface [IChromelyResourceHandlerFactory](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/IChromelyResourceHandlerFactory.cs) is just a placeholder and should not be implemented.
-- The name "custom-01" used in url scheme must match the key used in factory registration.
-- Sample [CustomResourceSchemeHandler](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.CefGlue/Browser/Handlers/CefGlueResourceSchemeHandler.cs) and [CustomResourceSchemeHandlerFactory](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.CefGlue/Browser/Handlers/CefGlueResourceSchemeHandlerFactory.cs).
-
