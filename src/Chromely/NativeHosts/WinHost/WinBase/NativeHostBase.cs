@@ -13,6 +13,7 @@ using Chromely.Core.Configuration;
 using Chromely.Core.Host;
 using Chromely.Core.Logging;
 using Microsoft.Extensions.Logging;
+using Xilium.CefGlue;
 using static Chromely.Interop;
 using static Chromely.Interop.User32;
 
@@ -127,7 +128,23 @@ namespace Chromely.NativeHost
 
         public virtual void Run()
         {
-            RunMessageLoopInternal();
+            try
+            {
+                if (_options.UseOnlyCefMessageLoop)
+                {
+                    CefRuntime.RunMessageLoop();
+                    CefRuntime.Shutdown();
+                }
+                else
+                {
+                    RunMessageLoopInternal();
+                }
+            }
+            catch (Exception exception)
+            {
+                Logger.Instance.Log.LogError("Error in NativeHostBase::Run");
+                Logger.Instance.Log.LogError(exception, exception.Message);
+            }
         }
 
         public virtual Size GetWindowClientSize()
@@ -526,6 +543,10 @@ namespace Chromely.NativeHost
 
                 case WM.DESTROY:
                     {
+                        if (_options.UseOnlyCefMessageLoop)
+                        {
+                            CefRuntime.QuitMessageLoop();
+                        }
                         PostQuitMessage(0);
                         break;
                     }

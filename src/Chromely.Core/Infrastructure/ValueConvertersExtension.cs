@@ -85,11 +85,6 @@ namespace Chromely.Core.Infrastructure
             return false;
         }
 
-        public static string EnumToString(this CefEventKey key)
-        {
-            return Enum.GetName(key.GetType(), key);
-        }
-
         public static TEnumType ToEnum<TEnumType>(this string enumValue)
         {
             return (TEnumType)Enum.Parse(typeof(TEnumType), enumValue);

@@ -35,6 +35,11 @@ namespace Chromely.Core.Configuration
         /// <summary>Gets or sets a value indicating whether a custom style will be used.</summary>
         public bool UseCustomStyle { get; set; }
 
+        /// <summary>Gets or sets a value indicating whether CEF message loop only will be used. 
+        /// Only valid for Windows only. Will be ignored for Linux and MacOS. 
+        /// </summary>
+        public bool UseOnlyCefMessageLoop { get; set; }
+
         public Size MinimumSize { get; set; }
         public Size MaximumSize { get; set; }
 
@@ -52,9 +57,10 @@ namespace Chromely.Core.Configuration
 
         /// <summary>Gets or sets the FramelessOption of the borderless window.</summary>
         public FramelessOption FramelessOption { get; set; }
-
+  
         public WindowOptions()
         {
+            UseOnlyCefMessageLoop = false;
             DisableResizing = false;
             DisableMinMaximizeControls = false;
             WindowFrameless = false;

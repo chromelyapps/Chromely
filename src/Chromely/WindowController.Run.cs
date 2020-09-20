@@ -59,7 +59,7 @@ namespace Chromely
 
             _settings = new CefSettings
             {
-                MultiThreadedMessageLoop = _config.Platform == ChromelyPlatform.Windows,
+                MultiThreadedMessageLoop = (_config.Platform == ChromelyPlatform.Windows && !_config.WindowOptions.UseOnlyCefMessageLoop),
                 LogSeverity = CefLogSeverity.Info,
                 LogFile = "logs\\chromely.cef_" + DateTime.Now.ToString("yyyyMMdd") + ".log",
                 ResourcesDirPath = _config.AppExeLocation
@@ -81,6 +81,13 @@ namespace Chromely
             // Update configuration settings
             _settings.Update(_config.CustomSettings);
 
+            // For Windows- if MultiThreadedMessageLoop is overriden in Setting using CustomSettings, then
+            // It is assumed that the developer way not be aware of IWindowOptions - UseOnlyCefMessageLoop
+            if (_config.Platform == ChromelyPlatform.Windows)
+            {
+                _config.WindowOptions.UseOnlyCefMessageLoop = !_settings.MultiThreadedMessageLoop;
+            }
+            
             // Set DevTools url
             string devtoolsUrl = _config.DevToolsUrl;
             if (string.IsNullOrWhiteSpace(devtoolsUrl))

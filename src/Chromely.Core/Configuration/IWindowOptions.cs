@@ -17,6 +17,10 @@ namespace Chromely.Core.Configuration
         bool Fullscreen { get; set; }
         bool WindowFrameless { get; set; }
         bool UseCustomStyle { get; set; }
+
+        /* Windows ONLY */
+        bool UseOnlyCefMessageLoop { get; set; }
+
         Size MinimumSize { get; set; }
         Size MaximumSize { get; set; }
         WindowCustomStyle CustomStyle { get; set; }

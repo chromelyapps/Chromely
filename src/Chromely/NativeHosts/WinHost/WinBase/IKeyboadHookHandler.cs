@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Chromely.Core.Host
+namespace Chromely.NativeHost
 {
     public interface IKeyboadHookHandler
     {
