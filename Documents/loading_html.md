@@ -54,7 +54,7 @@ To load start url and its assets, you can do it in configuration object:
 
 ## File Protocol
 
-Local HTML5 files can also be loaded using file protocol (**file:///**). Using file protocol (**file:///**) is discouraged for security reasons. One issue might be Cross-Origin domain. Although not the preferred way, it is useful if HTML/Ajax XHR requests are required. 
+Local HTML5 files can also be loaded using file protocol (**file:///**). Using file protocol (**file:///**) is discouraged for security reasons. One issue might be Cross-Origin domain. Although not the preferred way, some developers may find need for it. 
 
 To load start url and its assets, you can do it in configuration object:
 
