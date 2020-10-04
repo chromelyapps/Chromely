@@ -39,26 +39,65 @@ Registration of a custom scheme handler requires 2 steps:
 
 ### 2. Registration of a custom scheme handler factory
 
-A registered url scheme must be matched to custom scheme handler. If no custom handler is provided, Chromely uses the provided [default handler](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.CefGlue/Browser/Handlers/CefGlueHttpSchemeHandler.cs).
+A registered url scheme must be matched to custom scheme handler. If no custom handler is provided, Chromely uses the provided [default handler](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely/Browser/Handlers/DefaultRequestSchemeHandler.cs).
 
-Handler factory registration:
+Registering a custom scheme requires creating both a custom scheme handler and custom scheme handler factory. The factory and custom scheme handler are then registered with the IOC container.
+
+Custom scheme handler factory:
 
 ````csharp
-    public class CusomChromelyApp : ChromelyBasicApp
+    class Program
     {
-          public override void ConfigureServices(ServiceCollection services)
+        [STAThread]
+        static void Main(string[] args)
         {
-            base.ConfigureServices(services);
-            services.AddSingleton<IChromelySchemeHandler, CustomRequestSchemeHandler>();
+            AppBuilder
+            .Create()
+            .UseApp<DemoApp>()
+            .Build()
+            .Run(args);
         }
     }
 
-    public class CustomRequestSchemeHandler : IChromelySchemeHandler
+    public class DemoApp : ChromelyBasicApp
+    {
+        public override void ConfigureServices(ServiceCollection services)
+        {
+            base.ConfigureServices(services);
+            services.AddSingleton(typeof(CustomRequestSchemeHandlerFactory), typeof(CustomRequestSchemeHandlerFactory));
+            services.AddSingleton(typeof(IChromelySchemeHandler), typeof(CustomSchemeHandler));
+
+            RegisterControllerAssembly(services, typeof(DemoApp).Assembly);
+        }
+    }
+
+    public class CustomSchemeHandler : IChromelySchemeHandler
+    {
+        public CustomSchemeHandler(CustomRequestSchemeHandlerFactory schemeHandlerFactory)
+        {
+            Name = "MyCustomRequestSchemeHamdler";
+            // Scheme: myscheme
+            // Host: custom - mapped to folder name containing resource files
+            //http://custom.com/customcontroller/hello";
+            Scheme = new UrlScheme("mycustomrequestcheme", "http", "custom.com", string.Empty, UrlSchemeType.LocalRquest);
+            HandlerFactory = schemeHandlerFactory;
+            IsCorsEnabled = true;
+            IsSecure = false;
+        }
+
+        public string Name { get; set; }
+        public UrlScheme Scheme { get; set; }
+
+        // Needed for CefSharp
+        public object Handler { get; set; }
+        public object HandlerFactory { get; set; }
+        public bool IsCorsEnabled { get; set; }
+        public bool IsSecure { get; set; }
+    }
+
+    public class CustomRequestSchemeHandlerFactory : DefaultResourceSchemeHandlerFactory
     {
     }
 ````
 
-Note the detail:
-- Interface [IChromelySchemeHandler](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely.Core/IChromelySchemeHandler.cs)
-
-
+Please see [Howto: Custom Request Scheme Handler](https://github.com/chromelyapps/Chromely/issues/247) for more.
