@@ -10,7 +10,25 @@ namespace Chromely.Core.Network
     /// </summary>
     public class UrlScheme
     {
-        public UrlScheme(string name, string scheme, string host, string baseUrl, UrlSchemeType type, bool baseUrlStrict = true, AssemblyOptions assemblyOptions = null)
+        public UrlScheme(string scheme, string host, UrlSchemeType type)
+        {
+            Name = Guid.NewGuid().ToString();
+            Scheme = scheme;
+            Host = host;
+            BaseUrl = null;
+            UrlSchemeType = type;
+            BaseUrlStrict = false;
+            AssemblyOptions = null;
+
+            if (!string.IsNullOrEmpty(BaseUrl))
+            {
+                var uri = new Uri(BaseUrl);
+                Scheme = uri.Scheme;
+                Host = uri.Host;
+            }
+        }
+
+        public UrlScheme(string name, string scheme, string host, string baseUrl, UrlSchemeType type, bool baseUrlStrict = false, AssemblyOptions assemblyOptions = null)
         {
             Name = name;
             Scheme = scheme;
@@ -28,7 +46,7 @@ namespace Chromely.Core.Network
             }
         }
 
-        public UrlScheme(string scheme, string host, string baseUrl, UrlSchemeType type, bool baseUrlStrict = true, AssemblyOptions assemblyOptions = null)
+        public UrlScheme(string scheme, string host, string baseUrl, UrlSchemeType type, bool baseUrlStrict = false, AssemblyOptions assemblyOptions = null)
         {
             Name = Guid.NewGuid().ToString();
             Scheme = scheme;
@@ -61,6 +79,14 @@ namespace Chromely.Core.Network
         /// http://a.com/me/they is not  valid
         /// </summary>
         public bool BaseUrlStrict { get; set; }
+        public bool ValidSchemeHost
+        {
+            get
+            {
+                return !string.IsNullOrWhiteSpace(Scheme) && !string.IsNullOrWhiteSpace(Host);
+            }
+        }
+
         public static bool IsStandardScheme(string scheme)
         {
             if (string.IsNullOrEmpty(scheme))

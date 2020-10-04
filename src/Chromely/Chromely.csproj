@@ -3,10 +3,10 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <Platforms>AnyCPU</Platforms>
-    <ProductVersion>5.1.83.0-pre01</ProductVersion>
+    <ProductVersion>5.1.83.0-pre02</ProductVersion>
     <AssemblyVersion>5.1.83.0</AssemblyVersion>
     <FileVersion>5.1.83.0</FileVersion>
-    <Version>5.1.83.0-pre01</Version>
+    <Version>5.1.83.0-pre02</Version>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Product>Chromely</Product>
@@ -18,7 +18,9 @@
     <PackageTags>Cef Chromium HTML5 Desktop Chromely CefGlue  Restful  Ajax HTTP XHR MessageRouter .NET Core</PackageTags>
     <Description>Primary Chromely implementation library - this is in .NET Standard 2.0 as it can be used in both .NET (Windows) and .NET Core (Windows, Linux, MacOS). Chromely version naming is based Chromely and Chromium versions implemented- major.minor.chromuim version.patch e.g 1.0.70.0.</Description>
     <PackageReleaseNotes>
-      Upgrade to v5.1 - https://github.com/chromelyapps/Chromely/issues/225.
+      - Upgrade to v5.1 - https://github.com/chromelyapps/Chromely/issues/225.
+      - Fixes for Fullscreen/Kiosk modes - https://github.com/chromelyapps/Chromely/commit/b383c3f6e165895f8a216e50ba551a6e26c0a65a
+      - Adding a configurable option - UseOnlyCefMessageLoop - https://github.com/chromelyapps/Chromely/commit/df44870ad1928fb95badae7b8c4be7c65f4d5b92
     </PackageReleaseNotes>
     <RepositoryType>Github Repository</RepositoryType>
     <RepositoryUrl>https://github.com/chromelyapps/Chromely</RepositoryUrl>

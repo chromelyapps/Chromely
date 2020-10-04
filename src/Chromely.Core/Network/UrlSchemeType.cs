@@ -11,6 +11,7 @@ namespace Chromely.Core.Network
         Command,
         LocalRquest,
         ExternalRequest,
-        ExternalBrowser
+        ExternalBrowser,
+        Other
     }
 }

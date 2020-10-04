@@ -67,8 +67,7 @@ namespace Chromely
                     var schemehandler = schemeHandlerObj as IChromelySchemeHandler;
                     if (schemehandler == null ||
                         schemehandler.Scheme == null ||
-                        string.IsNullOrWhiteSpace(schemehandler.Scheme.Scheme) ||
-                        string.IsNullOrWhiteSpace(schemehandler.Scheme.Host))
+                        !schemehandler.Scheme.ValidSchemeHost)
                         continue;
 
                     _requestSchemeProvider.Add(schemehandler.Scheme);
@@ -103,8 +102,7 @@ namespace Chromely
                     var schemehandler = schemeHandlerObj as IChromelySchemeHandler;
                     if (schemehandler == null ||
                         schemehandler.Scheme == null ||
-                        string.IsNullOrWhiteSpace(schemehandler.Scheme.Scheme) ||
-                        string.IsNullOrWhiteSpace(schemehandler.Scheme.Host))
+                        !schemehandler.Scheme.ValidSchemeHost)
                         continue;
 
                     _requestSchemeProvider.Add(schemehandler.Scheme);

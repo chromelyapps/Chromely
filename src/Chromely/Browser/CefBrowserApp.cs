@@ -4,6 +4,7 @@
 using Chromely.Core;
 using Chromely.Core.Configuration;
 using Chromely.Core.Network;
+using System.Collections.Generic;
 using System.Linq;
 using Xilium.CefGlue;
 
@@ -35,16 +36,40 @@ namespace Chromely.Browser
         protected override void OnRegisterCustomSchemes(CefSchemeRegistrar registrar)
         {
             var schemes = _requestSchemeProvider?.GetAllSchemes();
-            if (schemes != null && schemes.Any())
+            if (schemes == null)
             {
-                foreach (var scheme in schemes)
+                schemes = new List<UrlScheme>();
+            }
+
+            var schemeHandlerList = _handlersResolver?.Invoke(typeof(IChromelySchemeHandler));
+            if (schemeHandlerList != null && schemeHandlerList.Any())
+            {
+                foreach (var handler in schemeHandlerList)
                 {
-                    bool isStandardScheme = UrlScheme.IsStandardScheme(scheme.Scheme);
-                    if (!isStandardScheme)
+                    if (handler is IChromelySchemeHandler schemeHandler)
                     {
-                        var option = CefSchemeOptions.Local | CefSchemeOptions.CorsEnabled;
-                        registrar.AddCustomScheme(scheme.Scheme, option);
+                        if (schemeHandler?.Scheme != null && schemeHandler.Scheme.ValidSchemeHost)
+                        {
+                            // add if not already added
+                            var firstOrDefault = schemes.FirstOrDefault(x => x.ValidSchemeHost &&
+                                                                          x.Scheme.ToLower().Equals(schemeHandler.Scheme.Scheme.ToLower()) &&
+                                                                          x.Host.ToLower().Equals(schemeHandler.Scheme.Host.ToLower()));
+                            if (firstOrDefault == null)
+                            {
+                                schemes.Add(schemeHandler.Scheme);
+                            }
+                        }
                     }
+                }
+            }
+
+            foreach (var scheme in schemes)
+            {
+                bool isStandardScheme = UrlScheme.IsStandardScheme(scheme.Scheme);
+                if (!isStandardScheme)
+                {
+                    var option = CefSchemeOptions.Local | CefSchemeOptions.CorsEnabled;
+                    registrar.AddCustomScheme(scheme.Scheme, option);
                 }
             }
         }

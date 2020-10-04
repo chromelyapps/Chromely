@@ -60,7 +60,7 @@ namespace Chromely.Core.Network
         {
             get
             {
-                return string.IsNullOrWhiteSpace(Error) || Status != (int)System.Net.HttpStatusCode.OK;
+                return !string.IsNullOrWhiteSpace(Error) || Status != (int)System.Net.HttpStatusCode.OK;
             }
         }
 

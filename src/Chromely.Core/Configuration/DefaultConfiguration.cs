@@ -80,9 +80,9 @@ namespace Chromely.Core.Configuration
 
             UrlSchemes.AddRange(new List<UrlScheme>()
             {
-                new UrlScheme(DefaultSchemeName.RESOURCE, "local", string.Empty, string.Empty, UrlSchemeType.Resource, false),
-                new UrlScheme(DefaultSchemeName.REQUEST, "http", "chromely.com", string.Empty, UrlSchemeType.LocalRquest, false),
-                new UrlScheme(DefaultSchemeName.COMMAND, "http", "command.com", string.Empty, UrlSchemeType.Command, false),
+                new UrlScheme(DefaultSchemeName.RESOURCE, "local", string.Empty, string.Empty, UrlSchemeType.Resource),
+                new UrlScheme(DefaultSchemeName.REQUEST, "http", "chromely.com", string.Empty, UrlSchemeType.LocalRquest),
+                new UrlScheme(DefaultSchemeName.COMMAND, "http", "command.com", string.Empty, UrlSchemeType.Command),
                 new UrlScheme(DefaultSchemeName.GITHUBSITE, string.Empty, string.Empty, "https://github.com/chromelyapps/Chromely", UrlSchemeType.ExternalBrowser, true)
             });
 
