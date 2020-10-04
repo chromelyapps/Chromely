@@ -56,7 +56,8 @@ Sample 2 - embedded file resources.
 
 A registered url scheme must be matched to custom resource handler. If no resource handler is provided, Chromely uses the provided [default handler](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely/Browser/Handlers/DefaultResourceSchemeHandler.cs).
 
-Registering a custom scheme requires creating both a custom scheme handler and custom scheme handler factory. The factory is then registered with the IOC container.
+Registering a custom scheme requires creating both a custom scheme handler and custom scheme handler factory. The factory and custom scheme handler are then registered with the IOC container.
+
 
 Custom scheme handler factory:
 
