@@ -31,8 +31,8 @@ namespace Chromely.Windows
             _config = config;
             _commandTaskRunner = commandTaskRunner;
             _browserMessageRouter = browserMessageRouter;
-            Browser = new CefGlueBrowser(this, _container, config, _commandTaskRunner, _browserMessageRouter, new CefBrowserSettings());
-            
+            Browser = CreateBrowser(new CefBrowserSettings());
+
             // Set event handler
             Browser.SetEventHandlers(_container);
 
@@ -86,6 +86,11 @@ namespace Chromely.Windows
         }
 
         #endregion Dispose
+
+        protected virtual CefGlueBrowser CreateBrowser(CefBrowserSettings cefBrowserSettings)
+        {
+            return new CefGlueBrowser(this, _container, _config, _commandTaskRunner, _browserMessageRouter, cefBrowserSettings);
+        }
 
         protected override void OnCreated(object sender, CreatedEventArgs createdEventArgs)
         {

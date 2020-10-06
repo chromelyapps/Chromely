@@ -288,7 +288,7 @@ namespace Chromely.CefGlue.BrowserWindow
         /// <summary>
         /// The action task.
         /// </summary>
-        private sealed class ActionTask : CefTask
+        public sealed class ActionTask : CefTask
         {
             /// <summary>
             /// Initializes a new instance of the <see cref="ActionTask"/> class.
@@ -306,7 +306,7 @@ namespace Chromely.CefGlue.BrowserWindow
             /// </summary>
             protected override void Execute()
             {
-                Action();
+                Action?.Invoke();
                 Action = null;
             }
 
