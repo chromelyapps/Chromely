@@ -20,7 +20,7 @@ namespace Chromely.Browser
         protected IntPtr _browserWindowHandle;
 
         private CefBrowserSettings _settings;
-        private CefBrowserClient _client;
+        private CefClient _client;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ChromiumBrowser"/> class.
@@ -143,11 +143,15 @@ namespace Chromely.Browser
             }
         }
 
+        protected virtual CefClient CreateClient() {
+            return new CefBrowserClient(_browserMessageRouter, _handlersResolver);
+        }
+
         internal void CreateBrowser(IntPtr hostHandle, IntPtr winXID)
         {
             if (_client == null)
             {
-                _client = new CefBrowserClient(_browserMessageRouter, _handlersResolver);
+                _client = CreateClient();
             }
             if (_settings == null)
             {
