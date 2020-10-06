@@ -15,7 +15,7 @@ namespace Chromely
     /// </summary>
     public class ChromelyBasicApp: ChromelyAppBase
     {
-        public sealed override void ConfigureCoreServices(ServiceCollection services)
+        public override void ConfigureCoreServices(ServiceCollection services)
         {
             base.ConfigureCoreServices(services);
 
