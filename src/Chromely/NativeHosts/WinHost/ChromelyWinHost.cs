@@ -5,7 +5,7 @@ using Chromely.Core.Host;
 
 namespace Chromely.NativeHost
 {
-    internal class ChromelyWinHost : NativeHostBase
+    public class ChromelyWinHost : NativeHostBase
     {
         public ChromelyWinHost(IKeyboadHookHandler keyboadHandler = null): base(keyboadHandler)
         {
