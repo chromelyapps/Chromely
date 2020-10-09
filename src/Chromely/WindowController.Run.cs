@@ -47,6 +47,10 @@ namespace Chromely
             NativeHost_Quit();
         }
 
+        protected virtual CefApp CreateApp() {
+            return new CefBrowserApp(_config, _requestSchemeProvider, _handlersResolver);
+        }
+
         protected int RunInternal(string[] args)
         {
             MacHostRuntime.LoadNativeHostFile(_config);
@@ -106,7 +110,7 @@ namespace Chromely
             ResolveHandlers();
 
             var mainArgs = new CefMainArgs(argv);
-            CefApp app = new CefBrowserApp(_config, _requestSchemeProvider, _handlersResolver);
+            CefApp app = CreateApp();
 
             if (ClientAppUtils.ExecuteProcess(_config.Platform, argv))
             {

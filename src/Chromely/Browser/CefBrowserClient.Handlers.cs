@@ -6,7 +6,7 @@ using Xilium.CefGlue;
 
 namespace Chromely.Browser
 {
-    internal partial class CefBrowserClient 
+    public partial class CefBrowserClient 
     {
         private void SetHandlers(ChromelyHandlersResolver handlersResolver)
         {

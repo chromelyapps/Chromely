@@ -10,7 +10,7 @@ using Xilium.CefGlue;
 
 namespace Chromely.Browser
 {
-    internal class CefBrowserApp : CefApp
+    public class CefBrowserApp : CefApp
     {
         private readonly CefRenderProcessHandler _renderProcessHandler;
         private readonly CefBrowserProcessHandler _browserProcessHandler;

@@ -9,7 +9,7 @@ using static Chromely.Interop.User32;
 
 namespace Chromely.NativeHost
 {
-    abstract partial class NativeHostBase
+    public abstract partial class NativeHostBase
     {
         public virtual void ToggleFullscreen(IntPtr hWnd)
         {
