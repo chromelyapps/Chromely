@@ -56,9 +56,6 @@ namespace Chromely.Browser
                     && typeof(CefBrowser).GetField("_self", BindingFlags.NonPublic | BindingFlags.Instance)?.GetValue(Browser) is Pointer self
                     && Pointer.Unbox(self) != null)
                 {
-                    // A hack - until fix is found for why OnBeforeClose is not called in CefGlueLifeHandler.cs
-                    OnBeforeClose();
-
                     var host = Browser.GetHost();
                     host.CloseBrowser(true);
                     host.Dispose();
