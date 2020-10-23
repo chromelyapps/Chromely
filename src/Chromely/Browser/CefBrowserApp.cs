@@ -36,9 +36,13 @@ namespace Chromely.Browser
         protected override void OnRegisterCustomSchemes(CefSchemeRegistrar registrar)
         {
             var schemes = _requestSchemeProvider?.GetAllSchemes();
-            if (schemes == null)
+            var schemeExes = new List<UrlSchemeEx>();
+            if (schemes != null && schemes.Any())
             {
-                schemes = new List<UrlScheme>();
+                foreach (var item in schemes)
+                {
+                    schemeExes.Add(new UrlSchemeEx(item));
+                }
             }
 
             var schemeHandlerList = _handlersResolver?.Invoke(typeof(IChromelySchemeHandler));
@@ -51,25 +55,36 @@ namespace Chromely.Browser
                         if (schemeHandler?.Scheme != null && schemeHandler.Scheme.ValidSchemeHost)
                         {
                             // add if not already added
-                            var firstOrDefault = schemes.FirstOrDefault(x => x.ValidSchemeHost &&
+                            var firstOrDefault = schemeExes.FirstOrDefault(x => x.ValidSchemeHost &&
                                                                           x.Scheme.ToLower().Equals(schemeHandler.Scheme.Scheme.ToLower()) &&
                                                                           x.Host.ToLower().Equals(schemeHandler.Scheme.Host.ToLower()));
                             if (firstOrDefault == null)
                             {
-                                schemes.Add(schemeHandler.Scheme);
+                                schemeExes.Add(new UrlSchemeEx(schemeHandler.Scheme, schemeHandler.IsCorsEnabled, schemeHandler.IsSecure));
                             }
                         }
                     }
                 }
             }
 
-            foreach (var scheme in schemes)
+            var schemeOptions = CefSchemeOptions.Local | CefSchemeOptions.Standard | CefSchemeOptions.CorsEnabled;
+
+            foreach (var scheme in schemeExes)
             {
                 bool isStandardScheme = UrlScheme.IsStandardScheme(scheme.Scheme);
                 if (!isStandardScheme)
                 {
-                    var option = CefSchemeOptions.Local | CefSchemeOptions.CorsEnabled;
-                    registrar.AddCustomScheme(scheme.Scheme, option);
+                    if (!scheme.IsCorsEnabled)
+                    {
+                        schemeOptions &= ~CefSchemeOptions.CorsEnabled;
+                    }
+
+                    if (scheme.IsSecure)
+                    {
+                        schemeOptions |= CefSchemeOptions.Secure;
+                    }
+
+                    registrar.AddCustomScheme(scheme.Scheme, schemeOptions);
                 }
             }
         }
@@ -151,6 +166,54 @@ namespace Chromely.Browser
 
                 return new DefaultBrowserProcessHandler(_config);
             }
+        }
+
+        private class UrlSchemeEx 
+        {
+            private UrlScheme _urlScheme;
+
+            public UrlSchemeEx(UrlScheme urlScheme, bool isCorsEnabled = true, bool isSecure = false)
+            {
+                _urlScheme = urlScheme;
+                IsCorsEnabled = isCorsEnabled;
+                IsSecure = isSecure;
+            }
+
+            public string Scheme
+            {
+                get
+                {
+                    if (_urlScheme == null)
+                        return string.Empty;
+
+                    return _urlScheme.Scheme;
+                }
+            }
+            public string Host 
+            {
+                get
+                {
+                    if (_urlScheme == null)
+                        return string.Empty;
+
+                    return _urlScheme.Host;
+                }
+            }
+
+            public bool ValidSchemeHost
+            {
+                get
+                {
+                    if (_urlScheme == null)
+                        return false;
+
+                    return _urlScheme.ValidSchemeHost;
+                }
+            }
+
+            
+            public bool IsCorsEnabled { get; }
+            public bool IsSecure { get; }
         }
     }
 }
