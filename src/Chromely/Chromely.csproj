@@ -3,10 +3,10 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <Platforms>AnyCPU</Platforms>
-    <ProductVersion>5.1.83.0-pre02</ProductVersion>
+    <ProductVersion>5.1.83.0</ProductVersion>
     <AssemblyVersion>5.1.83.0</AssemblyVersion>
     <FileVersion>5.1.83.0</FileVersion>
-    <Version>5.1.83.0-pre02</Version>
+    <Version>5.1.83.0</Version>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Product>Chromely</Product>
@@ -15,8 +15,8 @@
     <Copyright>Copyright © 2017-2020 Chromely Projects</Copyright>
     <PackageProjectUrl>https://github.com/chromelyapps/Chromely</PackageProjectUrl>
     <PackageIcon>chromely.png</PackageIcon>
-    <PackageTags>Cef Chromium HTML5 Desktop Chromely CefGlue  Restful  Ajax HTTP XHR MessageRouter .NET Core</PackageTags>
-    <Description>Primary Chromely implementation library - this is in .NET Standard 2.0 as it can be used in both .NET (Windows) and .NET Core (Windows, Linux, MacOS). Chromely version naming is based Chromely and Chromium versions implemented- major.minor.chromuim version.patch e.g 1.0.70.0.</Description>
+    <PackageTags>CEF Chromium HTML5 Desktop Chromely CefGlue NetStandard .NET Core 3 .NET 5</PackageTags>
+    <Description>Primary Chromely implementation library - this is in NetStandard as it can be used in both .NET (Windows), .NET Core and .NET 5 (Windows, Linux, MacOS). Chromely version naming is based Chromely and Chromium versions implemented- major.minor.chromuim version.patch e.g 1.0.70.0.</Description>
     <PackageReleaseNotes>
       - Upgrade to v5.1 - https://github.com/chromelyapps/Chromely/issues/225.
       - Fixes for Fullscreen/Kiosk modes - https://github.com/chromelyapps/Chromely/commit/b383c3f6e165895f8a216e50ba551a6e26c0a65a

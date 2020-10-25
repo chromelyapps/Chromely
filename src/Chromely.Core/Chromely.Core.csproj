@@ -3,15 +3,15 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <Platforms>AnyCPU</Platforms>
-    <ProductVersion>5.1.0.0-pre02</ProductVersion>
+    <ProductVersion>5.1.0.0</ProductVersion>
     <AssemblyVersion>5.1.0.0</AssemblyVersion>
     <FileVersion>5.1.0.0</FileVersion>
-    <Version>5.1.0.0-pre02</Version>
+    <Version>5.1.0.0</Version>
     <Product>Chromely.Core</Product>
     <Authors>Chromely Projects</Authors>
     <Company>Chromely Projects</Company>
-    <PackageTags>Cef Chromium HTML5 Desktop Chromely CefGlue Restful Ajax HTTP XHR MessageRouter NetStandard .NET Core</PackageTags>
-    <Description>This is a .NET Standard library. It is the base/core library required to build Chromely CefGlue apps on Windows, Linux and MacOS.</Description>
+    <PackageTags>CEF Chromium HTML5 Desktop Chromely CefGlue CefSharp NetStandard .NET Core 3 .NET 5</PackageTags>
+    <Description>This is a .NET Standard library. It is the base/core library required to build Chromely CefGlue/CefSharp apps on Windows, Linux and MacOS.</Description>
     <Copyright>Copyright © 2017-2020 Chromely Projects</Copyright>
     <PackageProjectUrl>https://github.com/chromelyapps/Chromely</PackageProjectUrl>
     <PackageIcon>chromely.png</PackageIcon>
