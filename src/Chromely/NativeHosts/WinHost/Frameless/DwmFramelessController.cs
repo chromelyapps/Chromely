@@ -416,7 +416,7 @@ namespace Chromely.NativeHost
                 eventArgs.DeltaChangeSize != null &&
                 !eventArgs.DeltaChangeSize.IsEmpty)
             {
-                SetWindowPos(_windowHandle, IntPtr.Zero, eventArgs.DeltaChangeSize.Width, eventArgs.DeltaChangeSize.Height, 0, 0,
+                SetWindowPos(_windowHandle, IntPtr.Zero, 0, 0, eventArgs.DeltaChangeSize.Width, eventArgs.DeltaChangeSize.Height, 
                                     SWP.NOACTIVATE
                                     | SWP.NOZORDER
                                     | SWP.NOOWNERZORDER

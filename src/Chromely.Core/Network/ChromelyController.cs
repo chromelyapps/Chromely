@@ -91,7 +91,7 @@ namespace Chromely.Core.Network
             }
             catch (Exception exception)
             {
-                Logger.Instance.Log.LogError("ChromelyController:SetAttributeInfo", exception);
+                Logger.Instance.Log.LogError(exception, "ChromelyController:SetAttributeInfo");
             }
         }
     }

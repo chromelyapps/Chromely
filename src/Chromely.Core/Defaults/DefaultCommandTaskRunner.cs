@@ -48,7 +48,7 @@ namespace Chromely.Core.Defaults
             }
             catch (Exception exception)
             {
-                Logger.Instance.Log.LogError("DefaultCommandTaskRunner:Run", exception);
+                Logger.Instance.Log.LogError(exception, "DefaultCommandTaskRunner:Run");
             }
         }
 
