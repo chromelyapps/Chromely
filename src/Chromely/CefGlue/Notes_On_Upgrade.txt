@@ -1,5 +1,16 @@
-Note:
-
 Do not remove/overrwrite:
-File: CefRuntime.cs
-Folder: Wrapper
+	File: CefRuntime.cs (https://github.com/chromelyapps/Chromely/blob/master/src/Chromely/CefGlue/CefRuntime.cs)
+	Folder: Wrapper (https://github.com/chromelyapps/Chromely/tree/master/src/Chromely/CefGlue/Wrapper/MessageRouter)
+
+Copy replace/overrwrite folder (except .. note above): https://gitlab.com/xiliumhq/chromiumembedded/cefglue/-/tree/master/CefGlue
+with https://github.com/chromelyapps/Chromely/tree/master/src/Chromely/CefGlue.
+
+Delete:
+    File:    CefGlue.csproj
+    Folder:  Properties
+
+The CEF binaries required will be at:
+       https://github.com/chromelyapps/Chromely/blob/3235514f0ba568663d05313c8f6cad9984470b55/src/Chromely/CefGlue/Interop/version.g.cs#L12
+	
+
+
