@@ -18,6 +18,16 @@ namespace Chromely.Browser
         protected string _mime;
         protected bool _completed;
         protected int _totalBytesRead;
+        protected int _status;
+        protected string _statusText;
+
+        public DefaultResourceSchemeHandler()
+        {
+            var status = ResourceFileStatus.Ok.GetStatus();
+            _status = status.Item1;
+            _statusText = status.Item2;
+            _mime = "text/plain"; 
+        }
 
         [Obsolete]
         protected override bool ProcessRequest(CefRequest request, CefCallback callback)
@@ -29,9 +39,30 @@ namespace Chromely.Browser
             _fileBytes = null;
             _completed = false;
 
-            // Check if file exists and not empty
             var fileInfo = new FileInfo(file);
-            if ((fileInfo.Exists) && fileInfo.Length > 0)
+            // Check if file exists 
+            if (!fileInfo.Exists)
+            {
+                var status = ResourceFileStatus.FileNotFound.GetStatus();
+                _status = status.Item1;
+                _statusText = status.Item2;
+
+                Logger.Instance.Log.LogWarning($"File: {file}: {_statusText}");
+
+                callback.Continue();
+            }
+            // Check if file exists but empty
+            else if (fileInfo.Length == 0)
+            {
+                var status = ResourceFileStatus.ZeroFileSize.GetStatus();
+                _status = status.Item1;
+                _statusText = status.Item2;
+
+                Logger.Instance.Log.LogWarning($"File: {file}: {_statusText}");
+
+                callback.Continue();
+            }
+            else 
             {
                 Task.Run(() =>
                 {
@@ -43,9 +74,16 @@ namespace Chromely.Browser
 
                             string extension = Path.GetExtension(file);
                             _mime = MimeMapper.GetMimeType(extension);
+                            var status = ResourceFileStatus.FileFound.GetStatus();
+                            _status = status.Item1;
+                            _statusText = status.Item2;
                         }
                         catch (Exception exception)
                         {
+                            var status = ResourceFileStatus.FileProcessingError.GetStatus();
+                            _status = status.Item1;
+                            _statusText = status.Item2;
+
                             Logger.Instance.Log.LogError(exception, exception.Message);
                         }
                         finally
@@ -75,9 +113,9 @@ namespace Chromely.Browser
                 headers.Add("Access-Control-Allow-Origin", "*");
                 response.SetHeaderMap(headers);
 
-                response.Status = (int)HttpStatusCode.OK;
+                response.Status = _status;
                 response.MimeType = _mime;
-                response.StatusText = "OK";
+                response.StatusText = _statusText;
             }
             catch (Exception exception)
             {

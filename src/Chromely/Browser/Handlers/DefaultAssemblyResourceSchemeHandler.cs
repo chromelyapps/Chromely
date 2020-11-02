@@ -23,10 +23,16 @@ namespace Chromely.Browser
         protected string _mime;
         protected bool _completed;
         protected int _totalBytesRead;
+        protected int _status;
+        protected string _statusText;
 
         public DefaultAssemblyResourceSchemeHandler(IChromelyConfiguration config)
         {
             _config = config;
+            var status = ResourceFileStatus.Ok.GetStatus();
+            _status = status.Item1;
+            _statusText = status.Item2;
+            _mime = "text/plain";
         }
 
         [Obsolete]
@@ -71,9 +77,9 @@ namespace Chromely.Browser
                 headers.Add("Access-Control-Allow-Origin", "*");
                 response.SetHeaderMap(headers);
 
-                response.Status = (int)HttpStatusCode.OK;
+                response.Status = _status;
                 response.MimeType = _mime;
-                response.StatusText = "OK";
+                response.StatusText = _statusText;
             }
             catch (Exception exception)
             {
@@ -152,9 +158,30 @@ namespace Chromely.Browser
 
         private bool ProcessLocalFile(string file, CefCallback callback)
         {
-            // Check if file exists and not empty
             var fileInfo = new FileInfo(file);
-            if ((fileInfo.Exists) && fileInfo.Length > 0)
+            // Check if file exists 
+            if (!fileInfo.Exists)
+            {
+                var status = ResourceFileStatus.FileNotFound.GetStatus();
+                _status = status.Item1;
+                _statusText = status.Item2;
+
+                Logger.Instance.Log.LogWarning($"File: {file}: {_statusText}");
+
+                callback.Continue();
+            }
+            // Check if file exists but empty
+            else if (fileInfo.Length == 0)
+            {
+                var status = ResourceFileStatus.ZeroFileSize.GetStatus();
+                _status = status.Item1;
+                _statusText = status.Item2;
+
+                Logger.Instance.Log.LogWarning($"File: {file}: {_statusText}");
+
+                callback.Continue();
+            }
+            else 
             {
                 Task.Run(() =>
                 {
@@ -166,9 +193,16 @@ namespace Chromely.Browser
 
                             string extension = Path.GetExtension(file);
                             _mime = MimeMapper.GetMimeType(extension);
+                            var status = ResourceFileStatus.FileFound.GetStatus();
+                            _status = status.Item1;
+                            _statusText = status.Item2;
                         }
                         catch (Exception exception)
                         {
+                            var status = ResourceFileStatus.FileProcessingError.GetStatus();
+                            _status = status.Item1;
+                            _statusText = status.Item2;
+
                             Logger.Instance.Log.LogError(exception, exception.Message);
                         }
                         finally
@@ -195,7 +229,31 @@ namespace Chromely.Browser
 
             var manifestName = string.Join(".", option.DefaultNamespace, option.RootFolder, _regex.Replace(fileAbsolutePath, ".")).Replace("..", ".").Replace("..", ".");
             var stream = option.TargetAssembly.GetManifestResourceStream(manifestName);
-            if (stream != null && stream.Length > 0)
+
+            // Check if file exists 
+            if (stream == null)
+            {
+                var status = ResourceFileStatus.FileNotFound.GetStatus();
+                _status = status.Item1;
+                _statusText = status.Item2;
+
+                Logger.Instance.Log.LogWarning($"File: {file}: {_statusText}");
+
+                callback.Continue();
+            }
+            // Check if file exists but empty
+            else if (stream.Length == 0)
+            {
+                var status = ResourceFileStatus.ZeroFileSize.GetStatus();
+                _status = status.Item1;
+                _statusText = status.Item2;
+                 stream.Dispose();
+
+                Logger.Instance.Log.LogWarning($"File: {file}: {_statusText}");
+
+                callback.Continue();
+            }
+            else 
             {
                 Task.Run(() =>
                 {
@@ -222,11 +280,6 @@ namespace Chromely.Browser
                 });
 
                 return true;
-            }
-            else
-            {
-                if (stream != null)
-                    stream.Dispose();
             }
 
             return false;
