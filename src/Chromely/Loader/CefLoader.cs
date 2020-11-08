@@ -24,7 +24,7 @@ using Xilium.CefGlue;
 namespace Chromely.Loader
 {
     /// <summary>
-    /// Loads the necessary CEF runtime files from opensource.spotify.com
+    /// Loads the necessary CEF runtime files from cef-builds.spotifycdn.com
     /// Inherits detailed version information from cefbuilds/index page.
     /// Note:
     /// Keep this class in a separate nuget package
@@ -33,9 +33,9 @@ namespace Chromely.Loader
     /// </summary>
     public class CefLoader
     {
-        private const string CefBuildsDownloadUrl = "http://opensource.spotify.com/cefbuilds";
-        private static string CefBuildsDownloadIndex(string platform) => $"http://opensource.spotify.com/cefbuilds/index.html#{platform}_builds";
-        private static string CefDownloadUrl(string name) => $"http://opensource.spotify.com/cefbuilds/{name}";
+        private const string CefBuildsDownloadUrl = "https://cef-builds.spotifycdn.com";
+        private static string CefBuildsDownloadIndex(string platform) => $"https://cef-builds.spotifycdn.com/index.html#{platform}_builds";
+        private static string CefDownloadUrl(string name) => $"https://cef-builds.spotifycdn.com/{name}";
         
         private static string MacOSConfigFile = "Info.plist";
         
@@ -176,7 +176,28 @@ namespace Chromely.Loader
                 {
                     return found.Groups[1].Value;
                 }
-                    
+
+                #region https://github.com/chromelyapps/Chromely/issues/257 
+
+                // Hack until fixed.
+                if (!string.IsNullOrEmpty(binaryNamePattern1))
+                {
+                    if (binaryNamePattern1.Contains("83.0.4103.106"))
+                    {
+                        return $"cef_binary_83.5.0%2Bgbf03589%2Bchromium-83.0.4103.106_{platformIdentifier}_minimal.tar.bz2";
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(binaryNamePattern2))
+                {
+                    if (binaryNamePattern2.Contains("83.0.4103.106"))
+                    {
+                        return $"cef_binary_83.5.0%2Bgbf03589%2Bchromium-83.0.4103.106_{platformIdentifier}_minimal.tar.bz2";
+                    }
+                }
+
+                #endregion Hack until fixed.
+
                 var message = $"CEF for chrome version {CefRuntime.ChromeVersion} platform {platformIdentifier} not found.";
                 Logger.Instance.Log.LogError("CefLoader: " + message);
             }

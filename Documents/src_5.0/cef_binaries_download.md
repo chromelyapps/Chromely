@@ -6,7 +6,7 @@ CEF binaries are automatically downloaded for Windows builds for Nuget packages.
 
 For manual download please these follow steps:
 
-1.  Get CEF binaries from [Spotify CEF binaries download page](http://opensource.spotify.com/cefbuilds/index.html). 
+1.  Get CEF binaries from [Spotify CEF binaries download page](https://cef-builds.spotifycdn.com/index.html). 
 
      #### Versions Map 
     | Chromely.CefGlue| Chromely.Unofficial.CefGlue.NetStd | Required CEF Binary |
