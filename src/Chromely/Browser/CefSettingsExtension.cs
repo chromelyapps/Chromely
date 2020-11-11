@@ -197,6 +197,14 @@ namespace Chromely.Browser
                     // Not supported by CefGlue
                     case CefSettingKeys.FOCUSEDNODECHANGEDENABLED:
                         break;
+
+                    // MacOS Only
+                    case CefSettingKeys.FRAMEWORKDIRPATH:
+                        cefSettings.FrameworkDirPath = setting.Value;
+                        break;
+
+                    default:
+                        break;
                 }
             }
         }

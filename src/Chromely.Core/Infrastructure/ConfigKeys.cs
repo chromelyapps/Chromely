@@ -83,5 +83,6 @@ namespace Chromely.Core.Infrastructure
         public const string ENABLENETSECURITYEXPIRATION = nameof(ENABLENETSECURITYEXPIRATION);
         public const string ACCEPTLANGUAGELIST = nameof(ACCEPTLANGUAGELIST);
         public const string FOCUSEDNODECHANGEDENABLED = nameof(FOCUSEDNODECHANGEDENABLED);
+        public const string FRAMEWORKDIRPATH = nameof(FRAMEWORKDIRPATH);
     }
 }
