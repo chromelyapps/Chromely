@@ -165,6 +165,7 @@ namespace Chromely.Browser
                 var status = ResourceFileStatus.FileNotFound.GetStatus();
                 _status = status.Item1;
                 _statusText = status.Item2;
+                _fileBytes = _statusText.GetMemoryStream();
 
                 Logger.Instance.Log.LogWarning($"File: {file}: {_statusText}");
 
@@ -176,6 +177,7 @@ namespace Chromely.Browser
                 var status = ResourceFileStatus.ZeroFileSize.GetStatus();
                 _status = status.Item1;
                 _statusText = status.Item2;
+                _fileBytes = _statusText.GetMemoryStream();
 
                 Logger.Instance.Log.LogWarning($"File: {file}: {_statusText}");
 
@@ -202,6 +204,7 @@ namespace Chromely.Browser
                             var status = ResourceFileStatus.FileProcessingError.GetStatus();
                             _status = status.Item1;
                             _statusText = status.Item2;
+                            _fileBytes = _statusText.GetMemoryStream();
 
                             Logger.Instance.Log.LogError(exception, exception.Message);
                         }
@@ -236,6 +239,7 @@ namespace Chromely.Browser
                 var status = ResourceFileStatus.FileNotFound.GetStatus();
                 _status = status.Item1;
                 _statusText = status.Item2;
+                _fileBytes = _statusText.GetMemoryStream();
 
                 Logger.Instance.Log.LogWarning($"File: {file}: {_statusText}");
 
@@ -247,7 +251,8 @@ namespace Chromely.Browser
                 var status = ResourceFileStatus.ZeroFileSize.GetStatus();
                 _status = status.Item1;
                 _statusText = status.Item2;
-                 stream.Dispose();
+                _fileBytes = _statusText.GetMemoryStream();
+                stream.Dispose();
 
                 Logger.Instance.Log.LogWarning($"File: {file}: {_statusText}");
 
@@ -270,6 +275,11 @@ namespace Chromely.Browser
                         }
                         catch (Exception exception)
                         {
+                            var status = ResourceFileStatus.FileProcessingError.GetStatus();
+                            _status = status.Item1;
+                            _statusText = status.Item2;
+                            _fileBytes = _statusText.GetMemoryStream();
+
                             Logger.Instance.Log.LogError(exception, exception.Message);
                         }
                         finally
@@ -284,6 +294,5 @@ namespace Chromely.Browser
 
             return false;
         }
-
     }
 }

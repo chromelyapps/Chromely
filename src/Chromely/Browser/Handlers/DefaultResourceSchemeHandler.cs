@@ -46,6 +46,7 @@ namespace Chromely.Browser
                 var status = ResourceFileStatus.FileNotFound.GetStatus();
                 _status = status.Item1;
                 _statusText = status.Item2;
+                _fileBytes = _statusText.GetMemoryStream();
 
                 Logger.Instance.Log.LogWarning($"File: {file}: {_statusText}");
 
@@ -57,6 +58,7 @@ namespace Chromely.Browser
                 var status = ResourceFileStatus.ZeroFileSize.GetStatus();
                 _status = status.Item1;
                 _statusText = status.Item2;
+                _fileBytes = _statusText.GetMemoryStream();
 
                 Logger.Instance.Log.LogWarning($"File: {file}: {_statusText}");
 
@@ -83,6 +85,7 @@ namespace Chromely.Browser
                             var status = ResourceFileStatus.FileProcessingError.GetStatus();
                             _status = status.Item1;
                             _statusText = status.Item2;
+                            _fileBytes = _statusText.GetMemoryStream();
 
                             Logger.Instance.Log.LogError(exception, exception.Message);
                         }
