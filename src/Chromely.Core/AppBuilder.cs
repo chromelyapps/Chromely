@@ -14,6 +14,7 @@ namespace Chromely.Core
 {
     public sealed class AppBuilder
     {
+        private ServiceCollection _serviceCollection;
         private ServiceProvider _serviceProvider;
         private ChromelyApp _chromelyApp;
         private IChromelyConfiguration _config;
@@ -34,6 +35,12 @@ namespace Chromely.Core
         {
             var appBuilder = new AppBuilder();
             return appBuilder;
+        }
+
+        public AppBuilder UseServices(ServiceCollection serviceCollection)
+        {
+            _serviceCollection = serviceCollection;
+            return this;
         }
 
         public AppBuilder UseConfig<TService>(IChromelyConfiguration config = null) where TService : IChromelyConfiguration
@@ -68,13 +75,13 @@ namespace Chromely.Core
             return this;
         }
 
-        public AppBuilder UseApp<T>(ChromelyApp ChromelyApp = null) where T : ChromelyApp
+        public AppBuilder UseApp<TApp>(ChromelyApp chromelyApp = null) where TApp : ChromelyApp
         {
-            _chromelyApp = ChromelyApp;
+            _chromelyApp = chromelyApp;
             if (_chromelyApp == null)
             {
-                EnsureIsDerivedType(typeof(ChromelyApp), typeof(T));
-                _chromelyApp = (T)Activator.CreateInstance(typeof(T));
+                EnsureIsDerivedType(typeof(ChromelyApp), typeof(TApp));
+                _chromelyApp = (TApp)Activator.CreateInstance(typeof(TApp));
             }
 
             _stepCompleted = 1;
@@ -93,16 +100,20 @@ namespace Chromely.Core
                 throw new Exception($"ChromelyApp {nameof(_chromelyApp)} cannot be null.");
             }
 
-            var serviceCollection = new ServiceCollection();
-            _chromelyApp.ConfigureServices(serviceCollection);
+            if (_serviceCollection == null)
+            {
+                _serviceCollection = new ServiceCollection();
+            }
+
+            _chromelyApp.ConfigureServices(_serviceCollection);
 
             // This must be done before registring core services
-            RegisterUseComponents(serviceCollection);
+            RegisterUseComponents(_serviceCollection);
 
-            _chromelyApp.ConfigureCoreServices(serviceCollection);
-            _chromelyApp.ConfigureServiceResolvers(serviceCollection);
-            _chromelyApp.ConfigureDefaultHandlers(serviceCollection);
-            _serviceProvider = serviceCollection.BuildServiceProvider();
+            _chromelyApp.ConfigureCoreServices(_serviceCollection);
+            _chromelyApp.ConfigureServiceResolvers(_serviceCollection);
+            _chromelyApp.ConfigureDefaultHandlers(_serviceCollection);
+            _serviceProvider = _serviceCollection.BuildServiceProvider();
             _chromelyApp.Initialize(_serviceProvider);
             _chromelyApp.RegisterControllerRoutes(_serviceProvider);
 
