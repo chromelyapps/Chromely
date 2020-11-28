@@ -19,7 +19,7 @@ using static Chromely.Interop.User32;
 
 namespace Chromely.NativeHost
 {
-    abstract partial class NativeHostBase : IChromelyNativeHost
+    public abstract partial class NativeHostBase : IChromelyNativeHost
     {
         [DllImport(Libraries.Kernel32)]
         public static extern IntPtr GetConsoleWindow();
