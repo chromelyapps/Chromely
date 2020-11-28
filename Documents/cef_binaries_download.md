@@ -2,7 +2,16 @@
 
 Note: This description is for 64-bit. The guide will also work for 32-bit - the right binaries need to be downloaded.
 
-CEF binaries are automatically downloaded for Windows builds for Nuget packages. For all platforms (Windows, Linux, MacOS, binaries are downloaded at runtime if configured to do so by the developer. Auto download at runtime is the default.
+CEF binaries are automatically downloaded for Windows builds for Nuget packages. For all platforms (Windows, Linux, MacOS, binaries are downloaded at runtime if configured to do so by the developer. 
+
+Auto download at runtime is the default.
+To disable auto download and do it manually:
+
+````C#
+   var config = DefaultConfiguration.CreateForRuntimePlatform();
+   config.CefDownloadOptions.AutoDownloadWhenMissing = false;
+````
+
 
 For manual download please these follow steps:
 
