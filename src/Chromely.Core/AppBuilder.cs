@@ -14,8 +14,8 @@ namespace Chromely.Core
 {
     public sealed class AppBuilder
     {
-        private ServiceCollection _serviceCollection;
-        private ServiceProvider _serviceProvider;
+        private IServiceCollection _serviceCollection;
+        private IServiceProvider _serviceProvider;
         private ChromelyApp _chromelyApp;
         private IChromelyConfiguration _config;
         private IChromelyWindow _chromelyWindow;
@@ -37,7 +37,7 @@ namespace Chromely.Core
             return appBuilder;
         }
 
-        public AppBuilder UseServices(ServiceCollection serviceCollection)
+        public AppBuilder UseServices(IServiceCollection serviceCollection)
         {
             _serviceCollection = serviceCollection;
             return this;
@@ -149,7 +149,7 @@ namespace Chromely.Core
                 finally
                 {
                     windowController.Dispose();
-                    _serviceProvider.Dispose();
+                    (_serviceProvider as ServiceProvider)?.Dispose();
                 }
 
             }
@@ -178,7 +178,7 @@ namespace Chromely.Core
             }
         }
 
-        private void RegisterUseComponents(ServiceCollection services)
+        private void RegisterUseComponents(IServiceCollection services)
         {
             if (_config != null)
             {

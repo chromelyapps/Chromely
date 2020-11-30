@@ -25,12 +25,12 @@ namespace Chromely.Core
         protected bool _resolversConfigured;
         protected bool _defaultHandlersConfigured;
 
-        public virtual void ConfigureServices(ServiceCollection services)
+        public virtual void ConfigureServices(IServiceCollection services)
         {
             _servicesConfigured = true;
         }
 
-        public virtual void ConfigureCoreServices(ServiceCollection services)
+        public virtual void ConfigureCoreServices(IServiceCollection services)
         {
             if (!_servicesConfigured)
             {
@@ -50,7 +50,7 @@ namespace Chromely.Core
             _coreServicesConfigured = true;
         }
 
-        public virtual void ConfigureServiceResolvers(ServiceCollection services)
+        public virtual void ConfigureServiceResolvers(IServiceCollection services)
         {
             /*  Collection service resolvers for types: 
                 IChromelyJsBindingHandler
@@ -66,12 +66,12 @@ namespace Chromely.Core
             _resolversConfigured = true;
         }
 
-        public virtual void ConfigureDefaultHandlers(ServiceCollection services)
+        public virtual void ConfigureDefaultHandlers(IServiceCollection services)
         {
             _defaultHandlersConfigured = true;
         }
 
-        public virtual void Initialize(ServiceProvider serviceProvider)
+        public virtual void Initialize(IServiceProvider serviceProvider)
         {
             if (!_servicesConfigured || !_coreServicesConfigured || !_resolversConfigured || !_defaultHandlersConfigured)
             {
@@ -127,7 +127,7 @@ namespace Chromely.Core
             _servicesInitialized = true;
         }
 
-        public virtual void RegisterControllerRoutes(ServiceProvider serviceProvider)
+        public virtual void RegisterControllerRoutes(IServiceProvider serviceProvider)
         {
             if (!_servicesInitialized)
             {
@@ -142,7 +142,7 @@ namespace Chromely.Core
             }
         }
 
-        public virtual void RegisterControllerAssembly(ServiceCollection services, string assemblyFullPath)
+        public virtual void RegisterControllerAssembly(IServiceCollection services, string assemblyFullPath)
         {
             if (string.IsNullOrWhiteSpace(assemblyFullPath))
             {
@@ -164,7 +164,7 @@ namespace Chromely.Core
 
         }
 
-        public virtual void RegisterControllerAssembly(ServiceCollection services, Assembly assembly)
+        public virtual void RegisterControllerAssembly(IServiceCollection services, Assembly assembly)
         {
             if (assembly == null)
             {
@@ -182,7 +182,7 @@ namespace Chromely.Core
 
         }
 
-        protected virtual ILogger GetCurrentLogger(ServiceProvider serviceProvider)
+        protected virtual ILogger GetCurrentLogger(IServiceProvider serviceProvider)
         {
             var logger = serviceProvider.GetService<ILogger>();
             if (logger != null)
