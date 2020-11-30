@@ -8,16 +8,19 @@ namespace Chromely.NativeHost
 {
     public class MouseMoveEventArgs : EventArgs
     {
-        public MouseMoveEventArgs(int xDelta, int yDelta)
+        public MouseMoveEventArgs(int deltaX, int deltaY)
         {
-            DeltaChangeSize = new Size(xDelta, yDelta);
+            DeltaX = deltaX;
+            DeltaY = deltaY;
         }
 
         public MouseMoveEventArgs(Size deltaSize)
         {
-            DeltaChangeSize = deltaSize;
+            DeltaX = deltaSize.Width;
+            DeltaY = deltaSize.Height;
         }
 
-        public Size DeltaChangeSize { get; set; }
-     }
+        public int DeltaX { get; set; }
+        public int DeltaY { get; set; }
+    }
 }

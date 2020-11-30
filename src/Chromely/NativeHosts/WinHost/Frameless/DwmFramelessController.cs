@@ -412,11 +412,9 @@ namespace Chromely.NativeHost
         private void MouseLLHook_MouseMoveHandler(object sender, MouseMoveEventArgs eventArgs)
         {
             if (_windowHandle != IntPtr.Zero &&
-                eventArgs != null &&
-                eventArgs.DeltaChangeSize != null &&
-                !eventArgs.DeltaChangeSize.IsEmpty)
+                eventArgs != null)
             {
-                SetWindowPos(_windowHandle, IntPtr.Zero, 0, 0, eventArgs.DeltaChangeSize.Width, eventArgs.DeltaChangeSize.Height, 
+                SetWindowPos(_windowHandle, IntPtr.Zero, eventArgs.DeltaX, eventArgs.DeltaY, 0, 0,
                                     SWP.NOACTIVATE
                                     | SWP.NOZORDER
                                     | SWP.NOOWNERZORDER

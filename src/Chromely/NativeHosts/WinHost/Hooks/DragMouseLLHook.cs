@@ -76,12 +76,12 @@ namespace Chromely.NativeHost
 
 		#region
 
-		static void OnMouseMove(int xDelta, int yDelta)
+		static void OnMouseMove(int deltaX, int deltaY)
 		{
 			var handler = MouseMoveHandler;
 			if (handler != null)
 			{
-				var args = new MouseMoveEventArgs(xDelta, yDelta);
+				var args = new MouseMoveEventArgs(deltaX, deltaY);
 				handler.Invoke(null, args);
 			}
 		}
