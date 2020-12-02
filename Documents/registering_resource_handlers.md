@@ -7,12 +7,22 @@ Resource files (html, css, javasctipt etc) can be loaded in 3 different ways:
 - file protocol (e.g file:///{appDirectory}app/chromely.html)
 - local resource (e.g local://app/chromely.html)
 
-The preferred option is via local resources. For local resource processing a custom (or default) handler must be registered.
+The preferred option is via local resources. 
 
-Registration of a resource handler requires 2 steps:
+Registration of a custom resource handler requires 2 steps:
 
 1. Registration of a url scheme
 2. Registration of a custom resource scheme handler factory
+
+- A default resource handler will be pre-registered for the developer and the developer can use the pre-register scheme handler - or register a new one using **"1. Registration of a url scheme"** below. 
+
+    A pre-registered url scheme -  
+    ````
+    StartUrl = "local://app/index.html";
+    ````
+    https://github.com/chromelyapps/Chromely/blob/960f8ac1c97c9fd73591bd2f0828d4cee5bf5900/src/Chromely.Core/Configuration/DefaultConfiguration.cs#L71
+    https://github.com/chromelyapps/Chromely/blob/960f8ac1c97c9fd73591bd2f0828d4cee5bf5900/src/Chromely.Core/Configuration/DefaultConfiguration.cs#L83
+- If you are using a custom resource handler, it must be registred using **"1. Registration of a url scheme"** and **"2. Registration of a custom resource handler factory"** below.
 
 ### 1. Registration of a url scheme
 
