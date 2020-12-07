@@ -7,7 +7,6 @@ using Chromely.NativeHost;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
-using System.ComponentModel;
 
 namespace Chromely
 {
@@ -27,6 +26,7 @@ namespace Chromely
                 throw new InvalidOperationException("ChromelyFramelessApp can only be used on Windows.");
             }
 
+            services.TryAddSingleton<IKeyboadHookHandler, DefaulKeyboadHookHandler>();
             services.TryAddSingleton<IChromelyNativeHost, ChromelyWinFramelessHost>();
         }
     }

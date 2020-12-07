@@ -16,19 +16,23 @@ namespace Chromely.NativeHost
     //https://github.com/rossy/borderless-window
     public partial class DwmFramelessController
     {
-        protected FramelessInfo _framelessInfo;
+        protected IChromelyNativeHost _nativeHost;
+        protected DwmFramelessOption _framelessInfo;
+        protected IWindowOptions _options;
         protected FramelessOption _framelessOption;
         protected DragWindowInfo _dragWindowInfo;
         protected DragMouseLLHook _dragMouseHook;
         protected Action<SizeChangedEventArgs> _onSizeChanged;
 
         private IntPtr _windowHandle;
-        public DwmFramelessController(FramelessInfo framelessInfo, FramelessOption framelessOption, Action<SizeChangedEventArgs> onSizeChanged)
+        public DwmFramelessController(IChromelyNativeHost nativeHost, IWindowOptions options, DwmFramelessOption framelessInfo, Action<SizeChangedEventArgs> onSizeChanged)
         {
+            _nativeHost = nativeHost;
+            _options = options;
             _windowHandle = framelessInfo.Handle;
             _framelessInfo =  framelessInfo;
-            _framelessOption = framelessOption;
-            _dragWindowInfo = new DragWindowInfo(framelessInfo.Handle, _framelessOption);
+            _framelessOption = _options?.FramelessOption ?? new FramelessOption();
+            _dragWindowInfo = new DragWindowInfo(_nativeHost, framelessInfo.Handle, _framelessOption);
             _onSizeChanged = onSizeChanged;
         }
 
@@ -191,68 +195,24 @@ namespace Chromely.NativeHost
 
             /* DefWindowProc must be called in both the maximized and non-maximized
                cases, otherwise tile/cascade windows won't work */
-
             var nonclient = (RECT)Marshal.PtrToStructure(lParam, typeof(RECT));
-            DefWindowProcW(_framelessInfo.Handle, WM.NCCALCSIZE, wParam, lParam);
-            var client = (RECT)Marshal.PtrToStructure(lParam, typeof(RECT));
 
-            if (IsMaximized(_framelessInfo.Handle))
-            {
-                WINDOWINFO wi = new WINDOWINFO(null);
-                GetWindowInfo(_framelessInfo.Handle, ref wi);
-
-                /* Maximized windows always have a non-client border that hangs over
-                   the edge of the screen, so the size proposed by WM_NCCALCSIZE is
-                   fine. Just adjust the top border to remove the window title. */
-                var rect = new RECT();
-                rect.left = client.left;
-                rect.top = (int)(nonclient.top + wi.cyWindowBorders);
-                rect.right = client.right;
-                rect.bottom = client.bottom;
-
-                IntPtr mon = MonitorFromWindow(_framelessInfo.Handle, MONITOR.DEFAULTTOPRIMARY);
-                MONITORINFOEXW mi = new MONITORINFOEXW(null);
-                GetMonitorInfoW(mon, ref mi);
-
-                /* If the client rectangle is the same as the monitor's rectangle,
-                   the shell assumes that the window has gone fullscreen, so it removes
-                   the topmost attribute from any auto-hide appbars, making them
-                   inaccessible. To avoid this, reduce the size of the client area by
-                   one pixel on a certain edge. The edge is chosen based on which side
-                   of the monitor is likely to contain an auto-hide appbar, so the
-                   missing client area is covered by it. */
-                if (rect.AreEqual(mi.rcMonitor))
-                {
-                    if (HasAutohideAppbar(ABE_BOTTOM, mi.rcMonitor))
-                    {
-                        rect.bottom--;
-                    }
-
-                    else if (HasAutohideAppbar(ABE_LEFT, mi.rcMonitor))
-                    {
-                        rect.left++;
-                    }
-
-                    else if (HasAutohideAppbar(ABE_TOP, mi.rcMonitor))
-                    {
-                        rect.top++;
-                    }
-
-                    else if (HasAutohideAppbar(ABE_RIGHT, mi.rcMonitor))
-                    {
-                        rect.right--;
-                    }
-                }
-
-                Marshal.StructureToPtr(rect, lParam, false);
-            }
-            else
+            var setResizeGrip = !_options.DisableResizing;
+            if (setResizeGrip)
             {
                 /* For the non-maximized case, set the output RECT to what it was
                    before WM_NCCALCSIZE modified it. This will make the client size the
                    same as the non-client size. */
-                Marshal.StructureToPtr(nonclient, lParam, false);
+
+                // Why is this not working?
+                // nonclient.top += _framelessOption.DwmResizeGrip;
+
+                nonclient.left += _framelessOption.DwmResizeGrip;
+                nonclient.right -= _framelessOption.DwmResizeGrip;
+                nonclient.bottom -= _framelessOption.DwmResizeGrip;
             }
+
+            Marshal.StructureToPtr(nonclient, lParam, false);
         }
 
         public void HandleCompositionchanged()
@@ -355,30 +315,6 @@ namespace Chromely.NativeHost
             return false;
         }
 
-        public bool HasAutohideAppbar(int edge, RECT rectMon)
-        {
-            if (IsWindows8Point1OrGreater())
-            {
-                APPBARDATA appBarData81 = new APPBARDATA(null);
-                appBarData81.uEdge = (uint)edge;
-                appBarData81.rc = rectMon;
-                var result81 = SHAppBarMessage((uint)ABM.ABM_GETAUTOHIDEBAREX, ref appBarData81);
-                return result81 != IntPtr.Zero;
-            }
-
-            /* Before Windows 8.1, it was not possible to specify a monitor when
-               checking for hidden appbars, so check only on the primary monitor */
-            if (rectMon.left != 0 || rectMon.top != 0)
-            {
-                return false;
-            }
-
-            APPBARDATA appBarData = new APPBARDATA(null);
-            appBarData.uEdge = (uint)edge;
-            var result = SHAppBarMessage((uint)ABM.ABM_GETAUTOHIDEBAR, ref appBarData);
-            return result != IntPtr.Zero;
-        }
-
         #region Install/Detach Hooks
 
         private void InstallDragMouseHook()
@@ -387,10 +323,13 @@ namespace Chromely.NativeHost
             {
                 UninstallDragMouseHook();
 
-                _dragMouseHook = new DragMouseLLHook(_dragWindowInfo);
-                _dragMouseHook.Install();
-                DragMouseLLHook.MouseMoveHandler += MouseLLHook_MouseMoveHandler;
-                DragMouseLLHook.LeftButtonUpHandler += MouseLLHook_LeftButtonUpHandler;
+                if (!_options.KioskMode)
+                {
+                    _dragMouseHook = new DragMouseLLHook(_dragWindowInfo);
+                    _dragMouseHook.Install();
+                    DragMouseLLHook.MouseMoveHandler += MouseLLHook_MouseMoveHandler;
+                    DragMouseLLHook.LeftButtonUpHandler += MouseLLHook_LeftButtonUpHandler;
+                }
             }
             catch
             {

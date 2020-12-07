@@ -166,10 +166,14 @@ namespace Chromely.NativeHost
         /// <summary> Sets window state. Maximise / Minimize / Restore. </summary>
         /// <param name="state"> The state to set. </param>
         /// <returns> True if it succeeds, false if it fails. </returns>
-        public bool SetWindowState(WindowState state)
+        public virtual bool SetWindowState(WindowState state)
         {
             // TODO required for frameless linux / gtk3 mode
             return false;
+        }
+
+        public virtual void SetupMessageInterceptor(IntPtr browserWindowHandle)
+        {
         }
 
         public virtual void ResizeBrowser(IntPtr browserWindow, int width, int height)

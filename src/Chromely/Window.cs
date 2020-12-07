@@ -12,7 +12,7 @@ namespace Chromely
 {
     public partial class Window : ChromiumBrowser, IChromelyWindow
     {
-        public Window(IChromelyNativeHost nativeHost, 
+        public Window(IChromelyNativeHost nativeHost,
                       IChromelyConfiguration config,
                       ChromelyHandlersResolver handlersResolver)
             : base(config, handlersResolver)

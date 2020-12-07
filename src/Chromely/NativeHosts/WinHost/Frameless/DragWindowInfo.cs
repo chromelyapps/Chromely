@@ -2,6 +2,7 @@
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
 using Chromely.Core.Configuration;
+using Chromely.Core.Host;
 using System;
 using System.Drawing;
 using System.Linq;
@@ -12,9 +13,11 @@ namespace Chromely.NativeHost
 {
     public class DragWindowInfo
     {
+        protected IChromelyNativeHost _nativeHost;
         protected FramelessOption _framelessOption;
-        public DragWindowInfo(IntPtr parentHandle, FramelessOption framelessOption)
+        public DragWindowInfo(IChromelyNativeHost nativeHost, IntPtr parentHandle, FramelessOption framelessOption)
         {
+            _nativeHost = nativeHost;
             MainWindowHandle = parentHandle;
             _framelessOption = framelessOption;
         }
@@ -65,7 +68,7 @@ namespace Chromely.NativeHost
             {
                 if (_framelessOption.IsDraggable != null)
                 {
-                    bool isDraggable = _framelessOption.IsDraggable(zonePt);
+                    bool isDraggable = _framelessOption.IsDraggable(_nativeHost, zonePt);
                     if (isDraggable)
                     {
                         windowTopLeftPoint = new POINT(rectangle.Left, rectangle.Top);

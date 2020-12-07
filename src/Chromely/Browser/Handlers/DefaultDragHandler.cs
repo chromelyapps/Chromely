@@ -70,7 +70,7 @@ namespace Chromely.Browser
             {
                 lock (objLock)
                 {
-                    framelessOption.IsDraggable = (point) =>
+                    framelessOption.IsDraggable = (nativeHost, point) =>
                     {
                         var hitNoDrag = regions.Any(r => !r.Draggable && ContainsPoint(r, point));
                         if (hitNoDrag)

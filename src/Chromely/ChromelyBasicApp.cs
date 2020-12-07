@@ -32,10 +32,14 @@ namespace Chromely
                     break;
 
                 case ChromelyPlatform.Windows:
+                    services.TryAddSingleton<IWindowMessageInterceptor, DefaultWindowMessageInterceptor>();
+                    services.TryAddSingleton<IKeyboadHookHandler, DefaulKeyboadHookHandler>();
                     services.TryAddSingleton<IChromelyNativeHost, ChromelyWinHost>();
                     break;
 
                 default:
+                    services.TryAddSingleton<IWindowMessageInterceptor, DefaultWindowMessageInterceptor>();
+                    services.TryAddSingleton<IKeyboadHookHandler, DefaulKeyboadHookHandler>();
                     services.TryAddSingleton<IChromelyNativeHost, ChromelyWinHost>();
                     break;
             }

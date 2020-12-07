@@ -6,9 +6,9 @@ using static Chromely.Interop;
 
 namespace Chromely.NativeHost
 {
-    public class FramelessInfo
+    public class DwmFramelessOption
     {
-        public FramelessInfo(IntPtr hWnd)
+        public DwmFramelessOption(IntPtr hWnd)
         {
             Handle = hWnd;
         }

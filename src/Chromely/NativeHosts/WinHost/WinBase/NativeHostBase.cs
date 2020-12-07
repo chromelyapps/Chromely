@@ -34,8 +34,10 @@ namespace Chromely.NativeHost
         protected const int CW_USEDEFAULT = unchecked((int)0x80000000);
         protected static RECT DefaultBounds => new RECT(CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT);
         public static NativeHostBase NativeInstance { get; set; }
+        protected IWindowMessageInterceptor _messageInterceptor;
         protected IWindowOptions _options;
         protected IntPtr _handle;
+        protected bool _windowFrameless;
         protected bool _isInitialized;
         protected IntPtr _consoleParentInstance;
         protected WNDPROC _wndProc;
@@ -48,10 +50,11 @@ namespace Chromely.NativeHost
         public event EventHandler<SizeChangedEventArgs> HostSizeChanged;
         public event EventHandler<CloseEventArgs> HostClose;
 
-        public NativeHostBase(IKeyboadHookHandler keyboadHandler = null)
+        public NativeHostBase(IWindowMessageInterceptor messageInterceptor, IKeyboadHookHandler keyboadHandler)
         {
             _isInitialized = false;
             _handle = IntPtr.Zero;
+            _messageInterceptor = messageInterceptor;
             _keyboadHandler = keyboadHandler;
         }
 
@@ -59,11 +62,9 @@ namespace Chromely.NativeHost
 
         public unsafe virtual void CreateWindow(IWindowOptions options, bool debugging)
         {
-            _options = options;
-            if (_keyboadHandler == null)
-            {
-                _keyboadHandler = new DefaulKeyboadHookHandler(this, _options);
-            }
+            _keyboadHandler?.SetNativeHost(this);
+           _options = options;
+            _windowFrameless = _options.WindowFrameless;
 
             _wndProc = WndProc;
             _consoleParentInstance = GetConsoleWindow();
@@ -165,6 +166,14 @@ namespace Chromely.NativeHost
                 ReleaseDC(_handle, hdc);
             }
             return scale;
+        }
+
+        public virtual void SetupMessageInterceptor(IntPtr browserWindowHandle)
+        {
+            if (_windowFrameless)
+            {
+                _messageInterceptor?.Setup(this, browserWindowHandle);
+            }
         }
 
         public virtual void ResizeBrowser(IntPtr browserHande, int width, int height)
@@ -300,6 +309,10 @@ namespace Chromely.NativeHost
             return size;
         }
 
+        protected virtual void PreCreated(IntPtr hWnd)
+        {
+        }
+
         protected virtual void OnCreated(IntPtr hWnd)
         {
         }
@@ -401,6 +414,7 @@ namespace Chromely.NativeHost
                 styles &= ~(WS.CAPTION);
                 exStyles &= ~(WS_EX.DLGMODALFRAME | WS_EX.WINDOWEDGE | WS_EX.CLIENTEDGE | WS_EX.STATICEDGE);
                 state = WindowState.Fullscreen;
+                _options.DisableResizing = _options.KioskMode ? true : _options.DisableResizing;
             }
 
             windowStyle.Styles = styles;
@@ -485,10 +499,16 @@ namespace Chromely.NativeHost
             WM wmMsg = (WM)message;
             switch (wmMsg)
             {
-                case WM.CREATE:
+                case WM.NCCREATE:
                     {
                         NativeInstance = this;
                         _handle = hWnd;
+                        PreCreated(hWnd);
+                        break;
+                    }
+
+                case WM.CREATE:
+                    {
                         OnCreated(hWnd);
                         var createdEvent = new CreatedEventArgs(_handle, _handle);
                         HostCreated?.Invoke(this, createdEvent);
@@ -555,7 +575,6 @@ namespace Chromely.NativeHost
             }
 
             return (DefWindowProcW(hWnd, wmMsg, wParam, lParam));
-          
         }
 
         #region WndProc Methods
@@ -635,5 +654,18 @@ namespace Chromely.NativeHost
 
 
         #endregion
+
+        protected static readonly HT[] BorderHitTestResults =
+        {
+            HT.TOP,
+            HT.TOPLEFT,
+            HT.TOPRIGHT,
+            HT.BOTTOM,
+            HT.BOTTOMLEFT,
+            HT.BOTTOMRIGHT,
+            HT.LEFT,
+            HT.RIGHT,
+            HT.BORDER
+        };
     }
 }

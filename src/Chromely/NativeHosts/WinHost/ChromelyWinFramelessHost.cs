@@ -12,30 +12,31 @@ namespace Chromely.NativeHost
     public class ChromelyWinFramelessHost : NativeHostBase
     {
         protected DwmFramelessController _dwmFramelessController;
-        protected FramelessInfo _framelessInfo;
+        protected DwmFramelessOption _dwmFramelessOption;
         protected FramelessOption _framelessOption;
 
         private bool _disposed;
 
-        public ChromelyWinFramelessHost()
+        public ChromelyWinFramelessHost(IKeyboadHookHandler keyboadHandler)
+            : base(null, keyboadHandler)
         {
-            _framelessInfo = new FramelessInfo(IntPtr.Zero);
+            _dwmFramelessOption = new DwmFramelessOption(IntPtr.Zero);
             _framelessOption = new FramelessOption();
+        }
+
+        protected override void PreCreated(IntPtr hWnd)
+        {
+            base.PreCreated(hWnd);
+
+            _options.WindowFrameless = true;
+            _dwmFramelessOption = new DwmFramelessOption(hWnd);
+            _framelessOption = _options.FramelessOption;
+            _dwmFramelessController = new DwmFramelessController(this, _options, _dwmFramelessOption, HandleSizeChanged);
         }
 
         protected override void OnCreated(IntPtr hWnd)
         {
             base.OnCreated(hWnd);
-
-            if (_options.Fullscreen || _options.KioskMode)
-            {
-                throw new NotSupportedException("Fullscreen/Kiok mode is not supported in ChromelyFramelessApp. Please use ChromelyBasicApp instead.");
-            }
-
-            _options.WindowFrameless = true;
-            _framelessInfo = new FramelessInfo(hWnd);
-            _framelessOption = _options.FramelessOption;
-            _dwmFramelessController = new DwmFramelessController(_framelessInfo, _framelessOption, HandleSizeChanged);
 
             _dwmFramelessController.HandleCompositionchanged();
             _dwmFramelessController.HandleThemechanged();
@@ -56,6 +57,18 @@ namespace Chromely.NativeHost
             windowStyle.ExStyles = exStyles;
             windowStyle.RECT = GetWindowBounds();
 
+            if (_options.KioskMode || _options.Fullscreen)
+            {
+                styles &= ~(WS.CAPTION);
+                exStyles &= ~(WS_EX.DLGMODALFRAME | WS_EX.WINDOWEDGE | WS_EX.CLIENTEDGE | WS_EX.STATICEDGE);
+                state = WindowState.Fullscreen;
+                _options.DisableResizing = _options.KioskMode ? true : _options.DisableResizing;
+            }
+
+            windowStyle.Styles = styles;
+            windowStyle.ExStyles = exStyles;
+            windowStyle.RECT = GetWindowBounds();
+
             switch (state)
             {
                 case WindowState.Normal:
@@ -67,37 +80,26 @@ namespace Chromely.NativeHost
                     windowStyle.ShowCommand = SW.SHOWMAXIMIZED;
                     break;
 
+                case WindowState.Fullscreen:
+                    windowStyle.ShowCommand = SW.SHOWMAXIMIZED;
+                    break;
+
                 default:
-                    windowStyle.ShowCommand = SW.SHOWNORMAL;
                     break;
             }
 
             return windowStyle;
         }
 
+
+        public override void SetupMessageInterceptor(IntPtr browserWindowHandle)
+        {
+            // No interception yet
+        }
+
         public override void ResizeBrowser(IntPtr browserHande, int width, int height)
         {
-            var noResize = (_options == null) ? false : _options.DisableResizing;
-            var gripSize = (_options?.FramelessOption == null) ? 0 : _options.FramelessOption.ResizeGrip;
-            var addMargins = !noResize &&
-                             (gripSize > 0) &&
-                             (browserHande != IntPtr.Zero) &&
-                             (width > (4 * gripSize)) &&
-                             (height > (4 * gripSize));
-
-            if (addMargins)
-            {
-                var left = gripSize;
-                var top = gripSize;
-                width = width - (2 * gripSize);
-                height = height - (2 * gripSize);
-
-                SetWindowPos(browserHande, IntPtr.Zero, left, top, width, height, SWP.NOZORDER);
-            }
-            else
-            {
-                SetWindowPos(browserHande, IntPtr.Zero, 0, 0, width, height, SWP.NOZORDER);
-            }
+            SetWindowPos(browserHande, IntPtr.Zero, 0, 0, width, height, SWP.NOZORDER);
         }
 
         #region Frameless WndProc
@@ -128,7 +130,7 @@ namespace Chromely.NativeHost
 
                 case WM.LBUTTONDOWN:
                     /* Allow window dragging from any point */
-                    var handlerNullable = _framelessInfo?.Handle;
+                    var handlerNullable = _dwmFramelessOption?.Handle;
                     if (handlerNullable.HasValue)
                     {
                         ReleaseCapture();
@@ -147,11 +149,11 @@ namespace Chromely.NativeHost
                     return IntPtr.Zero;
 
                 case WM.NCHITTEST:
-                    if (_framelessInfo != null)
+                    if (_dwmFramelessOption != null)
                     {
-                        _framelessInfo.ResizeInMotion = true;
+                        _dwmFramelessOption.ResizeInMotion = true;
                         var hitTestResultNullable = _dwmFramelessController?.HandleNCHittest(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
-                        _framelessInfo.ResizeInMotion = false;
+                        _dwmFramelessOption.ResizeInMotion = false;
                         return hitTestResultNullable.HasValue ? hitTestResultNullable.Value : IntPtr.Zero;
                     }
                     return IntPtr.Zero;
@@ -159,7 +161,7 @@ namespace Chromely.NativeHost
                 case WM.NCPAINT:
                     /* Only block WM_NCPAINT when composition is disabled. If it's blocked
                        when composition is enabled, the window shadow won't be drawn. */
-                    var isComposistionEnabedNullable = _framelessInfo?.IsCompositionEnabled;
+                    var isComposistionEnabedNullable = _dwmFramelessOption?.IsCompositionEnabled;
                     var isComposistionEnabed = isComposistionEnabedNullable.HasValue ? isComposistionEnabedNullable.Value : false;
                     if (!isComposistionEnabed)
                     {
@@ -180,10 +182,10 @@ namespace Chromely.NativeHost
                        composition and theming are disabled. These messages don't paint
                        when composition is enabled and blocking WM_NCUAHDRAWCAPTION should
                        be enough to prevent painting when theming is enabled. */
-                    isComposistionEnabedNullable = _framelessInfo?.IsCompositionEnabled;
+                    isComposistionEnabedNullable = _dwmFramelessOption?.IsCompositionEnabled;
                     isComposistionEnabed = isComposistionEnabedNullable.HasValue ? isComposistionEnabedNullable.Value : false;
 
-                    var isThemeEnabledNullable = _framelessInfo?.IsThemeEnabled;
+                    var isThemeEnabledNullable = _dwmFramelessOption?.IsThemeEnabled;
                     var isThemeEnabledEnabed = isThemeEnabledNullable.HasValue ? isThemeEnabledNullable.Value : false;
 
                     if (!isComposistionEnabed && !isThemeEnabledEnabed)

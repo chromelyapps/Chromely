@@ -10,10 +10,14 @@ namespace Chromely.NativeHost
         protected IChromelyNativeHost _nativeHost;
         protected IWindowOptions _options;
 
-        public DefaulKeyboadHookHandler(IChromelyNativeHost nativeHost, IWindowOptions options)
+        public DefaulKeyboadHookHandler(IChromelyConfiguration config)
+        {
+            _options = config?.WindowOptions ?? new WindowOptions();
+        }
+
+        public void SetNativeHost(IChromelyNativeHost nativeHost)
         {
             _nativeHost = nativeHost;
-            _options = options;
         }
 
         public bool HandleKey(IntPtr hWnd, object param)
@@ -43,7 +47,7 @@ namespace Chromely.NativeHost
                     {
                         if (!_options.WindowFrameless && !_options.KioskMode && keyboardParam.IsKeyUp)
                         {
-                            _nativeHost.ToggleFullscreen(hWnd);
+                            _nativeHost?.ToggleFullscreen(hWnd);
                             return true;
                         }
                         break;

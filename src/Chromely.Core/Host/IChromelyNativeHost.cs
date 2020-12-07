@@ -19,6 +19,7 @@ namespace Chromely.Core.Host
         void Run();
         Size GetWindowClientSize();
         float GetWindowDpiScale();
+        void SetupMessageInterceptor(IntPtr browserWindowHandle);
         void ResizeBrowser(IntPtr browserWindow, int width, int height);
         void Exit();
         void SetWindowTitle(string title);
