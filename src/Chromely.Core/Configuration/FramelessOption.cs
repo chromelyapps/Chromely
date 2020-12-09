@@ -12,7 +12,6 @@ namespace Chromely.Core.Configuration
     /// <summary> Options associated with the Frameless mode. </summary>
     public class FramelessOption
     {
-        private static int RESIZEGRIPSIZE = 4;
         private static int DRAGZONE_HEIGHT = 32;
         private static int DRAGZONE_TOP_OFFSET = 0;
         private static int DRAGZONE_LEFT_OFFSET = 0;
@@ -32,8 +31,6 @@ namespace Chromely.Core.Configuration
         /// <value> The drag zones. </value>
         public List<DragZoneConfiguration> DragZones { get; set; }
 
-        public int DwmResizeGrip { get; set; }
-
         /// <summary> Default constructor. </summary>
         public FramelessOption()
         {
@@ -42,7 +39,6 @@ namespace Chromely.Core.Configuration
             DragZones.Add(new DragZoneConfiguration(DRAGZONE_HEIGHT, DRAGZONE_TOP_OFFSET, DRAGZONE_LEFT_OFFSET, DRAGZONE_RIGHT_OFFSET));
             IsDraggable = IsDraggableCallbackFunc;
             DblClick = DblClickCallbackFunc;
-            DwmResizeGrip = RESIZEGRIPSIZE;
         }
 
         /// <summary>
