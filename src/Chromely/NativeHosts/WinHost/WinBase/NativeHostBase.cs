@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Threading.Tasks;
 using Chromely.Core.Configuration;
 using Chromely.Core.Host;
@@ -21,6 +22,8 @@ namespace Chromely.NativeHost
 {
     public abstract partial class NativeHostBase : IChromelyNativeHost
     {
+        private const int PROCESS_IDLE_ID = 0;
+
         [DllImport(Libraries.Kernel32)]
         public static extern IntPtr GetConsoleWindow();
 
@@ -246,16 +249,18 @@ namespace Chromely.NativeHost
                 {
                     DetachHooks();
                     ShowWindow(_handle, SW.HIDE);
-                    Task.Run(() =>
+
+                    uint processId = 0;
+                    GetWindowThreadProcessId(_handle, out processId);
+                    if (processId != PROCESS_IDLE_ID)
                     {
-                        uint processId = 0;
-                        GetWindowThreadProcessId(_handle, out processId);
                         var process = Process.GetProcessById((int)processId);
                         if (process != null)
                         {
                             process.Kill();
                         }
-                    });
+                    }
+
                 }
                 catch {}
             }
