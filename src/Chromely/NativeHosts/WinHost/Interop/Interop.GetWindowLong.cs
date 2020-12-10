@@ -11,12 +11,23 @@ namespace Chromely
     {
         public static partial class User32
         {
+            [DllImport(Libraries.User32, EntryPoint = "GetWindowLong")]
+            private static extern IntPtr GetWindowLongPtr32(IntPtr hWnd, int nIndex);
+
+            [DllImport(Libraries.User32, EntryPoint = "GetWindowLongPtr")]
+            private static extern IntPtr GetWindowLongPtr64(IntPtr hWnd, int nIndex);
+
             // We only ever call this on 32 bit so IntPtr is correct
             [DllImport(Libraries.User32, ExactSpelling = true, SetLastError = true)]
             private static extern IntPtr GetWindowLongW(IntPtr hWnd, GWL nIndex);
 
             [DllImport(Libraries.User32, ExactSpelling = true, SetLastError = true)]
-            public static extern IntPtr GetWindowLongPtrW(IntPtr hWnd, GWL nIndex);
+            private static extern IntPtr GetWindowLongPtrW(IntPtr hWnd, GWL nIndex);
+
+            public static IntPtr GetWindowLongPtr(IntPtr hWnd, int nIndex)
+            {
+                return Environment.Is64BitProcess ? GetWindowLongPtr64(hWnd, nIndex) : GetWindowLongPtr32(hWnd, nIndex);
+            }
 
             public static IntPtr GetWindowLong(IntPtr hWnd, GWL nIndex)
             {

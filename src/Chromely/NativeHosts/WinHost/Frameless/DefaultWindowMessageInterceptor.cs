@@ -51,7 +51,7 @@ namespace Chromely.NativeHost
                         foundWidget = true;
                         _dragWindowHandlers = childHandles
                             .Concat(new[] { browserHandle })
-                            .Select(h => new DragWindowHandler(h, _nativeHost, _framelessOption, h == browserHandle))
+                            .Select(h => new DragWindowHandler(h, _nativeHost, _framelessOption))
                             .ToArray();
                     }
                     else
@@ -101,26 +101,25 @@ namespace Chromely.NativeHost
         {
             private readonly IntPtr _handle;
             private readonly IChromelyNativeHost _nativeHost;
-            private readonly bool _isHost;
             private readonly IntPtr _originalWndProc;
-            private readonly SUBCLASSPROC _wndProc;
+            private readonly WndProc _wndProc;
+            private readonly IntPtr _wndProcPtr;
             private readonly FramelessOption _framelessOption;
             private bool _hasCapture;
             private POINT _dragPoint;
 
-            public DragWindowHandler(IntPtr handle, IChromelyNativeHost nativeHost, FramelessOption framelessOption, bool isHost)
+            public DragWindowHandler(IntPtr handle, IChromelyNativeHost nativeHost, FramelessOption framelessOption)
             {
                 _handle = handle;
                 _nativeHost = nativeHost;
                 _framelessOption = framelessOption ?? new FramelessOption();
-                _isHost = isHost;
-                _originalWndProc = GetWindowLong(_handle, GWL.WNDPROC);
-                _wndProc = new SUBCLASSPROC(WndProc);
-                var wndProcPtr = Marshal.GetFunctionPointerForDelegate(_wndProc);
-                SetWindowLong(_handle, GWL.WNDPROC, wndProcPtr);
+                _originalWndProc = GetWindowLongPtr(_handle, (int)GWL.WNDPROC);
+                _wndProc = WndProc;
+                _wndProcPtr = Marshal.GetFunctionPointerForDelegate(_wndProc);
+                SetWindowLongPtr(_handle, (int)GWL.WNDPROC, _wndProcPtr);
             }
 
-            private IntPtr WndProc(IntPtr hWnd, int message, IntPtr wParam, IntPtr lParam, UIntPtr uIdSubclass, UIntPtr dwRefData)
+            private IntPtr WndProc(IntPtr hWnd, uint message, IntPtr wParam, IntPtr lParam)
             {
                 var msg = (WM)message;
                 var isDraggableArea = IsDraggableArea(msg, lParam);
@@ -191,7 +190,7 @@ namespace Chromely.NativeHost
                             break;
                         }
                 }
-                return CallWindowProcW(_originalWndProc, hWnd, msg, wParam, lParam);
+                return CallWindowProc(_originalWndProc, hWnd, message, wParam, lParam);
             }
 
             private bool IsDraggableArea(WM message, IntPtr lParam)

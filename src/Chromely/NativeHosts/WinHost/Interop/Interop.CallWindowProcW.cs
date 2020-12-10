@@ -11,6 +11,14 @@ namespace Chromely
     {
         public static partial class User32
         {
+            public delegate IntPtr WndProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
+
+            [DllImport(Libraries.User32)]
+            public static extern IntPtr DefWindowProc(IntPtr hWnd, uint uMsg, IntPtr wParam, IntPtr lParam);
+
+            [DllImport(Libraries.User32)]
+            public static extern IntPtr CallWindowProc(IntPtr lpPrevWndFunc, IntPtr hWnd, uint uMsg, IntPtr wParam, IntPtr lParam);
+
             [DllImport(Libraries.User32, ExactSpelling = true)]
             public static extern IntPtr CallWindowProcW(
                 IntPtr wndProc,

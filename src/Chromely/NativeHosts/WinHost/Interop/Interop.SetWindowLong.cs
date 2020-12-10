@@ -11,12 +11,26 @@ namespace Chromely
     {
         public static partial class User32
         {
+            [DllImport(Libraries.User32, EntryPoint = "SetWindowLong")]
+            private static extern int SetWindowLong32(HandleRef hWnd, int nIndex, int dwNewLong);
+
+            [DllImport(Libraries.User32, EntryPoint = "SetWindowLongPtr")]
+            private static extern IntPtr SetWindowLongPtr64(HandleRef hWnd, int nIndex, IntPtr dwNewLong);
+
             // We only ever call this on 32 bit so IntPtr is correct
             [DllImport(Libraries.User32, ExactSpelling = true, SetLastError = true)]
             private static extern IntPtr SetWindowLongW(IntPtr hWnd, GWL nIndex, IntPtr dwNewLong);
 
             [DllImport(Libraries.User32, ExactSpelling = true, SetLastError = true)]
-            public static extern IntPtr SetWindowLongPtrW(IntPtr hWnd, GWL nIndex, IntPtr dwNewLong);
+            private static extern IntPtr SetWindowLongPtrW(IntPtr hWnd, GWL nIndex, IntPtr dwNewLong);
+
+            public static IntPtr SetWindowLongPtr(IntPtr hWnd, int nIndex, IntPtr newWndProc)
+            {
+                if (Environment.Is64BitProcess)
+                    return SetWindowLongPtr64(new HandleRef(null, hWnd), nIndex, newWndProc);
+                else
+                    return new IntPtr(SetWindowLong32(new HandleRef(null, hWnd), nIndex, newWndProc.ToInt32()));
+            }
 
             public static IntPtr SetWindowLong(IntPtr hWnd, GWL nIndex, IntPtr dwNewLong)
             {
@@ -51,6 +65,7 @@ namespace Chromely
                 GC.KeepAlive(dwNewLong.Wrapper);
                 return result;
             }
+
         }
     }
 }
