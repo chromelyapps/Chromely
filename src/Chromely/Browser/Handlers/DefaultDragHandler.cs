@@ -60,8 +60,7 @@ namespace Chromely.Browser
         protected override void OnDraggableRegionsChanged(CefBrowser browser, CefFrame frame, CefDraggableRegion[] regions)
         {
             var framelessOption = _config?.WindowOptions?.FramelessOption;
-            if (framelessOption == null ||
-                !framelessOption.UseWebkitAppRegions)
+            if (framelessOption == null || !framelessOption.UseWebkitAppRegions)
             {
                 return;
             }

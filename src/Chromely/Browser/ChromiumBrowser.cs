@@ -4,6 +4,7 @@
 using System;
 using Chromely.Core;
 using Chromely.Core.Configuration;
+using Chromely.Core.Host;
 using Xilium.CefGlue;
 using Xilium.CefGlue.Wrapper;
 
@@ -25,11 +26,14 @@ namespace Chromely.Browser
         /// <summary>
         /// Initializes a new instance of the <see cref="ChromiumBrowser"/> class.
         /// </summary>
-        public ChromiumBrowser(IChromelyConfiguration config, ChromelyHandlersResolver handlersResolver)
+        public ChromiumBrowser(IChromelyNativeHost nativeHost, IChromelyConfiguration config, ChromelyHandlersResolver handlersResolver)
         {
+            NativeHost = nativeHost;
             _config = config;
             _handlersResolver = handlersResolver;
         }
+
+        public IChromelyNativeHost NativeHost { get; private set; }
 
         #region Events Handling Properties
 
@@ -297,6 +301,9 @@ namespace Chromely.Browser
         public void OnFrameLoadEnd(FrameLoadEndEventArgs eventArgs)
         {
             FrameLoadEnd?.Invoke(this, eventArgs);
+
+            // Setup window subclass to intercept message for frameless window dragging
+            NativeHost.SetupMessageInterceptor(_browserWindowHandle);
         }
 
         /// <summary>

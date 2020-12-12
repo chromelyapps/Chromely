@@ -3,10 +3,10 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <Platforms>AnyCPU</Platforms>
-    <ProductVersion>5.1.0.0</ProductVersion>
-    <AssemblyVersion>5.1.0.0</AssemblyVersion>
-    <FileVersion>5.1.0.0</FileVersion>
-    <Version>5.1.0.0</Version>
+    <ProductVersion>5.1.0.2</ProductVersion>
+    <AssemblyVersion>5.1.0.2</AssemblyVersion>
+    <FileVersion>5.1.0.2</FileVersion>
+    <Version>5.1.0.2</Version>
     <Product>Chromely.Core</Product>
     <Authors>Chromely Projects</Authors>
     <Company>Chromely Projects</Company>
@@ -18,9 +18,8 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageReleaseNotes>
-      - Upgrade to v5.1 - https://github.com/chromelyapps/Chromely/issues/225.
-      - Fixes for Fullscreen/Kiosk modes - https://github.com/chromelyapps/Chromely/commit/b383c3f6e165895f8a216e50ba551a6e26c0a65a
-      - Adding a configurable option - UseOnlyCefMessageLoop - https://github.com/chromelyapps/Chromely/commit/df44870ad1928fb95badae7b8c4be7c65f4d5b92
+      - Breaking changes.
+      - Fixes for frameless window - https://github.com/chromelyapps/Chromely/issues/266
     </PackageReleaseNotes>
     <RepositoryUrl>https://github.com/chromelyapps/Chromely</RepositoryUrl>
     <RepositoryType>Github Repository</RepositoryType>

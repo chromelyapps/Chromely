@@ -15,10 +15,8 @@ namespace Chromely
         public Window(IChromelyNativeHost nativeHost,
                       IChromelyConfiguration config,
                       ChromelyHandlersResolver handlersResolver)
-            : base(config, handlersResolver)
+            : base(nativeHost, config, handlersResolver)
         {
-            NativeHost = nativeHost;
-
             Created += OnBrowserCreated;
         }
 
@@ -34,8 +32,6 @@ namespace Chromely
                 return IntPtr.Zero;
             }
         }
-
-        public IChromelyNativeHost NativeHost { get; private set; }
 
         public virtual void Init(object settings)
         {

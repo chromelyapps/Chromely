@@ -3,10 +3,10 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <Platforms>AnyCPU</Platforms>
-    <ProductVersion>5.1.83.1</ProductVersion>
-    <AssemblyVersion>5.1.83.1</AssemblyVersion>
-    <FileVersion>5.1.83.1</FileVersion>
-    <Version>5.1.83.1</Version>
+    <ProductVersion>5.1.83.2</ProductVersion>
+    <AssemblyVersion>5.1.83.2</AssemblyVersion>
+    <FileVersion>5.1.83.2</FileVersion>
+    <Version>5.1.83.2</Version>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Product>Chromely</Product>
@@ -18,7 +18,8 @@
     <PackageTags>CEF Chromium HTML5 Desktop Chromely CefGlue NetStandard .NET Core 3 .NET 5</PackageTags>
     <Description>Primary Chromely implementation library - this is in NetStandard as it can be used in both .NET (Windows), .NET Core and .NET 5 (Windows, Linux, MacOS). Chromely version naming is based Chromely and Chromium versions implemented- major.minor.chromuim version.patch e.g 1.0.70.0.</Description>
     <PackageReleaseNotes>
-      - Fix for https://github.com/chromelyapps/Chromely/issues/257 (replaced http://opensource.spotify.com/cefbuilds/index.html with https://cef-builds.spotifycdn.com/index.html)
+      - Breaking changes.
+      - Fixes for frameless window - https://github.com/chromelyapps/Chromely/issues/266
     </PackageReleaseNotes>
     <RepositoryType>Github Repository</RepositoryType>
     <RepositoryUrl>https://github.com/chromelyapps/Chromely</RepositoryUrl>

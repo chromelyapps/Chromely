@@ -8,6 +8,7 @@ using Chromely.Core;
 using Chromely.Core.Configuration;
 using Chromely.Core.Host;
 using Chromely.Core.Infrastructure;
+using Chromely.NativeHost;
 // ReSharper disable UnusedParameter.Global
 
 namespace Chromely.Integration.TestApp

@@ -48,8 +48,6 @@ namespace Chromely
             {
                 var size = NativeHost.GetWindowClientSize();
                 ResizeBrowser(size.Width, size.Height);
-
-                NativeHost.SetupMessageInterceptor(_browserWindowHandle);
             }
         }
 

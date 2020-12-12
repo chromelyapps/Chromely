@@ -36,7 +36,8 @@ namespace Chromely.NativeHost
         protected const uint IDI_APPLICATION = 32512;
         protected const int CW_USEDEFAULT = unchecked((int)0x80000000);
         protected static RECT DefaultBounds => new RECT(CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT);
-        public static NativeHostBase NativeInstance { get; set; }
+        public static NativeHostBase NativeInstance;
+        protected static bool WindowInterceptorInitialized = false;
         protected IWindowMessageInterceptor _messageInterceptor;
         protected IWindowOptions _options;
         protected IntPtr _handle;
@@ -173,9 +174,10 @@ namespace Chromely.NativeHost
 
         public virtual void SetupMessageInterceptor(IntPtr browserWindowHandle)
         {
-            if (_windowFrameless)
+            if (!WindowInterceptorInitialized && _windowFrameless)
             {
                 _messageInterceptor?.Setup(this, browserWindowHandle);
+                WindowInterceptorInitialized = true;
             }
         }
 
