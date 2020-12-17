@@ -28,7 +28,7 @@
                     return (cef_main_args_t*)ToNativeWindows();
 
                 case CefRuntimePlatform.Linux:
-                case CefRuntimePlatform.MacOSX:
+                case CefRuntimePlatform.MacOS:
                     return (cef_main_args_t*)ToNativePosix();
 
                 default:
@@ -104,7 +104,7 @@
                     return;
 
                 case CefRuntimePlatform.Linux:
-                case CefRuntimePlatform.MacOSX:
+                case CefRuntimePlatform.MacOS:
                     cef_main_args_t_posix.Free((cef_main_args_t_posix*)ptr);
                     return;
 

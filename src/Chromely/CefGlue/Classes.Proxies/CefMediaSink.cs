@@ -26,11 +26,6 @@
         }
 
         /// <summary>
-        /// Returns true if this sink is valid.
-        /// </summary>
-        public bool IsValid => cef_media_sink_t.is_valid(_self) != 0;
-
-        /// <summary>
         /// Returns the name of this sink.
         /// </summary>
         public string Name

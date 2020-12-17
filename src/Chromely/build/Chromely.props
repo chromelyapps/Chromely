@@ -10,7 +10,7 @@ chromely_win_cef_downloader.exe download -h
  
    <PropertyGroup>
      <DownloadCefBinariesExe>"$(MSBuildThisFileDirectory)\chromely_win_cef_downloader.exe"</DownloadCefBinariesExe>
-     <ChromiumVersionParameter>v83</ChromiumVersionParameter>
+     <ChromiumVersionParameter>v86</ChromiumVersionParameter>
     </PropertyGroup>
 
     <Target Condition=" '$(OS)' == 'Windows_NT' " Name="DownloadCefBinaries" AfterTargets="CoreCompile">

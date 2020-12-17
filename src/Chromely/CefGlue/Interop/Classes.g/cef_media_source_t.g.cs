@@ -14,7 +14,6 @@ namespace Xilium.CefGlue.Interop
     {
         internal cef_base_ref_counted_t _base;
         internal IntPtr _get_id;
-        internal IntPtr _is_valid;
         internal IntPtr _is_cast_source;
         internal IntPtr _is_dial_source;
         
@@ -47,12 +46,6 @@ namespace Xilium.CefGlue.Interop
         [SuppressUnmanagedCodeSecurity]
         #endif
         private delegate cef_string_userfree* get_id_delegate(cef_media_source_t* self);
-        
-        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
-        #if !DEBUG
-        [SuppressUnmanagedCodeSecurity]
-        #endif
-        private delegate int is_valid_delegate(cef_media_source_t* self);
         
         [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
         #if !DEBUG
@@ -151,53 +144,36 @@ namespace Xilium.CefGlue.Interop
             return d(self);
         }
         
-        // IsValid
-        private static IntPtr _p5;
-        private static is_valid_delegate _d5;
-        
-        public static int is_valid(cef_media_source_t* self)
-        {
-            is_valid_delegate d;
-            var p = self->_is_valid;
-            if (p == _p5) { d = _d5; }
-            else
-            {
-                d = (is_valid_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(is_valid_delegate));
-                if (_p5 == IntPtr.Zero) { _d5 = d; _p5 = p; }
-            }
-            return d(self);
-        }
-        
         // IsCastSource
-        private static IntPtr _p6;
-        private static is_cast_source_delegate _d6;
+        private static IntPtr _p5;
+        private static is_cast_source_delegate _d5;
         
         public static int is_cast_source(cef_media_source_t* self)
         {
             is_cast_source_delegate d;
             var p = self->_is_cast_source;
-            if (p == _p6) { d = _d6; }
+            if (p == _p5) { d = _d5; }
             else
             {
                 d = (is_cast_source_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(is_cast_source_delegate));
-                if (_p6 == IntPtr.Zero) { _d6 = d; _p6 = p; }
+                if (_p5 == IntPtr.Zero) { _d5 = d; _p5 = p; }
             }
             return d(self);
         }
         
         // IsDialSource
-        private static IntPtr _p7;
-        private static is_dial_source_delegate _d7;
+        private static IntPtr _p6;
+        private static is_dial_source_delegate _d6;
         
         public static int is_dial_source(cef_media_source_t* self)
         {
             is_dial_source_delegate d;
             var p = self->_is_dial_source;
-            if (p == _p7) { d = _d7; }
+            if (p == _p6) { d = _d6; }
             else
             {
                 d = (is_dial_source_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(is_dial_source_delegate));
-                if (_p7 == IntPtr.Zero) { _d7 = d; _p7 = p; }
+                if (_p6 == IntPtr.Zero) { _d6 = d; _p6 = p; }
             }
             return d(self);
         }

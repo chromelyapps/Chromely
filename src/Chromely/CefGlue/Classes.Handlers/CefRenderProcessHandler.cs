@@ -13,23 +13,6 @@
     /// </summary>
     public abstract unsafe partial class CefRenderProcessHandler
     {
-        private void on_render_thread_created(cef_render_process_handler_t* self, cef_list_value_t* extra_info)
-        {
-            CheckSelf(self);
-
-            var mExtraInfo = CefListValue.FromNative(extra_info);
-            OnRenderThreadCreated(mExtraInfo);
-            mExtraInfo.Dispose();
-        }
-
-        /// <summary>
-        /// Called after the render process main thread has been created.
-        /// </summary>
-        protected virtual void OnRenderThreadCreated(CefListValue extraInfo)
-        {
-        }
-
-
         private void on_web_kit_initialized(cef_render_process_handler_t* self)
         {
             CheckSelf(self);

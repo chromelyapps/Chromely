@@ -55,13 +55,13 @@ namespace Xilium.CefGlue.Interop
         #if !DEBUG
         [SuppressUnmanagedCodeSecurity]
         #endif
-        private delegate int get_data_resource_delegate(cef_resource_bundle_t* self, int resource_id, void** data, UIntPtr* data_size);
+        private delegate cef_binary_value_t* get_data_resource_delegate(cef_resource_bundle_t* self, int resource_id);
         
         [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
         #if !DEBUG
         [SuppressUnmanagedCodeSecurity]
         #endif
-        private delegate int get_data_resource_for_scale_delegate(cef_resource_bundle_t* self, int resource_id, CefScaleFactor scale_factor, void** data, UIntPtr* data_size);
+        private delegate cef_binary_value_t* get_data_resource_for_scale_delegate(cef_resource_bundle_t* self, int resource_id, CefScaleFactor scale_factor);
         
         // AddRef
         private static IntPtr _p0;
@@ -152,7 +152,7 @@ namespace Xilium.CefGlue.Interop
         private static IntPtr _p5;
         private static get_data_resource_delegate _d5;
         
-        public static int get_data_resource(cef_resource_bundle_t* self, int resource_id, void** data, UIntPtr* data_size)
+        public static cef_binary_value_t* get_data_resource(cef_resource_bundle_t* self, int resource_id)
         {
             get_data_resource_delegate d;
             var p = self->_get_data_resource;
@@ -162,14 +162,14 @@ namespace Xilium.CefGlue.Interop
                 d = (get_data_resource_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_data_resource_delegate));
                 if (_p5 == IntPtr.Zero) { _d5 = d; _p5 = p; }
             }
-            return d(self, resource_id, data, data_size);
+            return d(self, resource_id);
         }
         
         // GetDataResourceForScale
         private static IntPtr _p6;
         private static get_data_resource_for_scale_delegate _d6;
         
-        public static int get_data_resource_for_scale(cef_resource_bundle_t* self, int resource_id, CefScaleFactor scale_factor, void** data, UIntPtr* data_size)
+        public static cef_binary_value_t* get_data_resource_for_scale(cef_resource_bundle_t* self, int resource_id, CefScaleFactor scale_factor)
         {
             get_data_resource_for_scale_delegate d;
             var p = self->_get_data_resource_for_scale;
@@ -179,7 +179,7 @@ namespace Xilium.CefGlue.Interop
                 d = (get_data_resource_for_scale_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_data_resource_for_scale_delegate));
                 if (_p6 == IntPtr.Zero) { _d6 = d; _p6 = p; }
             }
-            return d(self, resource_id, scale_factor, data, data_size);
+            return d(self, resource_id, scale_factor);
         }
         
     }

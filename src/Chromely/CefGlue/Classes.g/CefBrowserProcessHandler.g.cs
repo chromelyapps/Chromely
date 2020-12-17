@@ -25,9 +25,8 @@ namespace Xilium.CefGlue
         private cef_browser_process_handler_t.has_at_least_one_ref_delegate _ds3;
         private cef_browser_process_handler_t.on_context_initialized_delegate _ds4;
         private cef_browser_process_handler_t.on_before_child_process_launch_delegate _ds5;
-        private cef_browser_process_handler_t.on_render_process_thread_created_delegate _ds6;
-        private cef_browser_process_handler_t.get_print_handler_delegate _ds7;
-        private cef_browser_process_handler_t.on_schedule_message_pump_work_delegate _ds8;
+        private cef_browser_process_handler_t.get_print_handler_delegate _ds6;
+        private cef_browser_process_handler_t.on_schedule_message_pump_work_delegate _ds7;
         
         protected CefBrowserProcessHandler()
         {
@@ -45,12 +44,10 @@ namespace Xilium.CefGlue
             _self->_on_context_initialized = Marshal.GetFunctionPointerForDelegate(_ds4);
             _ds5 = new cef_browser_process_handler_t.on_before_child_process_launch_delegate(on_before_child_process_launch);
             _self->_on_before_child_process_launch = Marshal.GetFunctionPointerForDelegate(_ds5);
-            _ds6 = new cef_browser_process_handler_t.on_render_process_thread_created_delegate(on_render_process_thread_created);
-            _self->_on_render_process_thread_created = Marshal.GetFunctionPointerForDelegate(_ds6);
-            _ds7 = new cef_browser_process_handler_t.get_print_handler_delegate(get_print_handler);
-            _self->_get_print_handler = Marshal.GetFunctionPointerForDelegate(_ds7);
-            _ds8 = new cef_browser_process_handler_t.on_schedule_message_pump_work_delegate(on_schedule_message_pump_work);
-            _self->_on_schedule_message_pump_work = Marshal.GetFunctionPointerForDelegate(_ds8);
+            _ds6 = new cef_browser_process_handler_t.get_print_handler_delegate(get_print_handler);
+            _self->_get_print_handler = Marshal.GetFunctionPointerForDelegate(_ds6);
+            _ds7 = new cef_browser_process_handler_t.on_schedule_message_pump_work_delegate(on_schedule_message_pump_work);
+            _self->_on_schedule_message_pump_work = Marshal.GetFunctionPointerForDelegate(_ds7);
         }
         
         ~CefBrowserProcessHandler()

@@ -3,10 +3,10 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <Platforms>AnyCPU</Platforms>
-    <ProductVersion>5.1.0.2</ProductVersion>
-    <AssemblyVersion>5.1.0.2</AssemblyVersion>
-    <FileVersion>5.1.0.2</FileVersion>
-    <Version>5.1.0.2</Version>
+    <ProductVersion>5.1.1.0</ProductVersion>
+    <AssemblyVersion>5.1.1.0</AssemblyVersion>
+    <FileVersion>5.1.1.0</FileVersion>
+    <Version>5.1.1.0</Version>
     <Product>Chromely.Core</Product>
     <Authors>Chromely Projects</Authors>
     <Company>Chromely Projects</Company>
@@ -20,6 +20,7 @@
     <PackageReleaseNotes>
       - Breaking changes.
       - Fixes for frameless window - https://github.com/chromelyapps/Chromely/issues/266
+      - Upgraded to CefGlue/Chromium v86.
     </PackageReleaseNotes>
     <RepositoryUrl>https://github.com/chromelyapps/Chromely</RepositoryUrl>
     <RepositoryType>Github Repository</RepositoryType>

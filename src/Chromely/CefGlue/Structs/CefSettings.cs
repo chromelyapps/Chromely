@@ -53,6 +53,13 @@
         public string MainBundlePath { get; set; }
 
         /// <summary>
+        /// Set to true to enable use of the Chrome runtime in CEF. This feature is
+        /// considered experimental and is not recommended for most users at this time.
+        /// See issue #2969 for details.
+        /// </summary>
+        public bool ChromeRuntime { get; set; }
+
+        /// <summary>
         /// Set to <c>true</c> to have the browser process message loop run in a separate
         /// thread. If <c>false</c> than the CefDoMessageLoopWork() function must be
         /// called from your application message loop. This option is only supported on
@@ -286,6 +293,7 @@
             cef_string_t.Copy(BrowserSubprocessPath, &ptr->browser_subprocess_path);
             cef_string_t.Copy(FrameworkDirPath, &ptr->framework_dir_path);
             cef_string_t.Copy(MainBundlePath, &ptr->main_bundle_path);
+            ptr->chrome_runtime = ChromeRuntime ? 1 : 0;
             ptr->multi_threaded_message_loop = MultiThreadedMessageLoop ? 1 : 0;
             ptr->windowless_rendering_enabled = WindowlessRenderingEnabled ? 1 : 0;
             ptr->external_message_pump = ExternalMessagePump ? 1 : 0;

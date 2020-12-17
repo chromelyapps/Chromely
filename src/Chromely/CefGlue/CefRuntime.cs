@@ -25,11 +25,11 @@
             var platformId = Environment.OSVersion.Platform;
 
             if (platformId == PlatformID.MacOSX)
-                return CefRuntimePlatform.MacOSX;
+                return CefRuntimePlatform.MacOS;
 
             int p = (int)platformId;
             if ((p == 4) || (p == 128))
-                return IsRunningOnMac() ? CefRuntimePlatform.MacOSX : CefRuntimePlatform.Linux;
+                return IsRunningOnMac() ? CefRuntimePlatform.MacOS : CefRuntimePlatform.Linux;
 
             return CefRuntimePlatform.Windows;
         }
@@ -142,7 +142,7 @@
             switch (CefRuntime.Platform)
             {
                 case CefRuntimePlatform.Windows: expected = libcef.CEF_API_HASH_PLATFORM_WIN; break;
-                case CefRuntimePlatform.MacOSX: expected = libcef.CEF_API_HASH_PLATFORM_MACOSX; break;
+                case CefRuntimePlatform.MacOS: expected = libcef.CEF_API_HASH_PLATFORM_MACOS; break;
                 case CefRuntimePlatform.Linux: expected = libcef.CEF_API_HASH_PLATFORM_LINUX; break;
                 default: throw new PlatformNotSupportedException();
             }
@@ -724,6 +724,12 @@
                 var n_result = libcef.parse_json(&n_value, options);
                 return CefValue.FromNativeOrNull(n_result);
             }
+        }
+
+        public static CefValue ParseJson(IntPtr json, int jsonSize, CefJsonParserOptions options)
+        {
+            var n_result = libcef.parse_json_buffer((void*)json, checked((UIntPtr)jsonSize), options);
+            return CefValue.FromNativeOrNull(n_result);
         }
 
         /// <summary>

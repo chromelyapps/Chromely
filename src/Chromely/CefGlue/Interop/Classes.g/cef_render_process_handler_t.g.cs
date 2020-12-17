@@ -13,7 +13,6 @@ namespace Xilium.CefGlue.Interop
     internal unsafe struct cef_render_process_handler_t
     {
         internal cef_base_ref_counted_t _base;
-        internal IntPtr _on_render_thread_created;
         internal IntPtr _on_web_kit_initialized;
         internal IntPtr _on_browser_created;
         internal IntPtr _on_browser_destroyed;
@@ -47,12 +46,6 @@ namespace Xilium.CefGlue.Interop
         [SuppressUnmanagedCodeSecurity]
         #endif
         internal delegate int has_at_least_one_ref_delegate(cef_render_process_handler_t* self);
-        
-        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
-        #if !DEBUG
-        [SuppressUnmanagedCodeSecurity]
-        #endif
-        internal delegate void on_render_thread_created_delegate(cef_render_process_handler_t* self, cef_list_value_t* extra_info);
         
         [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
         #if !DEBUG

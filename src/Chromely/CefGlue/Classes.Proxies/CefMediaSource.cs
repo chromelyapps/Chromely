@@ -26,11 +26,6 @@
         }
 
         /// <summary>
-        /// Returns true if this source is valid.
-        /// </summary>
-        public bool IsValid => cef_media_source_t.is_valid(_self) != 0;
-
-        /// <summary>
         /// Returns true if this source outputs its content via Cast.
         /// </summary>
         public bool IsCastSource => cef_media_source_t.is_cast_source(_self) != 0;

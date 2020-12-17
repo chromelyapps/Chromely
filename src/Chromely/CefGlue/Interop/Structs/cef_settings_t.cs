@@ -20,6 +20,7 @@ namespace Xilium.CefGlue.Interop
         public cef_string_t browser_subprocess_path;
         public cef_string_t framework_dir_path;
         public cef_string_t main_bundle_path;
+        public int chrome_runtime;
         public int multi_threaded_message_loop;
         public int external_message_pump;
         public int windowless_rendering_enabled;

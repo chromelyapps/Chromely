@@ -70,7 +70,7 @@ namespace Xilium.CefGlue
         /// <summary>
         /// The main thread in the renderer. Used for all WebKit and V8 interaction.
         /// Tasks may be posted to this thread after
-        /// CefRenderProcessHandler::OnRenderThreadCreated but are not guaranteed to
+        /// CefRenderProcessHandler::OnWebKitInitialized but are not guaranteed to
         /// run before sub-process termination (sub-processes may be killed at any time
         /// without warning).
         /// </summary>

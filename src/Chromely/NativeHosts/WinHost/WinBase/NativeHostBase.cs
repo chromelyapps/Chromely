@@ -84,7 +84,7 @@ namespace Chromely.NativeHost
             wcex.hCursor = User32.LoadCursorW(IntPtr.Zero, (IntPtr)CursorResourceId.IDC_ARROW);
             wcex.hbrBackground = Gdi32.GetStockObject(Gdi32.StockObject.WHITE_BRUSH);
             wcex.lpszMenuName = null;
-            wcex.hInstance = _consoleParentInstance; 
+            wcex.hInstance = _consoleParentInstance;
 
             fixed (char* c = Chromely_WINDOW_CLASS)
             {

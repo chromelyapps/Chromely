@@ -6,6 +6,6 @@
     {
         Windows,
         Linux,
-        MacOSX,
+        MacOS,
     }
 }

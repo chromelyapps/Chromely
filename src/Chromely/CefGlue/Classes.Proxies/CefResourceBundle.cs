@@ -35,59 +35,29 @@
         }
 
         /// <summary>
-        /// Retrieves the contents of the specified scale independent |resource_id|.
-        /// If the value is found then |data| and |data_size| will be populated and
-        /// this method will return true. If the value is not found then this method
-        /// will return false. The returned |data| pointer will remain resident in
-        /// memory and should not be freed. Include cef_pack_resources.h for a listing
-        /// of valid resource ID values.
+        /// Returns a CefBinaryValue containing the decompressed contents of the
+        /// specified scale independent |resource_id| or NULL if not found. Include
+        /// cef_pack_resources.h for a listing of valid resource ID values.
         /// </summary>
-        public bool GetDataResource(int resourceId, out void* data, out UIntPtr dataSize)
+        public CefBinaryValue GetDataResource(int resource_id)
         {
-            void* n_data;
-            UIntPtr n_dataSize;
-            var n_result = cef_resource_bundle_t.get_data_resource(_self, resourceId, &n_data, &n_dataSize);
-            if (n_result != 0)
-            {
-                data = n_data;
-                dataSize = n_dataSize;
-                return true;
-            }
-            else
-            {
-                data = null;
-                dataSize = UIntPtr.Zero;
-                return false;
-            }
+            return CefBinaryValue.FromNativeOrNull(
+                cef_resource_bundle_t.get_data_resource(_self, resource_id)
+                );
         }
 
         /// <summary>
-        /// Retrieves the contents of the specified |resource_id| nearest the scale
-        /// factor |scale_factor|. Use a |scale_factor| value of SCALE_FACTOR_NONE for
-        /// scale independent resources or call GetDataResource instead. If the value
-        /// is found then |data| and |data_size| will be populated and this method will
-        /// return true. If the value is not found then this method will return false.
-        /// The returned |data| pointer will remain resident in memory and should not
-        /// be freed. Include cef_pack_resources.h for a listing of valid resource ID
-        /// values.
+        /// Returns a CefBinaryValue containing the decompressed contents of the
+        /// specified |resource_id| nearest the scale factor |scale_factor| or NULL if
+        /// not found. Use a |scale_factor| value of SCALE_FACTOR_NONE for scale
+        /// independent resources or call GetDataResource instead.Include
+        /// cef_pack_resources.h for a listing of valid resource ID values.
         /// </summary>
-        public bool GetDataResourceForScale(int resourceId, CefScaleFactor scaleFactor, out void* data, out UIntPtr dataSize)
+        public CefBinaryValue GetDataResourceForScale(int resource_id, CefScaleFactor scale_factor)
         {
-            void* n_data;
-            UIntPtr n_dataSize;
-            var n_result = cef_resource_bundle_t.get_data_resource_for_scale(_self, resourceId, scaleFactor, &n_data, &n_dataSize);
-            if (n_result != 0)
-            {
-                data = n_data;
-                dataSize = n_dataSize;
-                return true;
-            }
-            else
-            {
-                data = null;
-                dataSize = UIntPtr.Zero;
-                return false;
-            }
+            return CefBinaryValue.FromNativeOrNull(
+                cef_resource_bundle_t.get_data_resource_for_scale(_self, resource_id, scale_factor)
+                );
         }
     }
 }

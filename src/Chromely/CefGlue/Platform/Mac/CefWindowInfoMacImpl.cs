@@ -20,7 +20,7 @@
         public CefWindowInfoMacImpl(cef_window_info_t* ptr)
             : base(false)
         {
-            if (CefRuntime.Platform != CefRuntimePlatform.MacOSX)
+            if (CefRuntime.Platform != CefRuntimePlatform.MacOS)
                 throw new InvalidOperationException();
 
             _self = (cef_window_info_t_mac*)ptr;

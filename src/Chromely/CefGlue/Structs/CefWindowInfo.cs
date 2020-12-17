@@ -39,7 +39,7 @@
             {
                 case CefRuntimePlatform.Windows: return new CefWindowInfoWindowsImpl();
                 case CefRuntimePlatform.Linux: return new CefWindowInfoLinuxImpl();
-                case CefRuntimePlatform.MacOSX: return new CefWindowInfoMacImpl();
+                case CefRuntimePlatform.MacOS: return new CefWindowInfoMacImpl();
                 default: throw new NotSupportedException();
             }
         }
@@ -50,7 +50,7 @@
             {
                 case CefRuntimePlatform.Windows: return new CefWindowInfoWindowsImpl(ptr);
                 case CefRuntimePlatform.Linux: return new CefWindowInfoLinuxImpl(ptr);
-                case CefRuntimePlatform.MacOSX: return new CefWindowInfoMacImpl(ptr);
+                case CefRuntimePlatform.MacOS: return new CefWindowInfoMacImpl(ptr);
                 default: throw new NotSupportedException();
             }
         }
