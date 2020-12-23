@@ -28,7 +28,7 @@ namespace Chromely
             IDictionary<UrlSchemeType, Type> urlTypesMapper = new Dictionary<UrlSchemeType, Type>();
             urlTypesMapper.Add(UrlSchemeType.Resource, typeof(IDefaultResourceCustomHandler));
             urlTypesMapper.Add(UrlSchemeType.AssemblyResource, typeof(IDefaultAssemblyResourceCustomHandler));
-            urlTypesMapper.Add(UrlSchemeType.LocalRquest, typeof(IDefaultRequestCustomHandler));
+            urlTypesMapper.Add(UrlSchemeType.LocalRequest, typeof(IDefaultRequestCustomHandler));
             urlTypesMapper.Add(UrlSchemeType.ExternalRequest, typeof(IDefaultExernalRequestCustomHandler));
 
             foreach (var urlType in urlTypesMapper)
@@ -86,7 +86,7 @@ namespace Chromely
                 {
                     if (item.UrlSchemeType == UrlSchemeType.Resource ||
                         item.UrlSchemeType == UrlSchemeType.AssemblyResource ||
-                        item.UrlSchemeType == UrlSchemeType.LocalRquest ||
+                        item.UrlSchemeType == UrlSchemeType.LocalRequest ||
                         item.UrlSchemeType == UrlSchemeType.ExternalRequest)
                     {
                         _requestSchemeProvider.Add(item);

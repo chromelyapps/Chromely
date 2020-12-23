@@ -36,7 +36,7 @@ namespace Chromely.Core.Network
                  string.IsNullOrWhiteSpace(url))
                 return false;
 
-            return urlSchemes.Any((x => x.IsUrlOfSameScheme(url) && (x.UrlSchemeType == UrlSchemeType.LocalRquest)));
+            return urlSchemes.Any((x => x.IsUrlOfSameScheme(url) && (x.UrlSchemeType == UrlSchemeType.LocalRequest)));
         }
 
         public static bool IsUrlRegisteredExternalRequestScheme(this List<UrlScheme> urlSchemes, string url)
@@ -46,7 +46,7 @@ namespace Chromely.Core.Network
                  string.IsNullOrWhiteSpace(url))
                 return false;
 
-            return urlSchemes.Any((x => x.IsUrlOfSameScheme(url) && (x.UrlSchemeType == UrlSchemeType.LocalRquest)));
+            return urlSchemes.Any((x => x.IsUrlOfSameScheme(url) && (x.UrlSchemeType == UrlSchemeType.LocalRequest)));
         }
 
         public static IEnumerable<UrlScheme> GetSchemesByType(this List<UrlScheme> urlSchemes, UrlSchemeType type)

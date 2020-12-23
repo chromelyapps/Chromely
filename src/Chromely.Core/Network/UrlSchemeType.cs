@@ -9,7 +9,7 @@ namespace Chromely.Core.Network
         Resource,
         AssemblyResource,
         Command,
-        LocalRquest,
+        LocalRequest,
         ExternalRequest,
         ExternalBrowser,
         Other
