@@ -179,6 +179,22 @@ namespace Chromely.NativeHost
 
             return size;
         }
+        
+        public static Rectangle GetWindowBounds(IntPtr hwnd)
+        {
+            var bounds = new Rectangle();
+            if (hwnd != IntPtr.Zero)
+            {
+                RECT rect = new RECT();
+                GetWindowRect(hwnd, ref rect);
+                bounds.Width = rect.Width;
+                bounds.Height = rect.Height;
+                bounds.X = rect.X;
+                bounds.Y = rect.Y;
+            }
+
+            return bounds;
+        }
     }
 
     internal static class IconHandler

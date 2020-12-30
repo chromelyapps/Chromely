@@ -17,6 +17,7 @@ namespace Chromely.NativeHost
     {
         public event EventHandler<CreatedEventArgs> HostCreated;
         public event EventHandler<MovingEventArgs> HostMoving;
+        public event EventHandler<MovedEventArgs> HostMoved;
         public event EventHandler<SizeChangedEventArgs> HostSizeChanged;
         public event EventHandler<CloseEventArgs> HostClose;
 
@@ -87,6 +88,11 @@ namespace Chromely.NativeHost
         public virtual Size GetWindowClientSize()
         {
             return new Size();
+        }
+
+        public virtual Rectangle GetWindowClientBounds()
+        {
+            return new Rectangle();
         }
 
         public virtual float GetWindowDpiScale()
@@ -172,7 +178,7 @@ namespace Chromely.NativeHost
         {
             if (_viewHandle != IntPtr.Zero && _isInitialized)
             {
-                HostSizeChanged?.Invoke(this, new SizeChangedEventArgs(width, height));
+                HostSizeChanged?.Invoke(this, new SizeChangedEventArgs(width, height, width, height));
             }
         }
 

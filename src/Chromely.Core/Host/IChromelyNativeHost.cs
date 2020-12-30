@@ -11,6 +11,7 @@ namespace Chromely.Core.Host
     {
         event EventHandler<CreatedEventArgs> HostCreated;
         event EventHandler<MovingEventArgs> HostMoving;
+        event EventHandler<MovedEventArgs> HostMoved;
         event EventHandler<SizeChangedEventArgs> HostSizeChanged;
         event EventHandler<CloseEventArgs> HostClose;
         IntPtr Handle { get; }
@@ -18,6 +19,7 @@ namespace Chromely.Core.Host
         IntPtr GetNativeHandle();
         void Run();
         Size GetWindowClientSize();
+        Rectangle GetWindowClientBounds();
         float GetWindowDpiScale();
         void SetupMessageInterceptor(IntPtr browserWindowHandle);
         void ResizeBrowser(IntPtr browserWindow, int width, int height);

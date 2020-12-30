@@ -7,14 +7,18 @@ namespace Chromely.Core.Host
 {
     public class SizeChangedEventArgs : EventArgs
     {
-        public SizeChangedEventArgs(int width, int height)
+        public SizeChangedEventArgs(int width, int height, int outerWidth, int outerHeight)
         {
             Width = width;
             Height = height;
+            OuterWidth = outerWidth;
+            OuterHeight = outerHeight;
         }
 
         public IntPtr GdkHandle { get; }
         public int Width { get; }
         public int Height { get; }
+        public int OuterWidth { get; }
+        public int OuterHeight { get; }
     }
 }
