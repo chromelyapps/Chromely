@@ -16,6 +16,7 @@ namespace Chromely.Core
     {
         private IServiceCollection _serviceCollection;
         private IServiceProvider _serviceProvider;
+        private ChromelyServiceProviderFactory _serviceProviderFactory;
         private ChromelyApp _chromelyApp;
         private IChromelyConfiguration _config;
         private IChromelyWindow _chromelyWindow;
@@ -40,6 +41,12 @@ namespace Chromely.Core
         public AppBuilder UseServices(IServiceCollection serviceCollection)
         {
             _serviceCollection = serviceCollection;
+            return this;
+        }
+
+        public AppBuilder UseServiceProviderFactory(ChromelyServiceProviderFactory serviceProviderFactory)
+        {
+            _serviceProviderFactory = serviceProviderFactory;
             return this;
         }
 
@@ -107,13 +114,22 @@ namespace Chromely.Core
 
             _chromelyApp.ConfigureServices(_serviceCollection);
 
-            // This must be done before registring core services
+            // This must be done before registering core services
             RegisterUseComponents(_serviceCollection);
 
             _chromelyApp.ConfigureCoreServices(_serviceCollection);
             _chromelyApp.ConfigureServiceResolvers(_serviceCollection);
             _chromelyApp.ConfigureDefaultHandlers(_serviceCollection);
-            _serviceProvider = _serviceCollection.BuildServiceProvider();
+
+            if (_serviceProviderFactory != null)
+            {
+                _serviceProvider = _serviceProviderFactory.BuildServiceProvider(_serviceCollection);
+            }
+            else
+            {
+                _serviceProvider = _serviceCollection.BuildServiceProvider();
+            }
+
             _chromelyApp.Initialize(_serviceProvider);
             _chromelyApp.RegisterControllerRoutes(_serviceProvider);
 

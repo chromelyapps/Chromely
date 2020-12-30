@@ -77,7 +77,7 @@ namespace Chromely.Tests.ChromelyCore
                 };
 
                 var schemeDefaultResource = new UrlScheme("default-resource", "local", string.Empty, string.Empty, UrlSchemeType.Resource, false);
-                var schemeCustomHttp = new UrlScheme("default-request-http", "http", "chromely.com", string.Empty, UrlSchemeType.LocalRquest, false);
+                var schemeCustomHttp = new UrlScheme("default-request-http", "http", "chromely.com", string.Empty, UrlSchemeType.LocalRequest, false);
                 var schemeCommandHttp = new UrlScheme("default-command-http", "http", "command.com", string.Empty, UrlSchemeType.Command, false);
                 var schemeExternal1 = new UrlScheme("chromely-site", string.Empty, string.Empty, "https://github.com/chromelyapps/Chromely", UrlSchemeType.ExternalBrowser, true);
 
