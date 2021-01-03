@@ -139,12 +139,22 @@ namespace Chromely.Browser
         /// </summary>
         public CefBrowser Browser { get; private set; }
 
+        public CefBrowserHost BrowserHost 
+        { 
+            get
+            {
+                if (_browserWindowHandle != IntPtr.Zero)
+                {
+                    return Browser?.GetHost();
+                }
+
+                return null;
+            }
+        }
+
         internal void NotifyMoveOrResize()
         {
-            if (_browserWindowHandle != IntPtr.Zero)
-            {
-                Browser?.GetHost()?.NotifyMoveOrResizeStarted();
-            }
+            NotifyMoveOrResizeStarted();
         }
 
         protected virtual CefClient CreateClient() {

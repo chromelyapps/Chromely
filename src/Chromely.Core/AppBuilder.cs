@@ -29,7 +29,7 @@ namespace Chromely.Core
             _config = null;
             _chromelyUseConfigType = null;
             _chromelyUseWindowType = null;
-            _stepCompleted = 1;
+            _stepCompleted = -1;
         }
 
         public static AppBuilder Create()

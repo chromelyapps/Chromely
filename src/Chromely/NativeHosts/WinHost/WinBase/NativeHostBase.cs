@@ -181,9 +181,9 @@ namespace Chromely.NativeHost
             }
         }
 
-        public virtual void ResizeBrowser(IntPtr browserHande, int width, int height)
+        public virtual void ResizeBrowser(IntPtr browserHandle, int width, int height)
         {
-            SetWindowPos(browserHande, IntPtr.Zero, 0, 0, width, height, SWP.NOZORDER);
+            SetWindowPos(browserHandle, IntPtr.Zero, 0, 0, width, height, SWP.NOZORDER);
         }
 
         public virtual WindowState GetWindowState() 
