@@ -95,7 +95,7 @@ Custom scheme handler factory:
         public bool IsSecure { get; set; }
     }
 
-    public class CustomRequestSchemeHandlerFactory : DefaultResourceSchemeHandlerFactory
+    public class CustomRequestSchemeHandlerFactory : DefaultRequestSchemeHandlerFactory
     {
     }
 ````
