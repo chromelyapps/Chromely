@@ -95,8 +95,16 @@ Custom scheme handler factory:
         public bool IsSecure { get; set; }
     }
 
-    public class CustomRequestSchemeHandlerFactory : DefaultResourceSchemeHandlerFactory
+    public class CustomRequestSchemeHandler : DefaultRequestSchemeHandler
     {
+    }
+    
+    public class CustomRequestSchemeHandlerFactory : DefaultRequestSchemeHandlerFactory
+    {
+        protected override CefResourceHandler Create(CefBrowser browser, CefFrame frame, string schemeName, CefRequest request)
+        {
+            return new CustomRequestSchemeHandler();
+        }
     }
 ````
 
