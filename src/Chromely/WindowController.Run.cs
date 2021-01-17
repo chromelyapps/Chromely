@@ -20,7 +20,7 @@ namespace Chromely
         /// <summary>
         /// Runs the application.
         /// This call does not return until the application terminates
-        /// or an error is occured.
+        /// or an error is occurred.
         /// </summary>
         /// <param name="args">
         /// The args.

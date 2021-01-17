@@ -99,7 +99,7 @@ namespace Chromely.Browser
                                 new ChromelyResponse
                                 {
                                     Status = (int)HttpStatusCode.BadRequest,
-                                    Data = "An error occured."
+                                    Data = "An error occurred."
                                 };
                         }
                         finally
@@ -151,7 +151,7 @@ namespace Chromely.Browser
                                 new ChromelyResponse
                                 {
                                     Status = (int)HttpStatusCode.BadRequest,
-                                    Data = "An error occured."
+                                    Data = "An error occurred."
                                 };
                         }
                         finally
