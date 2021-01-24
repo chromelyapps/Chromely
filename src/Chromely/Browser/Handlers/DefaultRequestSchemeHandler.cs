@@ -21,18 +21,24 @@ namespace Chromely.Browser
         protected readonly IChromelyRequestSchemeProvider _requestSchemeProvider;
         protected readonly IChromelyRequestTaskRunner _requestTaskRunner;
         protected readonly IChromelySerializerUtil _serializerUtil;
+        protected readonly IChromelyErrorHandler _chromelyErrorHandler;
 
         protected IChromelyResponse _chromelyResponse;
         protected byte[] _responseBytes;
         protected bool _completed;
         protected int _totalBytesRead;
 
-        public DefaultRequestSchemeHandler(IChromelyRouteProvider routeProvider, IChromelyRequestSchemeProvider requestSchemeProvider, IChromelyRequestTaskRunner requestTaskRunner, IChromelySerializerUtil serializerUtil)
+        public DefaultRequestSchemeHandler(IChromelyRouteProvider routeProvider,
+                                           IChromelyRequestSchemeProvider requestSchemeProvider,
+                                           IChromelyRequestTaskRunner requestTaskRunner,
+                                           IChromelySerializerUtil serializerUtil,
+                                           IChromelyErrorHandler chromelyErrorHandler)
         {
             _routeProvider = routeProvider;
             _requestSchemeProvider = requestSchemeProvider;
             _requestTaskRunner = requestTaskRunner;
             _serializerUtil = serializerUtil;
+            _chromelyErrorHandler = chromelyErrorHandler;
         }
 
         [Obsolete]
@@ -56,8 +62,13 @@ namespace Chromely.Browser
 
                 return true;
             }
+            else
+            {
+                _chromelyResponse = _chromelyErrorHandler.HandleRouteNotFound(request.Identifier.ToString(), request.Url);
+                string jsonData = _serializerUtil.EnsureResponseDataIsJson(_chromelyResponse.Data);
+                _responseBytes = Encoding.UTF8.GetBytes(jsonData);
+            }
 
-            Logger.Instance.Log.LogWarning($"Url {request.Url} is not of a registered custom scheme.");
             callback.Dispose();
             return false;
 
@@ -71,14 +82,11 @@ namespace Chromely.Browser
                     {
                         try
                         {
-                            var response = new ChromelyResponse();
-                            if (string.IsNullOrEmpty(path))
+                            if (string.IsNullOrWhiteSpace(path))
                             {
-                                response.ReadyState = (int)ReadyState.ResponseIsReady;
-                                response.Status = (int)HttpStatusCode.BadRequest;
-                                response.StatusText = "Bad Request";
-
-                                _chromelyResponse = response;
+                                _chromelyResponse = _chromelyErrorHandler.HandleRouteNotFound(request.Identifier.ToString(), path);
+                                string jsonData = _serializerUtil.EnsureResponseDataIsJson(_chromelyResponse.Data);
+                                _responseBytes = Encoding.UTF8.GetBytes(jsonData);
                             }
                             else
                             {
@@ -93,14 +101,10 @@ namespace Chromely.Browser
                         }
                         catch (Exception exception)
                         {
-                            Logger.Instance.Log.LogError(exception, exception.Message);
-
-                            _chromelyResponse =
-                                new ChromelyResponse
-                                {
-                                    Status = (int)HttpStatusCode.BadRequest,
-                                    Data = "An error occurred."
-                                };
+                            var chromelyRequest = new ChromelyRequest() { Id = request.Identifier.ToString(), RouteUrl = request.Url };
+                            _chromelyResponse = _chromelyErrorHandler.HandleError(chromelyRequest, exception);
+                            string jsonData = _serializerUtil.EnsureResponseDataIsJson(_chromelyResponse.Data);
+                            _responseBytes = Encoding.UTF8.GetBytes(jsonData);
                         }
                         finally
                         {
@@ -122,14 +126,11 @@ namespace Chromely.Browser
                     {
                         try
                         {
-                            var response = new ChromelyResponse();
-                            if (string.IsNullOrEmpty(path))
+                            if (string.IsNullOrWhiteSpace(path))
                             {
-                                response.ReadyState = (int)ReadyState.ResponseIsReady;
-                                response.Status = (int)System.Net.HttpStatusCode.BadRequest;
-                                response.StatusText = "Bad Request";
-
-                                _chromelyResponse = response;
+                                _chromelyResponse = _chromelyErrorHandler.HandleRouteNotFound(request.Identifier.ToString(), path);
+                                string jsonData = _serializerUtil.EnsureResponseDataIsJson(_chromelyResponse.Data);
+                                _responseBytes = Encoding.UTF8.GetBytes(jsonData);
                             }
                             else
                             {
@@ -145,14 +146,10 @@ namespace Chromely.Browser
                         }
                         catch (Exception exception)
                         {
-                            Logger.Instance.Log.LogError(exception, exception.Message);
-
-                            _chromelyResponse =
-                                new ChromelyResponse
-                                {
-                                    Status = (int)HttpStatusCode.BadRequest,
-                                    Data = "An error occurred."
-                                };
+                            var chromelyRequest = new ChromelyRequest() { Id = request.Identifier.ToString(), RouteUrl = request.Url };
+                            _chromelyResponse = _chromelyErrorHandler.HandleError(chromelyRequest, exception);
+                            string jsonData = _serializerUtil.EnsureResponseDataIsJson(_chromelyResponse.Data);
+                            _responseBytes = Encoding.UTF8.GetBytes(jsonData);
                         }
                         finally
                         {

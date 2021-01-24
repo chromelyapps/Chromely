@@ -1,11 +1,14 @@
 ﻿// Copyright © 2017-2020 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
+using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Chromely.Core;
+using Chromely.Core.Logging;
 using Chromely.Core.Network;
+using Microsoft.Extensions.Logging;
 using Xilium.CefGlue;
 using Xilium.CefGlue.Wrapper;
 
@@ -19,56 +22,67 @@ namespace Chromely.Browser
         protected readonly IChromelyRouteProvider _routeProvider;
         protected readonly IChromelyRequestTaskRunner _requestTaskRunner;
         protected readonly IChromelySerializerUtil _serializerUtil;
+        protected readonly IChromelyErrorHandler _chromelyErrorHandler;
 
-        public DefaultMessageRouterHandler(IChromelyRouteProvider routeProvider, IChromelyRequestTaskRunner requestTaskRunner, IChromelySerializerUtil serializerUtil)
+        public DefaultMessageRouterHandler(IChromelyRouteProvider routeProvider, IChromelyRequestTaskRunner requestTaskRunner, IChromelySerializerUtil serializerUtil, IChromelyErrorHandler chromelyErrorHandler)
         {
             _routeProvider = routeProvider;
             _requestTaskRunner = requestTaskRunner;
             _serializerUtil = serializerUtil;
+            _chromelyErrorHandler = chromelyErrorHandler;
         }
 
         public override bool OnQuery(CefBrowser browser, CefFrame frame, long queryId, string request, bool persistent, CefMessageRouterBrowserSide.Callback callback)
         {
-            var options = new JsonSerializerOptions();
-            options.ReadCommentHandling = JsonCommentHandling.Skip;
-            options.AllowTrailingCommas = true;
-            var requestData =  JsonSerializer.Deserialize<request>(request, options);
+            request requestData = null;
 
-            if (requestData != null)
+            try
             {
-                var id = requestData.id ?? string.Empty;
-                var path = requestData.url ?? string.Empty;
+                requestData = JsonSerializer.Deserialize<request>(request, _serializerUtil.SerializerOptions);
 
-                bool isRequestAsync = _routeProvider.IsActionRouteAsync(path);
-
-                if (isRequestAsync)
+                if (requestData != null)
                 {
-                    Task.Run(async () =>
+                    var id = requestData.id ?? string.Empty;
+                    var path = requestData.url ?? string.Empty;
+
+                    bool isRequestAsync = _routeProvider.IsActionRouteAsync(path);
+
+                    if (isRequestAsync)
                     {
-                        var parameters = requestData.parameters;
-                        var postData = requestData.postData;
+                        Task.Run(async () =>
+                        {
+                            var parameters = requestData.parameters;
+                            var postData = requestData.postData;
 
-                        var response = await _requestTaskRunner.RunAsync(id, path, parameters, postData, request);
-                        var jsonResponse = _serializerUtil.ObjectToJson(response);
+                            var response = await _requestTaskRunner.RunAsync(id, path, parameters, postData, request);
+                            var jsonResponse = _serializerUtil.ObjectToJson(response);
 
-                        callback.Success(jsonResponse);
-                    });
-                }
-                else
-                {
-                    Task.Run(() =>
+                            callback.Success(jsonResponse);
+                        });
+                    }
+                    else
                     {
-                        var parameters = requestData.parameters;
-                        var postData = requestData.postData;
+                        Task.Run(() =>
+                        {
+                            var parameters = requestData.parameters;
+                            var postData = requestData.postData;
 
-                        var response = _requestTaskRunner.Run(id, path, parameters, postData, request);
-                        var jsonResponse = _serializerUtil.ObjectToJson(response);
+                            var response = _requestTaskRunner.Run(id, path, parameters, postData, request);
+                            var jsonResponse = _serializerUtil.ObjectToJson(response);
 
-                        callback.Success(jsonResponse);
-                    });
+                            callback.Success(jsonResponse);
+                        });
+                    }
+
+                    return true;
                 }
-
-                return true;
+            }
+            catch (Exception exception)
+            {
+                var response = _chromelyErrorHandler.HandleError(requestData?.ToRequest(), exception);
+                var jsonResponse = _serializerUtil.ObjectToJson(response);
+                callback.Failure(100, jsonResponse);
+                return false;
             }
 
             callback.Failure(100, "Request is not valid.");
@@ -98,6 +112,11 @@ namespace Chromely.Browser
             public string url { get; set; }
             public IDictionary<string, string> parameters { get; set; }
             public object postData { get; set; }
+
+            public IChromelyRequest ToRequest()
+            {
+                return new ChromelyRequest(id, url, parameters, postData, null);
+            }
         }
     }
 }

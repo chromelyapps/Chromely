@@ -14,18 +14,21 @@ namespace Chromely.Core.Defaults
     {
         protected readonly IChromelyRouteProvider _routeProvider;
         protected readonly IChromelyInfo _chromelyInfo;
+        protected readonly IChromelyErrorHandler _chromelyErrorHandler;
 
-        public DefaultRequestTaskRunner(IChromelyRouteProvider routeProvider, IChromelyInfo chromelyInfo)
+        public DefaultRequestTaskRunner(IChromelyRouteProvider routeProvider, IChromelyInfo chromelyInfo, IChromelyErrorHandler chromelyErrorHandler)
         {
             _routeProvider = routeProvider;
             _chromelyInfo = chromelyInfo;
+            _chromelyErrorHandler = chromelyErrorHandler;
         }
 
         public IChromelyResponse Run(string routeUrl, IDictionary<string, string> parameters, object postData)
         {
             if (string.IsNullOrWhiteSpace(routeUrl))
             {
-                return GetBadRequestResponse(null);
+
+                return _chromelyErrorHandler.HandleRouteNotFound(string.Empty, routeUrl);
             }
 
             if (routeUrl.ToLower().Equals("/info"))
@@ -45,14 +48,9 @@ namespace Chromely.Core.Defaults
 
         public IChromelyResponse Run(IChromelyRequest request)
         {
-            if (request.RouteUrl == null)
+            if (string.IsNullOrWhiteSpace(request.RouteUrl))
             {
-                return GetBadRequestResponse(request.Id);
-            }
-
-            if (string.IsNullOrEmpty(request.RouteUrl))
-            {
-                return GetBadRequestResponse(request.Id);
+                return _chromelyErrorHandler.HandleRouteNotFound(request.Id, request.RouteUrl);
             }
 
             if (request.RouteUrl.ToLower().Equals("/info"))
@@ -63,7 +61,7 @@ namespace Chromely.Core.Defaults
             var route = _routeProvider.GetActionRoute(request.RouteUrl);
             if (route == null)
             {
-                throw new Exception($"Route for path = {request.RouteUrl} is null or invalid.");
+                return _chromelyErrorHandler.HandleRouteNotFound(request.Id, request.RouteUrl);
             }
 
             var temp = request.Parameters ?? request.RouteUrl.GetParameters();
@@ -75,9 +73,9 @@ namespace Chromely.Core.Defaults
 
         public IChromelyResponse Run(string requestId, string routeUrl, IDictionary<string, string> parameters, object postData, string requestData)
         {
-            if (string.IsNullOrEmpty(routeUrl))
+            if (string.IsNullOrWhiteSpace(routeUrl))
             {
-                return GetBadRequestResponse(requestId);
+                return _chromelyErrorHandler.HandleRouteNotFound(requestId, routeUrl);
             }
 
             if (routeUrl.ToLower().Equals("/info"))
@@ -98,7 +96,7 @@ namespace Chromely.Core.Defaults
         {
             if (string.IsNullOrWhiteSpace(routeUrl))
             {
-                return GetBadRequestResponse(null);
+                return _chromelyErrorHandler.HandleRouteNotFound(string.Empty, routeUrl);
             }
 
             if (routeUrl.ToLower().Equals("/info"))
@@ -110,7 +108,7 @@ namespace Chromely.Core.Defaults
 
             if (route == null)
             {
-                throw new Exception($"Route for path = {routeUrl} is null or invalid.");
+                return _chromelyErrorHandler.HandleRouteNotFound(string.Empty, routeUrl);
             }
 
             return await ExecuteRouteAsync(string.Empty, routeUrl, parameters, postData, string.Empty);
@@ -118,14 +116,9 @@ namespace Chromely.Core.Defaults
 
         public async Task<IChromelyResponse> RunAsync(IChromelyRequest request)
         {
-            if (request.RouteUrl == null)
+            if (string.IsNullOrWhiteSpace(request.RouteUrl))
             {
-                return GetBadRequestResponse(request.Id);
-            }
-
-            if (string.IsNullOrEmpty(request.RouteUrl))
-            {
-                return GetBadRequestResponse(request.Id);
+                return _chromelyErrorHandler.HandleRouteNotFound(request.Id, request.RouteUrl);
             }
 
             if (request.RouteUrl.ToLower().Equals("/info"))
@@ -136,7 +129,7 @@ namespace Chromely.Core.Defaults
             var route = _routeProvider.GetActionRoute(request.RouteUrl);
             if (route == null)
             {
-                throw new Exception($"Route for path = {request.RouteUrl} is null or invalid.");
+                return _chromelyErrorHandler.HandleRouteNotFound(request.Id, request.RouteUrl);
             }
 
             var temp = request.Parameters ?? request.RouteUrl.GetParameters();
@@ -148,9 +141,9 @@ namespace Chromely.Core.Defaults
 
         public async Task<IChromelyResponse> RunAsync(string requestId, string routeUrl, IDictionary<string, string> parameters, object postData, string requestData)
         {
-            if (string.IsNullOrEmpty(routeUrl))
+            if (string.IsNullOrWhiteSpace(routeUrl))
             {
-                return GetBadRequestResponse(requestId);
+                return _chromelyErrorHandler.HandleRouteNotFound(requestId, routeUrl);
             }
 
             if (routeUrl.ToLower().Equals("/info"))
@@ -161,7 +154,7 @@ namespace Chromely.Core.Defaults
             var route = _routeProvider.GetActionRoute(routeUrl);
             if (route == null)
             {
-                throw new Exception($"Route for path = {routeUrl} is null or invalid.");
+                return _chromelyErrorHandler.HandleRouteNotFound(requestId, routeUrl);
             }
 
             return await ExecuteRouteAsync(requestId, routeUrl, parameters, postData, requestData);
@@ -173,7 +166,7 @@ namespace Chromely.Core.Defaults
 
             if (route == null)
             {
-                return GetBadRequestResponse(requestId, $"Route for path = {routeUrl} is null or invalid.");
+                return _chromelyErrorHandler.HandleRouteNotFound(requestId, routeUrl);
             }
 
             var response = route.Invoke(requestId: requestId, routeUrl: routeUrl, parameters: parameters, postData: postData, rawJson: requestData);
@@ -190,7 +183,7 @@ namespace Chromely.Core.Defaults
 
             if (route == null)
             {
-                return GetBadRequestResponse(requestId, $"Route for path = {routeUrl} is null or invalid.");
+                return _chromelyErrorHandler.HandleRouteNotFound(requestId, routeUrl);
             }
 
             IChromelyResponse response;
@@ -208,17 +201,6 @@ namespace Chromely.Core.Defaults
             response.StatusText = (string.IsNullOrWhiteSpace(response.StatusText) && (response.Status == (int)HttpStatusCode.OK)) ? "OK" : response.StatusText;
 
             return response;
-        }
-
-        private IChromelyResponse GetBadRequestResponse(string requestId, string reason = null)
-        {
-            return new ChromelyResponse
-            {
-                RequestId = requestId,
-                ReadyState = (int)ReadyState.ResponseIsReady,
-                Status = (int)System.Net.HttpStatusCode.BadRequest,
-                StatusText = string.IsNullOrWhiteSpace(reason) ? "Bad Request" : reason
-            };
         }
     }
 }

@@ -20,8 +20,10 @@ namespace Chromely.Core
         private ChromelyApp _chromelyApp;
         private IChromelyConfiguration _config;
         private IChromelyWindow _chromelyWindow;
+        private IChromelyErrorHandler _chromelyErrorHandler;
         private Type _chromelyUseConfigType;
         private Type _chromelyUseWindowType;
+        private Type _chromelyUseErrorHandlerType;
         private int _stepCompleted;
 
         private AppBuilder()
@@ -29,6 +31,7 @@ namespace Chromely.Core
             _config = null;
             _chromelyUseConfigType = null;
             _chromelyUseWindowType = null;
+            _chromelyUseErrorHandlerType = null;
             _stepCompleted = -1;
         }
 
@@ -77,6 +80,22 @@ namespace Chromely.Core
                 _chromelyUseWindowType = null;
                 EnsureIsDerivedType(typeof(IChromelyWindow), typeof(TService));
                 _chromelyUseWindowType = typeof(TService);
+            }
+
+            return this;
+        }
+
+        public AppBuilder UseErrorHandler<TService>(IChromelyErrorHandler chromelyErrorHandler = null) where TService : IChromelyErrorHandler
+        {
+            if (chromelyErrorHandler != null)
+            {
+                _chromelyErrorHandler = chromelyErrorHandler;
+            }
+            else
+            {
+                _chromelyUseErrorHandlerType = null;
+                EnsureIsDerivedType(typeof(IChromelyErrorHandler), typeof(TService));
+                _chromelyUseErrorHandlerType = typeof(TService);
             }
 
             return this;
@@ -196,6 +215,8 @@ namespace Chromely.Core
 
         private void RegisterUseComponents(IServiceCollection services)
         {
+            #region IChromelyConfiguration
+
             if (_config != null)
             {
                 services.TryAddSingleton<IChromelyConfiguration>(_config);
@@ -205,6 +226,10 @@ namespace Chromely.Core
                 services.TryAddSingleton(typeof(IChromelyConfiguration), _chromelyUseConfigType);
             }
 
+            #endregion IChromelyConfiguration
+
+            #region IChromelyWindow
+
             if (_chromelyWindow != null)
             {
                 services.TryAddSingleton<IChromelyWindow>(_chromelyWindow);
@@ -213,6 +238,21 @@ namespace Chromely.Core
             {
                 services.TryAddSingleton(typeof(IChromelyWindow), _chromelyUseWindowType);
             }
+
+            #endregion IChromelyWindow
+
+            #region IChromelyErrorHandler
+
+            if (_chromelyErrorHandler != null)
+            {
+                services.TryAddSingleton<IChromelyErrorHandler>(_chromelyErrorHandler);
+            }
+            else if (_chromelyUseErrorHandlerType != null)
+            {
+                services.TryAddSingleton(typeof(IChromelyErrorHandler), _chromelyUseErrorHandlerType);
+            }
+
+            #endregion IChromelyErrorHandler
         }
     }
 }

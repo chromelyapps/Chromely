@@ -39,13 +39,15 @@ namespace Chromely.Core
 
             // Add core services if not already added.
             // Expected core services are -
-            // IChromelyAppSettings, IChromelyConfiguration, IChromelyLogger, IChromelyRouteProvider
-            // DefaultAppSettings  DefaultConfiguration SimpleLogger, DefaultRouteProvider
+            // IChromelyAppSettings, IChromelyConfiguration, IChromelyLogger, IChromelyRouteProvider, IChromelyErrorHandler
+            // DefaultAppSettings  DefaultConfiguration, SimpleLogger, DefaultRouteProvider, DefaultErrorHandler
             // Logger is added in Initialize method
 
             services.TryAddSingleton<IChromelyConfiguration>(DefaultConfiguration.CreateForRuntimePlatform());
             services.TryAddSingleton<IChromelySerializerUtil, DefaultSerializerUtil>();
             services.TryAddSingleton<IChromelyAppSettings, DefaultAppSettings>();
+            services.TryAddSingleton<IChromelyAppSettings, DefaultAppSettings>();
+            services.TryAddSingleton<IChromelyErrorHandler, DefaultErrorHandler>();
 
             _coreServicesConfigured = true;
         }

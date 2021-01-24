@@ -35,8 +35,8 @@ namespace Chromely.Browser
      */
     internal sealed class ChromelyMessageRouter : DefaultMessageRouterHandler
     {
-        public ChromelyMessageRouter(IChromelyRouteProvider routeProvider, IChromelyRequestTaskRunner requestTaskRunner, IChromelySerializerUtil serializerUtil) 
-            : base(routeProvider, requestTaskRunner, serializerUtil)
+        public ChromelyMessageRouter(IChromelyRouteProvider routeProvider, IChromelyRequestTaskRunner requestTaskRunner, IChromelySerializerUtil serializerUtil, IChromelyErrorHandler chromelyErrorHandler) 
+            : base(routeProvider, requestTaskRunner, serializerUtil, chromelyErrorHandler)
         {
         }
     }
@@ -46,19 +46,22 @@ namespace Chromely.Browser
      */
     internal sealed class ChromelyResourceSchemeHandlerFactory : DefaultResourceSchemeHandlerFactory, IDefaultResourceCustomHandler
     {
+        public ChromelyResourceSchemeHandlerFactory(IChromelyErrorHandler chromelyErrorHandler) : base(chromelyErrorHandler)
+        {
+        }
     }
 
     internal sealed class ChromelyAssemblyResourceSchemeHandlerFactory : DefaultAssemblyResourceSchemeHandlerFactory, IDefaultAssemblyResourceCustomHandler
     {
-        public ChromelyAssemblyResourceSchemeHandlerFactory(IChromelyConfiguration config) : base(config)
+        public ChromelyAssemblyResourceSchemeHandlerFactory(IChromelyConfiguration config, IChromelyErrorHandler chromelyErrorHandler) : base(config, chromelyErrorHandler)
         {
         }
     }
 
     internal sealed class ChromelyRequestSchemeHandlerFactory : DefaultRequestSchemeHandlerFactory, IDefaultRequestCustomHandler
     {
-        public ChromelyRequestSchemeHandlerFactory(IChromelyRouteProvider routeProvider, IChromelyRequestSchemeProvider requestSchemeProvider, IChromelyRequestTaskRunner requestTaskRunner, IChromelySerializerUtil serializerUtil) 
-            : base(routeProvider, requestSchemeProvider, requestTaskRunner, serializerUtil)
+        public ChromelyRequestSchemeHandlerFactory(IChromelyRouteProvider routeProvider, IChromelyRequestSchemeProvider requestSchemeProvider, IChromelyRequestTaskRunner requestTaskRunner, IChromelySerializerUtil serializerUtil, IChromelyErrorHandler chromelyErrorHandler) 
+            : base(routeProvider, requestSchemeProvider, requestTaskRunner, serializerUtil, chromelyErrorHandler)
         {
         }
     }

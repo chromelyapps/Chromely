@@ -1,6 +1,8 @@
 ﻿// Copyright © 2017-2020 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
+using System.Net;
+
 namespace Chromely.Core.Infrastructure
 {
     public static class JsObjectBinding
@@ -84,5 +86,18 @@ namespace Chromely.Core.Infrastructure
         public const string ACCEPTLANGUAGELIST = nameof(ACCEPTLANGUAGELIST);
         public const string FOCUSEDNODECHANGEDENABLED = nameof(FOCUSEDNODECHANGEDENABLED);
         public const string FRAMEWORKDIRPATH = nameof(FRAMEWORKDIRPATH);
+    }
+
+    public static class ResourceStatus
+    {
+        public const string ZeroFileSize = nameof(ZeroFileSize);
+        public const string FileNotFound = nameof(FileNotFound);
+        public const string FileProcessingError = nameof(FileProcessingError);
+    }
+
+    public static class ResourceConstants
+    {
+        public const HttpStatusCode StatusOK = HttpStatusCode.OK;
+        public const string StatusOKText = "OK";
     }
 }

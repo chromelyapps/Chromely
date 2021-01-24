@@ -16,18 +16,24 @@ namespace Chromely.Browser
         protected readonly IChromelyRequestSchemeProvider _requestSchemeProvider;
         protected readonly IChromelyRequestTaskRunner _requestTaskRunner;
         protected readonly IChromelySerializerUtil _serializerUtil;
+        protected readonly IChromelyErrorHandler _chromelyErrorHandler;
 
-        public DefaultRequestSchemeHandlerFactory(IChromelyRouteProvider routeProvider, IChromelyRequestSchemeProvider requestSchemeProvider, IChromelyRequestTaskRunner requestTaskRunner, IChromelySerializerUtil serializerUtil)
+        public DefaultRequestSchemeHandlerFactory(IChromelyRouteProvider routeProvider,
+                                                  IChromelyRequestSchemeProvider requestSchemeProvider,
+                                                  IChromelyRequestTaskRunner requestTaskRunner,
+                                                  IChromelySerializerUtil serializerUtil,
+                                                  IChromelyErrorHandler chromelyErrorHandler)
         {
             _routeProvider = routeProvider;
             _requestSchemeProvider = requestSchemeProvider;
             _requestTaskRunner = requestTaskRunner;
             _serializerUtil = serializerUtil;
+            _chromelyErrorHandler = chromelyErrorHandler;
         }
 
         protected override CefResourceHandler Create(CefBrowser browser, CefFrame frame, string schemeName, CefRequest request)
         {
-            return new DefaultRequestSchemeHandler(_routeProvider, _requestSchemeProvider, _requestTaskRunner, _serializerUtil);
+            return new DefaultRequestSchemeHandler(_routeProvider, _requestSchemeProvider, _requestTaskRunner, _serializerUtil, _chromelyErrorHandler);
         }
     }
 }
