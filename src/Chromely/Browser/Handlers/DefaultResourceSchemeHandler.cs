@@ -16,21 +16,18 @@ namespace Chromely.Browser
 {
     public class DefaultResourceSchemeHandler : CefResourceHandler
     {
+        protected IChromelyResource _chromelyResource;
         protected IChromelyErrorHandler _chromelyErrorHandler;
 
-        protected byte[] _fileBytes;
-        protected string _mime;
+        protected FileInfo _fileInfo;
         protected bool _completed;
         protected int _totalBytesRead;
-        protected HttpStatusCode _statusCode;
-        protected string _statusText;
 
         public DefaultResourceSchemeHandler(IChromelyErrorHandler chromelyErrorHandler)
         {
+            _chromelyResource = new ChromelyResource();
             _chromelyErrorHandler = chromelyErrorHandler;
-            _statusCode = ResourceConstants.StatusOK;
-            _statusText = ResourceConstants.StatusOKText;
-            _mime = "text/plain"; 
+            _fileInfo = null;
         }
 
         [Obsolete]
@@ -40,23 +37,20 @@ namespace Chromely.Browser
             var file = u.Authority + u.AbsolutePath;
 
             _totalBytesRead = 0;
-            _fileBytes = null;
+            _chromelyResource.Content = null;
             _completed = false;
 
-            var fileInfo = new FileInfo(file);
+            _fileInfo = new FileInfo(file);
             // Check if file exists 
-            if (!fileInfo.Exists)
+            if (!_fileInfo.Exists)
             {
-                _chromelyErrorHandler.HandleResourceError(ResourceStatus.FileNotFound, file, out _statusCode, out _statusText);
-                _fileBytes = _statusText.GetMemoryStream();
-
+                _chromelyResource = _chromelyErrorHandler.HandleError(_fileInfo);
                 callback.Continue();
             }
             // Check if file exists but empty
-            else if (fileInfo.Length == 0)
+            else if (_fileInfo.Length == 0)
             {
-                _chromelyErrorHandler.HandleResourceError(ResourceStatus.ZeroFileSize, file, out _statusCode, out _statusText);
-                _fileBytes = _statusText.GetMemoryStream();
+                _chromelyResource = _chromelyErrorHandler.HandleError(_fileInfo);
                 callback.Continue();
             }
             else 
@@ -67,18 +61,17 @@ namespace Chromely.Browser
                     {
                         try
                         {
-                            _fileBytes = File.ReadAllBytes(file);
+                            var fileBytes = File.ReadAllBytes(file);
+                            _chromelyResource.Content = new MemoryStream(fileBytes);
 
                             string extension = Path.GetExtension(file);
-                            _mime = MimeMapper.GetMimeType(extension);
-                            _statusCode = ResourceConstants.StatusOK;
-                            _statusText = ResourceConstants.StatusOKText;
+                            _chromelyResource.MimeType = MimeMapper.GetMimeType(extension);
+                            _chromelyResource.StatusCode = ResourceConstants.StatusOK;
+                            _chromelyResource.StatusText = ResourceConstants.StatusOKText;
                         }
                         catch (Exception exception)
                         {
-                            _chromelyErrorHandler.HandleResourceError(ResourceStatus.FileProcessingError, file, exception, out _statusCode, out _statusText);
-                            _fileBytes = _statusText.GetMemoryStream();
-                           
+                            _chromelyResource =_chromelyErrorHandler.HandleError(_fileInfo, exception);
                         }
                         finally
                         {
@@ -107,17 +100,16 @@ namespace Chromely.Browser
                 headers.Add("Access-Control-Allow-Origin", "*");
                 response.SetHeaderMap(headers);
 
-                response.Status = (int)_statusCode;
-                response.MimeType = _mime;
-                response.StatusText = _statusText;
+                response.Status = (int)_chromelyResource.StatusCode;
+                response.MimeType = _chromelyResource.MimeType;
+                response.StatusText = _chromelyResource.StatusText;
             }
             catch (Exception exception)
             {
-                response.Status = (int)HttpStatusCode.BadRequest; 
-                response.MimeType = "text/plain";
-                response.StatusText = "Resource loading error.";
-
-                Logger.Instance.Log.LogError(exception, exception.Message);
+                _chromelyResource = _chromelyErrorHandler.HandleError(_fileInfo, exception);
+                response.Status = (int)_chromelyResource.StatusCode;
+                response.MimeType = _chromelyResource.MimeType;
+                response.StatusText = _chromelyResource.StatusText;
             }
         }
 
@@ -132,18 +124,19 @@ namespace Chromely.Browser
                 {
                     bytesRead = 0;
                     _totalBytesRead = 0;
-                    _fileBytes = null;
+                    _chromelyResource.Content = null;
                     return false;
                 }
                 else
                 {
-                    if (_fileBytes != null)
+                    if (_chromelyResource.Content != null)
                     {
-                        currBytesRead = Math.Min(_fileBytes.Length - _totalBytesRead, bytesToRead);
-                        response.Write(_fileBytes, _totalBytesRead, currBytesRead);
+                        var fileBytes = _chromelyResource.Content.ToArray();
+                        currBytesRead = Math.Min(fileBytes.Length - _totalBytesRead, bytesToRead);
+                        response.Write(fileBytes, _totalBytesRead, currBytesRead);
                         _totalBytesRead += currBytesRead;
 
-                        if (_totalBytesRead >= _fileBytes.Length)
+                        if (_totalBytesRead >= fileBytes.Length)
                         {
                             _completed = true;
                         }

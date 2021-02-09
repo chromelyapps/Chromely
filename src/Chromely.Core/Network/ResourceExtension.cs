@@ -4,11 +4,11 @@
 using System.IO;
 using System.Text;
 
-namespace Chromely.Browser
+namespace Chromely.Core.Network
 {
-    public static class ResourceFileStatusExtension
+    public static class ResourceExtension
     {
-        public static byte[] GetMemoryStream(this string statusText)
+        public static MemoryStream GetMemoryStream(this string statusText)
         {
             if (string.IsNullOrWhiteSpace(statusText))
             {
@@ -25,7 +25,7 @@ namespace Chromely.Browser
 
             memoryStream.Position = 0;
 
-            return memoryStream.ToArray();
+            return memoryStream;
         }
     }
 }
