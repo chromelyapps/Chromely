@@ -25,11 +25,11 @@ namespace Chromely.Core.Defaults
 
         public virtual IChromelyResource HandleError(FileInfo fileInfo, Exception exception = null)
         {
-            bool fileExists = fileInfo != null;
+            bool fileExists = fileInfo != null && fileInfo.Exists;
             int fileSize = (int)(fileInfo != null ? fileInfo.Length : 0);
             
             var resource = HandleResourceError(fileExists, fileSize, exception);
-            Logger.Instance.Log.LogWarning($"File: {fileInfo.FullName}: {resource.StatusText}");
+            Logger.Instance.Log.LogWarning($"File: {fileInfo?.FullName}: {resource?.StatusText}");
             return resource;
         }
 
