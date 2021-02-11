@@ -6,12 +6,14 @@ using Chromely.Core;
 using Chromely.Core.Configuration;
 using Chromely.Core.Host;
 using Chromely.Core.Network;
+using System.Linq;
 
 namespace Chromely
 {
     public partial class WindowController : ChromelyWindowController
     {
         protected IChromelyRequestSchemeProvider _requestSchemeProvider;
+        protected ICefBinariesDownloader _binariesDownloader;
 
         public WindowController(IChromelyWindow window, 
                                 IChromelyNativeHost nativeHost, 
@@ -30,6 +32,10 @@ namespace Chromely
             _nativeHost.HostClose += OnWindowClose;
 
             _requestSchemeProvider = requestSchemeProvider;
+
+            // Set CefBinariesDownloader
+            var objList = _handlersResolver?.Invoke(typeof(ICefBinariesDownloader));
+            _binariesDownloader = objList?.FirstOrDefault() as ICefBinariesDownloader;
         }
     }
 }

@@ -6,6 +6,7 @@ using Chromely.Core;
 using Chromely.Core.Defaults;
 using Chromely.Core.Host;
 using Chromely.Core.Network;
+using Chromely.Loader;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Xilium.CefGlue;
@@ -19,13 +20,12 @@ namespace Chromely
             base.ConfigureCoreServices(services);
 
             // Add window core services if not already added.
-            // Expected window core services are -
-            // IChromelyNativeHost, IChromelyWindow
 
             services.TryAddSingleton<IChromelyInfo, ChromelyInfo>();
             services.TryAddSingleton<IChromelyRouteProvider, DefaultRouteProvider>();
             services.TryAddSingleton<IChromelyRequestTaskRunner, DefaultRequestTaskRunner>();
             services.TryAddSingleton<IChromelyCommandTaskRunner, DefaultCommandTaskRunner>();
+            services.TryAddSingleton<ICefBinariesDownloader, DefaultCefBinariesDownloader>();
 
             services.TryAddSingleton<IChromelyWindow, Window>();
             services.TryAddSingleton<ChromelyWindowController, WindowController>();
