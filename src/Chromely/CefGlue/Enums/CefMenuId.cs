@@ -42,7 +42,7 @@ namespace Xilium.CefGlue
         AddToDictionary = 206,
 
         // Custom menu items originating from the renderer process. For example,
-        // plugin placeholder menu items or Flash menu items.
+        // plugin placeholder menu items.
         CustomFirst = 220,
         CustomLast = 250,
 

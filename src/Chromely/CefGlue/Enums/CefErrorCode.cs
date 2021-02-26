@@ -189,13 +189,6 @@ namespace Xilium.CefGlue
         H2_OR_QUIC_REQUIRED = -31,
 
         /// <summary>
-        /// The request was blocked because it is a private network request coming from
-        /// an insecure context in a less private IP address space. This is used to
-        /// enforce CORS-RFC1918: https://wicg.github.io/cors-rfc1918.
-        /// </summary>
-        INSECURE_PRIVATE_NETWORK_REQUEST = -32,
-
-        /// <summary>
         /// A connection was closed (corresponding to a TCP FIN).
         /// </summary>
         CONNECTION_CLOSED = -100,
@@ -1154,6 +1147,12 @@ namespace Xilium.CefGlue
         /// are allowed.
         /// </summary>
         QUIC_CERT_ROOT_NOT_KNOWN = -380,
+
+        /// <summary>
+        /// A GOAWAY frame has been received indicating that the request has not been
+        /// processed and is therefore safe to retry on a different connection.
+        /// </summary>
+        QUIC_GOAWAY_REQUEST_CAN_BE_RETRIED = -381,
 
         /// <summary>
         /// The cache does not have the requested entry.

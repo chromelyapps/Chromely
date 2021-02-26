@@ -32,13 +32,12 @@ namespace Xilium.CefGlue
         private cef_render_handler_t.on_popup_size_delegate _dsa;
         private cef_render_handler_t.on_paint_delegate _dsb;
         private cef_render_handler_t.on_accelerated_paint_delegate _dsc;
-        private cef_render_handler_t.on_cursor_change_delegate _dsd;
-        private cef_render_handler_t.start_dragging_delegate _dse;
-        private cef_render_handler_t.update_drag_cursor_delegate _dsf;
-        private cef_render_handler_t.on_scroll_offset_changed_delegate _ds10;
-        private cef_render_handler_t.on_ime_composition_range_changed_delegate _ds11;
-        private cef_render_handler_t.on_text_selection_changed_delegate _ds12;
-        private cef_render_handler_t.on_virtual_keyboard_requested_delegate _ds13;
+        private cef_render_handler_t.start_dragging_delegate _dsd;
+        private cef_render_handler_t.update_drag_cursor_delegate _dse;
+        private cef_render_handler_t.on_scroll_offset_changed_delegate _dsf;
+        private cef_render_handler_t.on_ime_composition_range_changed_delegate _ds10;
+        private cef_render_handler_t.on_text_selection_changed_delegate _ds11;
+        private cef_render_handler_t.on_virtual_keyboard_requested_delegate _ds12;
         
         protected CefRenderHandler()
         {
@@ -70,20 +69,18 @@ namespace Xilium.CefGlue
             _self->_on_paint = Marshal.GetFunctionPointerForDelegate(_dsb);
             _dsc = new cef_render_handler_t.on_accelerated_paint_delegate(on_accelerated_paint);
             _self->_on_accelerated_paint = Marshal.GetFunctionPointerForDelegate(_dsc);
-            _dsd = new cef_render_handler_t.on_cursor_change_delegate(on_cursor_change);
-            _self->_on_cursor_change = Marshal.GetFunctionPointerForDelegate(_dsd);
-            _dse = new cef_render_handler_t.start_dragging_delegate(start_dragging);
-            _self->_start_dragging = Marshal.GetFunctionPointerForDelegate(_dse);
-            _dsf = new cef_render_handler_t.update_drag_cursor_delegate(update_drag_cursor);
-            _self->_update_drag_cursor = Marshal.GetFunctionPointerForDelegate(_dsf);
-            _ds10 = new cef_render_handler_t.on_scroll_offset_changed_delegate(on_scroll_offset_changed);
-            _self->_on_scroll_offset_changed = Marshal.GetFunctionPointerForDelegate(_ds10);
-            _ds11 = new cef_render_handler_t.on_ime_composition_range_changed_delegate(on_ime_composition_range_changed);
-            _self->_on_ime_composition_range_changed = Marshal.GetFunctionPointerForDelegate(_ds11);
-            _ds12 = new cef_render_handler_t.on_text_selection_changed_delegate(on_text_selection_changed);
-            _self->_on_text_selection_changed = Marshal.GetFunctionPointerForDelegate(_ds12);
-            _ds13 = new cef_render_handler_t.on_virtual_keyboard_requested_delegate(on_virtual_keyboard_requested);
-            _self->_on_virtual_keyboard_requested = Marshal.GetFunctionPointerForDelegate(_ds13);
+            _dsd = new cef_render_handler_t.start_dragging_delegate(start_dragging);
+            _self->_start_dragging = Marshal.GetFunctionPointerForDelegate(_dsd);
+            _dse = new cef_render_handler_t.update_drag_cursor_delegate(update_drag_cursor);
+            _self->_update_drag_cursor = Marshal.GetFunctionPointerForDelegate(_dse);
+            _dsf = new cef_render_handler_t.on_scroll_offset_changed_delegate(on_scroll_offset_changed);
+            _self->_on_scroll_offset_changed = Marshal.GetFunctionPointerForDelegate(_dsf);
+            _ds10 = new cef_render_handler_t.on_ime_composition_range_changed_delegate(on_ime_composition_range_changed);
+            _self->_on_ime_composition_range_changed = Marshal.GetFunctionPointerForDelegate(_ds10);
+            _ds11 = new cef_render_handler_t.on_text_selection_changed_delegate(on_text_selection_changed);
+            _self->_on_text_selection_changed = Marshal.GetFunctionPointerForDelegate(_ds11);
+            _ds12 = new cef_render_handler_t.on_virtual_keyboard_requested_delegate(on_virtual_keyboard_requested);
+            _self->_on_virtual_keyboard_requested = Marshal.GetFunctionPointerForDelegate(_ds12);
         }
         
         ~CefRenderHandler()

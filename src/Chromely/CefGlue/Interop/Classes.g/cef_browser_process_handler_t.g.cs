@@ -13,10 +13,12 @@ namespace Xilium.CefGlue.Interop
     internal unsafe struct cef_browser_process_handler_t
     {
         internal cef_base_ref_counted_t _base;
+        internal IntPtr _get_cookieable_schemes;
         internal IntPtr _on_context_initialized;
         internal IntPtr _on_before_child_process_launch;
         internal IntPtr _get_print_handler;
         internal IntPtr _on_schedule_message_pump_work;
+        internal IntPtr _get_default_client;
         
         [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
         #if !DEBUG
@@ -46,6 +48,12 @@ namespace Xilium.CefGlue.Interop
         #if !DEBUG
         [SuppressUnmanagedCodeSecurity]
         #endif
+        internal delegate void get_cookieable_schemes_delegate(cef_browser_process_handler_t* self, cef_string_list* schemes, int* include_defaults);
+        
+        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
+        #if !DEBUG
+        [SuppressUnmanagedCodeSecurity]
+        #endif
         internal delegate void on_context_initialized_delegate(cef_browser_process_handler_t* self);
         
         [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
@@ -65,6 +73,12 @@ namespace Xilium.CefGlue.Interop
         [SuppressUnmanagedCodeSecurity]
         #endif
         internal delegate void on_schedule_message_pump_work_delegate(cef_browser_process_handler_t* self, long delay_ms);
+        
+        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
+        #if !DEBUG
+        [SuppressUnmanagedCodeSecurity]
+        #endif
+        internal delegate cef_client_t* get_default_client_delegate(cef_browser_process_handler_t* self);
         
         private static int _sizeof;
         

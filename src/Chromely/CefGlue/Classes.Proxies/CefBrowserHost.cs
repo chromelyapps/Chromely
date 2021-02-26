@@ -450,25 +450,6 @@
         }
 
         /// <summary>
-        /// Set whether mouse cursor change is disabled.
-        /// </summary>
-        public void SetMouseCursorChangeDisabled(bool disabled)
-        {
-            cef_browser_host_t.set_mouse_cursor_change_disabled(_self, disabled ? 1 : 0);
-        }
-
-        /// <summary>
-        /// Returns true if mouse cursor change is disabled.
-        /// </summary>
-        public bool IsMouseCursorChangeDisabled
-        {
-            get
-            {
-                return cef_browser_host_t.is_mouse_cursor_change_disabled(_self) != 0;
-            }
-        }
-
-        /// <summary>
         /// If a misspelled word is currently selected in an editable node calling
         /// this method will replace it with the specified |word|.
         /// </summary>

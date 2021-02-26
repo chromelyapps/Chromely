@@ -191,5 +191,27 @@
         /// ranges from 0.0 to 1.0.
         /// </summary>
         protected virtual void OnLoadingProgressChange(CefBrowser browser, double progress) { }
+
+
+        private int on_cursor_change(cef_display_handler_t* self, cef_browser_t* browser, IntPtr cursor, CefCursorType type, cef_cursor_info_t* custom_cursor_info)
+        {
+            CheckSelf(self);
+
+            var m_browser = CefBrowser.FromNative(browser);
+            var m_cefCursorInfo = type == CefCursorType.Custom ? new CefCursorInfo(custom_cursor_info) : null;
+
+            var m_result = OnCursorChange(m_browser, cursor, type, m_cefCursorInfo);
+
+            if (m_cefCursorInfo != null) m_cefCursorInfo.Dispose();
+            return m_result ? 1 : 0;
+        }
+
+        /// <summary>
+        /// Called when the browser's cursor has changed. If |type| is CT_CUSTOM then
+        /// |custom_cursor_info| will be populated with the custom cursor information.
+        /// Return true if the cursor change was handled or false for default handling.
+        /// </summary>
+        protected virtual bool OnCursorChange(CefBrowser browser, IntPtr cursorHandle, CefCursorType type, CefCursorInfo customCursorInfo)
+            => false;
     }
 }

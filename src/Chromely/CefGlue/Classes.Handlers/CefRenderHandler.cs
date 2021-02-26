@@ -249,25 +249,6 @@
         protected abstract void OnAcceleratedPaint(CefBrowser browser, CefPaintElementType type, CefRectangle[] dirtyRects, IntPtr sharedHandle);
 
 
-        private void on_cursor_change(cef_render_handler_t* self, cef_browser_t* browser, IntPtr cursor, CefCursorType type, cef_cursor_info_t* custom_cursor_info)
-        {
-            CheckSelf(self);
-
-            var m_browser = CefBrowser.FromNative(browser);
-            var m_cefCursorInfo = type == CefCursorType.Custom ? new CefCursorInfo(custom_cursor_info) : null;
-
-            OnCursorChange(m_browser, cursor, type, m_cefCursorInfo);
-
-            if (m_cefCursorInfo != null) m_cefCursorInfo.Dispose();
-        }
-
-        /// <summary>
-        /// Called when the browser's cursor has changed. If |type| is CT_CUSTOM then
-        /// |custom_cursor_info| will be populated with the custom cursor information.
-        /// </summary>
-        protected abstract void OnCursorChange(CefBrowser browser, IntPtr cursorHandle, CefCursorType type, CefCursorInfo customCursorInfo);
-
-
         private int start_dragging(cef_render_handler_t* self, cef_browser_t* browser, cef_drag_data_t* drag_data, CefDragOperationsMask allowed_ops, int x, int y)
         {
             CheckSelf(self);

@@ -12,7 +12,7 @@
     public sealed unsafe partial class CefWebPluginInfo
     {
         /// <summary>
-        /// Returns the plugin name (i.e. Flash).
+        /// Returns the plugin name.
         /// </summary>
         public string Name
         {

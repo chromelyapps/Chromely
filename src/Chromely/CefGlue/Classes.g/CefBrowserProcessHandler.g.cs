@@ -23,10 +23,12 @@ namespace Xilium.CefGlue
         private cef_browser_process_handler_t.release_delegate _ds1;
         private cef_browser_process_handler_t.has_one_ref_delegate _ds2;
         private cef_browser_process_handler_t.has_at_least_one_ref_delegate _ds3;
-        private cef_browser_process_handler_t.on_context_initialized_delegate _ds4;
-        private cef_browser_process_handler_t.on_before_child_process_launch_delegate _ds5;
-        private cef_browser_process_handler_t.get_print_handler_delegate _ds6;
-        private cef_browser_process_handler_t.on_schedule_message_pump_work_delegate _ds7;
+        private cef_browser_process_handler_t.get_cookieable_schemes_delegate _ds4;
+        private cef_browser_process_handler_t.on_context_initialized_delegate _ds5;
+        private cef_browser_process_handler_t.on_before_child_process_launch_delegate _ds6;
+        private cef_browser_process_handler_t.get_print_handler_delegate _ds7;
+        private cef_browser_process_handler_t.on_schedule_message_pump_work_delegate _ds8;
+        private cef_browser_process_handler_t.get_default_client_delegate _ds9;
         
         protected CefBrowserProcessHandler()
         {
@@ -40,14 +42,18 @@ namespace Xilium.CefGlue
             _self->_base._has_one_ref = Marshal.GetFunctionPointerForDelegate(_ds2);
             _ds3 = new cef_browser_process_handler_t.has_at_least_one_ref_delegate(has_at_least_one_ref);
             _self->_base._has_at_least_one_ref = Marshal.GetFunctionPointerForDelegate(_ds3);
-            _ds4 = new cef_browser_process_handler_t.on_context_initialized_delegate(on_context_initialized);
-            _self->_on_context_initialized = Marshal.GetFunctionPointerForDelegate(_ds4);
-            _ds5 = new cef_browser_process_handler_t.on_before_child_process_launch_delegate(on_before_child_process_launch);
-            _self->_on_before_child_process_launch = Marshal.GetFunctionPointerForDelegate(_ds5);
-            _ds6 = new cef_browser_process_handler_t.get_print_handler_delegate(get_print_handler);
-            _self->_get_print_handler = Marshal.GetFunctionPointerForDelegate(_ds6);
-            _ds7 = new cef_browser_process_handler_t.on_schedule_message_pump_work_delegate(on_schedule_message_pump_work);
-            _self->_on_schedule_message_pump_work = Marshal.GetFunctionPointerForDelegate(_ds7);
+            _ds4 = new cef_browser_process_handler_t.get_cookieable_schemes_delegate(get_cookieable_schemes);
+            _self->_get_cookieable_schemes = Marshal.GetFunctionPointerForDelegate(_ds4);
+            _ds5 = new cef_browser_process_handler_t.on_context_initialized_delegate(on_context_initialized);
+            _self->_on_context_initialized = Marshal.GetFunctionPointerForDelegate(_ds5);
+            _ds6 = new cef_browser_process_handler_t.on_before_child_process_launch_delegate(on_before_child_process_launch);
+            _self->_on_before_child_process_launch = Marshal.GetFunctionPointerForDelegate(_ds6);
+            _ds7 = new cef_browser_process_handler_t.get_print_handler_delegate(get_print_handler);
+            _self->_get_print_handler = Marshal.GetFunctionPointerForDelegate(_ds7);
+            _ds8 = new cef_browser_process_handler_t.on_schedule_message_pump_work_delegate(on_schedule_message_pump_work);
+            _self->_on_schedule_message_pump_work = Marshal.GetFunctionPointerForDelegate(_ds8);
+            _ds9 = new cef_browser_process_handler_t.get_default_client_delegate(get_default_client);
+            _self->_get_default_client = Marshal.GetFunctionPointerForDelegate(_ds9);
         }
         
         ~CefBrowserProcessHandler()

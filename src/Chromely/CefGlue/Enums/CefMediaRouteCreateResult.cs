@@ -20,7 +20,8 @@ namespace Xilium.CefGlue
         NoSupportedProvider = 7,
         Cancelled = 8,
         RouteAlreadyExists = 9,
+        RouteAlreadyTerminated = 11,
 
-        // CEF_MRCR_TOTAL_COUNT = 11  // The total number of values.
+        // CEF_MRCR_TOTAL_COUNT = 12  // The total number of values.
     }
 }

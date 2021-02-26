@@ -139,7 +139,7 @@ namespace Xilium.CefGlue.Interop
         
         // CefParseJSONAndReturnError
         [DllImport(libcef.DllName, EntryPoint = "cef_parse_jsonand_return_error", CallingConvention = libcef.CEF_CALL)]
-        public static extern cef_value_t* parse_jsonand_return_error(cef_string_t* json_string, CefJsonParserOptions options, CefJsonParserError* error_code_out, cef_string_t* error_msg_out);
+        public static extern cef_value_t* parse_jsonand_return_error(cef_string_t* json_string, CefJsonParserOptions options, cef_string_t* error_msg_out);
         
         // CefWriteJSON
         [DllImport(libcef.DllName, EntryPoint = "cef_write_json", CallingConvention = libcef.CEF_CALL)]
