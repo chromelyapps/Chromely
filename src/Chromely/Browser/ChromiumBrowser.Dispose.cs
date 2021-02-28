@@ -49,7 +49,11 @@ namespace Chromely.Browser
         {
             unsafe
             {
-                // due we don't want to change Xilium.CefGlue.CefBrowser
+
+                // Repeated if missed
+                CefRuntime.Shutdown();
+
+                // We don't want to change Xilium.CefGlue.CefBrowser
                 // we check the internal _self property to see
                 // if it is already destroyed
                 if (Browser != null
@@ -65,7 +69,6 @@ namespace Chromely.Browser
                 }
             }
         }
-
 
         #endregion
     }

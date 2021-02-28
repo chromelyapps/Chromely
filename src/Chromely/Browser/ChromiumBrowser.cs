@@ -278,6 +278,13 @@ namespace Chromely.Browser
         public void OnBeforeClose()
         {
             BeforeClose?.Invoke(this, null);
+
+            // Flush cache
+            // This is needed since there is some delay from when a cookie
+            // has been set/deleted before it is actually persisted to disk.
+            // This ensures all cookies is written to disk before exit.
+            var cookieManager = CefCookieManager.GetGlobal(null);
+            cookieManager?.FlushStore(null);
         }
 
         /// <summary>

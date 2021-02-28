@@ -655,6 +655,7 @@ namespace Chromely.NativeHost
             try
             {
                 _keyboardHook?.Dispose();
+                _keyboardHook = null;
             }
             catch { }
         }
