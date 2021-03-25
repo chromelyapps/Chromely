@@ -90,7 +90,7 @@ namespace Chromely.Browser
                             }
                             else
                             {
-                                var parameters = request.Url.GetParameters();
+                                var parameters = request.Url.GetParameters(request.ReferrerURL);
                                 var postData = GetPostData(request);
 
                                 var jsonRequest = _serializerUtil.ObjectToJson(request);
@@ -134,7 +134,7 @@ namespace Chromely.Browser
                             }
                             else
                             {
-                                var parameters = request.Url.GetParameters();
+                                var parameters = request.Url.GetParameters(request.ReferrerURL);
                                 var postData = GetPostData(request);
 
                                 var jsonRequest = _serializerUtil.ObjectToJson(request);

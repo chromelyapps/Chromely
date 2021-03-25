@@ -100,4 +100,9 @@ namespace Chromely.Core.Infrastructure
         public const HttpStatusCode StatusOK = HttpStatusCode.OK;
         public const string StatusOKText = "OK";
     }
+
+    public static class RequestConstants
+    {
+        public const string Referrer = "referrer";
+    }
 }

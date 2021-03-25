@@ -5,6 +5,7 @@ using Chromely.Core;
 using Chromely.Core.Configuration;
 using Chromely.Core.Host;
 using Chromely.Core.Network;
+using Xilium.CefGlue;
 
 namespace Chromely.Browser
 {
@@ -115,8 +116,8 @@ namespace Chromely.Browser
 
     internal sealed class ChromelyRequestHandler : DefaultRequestHandler, IDefaultCustomHandler
     {
-        public ChromelyRequestHandler(IChromelyConfiguration config, IChromelyCommandTaskRunner commandTaskRunner, IChromelyWindow window)
-                : base(config, commandTaskRunner, window)
+        public ChromelyRequestHandler(IChromelyConfiguration config, IChromelyCommandTaskRunner commandTaskRunner, IChromelyWindow window, CefResourceRequestHandler resourceRequestHandler = null)
+                : base(config, commandTaskRunner, window, resourceRequestHandler)
         {
         }
     }

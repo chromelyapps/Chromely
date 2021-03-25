@@ -15,6 +15,7 @@ namespace Chromely.Browser
     {
         protected readonly IChromelyConfiguration _config;
         protected readonly IChromelyCommandTaskRunner _commandTaskRunner;
+        protected readonly CefResourceRequestHandler _resourceRequestHandler;
 
         /// <summary>
         /// The m_browser.
@@ -24,11 +25,12 @@ namespace Chromely.Browser
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultRequestHandler"/> class.
         /// </summary>
-        public DefaultRequestHandler(IChromelyConfiguration config, IChromelyCommandTaskRunner commandTaskRunner, IChromelyWindow window)
+        public DefaultRequestHandler(IChromelyConfiguration config, IChromelyCommandTaskRunner commandTaskRunner, IChromelyWindow window, CefResourceRequestHandler resourceRequestHandler = null)
         {
             _config = config;
             _commandTaskRunner = commandTaskRunner;
             _browser = window as ChromiumBrowser;
+            _resourceRequestHandler = resourceRequestHandler;
         }
 
         public ChromiumBrowser Browser
@@ -39,7 +41,7 @@ namespace Chromely.Browser
 
         protected override CefResourceRequestHandler GetResourceRequestHandler(CefBrowser browser, CefFrame frame, CefRequest request, bool isNavigation, bool isDownload, string requestInitiator, ref bool disableDefaultHandling)
         {
-            return null;
+            return _resourceRequestHandler;
         }
 
         /// <summary>

@@ -83,11 +83,15 @@ namespace Chromely.Core.Infrastructure
         /// <param name="url">
         /// The url.
         /// </param>
+        /// <param name="referrer">
+        /// The referrer.
+        /// </param>
         /// <returns>
         /// The name value collection.
         /// </returns>
-        public static IDictionary<string, string> GetParameters(this string url)
+        public static IDictionary<string, string> GetParameters(this string url, string referrer = null)
         {
+            var result = new Dictionary<string, string>();
             var nameValueCollection = new NameValueCollection();
 
             string querystring = string.Empty;
@@ -96,14 +100,26 @@ namespace Chromely.Core.Infrastructure
             {
                 querystring = url.Substring(url.IndexOf('?'));
                 nameValueCollection = HttpUtility.ParseQueryString(querystring);
+                if(nameValueCollection != null && nameValueCollection.Count > 0)
+                {
+                    result = nameValueCollection.AllKeys.ToDictionary(x => x, x => nameValueCollection[x]);
+                }
             }
 
-            if (string.IsNullOrEmpty(querystring))
+            if (!string.IsNullOrEmpty(referrer))
             {
-                return new Dictionary<string, string>();
+                if (result.ContainsKey(RequestConstants.Referrer))
+                {
+                    var guidStr = Guid.NewGuid().ToString();
+                    result.Add($"{RequestConstants.Referrer}_{guidStr}", referrer);
+                }
+                else
+                {
+                    result.Add(RequestConstants.Referrer, referrer);
+                }
             }
 
-            return nameValueCollection.AllKeys.ToDictionary(x => x, x => nameValueCollection[x]);
+            return result;
         }
 
         public static string JavaScriptStringEncode(this string value)
