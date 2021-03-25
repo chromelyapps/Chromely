@@ -25,8 +25,9 @@ namespace Chromely.Core.Defaults
 
         public virtual IChromelyResource HandleError(FileInfo fileInfo, Exception exception = null)
         {
-            bool fileExists = fileInfo != null && fileInfo.Exists;
-            int fileSize = (int)(fileInfo != null ? fileInfo.Length : 0);
+            var info = GetFileInfo(fileInfo);
+            bool fileExists = info.Item1;
+            int fileSize = info.Item2;
             
             var resource = HandleResourceError(fileExists, fileSize, exception);
             Logger.Instance.Log.LogWarning($"File: {fileInfo?.FullName}: {resource?.StatusText}");
@@ -35,8 +36,9 @@ namespace Chromely.Core.Defaults
 
         public IChromelyResource HandleError(Stream stream, Exception exception = null)
         {
-            bool fileExists = stream != null;
-            int fileSize = (int)(stream != null ? stream.Length : 0);
+            var info = GetFileInfo(stream);
+            bool fileExists = info.Item1;
+            int fileSize = info.Item2;
 
             return HandleResourceError(fileExists, fileSize, exception);
         }
@@ -96,6 +98,34 @@ namespace Chromely.Core.Defaults
             }
 
             return resource;
+        }
+
+        private (bool, int) GetFileInfo(object infoOrStream)
+        {
+            bool fileExists = false;
+            int fileSize = 0;
+
+            try
+            {
+                var fileInfo = infoOrStream as FileInfo;
+                if (fileInfo != null)
+                {
+                    fileExists = fileInfo != null && fileInfo.Exists;
+                    fileSize = (int)(fileInfo != null ? fileInfo.Length : 0);
+                }
+
+                var stream = infoOrStream as Stream;
+                if (stream != null)
+                {
+                    fileExists = stream != null;
+                    fileSize = (int)(stream != null ? stream.Length : 0);
+                }
+
+                return (fileExists, fileSize);
+            }
+            catch {}
+
+            return (fileExists, fileSize);
         }
     }
 }
