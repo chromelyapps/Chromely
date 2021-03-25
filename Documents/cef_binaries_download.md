@@ -17,12 +17,18 @@ For manual download please these follow steps:
 
 1.  Get CEF binaries from [Spotify CEF binaries download page](https://cef-builds.spotifycdn.com/index.html). 
 
+     To get the version info see [Version File](https://github.com/chromelyapps/Chromely/blob/master/src/Chromely/CefGlue/Interop/version.g.cs).
+     
      #### Versions Map 
     | Chromely.CefGlue| Chromely.Unofficial.CefGlue.NetStd | Required CEF Binary |
     | :---         | :---         | :--- |
     | 5.0.77.* | 77.0.3865.120 | 77.1.14%2Bg4fb61d2%2Bchromium-77.0.3865.120 |
     | 5.0.79.* | 79.0.3945.130 | 79.1.36+g90301bd+chromium-79.0.3945.130 |
-    
+    | 5.0.81.* | 81.0.4044.113 | 81.2.21%2Bge864886%2Bchromium-81.0.4044.113 |
+    | 5.0.83.* | 83.0.4103.106 | 83.5.0%2Bgbf03589%2Bchromium-83.0.4103.106 |
+    | 5.1.86.* | 86.0.4240.183 | 86.0.21%2Bg6a2c8e7%2Bchromium-86.0.4240.183 |
+    | 5.1.88.* | 88.0.4324.96  | 88.1.6%2Bg4fe33a1%2Bchromium-88.0.4324.96 |
+          
     For instance binaries download for Chromely 5.0.77.* will be url links: 
     ```` 
     http://opensource.spotify.com/cefbuilds/cef_binary_77.1.14%2Bg4fb61d2%2Bchromium-77.0.3865.120_windows64_minimal.tar.bz2
