@@ -41,7 +41,7 @@ struct CHROMELYPARAM {
     int noresize;
     int nominbutton;
     int nomaxbutton;
-    char title[256];
+    char* titleUtf8Ptr;
     OnRunMessageLoopCallback runMessageLoopCallback;
     OnCefShutdownCallback cefShutdownCallback;
     OnInitCallback initCallback;

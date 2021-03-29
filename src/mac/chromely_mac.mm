@@ -247,8 +247,8 @@ namespace {
                backing:NSBackingStoreBuffered
                defer:NO ];
 
-    NSString *title = [NSString stringWithFormat:@"%s", chromelyParam_.title];
-	[window_ setTitle:title];
+    NSString *title = [NSString stringWithUTF8String: chromelyParam_.titleUtf8Ptr];
+	  [window_ setTitle:title];
     [window_ setAcceptsMouseMovedEvents:YES];
 	
     // No dark mode, please

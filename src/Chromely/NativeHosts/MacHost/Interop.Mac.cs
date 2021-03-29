@@ -23,8 +23,7 @@ namespace Chromely.NativeHost
             public int noresize;
             public int nominbutton;
             public int nomaxbutton;
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
-            public string title;
+            public IntPtr titleUtf8Ptr;
             public IntPtr runMessageLoopCallback;
             public IntPtr cefShutdownCallback;
             public IntPtr initCallback;

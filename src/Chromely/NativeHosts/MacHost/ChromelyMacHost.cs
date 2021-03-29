@@ -4,6 +4,7 @@
 using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using System.Text;
 using Chromely.Core.Configuration;
 using Chromely.Core.Host;
 using Chromely.Core.Logging;
@@ -30,6 +31,7 @@ namespace Chromely.NativeHost
 
         private ChromelyParam _configParam;
         private IWindowOptions _options;
+        private GCHandle _titleHandle;
         private IntPtr _appHandle;
         private IntPtr _poolHandle;
         private IntPtr _windowHandle;
@@ -65,8 +67,8 @@ namespace Chromely.NativeHost
             _configParam.nominbutton = _options.DisableMinMaximizeControls ? 1 : 0;
             _configParam.nomaxbutton = _options.DisableMinMaximizeControls ? 1 : 0;
 
-            _configParam.title = _options.Title;
-
+            _configParam.titleUtf8Ptr = GetUTF8Title(_options.Title);
+  
             _configParam.x = _options.Position.X;
             _configParam.y = _options.Position.Y;
             _configParam.width = _options.Size.Width;
@@ -153,6 +155,7 @@ namespace Chromely.NativeHost
 
         protected virtual void CreateCallback(IntPtr window, IntPtr view)
         {
+            _titleHandle.Free();
             _windowHandle = window;
             _viewHandle = view;
             var createdEvent = new CreatedEventArgs(_windowHandle, _viewHandle);
@@ -213,5 +216,33 @@ namespace Chromely.NativeHost
         }
 
         #endregion
+
+        #region Title Encoding
+        private static bool TitleNonASCIIChars(string title)
+        {
+            return (System.Text.Encoding.UTF8.GetByteCount(title) != title.Length);
+        }
+
+        private IntPtr GetUTF8Title(string title)
+        {
+            try
+            {
+                if (TitleNonASCIIChars(title))
+                {
+                    byte[] utf8Bytes = Encoding.UTF8.GetBytes(title);
+                    _titleHandle = GCHandle.Alloc(utf8Bytes, GCHandleType.Pinned);
+                    return _titleHandle.AddrOfPinnedObject();
+                }
+
+               byte[] bytes = Encoding.ASCII.GetBytes(title);
+               _titleHandle = GCHandle.Alloc(bytes, GCHandleType.Pinned);
+                return _titleHandle.AddrOfPinnedObject();
+            }
+            catch {}
+
+            return IntPtr.Zero;
+        }
+
+        #endregion 
     }
 }
