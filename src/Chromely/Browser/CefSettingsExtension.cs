@@ -113,9 +113,7 @@ namespace Chromely.Browser
 
                     case CefSettingKeys.CEFLOGFILE:
                     case CefSettingKeys.LOGFILE:
-                        var ext = Path.GetExtension(setting.Value);
-                        var name = setting.Value.Substring(0, setting.Value.Length - ext.Length);
-                        cefSettings.LogFile = $"{name}_{DateTime.Now.ToString("yyyyMMdd")}{ext}";
+                        cefSettings.LogFile = setting.Value;
                         break;
 
                     case CefSettingKeys.LOGSEVERITY:
