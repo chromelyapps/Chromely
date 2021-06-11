@@ -21,7 +21,7 @@ namespace Xilium.CefGlue.Interop
         
         // GetGlobalMediaRouter
         [DllImport(libcef.DllName, EntryPoint = "cef_media_router_get_global", CallingConvention = libcef.CEF_CALL)]
-        public static extern cef_media_router_t* get_global();
+        public static extern cef_media_router_t* get_global(cef_completion_callback_t* callback);
         
         [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
         #if !DEBUG

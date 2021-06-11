@@ -213,6 +213,23 @@
         }
 
 
+        private cef_print_handler_t* get_print_handler(cef_client_t* self)
+        {
+            CheckSelf(self);
+            var result = GetPrintHandler();
+            return result != null ? result.ToNative() : null;
+        }
+
+        /// <summary>
+        /// Return the handler for printing on Linux. If a print handler is not
+        /// provided then printing will not be supported on the Linux platform.
+        /// </summary>
+        protected virtual CefPrintHandler GetPrintHandler()
+        {
+            return null;
+        }
+
+
         private cef_render_handler_t* get_render_handler(cef_client_t* self)
         {
             CheckSelf(self);

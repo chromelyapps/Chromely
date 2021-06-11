@@ -25,6 +25,7 @@ namespace Xilium.CefGlue.Interop
         internal IntPtr _get_keyboard_handler;
         internal IntPtr _get_life_span_handler;
         internal IntPtr _get_load_handler;
+        internal IntPtr _get_print_handler;
         internal IntPtr _get_render_handler;
         internal IntPtr _get_request_handler;
         internal IntPtr _on_process_message_received;
@@ -124,6 +125,12 @@ namespace Xilium.CefGlue.Interop
         [SuppressUnmanagedCodeSecurity]
         #endif
         internal delegate cef_load_handler_t* get_load_handler_delegate(cef_client_t* self);
+        
+        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
+        #if !DEBUG
+        [SuppressUnmanagedCodeSecurity]
+        #endif
+        internal delegate cef_print_handler_t* get_print_handler_delegate(cef_client_t* self);
         
         [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
         #if !DEBUG

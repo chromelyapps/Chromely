@@ -28,25 +28,6 @@
         }
 
         /// <summary>
-        /// Set the schemes supported by this manager. If |include_defaults| is true
-        /// the default schemes ("http", "https", "ws" and "wss") will also be
-        /// supported. Calling this method with an empty |schemes| value and
-        /// |include_defaults| set to false will disable all loading and saving of
-        /// cookies for this manager. If |callback| is non-NULL it will be executed
-        /// asnychronously on the UI thread after the change has been applied. Must be
-        /// called before any cookies are accessed.
-        /// </summary>
-        public void SetSupportedSchemes(string[] schemes, bool includeDefaults, CefCompletionCallback callback)
-        {
-            var n_schemes = cef_string_list.From(schemes);
-            var n_callback = callback != null ? callback.ToNative() : null;
-
-            cef_cookie_manager_t.set_supported_schemes(_self, n_schemes, includeDefaults ? 1 : 0, n_callback);
-
-            libcef.string_list_free(n_schemes);
-        }
-
-        /// <summary>
         /// Visit all cookies on the UI thread. The returned cookies are ordered by
         /// longest path, then by earliest creation date. Returns false if cookies
         /// cannot be accessed.

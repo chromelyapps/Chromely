@@ -31,7 +31,7 @@ namespace Xilium.CefGlue.Interop
         public int persist_session_cookies;
         public int persist_user_preferences;
         public cef_string_t user_agent;
-        public cef_string_t product_version;
+        public cef_string_t user_agent_product;
         public cef_string_t locale;
         public cef_string_t log_file;
         public CefLogSeverity log_severity;
@@ -44,6 +44,8 @@ namespace Xilium.CefGlue.Interop
         public int ignore_certificate_errors;
         public uint background_color;
         public cef_string_t accept_language_list;
+        public cef_string_t cookieable_schemes_list;
+        public int cookieable_schemes_exclude_defaults;
         public cef_string_t application_client_id_for_file_scanning;
 
         #region Alloc & Free

@@ -61,6 +61,19 @@
         /// </summary>
         public string AcceptLanguageList { get; set; }
 
+        /// <summary>
+        /// Comma delimited list of schemes supported by the associated
+        /// CefCookieManager. If |cookieable_schemes_exclude_defaults| is false (0) the
+        /// default schemes ("http", "https", "ws" and "wss") will also be supported.
+        /// Specifying a |cookieable_schemes_list| value and setting
+        /// |cookieable_schemes_exclude_defaults| to true (1) will disable all loading
+        /// and saving of cookies for this manager. These values will be ignored if
+        /// |cache_path| matches the CefSettings.cache_path value.
+        /// </summary>
+        public string CookieableSchemesList { get; set; }
+
+        public bool CookieableSchemesExcludeDefaults { get; set; }
+
         internal unsafe cef_request_context_settings_t* ToNative()
         {
             var ptr = cef_request_context_settings_t.Alloc();
@@ -69,6 +82,8 @@
             ptr->persist_user_preferences = PersistUserPreferences ? 1 : 0;
             ptr->ignore_certificate_errors = IgnoreCertificateErrors ? 1 : 0;
             cef_string_t.Copy(AcceptLanguageList, &ptr->accept_language_list);
+            cef_string_t.Copy(CookieableSchemesList, &ptr->cookieable_schemes_list);
+            ptr->cookieable_schemes_exclude_defaults = CookieableSchemesExcludeDefaults ? 1 : 0;
             return ptr;
         }
 
@@ -76,6 +91,7 @@
         {
             libcef.string_clear(&ptr->cache_path);
             libcef.string_clear(&ptr->accept_language_list);
+            libcef.string_clear(&ptr->cookieable_schemes_list);
         }
 
         internal static unsafe void Free(cef_request_context_settings_t* ptr)

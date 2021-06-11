@@ -70,7 +70,6 @@ namespace Chromely.Core.Infrastructure
         public const string PERSISTSESSIONCOOKIES = nameof(PERSISTSESSIONCOOKIES);
         public const string PERSISTUSERPREFERENCES = nameof(PERSISTUSERPREFERENCES);
         public const string USERAGENT = nameof(USERAGENT);
-        public const string PRODUCTVERSION = nameof(PRODUCTVERSION);
         public const string LOCALE = nameof(LOCALE);
         public const string CEFLOGFILE = nameof(CEFLOGFILE);
         public const string LOGFILE = nameof(LOGFILE);

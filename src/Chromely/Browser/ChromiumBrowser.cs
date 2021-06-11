@@ -175,7 +175,6 @@ namespace Chromely.Browser
             _settings.DefaultEncoding = "UTF-8";
             _settings.FileAccessFromFileUrls = CefState.Enabled;
             _settings.UniversalAccessFromFileUrls = CefState.Enabled;
-            _settings.WebSecurity = CefState.Disabled;
 
             HostHandle = hostHandle;
             var windowInfo = CefWindowInfo.Create();

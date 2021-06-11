@@ -1269,10 +1269,12 @@ namespace Xilium.CefGlue
 
         /// <summary>
         /// When handling a Trust Tokens protocol operation-executing request, the system
-        /// found that the request's desired Trust Tokens results were already present in
-        /// a local cache; as a result, the main request was cancelled.
+        /// was able to execute the request's Trust Tokens operation without sending the
+        /// request to its destination: for instance, the results could have been present
+        /// in a local cache (for redemption) or the operation could have been diverted
+        /// to a local provider (for "platform-provided" issuance).
         /// </summary>
-        TRUST_TOKEN_OPERATION_CACHE_HIT = -507,
+        TRUST_TOKEN_OPERATION_SUCCESS_WITHOUT_SENDING_REQUEST = -507,
 
         // *** Code -600 is reserved (was FTP_PASV_COMMAND_FAILED). ***
 

@@ -182,17 +182,17 @@ namespace Chromely.Loader
                 // Hack until fixed.
                 if (!string.IsNullOrEmpty(binaryNamePattern1))
                 {
-                    if (binaryNamePattern1.Contains("88.0.4324.96"))
+                    if (binaryNamePattern1.Contains("90.0.4430.93"))
                     {
-                        return $"cef_binary_88.1.6%2Bg4fe33a1%2Bchromium-88.0.4324.96_{platformIdentifier}_minimal.tar.bz2";
+                        return $"cef_binary_90.6.5%2Bg7a604aa%2Bchromium-90.0.4430.93_{platformIdentifier}_minimal.tar.bz2";
                     }
                 }
 
                 if (!string.IsNullOrEmpty(binaryNamePattern2))
                 {
-                    if (binaryNamePattern2.Contains("88.0.4324.96"))
+                    if (binaryNamePattern2.Contains("90.0.4430.93"))
                     {
-                        return $"cef_binary_88.1.6%2Bg4fe33a1%2Bchromium-88.0.4324.96_{platformIdentifier}_minimal.tar.bz2";
+                        return $"cef_binary_90.6.5%2Bg7a604aa%2Bchromium-90.0.4430.93_{platformIdentifier}_minimal.tar.bz2";
                     }
                 }
 

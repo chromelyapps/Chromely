@@ -12,37 +12,6 @@
     /// </summary>
     public abstract unsafe partial class CefBrowserProcessHandler
     {
-        private void get_cookieable_schemes(cef_browser_process_handler_t* self, cef_string_list* schemes, int* include_defaults)
-        {
-            CheckSelf(self);
-
-            var m_schemes = cef_string_list.ToList(schemes);
-            var m_includeDefaults = *include_defaults != 0;
-
-            GetCookieableSchemes(m_schemes, ref m_includeDefaults);
-
-            libcef.string_list_clear(schemes);
-            cef_string_list.AppendTo(schemes, m_schemes);
-
-            *include_defaults = m_includeDefaults ? 1 : 0;
-        }
-
-        /// <summary>
-        /// Called on the browser process UI thread to retrieve the list of schemes
-        /// that should support cookies. If |include_defaults| is true the default
-        /// schemes ("http", "https", "ws" and "wss") will also be supported. Providing
-        /// an empty |schemes| value and setting |include_defaults| to false will
-        /// disable all loading and saving of cookies.
-        /// This state will apply to the CefCookieManager associated with the global
-        /// CefRequestContext. It will also be used as the initial state for any new
-        /// CefRequestContexts created by the client. After creating a new
-        /// CefRequestContext the CefCookieManager::SetSupportedSchemes method may be
-        /// called on the associated CefCookieManager to futher override these values.
-        /// </summary>
-        protected virtual void GetCookieableSchemes(List<string> schemes, ref bool includeDefaults)
-        { }
-
-
         private void on_context_initialized(cef_browser_process_handler_t* self)
         {
             CheckSelf(self);
@@ -77,23 +46,6 @@
         /// </summary>
         protected virtual void OnBeforeChildProcessLaunch(CefCommandLine commandLine)
         {
-        }
-
-
-        private cef_print_handler_t* get_print_handler(cef_browser_process_handler_t* self)
-        {
-            CheckSelf(self);
-            var result = GetPrintHandler();
-            return result != null ? result.ToNative() : null;
-        }
-
-        /// <summary>
-        /// Return the handler for printing on Linux. If a print handler is not
-        /// provided then printing will not be supported on the Linux platform.
-        /// </summary>
-        protected virtual CefPrintHandler GetPrintHandler()
-        {
-            return null;
         }
 
 

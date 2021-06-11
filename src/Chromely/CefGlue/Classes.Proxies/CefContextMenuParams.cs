@@ -224,13 +224,5 @@
         {
             get { return cef_context_menu_params_t.is_custom_menu(_self) != 0; }
         }
-
-        /// <summary>
-        /// Returns true if the context menu was invoked from a pepper plugin.
-        /// </summary>
-        public bool IsPepperMenu
-        {
-            get { return cef_context_menu_params_t.is_pepper_menu(_self) != 0; }
-        }
     }
 }

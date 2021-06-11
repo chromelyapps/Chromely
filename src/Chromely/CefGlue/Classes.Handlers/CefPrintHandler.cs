@@ -102,11 +102,13 @@
         protected abstract void OnPrintReset(CefBrowser browser);
 
 
-        private cef_size_t get_pdf_paper_size(cef_print_handler_t* self, int device_units_per_inch)
+        private cef_size_t get_pdf_paper_size(cef_print_handler_t* self, cef_browser_t* browser, int device_units_per_inch)
         {
             CheckSelf(self);
 
-            var m_result = GetPdfPaperSize(device_units_per_inch);
+            var mBrowser = CefBrowser.FromNativeOrNull(browser);
+
+            var m_result = GetPdfPaperSize(mBrowser, device_units_per_inch);
 
             var n_result = new cef_size_t
             {
@@ -121,6 +123,7 @@
         /// Return the PDF paper size in device units. Used in combination with
         /// CefBrowserHost::PrintToPDF().
         /// </summary>
-        protected abstract CefSize GetPdfPaperSize(int deviceUnitsPerInch);
+        protected virtual CefSize GetPdfPaperSize(CefBrowser browser, int deviceUnitsPerInch)
+            => new CefSize();
     }
 }

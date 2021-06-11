@@ -129,7 +129,7 @@
         /// </summary>
         public CefFrame GetMainFrame()
         {
-            return CefFrame.FromNative(
+            return CefFrame.FromNativeOrNull(
                 cef_browser_t.get_main_frame(_self)
                 );
         }
@@ -139,7 +139,7 @@
         /// </summary>
         public CefFrame GetFocusedFrame()
         {
-            return CefFrame.FromNative(
+            return CefFrame.FromNativeOrNull(
                 cef_browser_t.get_focused_frame(_self)
                 );
         }

@@ -216,7 +216,7 @@ namespace Xilium.CefGlue.Interop
         #if !DEBUG
         [SuppressUnmanagedCodeSecurity]
         #endif
-        private delegate cef_media_router_t* get_media_router_delegate(cef_request_context_t* self);
+        private delegate cef_media_router_t* get_media_router_delegate(cef_request_context_t* self, cef_completion_callback_t* callback);
         
         // AddRef
         private static IntPtr _p0;
@@ -681,7 +681,7 @@ namespace Xilium.CefGlue.Interop
         private static IntPtr _p1b;
         private static get_media_router_delegate _d1b;
         
-        public static cef_media_router_t* get_media_router(cef_request_context_t* self)
+        public static cef_media_router_t* get_media_router(cef_request_context_t* self, cef_completion_callback_t* callback)
         {
             get_media_router_delegate d;
             var p = self->_get_media_router;
@@ -691,7 +691,7 @@ namespace Xilium.CefGlue.Interop
                 d = (get_media_router_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_media_router_delegate));
                 if (_p1b == IntPtr.Zero) { _d1b = d; _p1b = p; }
             }
-            return d(self);
+            return d(self, callback);
         }
         
     }

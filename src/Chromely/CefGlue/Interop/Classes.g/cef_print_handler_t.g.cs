@@ -78,7 +78,7 @@ namespace Xilium.CefGlue.Interop
         #if !DEBUG
         [SuppressUnmanagedCodeSecurity]
         #endif
-        internal delegate cef_size_t get_pdf_paper_size_delegate(cef_print_handler_t* self, int device_units_per_inch);
+        internal delegate cef_size_t get_pdf_paper_size_delegate(cef_print_handler_t* self, cef_browser_t* browser, int device_units_per_inch);
         
         private static int _sizeof;
         

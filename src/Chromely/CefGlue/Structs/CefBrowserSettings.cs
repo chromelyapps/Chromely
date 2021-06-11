@@ -212,18 +212,6 @@
         }
 
         /// <summary>
-        /// Controls whether web security restrictions (same-origin policy) will be
-        /// enforced. Disabling this setting is not recommend as it will allow risky
-        /// security behavior such as cross-site scripting (XSS). Also configurable
-        /// using the "disable-web-security" command-line switch.
-        /// </summary>
-        public CefState WebSecurity
-        {
-            get { return _self->web_security; }
-            set { _self->web_security = value; }
-        }
-
-        /// <summary>
         /// Controls whether image URLs will be loaded from the network. A cached image
         /// will still be rendered if requested. Also configurable using the
         /// "disable-image-loading" command-line switch.
@@ -325,7 +313,7 @@
         /// <summary>
         /// Comma delimited ordered list of language codes without any whitespace that
         /// will be used in the "Accept-Language" HTTP header. May be set globally
-        /// using the CefBrowserSettings.accept_language_list value. If both values are
+        /// using the CefSettings.accept_language_list value. If both values are
         /// empty then "en-US,en" will be used.
         /// </summary>
         public string AcceptLanguageList

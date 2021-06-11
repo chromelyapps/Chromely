@@ -103,10 +103,6 @@ namespace Chromely.Browser
                         cefSettings.UserAgent = setting.Value;
                         break;
 
-                    case CefSettingKeys.PRODUCTVERSION:
-                        cefSettings.ProductVersion = setting.Value;
-                        break;
-
                     case CefSettingKeys.LOCALE:
                         cefSettings.Locale = setting.Value;
                         break;

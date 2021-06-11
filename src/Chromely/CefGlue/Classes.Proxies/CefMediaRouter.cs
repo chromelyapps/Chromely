@@ -15,14 +15,15 @@
     {
         /// <summary>
         /// Returns the MediaRouter object associated with the global request context.
-        /// Equivalent to calling
-        /// CefRequestContext::GetGlobalContext()->GetMediaRouter().
+        /// If |callback| is non-NULL it will be executed asnychronously on the UI
+        /// thread after the manager's storage has been initialized. Equivalent to
+        /// calling CefRequestContext::GetGlobalContext()->GetMediaRouter().
         /// </summary>
-        public static CefMediaRouter GetGlobalMediaRouter()
+        public static CefMediaRouter GetGlobalMediaRouter(CefCompletionCallback? callback)
         {
-            return CefMediaRouter.FromNative(
-                cef_media_router_t.get_global()
-                );
+            var nCallback = callback != null ? callback.ToNative() : null;
+            var nResult = cef_media_router_t.get_global(nCallback);
+            return CefMediaRouter.FromNative(nResult);
         }
 
         /// <summary>

@@ -126,7 +126,7 @@
 
         /// <summary>
         /// Returns the cookie manager for this object. If |callback| is non-NULL it
-        /// will be executed asnychronously on the IO thread after the manager's
+        /// will be executed asnychronously on the UI thread after the manager's
         /// storage has been initialized.
         /// </summary>
         public CefCookieManager GetCookieManager(CefCompletionCallback callback)
@@ -440,12 +440,15 @@
         }
 
         /// <summary>
-        /// Returns the MediaRouter object associated with this context.
+        /// Returns the MediaRouter object associated with this context. If |callback|
+        /// is non-NULL it will be executed asnychronously on the UI thread after the
+        /// manager's context has been initialized.
         /// </summary>
-        public CefMediaRouter GetMediaRouter()
+        public CefMediaRouter GetMediaRouter(CefCompletionCallback? callback)
         {
-            var n_result = cef_request_context_t.get_media_router(_self);
-            return CefMediaRouter.FromNative(n_result);
+            var nCallback = callback != null ? callback.ToNative() : null;
+            var nResult = cef_request_context_t.get_media_router(_self, nCallback);
+            return CefMediaRouter.FromNative(nResult);
         }
     }
 }

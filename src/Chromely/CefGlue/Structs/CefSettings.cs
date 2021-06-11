@@ -102,7 +102,9 @@
         /// in-memory caches are used for storage and no data is persisted to disk.
         /// HTML5 databases such as localStorage will only persist across sessions if a
         /// cache path is specified. Can be overridden for individual CefRequestContext
-        /// instances via the CefRequestContextSettings.cache_path value.
+        /// instances via the CefRequestContextSettings.cache_path value. When using
+        /// the Chrome runtime the "default" profile will be used if |cache_path| and
+        /// |root_cache_path| have the same value.
         /// </summary>
         public string CachePath { get; set; }
 
@@ -124,7 +126,8 @@
         /// directory on Linux, "~/Library/Application Support/CEF/User Data" directory
         /// on Mac OS X, "Local Settings\Application Data\CEF\User Data" directory
         /// under the user profile directory on Windows). If this value is non-empty
-        /// then it must be an absolute path.
+        /// then it must be an absolute path. When using the Chrome runtime this value
+        /// will be ignored in favor of the |root_cache_path| value.
         /// </summary>
         public string UserDataPath { get; set; }
 
@@ -161,9 +164,9 @@
         /// Value that will be inserted as the product portion of the default
         /// User-Agent string. If empty the Chromium product version will be used. If
         /// |userAgent| is specified this value will be ignored. Also configurable
-        /// using the "product-version" command-line switch.
+        /// using the "user-agent-product" command-line switch.
         /// </summary>
-        public string ProductVersion { get; set; }
+        public string UserAgentProduct { get; set; }
 
         /// <summary>
         /// The locale string that will be passed to WebKit. If empty the default
@@ -202,10 +205,10 @@
 
         /// <summary>
         /// The fully qualified path for the resources directory. If this value is
-        /// empty the cef.pak and/or devtools_resources.pak files must be located in
-        /// the module directory on Windows/Linux or the app bundle Resources directory
-        /// on Mac OS X. If this value is non-empty then it must be an absolute path.
-        /// Also configurable using the "resources-dir-path" command-line switch.
+        /// empty the *.pak files must be located in the module directory on
+        /// Windows/Linux or the app bundle Resources directory on Mac OS X. If this
+        /// value is non-empty then it must be an absolute path. Also configurable
+        /// using the "resources-dir-path" command-line switch.
         /// </summary>
         public string ResourcesDirPath { get; set; }
 
@@ -279,6 +282,21 @@
         public string AcceptLanguageList { get; set; }
 
         /// <summary>
+        /// Comma delimited list of schemes supported by the associated
+        /// CefCookieManager. If |cookieable_schemes_exclude_defaults| is false (0) the
+        /// default schemes ("http", "https", "ws" and "wss") will also be supported.
+        /// Specifying a |cookieable_schemes_list| value and setting
+        /// |cookieable_schemes_exclude_defaults| to true (1) will disable all loading
+        /// and saving of cookies for this manager. Can be overridden
+        /// for individual CefRequestContext instances via the
+        /// CefRequestContextSettings.cookieable_schemes_list and
+        /// CefRequestContextSettings.cookieable_schemes_exclude_defaults values.
+        /// </summary>
+        public string CookieableSchemesList { get; set; }
+
+        public bool CookieableSchemesExcludeDefaults { get; set; }
+
+        /// <summary>
         /// GUID string used for identifying the application. This is passed to the
         /// system AV function for scanning downloaded files. By default, the GUID
         /// will be an empty string and the file will be treated as an untrusted
@@ -304,7 +322,7 @@
             ptr->persist_session_cookies = PersistSessionCookies ? 1 : 0;
             ptr->persist_user_preferences = PersistUserPreferences ? 1 : 0;
             cef_string_t.Copy(UserAgent, &ptr->user_agent);
-            cef_string_t.Copy(ProductVersion, &ptr->product_version);
+            cef_string_t.Copy(UserAgentProduct, &ptr->user_agent_product);
             cef_string_t.Copy(Locale, &ptr->locale);
             cef_string_t.Copy(LogFile, &ptr->log_file);
             ptr->log_severity = LogSeverity;
@@ -317,6 +335,8 @@
             ptr->ignore_certificate_errors = IgnoreCertificateErrors ? 1 : 0;
             ptr->background_color = BackgroundColor.ToArgb();
             cef_string_t.Copy(AcceptLanguageList, &ptr->accept_language_list);
+            cef_string_t.Copy(CookieableSchemesList, &ptr->cookieable_schemes_list);
+            ptr->cookieable_schemes_exclude_defaults = CookieableSchemesExcludeDefaults ? 1 : 0;
             cef_string_t.Copy(ApplicationClientIdForFileScanning, &ptr->application_client_id_for_file_scanning);
             return ptr;
         }
@@ -330,13 +350,14 @@
             libcef.string_clear(&ptr->root_cache_path);
             libcef.string_clear(&ptr->user_data_path);
             libcef.string_clear(&ptr->user_agent);
-            libcef.string_clear(&ptr->product_version);
+            libcef.string_clear(&ptr->user_agent_product);
             libcef.string_clear(&ptr->locale);
             libcef.string_clear(&ptr->log_file);
             libcef.string_clear(&ptr->javascript_flags);
             libcef.string_clear(&ptr->resources_dir_path);
             libcef.string_clear(&ptr->locales_dir_path);
             libcef.string_clear(&ptr->accept_language_list);
+            libcef.string_clear(&ptr->cookieable_schemes_list);
             libcef.string_clear(&ptr->application_client_id_for_file_scanning);
         }
 

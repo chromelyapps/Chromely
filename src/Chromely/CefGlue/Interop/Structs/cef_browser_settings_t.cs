@@ -34,7 +34,6 @@ namespace Xilium.CefGlue.Interop
         public CefState plugins;
         public CefState universal_access_from_file_urls;
         public CefState file_access_from_file_urls;
-        public CefState web_security;
         public CefState image_loading;
         public CefState image_shrink_standalone_to_fit;
         public CefState text_area_resize;
