@@ -196,7 +196,10 @@ namespace Chromely.Browser
                     case CefSettingKeys.FRAMEWORKDIRPATH:
                         cefSettings.FrameworkDirPath = setting.Value;
                         break;
-
+                    // MacOS Only
+                    case CefSettingKeys.MAINBUNDLEPATH:
+                        cefSettings.MainBundlePath = setting.Value;
+                        break;
                     default:
                         break;
                 }

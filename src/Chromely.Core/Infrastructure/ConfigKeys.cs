@@ -85,6 +85,7 @@ namespace Chromely.Core.Infrastructure
         public const string ACCEPTLANGUAGELIST = nameof(ACCEPTLANGUAGELIST);
         public const string FOCUSEDNODECHANGEDENABLED = nameof(FOCUSEDNODECHANGEDENABLED);
         public const string FRAMEWORKDIRPATH = nameof(FRAMEWORKDIRPATH);
+        public const string MAINBUNDLEPATH = nameof(MAINBUNDLEPATH);
     }
 
     public static class ResourceStatus
