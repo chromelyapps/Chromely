@@ -25,7 +25,7 @@ For example to register [CefContext Menu Handler](https://github.com/chromelyapp
 ````csharp
     public class CusomChromelyApp : ChromelyBasicApp
     {
-          public override void ConfigureServices(ServiceCollection services)
+          public override void ConfigureServices(IServiceCollection services)
         {
             base.ConfigureServices(services);
             services.AddSingleton<CefContextMenuHandler, CustomContextMenuHandler>();
