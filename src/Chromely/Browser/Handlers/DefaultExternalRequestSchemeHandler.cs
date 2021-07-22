@@ -158,7 +158,6 @@ namespace Chromely.Browser
                         headers.Add(header.Key, val);
                 }
             }
-            headers["Access-Control-Allow-Origin"] = "*";
         }
 
         /// <inheritdoc/>
