@@ -1,4 +1,4 @@
-// Copyright © 2017-2020 Chromely Projects. All rights reserved.
+// Copyright ï¿½ 2017-2020 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
 using Chromely.Core.Configuration;
@@ -8,6 +8,9 @@ using Chromely.Core.Network;
 using System;
 using System.Collections.Generic;
 using Xunit;
+// ReSharper disable UnusedMember.Local
+// ReSharper disable RedundantArgumentDefaultValue
+// ReSharper disable UseObjectOrCollectionInitializer
 
 namespace Chromely.Tests.ChromelyCore
 {
@@ -18,7 +21,10 @@ namespace Chromely.Tests.ChromelyCore
         {
             // Arrange
             var appName = System.Reflection.Assembly.GetEntryAssembly()?.GetName().Name;
-            var windowTitle = appName;
+            var moduleName = appName?.ToLower() ?? "";
+            var inUnitTest = moduleName.Contains("testrunner") || moduleName.Contains("testhost");
+            
+            var windowTitle = inUnitTest ? DefaultConfig.WindowOptions.Title : appName;
             var platform = ChromelyRuntime.Platform;
             var appExeLocation = AppDomain.CurrentDomain.BaseDirectory;
 
