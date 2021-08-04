@@ -8,7 +8,7 @@ using Chromely.Core;
 using Chromely.Core.Configuration;
 using Chromely.Core.Host;
 using Chromely.Core.Infrastructure;
-using Chromely.NativeHost;
+
 // ReSharper disable UnusedParameter.Global
 
 namespace Chromely.Integration.TestApp
@@ -45,7 +45,7 @@ namespace Chromely.Integration.TestApp
             _startupTimer.Start();
 
             var core = typeof(IChromelyConfiguration).Assembly;
-            CiTrace("Chromely.Core", core.GetName().Version.ToString());
+            CiTrace("Chromely.Core", core.GetName().Version?.ToString() ?? "");
             CiTrace("Platform", ChromelyRuntime.Platform.ToString());
 
             var appDirectory = AppDomain.CurrentDomain.BaseDirectory;

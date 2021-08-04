@@ -34,7 +34,9 @@
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
       <None Remove="chromely.ico" />
-      <EmbeddedResource Include="chromely.ico" />
+      <Content Include="chromely.ico">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
     <ItemGroup>
