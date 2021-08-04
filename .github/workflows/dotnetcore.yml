@@ -9,12 +9,16 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Setup .NET Core
+    - name: Setup .NET Core 3.1
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.1.100
+        dotnet-version: 3.1.x
+    - name: Setup .NET Core 5
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.x
     - name: Build with dotnet
-      run: dotnet build --configuration Release ./src/ChromelySolution.sln
+      run: dotnet build --configuration Release ./src/Chromely.sln
     - name: Test with dotnet
-      run: dotnet test --configuration Release ./src/ChromelySolution.sln
+      run: dotnet test --configuration Release ./src/Chromely.sln
       
