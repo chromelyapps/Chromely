@@ -3,12 +3,22 @@
 
 using Chromely.Core.Host;
 using System.Drawing;
+// ReSharper disable UnusedMemberInSuper.Global
 
 namespace Chromely.Core.Configuration
 {
     public interface IWindowOptions
     {
+        /// <summary>
+        /// Application title - used as window title
+        /// </summary>
         string Title { get; set; }
+        /// <summary>
+        /// Path to application icon file.
+        /// Relative from application directory.
+        /// Note:
+        /// Windows requires ICO files while Linus needs PNG format.
+        /// </summary>
         string RelativePathToIconFile { get; set; }
         bool DisableResizing { get; set; }
         bool DisableMinMaximizeControls { get; set; }
