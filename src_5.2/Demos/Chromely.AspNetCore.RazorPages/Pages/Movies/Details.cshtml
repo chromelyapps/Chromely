@@ -1,0 +1,48 @@
+﻿@page "{id:int}"
+@model Chromely.AspNetCore.RazorPages.Pages.Movies.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="container justify-content-center mt-3">
+
+    <h1>Details</h1>
+
+    <div>
+        <h4>Movie</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Movie.Title)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Movie.Title)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Movie.ReleaseDate)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Movie.ReleaseDate)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Movie.Genre)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Movie.Genre)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Movie.Price)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Movie.Price)
+            </dd>
+        </dl>
+    </div>
+    <div>
+        <p>
+            <a class="btn btn-primary btn-sm" role="button" asp-page="./Edit" asp-route-id="@Model.Movie.Id">Edit</a> |
+            <a class="btn btn-light btn-sm" role="button" asp-page="./Index" Index">Back to List</a>
+        </p>
+    </div>
+</div>

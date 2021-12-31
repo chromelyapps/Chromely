@@ -1,0 +1,173 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+     <title>Chromely</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../Content/css/bootstrap.min.css">
+	<script src="../Content/js/jquery.min.js"></script>
+    <script src="../Content/js/popper.min.js"></script>
+    <script src="../Content/js/bootstrap.min.js"></script>
+    <script>
+
+    function getTodoList(reqType, id, todo, completed) {
+
+            $('#moviesContainer').html("");
+            var keys = {};
+            keys["name"] = reqType;
+            keys["id"] = id;
+            keys["todo"] = todo;
+            keys["completed"] = completed.toString();
+
+            var parameters = {};
+            parameters["keys"] = keys;
+
+            var request = {
+                "method": "GET",
+                "url": "/todolistcontroller/items",
+                "parameters": parameters,
+                "postData": null,
+            };
+
+            window.cefQuery({
+                request: JSON.stringify(request),
+                onSuccess: function (response) {
+                    populateTodoList(response);
+                    if (reqType == 'clearcompleted') {
+                        var checkBox = document.getElementById("checkboxSelectAllTodoItems");
+                        checkBox.checked = false;
+                    }
+                }, onFailure: function (err, msg) {
+                    console.log(err, msg);
+                }
+            });
+        }
+
+        function populateTodoList(res) {
+         var itemsContainer = "";
+            $('#todoItemsContainer').html(itemsContainer);
+
+            // Begininng 
+            itemsContainer += "<div class='col-8'>";
+            itemsContainer += "<ul id='listGroupId'  class='list-group'>";
+
+            var jsonData = JSON.parse(res);
+            if (jsonData.ReadyState == 4 && jsonData.Status == 200) {
+                for (var i = 0; i < jsonData.Data.length; i++) {
+                    var todoItem = jsonData.Data[i];
+                    var itemChecked = todoItem.Completed == 1 ? "checked" : "unchecked";
+                    var delTagStart = todoItem.Completed == 1 ? "<del>" : "";
+                    var delTagEnd = todoItem.Completed == 1 ? "</del>" : "";
+                    itemsContainer += "<li class='list-group-item d-flex justify-content-between align-items-center'>";
+                    itemsContainer += "<div class='custom-control custom-switch'>";
+                    itemsContainer += "<input type='checkbox' class='custom-control-input' id='" + todoItem.Id + "CheckboxTodoItem' " + itemChecked + " onclick=\"switchOnOffTodoItem('" + todoItem.Id + "', '" + todoItem.Id + "CheckboxTodoItem', '" + todoItem.Id + "LabelTodoItem');\">";
+                    itemsContainer += "<label id='" + todoItem.Id + "LabelTodoItem' class='custom-control-label' for='" + todoItem.Id + "CheckboxTodoItem'>" + delTagStart + todoItem.Todo + delTagEnd + "</label>";
+                    itemsContainer += "</div>";
+                    itemsContainer += "<span class='badge badge-secondary badge-pill'><a id='itemDelLink' href='#' onclick=\"getTodoList('delete', '" + todoItem.Id + "', '', '');return false;\">X</a></span>";
+                    itemsContainer += "</li>";
+                }
+            }
+
+            // End 
+            itemsContainer += "</ul>";
+            itemsContainer += "</div>";
+
+            $('#todoItemsContainer').html(itemsContainer);
+        }
+
+        function switchOnOffAllTodoItems() {
+            // Get the checkbox
+            var checkBox = document.getElementById("checkboxSelectAllTodoItems");
+            var allCompleted = 0;
+            if (checkBox.checked == true){
+                allCompleted = 1;
+            } 
+
+            getTodoList("toggleall", "", "", allCompleted);
+        }
+
+        function switchOnOffTodoItem(itemId, checkboxSelectTodoItem,  labelItemTodo) {
+            var checkBox = document.getElementById(checkboxSelectTodoItem);
+            var labelText = document.getElementById(labelItemTodo);
+
+            var completed = 0;
+            if (checkBox.checked == true){
+                labelText.innerHTML = "<del>" + labelText.innerText + "</del>";
+                completed = 1;
+            } else {
+                labelText.innerHTML = labelText.innerText;
+            }
+
+            var allItemsSwictchCheckBox = document.getElementById("checkboxSelectAllTodoItems");
+            allItemsSwictchCheckBox.checked = false;
+
+            var url = "http://chromely.com/todolistcontroller/toggleactive?id=" + itemId + "&completed=" + completed.toString();
+            var link = document.createElement('a');
+            link.href = url;
+            document.body.appendChild(link);
+            link.click(); 
+        }
+        </script>
+
+    <script>
+    $(document).ready(function(){
+        $("#textTodoItem").on("keyup",function(e){
+            if (e.which == 13) {
+                var allItemsSwictchCheckBox = document.getElementById("checkboxSelectAllTodoItems");
+                allItemsSwictchCheckBox.checked = false;
+
+                var text = document.getElementById("textTodoItem");
+                getTodoList("add", "", text.value, 0);
+                document.getElementById("textTodoItem").value = "";
+            }
+        });
+         
+        getTodoList("all", "", "", "");
+    });
+  </script>
+  </head>
+<body>
+    
+    
+<div class="container-fluid">
+    
+        <div class="row col-12 justify-content-center">
+                <div class="col-8">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                        <div class="custom-control custom-switch">
+                                                <input type="checkbox" class="custom-control-input" id="checkboxSelectAllTodoItems" unchecked onclick="switchOnOffAllTodoItems();">
+                                                <label class="custom-control-label" for="checkboxSelectAllTodoItems"></label>
+                                              </div>
+                                </span>
+                        </div>
+                        <input type="text" id="textTodoItem" class="form-control" placeholder="What needs to be done?" style="font-size: 24px; text-align: center;">
+                    </div>
+                </div>
+        </div>
+
+        <!-- TODO Items List  -->
+        <div id="todoItemsContainer" class="row col-12 justify-content-center">
+        </div>
+        <!-- End TODO Items List  -->
+
+        <div class="row col-12 justify-content-center">
+                <div class="col-8">
+                        <ul class="list-group">
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                 <label>Chromely TODO List</label>
+                                  <button type="button" class="btn btn-link"  onclick="getTodoList('all', '', '', '')">All</button>
+                                  <button type="button" class="btn btn-link" onclick="getTodoList('allactive', '', '', '')">Active</button>
+                                  <button type="button" class="btn btn-link" onclick="getTodoList('allcompleted', '', '', '')">Completed</button>
+                                  <button type="button" class="btn btn-link" onclick="getTodoList('clearcompleted', '', '', '')">Clear completed</button>
+                                </li>
+                              </ul>
+                </div>
+        </div>
+        
+</div>   
+
+
+ </body>
+</html>

@@ -1,0 +1,151 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Chromely</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="Content/css/bootstrap.min.css">
+    <script src="Content/js/jquery.min.js"></script>
+    <script src="Content/js/popper.min.js"></script>
+    <script src="Content/js/bootstrap.min.js"></script>
+    <style type="text/css">
+        body {
+            overflow: hidden;
+        }
+
+        .navbar {
+            background: none;
+            box-shadow: none;
+        }
+
+        .navbar-brand {
+            font-family: 'Palatino';
+            font-style: italic;
+            color: grey;
+            font-size: 30px;
+            margin: 0px;
+        }
+
+        iframe, object, embed {
+            max-width: 100%;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+
+            $('#nav-content a').on('click', function (e) {
+                e.preventDefault()
+                var url = $(this).attr("data-url"); // the remote url for content
+                if (url) {
+                    demoframe.src = url;
+                }
+            });
+        });
+
+        function showDevTools() {
+            var url = "http://chromely.com/democontroller/showdevtools";
+            var link = document.createElement('a');
+            link.href = url;
+            document.body.appendChild(link);
+            link.click();
+        }
+    </script>
+    <script>
+        // Custom dialogs
+        function showCustomAlert(message) {
+            bootbox.alert(message);
+        }
+
+        function showCustomConfirm(message) {
+            bootbox.confirm(message, function (result) {
+                console.log(result);
+            })
+        }
+
+        function showCustomPrompt(message) {
+            bootbox.prompt(message, function (result) {
+                console.log(result);
+            });
+        }
+
+        function showCustomPopupDialog(title, url) {
+            bootbox.dialog({
+                title: title,
+                message: "<iframe src='" + url + "' style='resize: vertical; overflow: both; height: 400px;' width='100%' height='100%' frameborder='0' allowfullscreen />",
+                size: 'large',
+                buttons: {
+                    cancel: {
+                        label: "Close",
+                        className: 'btn-secondary',
+                    }
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+		
+<nav class="navbar navbar-expand-sm navbar-light bg-faded">
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav-content" aria-controls="nav-content" aria-expanded="false" aria-label="Toggle navigation">
+	<span class="navbar-toggler-icon"></span>
+	</button>
+
+	<!-- Brand -->
+	<a class="navbar-brand text-muted" href="#">Demos</a>
+
+	
+	<!-- Links -->
+	<div class="collapse navbar-collapse justify-content-end" id="nav-content">   
+	<ul class="nav nav-pills">
+	  <li class="nav-item">
+		<a class="nav-link" href="#home" data-url="./pages/home.html">home</a>
+	  </li>
+	  <li class="nav-item">
+		<a class="nav-link" href="#movies" data-url="./pages/tmdbmovies.html">tmdb movies</a>
+	  </li>
+	  	<li class="nav-item">
+		<a class="nav-link" href="#todo" data-url="./pages/todolist.html">todo list</a>
+	  </li>
+	  <li class="nav-item dropdown">
+		<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">basics</a>
+        <div class="dropdown-menu dropdown-menu-right">
+            <a class="dropdown-item" href="" #messagerouterdemo" data-url="./pages/messagerouterdemo.html">Message Router Demo</a>
+            <a class="dropdown-item" href="#ajaxdemo" data-url="./pages/ajaxdemo.html">Ajax Demo</a>
+            <a class="dropdown-item" href="#javascriptdemo" data-url="./pages/javascriptdemo.html">Execute JavaScript Demo</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#html5tests" data-url="https://html5test.com/">HTML5 Tests</a>
+            <a class="dropdown-item" href="#html6tests" data-url="http://html6test.com/">HTML6 Tests</a>
+            <a class="dropdown-item" href="#shakatests" data-url="https://shaka-player-demo.appspot.com/demo/#asset=https://storage.googleapis.com/shaka-demo-assets/angel-one/dash.mpd;lang=en-US;build=uncompiled">Google Shaka Support Tests</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" onclick="showDevTools()">Show DevTools</a>
+        </div>
+	  </li>
+	</ul>
+	</div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 p-0">
+            <div class="text-center m-0  d-flex flex-column justify-content-center">
+          <iframe id="demoframe" name="alldemoframe" src="./pages/home.html" width="100%" height="800"  frameborder="0" allowfullscreen/>
+            </div>
+        </div>
+    </div>
+</div>
+	
+<!-- Initialize Bootstrap functionality -->
+<script>
+// Initialize tooltip component
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+
+// Initialize popover component
+$(function () {
+  $('[data-toggle="popover"]').popover()
+})
+</script>
+
+ </body>
+</html>

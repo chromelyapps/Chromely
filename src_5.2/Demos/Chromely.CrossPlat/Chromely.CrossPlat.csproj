@@ -1,0 +1,52 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<SelfContained>true</SelfContained>
+		<PublishReadyToRun>true</PublishReadyToRun>
+		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+		<!-- <RuntimeIdentifier>linux-x64</RuntimeIdentifier>-->
+		<!-- <RuntimeIdentifier>osx-x64</RuntimeIdentifier>-->
+		<Platforms>x64</Platforms>
+		<ApplicationIcon />
+		<StartupObject />
+	</PropertyGroup>
+	
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+		<PlatformTarget>x64</PlatformTarget>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.5" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.5" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="3.1.5" />
+		<PackageReference Include="Serilog.Extensions.Logging.File" Version="2.0.0" />
+		<PackageReference Include="System.Text.Json" Version="4.7.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="app\**">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Reference Include="Chromely">
+	    <HintPath>..\libs\Chromely.dll</HintPath>
+	  </Reference>
+	  <Reference Include="Chromely.Core">
+	    <HintPath>..\libs\Chromely.Core.dll</HintPath>
+	  </Reference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="chromely.ico">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+
+</Project>

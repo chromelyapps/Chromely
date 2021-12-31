@@ -1,0 +1,107 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Chromely</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="Content/css/bootstrap.min.css">
+    <link rel="stylesheet" href="Content/css/nav_style.css">
+    <script src="Content/js/jquery.min.js"></script>
+    <script src="Content/js/tether.min.js"></script>
+    <script src="Content/js/bootstrap.min.js"></script>
+    <style type="text/css">
+        html {
+            overflow-y: hidden;
+        }
+
+        body, html {
+            height: 100%;
+            display: grid;
+        }
+
+        .navbar {
+            height: 38px;
+            background-color: transparent;
+            background: transparent;
+            border-color: transparent;
+        }
+
+            .navbar li {
+                color: #000
+            }
+
+        .centerBlock {
+            display: table;
+            margin: auto;
+        }
+
+        .titlebar {
+            -webkit-app-region: drag;
+            -webkit-user-select: none;
+            position: absolute;
+            top: 0px;
+            left: 50px;
+            width: 100%;
+            height: 32px;
+        }
+
+        .titlebar-button {
+            -webkit-app-region: no-drag;
+            position: absolute;
+            top: 0px;
+            width: 140px;
+            height: 32px;
+        }
+    </style>
+    <script>
+        function frameCommand(type) {
+            var url = "http://chromely.com/window/" + type;
+            var link = document.createElement('a');
+            link.href = url;
+            document.body.appendChild(link);
+            link.click();
+        }
+    </script>
+</head>
+<body>
+
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div>
+            <div class="titlebar" id="window-title">
+                <img src="./Content/img/chromely_gray.png" width="22" height="22">
+                <span><h6>chromely demo</h6></span>
+            </div>
+
+            <div class="titlebar-button" id="window-controls">
+                <div class="button" id="min-button">
+                    <a onclick="frameCommand('minimize')"><span>&#xE921;</span></a>
+                </div>
+                <div class="button" id="max-button">
+                    <a onclick="frameCommand('maximize')"><span>&#xE922;</span></a>
+                </div>
+                <div class="button" id="restore-button">
+                    <a onclick="frameCommand('restore')"><span>&#xE923;</span></a>
+                </div>
+                <div class="button" id="close-button">
+                    <a onclick="frameCommand('close')"><span>&#xE8BB;</span></a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+    <script>
+        function toggleRestoreMaxButton(max) {
+            var maxButton = document.getElementById('max-button');
+            var restoreButton = document.getElementById('restore-button');
+            if (max === 1) {
+                maxButton.style.display = "none";
+                restoreButton.style.display = "flex";
+            } else {
+                restoreButton.style.display = "none";
+                maxButton.style.display = "flex";
+            }
+        }
+    </script>
+</body>
+</html>
