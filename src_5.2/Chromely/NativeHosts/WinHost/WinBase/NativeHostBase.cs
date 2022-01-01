@@ -611,6 +611,27 @@ namespace Chromely.NativeHost
                 isHandled = true;
             }
 
+            // https://stackoverflow.com/questions/39816031/maximize-window-maintaining-taskbar-limits
+            if (_options.WindowFrameless && _options.WindowState == WindowState.Maximize)
+            {
+                IntPtr handle = MonitorFromWindow(GetDesktopWindow(), MONITOR.DEFAULTTONEAREST);
+
+                MONITORINFOEXW monInfo = new MONITORINFOEXW(null);
+                monInfo.cbSize = (uint)Marshal.SizeOf(monInfo);
+
+                var captionHeight = GetSystemMetrics(SystemMetric.SM_CYCAPTION);
+
+                GetMonitorInfoW(handle, ref monInfo);
+                var workArea = monInfo.rcWork;
+                var monitorArea = monInfo.rcMonitor;
+                mmi->ptMaxPosition.X = Math.Abs(workArea.left - monitorArea.left) - captionHeight / 2;
+                mmi->ptMaxPosition.Y = Math.Abs(workArea.top - monitorArea.top);
+                mmi->ptMaxSize.X = Math.Abs(workArea.right - workArea.left) + captionHeight;
+                mmi->ptMaxSize.Y = Math.Abs(workArea.bottom - workArea.top) + captionHeight;
+
+                isHandled = true;
+            }
+
             return isHandled;
         }
 
