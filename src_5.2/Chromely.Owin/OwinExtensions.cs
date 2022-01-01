@@ -112,7 +112,9 @@ public static class OwinExtensions
         try
         {
             var uri = new Uri(url);
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             return owinPipeline.ErrorHandlingPath.Equals(uri.AbsolutePath, StringComparison.InvariantCultureIgnoreCase) ||
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
                    owinPipeline.ErrorHandlingPath.Equals(uri.AbsolutePath + "/Index", StringComparison.InvariantCultureIgnoreCase);
 
         }

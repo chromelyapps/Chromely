@@ -1,0 +1,136 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Chromely</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../Content/css/bootstrap.min.css">
+    <script src="../Content/js/jquery.min.js"></script>
+    <script src="../Content/js/popper.min.js"></script>
+    <script src="../Content/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        function parseMoviesResult(res) {
+            var containerHtml = "";
+            $('#moviesContainer').html(containerHtml);
+            var jsonData = JSON.parse(res);
+            if (jsonData.ReadyState == 4 && jsonData.Status == 200) {
+                for (var i = 0; i < jsonData.Data.length; i++) {
+                    var movieItem = jsonData.Data[i];
+                    containerHtml += "<div class='col-sm-6 col-lg-3 mb-3'>";
+                    containerHtml += "<div class='card h-100'>";
+                    containerHtml += "<div class='row no-gutters'>";
+                    containerHtml += "<div class='col-md-12 text-center'>";
+                    containerHtml += "<img src='https://image.tmdb.org/t/p/original" + movieItem.poster_path + "' alt='...' style='width: 100%;' title='" + movieItem.overview + "'>";
+                    containerHtml += "</div>";
+                    containerHtml += "<div class='col-md-12'>";
+                    containerHtml += "<div class='card-body'>";
+                    containerHtml += "<h4 class='card-title text-info'>" + movieItem.original_title + "</h4>";
+                    containerHtml += "<h6 class='card-subtitle text-muted'>" + movieItem.release_date + "</h6>";
+                    containerHtml += "<p class='card-text mt-4'><b>Popularity</b>: " + movieItem.popularity + "<br><b>Vote Count</b>: " + movieItem.vote_count + "<br><b>Vote Average</b>: " + movieItem.vote_average;
+                    containerHtml += "<br><br><a href='http://chromely.com/tmdbmoviescontroller/homepage?movieid=" + movieItem.id + "'>Homepage</a></p>";
+                    containerHtml += "</div>";
+                    containerHtml += "</div>";
+                    containerHtml += "</div>";
+                    containerHtml += "</div>";
+                    containerHtml += "</div>";
+                }
+            }
+
+           $('#moviesContainer').html(containerHtml);
+        }
+
+        function getTmdbMovies(reqType, queryValue) {
+
+            $('#moviesContainer').html("");
+            var parameters = {};
+            parameters["name"] = reqType;
+            parameters["query"] = queryValue;
+
+            var request = {
+                "method": "GET",
+                "url": "/tmdbmoviescontroller/movies",
+                "parameters": parameters,
+                "postData": null,
+            };
+
+            window.cefQuery({
+                request: JSON.stringify(request),
+                onSuccess: function (response) {
+                    parseMoviesResult(response);
+                }, onFailure: function (err, msg) {
+                    console.log(err, msg);
+                }
+            });
+        }
+
+        function searchMovies() {
+            // Get the text from textbox
+            var searchText = document.getElementById("textSearchMovies").value;
+            getTmdbMovies('search', searchText);
+        }
+    </script>
+    <script>
+        $(document).ready(function () {
+            getTmdbMovies('popular', '');
+        });
+
+    </script>
+</head>
+<body>
+		
+
+<div class="container justify-content-center">
+
+     <div class="container">
+            <div class="row">
+              <div class="col">
+                <!-- -->
+                <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="getTmdbMovies('latest', '')">latest</button>
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="getTmdbMovies('popular', '')">popular</button>
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="getTmdbMovies('toprated', '')">top rated</button>
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="getTmdbMovies('nowplaying', '')">now playing</button>
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="getTmdbMovies('upcoming', '')">upcoming</button>
+                      </div>
+                <!-- -->
+              </div>
+              <div class="col">
+                  
+                <!-- -->
+                <div class="form-group row justify-content-end col-12">
+                     <div>
+                        <input id="textSearchMovies" type="text" class="form-control" placeholder="Search Movies" style="width:auto;">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-sm" onclick="searchMovies()">Search</button>
+                </div>
+                <!-- -->
+              </div>
+            </div>
+    </div>
+
+    <!-- Movies List  -->
+    <div class="container">
+        <div id="moviesContainer" class="row">
+        </div>
+    </div>
+
+    <!-- End Moves List -->
+
+</div>
+
+ </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+	

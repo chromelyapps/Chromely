@@ -57,6 +57,7 @@ namespace Chromely.NativeHost
                         ForceRedraw(hWnd);
                         break;
                     }
+
                 case WM.NCCALCSIZE:
                     {
                         var captionHeight = GetSystemMetrics(SystemMetric.SM_CYCAPTION);
@@ -86,7 +87,7 @@ namespace Chromely.NativeHost
 
             return base.WndProc(hWnd, message, wParam, lParam);
         }
-
+        
         private static void ForceRedraw(IntPtr hWnd)
         {
             SetWindowPos(hWnd, IntPtr.Zero, 0, 0, 0, 0,

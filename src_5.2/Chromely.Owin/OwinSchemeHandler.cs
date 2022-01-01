@@ -11,7 +11,12 @@ public class OwinSchemeHandler : ResourceHandler
 {
     protected readonly IOwinPipeline _owinPipeline;
     protected readonly IChromelyErrorHandler _errorHandler;
-   
+
+    /// <summary>
+    /// Initializes a new instance of <see cref="OwinSchemeHandler"/>.
+    /// </summary>
+    /// <param name="owinPipeline">Owin pipeline type of <see cref="IOwinPipeline"/>. </param>
+    /// <param name="errorHandler">Error handler type of <see cref="IChromelyErrorHandler"/>. </param>
     public OwinSchemeHandler(IOwinPipeline owinPipeline, IChromelyErrorHandler errorHandler)
     {
         _owinPipeline = owinPipeline;

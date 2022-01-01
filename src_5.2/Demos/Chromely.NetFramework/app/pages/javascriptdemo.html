@@ -1,0 +1,105 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chromely</title>
+    <link rel="stylesheet" href="../Content/css/bootstrap.min.css">
+    <script src="../Content/js/jquery.min.js"></script>
+    <script src="../Content/js/tether.min.js"></script>
+    <script src="../Content/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container justify-content-center">
+            <!-- -->
+            <div class="form-group row justify-content-center col-12">
+                    <div class="row col-8">
+                            <h1>Execute JavaScript Demo</h1>
+                        </div>
+                        <div class="row col-8">
+                            <div class="card">
+                                <div class="card-header">Script:</div>
+                                <div class="card-body">
+                                        <div class="col-8">
+                                                <textarea class="form-control" id="demoscript" rows="5" cols="100%"></textarea>
+                                            </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row col-8">
+                                <button id="execute" type="button" class="btn btn-primary btn-sm" onclick="executeRun()" style="margin: 5px;">Execute</button>
+                            </div>
+                        <div class="row col-8">
+                            <table id="resulttable" class="table table-striped" style="margin-top: 10px;">
+                                <thead>
+                                <tr>
+                                    <th scope="col" style="width: 100px;">Type</th>
+                                    <th scope="col">Output</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                </div>
+    </div>
+
+<script>
+    document.getElementById("demoscript").value = "alert('Chromely : Build .NET/.NET Core HTML5 desktop apps using cross-platform native GUI API.');";
+    document.getElementById("demoscript").addEventListener("keyup", scriptUpdate);
+    function scriptUpdate() {
+        var content = document.getElementById("demoscript").value;
+        if (content.length > 5) {
+            $('#execute').removeClass('disabled');
+        } else {
+            $('#execute').addClass('disabled');
+        } 
+    }
+
+    function executeResult(res) {
+        var jsonData = JSON.parse(res);
+        if (jsonData.ReadyState == 4 && jsonData.Status == 200) {
+            var row = '<tr>';
+            row += '<td>Execute</td>';
+            row += '<td>' + jsonData.Data + '</td>';
+            row += '</tr>';
+            $('#resulttable tr:last').after(row);
+        }
+    }
+
+    function executeRun() {
+        var content = document.getElementById("demoscript").value;
+
+        var postData = {};
+        postData.framename = "alldemoframe";
+        postData.script = content;
+
+        var request = {
+            "method": "POST",
+            "url": "/executejavascript/execute",
+            "parameters": null,
+            "postData": JSON.stringify(postData),
+        };
+
+        window.cefQuery({
+            request: JSON.stringify(request),
+            onSuccess: function (response) {
+                executeResult(response);
+            }, onFailure: function (err, msg) {
+                console.log(err, msg);
+            }
+        });
+    }
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+

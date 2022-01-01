@@ -34,12 +34,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Reference Include="Chromely">
-	    <HintPath>..\libs\Chromely.dll</HintPath>
-	  </Reference>
-	  <Reference Include="Chromely.Core">
-	    <HintPath>..\libs\Chromely.Core.dll</HintPath>
-	  </Reference>
+	  <ProjectReference Include="..\..\Chromely.Core\Chromely.Core.csproj" />
+	  <ProjectReference Include="..\..\Chromely\Chromely.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

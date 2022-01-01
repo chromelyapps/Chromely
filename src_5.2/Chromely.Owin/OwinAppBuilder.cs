@@ -195,7 +195,7 @@ public sealed class OwinAppBuilder : AppBuilderBase
         _serviceProvider = _owinHost.Services;
     }
 
-    public void BuildInternal()
+    private void BuildInternal()
     {
         _tcsAppFunc = null;
 
