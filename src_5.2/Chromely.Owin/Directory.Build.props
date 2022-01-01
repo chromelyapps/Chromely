@@ -1,9 +1,9 @@
 ﻿<Project>
 	<PropertyGroup>
-		<ProductVersion>5.2.0.0</ProductVersion>
+		<ProductVersion>5.2.0.0-pre01</ProductVersion>
 		<AssemblyVersion>5.2.0.0</AssemblyVersion>
 		<FileVersion>5.2.0.0</FileVersion>
-		<Version>5.2.0.0</Version>
+		<Version>5.2.0.0-pre01</Version>
 		<Product>Chromely.Core.Owin</Product>
 		<Authors>Chromely Projects</Authors>
 		<Company>Chromely Projects</Company>

@@ -35,6 +35,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Reference Include="Chromely">
+		  <HintPath>..\libs\netstandard2.0\Chromely.dll</HintPath>
+		</Reference>
+		<Reference Include="Chromely.Core">
+		  <HintPath>..\libs\netstandard2.0\Chromely.Core.dll</HintPath>
+		</Reference>
 		<Reference Include="System.Net.Http" />
 	</ItemGroup>
 
@@ -42,8 +48,9 @@
 		<Content Include="app\**">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
-		<ProjectReference Include="..\..\Chromely.Core\Chromely.Core.csproj" />
-		<ProjectReference Include="..\..\Chromely\Chromely.csproj" />
+	</ItemGroup>
+	
+	<ItemGroup>
 		<None Update="chromely.ico">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>

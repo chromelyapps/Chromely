@@ -19,14 +19,17 @@
 		<Content Include="assets\**">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
+	</ItemGroup>
+	
+	<ItemGroup>	
 		<Reference Include="Chromely">
-		  <HintPath>..\libs\Chromely.dll</HintPath>
+		  <HintPath>..\libs\net6.0\Chromely.dll</HintPath>
 		</Reference>
 		<Reference Include="Chromely.Core">
-		  <HintPath>..\libs\Chromely.Core.dll</HintPath>
+		  <HintPath>..\libs\net6.0\Chromely.Core.dll</HintPath>
 		</Reference>
 		<Reference Include="Chromely.Owin">
-		  <HintPath>..\libs\Chromely.Owin.dll</HintPath>
+		  <HintPath>..\libs\net6.0\Chromely.Owin.dll</HintPath>
 		</Reference>
 		<None Update="chromely.ico">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
