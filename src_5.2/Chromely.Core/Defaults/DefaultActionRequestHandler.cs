@@ -24,7 +24,7 @@ namespace Chromely.Core.Defaults
             ExecuteRoute(string.Empty, routePath, parameters, null, string.Empty);
         }
 
-        public IChromelyResponse Execute(string requestId, string routePath, IDictionary<string, object> parameters, object postData, string requestData)
+        public IChromelyResponse Execute(string requestId, string routePath, IDictionary<string, object>? parameters, object? postData, string? requestData)
         {
             if (string.IsNullOrWhiteSpace(routePath))
             {
@@ -33,11 +33,11 @@ namespace Chromely.Core.Defaults
 
             if (routePath.ToLower().Equals("/info"))
             {
-                return _chromelyInfo?.GetInfo(requestId);
+                return _chromelyInfo.GetInfo(requestId);
             }
 
             var route = _routeProvider.GetRoute(routePath);
-            if (route == null)
+            if (route is null)
             {
                 throw new Exception($"Route for path = {routePath} is null or invalid.");
             }
@@ -45,7 +45,7 @@ namespace Chromely.Core.Defaults
             return ExecuteRoute(requestId, routePath, parameters, postData, requestData);
         }
 
-        public async Task<IChromelyResponse> ExecuteAsync(string requestId, string routePath, IDictionary<string, object> parameters, object postData, string requestData)
+        public async Task<IChromelyResponse> ExecuteAsync(string requestId, string routePath, IDictionary<string, object>? parameters, object? postData, string? requestData)
         {
             if (string.IsNullOrWhiteSpace(routePath))
             {
@@ -54,11 +54,11 @@ namespace Chromely.Core.Defaults
 
             if (routePath.ToLower().Equals("/info"))
             {
-                return _chromelyInfo?.GetInfo(requestId);
+                return _chromelyInfo.GetInfo(requestId);
             }
 
             var route = _routeProvider.GetRoute(routePath);
-            if (route == null)
+            if (route is null)
             {
                 return _chromelyErrorHandler.HandleRouteNotFound(requestId, routePath);
             }
@@ -66,11 +66,11 @@ namespace Chromely.Core.Defaults
             return await ExecuteRouteAsync(requestId, routePath, parameters, postData, requestData);
         }
 
-        private IChromelyResponse ExecuteRoute(string requestId, string routeUrl, IDictionary<string, object> parameters, object postData, string requestData)
+        private IChromelyResponse ExecuteRoute(string requestId, string routeUrl, IDictionary<string, object>? parameters, object? postData, string? requestData)
         {
             var route = _routeProvider.GetRoute(routeUrl);
 
-            if (route == null)
+            if (route is null)
             {
                 return _chromelyErrorHandler.HandleRouteNotFound(requestId, routeUrl);
             }
@@ -84,11 +84,11 @@ namespace Chromely.Core.Defaults
             return response;
         }
 
-        private async Task<IChromelyResponse> ExecuteRouteAsync(string requestId, string routeUrl, IDictionary<string, object> parameters, object postData, string requestData)
+        private async Task<IChromelyResponse> ExecuteRouteAsync(string requestId, string routeUrl, IDictionary<string, object>? parameters, object? postData, string? requestData)
         {
             var route = _routeProvider.GetRoute(routeUrl);
 
-            if (route == null)
+            if (route is null)
             {
                 return _chromelyErrorHandler.HandleRouteNotFound(requestId, routeUrl);
             }

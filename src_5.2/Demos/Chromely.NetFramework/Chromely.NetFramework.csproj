@@ -31,23 +31,23 @@
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.5" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="3.1.5" />
 		<PackageReference Include="Serilog.Extensions.Logging.File" Version="2.0.0" />
+		<PackageReference Include="System.Net.Http" Version="4.0.0" />
 		<PackageReference Include="System.Text.Json" Version="4.7.2" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Reference Include="Chromely">
-		  <HintPath>..\libs\netstandard2.0\Chromely.dll</HintPath>
-		</Reference>
-		<Reference Include="Chromely.Core">
-		  <HintPath>..\libs\netstandard2.0\Chromely.Core.dll</HintPath>
-		</Reference>
-		<Reference Include="System.Net.Http" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<Content Include="app\**">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Reference Include="Chromely">
+	    <HintPath>..\libs\netstandard2.0\Chromely.dll</HintPath>
+	  </Reference>
+	  <Reference Include="Chromely.Core">
+	    <HintPath>..\libs\netstandard2.0\Chromely.Core.dll</HintPath>
+	  </Reference>
 	</ItemGroup>
 	
 	<ItemGroup>

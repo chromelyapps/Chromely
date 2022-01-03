@@ -1,7 +1,10 @@
 ﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
-using System;
+#nullable disable
+#pragma warning disable CA1806
+#pragma warning disable IDE0034
+
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -31,20 +34,20 @@ namespace Chromely.NativeHost
         private bool _isInitialized;
         private bool _debugging;
 
-        private RealizeCallback _onRealizedDelegate;
-        private SizeAllocateCallback _onSizeAllocateDelegate;
-        private ResizeCallback _onResizeDelegate;
-        private DestroyCallback _onDestroyDelegate;
+        private readonly RealizeCallback _onRealizedDelegate;
+        private readonly SizeAllocateCallback _onSizeAllocateDelegate;
+        private readonly ResizeCallback _onResizeDelegate;
+        private readonly DestroyCallback _onDestroyDelegate;
 
         private IntPtr _onRealizedSignal;
         private IntPtr _onSizeAllocateSignal;
         private IntPtr _onResizeSignal;
         private IntPtr _onDestroySignal;
 
-        private GClosureNotify _onFreeNotify;
+        private readonly GClosureNotify _onFreeNotify;
 
-        private XHandleXError _onHandleErrorDelegate;
-        private XHandleXIOError _onHandleIOErrorDelegate;
+        private readonly XHandleXError _onHandleErrorDelegate;
+        private readonly XHandleXIOError _onHandleIOErrorDelegate;
 
         public ChromelyLinuxHost()
         {
@@ -303,7 +306,8 @@ namespace Chromely.NativeHost
                     var errorMsgSb = new StringBuilder(160);
                     XGetErrorText(display, errorEvent.error_code, errorMsgSb, errorMsgSb.Capacity);
                     var requestType = GetRequestType(errorEvent.request_code);
-                    Logger.Instance.Log.LogWarning($"Request Code: {errorEvent.request_code}\tRequest Type: {requestType}\tX11 Error: {errorMsgSb.ToString()}");
+                    Logger.Instance.Log.LogWarning("Request Code: {errorEvent.request_code}\tRequest Type: {requestType}\tX11 Error: {errorMsgSb.ToString()}",
+                                                                   errorEvent.request_code, requestType, errorMsgSb.ToString());
                 }
 
                 return 0;

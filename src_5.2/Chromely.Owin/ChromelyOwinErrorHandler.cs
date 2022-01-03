@@ -19,9 +19,9 @@ public class ChromelyOwinErrorHandler : DefaultErrorHandler
         _owinPipeline = owinPipeline;
     }
 
-    public async override Task<IChromelyResource> HandleErrorAsync(string requestUrl, IChromelyResource response, Exception exception)
+    public async override Task<IChromelyResource> HandleErrorAsync(string requestUrl, IChromelyResource response, Exception? exception)
     {
-        if (exception != null)
+        if (exception is not null)
         {
             Logger.Instance.Log.LogError(exception);
         }
@@ -51,7 +51,7 @@ public class ChromelyOwinErrorHandler : DefaultErrorHandler
         return $"{refererUri?.Scheme}{Uri.SchemeDelimiter}{refererUri?.Host}{refererUri?.Port}{_owinPipeline.ErrorHandlingPath}";
     }
 
-    private Uri? CreateUri(string url, string startUrl)
+    private static Uri? CreateUri(string url, string startUrl)
     {
         try
         {

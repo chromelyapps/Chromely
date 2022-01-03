@@ -5,7 +5,7 @@ namespace Chromely.Core.Defaults;
 
 public partial class DataTransferOptions
 {
-    public virtual string ConvertRequestToJson(object request)
+    public virtual string? ConvertRequestToJson(object request)
     {
         if (request.IsValidJson())
         {
@@ -15,12 +15,10 @@ public partial class DataTransferOptions
         var outStream = request as Stream;
 
         // Convert stream to Json
-        if (outStream != null)
+        if (outStream is not null)
         {
-            using (StreamReader reader = new StreamReader(outStream))
-            {
-                return reader.ReadToEnd();
-            }
+            using StreamReader reader = new(outStream);
+            return reader.ReadToEnd();
         }
 
         // Default option

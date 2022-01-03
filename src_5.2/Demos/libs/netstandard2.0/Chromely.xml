@@ -10523,7 +10523,7 @@
         </member>
         <member name="P:Xilium.CefGlue.CefV8Value.IsObject">
             <summary>
-            True if the value type is object.
+            True if the value type is not null.
             </summary>
         </member>
         <member name="P:Xilium.CefGlue.CefV8Value.IsArray">

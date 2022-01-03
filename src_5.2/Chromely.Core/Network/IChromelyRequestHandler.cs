@@ -6,6 +6,6 @@ namespace Chromely.Core.Network;
 public interface IChromelyRequestHandler
 {
     void Execute(string url);
-    IChromelyResponse Execute(string requestId, string routeUrl, IDictionary<string, object> parameters, object postData, string requestData);
-    Task<IChromelyResponse> ExecuteAsync(string requestId, string routeUrl, IDictionary<string, object> parameters, object postData, string requestData);
+    IChromelyResponse Execute(string requestId, string routeUrl, IDictionary<string, object>? parameters, object? postData, string? requestData);
+    Task<IChromelyResponse> ExecuteAsync(string requestId, string routeUrl, IDictionary<string, object>? parameters, object? postData, string? requestData);
 }

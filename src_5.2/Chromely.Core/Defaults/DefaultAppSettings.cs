@@ -1,23 +1,13 @@
 ﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
-using Chromely.Core.Configuration;
-using Chromely.Core.Infrastructure;
-using Chromely.Core.Logging;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Text.Json;
-
 namespace Chromely.Core.Defaults
 {
     public class DefaultAppSettings : IChromelyAppSettings
     {
-        private ChromelyDynamic _chromelyDynamic;
+        private ChromelyDynamic? _chromelyDynamic;
         public string AppName { get; set; }
-        public string DataPath { get; set; }
+        public string? DataPath { get; set; }
 
         public DefaultAppSettings(string appName = "chromely")
         {
@@ -28,7 +18,7 @@ namespace Chromely.Core.Defaults
         { 
             get
             {
-                if (_chromelyDynamic == null)
+                if (_chromelyDynamic is null)
                 {
                     _chromelyDynamic = new ChromelyDynamic();
                 }
@@ -43,7 +33,7 @@ namespace Chromely.Core.Defaults
             {
                 var appSettingsFile = AppSettingInfo.GetSettingsFilePath(config.Platform, AppName);
 
-                if (appSettingsFile == null)
+                if (appSettingsFile is null)
                 {
                     return;
                 }
@@ -51,20 +41,20 @@ namespace Chromely.Core.Defaults
                 var info = new FileInfo(appSettingsFile);
                 if ((info.Exists) && info.Length > 0)
                 {
-                    using (StreamReader jsonReader = new StreamReader(appSettingsFile))
+                    using StreamReader jsonReader = new(appSettingsFile);
+                    string json = jsonReader.ReadToEnd();
+                    var options = new JsonSerializerOptions
                     {
-                        string json = jsonReader.ReadToEnd();
-                        var options = new JsonSerializerOptions();
-                        options.ReadCommentHandling = JsonCommentHandling.Skip;
-                        options.AllowTrailingCommas = true;
+                        ReadCommentHandling = JsonCommentHandling.Skip,
+                        AllowTrailingCommas = true
+                    };
 
-                        var settingsJsonElement = JsonSerializer.Deserialize<JsonElement>(json, options);
-                        var settingsDic = JsonToDictionary(settingsJsonElement);
-                        _chromelyDynamic = new ChromelyDynamic(settingsDic);
-                    }
+                    var settingsJsonElement = JsonSerializer.Deserialize<JsonElement>(json, options);
+                    var settingsDic = JsonToDictionary(settingsJsonElement);
+                    _chromelyDynamic = new ChromelyDynamic(settingsDic);
                 }
 
-                 if (File.Exists(appSettingsFile))
+                if (File.Exists(appSettingsFile))
                 {
                     DataPath = appSettingsFile;
                 }
@@ -79,9 +69,9 @@ namespace Chromely.Core.Defaults
         {
             try
             {
-                if (_chromelyDynamic == null || 
+                if (_chromelyDynamic is null || 
                     _chromelyDynamic.Empty ||
-                    _chromelyDynamic.Dictionary == null ||
+                    _chromelyDynamic.Dictionary is null ||
                     _chromelyDynamic.Dictionary.Count == 0)
                 {
                     return;
@@ -94,29 +84,29 @@ namespace Chromely.Core.Defaults
                     appSettingsFile = AppSettingInfo.GetSettingsFilePath(config.Platform, AppName, true);
                 }
 
-                if (appSettingsFile == null)
+                if (appSettingsFile is null)
                 {
                     return;
                 }
 
-                using (StreamWriter streamWriter = File.CreateText(appSettingsFile))
+                using StreamWriter streamWriter = File.CreateText(appSettingsFile);
+                try
                 {
-                    try 
+                    var options = new JsonSerializerOptions
                     {
-                        var options = new JsonSerializerOptions();
-                        options.ReadCommentHandling = JsonCommentHandling.Skip;
-                        options.AllowTrailingCommas = true;
+                        ReadCommentHandling = JsonCommentHandling.Skip,
+                        AllowTrailingCommas = true
+                    };
 
-                        var jsonDic = JsonSerializer.Serialize(_chromelyDynamic.Dictionary, options);
-                        streamWriter.Write(jsonDic);
+                    var jsonDic = JsonSerializer.Serialize(_chromelyDynamic.Dictionary, options);
+                    streamWriter.Write(jsonDic);
 
-                        Logger.Instance.Log.LogInformation("AppSettings FileName:" + appSettingsFile);
-                    }
-                    catch (Exception exception)  
-                    {
-                        Logger.Instance.Log.LogWarning(exception.ToString());
-                        Logger.Instance.Log.LogWarning("If this is about cycle was detecttion please see - https://github.com/dotnet/corefx/issues/41288");
-                    }
+                    Logger.Instance.Log.LogInformation("AppSettings FileName:{appSettingsFile}", appSettingsFile);
+                }
+                catch (Exception exception)
+                {
+                    Logger.Instance.Log.LogWarning("{ exception.Message}", exception.Message);
+                    Logger.Instance.Log.LogWarning("If this is about cycle was detecttion please see - https://github.com/dotnet/corefx/issues/41288");
                 }
             }
             catch (Exception exception)
@@ -125,6 +115,7 @@ namespace Chromely.Core.Defaults
             }
         }
 
+#nullable disable
         private IDictionary<string, object> JsonToDictionary(JsonElement jsonElement)
         {
             var dic = new Dictionary<string, object>();
@@ -164,7 +155,7 @@ namespace Chromely.Core.Defaults
                         dic.Add(jsonProperty.Name, JsonToDictionary(jsonProperty.Value));
                         break;
                     case JsonValueKind.Array:
-                        ArrayList objectList = new ArrayList();
+                        ArrayList objectList = new();
                         foreach (JsonElement item in jsonProperty.Value.EnumerateArray())
                         {
                             switch (item.ValueKind)
@@ -208,5 +199,6 @@ namespace Chromely.Core.Defaults
 
             return dic;
         }
+#nullable restore
     }
 }

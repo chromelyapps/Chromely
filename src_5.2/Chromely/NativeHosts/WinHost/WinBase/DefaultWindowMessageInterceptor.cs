@@ -16,11 +16,11 @@ namespace Chromely.NativeHost
 {
     public class DefaultWindowMessageInterceptor : IWindowMessageInterceptor
     {
-        protected IChromelyNativeHost _nativeHost;
-        protected IChromelyConfiguration _config;
+        protected readonly IChromelyConfiguration _config;
+        protected IChromelyNativeHost? _nativeHost;
         protected IntPtr _browserHandle;
-        protected DragWindowHandler[] _dragWindowHandlers;
-        protected FramelessOption _framelessOption;
+        protected DragWindowHandler[]? _dragWindowHandlers;
+        protected FramelessOption? _framelessOption;
 
         public DefaultWindowMessageInterceptor(IChromelyConfiguration config)
         {
@@ -46,7 +46,7 @@ namespace Chromely.NativeHost
                 while (!foundWidget)
                 {
                     var childHandles = GetAllChildHandles(_browserHandle);
-                    if (childHandles != null && childHandles.Any())
+                    if (childHandles is not null && childHandles.Any())
                     {
                         foundWidget = true;
                         _dragWindowHandlers = childHandles
@@ -86,13 +86,16 @@ namespace Chromely.NativeHost
         protected virtual bool EnumWindow(IntPtr hWnd, IntPtr lParam)
         {
             GCHandle gcChildhandlesList = GCHandle.FromIntPtr(lParam);
-            if (gcChildhandlesList == null || gcChildhandlesList.Target == null)
+            if (gcChildhandlesList.Target is null)
             {
                 return false;
             }
 
-            List<IntPtr> childHandles = gcChildhandlesList.Target as List<IntPtr>;
-            childHandles.Add(hWnd);
+            List<IntPtr>? childHandles = gcChildhandlesList.Target as List<IntPtr>;
+            if (childHandles is not null)
+            {
+                childHandles.Add(hWnd);
+            }
 
             return true;
         }

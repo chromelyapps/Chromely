@@ -1,4 +1,11 @@
-﻿using System;
+﻿#nullable disable
+
+#pragma warning disable IDE0079
+#pragma warning disable IDE0044
+#pragma warning disable IDE0057
+
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;

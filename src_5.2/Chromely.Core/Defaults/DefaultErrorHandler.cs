@@ -16,60 +16,76 @@ namespace Chromely.Core.Defaults
             };
         }
 
-        public virtual IChromelyResource HandleError(FileInfo fileInfo, Exception exception = null)
+        public virtual IChromelyResource HandleError(FileInfo? fileInfo, Exception? exception = null)
         {
-            var info = GetFileInfo(fileInfo);
+            var info = DefaultErrorHandler.GetFileInfo(fileInfo);
             bool fileExists = info.Item1;
             int fileSize = info.Item2;
             
-            var resource = HandleResourceError(fileExists, fileSize, exception);
-            Logger.Instance.Log.LogWarning($"File: {fileInfo?.FullName}: {resource?.StatusText}");
+            var resource = DefaultErrorHandler.HandleResourceError(fileExists, fileSize, exception);
+            Logger.Instance.Log.LogWarning("File: {fileInfo?.FullName}: {resource?.StatusText}", fileInfo?.FullName, resource?.StatusText);
             return resource;
         }
 
-        public IChromelyResource HandleError(Stream stream, Exception exception = null)
+        public IChromelyResource HandleError(Stream? stream, Exception? exception = null)
         {
-            var info = GetFileInfo(stream);
+            var info = DefaultErrorHandler.GetFileInfo(stream);
             bool fileExists = info.Item1;
             int fileSize = info.Item2;
 
-            return HandleResourceError(fileExists, fileSize, exception);
+            return DefaultErrorHandler.HandleResourceError(fileExists, fileSize, exception);
         }
 
-        public virtual IChromelyResponse HandleError(IChromelyRequest request, Exception exception)
+        public virtual IChromelyResponse HandleError(IChromelyRequest request, Exception? exception = null)
         {
-            Logger.Instance.Log.LogError(exception);
-
-            return new ChromelyResponse
+            if (exception is not null)
             {
-                RequestId = request?.Id,
+                Logger.Instance.Log.LogError(exception);
+            }
+
+            var localResponse = new ChromelyResponse
+            {
                 ReadyState = (int)ReadyState.ResponseIsReady,
                 Status = (int)System.Net.HttpStatusCode.BadRequest,
                 StatusText = "An error has occurred"
             };
+
+            localResponse.RequestId = (request is not null && string.IsNullOrWhiteSpace(request.Id))
+                                    ? request.Id
+                                    : localResponse.RequestId;
+
+            return localResponse;
         }
 
-        public virtual IChromelyResponse HandleError(IChromelyRequest request, IChromelyResponse response, Exception exception)
+        public virtual IChromelyResponse HandleError(IChromelyRequest request, IChromelyResponse response, Exception? exception = null)
         {
-            Logger.Instance.Log.LogError(exception);
-
-            return new ChromelyResponse
+            if (exception is not null)
             {
-                RequestId = request?.Id,
+                Logger.Instance.Log.LogError(exception);
+            }
+
+            var localResponse = new ChromelyResponse
+            {
                 ReadyState = (int)ReadyState.ResponseIsReady,
                 Status = (int)System.Net.HttpStatusCode.BadRequest,
                 StatusText = "An error has occurred"
             };
+
+            localResponse.RequestId = (request is not null && string.IsNullOrWhiteSpace(request.Id))
+                                    ? request.Id
+                                    : localResponse.RequestId;
+
+            return localResponse;
         }
 
-        public virtual Task<IChromelyResource> HandleErrorAsync(string requestUrl, IChromelyResource response, Exception exception)
+        public virtual Task<IChromelyResource> HandleErrorAsync(string requestUrl, IChromelyResource response, Exception? exception = null)
         {
             return Task.FromResult<IChromelyResource>(response);
         }
 
-        private IChromelyResource HandleResourceError(bool fileExists, int fileSize, Exception exception = null)
+        private static IChromelyResource HandleResourceError(bool fileExists, int fileSize, Exception? exception = null)
         {
-            if (exception != null)
+            if (exception is not null)
             {
                 Logger.Instance.Log.LogError(exception);
             }
@@ -98,7 +114,7 @@ namespace Chromely.Core.Defaults
             return resource;
         }
 
-        private (bool, int) GetFileInfo(object infoOrStream)
+        private static (bool, int) GetFileInfo(object? infoOrStream)
         {
             bool fileExists = false;
             int fileSize = 0;
@@ -106,17 +122,17 @@ namespace Chromely.Core.Defaults
             try
             {
                 var fileInfo = infoOrStream as FileInfo;
-                if (fileInfo != null)
+                if (fileInfo is not null)
                 {
-                    fileExists = fileInfo != null && fileInfo.Exists;
-                    fileSize = (int)(fileInfo != null ? fileInfo.Length : 0);
+                    fileExists = fileInfo is not null && fileInfo.Exists;
+                    fileSize = (int)(fileInfo is not null ? fileInfo.Length : 0);
                 }
 
                 var stream = infoOrStream as Stream;
-                if (stream != null)
+                if (stream is not null)
                 {
-                    fileExists = stream != null;
-                    fileSize = (int)(stream != null ? stream.Length : 0);
+                    fileExists = stream is not null;
+                    fileSize = (int)(stream is not null ? stream.Length : 0);
                 }
 
                 return (fileExists, fileSize);

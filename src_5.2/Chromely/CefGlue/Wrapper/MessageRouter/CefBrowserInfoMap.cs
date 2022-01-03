@@ -1,4 +1,6 @@
-﻿namespace Xilium.CefGlue.Wrapper
+﻿#nullable disable
+
+namespace Xilium.CefGlue.Wrapper
 {
     using System;
     using System.Collections.Generic;
@@ -9,7 +11,7 @@
     {
         public delegate bool Visitor(int browserId, TKey key, TValue value, ref bool remove);
 
-        private Dictionary<int, Dictionary<TKey, TValue>> _map = new Dictionary<int, Dictionary<TKey, TValue>>();
+        private readonly Dictionary<int, Dictionary<TKey, TValue>> _map = new();
 
         public CefBrowserInfoMap()
         {
@@ -35,16 +37,13 @@
 
         public int Count(int browserId)
         {
-            Dictionary<TKey, TValue> v;
-            if (_map.TryGetValue(browserId, out v)) return v.Count;
-            else return 0;
+            return _map.TryGetValue(browserId, out Dictionary<TKey, TValue> v) ? v.Count : 0;
         }
 
 
         public void Add(int browserId, TKey key, TValue value)
         {
-            Dictionary<TKey, TValue> v;
-            if (!_map.TryGetValue(browserId, out v))
+            if (!_map.TryGetValue(browserId, out Dictionary<TKey, TValue> v))
             {
                 v = new Dictionary<TKey, TValue>();
                 _map.Add(browserId, v);
@@ -55,14 +54,12 @@
 
         public TValue Find(int browserId, TKey key, Visitor visitor)
         {
-            Dictionary<TKey, TValue> v;
-            if (!_map.TryGetValue(browserId, out v))
+            if (!_map.TryGetValue(browserId, out Dictionary<TKey, TValue> v))
             {
-                return default(TValue);
+                return default;
             }
 
-            TValue x;
-            if (v.TryGetValue(key, out x))
+            if (v.TryGetValue(key, out TValue x))
             {
                 bool remove = false;
                 visitor(browserId, key, x, ref remove);
@@ -72,16 +69,15 @@
                 }
                 return x;
             }
-            else return default(TValue);
+            else return default;
         }
 
         public void FindAll(int browserId, Visitor visitor)
         {
-            Dictionary<TKey, TValue> v;
-            if (!_map.TryGetValue(browserId, out v)) return;
+            if (!_map.TryGetValue(browserId, out Dictionary<TKey, TValue> v)) return;
 
             bool hasRemoveKey = false;
-            TKey removeKey = default(TKey);
+            TKey removeKey = default;
             List<TKey> removeList = null;
             foreach (var kv in v)
             {

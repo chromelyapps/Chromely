@@ -22,6 +22,7 @@ namespace Chromely.Core.Infrastructure
         {
             try
             {
+#nullable disable
                 var appExeLocation = AppDomain.CurrentDomain.BaseDirectory;
                 string dllName = Path.Combine(appExeLocation, "Chromely.dll");
                 var assembly = Assembly.LoadFrom(dllName);
@@ -32,10 +33,11 @@ namespace Chromely.Core.Infrastructure
                 versionProperty = type?.GetProperty("ChromeVersion");
                 var chromiumVersion = versionProperty?.GetValue(null).ToString();
                 return new CefBuildNumbers(cefVersion, chromiumVersion);
+#nullable restore
             }
             catch (Exception ex)
             {
-                Logger.Instance.Log.LogError("Could not get expected chromium build number: " + ex.Message);
+                Logger.Instance.Log.LogError("Could not get expected chromium build number: {ex.Message}", ex.Message);
             }
             return new CefBuildNumbers("","");
         }
@@ -47,28 +49,15 @@ namespace Chromely.Core.Infrastructure
         {
             get
             {
-                switch (Environment.OSVersion.Platform)
+                return Environment.OSVersion.Platform switch
                 {
-                    case PlatformID.MacOSX:
-                        return ChromelyPlatform.MacOSX;
-                    
-                    case PlatformID.Unix:
-                    case (PlatformID)128:   // Framework (1.0 and 1.1) didn't include any PlatformID value for Unix, so Mono used the value 128.
-                        return IsRunningOnMac()
-                        ? ChromelyPlatform.MacOSX
-                        : ChromelyPlatform.Linux;
-
-                    case PlatformID.Win32NT:
-                    case PlatformID.Win32S:
-                    case PlatformID.Win32Windows:
-                    case PlatformID.WinCE:
-                    case PlatformID.Xbox:
-                        return ChromelyPlatform.Windows;
-
-                    default:
-                        return ChromelyPlatform.NotSupported;
-                }
-                
+                    PlatformID.MacOSX => ChromelyPlatform.MacOSX,
+                    PlatformID.Unix or (PlatformID)128 => IsRunningOnMac()
+                                                         ? ChromelyPlatform.MacOSX
+                                                         : ChromelyPlatform.Linux,
+                    PlatformID.Win32NT or PlatformID.Win32S or PlatformID.Win32Windows or PlatformID.WinCE or PlatformID.Xbox => ChromelyPlatform.Windows,
+                    _ => ChromelyPlatform.NotSupported,
+                };
             }
         }
 

@@ -11,10 +11,10 @@ namespace Chromely.Core
     public interface IChromelyErrorHandler
     {
         IChromelyResponse HandleRouteNotFound(string requestId, string routePath);
-        IChromelyResource HandleError(FileInfo fileInfo, Exception exception = null);
-        IChromelyResource HandleError(Stream stream, Exception exception = null);
-        IChromelyResponse HandleError(IChromelyRequest request, Exception exception);
-        IChromelyResponse HandleError(IChromelyRequest request, IChromelyResponse response, Exception exception);
-        Task<IChromelyResource> HandleErrorAsync(string requestUrl, IChromelyResource response, Exception exception);
+        IChromelyResource HandleError(FileInfo? fileInfo, Exception? exception = null);
+        IChromelyResource HandleError(Stream? stream, Exception? exception = null);
+        IChromelyResponse HandleError(IChromelyRequest request, Exception? exception = null);
+        IChromelyResponse HandleError(IChromelyRequest request, IChromelyResponse response, Exception? exception = null);
+        Task<IChromelyResource> HandleErrorAsync(string requestUrl, IChromelyResource response, Exception? exception = null);
     }
 }

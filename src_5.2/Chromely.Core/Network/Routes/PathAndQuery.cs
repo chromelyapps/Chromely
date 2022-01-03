@@ -1,6 +1,9 @@
 ﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
+#nullable disable
+#pragma warning disable IDE0057
+
 namespace Chromely.Core.Network;
 
 public class PathAndQuery
@@ -12,14 +15,18 @@ public class PathAndQuery
     {
         var uri = CreateUri(requestUrl);
         Path = uri?.AbsolutePath;
-        QueryParameters = GetParameters(uri?.PathAndQuery);
+
+        if (uri is not null)
+        {
+            QueryParameters = GetParameters(uri.PathAndQuery);
+        }
     }
 
     public static Uri CreateUri(string requestUrl)
     {
         if (string.IsNullOrWhiteSpace(requestUrl))
         {
-            return null;
+            return default;
         }
 
         try
@@ -42,7 +49,7 @@ public class PathAndQuery
         }
         catch { }
 
-        return null;
+        return default;
     }
 
     public static IDictionary<string, string> GetParameters(string querypath)

@@ -2,9 +2,6 @@
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
 using Chromely.Core.Infrastructure;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Chromely.Browser
 {
@@ -35,21 +32,21 @@ namespace Chromely.Browser
 
         public static ProcessType GetProcessType(IEnumerable<string> args)
         {
-            if (args == null || !args.Any())
+            if (args is null || !args.Any())
             {
                 return ProcessType.Browser;
             }
 
             if (HasArgument(args, ArgumentType))
             {
-                string type = GetArgumentValue(args, ArgumentType);
-                if (!string.IsNullOrWhiteSpace(type) && type.Equals(RendererType, StringComparison.InvariantCultureIgnoreCase))
+                string? type = GetArgumentValue(args, ArgumentType);
+                if (type is not null && !string.IsNullOrWhiteSpace(type) && type.Equals(RendererType, StringComparison.InvariantCultureIgnoreCase))
                 {
                     return ProcessType.Renderer;
                 }
 
                 type = GetArgumentValue(args, ArgumentType);
-                if (!string.IsNullOrWhiteSpace(type) && type.Equals(ZygoteType, StringComparison.InvariantCultureIgnoreCase))
+                if (type is not null && !string.IsNullOrWhiteSpace(type) && type.Equals(ZygoteType, StringComparison.InvariantCultureIgnoreCase))
                 {
                     return ProcessType.Renderer;
                 }
@@ -65,10 +62,18 @@ namespace Chromely.Browser
             return args.Any(a => a.StartsWith(arg));
         }
 
-        private static string GetArgumentValue(this IEnumerable<string> args, string argumentName)
+        private static string? GetArgumentValue(this IEnumerable<string> args, string argumentName)
         {
-            var arg = args?.FirstOrDefault(a => a.StartsWith(argumentName));
-            return arg?.Split('=').Last();
+            if (args is not null)
+            {
+                var arg = args.FirstOrDefault(a => a.StartsWith(argumentName));
+                if (arg is not null)
+                {
+                    return arg.Split('=').Last();
+                }
+            }
+
+            return default;
         }
     }
 }

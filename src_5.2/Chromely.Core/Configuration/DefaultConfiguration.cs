@@ -16,7 +16,7 @@ namespace Chromely.Core.Configuration
     public class DefaultConfiguration : IChromelyConfiguration
     {
         /// <summary>Gets or sets the name of the application.</summary>
-        public string AppName { get; set; }
+        public string? AppName { get; set; }
 
         /// <summary>Gets or sets the start URL.</summary>
         public string StartUrl { get; set; }
@@ -25,7 +25,7 @@ namespace Chromely.Core.Configuration
         public string AppExeLocation { get; set; }
 
         /// <summary>Gets or sets the chromely version.</summary>
-        public string ChromelyVersion { get; set; }
+        public string? ChromelyVersion { get; set; }
 
         /// <summary>Gets or sets the platform.</summary>
         public ChromelyPlatform Platform { get; set; }
@@ -34,25 +34,22 @@ namespace Chromely.Core.Configuration
         public bool DebuggingMode { get; set; }
 
         /// <summary>Gets or sets the dev tools URL.</summary>
-        public string DevToolsUrl { get; set; }
+        public string? DevToolsUrl { get; set; }
 
         /// <summary>Gets or sets the command line arguments.</summary>
-        public Dictionary<string, string> CommandLineArgs { get; set; }
+        public Dictionary<string, string>? CommandLineArgs { get; set; }
 
         /// <summary>Gets or sets the command line options.</summary>
-        public List<string> CommandLineOptions { get; set; }
-
-        /// <summary>Gets or sets the controller assemblies.</summary>
-        public List<ControllerAssemblyInfo> ControllerAssemblies { get; set; }
+        public List<string>? CommandLineOptions { get; set; }
 
         /// <summary>Gets or sets the custom settings.</summary>
-        public Dictionary<string, string> CustomSettings { get; set; }
+        public Dictionary<string, string>? CustomSettings { get; set; }
 
         /// <summary>Gets or sets the extension data.</summary>
-        public Dictionary<string, object> ExtensionData { get; set; }
+        public Dictionary<string, object>? ExtensionData { get; set; }
 
         /// <summary>Gets or sets the java script executor.</summary>
-        public IChromelyJavaScriptExecutor JavaScriptExecutor { get; set; }
+        public IChromelyJavaScriptExecutor? JavaScriptExecutor { get; set; }
 
         /// <summary>Gets or sets the URL schemes.</summary>
         public List<UrlScheme> UrlSchemes { get; set; }
@@ -65,7 +62,7 @@ namespace Chromely.Core.Configuration
 
         public DefaultConfiguration()
         {
-            AppName = Assembly.GetEntryAssembly()?.GetName().Name;
+            AppName = Assembly.GetEntryAssembly()?.GetName().Name ?? "Chromely App";
             Platform = ChromelyRuntime.Platform;
             AppExeLocation = AppDomain.CurrentDomain.BaseDirectory;
             StartUrl = "local://app/index.html";
@@ -86,7 +83,6 @@ namespace Chromely.Core.Configuration
                 new UrlScheme(DefaultSchemeName.GITHUBSITE, string.Empty, string.Empty, "https://github.com/chromelyapps/Chromely", UrlSchemeType.ExternalBrowser, true)
             });
 
-            ControllerAssemblies = new List<ControllerAssemblyInfo>();
             CustomSettings = new Dictionary<string, string>()
             {
                 ["cefLogFile"] = "logs\\chromely.cef.log",
@@ -97,20 +93,22 @@ namespace Chromely.Core.Configuration
 
         public virtual void Update(ConfiguratorSection configSection)
         {
-            if (configSection == null) return;
+            if (configSection is null) return;
 
-            if (!string.IsNullOrWhiteSpace(configSection.AppName)) AppName = configSection.AppName;
-            if (!string.IsNullOrWhiteSpace(configSection.StartUrl)) StartUrl = configSection.StartUrl;
+            if (!StringUtil.IsNullOrWhiteSpace(configSection.AppName)) AppName = configSection.AppName;
+#pragma warning disable CS8601 // Possible null reference assignment.
+            if (!StringUtil.IsNullOrWhiteSpace(configSection.StartUrl)) StartUrl = configSection.StartUrl;
+#pragma warning restore CS8601 // Possible null reference assignment.
             if (!string.IsNullOrWhiteSpace(configSection.ChromelyVersion)) ChromelyVersion = configSection.ChromelyVersion;
             if (!string.IsNullOrWhiteSpace(configSection.DevToolsUrl)) DevToolsUrl = configSection.DevToolsUrl;
             if (!string.IsNullOrWhiteSpace(configSection.AppName)) AppName = configSection.AppName;
 
             DebuggingMode = configSection.DebuggingMode;
 
-            if (CommandLineArgs != null) CommandLineArgs = configSection.CommandLineArgs;
-            if (CommandLineOptions != null) CommandLineOptions = configSection.CommandLineOptions;
-            if (CustomSettings != null) CustomSettings = configSection.CustomSettings;
-            if (ExtensionData != null) ExtensionData = configSection.ExtensionData;
+            if (CommandLineArgs is not null) CommandLineArgs = configSection.CommandLineArgs;
+            if (CommandLineOptions is not null) CommandLineOptions = configSection.CommandLineOptions;
+            if (CustomSettings is not null) CustomSettings = configSection.CustomSettings;
+            if (ExtensionData is not null) ExtensionData = configSection.ExtensionData;
         }
 
         public static IChromelyConfiguration CreateForRuntimePlatform()
@@ -120,12 +118,10 @@ namespace Chromely.Core.Configuration
 
         public static IChromelyConfiguration CreateForPlatform(ChromelyPlatform platform)
         {
-            IChromelyConfiguration config;
+            IChromelyConfiguration config = new DefaultConfiguration();
 
             try
             {
-                config = new DefaultConfiguration();
-
                 switch (platform)
                 {
                     case ChromelyPlatform.Windows:
@@ -154,20 +150,19 @@ namespace Chromely.Core.Configuration
             }
             catch (Exception exception)
             {
-                config = null;
                 Logger.Instance.Log.LogError(exception);
             }
 
             return config;
         }
 
-        public static IChromelyConfiguration CreateFromConfigSection(IConfigurationRoot configuration, string sectionName = "ChromelyConfig")
+        public static IChromelyConfiguration? CreateFromConfigSection(IConfigurationRoot configuration, string sectionName = "ChromelyConfig")
         {
-            if (configuration == null)
+            if (configuration is null)
                 return null;
 
             var configSection = configuration.GetSection(sectionName).Get(typeof(ConfiguratorSection)) as ConfiguratorSection;
-            if (configSection != null)
+            if (configSection is not null)
             {
                 var config = new DefaultConfiguration();
                 config.Update(configSection);

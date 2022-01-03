@@ -1,7 +1,10 @@
 ﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
-using System;
+#nullable disable
+#pragma warning disable IDE0034
+#pragma warning disable IDE0052
+
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -204,7 +207,7 @@ namespace Chromely.NativeHost
                                                     QuitCallbackEvent quitCallback)
         {
 
-            ChromelyParam configParam = new ChromelyParam();
+            ChromelyParam configParam = new();
             configParam.runMessageLoopCallback = Marshal.GetFunctionPointerForDelegate(runCallback);
             configParam.cefShutdownCallback = Marshal.GetFunctionPointerForDelegate(cefShutdownCallback);
             configParam.initCallback = Marshal.GetFunctionPointerForDelegate(initCallback);

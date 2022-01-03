@@ -1,9 +1,9 @@
 ﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
+#pragma warning disable CS8602
+
 using Chromely.Core.Configuration;
-using Chromely.Core.Host;
-using System;
 using System.Runtime.InteropServices;
 using static Chromely.Interop.User32;
 
@@ -25,7 +25,7 @@ namespace Chromely.NativeHost
 
 		protected virtual bool OnKeyboardEvent(HookEventArgs args)
 		{
-			if (args == null)
+			if (args is null)
 			{
 				return false;
 			}

@@ -5,7 +5,7 @@ namespace Chromely.Core
 {
     public sealed class AppBuilder : AppBuilderBase
     {
-        private ChromelyServiceProviderFactory _serviceProviderFactory;
+        private ChromelyServiceProviderFactory? _serviceProviderFactory;
 
         private AppBuilder(string[] args) 
             : base(args)
@@ -37,12 +37,12 @@ namespace Chromely.Core
                 throw new Exception("Invalid order: Step 1: UseApp must be completed before Step 2: Build.");
             }
 
-            if (_chromelyApp == null)
+            if (_chromelyApp is null)
             {
                 throw new Exception($"ChromelyApp {nameof(_chromelyApp)} cannot be null.");
             }
 
-            if (_serviceCollection == null)
+            if (_serviceCollection is null)
             {
                 _serviceCollection = new ServiceCollection();
             }
@@ -56,14 +56,9 @@ namespace Chromely.Core
             _chromelyApp.ConfigureServiceResolvers(_serviceCollection);
             _chromelyApp.ConfigureDefaultHandlers(_serviceCollection);
 
-            if (_serviceProviderFactory != null)
-            {
-                _serviceProvider = _serviceProviderFactory.BuildServiceProvider(_serviceCollection);
-            }
-            else
-            {
-                _serviceProvider = _serviceCollection.BuildServiceProvider();
-            }
+            _serviceProvider = _serviceProviderFactory is not null
+                ? _serviceProviderFactory.BuildServiceProvider(_serviceCollection)
+                : _serviceCollection.BuildServiceProvider();
 
             _chromelyApp.Initialize(_serviceProvider);
             _chromelyApp.RegisterChromelyControllerRoutes(_serviceProvider);
@@ -79,7 +74,7 @@ namespace Chromely.Core
                 throw new Exception("Invalid order: Step 2: Build must be completed before Step 3: Run.");
             }
 
-            if (_serviceProvider == null)
+            if (_serviceProvider is null)
             {
                 throw new Exception("ServiceProvider is not initialized.");
             }
@@ -90,12 +85,12 @@ namespace Chromely.Core
                 var windowController = _serviceProvider.GetService<ChromelyWindowController>();
                 try
                 {
-                    Logger.Instance.Log.LogInformation($"Running application:{appName}.");
+                    Logger.Instance.Log.LogInformation("Running application:{appName}.", appName);
                     windowController.Run(_args);
                 }
                 catch (Exception exception)
                 {
-                    Logger.Instance.Log.LogError(exception, $"Error running application:{appName}.");
+                    Logger.Instance.Log.LogError(exception, "Error running application:{appName}.", appName);
                 }
                 finally
                 {
@@ -107,7 +102,7 @@ namespace Chromely.Core
             catch (Exception exception)
             {
                 var appName = Assembly.GetEntryAssembly()?.GetName().Name;
-                Logger.Instance.Log.LogError(exception, $"Error running application:{appName}.");
+                Logger.Instance.Log.LogError(exception, "Error running application:{appName}.", appName);
             }
         }
     }

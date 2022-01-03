@@ -7,21 +7,21 @@ public static class CollectionExtensions
 {
     public static bool NotEmpty(this IEnumerable<object> list)
     {
-        return list != null && list.Any();
+        return list is not null && list.Any();
     }
 
     public static bool NotEmpty(this IList<object> list)
     {
-        return list != null && list.Any();
+        return list is not null && list.Any();
     }
 
     public static bool IsNullOrEmpty(this IEnumerable<object> list)
     {
-        return list == null || !list.Any();
+        return list is null || !list.Any();
     }
 
     public static bool IsNullOrEmpty(this IList<object> list)
     {
-        return list == null || !list.Any();
+        return list is null || !list.Any();
     }
 }

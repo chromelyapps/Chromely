@@ -1,4 +1,9 @@
-﻿using System;
+﻿#nullable disable
+
+#pragma warning disable IDE0044
+#pragma warning disable IDE0051
+
+using System;
 
 namespace ICSharpCode.SharpZipLib.Core
 {

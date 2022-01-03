@@ -1,16 +1,11 @@
 ﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
-using Chromely.Core.Logging;
-using Microsoft.Extensions.Logging;
-using System;
-using System.IO;
-
 namespace Chromely.Core.Infrastructure
 {
     public static class AppSettingInfo
     {
-        public static string GetSettingsFilePath(ChromelyPlatform platform, string appName = "chromely", bool onSave = false)
+        public static string? GetSettingsFilePath(ChromelyPlatform platform, string appName = "chromely", bool onSave = false)
         {
             try
             {
@@ -51,7 +46,7 @@ namespace Chromely.Core.Infrastructure
                 Logger.Instance.Log.LogError(exception);
             }
 
-            return null;
+            return default;
         }
     }
 }

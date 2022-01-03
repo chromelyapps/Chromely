@@ -7,13 +7,13 @@ namespace Chromely.Core.Infrastructure
 {
     public class CurrentAppSettings : ChromelyAppUser
     {
-        private IChromelyAppSettings appSettings;
+        private IChromelyAppSettings? appSettings;
 
         public override IChromelyAppSettings Properties
         {
             get
             {
-                if (appSettings == null)
+                if (appSettings is null)
                 {
                     appSettings = new DefaultAppSettings();
                 }
@@ -25,6 +25,5 @@ namespace Chromely.Core.Infrastructure
                 appSettings = value;
             }
         }
-
     }
 }

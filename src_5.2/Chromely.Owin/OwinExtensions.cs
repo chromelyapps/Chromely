@@ -25,7 +25,7 @@ public static class OwinExtensions
 
     public static string GetMimeType(this IDictionary<string, string[]> headers)
     {
-       if (headers == null || !headers.Any())
+       if (headers is null || !headers.Any())
        {
             return ResourceHandler.DefaultMimeType;
        }
@@ -43,11 +43,11 @@ public static class OwinExtensions
     {
         try
         {
-            owinPipeline.Routes = owinPipeline.Routes ?? new List<OwinRoute>();
+            owinPipeline.Routes ??= new List<OwinRoute>();
             var routes = new List<OwinRoute>();
 
             var actionDescriptorCollectionProvider = provider.GetRequiredService<IActionDescriptorCollectionProvider>();
-            if (actionDescriptorCollectionProvider != null)
+            if (actionDescriptorCollectionProvider is not null)
             {
                 var controllerActions = actionDescriptorCollectionProvider.ActionDescriptors.Items.OfType<ControllerActionDescriptor>().ToList();
                 if (!controllerActions.IsNullOrEmpty())
@@ -55,7 +55,7 @@ public static class OwinExtensions
                     foreach (var action in controllerActions)
                     {
                         var template = action.AttributeRouteInfo?.Template;
-                        if (template != null)
+                        if (template is not null)
                         {
                             template = template.TrimStart('/');
                             routes.Add(new OwinRoute(action.DisplayName,
@@ -93,7 +93,7 @@ public static class OwinExtensions
     {
         try
         {
-            owinPipeline.Routes = owinPipeline.Routes ?? new List<OwinRoute>();
+            owinPipeline.Routes ??= new List<OwinRoute>();
             var uri = new Uri(url);
             return owinPipeline.Routes.Any(x => x.RoutePath.Equals(uri.AbsolutePath, StringComparison.InvariantCultureIgnoreCase) ||
                                                 x.RoutePath.Equals(uri.AbsolutePath + "/Index", StringComparison.InvariantCultureIgnoreCase));

@@ -10,7 +10,7 @@ namespace Chromely.Browser
     {
         private void SetHandlers(ChromelyHandlersResolver handlersResolver)
         {
-            if (handlersResolver == null)
+            if (handlersResolver is null)
             {
                 return;
             }

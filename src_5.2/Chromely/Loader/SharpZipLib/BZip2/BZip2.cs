@@ -1,4 +1,10 @@
-﻿using System;
+﻿#nullable disable
+
+#pragma warning disable IDE0063
+#pragma warning disable IDE0079
+#pragma warning disable IDE0090
+
+using System;
 using System.IO;
 
 namespace ICSharpCode.SharpZipLib.BZip2

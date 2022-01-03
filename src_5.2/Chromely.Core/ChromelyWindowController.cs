@@ -85,9 +85,6 @@ namespace Chromely.Core
             _nativeHost?.Dispose();
             _window?.Dispose();
 
-            _nativeHost = null;
-            _window = null;
-
             _disposed = true;
         }
 

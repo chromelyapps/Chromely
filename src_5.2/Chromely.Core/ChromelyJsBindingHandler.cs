@@ -13,6 +13,7 @@ namespace Chromely.Core
         public ChromelyJsBindingHandler()
         {
             Key = Guid.NewGuid().ToString();
+            ObjectName = Guid.NewGuid().ToString();
         }
 
         public ChromelyJsBindingHandler(string objectName)
@@ -23,7 +24,7 @@ namespace Chromely.Core
             BindingOptions = null;
         }
 
-        public ChromelyJsBindingHandler(string objectName, object boundObject, object bindingOptions, bool useDefaultObject)
+        public ChromelyJsBindingHandler(string objectName, object boundObject, object bindingOptions)
         {
             Key = objectName;
             ObjectName = objectName;
@@ -33,7 +34,7 @@ namespace Chromely.Core
 
         public string Key { get; }
         public string ObjectName{ get; set; }
-        public object BoundObject { get; set; }
-        public object BindingOptions { get; set; }
+        public object? BoundObject { get; set; }
+        public object? BindingOptions { get; set; }
     }
 }

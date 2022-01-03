@@ -1,6 +1,9 @@
 // Copyright � 2017-2020 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
+#pragma warning disable SYSLIB0001
+#pragma warning disable SYSLIB0014
+
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -37,9 +40,9 @@ namespace Chromely.Loader
         private static string CefBuildsDownloadIndex(string platform) => $"https://cef-builds.spotifycdn.com/index.html#{platform}_builds";
         private static string CefDownloadUrl(string name) => $"https://cef-builds.spotifycdn.com/{name}";
         
-        private static string MacOSConfigFile = "Info.plist";
+        private static readonly string MacOSConfigFile = "Info.plist";
         
-        private static string MacOSDefaultAppName = "Chromium Embedded Framework";
+        private static readonly string MacOSDefaultAppName = "Chromium Embedded Framework";
 
         /// <summary>
         /// Gets or sets the timeout for the CEF download in minutes.
@@ -66,17 +69,17 @@ namespace Chromely.Loader
                 {
                     loader.Download();
                 }
-                Logger.Instance.Log.LogInformation($"CefLoader: Download took {watch.ElapsedMilliseconds}ms");
+                Logger.Instance.Log.LogInformation("CefLoader: Download took {watch.ElapsedMilliseconds}ms", watch.ElapsedMilliseconds);
                 watch.Restart();
                 loader.DecompressArchive();
-                Logger.Instance.Log.LogInformation($"CefLoader: Decompressing archive took {watch.ElapsedMilliseconds}ms");
+                Logger.Instance.Log.LogInformation("CefLoader: Decompressing archive took {watch.ElapsedMilliseconds}ms", watch.ElapsedMilliseconds);
                 watch.Restart();
                 loader.CopyFilesToAppDirectory();
-                Logger.Instance.Log.LogInformation($"CefLoader: Copying files took {watch.ElapsedMilliseconds}ms");
+                Logger.Instance.Log.LogInformation("CefLoader: Copying files took {watch.ElapsedMilliseconds}ms", watch.ElapsedMilliseconds);
             }
             catch (Exception ex)
             {
-                Logger.Instance.Log.LogError("CefLoader: " + ex.Message);
+                Logger.Instance.Log.LogError("CefLoader: {ex.Message}", ex.Message);
                 throw;
             }
             finally
@@ -112,9 +115,9 @@ namespace Chromely.Loader
         private readonly string _tempTarFile;
         private readonly string _tempDirectory;
 
-        private string _archiveName;
-        private string _folderName;
-        private string _downloadUrl;
+        private string _archiveName = string.Empty;
+        private string _folderName = string.Empty;
+        private string _downloadUrl = string.Empty;
         private long _downloadLength;
 
         private readonly int _numberOfParallelDownloads;
@@ -125,7 +128,7 @@ namespace Chromely.Loader
             _platform = platform;
             _architecture = RuntimeInformation.ProcessArchitecture;
             _build = ChromelyRuntime.GetExpectedCefBuild();
-            Logger.Instance.Log.LogInformation($"CefLoader: Load CEF for {_platform} {_architecture}, version {_build}");
+            Logger.Instance.Log.LogInformation("CefLoader: Load CEF for {_platform} {_architecture}, version {_build}", _platform, _architecture, _build);
 
             _lastPercent = 0;
             _numberOfParallelDownloads = Environment.ProcessorCount;
@@ -143,7 +146,7 @@ namespace Chromely.Loader
         /// <param name="processArchitecture"></param>
         /// <param name="build"></param>
         /// <returns></returns>
-        public string FindCefArchiveName(ChromelyPlatform platform, Architecture processArchitecture, CefBuildNumbers build)
+        public static string FindCefArchiveName(ChromelyPlatform platform, Architecture processArchitecture, CefBuildNumbers build)
         {
             var arch = processArchitecture.ToString()
                 .Replace("X64", "64")
@@ -161,7 +164,7 @@ namespace Chromely.Loader
             
             using (var client = new WebClient())
             {
-                Logger.Instance.Log.LogInformation($"CefLoader: Load index page {indexUrl}");
+                Logger.Instance.Log.LogInformation("CefLoader: Load index page {indexUrl}", indexUrl);
                 var cefIndex = client.DownloadString(indexUrl);
                 
                 // up to Chromium version 72
@@ -199,7 +202,7 @@ namespace Chromely.Loader
                 #endregion Hack until fixed.
 
                 var message = $"CEF for chrome version {CefRuntime.ChromeVersion} platform {platformIdentifier} not found.";
-                Logger.Instance.Log.LogError("CefLoader: " + message);
+                Logger.Instance.Log.LogError("CefLoader: {message}", message);
             }
             
             return "";
@@ -240,7 +243,7 @@ namespace Chromely.Loader
                 .Replace("%2B", "+")
                 .Replace(".tar.bz2", "");
             _downloadUrl = CefDownloadUrl(_archiveName);
-            Logger.Instance.Log.LogInformation($"CefLoader: Found download URL {_downloadUrl}");
+            Logger.Instance.Log.LogInformation("CefLoader: Found download URL {_downloadUrl}", _downloadUrl);
         }
 
         private class Range  
@@ -254,12 +257,14 @@ namespace Chromely.Loader
             {
                 var webRequest = WebRequest.Create(_downloadUrl);
                 webRequest.Method = "HEAD";
-                using (var webResponse = webRequest.GetResponse())
+                using WebResponse webResponse = webRequest.GetResponse();
+                var contentLengthVal = webResponse.Headers?.Get("Content-Length");
+                if (contentLengthVal is not null)
                 {
-                    _downloadLength = long.Parse(webResponse.Headers.Get("Content-Length"));
+                    _downloadLength = long.Parse(contentLengthVal);
                 }
 
-                Logger.Instance.Log.LogInformation($"CefLoader: Parallel download {_archiveName}, {_downloadLength / (1024 * 1024)}MB");
+                Logger.Instance.Log.LogInformation("CefLoader: Parallel download {_archiveName}, {_downloadLength / (1024 * 1024)}MB", _archiveName, _downloadLength);
 
                 // Calculate ranges  
                 var readRanges = new List<Range>();
@@ -283,20 +288,18 @@ namespace Chromely.Loader
 
                 Parallel.ForEach(readRanges, new ParallelOptions() { MaxDegreeOfParallelism = _numberOfParallelDownloads }, readRange =>
                 {
-                    var httpWebRequest = WebRequest.Create(_downloadUrl) as HttpWebRequest;
-                    // ReSharper disable once PossibleNullReferenceException
-                    httpWebRequest.Method = "GET";
-                    httpWebRequest.Timeout = (int)TimeSpan.FromMinutes(DownloadTimeoutMinutes).TotalMilliseconds;
-                    httpWebRequest.AddRange(readRange.Start, readRange.End);
-                    using (var httpWebResponse = httpWebRequest.GetResponse() as HttpWebResponse)
+                    if (WebRequest.Create(_downloadUrl) is HttpWebRequest httpWebRequest)
                     {
+                        httpWebRequest.Method = "GET";
+                        httpWebRequest.Timeout = (int)TimeSpan.FromMinutes(DownloadTimeoutMinutes).TotalMilliseconds;
+                        httpWebRequest.AddRange(readRange.Start, readRange.End);
+                        using HttpWebResponse httpWebResponse = httpWebRequest.GetResponse() as HttpWebResponse;
                         var tempFilePath = Path.GetTempFileName();
-                        Logger.Instance.Log.LogInformation($"CefLoader: Load {tempFilePath} ({readRange.Start}..{readRange.End})");
-                        using (var fileStream = new FileStream(tempFilePath, FileMode.Create, FileAccess.Write, FileShare.Write))
-                        {
-                            httpWebResponse?.GetResponseStream()?.CopyTo(fileStream);
-                            tempFilesDictionary.TryAdd(readRange.Start, tempFilePath);
-                        }
+                        Logger.Instance.Log.LogInformation("CefLoader: Load {tempFilePath} ({readRange.Start}..{readRange.End})",
+                                                                tempFilePath, readRange.Start, readRange.End);
+                        using FileStream fileStream = new(tempFilePath, FileMode.Create, FileAccess.Write, FileShare.Write);
+                        httpWebResponse?.GetResponseStream()?.CopyTo(fileStream);
+                        tempFilesDictionary.TryAdd(readRange.Start, tempFilePath);
                     }
                 });
 
@@ -319,7 +322,7 @@ namespace Chromely.Loader
             }
             catch (Exception ex)
             {
-                Logger.Instance.Log.LogError("CefLoader.ParallelDownload: " + ex.Message);
+                Logger.Instance.Log.LogError("CefLoader.ParallelDownload: {ex.Message}", ex.Message);
             }
 
             return false;
@@ -327,38 +330,34 @@ namespace Chromely.Loader
 
         private void Download()
         {
-            using (var client = new WebClient())
+            using WebClient client = new();
+            if (File.Exists(_tempBz2File))
             {
-                if (File.Exists(_tempBz2File))
-                {
-                    File.Delete(_tempBz2File);
-                }
-
-                Logger.Instance.Log.LogInformation($"CefLoader: Loading {_tempBz2File}");
-                client.DownloadProgressChanged += Client_DownloadProgressChanged;
-
-                client.DownloadFile(_downloadUrl, _tempBz2File);
+                File.Delete(_tempBz2File);
             }
+
+            Logger.Instance.Log.LogInformation("CefLoader: Loading {_tempBz2File}", _tempBz2File);
+            client.DownloadProgressChanged += Client_DownloadProgressChanged;
+
+            client.DownloadFile(_downloadUrl, _tempBz2File);
         }
 
         private void DecompressArchive()
         {
             Logger.Instance.Log.LogInformation("CefLoader: Decompressing BZ2 archive");
-            using (var tarStream = new FileStream(_tempTarStream, FileMode.Create, FileAccess.ReadWrite))
+            using FileStream tarStream = new(_tempTarStream, FileMode.Create, FileAccess.ReadWrite);
+            using (var inStream = new FileStream(_tempBz2File, FileMode.Open, FileAccess.Read, FileShare.None))
             {
-                using (var inStream = new FileStream(_tempBz2File, FileMode.Open, FileAccess.Read, FileShare.None))
-                {
-                    BZip2.Decompress(inStream, tarStream, false, DecompressProgressChanged);
-                }
-
-                Logger.Instance.Log.LogInformation("CefLoader: Decompressing TAR archive");
-                tarStream.Seek(0, SeekOrigin.Begin);
-                var tar = TarArchive.CreateInputTarArchive(tarStream);
-                tar.ProgressMessageEvent += (archive, entry, message) => Logger.Instance.Log.LogInformation("CefLoader: Extracting " + entry.Name);
-                    
-                Directory.CreateDirectory(_tempDirectory);
-                tar.ExtractContents(_tempDirectory);
+                BZip2.Decompress(inStream, tarStream, false, DecompressProgressChanged);
             }
+
+            Logger.Instance.Log.LogInformation("CefLoader: Decompressing TAR archive");
+            tarStream.Seek(0, SeekOrigin.Begin);
+            var tar = TarArchive.CreateInputTarArchive(tarStream);
+            tar.ProgressMessageEvent += (archive, entry, message) => Logger.Instance.Log.LogInformation("CefLoader: Extracting {entry.Name}", entry.Name);
+
+            Directory.CreateDirectory(_tempDirectory);
+            tar.ExtractContents(_tempDirectory);
         }
 
         private void CopyFilesToAppDirectory()
@@ -406,7 +405,7 @@ namespace Chromely.Loader
                 return;   
             }
             _lastPercent = percent;
-            Logger.Instance.Log.LogInformation($"CefLoader: Decompress progress = {percent}%");
+            Logger.Instance.Log.LogInformation("CefLoader: Decompress progress = {percent}%", percent);
         }
 
         private void Client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
@@ -422,13 +421,13 @@ namespace Chromely.Loader
             }
 
             _lastPercent = percent;
-            Logger.Instance.Log.LogInformation($"CefLoader: Download progress = {percent}%");
+            Logger.Instance.Log.LogInformation("CefLoader: Download progress = {percent}%", percent);
         }
 
         private static void CopyDirectory(string sourceDirName, string destDirName)
         {
             // Get the subdirectories for the specified directory.
-            DirectoryInfo dirInfo = new DirectoryInfo(sourceDirName);
+            DirectoryInfo dirInfo = new(sourceDirName);
             DirectoryInfo[] dirs = dirInfo.GetDirectories();
 
             // If the destination directory doesn't exist, create it.
@@ -449,43 +448,6 @@ namespace Chromely.Loader
             {
                 var tempPath = Path.Combine(destDirName, subDir.Name);
                 CopyDirectory(subDir.FullName, tempPath);
-            }
-        }
-
-        // ReSharper disable once UnusedMember.Local
-        private void CopyDirectory2(string srcPath, string dstPath)
-        {
-            var localesDir = string.Empty;
-            // Create all of the sub-directories
-            foreach (var dirPath in Directory.GetDirectories(srcPath, "*", SearchOption.AllDirectories))
-            {
-                var newPath = dirPath.Replace(srcPath, dstPath);
-                var dirInfo = new DirectoryInfo(newPath);
-                if (!string.IsNullOrWhiteSpace(dirInfo.Name) && dirInfo.Name.Equals("locales", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    localesDir = newPath;
-                }
-
-                Directory.CreateDirectory(newPath);
-            }
-
-            // Copy all the files & replaces any files with the same name
-            foreach (var srcFile in Directory.GetFiles(srcPath, "*.*", SearchOption.AllDirectories))
-            {
-                // ReSharper disable once AssignNullToNotNullAttribute
-                var dstFile = Path.Combine(dstPath, Path.GetFileName(srcFile));
-                if (srcFile != null)
-                {
-                    File.Copy(srcFile, dstFile, true);
-                }
-
-                // Copy all ***-**.pak file to locales directory
-                var fileName = Path.GetFileName(dstFile);
-                var ext = Path.GetExtension(dstFile);
-                if (!string.IsNullOrWhiteSpace(localesDir) && !string.IsNullOrWhiteSpace(ext) && ext.ToLower().Equals(".pak") && fileName.Contains("-"))
-                {
-                    File.Copy(dstFile, Path.Combine(localesDir, Path.GetFileName(fileName)), true);
-                }
             }
         }
     }

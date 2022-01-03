@@ -82,19 +82,19 @@ namespace Chromely.Core
             #region Configuration
 
             var config = serviceProvider.GetService<IChromelyConfiguration>();
-            if (config == null)
+            if (config is null)
             {
                 config = DefaultConfiguration.CreateForRuntimePlatform();
             }
 
-            InitConfiguration(config);
+            ChromelyApp.InitConfiguration(config);
 
             #endregion Configuration
 
             #region Application/User Settings
 
             var appSettings = serviceProvider.GetService<IChromelyAppSettings>();
-            if (appSettings == null)
+            if (appSettings is null)
             {
                 appSettings = new DefaultAppSettings();
             }
@@ -112,13 +112,15 @@ namespace Chromely.Core
             #region Logger
 
             var logger = GetCurrentLogger(serviceProvider);
-            if (logger == null)
+            if (logger is null)
             {
                 logger = new SimpleLogger();
             }
 
-            var defaultLogger = new DefaultLogger();
-            defaultLogger.Log = logger;
+            var defaultLogger = new DefaultLogger
+            {
+                Log = logger
+            };
             Logger.Instance = defaultLogger;
 
             #endregion
@@ -136,7 +138,7 @@ namespace Chromely.Core
             }
 
             var routeProvider = serviceProvider.GetService<IChromelyRouteProvider>();
-            if (routeProvider != null)
+            if (routeProvider is not null)
             {
                 var controllers = serviceProvider.GetServices<ChromelyController>();
                 routeProvider.RegisterAllRoutes(controllers?.ToList());
@@ -167,7 +169,7 @@ namespace Chromely.Core
 
         public virtual void RegisterChromelyControllerAssembly(IServiceCollection services, Assembly assembly)
         {
-            if (assembly == null)
+            if (assembly is null)
             {
                 return;
             }
@@ -183,28 +185,28 @@ namespace Chromely.Core
 
         }
 
-        protected virtual ILogger GetCurrentLogger(IServiceProvider serviceProvider)
+        protected virtual ILogger? GetCurrentLogger(IServiceProvider serviceProvider)
         {
             var logger = serviceProvider.GetService<ILogger>();
-            if (logger != null)
+            if (logger is not null)
             {
                 return logger;
             }
 
             var appName = Assembly.GetEntryAssembly()?.GetName().Name;
             var loggerFactory = serviceProvider.GetService<ILoggerFactory>();
-            if (loggerFactory != null)
+            if (loggerFactory is not null)
             {
                 return loggerFactory.CreateLogger(appName);
             }
 
             var loggerProvider = serviceProvider.GetService<ILoggerProvider>();
-            if (loggerProvider != null)
+            if (loggerProvider is not null)
             {
                 return loggerProvider.CreateLogger(appName);
             }
 
-            return null;
+            return default;
         }
 
         /// <summary>
@@ -227,18 +229,18 @@ namespace Chromely.Core
             }
         }
 
-        protected void InitConfiguration(IChromelyConfiguration config)
+        protected static void InitConfiguration(IChromelyConfiguration config)
         {
-            if (config == null)
+            if (config is null)
             {
                 throw new Exception("Configuration cannot be null.");
             }
 
-            if (config.UrlSchemes == null) config.UrlSchemes = new List<UrlScheme>();
-            if (config.CommandLineArgs == null) config.CommandLineArgs = new Dictionary<string, string>();
-            if (config.CommandLineOptions == null) config.CommandLineOptions = new List<string>();
-            if (config.CustomSettings == null) config.CustomSettings = new Dictionary<string, string>();
-            if (config.WindowOptions == null) config.WindowOptions = new Configuration.WindowOptions();
+            if (config.UrlSchemes is null) config.UrlSchemes = new List<UrlScheme>();
+            if (config.CommandLineArgs is null) config.CommandLineArgs = new Dictionary<string, string>();
+            if (config.CommandLineOptions is null) config.CommandLineOptions = new List<string>();
+            if (config.CustomSettings is null) config.CustomSettings = new Dictionary<string, string>();
+            if (config.WindowOptions is null) config.WindowOptions = new Configuration.WindowOptions();
         }
     }
 }

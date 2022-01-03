@@ -5,11 +5,11 @@ namespace Chromely.Core.Defaults;
 
 public partial class DataTransferOptions
 {
-    public virtual object ConvertJsonToDictionary(string json, Type typeToConvert)
+    public virtual object? ConvertJsonToDictionary(string json, Type typeToConvert)
     {
         if (!typeToConvert.IsDictionaryType())
         {
-            return null;
+            return default;
         }
 
         var keyType = typeToConvert.GetGenericArguments()[0];
@@ -18,34 +18,37 @@ public partial class DataTransferOptions
         return Convert(json, keyType, valueType);
     }
 
-    private object Convert(string json, Type keyType, Type valueType)
+    private object? Convert(string json, Type keyType, Type valueType)
     {
         Type[] templateTypes = new Type[] { keyType, valueType };
         Type dictionaryType = typeof(Dictionary<,>).MakeGenericType(templateTypes);
         var valueDic = Activator.CreateInstance(dictionaryType);
 
-        var jsonDocumentOptions = new JsonDocumentOptions();
-        jsonDocumentOptions.CommentHandling = Options.ReadCommentHandling;
-        jsonDocumentOptions.AllowTrailingCommas = Options.AllowTrailingCommas;
-        jsonDocumentOptions.MaxDepth = Options.MaxDepth;
-
-        var dicProp = valueDic.GetType().GetProperty("Item");
-
-        using (JsonDocument jsonDocument = JsonDocument.Parse(json, jsonDocumentOptions))
+        if (valueDic is not null)
         {
+            var jsonDocumentOptions = new JsonDocumentOptions
+            {
+                CommentHandling = Options.ReadCommentHandling,
+                AllowTrailingCommas = Options.AllowTrailingCommas,
+                MaxDepth = Options.MaxDepth
+            };
+
+            var dicProp = valueDic.GetType().GetProperty("Item");
+
+            using JsonDocument jsonDocument = JsonDocument.Parse(json, jsonDocumentOptions);
             foreach (JsonProperty element in jsonDocument.RootElement.EnumerateObject())
             {
                 var key = ExtractKey(element.Name, keyType);
                 var value = ExtractValue(element.Value, valueType);
 
-                dicProp.SetValue(valueDic, value, new[] { key });
+                dicProp?.SetValue(valueDic, value, new[] { key });
             }
         }
 
         return valueDic;
     }
 
-    private object ExtractKey(string keyString, Type keyType)
+    private object? ExtractKey(string keyString, Type keyType)
     {
         if (string.IsNullOrWhiteSpace(keyString))
         {
@@ -76,10 +79,10 @@ public partial class DataTransferOptions
             }
         }
 
-        return null;
+        return default;
     }
 
-    private object ExtractValue(JsonElement value, Type type)
+    private object? ExtractValue(JsonElement value, Type type)
     {
         try
         {
@@ -95,7 +98,15 @@ public partial class DataTransferOptions
                     return value.GetBoolean();
 
                 case TypeCode.Char:
-                    return value.GetString()[0];
+                    {
+                        var tempData = value.GetString();
+                        if (tempData is not null)
+                        {
+                            return tempData[0];
+                        }
+
+                        return char.MinValue;
+                    }
 
                 case TypeCode.SByte:
                     return value.GetSByte();

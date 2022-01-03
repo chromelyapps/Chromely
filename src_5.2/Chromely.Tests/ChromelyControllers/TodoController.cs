@@ -120,7 +120,7 @@ public class TodoController : ChromelyController
     {
         using var context = _contextFactory.CreateDbContext();
         var todoItem = await context.TodoItems.FindAsync(id);
-        if (todoItem == null)
+        if (todoItem is null)
         {
             return 0;
         }

@@ -20,21 +20,23 @@ public class OwinPipeline : IOwinPipeline
         Routes = new List<OwinRoute>();
     }
 
-    public AppFunc AppFunc { get; set; }
+#pragma warning disable CS8766 // Nullability of reference types in return type doesn't match implicitly implemented member (possibly because of nullability attributes).
+    public AppFunc? AppFunc { get; set; }
+#pragma warning restore CS8766 // Nullability of reference types in return type doesn't match implicitly implemented member (possibly because of nullability attributes).
     public string? ErrorHandlingPath { get; set; }
     public List<OwinRoute> Routes { get; set; }
 }
 
 public class OwinRoute
 {
-    public OwinRoute(string displayName, string routePath, string relativePath = null)
+    public OwinRoute(string? displayName, string routePath, string? relativePath = null)
     {
         DisplayName = displayName;
         RoutePath = routePath;
         RelativePath = relativePath;
     }
 
-    public string DisplayName { get; set; }
+    public string? DisplayName { get; set; }
     public string RoutePath { get; set; }
-    public string RelativePath { get; set; }
+    public string? RelativePath { get; set; }
 }

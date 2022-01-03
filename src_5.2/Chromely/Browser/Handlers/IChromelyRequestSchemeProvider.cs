@@ -9,7 +9,7 @@ namespace Chromely.Browser
     public interface IChromelyRequestSchemeProvider
     {
         void Add(UrlScheme scheme);
-        UrlScheme GetScheme(string url);
+        UrlScheme? GetScheme(string url);
         List<UrlScheme> GetAllSchemes();
         bool IsSchemeRegistered(string url);
     }

@@ -26,7 +26,7 @@ namespace Chromely.Browser
             }
         }
 
-        public UrlScheme GetScheme(string url)
+        public UrlScheme? GetScheme(string url)
         {
             string key = Key(url);
             if (_schemeMap.ContainsKey(key))
@@ -34,12 +34,13 @@ namespace Chromely.Browser
                 return _schemeMap[key];
             }
 
-            return null;
+            return default;
         }
 
         public List<UrlScheme> GetAllSchemes()
         {
-            return _schemeMap?.Values?.ToList();
+            var list = _schemeMap?.Values?.ToList();
+            return list ?? new List<UrlScheme>();
         }
 
         public bool IsSchemeRegistered(string url)
@@ -53,15 +54,15 @@ namespace Chromely.Browser
             return false;
         }
       
-        private string Key(UrlScheme scheme)
+        private static string Key(UrlScheme scheme)
         {
-            if (scheme == null)
+            if (scheme is null)
                 return string.Empty;
 
             return Key(scheme.Scheme, scheme.Host);
         }
 
-        private string Key(string url)
+        private static string Key(string url)
         {
             if (string.IsNullOrWhiteSpace(url))
                 return string.Empty;
@@ -70,7 +71,7 @@ namespace Chromely.Browser
             return Key(uri.Scheme, uri.Host);
         }
 
-        private string Key(string scheme, string host)
+        private static string Key(string scheme, string host)
         {
             return $"{scheme}::{host}";
         }

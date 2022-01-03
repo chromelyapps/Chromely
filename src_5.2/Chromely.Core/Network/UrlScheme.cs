@@ -29,7 +29,7 @@ namespace Chromely.Core.Network
             }
         }
 
-        public UrlScheme(string name, string scheme, string host, string folder, string baseUrl, UrlSchemeType type, bool baseUrlStrict = false, AssemblyOptions assemblyOptions = null)
+        public UrlScheme(string name, string scheme, string host, string folder, string baseUrl, UrlSchemeType type, bool baseUrlStrict = false, AssemblyOptions? assemblyOptions = null)
         {
             Name = name;
             Scheme = scheme;
@@ -48,7 +48,7 @@ namespace Chromely.Core.Network
             }
         }
 
-        public UrlScheme(string name, string scheme, string host, string baseUrl, UrlSchemeType type, bool baseUrlStrict = false, AssemblyOptions assemblyOptions = null)
+        public UrlScheme(string name, string scheme, string host, string baseUrl, UrlSchemeType type, bool baseUrlStrict = false, AssemblyOptions? assemblyOptions = null)
         {
             Name = name;
             Scheme = scheme;
@@ -67,7 +67,7 @@ namespace Chromely.Core.Network
             }
         }
 
-        public UrlScheme(string scheme, string host, string baseUrl, UrlSchemeType type, bool baseUrlStrict = false, AssemblyOptions assemblyOptions = null)
+        public UrlScheme(string scheme, string host, string baseUrl, UrlSchemeType type, bool baseUrlStrict = false, AssemblyOptions? assemblyOptions = null)
         {
             Name = Guid.NewGuid().ToString();
             Scheme = scheme;
@@ -87,12 +87,12 @@ namespace Chromely.Core.Network
         }
 
         public string Name { get; set; }
-        public string BaseUrl { get; set; }
+        public string? BaseUrl { get; set; }
         public string Scheme { get; set; }
         public string Host { get; set; }
-        public string Folder { get; set; }
+        public string? Folder { get; set; }
         public UrlSchemeType UrlSchemeType { get; set; }
-        public AssemblyOptions AssemblyOptions { get; set; }
+        public AssemblyOptions? AssemblyOptions { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether url must be relative to base.
@@ -117,18 +117,11 @@ namespace Chromely.Core.Network
                 return false;
             }
 
-            switch (scheme.ToLower())
+            return scheme.ToLower() switch
             {
-                case "http":
-                case "https":
-                case "file":
-                case "ftp":
-                case "about":
-                case "data":
-                    return true;
-            }
-
-            return false;
+                "http" or "https" or "file" or "ftp" or "about" or "data" => true,
+                _ => false,
+            };
         }
 
         public bool IsUrlOfSameScheme(string url)

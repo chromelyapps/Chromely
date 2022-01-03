@@ -21,9 +21,9 @@ namespace Chromely.Browser
         protected readonly IChromelyConfiguration _config;
         protected IChromelyResource _chromelyResource;
         protected readonly IChromelyErrorHandler _chromelyErrorHandler;
-        protected Regex _regex = new Regex("[/]");
+        protected Regex _regex = new("[/]");
 
-        protected FileInfo _fileInfo;
+        protected FileInfo? _fileInfo;
         protected bool _completed;
         protected int _totalBytesRead;
 
@@ -36,7 +36,7 @@ namespace Chromely.Browser
             _fileInfo = null;
         }
 
-        [Obsolete]
+        [Obsolete("ProcessRequest is obsolete.")]
         protected override bool ProcessRequest(CefRequest request, CefCallback callback)
         {
             var u = new Uri(request.Url);
@@ -70,7 +70,7 @@ namespace Chromely.Browser
             // unknown content-length
             // no-redirect
             responseLength = -1;
-            redirectUrl = null;
+            redirectUrl = string.Empty;
 
             try
             {
@@ -91,7 +91,7 @@ namespace Chromely.Browser
             }
         }
 
-        [Obsolete]
+        [Obsolete("ReadResponse is obsolete.")]
         protected override bool ReadResponse(Stream response, int bytesToRead, out int bytesRead, CefCallback callback)
         {
             int currBytesRead = 0;
@@ -107,7 +107,7 @@ namespace Chromely.Browser
                 }
                 else
                 {
-                    if (_chromelyResource.Content != null)
+                    if (_chromelyResource.Content is not null)
                     {
                         var fileBytes = _chromelyResource.Content.ToArray();
                         currBytesRead = Math.Min(fileBytes.Length - _totalBytesRead, bytesToRead);
@@ -209,17 +209,17 @@ namespace Chromely.Browser
         private bool ProcessAssmblyEmbeddedFile(string url, string file, string fileAbsolutePath, CefCallback callback)
         {
             var urlScheme = _config?.UrlSchemes?.GetScheme(url, UrlSchemeType.AssemblyResource);
-            var option = urlScheme.AssemblyOptions;
-            if (option == null || option.TargetAssembly == null)
+            AssemblyOptions? option = urlScheme?.AssemblyOptions;
+            if (option is null || option.TargetAssembly is null)
             {
                 return false;
             }
 
             var manifestName = string.Join(".", option.DefaultNamespace, option.RootFolder, _regex.Replace(fileAbsolutePath, ".")).Replace("..", ".").Replace("..", ".");
-            var stream = option.TargetAssembly.GetManifestResourceStream(manifestName);
+            Stream? stream = option.TargetAssembly.GetManifestResourceStream(manifestName);
 
             // Check if file exists 
-            if (stream == null)
+            if (stream is null)
             {
                 _chromelyResource = _chromelyErrorHandler.HandleError(stream);
                 callback.Continue();

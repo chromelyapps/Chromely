@@ -1,8 +1,6 @@
 ﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
-using System;
-using System.Linq;
 using Chromely.Core;
 using Xilium.CefGlue;
 using Xilium.CefGlue.Wrapper;
@@ -28,12 +26,12 @@ namespace Chromely
 
             // Register message router handlers
             var messageRouterHandlers = _handlersResolver?.Invoke(typeof(IChromelyMessageRouter))?.ToList();
-            if (messageRouterHandlers != null && messageRouterHandlers.Any())
+            if (messageRouterHandlers is not null && messageRouterHandlers.Any())
             {
                 foreach (var handler in messageRouterHandlers)
                 {
                     var router = handler as CefMessageRouterBrowserSide.Handler;
-                    if (router != null)
+                    if (router is not null)
                     {
                         _browserMessageRouter.AddHandler(router);
                     }
@@ -43,17 +41,20 @@ namespace Chromely
 
         internal void OnBrowserCreated(object sender, EventArgs e)
         {
-            _browserWindowHandle = Browser.GetHost().GetWindowHandle();
-            if (_browserWindowHandle != IntPtr.Zero)
+            if (Browser is not null)
             {
-                var size = NativeHost.GetWindowClientSize();
-                ResizeBrowser(size.Width, size.Height);
+                _browserWindowHandle = Browser.GetHost().GetWindowHandle();
+                if (_browserWindowHandle != IntPtr.Zero)
+                {
+                    var size = NativeHost.GetWindowClientSize();
+                    ResizeBrowser(size.Width, size.Height);
+                }
             }
         }
 
         internal void ResizeBrowser()
         {
-            if (Browser != null)
+            if (Browser is not null)
             {
                 _browserWindowHandle = Browser.GetHost().GetWindowHandle();
                 if (_browserWindowHandle != IntPtr.Zero)

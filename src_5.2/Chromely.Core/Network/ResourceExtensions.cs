@@ -12,7 +12,7 @@ namespace Chromely.Core.Network
         {
             if (string.IsNullOrWhiteSpace(statusText))
             {
-                return null;
+                return new MemoryStream();
             }
 
             var preamble = Encoding.UTF8.GetPreamble();

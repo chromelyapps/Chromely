@@ -38,6 +38,9 @@ namespace Chromely.Browser
             _requestHandler = requestHandler;
             _dataTransferOptions = dataTransferOptions;
             _chromelyErrorHandler = chromelyErrorHandler;
+            _chromelyResponse = new ChromelyResponse();
+            _mimeType = ResourceHandler.DefaultMimeType;
+            _stream = Stream.Null;
         }
 
         /// <summary>
@@ -55,9 +58,9 @@ namespace Chromely.Browser
         public override CefReturnValue ProcessRequestAsync(CefRequest request, CefCallback callback)
         {
             var scheme = _requestSchemeProvider?.GetScheme(request.Url);
-            if (scheme != null && scheme.UrlSchemeType == UrlSchemeType.LocalRequest)
+            if (scheme is not null && scheme.UrlSchemeType == UrlSchemeType.LocalRequest)
             {
-                _stream = null;
+                _stream = Stream.Null;
                 var uri = new Uri(request.Url);
                 var path = uri.LocalPath;
                 _mimeType = "application/json";
@@ -97,20 +100,24 @@ namespace Chromely.Browser
 
                                 var jsonRequest = _dataTransferOptions.ConvertObjectToJson(request);
                                 _chromelyResponse = _requestHandler.Execute(request.Identifier.ToString(), path, parameters, postData, jsonRequest);
-                                string jsonData = _dataTransferOptions.ConvertResponseToJson(_chromelyResponse.Data);
-                                var content = Encoding.UTF8.GetBytes(jsonData);
-                                _stream = new MemoryStream();
-                                _stream.Write(content, 0, content.Length);
+                                string? jsonData = _dataTransferOptions.ConvertResponseToJson(_chromelyResponse.Data);
+
+                                if (jsonData is not null)
+                                {
+                                    var content = Encoding.UTF8.GetBytes(jsonData);
+                                    _stream = new MemoryStream();
+                                    _stream.Write(content, 0, content.Length);
+                                }
                             }
                         }
                         catch (Exception exception)
                         {
-                            _stream = null;
+                            _stream = Stream.Null;
                             var chromelyRequest = new ChromelyRequest() { Id = request.Identifier.ToString(), RouteUrl = request.Url };
                             _chromelyResponse = _chromelyErrorHandler.HandleError(chromelyRequest, exception);
                         }
 
-                        if (_stream == null)
+                        if (_stream is null)
                         {
                             callback.Cancel();
                         }
@@ -147,20 +154,24 @@ namespace Chromely.Browser
 
                                 var jsonRequest = _dataTransferOptions.ConvertObjectToJson(request);
                                 _chromelyResponse = await _requestHandler.ExecuteAsync(request.Identifier.ToString(), path, parameters, postData, jsonRequest);
-                                string jsonData = _dataTransferOptions.ConvertResponseToJson(_chromelyResponse.Data);
-                                var content = Encoding.UTF8.GetBytes(jsonData);
-                                _stream = new MemoryStream();
-                                _stream.Write(content, 0, content.Length);
+                                string? jsonData = _dataTransferOptions.ConvertResponseToJson(_chromelyResponse.Data);
+
+                                if (jsonData is not null)
+                                {
+                                    var content = Encoding.UTF8.GetBytes(jsonData);
+                                    _stream = new MemoryStream();
+                                    _stream.Write(content, 0, content.Length);
+                                }
                             }
                         }
                         catch (Exception exception)
                         {
-                            _stream = null;
+                            _stream = Stream.Null;
                             var chromelyRequest = new ChromelyRequest() { Id = request.Identifier.ToString(), RouteUrl = request.Url };
                             _chromelyResponse = _chromelyErrorHandler.HandleError(chromelyRequest, exception);
                         }
 
-                        if (_stream == null)
+                        if (_stream is null)
                         {
                             callback.Cancel();
                         }
@@ -188,7 +199,7 @@ namespace Chromely.Browser
             Stream = _stream;
             MimeType = _mimeType;
 
-            if (Headers != null)
+            if (Headers is not null)
             {
                 Headers.Add("Cache-Control", "private");
                 Headers.Add("Access-Control-Allow-Methods", "GET,POST");
@@ -200,7 +211,7 @@ namespace Chromely.Browser
         private static string GetPostData(CefRequest request)
         {
             var postDataElements = request?.PostData?.GetElements();
-            if (postDataElements == null || (postDataElements.Length == 0))
+            if (postDataElements is null || (postDataElements.Length == 0))
             {
                 return string.Empty;
             }

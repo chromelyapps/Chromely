@@ -3,12 +3,13 @@
   <PropertyGroup>
 	<TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
 	<ImplicitUsings>enable</ImplicitUsings>
+	<Nullable>enable</Nullable>
     <Platforms>AnyCPU</Platforms>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>bin\Debug\$(TargetFramework)\Chromely.xml</DocumentationFile>
-    <NoWarn>1701;1702; NU5125;7035</NoWarn>
+    <NoWarn>1701;1702; NU5125;7035;CS8600;CS8601;CS8602;CS8603;CS8604;CS8618;CS8622;CS8625;IDE0079</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -18,7 +19,7 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DocumentationFile>bin\Release\$(TargetFramework)\Chromely.xml</DocumentationFile>
-    <NoWarn>1701;1702; NU5125;7035</NoWarn>
+    <NoWarn>1701;1702; NU5125;7035;CS8600;CS8601;CS8602;CS8603;CS8604;CS8618;CS8622;CS8625;IDE0079</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -28,12 +29,12 @@
 
   <PropertyGroup Condition=" '$(Configuration)' == 'ReleaseLinux' ">
     <Optimize>true</Optimize>
-    <NoWarn>1701;1702; NU5125;7035</NoWarn>
+    <NoWarn>1701;1702; NU5125;7035;CS8600;CS8601;CS8602;CS8603;CS8604;CS8618;CS8622;CS8625;IDE0079</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'DebugLinux' ">
     <Optimize>true</Optimize>
-    <NoWarn>1701;1702; NU5125;7035</NoWarn>
+    <NoWarn>1701;1702; NU5125;7035;CS8600;CS8601;CS8602;CS8603;CS8604;CS8618;CS8622;CS8625;IDE0079</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

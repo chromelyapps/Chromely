@@ -17,6 +17,8 @@ namespace Chromely.Core.Network
         {
             RequestId = Guid.NewGuid().ToString();
             Error = string.Empty;
+            Status = ResponseConstants.StatusOK;
+            StatusText = ResponseConstants.StatusOKText;
         }
 
         /// <summary>
@@ -26,9 +28,9 @@ namespace Chromely.Core.Network
         /// The request id.
         /// </param>
         public ChromelyResponse(string requestId)
+            : this()
         {
             RequestId = requestId;
-            Error = string.Empty;
         }
 
         /// <summary>
@@ -54,7 +56,7 @@ namespace Chromely.Core.Network
         /// <summary>
         /// Gets or sets the data.
         /// </summary>
-        public object Data { get; set; }
+        public object? Data { get; set; }
 
         public bool HasRouteResponse { get; set; }
 

@@ -1,8 +1,6 @@
 ﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
-using System.Collections.Generic;
-using System.Linq;
 using Chromely.Core;
 using Chromely.Core.Logging;
 using Microsoft.Extensions.Logging;
@@ -15,7 +13,7 @@ namespace Chromely.Browser
         /// <summary>
         /// The browser.
         /// </summary>
-        private readonly CefBrowser _browser;
+        private readonly CefBrowser? _browser;
 
         /// <summary>
         /// Gets the browser.
@@ -28,47 +26,62 @@ namespace Chromely.Browser
         public object ExecuteScript(string frameName, string script)
         {
             var frame = _browser?.GetFrame(frameName);
-            if (frame == null)
+            if (frame is null)
             {
-                Logger.Instance.Log.LogWarning($"Frame {frameName} does not exist.");
-                return null;
+                Logger.Instance.Log.LogWarning("Frame {frameName} does not exist.", frameName);
+                return string.Empty;
             }
 
-            frame.ExecuteJavaScript(script, null, 0);
+            frame.ExecuteJavaScript(script, string.Empty, 0);
 
-            return null;
+            return string.Empty;
         }
 
         public object ExecuteScript(string script)
         {
             var frame = _browser?.GetMainFrame();
-            if (frame == null)
+            if (frame is null)
             {
                 Logger.Instance.Log.LogWarning("Cannot accces main frame.");
-                return null;
+                return string.Empty;
             }
 
-            frame.ExecuteJavaScript(script, null, 0);
-            return null;
+            frame.ExecuteJavaScript(script, string.Empty, 0);
+
+            return string.Empty;
         }
 
-        public object GetBrowser()
+        public object? GetBrowser()
         {
             return _browser;
         }
 
-        public object GetMainFrame()
+        public object? GetMainFrame()
         {
             return _browser?.GetMainFrame();
         }
 
-        public object GetFrame(string name)
+        public object? GetFrame(string name)
         {
             return _browser?.GetFrame(name);
         }
 
-        public List<long> GetFrameIdentifiers => _browser?.GetFrameIdentifiers()?.ToList();
+        public List<long> GetFrameIdentifiers
+        {
+            get
+            {
+                var list = _browser?.GetFrameIdentifiers()?.ToList();
+                return list ?? new List<long>();
+            }
+        }
 
-        public List<string> GetFrameNames => _browser?.GetFrameNames()?.ToList();
+        public List<string> GetFrameNames
+        {
+            get
+            {
+                var list = _browser?.GetFrameNames()?.ToList();
+                return list ?? new List<string>();
+            }
+        }
     }
 }

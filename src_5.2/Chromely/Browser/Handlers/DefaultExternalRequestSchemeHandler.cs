@@ -1,15 +1,13 @@
 ﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
+#nullable disable
+#pragma warning disable CA2016
+
 using Chromely.Core.Logging;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Specialized;
-using System.IO;
 using System.Net;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
 using Xilium.CefGlue;
 
 namespace Chromely.Browser
@@ -40,25 +38,17 @@ namespace Chromely.Browser
         /// </summary>
         protected virtual HttpMethod GetHttpMethod(string methodName)
         {
-            switch (methodName.ToUpper())
+            return methodName.ToUpper() switch
             {
-                case "GET":
-                    return HttpMethod.Get;
-                case "PUT":
-                    return HttpMethod.Put;
-                case "POST":
-                    return HttpMethod.Post;
-                case "DELETE":
-                    return HttpMethod.Delete;
-                case "HEAD":
-                    return HttpMethod.Head;
-                case "OPTIONS":
-                    return HttpMethod.Options;
-                case "TRACE":
-                    return HttpMethod.Trace;
-            }
-
-            throw new ArgumentException($"Unknown http method: {methodName}");
+                "GET" => HttpMethod.Get,
+                "PUT" => HttpMethod.Put,
+                "POST" => HttpMethod.Post,
+                "DELETE" => HttpMethod.Delete,
+                "HEAD" => HttpMethod.Head,
+                "OPTIONS" => HttpMethod.Options,
+                "TRACE" => HttpMethod.Trace,
+                _ => throw new ArgumentException($"Unknown http method: {methodName}"),
+            };
         }
 
         /// <summary>
@@ -72,7 +62,7 @@ namespace Chromely.Browser
             foreach (var key in cefHeaders.AllKeys)
                 httpRequest.Headers.TryAddWithoutValidation(key, cefHeaders.GetValues(key));
 
-            if (cefRequest.PostData != null && cefRequest.PostData.Count > 0)
+            if (cefRequest.PostData is not null && cefRequest.PostData.Count > 0)
                 httpRequest.Content = new StreamContent(new PostDataStream(cefRequest.PostData.GetElements()));
 
             return httpRequest;
@@ -89,7 +79,7 @@ namespace Chromely.Browser
         protected override async Task<bool> LoadResourceData(CancellationToken cancellationToken)
         {
             _httpResponseMessage = await _httpClient.SendAsync(_httpRequest, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
-            return _httpResponseMessage.Content != null;
+            return _httpResponseMessage.Content is not null;
         }
         /// <inheritdoc/>
         protected override Task<Stream> GetResourceDataStream(CancellationToken cancellationToken)
@@ -107,7 +97,7 @@ namespace Chromely.Browser
 
             try
             {
-                if (_httpResponseMessage == null)
+                if (_httpResponseMessage is null)
                 {
                     response.Error = CefErrorCode.Failed;
                     return;
@@ -150,7 +140,7 @@ namespace Chromely.Browser
                     headers.Add(header.Key, val);
             }
 
-            if (_httpResponseMessage.Content != null)
+            if (_httpResponseMessage.Content is not null)
             {
                 foreach (var header in _httpResponseMessage.Content.Headers)
                 {

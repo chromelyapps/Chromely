@@ -21,10 +21,10 @@ namespace Chromely.Core.Configuration
         {
             try
             {
-                if (config?.CustomSettings != null && config.CustomSettings.ContainsKey(key))
+                if (config is not null && config.CustomSettings is not null && config.CustomSettings.ContainsKey(key))
                 {
                     var value = config.CustomSettings[key];
-                    if (value == null)
+                    if (value is null)
                     {
                         return defaultValue;
                     }
@@ -64,10 +64,10 @@ namespace Chromely.Core.Configuration
         {
             try
             {
-                if (config?.CustomSettings != null && config.CustomSettings.ContainsKey(key))
+                if (config?.CustomSettings is not null && config.CustomSettings.ContainsKey(key))
                 {
                     var value = config.CustomSettings[key];
-                    if (value == null)
+                    if (value is null)
                     {
                         return defaultValue;
                     }
@@ -99,10 +99,10 @@ namespace Chromely.Core.Configuration
         {
             try
             {
-                if (config?.CustomSettings != null && config.CustomSettings.ContainsKey(key))
+                if (config is not null && config.CustomSettings is not null && config.CustomSettings.ContainsKey(key))
                 {
                     var value = config.CustomSettings[key];
-                    if (value == null)
+                    if (value is null)
                     {
                         return defaultValue;
                     }

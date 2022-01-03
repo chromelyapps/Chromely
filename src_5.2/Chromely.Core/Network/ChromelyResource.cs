@@ -17,7 +17,7 @@ namespace Chromely.Core.Network
             Headers = new Dictionary<string, string[]>();
         }
 
-        public MemoryStream Content { get; set; }
+        public MemoryStream? Content { get; set; }
         public string MimeType { get; set; }
         public HttpStatusCode StatusCode { get; set; }
         public string StatusText { get; set; }

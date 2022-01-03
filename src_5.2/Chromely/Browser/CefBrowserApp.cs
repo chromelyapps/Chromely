@@ -37,7 +37,7 @@ namespace Chromely.Browser
         {
             var schemes = _requestSchemeProvider?.GetAllSchemes();
             var schemeExes = new List<UrlSchemeEx>();
-            if (schemes != null && schemes.Any())
+            if (schemes is not null && schemes.Any())
             {
                 foreach (var item in schemes)
                 {
@@ -46,19 +46,19 @@ namespace Chromely.Browser
             }
 
             var schemeHandlerList = _handlersResolver?.Invoke(typeof(IChromelySchemeHandler));
-            if (schemeHandlerList != null && schemeHandlerList.Any())
+            if (schemeHandlerList is not null && schemeHandlerList.Any())
             {
                 foreach (var handler in schemeHandlerList)
                 {
                     if (handler is IChromelySchemeHandler schemeHandler)
                     {
-                        if (schemeHandler?.Scheme != null && schemeHandler.Scheme.ValidSchemeHost)
+                        if (schemeHandler?.Scheme is not null && schemeHandler.Scheme.ValidSchemeHost)
                         {
                             // add if not already added
                             var firstOrDefault = schemeExes.FirstOrDefault(x => x.ValidSchemeHost &&
                                                                           x.Scheme.ToLower().Equals(schemeHandler.Scheme.Scheme.ToLower()) &&
                                                                           x.Host.ToLower().Equals(schemeHandler.Scheme.Host.ToLower()));
-                            if (firstOrDefault == null)
+                            if (firstOrDefault is null)
                             {
                                 schemeExes.Add(new UrlSchemeEx(schemeHandler.Scheme, schemeHandler.IsCorsEnabled, schemeHandler.IsSecure));
                             }
@@ -101,19 +101,22 @@ namespace Chromely.Browser
         protected override void OnBeforeCommandLineProcessing(string processType, CefCommandLine commandLine)
         {
             // Get all custom command line argument switches
-            if (_config?.CommandLineArgs != null)
+            if (_config is not null)
             {
-                foreach (var commandArg in _config.CommandLineArgs)
+                if (_config.CommandLineArgs is not null)
                 {
-                    commandLine.AppendSwitch(commandArg.Key ?? string.Empty, commandArg.Value);
+                    foreach (var commandArg in _config.CommandLineArgs)
+                    {
+                        commandLine.AppendSwitch(commandArg.Key ?? string.Empty, commandArg.Value);
+                    }
                 }
-            }
 
-            if (_config?.CommandLineOptions != null)
-            {
-                foreach (var commmandOption in _config?.CommandLineOptions)
+                if (_config.CommandLineOptions is not null)
                 {
-                    commandLine.AppendSwitch(commmandOption ?? string.Empty);
+                    foreach (var commmandOption in _config.CommandLineOptions)
+                    {
+                        commandLine.AppendSwitch(commmandOption ?? string.Empty);
+                    }
                 }
             }
         }
@@ -170,7 +173,7 @@ namespace Chromely.Browser
 
         private class UrlSchemeEx 
         {
-            private UrlScheme _urlScheme;
+            private readonly UrlScheme _urlScheme;
 
             public UrlSchemeEx(UrlScheme urlScheme, bool isCorsEnabled = true, bool isSecure = false)
             {
@@ -183,7 +186,7 @@ namespace Chromely.Browser
             {
                 get
                 {
-                    if (_urlScheme == null)
+                    if (_urlScheme is null)
                         return string.Empty;
 
                     return _urlScheme.Scheme;
@@ -193,7 +196,7 @@ namespace Chromely.Browser
             {
                 get
                 {
-                    if (_urlScheme == null)
+                    if (_urlScheme is null)
                         return string.Empty;
 
                     return _urlScheme.Host;
@@ -204,7 +207,7 @@ namespace Chromely.Browser
             {
                 get
                 {
-                    if (_urlScheme == null)
+                    if (_urlScheme is null)
                         return false;
 
                     return _urlScheme.ValidSchemeHost;

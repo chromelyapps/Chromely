@@ -33,7 +33,7 @@ namespace Chromely.Core.Configuration
 
         Size MinimumSize { get; set; }
         Size MaximumSize { get; set; }
-        WindowCustomStyle CustomStyle { get; set; }
+        WindowCustomStyle? CustomStyle { get; set; }
         WindowPosition Position { get; set; }
         WindowSize Size { get; set; }
         WindowState WindowState { get; set; }

@@ -1,12 +1,9 @@
 ﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
-using System;
+#nullable disable
+
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Xilium.CefGlue;
 
 namespace Chromely.Browser
@@ -20,7 +17,7 @@ namespace Chromely.Browser
 
         protected int _currentElementIndex;
         protected int _currentElementPosition;
-        protected CefPostDataElement[] _postDataElements;
+        protected CefPostDataElement[] _postDataElements = Array.Empty<CefPostDataElement>();
         protected byte[] _currentElementBytes;
 
         protected int _position;     // read/write head.
@@ -53,12 +50,6 @@ namespace Chromely.Browser
         {
             if (!_isOpen)
                 throw new InvalidOperationException("Stream is closed");
-        }
-
-        private void EnsureWriteable()
-        {
-            if (!CanWrite)
-                throw new NotSupportedException("Cef stream is not writable");
         }
 
         /// <inheritdoc/>
@@ -129,7 +120,7 @@ namespace Chromely.Browser
         /// <inheritdoc/>
         public override int Read(byte[] buffer, int offset, int count)
         {
-            if (buffer == null)
+            if (buffer is null)
                 throw new ArgumentNullException(nameof(buffer));
             if (offset < 0)
                 throw new ArgumentOutOfRangeException(nameof(offset));
@@ -155,7 +146,7 @@ namespace Chromely.Browser
                 int bytesLeftInCurrentElement = (int)postElement.BytesCount - _currentElementPosition;
                 int bytesToCopyFromCurrentElement = Math.Min(bytesLeftInCurrentElement, totalBytesToCopy - bytesCopied);
 
-                if (_currentElementBytes == null)
+                if (_currentElementBytes is null)
                     _currentElementBytes = postElement.GetBytes();
 
                 if (bytesToCopyFromCurrentElement <= 8)

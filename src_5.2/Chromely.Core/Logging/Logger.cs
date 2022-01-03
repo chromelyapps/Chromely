@@ -7,12 +7,12 @@ namespace Chromely.Core.Logging
 {
     public abstract class Logger
     {
-        private static Logger instance;
+        private static Logger? instance;
         public static Logger Instance
         {
             get
             {
-                if (instance == null)
+                if (instance is null)
                 {
                     //Ambient Context can't return null, so we assign Local Default
                     instance = new DefaultLogger();
@@ -22,11 +22,12 @@ namespace Chromely.Core.Logging
             }
             set
             {
-                instance = (value == null) ? new DefaultLogger() : value;
+                instance = (value is null) ? new DefaultLogger() : value;
             }
         }
-
+#nullable disable
         public virtual ILogger Log { get; set; }
+#nullable restore
     }
 }
 

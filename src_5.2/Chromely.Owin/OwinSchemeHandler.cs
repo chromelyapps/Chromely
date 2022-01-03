@@ -35,15 +35,13 @@ public class OwinSchemeHandler : ResourceHandler
         var requestBody = Stream.Null;
         if (request.Method == "POST")
         {
-            using (var postData = request.PostData)
+            using var postData = request.PostData;
+            if (postData is not null)
             {
-                if (postData != null)
-                {
-                    var postDataElements = postData.GetElements();
-                    var firstPostDataElement = postDataElements.First();
-                    var bytes = firstPostDataElement.GetBytes();
-                    requestBody = new MemoryStream(bytes, 0, bytes.Length);
-                }
+                var postDataElements = postData.GetElements();
+                var firstPostDataElement = postDataElements.First();
+                var bytes = firstPostDataElement.GetBytes();
+                requestBody = new MemoryStream(bytes, 0, bytes.Length);
             }
         }
 
@@ -82,7 +80,7 @@ public class OwinSchemeHandler : ResourceHandler
             }
 
             //Populate the response properties
-            Stream = chromelyResource.Content;
+            Stream = chromelyResource.Content ?? Stream.Null;
             ResponseLength = (chromelyResource.Content ==  null ) ? 0 : chromelyResource.Content.Length;
             StatusCode = (int)chromelyResource.StatusCode;
             MimeType = chromelyResource.MimeType;

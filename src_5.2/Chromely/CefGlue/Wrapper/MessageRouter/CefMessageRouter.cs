@@ -1,4 +1,6 @@
-﻿namespace Xilium.CefGlue.Wrapper
+﻿#nullable disable
+
+namespace Xilium.CefGlue.Wrapper
 {
     using System;
     using System.Collections.Generic;

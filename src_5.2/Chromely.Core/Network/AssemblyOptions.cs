@@ -7,35 +7,35 @@ namespace Chromely.Core.Network
 {
     public class AssemblyOptions
     {
-        public Assembly TargetAssembly { get; set; }
-        public string DefaultNamespace { get; set; }
-        public string RootFolder { get; set; }
+        public Assembly? TargetAssembly { get; set; }
+        public string? DefaultNamespace { get; set; }
+        public string? RootFolder { get; set; }
 
-        public AssemblyOptions(string targetAssemblyName, string defaultNamespace = null, string rootFolder = null)
+        public AssemblyOptions(string targetAssemblyName, string? defaultNamespace = null, string? rootFolder = null)
         {
-            TargetAssembly = LoadAssembly(targetAssemblyName);
+            TargetAssembly = AssemblyOptions.LoadAssembly(targetAssemblyName);
             DefaultNamespace = defaultNamespace;
             RootFolder = rootFolder;
 
-            if (TargetAssembly != null && string.IsNullOrWhiteSpace(DefaultNamespace))
+            if (TargetAssembly is not null && string.IsNullOrWhiteSpace(DefaultNamespace))
             {
                 DefaultNamespace = TargetAssembly.GetName().Name;
             }
         }
 
-        public AssemblyOptions(Assembly target, string defaultNamespace = null, string rootFolder = null)
+        public AssemblyOptions(Assembly target, string? defaultNamespace = null, string? rootFolder = null)
         {
             TargetAssembly = target;
             DefaultNamespace = defaultNamespace;
             RootFolder = rootFolder;
 
-            if (TargetAssembly != null && string.IsNullOrWhiteSpace(DefaultNamespace))
+            if (TargetAssembly is not null && string.IsNullOrWhiteSpace(DefaultNamespace))
             {
                 DefaultNamespace = TargetAssembly.GetName().Name;
             }
         }
 
-        private Assembly LoadAssembly(string targetAssemblyName)
+        private static Assembly? LoadAssembly(string targetAssemblyName)
         {
             try
             {
@@ -43,7 +43,7 @@ namespace Chromely.Core.Network
             }
             catch {}
 
-            return null;
+            return default;
         }
     }
 }

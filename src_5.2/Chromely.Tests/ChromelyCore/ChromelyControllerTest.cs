@@ -60,8 +60,8 @@ public class ChromelyControllerTests
 
         var createRequest = new ChromelyRequest();
         createRequest.PostData = JsonSerializer.Serialize(postData);
-        var createResponse = route.Invoke(createRequest) as IChromelyResponse;
-        var createData = (int)createResponse.Data;
+        var createResponse = route?.Invoke(createRequest) as IChromelyResponse;
+        var createData = createResponse is not null && createResponse.Data is int ? (int)createResponse.Data : -1; 
 
         Assert.NotNull(createResponse);
         Assert.True(createData > 0);
@@ -78,8 +78,8 @@ public class ChromelyControllerTests
 
         var updateRequest = new ChromelyRequest();
         updateRequest.PostData = JsonSerializer.Serialize(postData);
-        var updateResponse = route.Invoke(updateRequest) as IChromelyResponse;
-        var updateData = (int)updateResponse.Data;
+        var updateResponse = route?.Invoke(updateRequest) as IChromelyResponse;
+        var updateData = updateResponse is not null && updateResponse.Data is int ? (int)updateResponse.Data : -1;
 
         Assert.NotNull(updateResponse);
         Assert.True(updateData > 0);
@@ -91,14 +91,18 @@ public class ChromelyControllerTests
         var getRequest = new ChromelyRequest();
         getRequest.RouteUrl = $"{TodoController.GetRoutePaths[TodoControllerRouteKeys.GetItem]}?id={todoItem.Id}";
         getRequest.Parameters = getRequest.RouteUrl.GetParameters();
-        var getResponse = route.Invoke(getRequest) as IChromelyResponse;
-        var getData = getResponse.Data as TodoItem;
+        var getResponse = route?.Invoke(getRequest) as IChromelyResponse;
+        TodoItem? getData = getResponse?.Data as TodoItem;
 
         Assert.NotNull(getResponse);
         Assert.NotNull(getData);
-        Assert.Equal(todoItem.Id, getData.Id);
-        Assert.Equal(todoItem.Name, getData.Name);
-        Assert.Equal(todoItem.IsComplete, getData.IsComplete);
+
+        if (getData is not null)
+        {
+            Assert.Equal(todoItem.Id, getData.Id);
+            Assert.Equal(todoItem.Name, getData.Name);
+            Assert.Equal(todoItem.IsComplete, getData.IsComplete);
+        }
 
         // Delete
         route = _routeProvider.GetRoute(TodoController.GetRoutePaths[TodoControllerRouteKeys.DeleteItem]);
@@ -107,8 +111,8 @@ public class ChromelyControllerTests
         var deleteRequest = new ChromelyRequest();
         deleteRequest.RouteUrl = $"{TodoController.GetRoutePaths[TodoControllerRouteKeys.DeleteItem]}?id={todoItem.Id}";
         deleteRequest.Parameters = getRequest.RouteUrl.GetParameters();
-        var deleteResponse = route.Invoke(deleteRequest) as IChromelyResponse;
-        var deleteData = (int)deleteResponse.Data;
+        var deleteResponse = route?.Invoke(deleteRequest) as IChromelyResponse;
+        var deleteData = deleteResponse is not null && deleteResponse.Data is int ? (int)deleteResponse.Data : -1;
 
         Assert.NotNull(deleteResponse);
         Assert.True(deleteData > 0);
@@ -120,8 +124,8 @@ public class ChromelyControllerTests
         getRequest = new ChromelyRequest();
         getRequest.RouteUrl = $"{TodoController.GetRoutePaths[TodoControllerRouteKeys.GetItem]}?id={todoItem.Id}";
         getRequest.Parameters = getRequest.RouteUrl.GetParameters();
-        getResponse = route.Invoke(getRequest) as IChromelyResponse;
-        getData = getResponse.Data as TodoItem;
+        getResponse = route?.Invoke(getRequest) as IChromelyResponse;
+        getData = getResponse?.Data as TodoItem;
 
         Assert.NotNull(getResponse);
         Assert.Null(getData);

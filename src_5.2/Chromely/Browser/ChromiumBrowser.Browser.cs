@@ -1,6 +1,8 @@
 ﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
+#nullable disable
+
 using Xilium.CefGlue;
 
 namespace Chromely.Browser
@@ -12,7 +14,7 @@ namespace Chromely.Browser
         /// </summary>
         public bool CanGoBack
         {
-            get { return Browser != null ? Browser.CanGoBack : false; }
+            get { return Browser is not null && Browser.CanGoBack; }
         }
 
         /// <summary>
@@ -28,7 +30,7 @@ namespace Chromely.Browser
         /// </summary>
         public bool CanGoForward
         {
-            get { return Browser != null ? Browser.CanGoForward : false; }
+            get { return Browser is not null && Browser.CanGoForward; }
         }
 
         /// <summary>
@@ -44,7 +46,7 @@ namespace Chromely.Browser
         /// </summary>
         public bool IsLoading
         {
-            get { return Browser != null ? Browser.IsLoading : false; }
+            get { return Browser is not null && Browser.IsLoading; }
         }
 
         /// <summary>
@@ -77,7 +79,7 @@ namespace Chromely.Browser
         /// </summary>
         public int Identifier
         {
-            get { return Browser != null ? Browser.Identifier : 0; }
+            get { return Browser is not null ? Browser.Identifier : 0; }
         }
 
         /// <summary>
@@ -85,7 +87,7 @@ namespace Chromely.Browser
         /// </summary>
         public bool IsPopup
         {
-            get { return Browser != null ? Browser.IsPopup : false; }
+            get { return Browser is not null && Browser.IsPopup; }
         }
 
         /// <summary>
@@ -93,7 +95,7 @@ namespace Chromely.Browser
         /// </summary>
         public bool HasDocument
         {
-            get { return Browser != null ? Browser.HasDocument : false; }
+            get { return Browser is not null && Browser.HasDocument; }
         }
 
         /// <summary>
@@ -133,7 +135,7 @@ namespace Chromely.Browser
         /// </summary>
         public int FrameCount
         {
-            get { return Browser != null ? Browser.FrameCount : 0; }
+            get { return Browser is not null ? Browser.FrameCount : 0; }
         }
 
         /// <summary>
@@ -141,7 +143,12 @@ namespace Chromely.Browser
         /// </summary>
         public long[] GetFrameIdentifiers()
         {
-            return Browser?.GetFrameIdentifiers();
+            if (Browser is not null)
+            {
+                return Browser.GetFrameIdentifiers();
+            }
+
+            return Array.Empty<long>();
         }
 
         /// <summary>
@@ -149,7 +156,12 @@ namespace Chromely.Browser
         /// </summary>
         public string[] GetFrameNames()
         {
-            return Browser?.GetFrameNames();
+            if (Browser is not null)
+            {
+                return Browser.GetFrameNames();
+            }
+
+            return Array.Empty<string>();
         }
     }
 }

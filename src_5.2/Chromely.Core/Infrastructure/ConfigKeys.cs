@@ -108,6 +108,7 @@ namespace Chromely.Core.Infrastructure
 
     public static class ResponseConstants
     {
+        public const int StatusOK = 200;
         public const string StatusOKText = "OK";
         public const int MinClientErrorStatusCode = 400;
         public const int MaxClientErrorStatusCode = 499;
@@ -119,5 +120,4 @@ namespace Chromely.Core.Infrastructure
         public const string Header_ContentType = "Content-Type";
         public const string Header_ContentTypeValue = "application/json";
     }
-
 }

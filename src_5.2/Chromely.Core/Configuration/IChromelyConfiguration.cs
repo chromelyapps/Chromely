@@ -9,18 +9,18 @@ namespace Chromely.Core.Configuration
 {
     public interface IChromelyConfiguration
     {
-        string AppName { get; set; }
+        string? AppName { get; set; }
         string StartUrl { get; set; }
         string AppExeLocation { get; set; }
-        string ChromelyVersion { get; set; }
+        string? ChromelyVersion { get; set; }
         ChromelyPlatform Platform { get; set; }
         bool DebuggingMode { get; set; }
-        string DevToolsUrl { get; set; }
-        Dictionary<string, string> CommandLineArgs { get; set; }
-        List<string> CommandLineOptions { get; set; }
-        Dictionary<string, string> CustomSettings { get; set; }
-        Dictionary<string, object> ExtensionData { get; set; }
-        IChromelyJavaScriptExecutor JavaScriptExecutor { get; set; }
+        string? DevToolsUrl { get; set; }
+        Dictionary<string, string>? CommandLineArgs { get; set; }
+        List<string>? CommandLineOptions { get; set; }
+        Dictionary<string, string>? CustomSettings { get; set; }
+        Dictionary<string, object>? ExtensionData { get; set; }
+        IChromelyJavaScriptExecutor? JavaScriptExecutor { get; set; }
         List<UrlScheme> UrlSchemes { get; set; }
         CefDownloadOptions CefDownloadOptions { get; set; }
         IWindowOptions WindowOptions { get; set; }

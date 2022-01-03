@@ -1,4 +1,9 @@
-﻿using System;
+﻿
+#nullable disable
+#pragma warning disable IDE0057
+#pragma warning disable IDE0016
+
+using System;
 using System.Text;
 
 namespace ICSharpCode.SharpZipLib.Tar
@@ -235,7 +240,7 @@ namespace ICSharpCode.SharpZipLib.Tar
         public const string GNU_TMAGIC = "ustar  ";
 
         const long timeConversionFactor = 10000000L;           // 1 tick == 100 nanoseconds
-        readonly static DateTime dateTime1970 = new DateTime(1970, 1, 1, 0, 0, 0, 0);
+        readonly static DateTime dateTime1970 = new(1970, 1, 1, 0, 0, 0, 0);
         #endregion
 
         #region Constructors
@@ -667,26 +672,24 @@ namespace ICSharpCode.SharpZipLib.Tar
         /// <returns>true if the objects are equal, false otherwise.</returns>
         public override bool Equals(object obj)
         {
-            var localHeader = obj as TarHeader;
-
             bool result;
-            if (localHeader != null)
+            if (obj as TarHeader != null)
             {
-                result = (name == localHeader.name)
-                    && (mode == localHeader.mode)
-                    && (UserId == localHeader.UserId)
-                    && (GroupId == localHeader.GroupId)
-                    && (Size == localHeader.Size)
-                    && (ModTime == localHeader.ModTime)
-                    && (Checksum == localHeader.Checksum)
-                    && (TypeFlag == localHeader.TypeFlag)
-                    && (LinkName == localHeader.LinkName)
-                    && (Magic == localHeader.Magic)
-                    && (Version == localHeader.Version)
-                    && (UserName == localHeader.UserName)
-                    && (GroupName == localHeader.GroupName)
-                    && (DevMajor == localHeader.DevMajor)
-                    && (DevMinor == localHeader.DevMinor);
+                result = (name == (obj as TarHeader).name)
+                    && (mode == (obj as TarHeader).mode)
+                    && (UserId == (obj as TarHeader).UserId)
+                    && (GroupId == (obj as TarHeader).GroupId)
+                    && (Size == (obj as TarHeader).Size)
+                    && (ModTime == (obj as TarHeader).ModTime)
+                    && (Checksum == (obj as TarHeader).Checksum)
+                    && (TypeFlag == (obj as TarHeader).TypeFlag)
+                    && (LinkName == (obj as TarHeader).LinkName)
+                    && (Magic == (obj as TarHeader).Magic)
+                    && (Version == (obj as TarHeader).Version)
+                    && (UserName == (obj as TarHeader).UserName)
+                    && (GroupName == (obj as TarHeader).GroupName)
+                    && (DevMajor == (obj as TarHeader).DevMajor)
+                    && (DevMinor == (obj as TarHeader).DevMinor);
             }
             else
             {
@@ -1046,7 +1049,7 @@ namespace ICSharpCode.SharpZipLib.Tar
                 for (int pos = length - 1; pos > 0; pos--)
                 {
                     buffer[offset + pos] = (byte)value;
-                    value = value >> 8;
+                    value >>= 8;
                 }
                 buffer[offset] = 0x80;
                 return offset + length;

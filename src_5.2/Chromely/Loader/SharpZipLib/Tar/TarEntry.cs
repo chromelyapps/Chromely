@@ -1,4 +1,9 @@
-﻿using System;
+﻿#nullable disable
+#pragma warning disable IDE0056
+#pragma warning disable IDE0057
+#pragma warning disable IDE0016
+
+using System;
 using System.IO;
 
 namespace ICSharpCode.SharpZipLib.Tar
@@ -76,10 +81,12 @@ namespace ICSharpCode.SharpZipLib.Tar
         /// <returns>Returns a clone of this entry.</returns>
         public object Clone()
         {
-            var entry = new TarEntry();
-            entry.file = file;
-            entry.header = (TarHeader)header.Clone();
-            entry.Name = Name;
+            var entry = new TarEntry
+            {
+                file = file,
+                header = (TarHeader)header.Clone(),
+                Name = Name
+            };
             return entry;
         }
         #endregion
@@ -120,11 +127,9 @@ namespace ICSharpCode.SharpZipLib.Tar
         /// </returns>
         public override bool Equals(object obj)
         {
-            var localEntry = obj as TarEntry;
-
-            if (localEntry != null)
+            if (obj as TarEntry != null)
             {
-                return Name.Equals(localEntry.Name);
+                return Name.Equals((obj as TarEntry).Name);
             }
             return false;
         }
@@ -417,7 +422,7 @@ namespace ICSharpCode.SharpZipLib.Tar
                 header.TypeFlag = TarHeader.LF_DIR;
                 if ((header.Name.Length == 0) || header.Name[header.Name.Length - 1] != '/')
                 {
-                    header.Name = header.Name + "/";
+                    header.Name += "/";
                 }
 
                 header.Size = 0;
@@ -445,7 +450,7 @@ namespace ICSharpCode.SharpZipLib.Tar
         {
             if ((file == null) || !Directory.Exists(file))
             {
-                return new TarEntry[0];
+                return Array.Empty<TarEntry>(); 
             }
 
             string[] list = Directory.GetFileSystemEntries(file);

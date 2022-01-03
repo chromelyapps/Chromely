@@ -21,17 +21,19 @@ namespace Chromely
                 return;
             }
 
-            if (_handlersResolver == null)
+            if (_handlersResolver is null)
                 return;
 
             // Register default resource/reguest handlers
-            IDictionary<UrlSchemeType, Type> urlTypesMapper = new Dictionary<UrlSchemeType, Type>();
-            urlTypesMapper.Add(UrlSchemeType.LocalResource, typeof(IDefaultResourceCustomHandler));
-            urlTypesMapper.Add(UrlSchemeType.FolderResource, typeof(IDefaultResourceCustomHandler));
-            urlTypesMapper.Add(UrlSchemeType.AssemblyResource, typeof(IDefaultAssemblyResourceCustomHandler));
-            urlTypesMapper.Add(UrlSchemeType.LocalRequest, typeof(IDefaultRequestCustomHandler));
-            urlTypesMapper.Add(UrlSchemeType.Owin, typeof(IDefaultOwinCustomHandler));
-            urlTypesMapper.Add(UrlSchemeType.ExternalRequest, typeof(IDefaultExernalRequestCustomHandler));
+            IDictionary<UrlSchemeType, Type> urlTypesMapper = new Dictionary<UrlSchemeType, Type>
+            {
+                { UrlSchemeType.LocalResource, typeof(IDefaultResourceCustomHandler) },
+                { UrlSchemeType.FolderResource, typeof(IDefaultResourceCustomHandler) },
+                { UrlSchemeType.AssemblyResource, typeof(IDefaultAssemblyResourceCustomHandler) },
+                { UrlSchemeType.LocalRequest, typeof(IDefaultRequestCustomHandler) },
+                { UrlSchemeType.Owin, typeof(IDefaultOwinCustomHandler) },
+                { UrlSchemeType.ExternalRequest, typeof(IDefaultExernalRequestCustomHandler) }
+            };
 
             foreach (var urlType in urlTypesMapper)
             {
@@ -40,7 +42,7 @@ namespace Chromely
                 if (handler is CefSchemeHandlerFactory schemeHandlerFactory)
                 {
                     var schemes = _config?.UrlSchemes.GetSchemesByType(urlType.Key);
-                    if (schemes != null && schemes.Any())
+                    if (schemes is not null && schemes.Any())
                     {
                         foreach (var item in schemes)
                         {
@@ -62,19 +64,21 @@ namespace Chromely
 
             // Register custom request handlers
             var schemeHandlerList = _handlersResolver?.Invoke(typeof(IChromelySchemeHandler));
-            if (schemeHandlerList != null && schemeHandlerList.Any())
+            if (schemeHandlerList is not null && schemeHandlerList.Any())
             {
                 foreach (var schemeHandlerObj in schemeHandlerList)
                 {
-                    var schemehandler = schemeHandlerObj as IChromelySchemeHandler;
-                    if (schemehandler == null ||
-                        schemehandler.Scheme == null ||
+                    if (schemeHandlerObj is not IChromelySchemeHandler schemehandler ||
+                        schemehandler.Scheme is null ||
                         !schemehandler.Scheme.ValidSchemeHost)
                         continue;
 
                     _requestSchemeProvider.Add(schemehandler.Scheme);
                     var schemeHandlerFactory = schemehandler.HandlerFactory as CefSchemeHandlerFactory;
-                    CefRuntime.RegisterSchemeHandlerFactory(schemehandler.Scheme.Scheme, schemehandler.Scheme.Host, schemeHandlerFactory);
+                    if (schemeHandlerFactory is not null)
+                    {
+                        CefRuntime.RegisterSchemeHandlerFactory(schemehandler.Scheme.Scheme, schemehandler.Scheme.Host, schemeHandlerFactory);
+                    }
                 }
             }
         }
@@ -82,7 +86,7 @@ namespace Chromely
         private void ResolveHandlers()
         {
             var schemes = _config?.UrlSchemes;
-            if (schemes != null && schemes.Any())
+            if (schemes is not null && schemes.Any())
             {
                 foreach (var item in schemes)
                 {
@@ -98,13 +102,12 @@ namespace Chromely
             }
 
             var schemeHandlerList = _handlersResolver?.Invoke(typeof(IChromelySchemeHandler));
-            if (schemeHandlerList != null && schemeHandlerList.Any())
+            if (schemeHandlerList is not null && schemeHandlerList.Any())
             {
                 foreach (var schemeHandlerObj in schemeHandlerList)
                 {
-                    var schemehandler = schemeHandlerObj as IChromelySchemeHandler;
-                    if (schemehandler == null ||
-                        schemehandler.Scheme == null ||
+                    if (schemeHandlerObj is not IChromelySchemeHandler schemehandler ||
+                        schemehandler.Scheme is null ||
                         !schemehandler.Scheme.ValidSchemeHost)
                         continue;
 

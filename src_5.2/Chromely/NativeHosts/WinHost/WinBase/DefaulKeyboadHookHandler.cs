@@ -7,7 +7,7 @@ namespace Chromely.NativeHost
 {
     internal class DefaulKeyboadHookHandler : IKeyboadHookHandler
     {
-        protected IChromelyNativeHost _nativeHost;
+        protected IChromelyNativeHost? _nativeHost;
         protected IWindowOptions _options;
 
         public DefaulKeyboadHookHandler(IChromelyConfiguration config)
@@ -22,8 +22,7 @@ namespace Chromely.NativeHost
 
         public bool HandleKey(IntPtr hWnd, object param)
         {
-            KeyboardParam keyboardParam = param as KeyboardParam;
-            if (keyboardParam == null)
+            if (param is not KeyboardParam keyboardParam)
             {
                 return false;
             }

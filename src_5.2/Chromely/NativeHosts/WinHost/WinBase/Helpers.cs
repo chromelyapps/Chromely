@@ -1,6 +1,9 @@
 ﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
+#pragma warning disable CA1822
+#pragma warning disable CA2211
+
 using Chromely.Core.Configuration;
 using Chromely.Core.Host;
 using Chromely.Core.Logging;
@@ -46,7 +49,7 @@ namespace Chromely.NativeHost
         {
             if (handle == IntPtr.Zero)
             {
-                throw new Exception($"Handle not valid in Method:{handle}");
+                throw new Exception($"Handle not valid in Method:{methodName}");
             }
         }
     }
@@ -60,7 +63,7 @@ namespace Chromely.NativeHost
         {
             RECT = new Rectangle(options.Position.X, options.Position.Y, options.Size.Width, options.Size.Height);
             WindowPlacement = new WINDOWPLACEMENT();
-            if (options.CustomStyle != null && 
+            if (options.CustomStyle is not null && 
                 options.CustomStyle.WindowStyles != 0 &&
                 options.CustomStyle.WindowExStyles != 0)
             {
@@ -107,10 +110,10 @@ namespace Chromely.NativeHost
         public static class HwndZOrder
         {
             public static IntPtr
-            NoTopMost = new IntPtr(-2),
-            TopMost = new IntPtr(-1),
-            Top = new IntPtr(0),
-            Bottom = new IntPtr(1);
+            NoTopMost = new(-2),
+            TopMost = new(-1),
+            Top = new(0),
+            Bottom = new(1);
         }
 
         public static void CenterWindowToScreen(IntPtr hwnd, bool useWorkArea = true)
@@ -119,7 +122,7 @@ namespace Chromely.NativeHost
             {
                 IntPtr handle = MonitorFromWindow(GetDesktopWindow(), MONITOR.DEFAULTTONEAREST);
 
-                MONITORINFOEXW monInfo = new MONITORINFOEXW(null);
+                MONITORINFOEXW monInfo = new(null);
                 monInfo.cbSize = (uint)Marshal.SizeOf(monInfo);
 
                 GetMonitorInfoW(handle, ref monInfo);
@@ -150,7 +153,7 @@ namespace Chromely.NativeHost
             {
                 IntPtr handle = MonitorFromWindow(GetDesktopWindow(), MONITOR.DEFAULTTOPRIMARY);
 
-                MONITORINFOEXW monInfo = new MONITORINFOEXW(null);
+                MONITORINFOEXW monInfo = new(null);
 
                 GetMonitorInfoW(handle, ref monInfo);
                 RECT rect = monInfo.rcMonitor;
@@ -171,7 +174,7 @@ namespace Chromely.NativeHost
             var size = new Size();
             if (hwnd != IntPtr.Zero)
             {
-                RECT rect = new RECT();
+                RECT rect = new();
                 GetWindowRect(hwnd, ref rect);
                 size.Width = rect.Width;
                 size.Height = rect.Height;

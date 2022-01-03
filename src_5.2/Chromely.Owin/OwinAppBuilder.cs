@@ -42,7 +42,7 @@ public sealed class OwinAppBuilder : AppBuilderBase
             throw new Exception("Invalid order: Step 1: UseApp must be completed before Step 2: Build.");
         }
 
-        if (_chromelyApp == null)
+        if (_chromelyApp is null)
         {
             throw new Exception($"Application {nameof(ChromelyApp)} cannot be null.");
         }
@@ -56,7 +56,7 @@ public sealed class OwinAppBuilder : AppBuilderBase
             BuildInternal();
         }
 
-        if (_serviceProvider == null)
+        if (_serviceProvider is null)
         {
             throw new Exception($"The service provider is not created.");
         }
@@ -78,7 +78,7 @@ public sealed class OwinAppBuilder : AppBuilderBase
             throw new Exception("Invalid order: Step 2: Build must be completed before Step 3: Run.");
         }
 
-        if (_serviceProvider == null)
+        if (_serviceProvider is null)
         {
             throw new Exception("ServiceProvider is not initialized.");
         }
@@ -90,7 +90,7 @@ public sealed class OwinAppBuilder : AppBuilderBase
             try
             {
 
-                if (_tcsAppFunc != null && _owinHost != null)
+                if (_tcsAppFunc is not null && _owinHost is not null)
                 {
                     Task.Run(async () => await _owinHost.RunAsync());
                     _owinPipeline = _serviceProvider.GetService<IOwinPipeline>() ?? new OwinPipeline();
@@ -103,14 +103,14 @@ public sealed class OwinAppBuilder : AppBuilderBase
             }
             catch (Exception exception)
             {
-                Logger.Instance.Log.LogError(exception, $"Error running application:{appName}.");
+                Logger.Instance.Log.LogError(exception, "Error running application:{appName}.", appName);
             }
             finally
             {
                 windowController?.Dispose();
                 (_serviceProvider as ServiceProvider)?.Dispose();
 
-                if (_owinHost != null)
+                if (_owinHost is not null)
                 {
                     Task.Run(async () => await _owinHost.StopAsync());
                 }
@@ -120,7 +120,7 @@ public sealed class OwinAppBuilder : AppBuilderBase
         catch (Exception exception)
         {
             var appName = Assembly.GetEntryAssembly()?.GetName().Name;
-            Logger.Instance.Log.LogError(exception, $"Error running application:{appName}.");
+            Logger.Instance.Log.LogError(exception, "Error running application:{appName}.", appName);
         }
     }
 
@@ -130,7 +130,7 @@ public sealed class OwinAppBuilder : AppBuilderBase
     {
         _owinAppStartup  = _chromelyApp as IOwinAppStartup;
 
-        if (_owinAppStartup == null)
+        if (_owinAppStartup is null)
         {
             throw new Exception($"Application {nameof(IOwinAppStartup)} cannot be null.");
         }
@@ -199,7 +199,7 @@ public sealed class OwinAppBuilder : AppBuilderBase
     {
         _tcsAppFunc = null;
 
-        if (_serviceCollection == null)
+        if (_serviceCollection is null)
         {
             _serviceCollection = new ServiceCollection();
         }

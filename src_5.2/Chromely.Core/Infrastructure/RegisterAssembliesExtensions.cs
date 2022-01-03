@@ -28,7 +28,7 @@ public static class RegisterAssembliesExtensions
         }
     }
 
-    public static IEnumerable<Type> GetLoadableTypes(this Assembly assembly)
+    public static IEnumerable<Type?> GetLoadableTypes(this Assembly assembly)
     {
         try
         {
@@ -36,7 +36,7 @@ public static class RegisterAssembliesExtensions
         }
         catch (ReflectionTypeLoadException e)
         {
-            return e.Types.Where(t => t != null);
+            return e.Types.Where(t => t is not null);
         }
     }
 }

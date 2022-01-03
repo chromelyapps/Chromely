@@ -1,6 +1,8 @@
 ﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
+#pragma warning disable IDE1006
+
 using System;
 using System.Collections.Generic;
 using System.Text.Json;
@@ -35,13 +37,13 @@ namespace Chromely.Browser
 
         public override bool OnQuery(CefBrowser browser, CefFrame frame, long queryId, string request, bool persistent, CefMessageRouterBrowserSide.Callback callback)
         {
-            request requestData = null;
+            request? requestData = null;
 
             try
             {
                 requestData = JsonSerializer.Deserialize<request>(request, _dataTransferOptions.SerializerOptions as JsonSerializerOptions);
 
-                if (requestData != null)
+                if (requestData is not null)
                 {
                     var id = requestData.id ?? string.Empty;
                     var path = requestData.url ?? string.Empty;
@@ -80,7 +82,13 @@ namespace Chromely.Browser
             }
             catch (Exception exception)
             {
-                var response = _chromelyErrorHandler.HandleError(requestData?.ToRequest(), exception);
+                var chromelyRequest = requestData?.ToRequest();
+                if (chromelyRequest is null)
+                {
+                    chromelyRequest = new ChromelyRequest();
+                }
+
+                var response = _chromelyErrorHandler.HandleError(chromelyRequest, exception);
                 var jsonResponse = _dataTransferOptions.ConvertObjectToJson(response);
                 callback.Failure(100, jsonResponse);
                 return false;
@@ -108,11 +116,18 @@ namespace Chromely.Browser
 
         private class request
         {
+            public request()
+            {
+                id = Guid.NewGuid().ToString();
+                method = "GET";
+                url = string.Empty;
+            }
+
             public string id { get; set; }
             public string method { get; set; }
             public string url { get; set; }
-            public IDictionary<string, object> parameters { get; set; }
-            public object postData { get; set; }
+            public IDictionary<string, object>? parameters { get; set; }
+            public object? postData { get; set; }
 
             public IChromelyRequest ToRequest()
             {

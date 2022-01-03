@@ -1,4 +1,6 @@
-﻿namespace ICSharpCode.SharpZipLib.Core
+﻿#nullable disable
+
+namespace ICSharpCode.SharpZipLib.Core
 {
     /// <summary>
     /// Scanning filters support filtering of names.

@@ -1,4 +1,6 @@
-﻿namespace Xilium.CefGlue
+﻿#pragma warning disable IDE1006
+
+namespace Xilium.CefGlue
 {
     using System;
     using System.Collections.Generic;

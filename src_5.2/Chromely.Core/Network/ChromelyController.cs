@@ -5,11 +5,11 @@ namespace Chromely.Core.Network;
 
 public abstract class ChromelyController
 {
-    private string _routePath;
-    private string _name;
-    private string _description;
+    private string? _routePath;
+    private string? _name;
+    private string? _description;
 
-    public string RoutePath
+    public string? RoutePath
     {
         get
         {
@@ -22,7 +22,7 @@ public abstract class ChromelyController
         }
     }
 
-    public string Name
+    public string? Name
     {
         get
         {
@@ -35,7 +35,7 @@ public abstract class ChromelyController
         }
     }
 
-    public string Description
+    public string? Description
     {
         get
         {
@@ -53,7 +53,7 @@ public abstract class ChromelyController
         try
         {
             var attribute = GetType().GetCustomAttribute<ChromelyControllerAttribute>(true);
-            if (attribute != null)
+            if (attribute is not null)
             {
                 _routePath = attribute.RoutePath;
                 _name = attribute.Name;

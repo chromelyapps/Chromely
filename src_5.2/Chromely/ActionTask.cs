@@ -32,14 +32,16 @@ namespace Chromely
         /// </summary>
         protected override void Execute()
         {
-            Action();
-            Action = null;
+            if (Action is not null)
+            {
+                Action();
+            }
         }
 
         /// <summary>
         /// Gets or sets the action.
         /// </summary>
-        private Action Action { get; set; }
+        private Action? Action { get; set; }
     }
 
 }

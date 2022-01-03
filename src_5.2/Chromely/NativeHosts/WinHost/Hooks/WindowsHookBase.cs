@@ -8,10 +8,10 @@ namespace Chromely.NativeHost
 {
 	public abstract class WindowsHookBase : IDisposable
 	{
-		public Func<HookEventArgs, bool> HookEventHandler;
+		public Func<HookEventArgs, bool>? HookEventHandler;
 	
 		protected IntPtr _hookID = IntPtr.Zero;
-		protected HOOKPROC _filterFunc = null;
+		protected HOOKPROC _filterFunc;
 		protected WH _hookType;
 
 		private bool _disposed = false;
@@ -40,12 +40,12 @@ namespace Chromely.NativeHost
 			{
 				// Let clients determine what to do
 				var handler = HookEventHandler;
-				HookEventArgs e = new HookEventArgs();
+				HookEventArgs e = new();
 				e.HookCode = code;
 				e.wParam = wParam;
 				e.lParam = lParam;
 
-				if (handler != null)
+				if (handler is not null)
 				{
 					bool handled = handler.Invoke(e);
 					if (handled)

@@ -9,7 +9,7 @@ namespace Chromely.Browser
     {
         protected override void OnBeforeDownload(CefBrowser browser, CefDownloadItem downloadItem, string suggestedName, CefBeforeDownloadCallback callback)
         {
-            if (callback != null)
+            if (callback is not null)
             {
                 using (callback)
                 {

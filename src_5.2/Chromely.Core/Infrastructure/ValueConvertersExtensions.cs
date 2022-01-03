@@ -74,7 +74,9 @@ namespace Chromely.Core.Infrastructure
                         return true;
                 }
 
+#pragma warning disable CS8601 // Possible null reference assignment.
                 result = value.ToString();
+#pragma warning restore CS8601 // Possible null reference assignment.
                 return true; 
             }
             catch (Exception exception)

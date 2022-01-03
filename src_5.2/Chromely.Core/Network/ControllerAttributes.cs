@@ -6,15 +6,20 @@ namespace Chromely.Core.Network;
 [AttributeUsage(AttributeTargets.Method)]
 public class ChromelyRouteAttribute : Attribute
 {
-    public string Name { get; set; }
-    public string Path { get; set; }
-    public string Description { get; set; }
+    public string? Name { get; set; }
+    public string? Path { get; set; }
+    public string? Description { get; set; }
 }
 
 [AttributeUsage(AttributeTargets.Class)]
 public class ChromelyControllerAttribute : Attribute
 {
-    public string Name { get; set; }
+    public ChromelyControllerAttribute()
+    {
+        RoutePath = string.Empty;
+    }
+
+    public string? Name { get; set; }
     public string RoutePath { get; set; }
-    public string Description { get; set; }
+    public string? Description { get; set; }
 }

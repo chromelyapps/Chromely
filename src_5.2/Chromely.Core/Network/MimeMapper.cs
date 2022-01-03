@@ -20,8 +20,6 @@ namespace Chromely.Core.Network
         /// <summary>
         /// Initializes static members of the <see cref="MimeMapper"/> class.
         /// </summary>
-        [SuppressMessage("StyleCop.CSharp.SpacingRules", "SA1013:ClosingCurlyBracketsMustBeSpacedCorrectly", Justification = "Reviewed. Suppression is OK here.")]
-        [SuppressMessage("StyleCop.CSharp.SpacingRules", "SA1012:OpeningCurlyBracketsMustBeSpacedCorrectly", Justification = "Reviewed. Suppression is OK here.")]
         static MimeMapper()
         {
             MimeDictionary = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase)
@@ -2293,9 +2291,9 @@ namespace Chromely.Core.Network
         /// </exception>
         public static string GetMimeType(string extension)
         {
-            if (extension == null)
+            if (extension is null)
             {
-                throw new ArgumentNullException("extension");
+                throw new ArgumentNullException(nameof(extension));
             }
 
             if (!extension.StartsWith("."))

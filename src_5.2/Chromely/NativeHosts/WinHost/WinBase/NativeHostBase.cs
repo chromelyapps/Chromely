@@ -1,15 +1,16 @@
 ﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
-using System;
+#nullable disable
+#pragma warning disable CA1401
+#pragma warning disable CA1806
+#pragma warning disable CA1822
+#pragma warning disable CA2211
+
 using System.Diagnostics;
 using System.Drawing;
-using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Threading;
-using System.Threading.Tasks;
 using Chromely.Core.Configuration;
 using Chromely.Core.Host;
 using Chromely.Core.Infrastructure;
@@ -36,7 +37,7 @@ namespace Chromely.NativeHost
         protected const string Chromely_WINDOW_CLASS = "ChromelyWindowClass";
         protected const uint IDI_APPLICATION = 32512;
         protected const int CW_USEDEFAULT = unchecked((int)0x80000000);
-        protected static RECT DefaultBounds => new RECT(CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT);
+        protected static RECT DefaultBounds => new(CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT);
         public static NativeHostBase NativeInstance;
         protected static bool WindowInterceptorInitialized = false;
         protected IWindowMessageInterceptor _messageInterceptor;
@@ -76,7 +77,7 @@ namespace Chromely.NativeHost
             _options.WindowState = (_options.Fullscreen || _options.KioskMode) ?  WindowState.Fullscreen : _options.WindowState;
             _windoStylePlacement = new WindowStylePlacement(_options);
 
-            User32.WNDCLASS wcex = new User32.WNDCLASS();
+            User32.WNDCLASS wcex = new();
             wcex.style = User32.CS.HREDRAW | User32.CS.VREDRAW;
             wcex.lpfnWndProc = Marshal.GetFunctionPointerForDelegate(_wndProc);
             wcex.cbClsExtra = 0;
@@ -193,16 +194,14 @@ namespace Chromely.NativeHost
             placement.length = (uint)Marshal.SizeOf(placement);
             GetWindowPlacement(_handle, out placement);
 
-            switch (placement.showCmd) {
-                case SW.Maximized:
-                    return WindowState.Maximize;
-                case SW.Minimized:
-                    return WindowState.Minimize;
-                case SW.Normal:
-                    return WindowState.Normal;
-            }
-            // If unknown
-            return WindowState.Normal;
+            return placement.showCmd switch
+            {
+                SW.Maximized => WindowState.Maximize,
+                SW.Minimized => WindowState.Minimize,
+                SW.Normal => WindowState.Normal,
+                // If unknown
+                _ => WindowState.Normal,
+            };
         }
 
 
@@ -253,12 +252,11 @@ namespace Chromely.NativeHost
                     DetachHooks();
                     ShowWindow(_handle, SW.HIDE);
 
-                    uint processId = 0;
-                    GetWindowThreadProcessId(_handle, out processId);
+                    GetWindowThreadProcessId(_handle, out uint processId);
                     if (processId != PROCESS_IDLE_ID)
                     {
                         var process = Process.GetProcessById((int)processId);
-                        if (process != null)
+                        if (process is not null)
                         {
                             process.Kill();
                         }
@@ -280,7 +278,7 @@ namespace Chromely.NativeHost
         #region Create Window Protected
         protected virtual Rectangle GetWindowBounds()
         {
-            var bounds = new System.Drawing.Rectangle(_options.Position.X, _options.Position.Y, _options.Size.Width, _options.Size.Height);
+            var bounds = new Rectangle(_options.Position.X, _options.Position.Y, _options.Size.Width, _options.Size.Height);
 
             switch (_options.WindowState)
             {
@@ -308,7 +306,7 @@ namespace Chromely.NativeHost
             var size = new Size();
             if (_handle != IntPtr.Zero)
             {
-                RECT rect = new RECT();
+                RECT rect = new();
                 GetClientRect(_handle, ref rect);
                 size.Width = rect.Width;
                 size.Height = rect.Height;
@@ -340,8 +338,7 @@ namespace Chromely.NativeHost
                 }
             }
 
-            WINDOWPLACEMENT wpPrev;
-            var placement = GetWindowPlacement(hWnd, out wpPrev);
+            var placement = GetWindowPlacement(hWnd, out WINDOWPLACEMENT wpPrev);
             if (placement == BOOL.TRUE)
             {
                 _windoStylePlacement.WindowPlacement = wpPrev;
@@ -363,20 +360,16 @@ namespace Chromely.NativeHost
             var hIcon = IconHandler.LoadIconFromFile(_options.RelativePathToIconFile);
             try
             {
-                if (hIcon == null)
+                if (hIcon is null)
                 {
                     var assembly = Assembly.GetEntryAssembly();
                     var iconAsResource = assembly?.GetManifestResourceNames()
                         .FirstOrDefault(res => res.EndsWith(_options.RelativePathToIconFile));
-                    if (iconAsResource != null)
+                    if (iconAsResource is not null)
                     {
-                        using (var resStream = assembly.GetManifestResourceStream(iconAsResource))
-                        {
-                            using(var fileStream = new FileStream(_options.RelativePathToIconFile, FileMode.Create))
-                            {
-                                resStream?.CopyTo(fileStream);
-                            }
-                        }
+                        using var resStream = assembly.GetManifestResourceStream(iconAsResource);
+                        using var fileStream = new FileStream(_options.RelativePathToIconFile, FileMode.Create);
+                        resStream?.CopyTo(fileStream);
                     }
                     hIcon = IconHandler.LoadIconFromFile(_options.RelativePathToIconFile);
                 }
@@ -390,8 +383,8 @@ namespace Chromely.NativeHost
 
         protected virtual WindowStylePlacement GetWindowStylePlacement(WindowState state)
         {
-            WindowStylePlacement windowStyle = new WindowStylePlacement(_options);
-            if (_options.UseCustomStyle && _options != null && _options.CustomStyle.IsValid())
+            WindowStylePlacement windowStyle = new(_options);
+            if (_options.UseCustomStyle && _options is not null && _options.CustomStyle.IsValid())
             {
                 return GetWindowStyles(_options.CustomStyle, state);
             }
@@ -422,7 +415,7 @@ namespace Chromely.NativeHost
                 styles &= ~(WS.CAPTION);
                 exStyles &= ~(WS_EX.DLGMODALFRAME | WS_EX.WINDOWEDGE | WS_EX.CLIENTEDGE | WS_EX.STATICEDGE);
                 state = WindowState.Fullscreen;
-                _options.DisableResizing = _options.KioskMode ? true : _options.DisableResizing;
+                _options.DisableResizing = _options.KioskMode || _options.DisableResizing;
             }
 
             windowStyle.Styles = styles;
@@ -453,7 +446,7 @@ namespace Chromely.NativeHost
 
         protected WindowStylePlacement GetWindowStyles(WindowCustomStyle customCreationStyle, WindowState state)
         {
-            WindowStylePlacement windowStyle = new WindowStylePlacement(_options);
+            WindowStylePlacement windowStyle = new(_options);
             var styles = (WS)customCreationStyle.WindowStyles;
             var exStyles = (WS_EX)customCreationStyle.WindowExStyles;
 
@@ -485,17 +478,12 @@ namespace Chromely.NativeHost
 
         private SW GetShowWindowCommand(WindowState state)
         {
-            switch (state)
+            return state switch
             {
-                case WindowState.Normal:
-                    return SW.SHOWNORMAL;
-
-                case WindowState.Maximize:
-                case WindowState.Fullscreen:
-                    return SW.SHOWMAXIMIZED;
-            }
-
-            return SW.SHOWNORMAL;
+                WindowState.Normal => SW.SHOWNORMAL,
+                WindowState.Maximize or WindowState.Fullscreen => SW.SHOWMAXIMIZED,
+                _ => SW.SHOWNORMAL,
+            };
         }
 
         #endregion Create Window Private
@@ -616,7 +604,7 @@ namespace Chromely.NativeHost
             {
                 IntPtr handle = MonitorFromWindow(GetDesktopWindow(), MONITOR.DEFAULTTONEAREST);
 
-                MONITORINFOEXW monInfo = new MONITORINFOEXW(null);
+                MONITORINFOEXW monInfo = new(null);
                 monInfo.cbSize = (uint)Marshal.SizeOf(monInfo);
 
                 var captionHeight = GetSystemMetrics(SystemMetric.SM_CYCAPTION);
@@ -642,7 +630,7 @@ namespace Chromely.NativeHost
 
         protected static void RunMessageLoopInternal()
         {
-            MSG msg = new MSG();
+            MSG msg = new();
             while (GetMessageW(ref msg, IntPtr.Zero, 0, 0) != 0)
             {
                 if (msg.message == WM.CLOSE)

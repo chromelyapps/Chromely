@@ -13,6 +13,9 @@ namespace Chromely.Core.Network
         /// </summary>
         public ChromelyRequest()
         {
+            Name = Guid.NewGuid().ToString();
+            Id = Guid.NewGuid().ToString();
+            RouteUrl = string.Empty;
         }
 
         /// <summary>
@@ -27,9 +30,9 @@ namespace Chromely.Core.Network
         /// <param name="postData">
         /// The post data.
         /// </param>
-        public ChromelyRequest(string routeUrl, IDictionary<string, object> parameters, object postData)
+        public ChromelyRequest(string routeUrl, IDictionary<string, object>? parameters, object? postData)
+            : this()
         {
-            Id = Guid.NewGuid().ToString();
             RouteUrl = routeUrl;
             Parameters = parameters;
             PostData = postData;
@@ -50,7 +53,8 @@ namespace Chromely.Core.Network
         /// <param name="postData">
         /// The post data.
         /// </param>
-        public ChromelyRequest(string id, string routeUrl, IDictionary<string, object> parameters, object postData)
+        public ChromelyRequest(string id, string routeUrl, IDictionary<string, object>? parameters, object? postData)
+            : this()
         {
             Id = id;
             RouteUrl = routeUrl;
@@ -76,7 +80,8 @@ namespace Chromely.Core.Network
         /// <param name="rawJson">
         /// The raw json.
         /// </param>
-        public ChromelyRequest(string id, string routeUrl, IDictionary<string, object> parameters, object postData, string rawJson)
+        public ChromelyRequest(string id, string routeUrl, IDictionary<string, object>? parameters, object? postData, string? rawJson)
+            : this()
         {
             Id = id;
             RouteUrl = routeUrl;
@@ -99,17 +104,17 @@ namespace Chromely.Core.Network
         /// <summary>
         /// Gets or sets the parameters.
         /// </summary>
-        public IDictionary<string, object> Parameters { get; set; }
+        public IDictionary<string, object>? Parameters { get; set; }
 
         /// <summary>
         /// Gets or sets the post data.
         /// </summary>
-        public object PostData { get; set; }
+        public object? PostData { get; set; }
 
         /// <summary>
         /// Gets or sets the raw json.
         /// Only used for CefGlue Generic Message Routing requests.
         /// </summary>
-        public string RawJson { get; set; }
+        public string? RawJson { get; set; }
     }
 }

@@ -1,4 +1,8 @@
-﻿using System;
+﻿#nullable disable
+#pragma warning disable IDE0060
+#pragma warning disable CA1822
+
+using System;
 using System.IO;
 using System.Text;
 
@@ -467,7 +471,7 @@ namespace ICSharpCode.SharpZipLib.Tar
                                 throw new InvalidHeaderException("Failed to read long name entry");
                             }
 
-                            longName.Append(TarHeader.ParseName(nameBuffer, 0, numRead).ToString());
+                            longName.Append(TarHeader.ParseName(nameBuffer, 0, numRead));
                             numToRead -= numRead;
                         }
 

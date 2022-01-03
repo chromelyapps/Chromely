@@ -1,7 +1,8 @@
 ﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
-using System;
+#nullable disable
+
 using Chromely.Core;
 using Chromely.Core.Configuration;
 using Chromely.Core.Host;
@@ -15,9 +16,9 @@ namespace Chromely.Browser
     /// </summary>
     public abstract partial class ChromiumBrowser 
     {
-        protected IChromelyConfiguration _config;
+        protected readonly IChromelyConfiguration _config;
+        protected readonly ChromelyHandlersResolver _handlersResolver;
         protected CefMessageRouterBrowserSide _browserMessageRouter;
-        protected ChromelyHandlersResolver _handlersResolver;
         protected IntPtr _browserWindowHandle;
 
         private CefBrowserSettings _settings;
@@ -28,6 +29,7 @@ namespace Chromely.Browser
         /// </summary>
         public ChromiumBrowser(IChromelyNativeHost nativeHost, IChromelyConfiguration config, ChromelyHandlersResolver handlersResolver)
         {
+            Browser = null;
             NativeHost = nativeHost;
             _config = config;
             _handlersResolver = handlersResolver;
@@ -148,7 +150,7 @@ namespace Chromely.Browser
                     return Browser?.GetHost();
                 }
 
-                return null;
+                return default;
             }
         }
 
@@ -163,11 +165,11 @@ namespace Chromely.Browser
 
         internal void CreateBrowser(IntPtr hostHandle, IntPtr winXID)
         {
-            if (_client == null)
+            if (_client is null)
             {
                 _client = CreateClient();
             }
-            if (_settings == null)
+            if (_settings is null)
             {
                 _settings = new CefBrowserSettings();
             }

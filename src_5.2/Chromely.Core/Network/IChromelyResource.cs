@@ -5,7 +5,7 @@ namespace Chromely.Core.Network;
 
 public interface IChromelyResource
 {
-    MemoryStream Content { get; set; }
+    MemoryStream? Content { get; set; }
     string MimeType { get; set; }
     HttpStatusCode StatusCode { get; set; }
     string StatusText { get; set; }

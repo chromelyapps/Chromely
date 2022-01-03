@@ -1,6 +1,8 @@
 ﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
+#nullable disable
+
 using Chromely.Core;
 using Xilium.CefGlue;
 using Xilium.CefGlue.Wrapper;
@@ -12,7 +14,7 @@ namespace Chromely.Browser
     /// </summary>
     public partial class CefBrowserClient : CefClient
     {
-        private CefMessageRouterBrowserSide _browserMessageRouter;
+        private readonly CefMessageRouterBrowserSide _browserMessageRouter;
 
         /// <summary>
         /// The life span handler.

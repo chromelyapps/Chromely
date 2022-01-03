@@ -2,7 +2,8 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System;
+#nullable disable
+
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using static Chromely.Interops;
@@ -47,24 +48,16 @@ namespace Chromely
 
             public static IntPtr SetHook(HOOKPROC proc)
             {
-                using (var curProcess = Process.GetCurrentProcess())
-                {
-                    using (var curModule = curProcess.MainModule)
-                    {
-                        return SetWindowsHookExW(WH.KEYBOARD_LL, proc, Kernel32.GetModuleHandleW(curModule.ModuleName), 0);
-                    }
-                }
+                using var curProcess = Process.GetCurrentProcess();
+                using var curModule = curProcess.MainModule;
+                return SetWindowsHookExW(WH.KEYBOARD_LL, proc, Kernel32.GetModuleHandleW(curModule.ModuleName), 0);
             }
 
             public static IntPtr SetHook(WH hookType, HOOKPROC proc)
             {
-                using (var curProcess = Process.GetCurrentProcess())
-                {
-                    using (var curModule = curProcess.MainModule)
-                    {
-                        return SetWindowsHookExW(hookType, proc, Kernel32.GetModuleHandleW(curModule.ModuleName), 0);
-                    }
-                }
+                using var curProcess = Process.GetCurrentProcess();
+                using var curModule = curProcess.MainModule;
+                return SetWindowsHookExW(hookType, proc, Kernel32.GetModuleHandleW(curModule.ModuleName), 0);
             }
 
             public static bool IsKeyPressed(uint testKey)
@@ -75,26 +68,14 @@ namespace Chromely
             public static bool IsKeyPressed(Keys testKey)
             {
                 short result = GetKeyState(testKey);
-
-                bool keyPressed;
-                switch (result)
-                {
-                    case 0:
-                        // Not pressed and not toggled on.
-                        keyPressed = false;
-                        break;
-
-                    case 1:
-                        // Not pressed, but toggled on
-                        keyPressed = false;
-                        break;
-
-                    default:
-                        // Pressed (and may be toggled on)
-                        keyPressed = true;
-                        break;
-                }
-
+                var
+                    // Not pressed and not toggled on.
+                    keyPressed = result switch
+                    {
+                        0 => false,// Not pressed and not toggled on.
+                        1 => false,// Not pressed, but toggled on
+                        _ => true,// Pressed (and may be toggled on)
+                    };
                 return keyPressed;
             }
         }

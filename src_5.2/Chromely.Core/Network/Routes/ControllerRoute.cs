@@ -20,9 +20,9 @@ public class ControllerRoute
         _dataTransfers = dataTransfers;
         IsAsync = isAsync;
         HasReturnValue = hasReturnValue;
-        _routeArguments = null;
-        _queryParameterArgs = null;
-        _propertyNameArgumentMap = null;
+        _routeArguments = new object[argumentInfos.Count];
+        _queryParameterArgs = new Dictionary<string, object>();
+        _propertyNameArgumentMap = new Dictionary<string, RouteArgument>();
     }
 
     public string Name { get; set; }
@@ -34,7 +34,7 @@ public class ControllerRoute
     #region Invokes
     public IChromelyResponse Invoke(IChromelyRequest request)
     {
-        if (Delegate == null)
+        if (Delegate is null)
         {
             return new ChromelyResponse()
             {
@@ -43,8 +43,8 @@ public class ControllerRoute
         }
 
         SetRouteArguments(request);
-        _routeArguments = _routeArguments ?? new object[] { };
-        object content = Invoke(_routeArguments.Length, _routeArguments);
+        _routeArguments ??= Array.Empty<object>();
+        object? content = Invoke(_routeArguments.Length, _routeArguments);
 
         return CreateResponse(content);
     }
@@ -65,24 +65,26 @@ public class ControllerRoute
 
     #region Helper Methods
 
-    private IChromelyResponse CreateResponse(object content)
+    private IChromelyResponse CreateResponse(object? content)
     {
-        IChromelyResponse chromelyResponse = content as IChromelyResponse;
-        if (chromelyResponse == null && HasReturnValue)
+        IChromelyResponse? chromelyResponse = content as IChromelyResponse;
+        if (chromelyResponse is null && HasReturnValue)
         {
             var task = content as Task;
-            if (task != null)
+            if (task is not null)
             {
                 switch (task.Status)
                 {
                     case TaskStatus.RanToCompletion:
                         {
                             var resultProperty = task.GetType().GetProperty("Result");
-                            chromelyResponse = resultProperty.GetValue(task) as IChromelyResponse;
-                            if (chromelyResponse == null)
+                            chromelyResponse = resultProperty?.GetValue(task) as IChromelyResponse;
+                            if (chromelyResponse is null)
                             {
-                                chromelyResponse = new ChromelyResponse();
-                                chromelyResponse.Data = resultProperty.GetValue(task);
+                                chromelyResponse = new ChromelyResponse
+                                {
+                                    Data = resultProperty?.GetValue(task)
+                                };
                             }
 
                             chromelyResponse.Status     = (int)HttpStatusCode.OK;
@@ -92,12 +94,14 @@ public class ControllerRoute
 
                     default:
                         {
-                            chromelyResponse = new ChromelyResponse();
-                            chromelyResponse.Status = (int)HttpStatusCode.BadRequest;
+                            chromelyResponse = new ChromelyResponse
+                            {
+                                Status = (int)HttpStatusCode.BadRequest
+                            };
                             var builder = new StringBuilder();
                             var statusText = task.Status.ToString();
                             builder.AppendLine($"{statusText}");
-                            if (task.Exception != null)
+                            if (task.Exception is not null)
                             {
                                 builder.AppendLine($"  - {task.Exception.Message}");
                                 Logger.Instance.Log.LogError(task.Exception);
@@ -110,10 +114,12 @@ public class ControllerRoute
             }
         }
 
-        if (chromelyResponse == null)
+        if (chromelyResponse is null)
         {
-            chromelyResponse = new ChromelyResponse();
-            chromelyResponse.Data = HasReturnValue ? content : null;
+            chromelyResponse = new ChromelyResponse
+            {
+                Data = HasReturnValue ? content : null
+            };
         }
 
         return chromelyResponse;
@@ -121,11 +127,10 @@ public class ControllerRoute
 
     private void SetRouteArguments(IChromelyRequest request)
     {
-        ValidateRequest(request);
+        ControllerRoute.ValidateRequest(request);
+        _propertyNameArgumentMap = new Dictionary<string, RouteArgument>();
 
-        int argumentsCount = 0;
-        _propertyNameArgumentMap = null;
-        _routeArguments = SetArgumentDefaultValues(out argumentsCount, out _propertyNameArgumentMap);
+        _routeArguments = SetArgumentDefaultValues(out int argumentsCount, out _propertyNameArgumentMap);
 
         if (argumentsCount == 0)
         {
@@ -134,7 +139,7 @@ public class ControllerRoute
 
         _queryParameterArgs = GetQueryParameterArgs(request.Parameters);
 
-        if (request.PostData != null)
+        if (request.PostData is not null)
         {
             ParsePostData(request.PostData);
         }
@@ -154,9 +159,10 @@ public class ControllerRoute
     {
         var json = _dataTransfers.ConvertRequestToJson(postData);
 
-        var jsonDocumentOptions = _dataTransfers.SerializerOptions.DocumentOptions();
-        using (JsonDocument jsonDocument = JsonDocument.Parse(json, jsonDocumentOptions))
+        if (json is not null)
         {
+            var jsonDocumentOptions = _dataTransfers.SerializerOptions.DocumentOptions();
+            using JsonDocument jsonDocument = JsonDocument.Parse(json, jsonDocumentOptions);
             foreach (JsonProperty element in jsonDocument.RootElement.EnumerateObject())
             {
                 if (_propertyNameArgumentMap.ContainsKey(element.Name))
@@ -169,10 +175,10 @@ public class ControllerRoute
         }
     }
 
-    private Dictionary<string, object> GetQueryParameterArgs(IDictionary<string, object> queryParameters)
+    private Dictionary<string, object> GetQueryParameterArgs(IDictionary<string, object>? queryParameters)
     {
         var argDic = new Dictionary<string, object>(StringComparer.InvariantCultureIgnoreCase);
-        if (queryParameters == null || !queryParameters.Any())
+        if (queryParameters is null || !queryParameters.Any())
         {
             return argDic;
         }
@@ -183,56 +189,69 @@ public class ControllerRoute
             if (dictQueryParamIgnoreCase.ContainsKey(argument.PropertyName))
             {
                 var argItemValue = dictQueryParamIgnoreCase[argument.PropertyName];
-                if (argItemValue != null)
+                if (argItemValue is not null)
                 {
-                    if (argItemValue is JsonElement)
+                    if (argItemValue is JsonElement element)
                     {
-                        argItemValue = ((JsonElement)argItemValue).JsonToObject();
+                        argItemValue = element.JsonToObject();
                     }
 
                     if (argument.Type.IsArrayType())
                     {
-                        var argItemValueList = argItemValue as IList<object>;
-                        if (argItemValueList == null)
+                        if (argItemValue is not IList<object> argItemValueList)
                         {
                             // If argument value is comma separated
                             // like "one,two,three"
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
                             argItemValueList = argItemValue.ToString().Split(',');
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
                         }
 
-                        if (argItemValueList != null && argItemValueList.Any())
+                        if (argItemValueList is not null && argItemValueList.Any())
                         {
                             Type subType = argument.Type.ArrayElementType();
                             var tempList = subType.CreateGenericList();
-                            foreach (var argItem in argItemValueList)
+
+                            if (tempList is not null)
                             {
-                                tempList.Add(argItem.ChangeObjectType(subType));
+                                foreach (var argItem in argItemValueList)
+                                {
+                                    tempList.Add(argItem.ChangeObjectType(subType));
+                                }
+
+                                argDic[argument.PropertyName] = tempList;
                             }
-                            argDic[argument.PropertyName] = tempList;
                         }
                     }
                     else if (argument.Type.IsDictionaryType())
                     {
                         var argItemValueDic = argItemValue as IDictionary<string, object>;
-                        if (argItemValueDic != null && argItemValueDic.Any())
+                        if (argItemValueDic is not null && argItemValueDic.Any())
                         {
                             var type1 = argument.Type.DictionaryElementKeyType();
                             var type2 = argument.Type.DictionaryElementValueType();
                             Type dictType = typeof(Dictionary<,>).MakeGenericType(type1, type2);
                             var tempDic = Activator.CreateInstance(dictType);
 
-                            foreach (var argItem in argItemValueDic)
+                            if (tempDic is not null)
                             {
-                                var addToDic = tempDic.GetType().GetMethod("Add", new[] {type1, type2 });
-                                addToDic.Invoke(tempDic, new object[] { argItem.Key, argItem.Value.ChangeObjectType(type2) });
-                            }
+                                foreach (var argItem in argItemValueDic)
+                                {
+                                    var addToDic = tempDic.GetType().GetMethod("Add", new[] { type1, type2 });
+#pragma warning disable CS8601 // Possible null reference assignment.
+                                    addToDic?.Invoke(tempDic, new object[] { argItem.Key, argItem.Value.ChangeObjectType(type2) });
+#pragma warning restore CS8601 // Possible null reference assignment.
+                                }
 
-                            argDic[argument.PropertyName] = tempDic;
+                                argDic[argument.PropertyName] = tempDic;
+                            }
                         }
                     }
                     else
                     {
+#pragma warning disable CS8601 // Possible null reference assignment.
                         argDic[argument.PropertyName] = argItemValue.ChangeObjectType(argument.Type);
+#pragma warning restore CS8601 // Possible null reference assignment.
                     }
                 }
             }
@@ -241,9 +260,9 @@ public class ControllerRoute
         return argDic;
     }
 
-    private void ValidateRequest(IChromelyRequest request)
+    private static void ValidateRequest(IChromelyRequest request)
     {
-        if (request == null)
+        if (request is null)
         {
             throw new ArgumentException("Request cannot be null", nameof(request));
         }
@@ -255,14 +274,16 @@ public class ControllerRoute
         argumentsCount = 0;
         if (RouteArguments == null || !RouteArguments.Any())
         {
-            return new object[] { };
+            return Array.Empty<object>();
         }
 
         argumentsCount = RouteArguments.Count;
         var args = new object[argumentsCount];
         foreach (var argument in RouteArguments)
         {
+#pragma warning disable CS8601 // Possible null reference assignment.
             args[argument.Index] = args[argument.Index].ChangeObjectType(argument.Type);
+#pragma warning restore CS8601 // Possible null reference assignment.
             dictIgnoreCase[argument.PropertyName] = argument;
         }
 
@@ -273,7 +294,7 @@ public class ControllerRoute
 
     #region Local Invokes 
 
-    private object Invoke(int argumentCount, params object[] args)
+    private object? Invoke(int argumentCount, params object[] args)
     {
         if (HasReturnValue)
         {
@@ -298,7 +319,7 @@ public class ControllerRoute
                 default:
                     {
                         var del = Delegate as Delegate;
-                        if (del != null)
+                        if (del is not null)
                         {
                             return del.DynamicInvoke(args);
                         }
@@ -330,7 +351,7 @@ public class ControllerRoute
                 default:
                     {
                         var del = Delegate as Delegate;
-                        if (del != null)
+                        if (del is not null)
                         {
                             return del.DynamicInvoke(args);
                         }
@@ -341,6 +362,7 @@ public class ControllerRoute
         }
 
         return null;
+;
     }
 
     #endregion

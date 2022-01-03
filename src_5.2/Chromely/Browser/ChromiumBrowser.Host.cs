@@ -1,7 +1,8 @@
 ﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
-using System;
+#nullable disable
+
 using Xilium.CefGlue;
 
 namespace Chromely.Browser
@@ -15,7 +16,7 @@ namespace Chromely.Browser
 
         public bool TryCloseBrowser()
         {
-            return BrowserHost == null ? false : BrowserHost.TryCloseBrowser();
+            return BrowserHost is not null && BrowserHost.TryCloseBrowser();
         }
 
         public void SetFocus(bool focus)
@@ -25,17 +26,17 @@ namespace Chromely.Browser
 
         public IntPtr GetWindowHandle()
         {
-           return BrowserHost == null ? IntPtr.Zero : BrowserHost.GetWindowHandle();
+           return BrowserHost is null ? IntPtr.Zero : BrowserHost.GetWindowHandle();
         }
 
         public IntPtr GetOpenerWindowHandle()
         {
-            return BrowserHost == null ? IntPtr.Zero : BrowserHost.GetOpenerWindowHandle();
+            return BrowserHost is null ? IntPtr.Zero : BrowserHost.GetOpenerWindowHandle();
         }
 
         public bool HasView
         {
-            get { return BrowserHost == null ? false : BrowserHost.HasView; }
+            get { return BrowserHost is not null && BrowserHost.HasView; }
         }
 
         public CefClient GetClient()
@@ -58,7 +59,7 @@ namespace Chromely.Browser
         /// </summary>
         public double GetZoomLevel()
         {
-            return BrowserHost == null ? 0 : BrowserHost.GetZoomLevel();
+            return BrowserHost is null ? 0 : BrowserHost.GetZoomLevel();
         }
 
         /// <summary>
@@ -191,7 +192,7 @@ namespace Chromely.Browser
         {
             get
             {
-                return BrowserHost == null ? false : BrowserHost.HasDevTools;
+                return BrowserHost is not null && BrowserHost.HasDevTools;
             }
         }
 
@@ -226,7 +227,7 @@ namespace Chromely.Browser
         /// </summary>
         public bool SendDevToolsMessage(IntPtr message, int messageSize)
         {
-            return BrowserHost == null ? false : BrowserHost.SendDevToolsMessage(message, messageSize);
+            return BrowserHost is not null && BrowserHost.SendDevToolsMessage(message, messageSize);
         }
 
         /// <summary>
@@ -243,7 +244,7 @@ namespace Chromely.Browser
         /// </summary>
         public int ExecuteDevToolsMethod(int messageId, string method, CefDictionaryValue parameters)
         {
-            return BrowserHost == null ? 0 : BrowserHost.ExecuteDevToolsMethod(messageId, method, parameters);
+            return BrowserHost is null ? 0 : BrowserHost.ExecuteDevToolsMethod(messageId, method, parameters);
         }
 
         /// <summary>
@@ -291,7 +292,7 @@ namespace Chromely.Browser
         {
             get
             {
-                return BrowserHost == null ? false : BrowserHost.IsWindowRenderingDisabled;
+                return BrowserHost is not null && BrowserHost.IsWindowRenderingDisabled;
             }
         }
 
@@ -420,7 +421,7 @@ namespace Chromely.Browser
         /// </summary>
         public int GetWindowlessFrameRate()
         {
-            return BrowserHost == null ? 0 : BrowserHost.GetWindowlessFrameRate();
+            return BrowserHost is null ? 0 : BrowserHost.GetWindowlessFrameRate();
         }
 
         /// <summary>
@@ -642,7 +643,7 @@ namespace Chromely.Browser
         {
             get
             {
-                return BrowserHost == null ? false : BrowserHost.IsBackgroundHost;
+                return BrowserHost is not null && BrowserHost.IsBackgroundHost;
             }
         }
 
@@ -662,7 +663,7 @@ namespace Chromely.Browser
         {
             get
             {
-                return BrowserHost == null ? false : BrowserHost.IsAudioMuted;
+                return BrowserHost is not null && BrowserHost.IsAudioMuted;
             }
         }
     }

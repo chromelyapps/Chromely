@@ -5,7 +5,7 @@ namespace Chromely.Core.Defaults;
 
 public partial class DataTransferOptions
 {
-    public virtual object ConvertJsonToObject(string json, Type typeToConvert)
+    public virtual object? ConvertJsonToObject(string json, Type typeToConvert)
     {
         try
         {
@@ -24,7 +24,7 @@ public partial class DataTransferOptions
         return typeToConvert.DefaultValue();
     }
 
-    private dynamic ConvertJsonToDynamic(string json)
+    private dynamic? ConvertJsonToDynamic(string json)
     {
         try
         {
@@ -37,7 +37,7 @@ public partial class DataTransferOptions
             Logger.Instance.Log.LogWarning("If this is about cycle was detection please see - https://github.com/dotnet/corefx/issues/41288");
         }
 
-        return null;
+        return default;
     }
 
     private dynamic ConvertJsonElementToDynamic(JsonElement jsonElement)
@@ -49,7 +49,9 @@ public partial class DataTransferOptions
             switch (jsonProperty.Value.ValueKind)
             {
                 case JsonValueKind.Null:
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
                     dic.Add(jsonProperty.Name, null);
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
                     break;
 
                 case JsonValueKind.Number:
@@ -65,7 +67,9 @@ public partial class DataTransferOptions
                     break;
 
                 case JsonValueKind.Undefined:
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
                     dic.Add(jsonProperty.Name, null);
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
                     break;
 
                 case JsonValueKind.String:
@@ -76,7 +80,9 @@ public partial class DataTransferOptions
                     }
                     else
                     {
+#pragma warning disable CS8604 // Possible null reference argument.
                         dic.Add(jsonProperty.Name, strValue);
+#pragma warning restore CS8604 // Possible null reference argument.
                     }
                     break;
 
@@ -85,7 +91,7 @@ public partial class DataTransferOptions
                     break;
 
                 case JsonValueKind.Array:
-                    ArrayList objectList = new ArrayList();
+                    ArrayList objectList = new();
                     foreach (JsonElement item in jsonProperty.Value.EnumerateArray())
                     {
                         switch (item.ValueKind)

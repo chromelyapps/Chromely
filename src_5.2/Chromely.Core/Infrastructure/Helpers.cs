@@ -1,6 +1,8 @@
 ﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
+#nullable disable
+
 using System.ComponentModel;
 
 namespace Chromely.Core.Infrastructure
@@ -20,7 +22,7 @@ namespace Chromely.Core.Infrastructure
         {
             var result = new Dictionary<string, string>();
             var objToDic =  source.ToDictionary<object>();
-            if (objToDic != null)
+            if (objToDic is not null)
             {
                 foreach (var item in objToDic)
                 {
@@ -45,13 +47,13 @@ namespace Chromely.Core.Infrastructure
         /// </returns>
         public static IDictionary<string, T> ToDictionary<T>(this object source)
         {
-            if (source == null)
+            if (source is null)
             {
                 return null;
             }
 
             var dictionary = source as IDictionary<string, T>;
-            if (dictionary != null)
+            if (dictionary is not null)
             {
                 return dictionary;
             }
@@ -107,7 +109,7 @@ namespace Chromely.Core.Infrastructure
                         result = jsonElement.JsonToDictionary();
                         break;
                     case JsonValueKind.Array:
-                        ArrayList objectList = new ArrayList();
+                        ArrayList objectList = new();
                         foreach (JsonElement item in jsonElement.EnumerateArray())
                         {
                             switch (item.ValueKind)
@@ -150,11 +152,11 @@ namespace Chromely.Core.Infrastructure
             }
             catch (Exception exception)
             {
+                Logger.Instance.Log.LogError(exception);
             }
 
             return result;
         }
-
         public static IDictionary<string, object> JsonToDictionary(this JsonElement jsonElement)
         {
             var dic = new Dictionary<string, object>();
@@ -196,7 +198,7 @@ namespace Chromely.Core.Infrastructure
                             dic.Add(jsonProperty.Name, JsonToDictionary(jsonProperty.Value));
                             break;
                         case JsonValueKind.Array:
-                            ArrayList objectList = new ArrayList();
+                            ArrayList objectList = new();
                             foreach (JsonElement item in jsonProperty.Value.EnumerateArray())
                             {
                                 switch (item.ValueKind)
@@ -240,12 +242,11 @@ namespace Chromely.Core.Infrastructure
             }
             catch (Exception exception)
             {
-                Console.WriteLine(exception);
+                Logger.Instance.Log.LogError(exception);
             }
 
             return dic;
         }
-
         public static string GetPathFromUrl(this string url)
         {
             try
@@ -258,10 +259,10 @@ namespace Chromely.Core.Infrastructure
             return url;
         }
 
-        public static IDictionary<string, object> GetParameters(this IDictionary<string, string> parameters, string referrer = null)
+        public static IDictionary<string, object> GetParameters(this IDictionary<string, string> parameters)
         {
             var paremetersWithList = new Dictionary<string, object>();
-            if (parameters != null && parameters.Any())
+            if (parameters is not null && parameters.Any())
             {
                 foreach (var item in parameters)
                 {
@@ -296,7 +297,7 @@ namespace Chromely.Core.Infrastructure
             {
                 var pathAndQuery = new PathAndQuery();
                 pathAndQuery.Parse(url);
-                if (pathAndQuery.QueryParameters != null && pathAndQuery.QueryParameters.Any())
+                if (pathAndQuery.QueryParameters is not null && pathAndQuery.QueryParameters.Any())
                 {
                     foreach (var item in pathAndQuery.QueryParameters)
                     {
@@ -408,7 +409,7 @@ namespace Chromely.Core.Infrastructure
         {
             var stringBuilder = new StringBuilder();
 
-            while (exception != null)
+            while (exception is not null)
             {
                 stringBuilder.AppendLine(exception.Message);
                 stringBuilder.AppendLine(exception.StackTrace);
@@ -421,11 +422,13 @@ namespace Chromely.Core.Infrastructure
 
         public static IChromelyResponse ErrorResponse(this Exception exception, string requestId)
         {
-            var response = new ChromelyResponse(requestId);
-            response.ReadyState = (int)ReadyState.ResponseIsReady;
-            response.Status = (int)System.Net.HttpStatusCode.BadRequest;
-            response.StatusText = "Bad Request";
-            response.Data = exception?.FlattenException();
+            var response = new ChromelyResponse(requestId)
+            {
+                ReadyState = (int)ReadyState.ResponseIsReady,
+                Status = (int)System.Net.HttpStatusCode.BadRequest,
+                StatusText = "Bad Request",
+                Data = exception?.FlattenException()
+            };
 
             return response;
         }
@@ -445,7 +448,7 @@ namespace Chromely.Core.Infrastructure
         /// </returns>
         public static bool IsOfType<T>(this object value)
         {
-            if (value == null)
+            if (value is null)
             {
                 return false;
             }

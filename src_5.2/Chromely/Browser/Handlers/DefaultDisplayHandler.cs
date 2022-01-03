@@ -10,7 +10,7 @@ namespace Chromely.Browser
     public class DefaultDisplayHandler : CefDisplayHandler
     {
         protected readonly IChromelyConfiguration _config;
-        protected ChromiumBrowser _browser;
+        protected ChromiumBrowser? _browser;
 
         public DefaultDisplayHandler(IChromelyConfiguration config, IChromelyWindow window)
         {
@@ -18,7 +18,7 @@ namespace Chromely.Browser
             _browser = window as ChromiumBrowser;
         }
 
-        public ChromiumBrowser Browser
+        public ChromiumBrowser? Browser
         {
             get { return _browser; }
             set { _browser = value; }
@@ -26,12 +26,15 @@ namespace Chromely.Browser
 
         protected override void OnTitleChange(CefBrowser browser, string title)
         {
-            _browser.InvokeAsyncIfPossible(() => _browser.OnTitleChanged(new TitleChangedEventArgs(title)));
+            if (_browser is not null)
+            {
+                _browser.InvokeAsyncIfPossible(() => _browser.OnTitleChanged(new TitleChangedEventArgs(title)));
+            }
         }
 
         protected override void OnAddressChange(CefBrowser browser, CefFrame frame, string url)
         {
-            if (frame.IsMain)
+            if (frame.IsMain && _browser is not null)
             {
                 _browser.InvokeAsyncIfPossible(() => _browser.OnAddressChanged(new AddressChangedEventArgs(frame, url)));
             }
@@ -39,20 +42,31 @@ namespace Chromely.Browser
 
         protected override void OnStatusMessage(CefBrowser browser, string value)
         {
-            _browser.InvokeAsyncIfPossible(() => _browser.OnStatusMessage(new StatusMessageEventArgs(value)));
+            if (_browser is not null)
+            {
+                _browser.InvokeAsyncIfPossible(() => _browser.OnStatusMessage(new StatusMessageEventArgs(value)));
+            }
         }
 
         protected override bool OnConsoleMessage(CefBrowser browser, CefLogSeverity level, string message, string source, int line)
         {
             var evntArgs = new ConsoleMessageEventArgs(message, source, line);
-            _browser.InvokeAsyncIfPossible(() => _browser.OnConsoleMessage(evntArgs));
+            if (_browser is not null)
+            {
+                _browser.InvokeAsyncIfPossible(() => _browser.OnConsoleMessage(evntArgs));
+            }
+
             return evntArgs.Handled;
         }
 
         protected override bool OnTooltip(CefBrowser browser, string text)
         {
             var evntArgs = new TooltipEventArgs(text);
-            _browser.InvokeAsyncIfPossible(() => _browser.OnTooltip(evntArgs));
+            if (_browser is not null)
+            {
+                _browser.InvokeAsyncIfPossible(() => _browser.OnTooltip(evntArgs));
+            }
+
             return evntArgs.Handled;
         }
     }

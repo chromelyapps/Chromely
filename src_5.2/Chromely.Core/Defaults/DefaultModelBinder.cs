@@ -20,6 +20,7 @@ public class DefaultModelBinder : IChromelyModelBinder
     }
 
     /// <inheritdoc />
+#nullable disable
     public virtual object Bind(string parameterName, Type type, JsonElement value)
     {
         try
@@ -36,7 +37,15 @@ public class DefaultModelBinder : IChromelyModelBinder
                     return value.GetBoolean();
 
                 case TypeCode.Char:
-                    return value.GetString()[0];
+                    {
+                        var tempData = value.GetString();
+                        if (tempData is not null)
+                        {
+                            return tempData[0];
+                        }
+
+                        return char.MinValue;
+                    }
 
                 case TypeCode.SByte:
                     return value.GetSByte();
@@ -98,9 +107,10 @@ public class DefaultModelBinder : IChromelyModelBinder
         }
         catch (Exception exception)
         {
-            Logger.Instance.Log.LogError(exception, exception.Message);
+            Logger.Instance.Log.LogError(exception);
         }
 
         return type.DefaultValue();
     }
+#nullable restore
 }

@@ -16,7 +16,7 @@ namespace Chromely.Core.Network
 
         string StatusText { get; set; }
 
-        object Data { get; set; }
+        object? Data { get; set; }
 
         bool HasError { get; }
 

@@ -24,7 +24,7 @@ namespace Chromely
         {
             get
             {
-                if (NativeHost != null)
+                if (NativeHost is not null)
                 {
                     return NativeHost.Handle;
                 }

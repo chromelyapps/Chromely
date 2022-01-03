@@ -5,22 +5,20 @@ namespace Chromely.Core.Defaults;
 
 public partial class DataTransferOptions
 {
-    public virtual string ConvertObjectToJson(object value)
+    public virtual string? ConvertObjectToJson(object? value)
     {
         try
         {
-            if (value == null)
+            if (value is null)
             {
                 return null;
             }
 
             var stream = value as Stream;
-            if (stream != null)
+            if (stream is not null)
             {
-                using (var reader = new StreamReader(stream, Encoding))
-                {
-                    value = reader.ReadToEnd();
-                }
+                using var reader = new StreamReader(stream, Encoding);
+                value = reader.ReadToEnd();
             }
 
             if (value.IsValidJson())
@@ -35,6 +33,8 @@ public partial class DataTransferOptions
             Logger.Instance.Log.LogError(exception);
         }
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
         return value.ToString();
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
     }
 }

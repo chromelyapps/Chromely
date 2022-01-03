@@ -16,7 +16,7 @@ namespace Chromely
 
         protected virtual void OnWindowCreated(object sender, CreatedEventArgs createdEventArgs)
         {
-            if (createdEventArgs != null)
+            if (createdEventArgs is not null)
             {
                 _nativeHandle = createdEventArgs.Window;
                 _window?.Create(_nativeHandle, createdEventArgs.WinXID);
@@ -30,7 +30,7 @@ namespace Chromely
 
         protected virtual void OnWindowSizeChanged(object sender, SizeChangedEventArgs sizeChangedEventArgs)
         {
-            if (sizeChangedEventArgs != null)
+            if (sizeChangedEventArgs is not null)
             {
                 _window?.Resize(sizeChangedEventArgs.Width, sizeChangedEventArgs.Height);
             }

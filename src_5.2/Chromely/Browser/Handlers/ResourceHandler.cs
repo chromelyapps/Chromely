@@ -3,6 +3,7 @@
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 
 
+using Chromely.Core.Infrastructure;
 using System;
 using System.Collections.Specialized;
 using System.IO;
@@ -28,12 +29,12 @@ namespace Chromely.Browser
         /// We reuse a temp buffer where possible for copying the data from the stream
         /// into the output stream
         /// </summary>
-        private byte[] tempBuffer;
+        private byte[] tempBuffer = Array.Empty<byte>();
 
         /// <summary>
         /// Gets or sets the Charset
         /// </summary>
-        public string Charset { get; set; }
+        public string? Charset { get; set; }
 
         /// <summary>
         /// Gets or sets the Mime Type.
@@ -90,18 +91,18 @@ namespace Chromely.Browser
         /// <param name="autoDisposeStream">When true the Stream will be disposed when this instance is Disposed, you will
         /// be unable to use this ResourceHandler after the Stream has been disposed</param>
         /// <param name="charset">response charset</param>
-        public ResourceHandler(string mimeType = DefaultMimeType, Stream stream = null, bool autoDisposeStream = false, string charset = null)
+        public ResourceHandler(string mimeType = DefaultMimeType, Stream? stream = null, bool autoDisposeStream = false, string? charset = null)
         {
             if (string.IsNullOrEmpty(mimeType))
             {
-                throw new ArgumentNullException("mimeType", "Please provide a valid mimeType");
+                throw new ArgumentNullException(nameof(mimeType));
             }
 
             StatusCode = 200;
             StatusText = "OK";
             MimeType = mimeType;
             Headers = new NameValueCollection();
-            Stream = stream;
+            Stream = stream ?? Stream.Null;
             AutoDisposeStream = autoDisposeStream;
             Charset = charset;
 
@@ -161,13 +162,13 @@ namespace Chromely.Browser
         /// </summary>
         public virtual void Dispose()
         {
-            if (AutoDisposeStream && Stream != null)
+            if (AutoDisposeStream && Stream is not null)
             {
                 Stream.Dispose();
             }
 
-            Stream = null;
-            tempBuffer = null;
+            Stream = Stream.Null;
+            tempBuffer = Array.Empty<byte>();
         }
 
         protected override bool Open(CefRequest request, out bool handleRequest, CefCallback callback)
@@ -196,7 +197,7 @@ namespace Chromely.Browser
 
         protected override void GetResponseHeaders(CefResponse response, out long responseLength, out string redirectUrl)
         {
-            redirectUrl = null;
+            redirectUrl = string.Empty;
             responseLength = -1;
 
             response.MimeType = MimeType;
@@ -204,9 +205,9 @@ namespace Chromely.Browser
             response.StatusText = StatusText;
             response.SetHeaderMap(Headers);
 
-            if (!string.IsNullOrEmpty(Charset))
+            if (!StringUtil.IsNullOrEmpty(Charset))
             {
-                response.Charset = Charset;
+                response.Charset = Charset ?? string.Empty;
             }
 
             if (ResponseLength.HasValue)
@@ -214,10 +215,10 @@ namespace Chromely.Browser
                 responseLength = ResponseLength.Value;
             }
 
-            if (Stream != null && Stream.CanSeek)
+            if (Stream is not null && Stream.CanSeek)
             {
                 //ResponseLength property has higher precedence over Stream.Length
-                if (ResponseLength == null || responseLength == 0)
+                if (ResponseLength is null || responseLength == 0)
                 {
                     //If no ResponseLength provided then attempt to infer the length
                     responseLength = Stream.Length;
@@ -230,7 +231,7 @@ namespace Chromely.Browser
         protected override bool Skip(long bytesToSkip, out long bytesSkipped, CefResourceSkipCallback callback)
         {
             //No Stream or Stream cannot seek then we indicate failure
-            if (Stream == null || !Stream.CanSeek)
+            if (Stream is null || !Stream.CanSeek)
             {
                 //Indicate failure
                 bytesSkipped = -2;
@@ -253,14 +254,14 @@ namespace Chromely.Browser
             //We don't need the callback, as it's an unmanaged resource we should dispose it (could wrap it in a using statement).
             callback.Dispose();
 
-            if (Stream == null)
+            if (Stream is null)
             {
                 return false;
             }
 
             //Data out represents an underlying unmanaged buffer (typically 64kb in size).
             //We reuse a temp buffer where possible
-            if (tempBuffer == null || tempBuffer.Length < bytesToRead)
+            if (tempBuffer is null || tempBuffer.Length < bytesToRead)
             {
                 tempBuffer = new byte[bytesToRead];
             }

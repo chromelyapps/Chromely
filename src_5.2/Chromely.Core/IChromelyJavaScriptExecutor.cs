@@ -9,9 +9,9 @@ namespace Chromely.Core
     {
         object ExecuteScript(string frameName, string script);
         object ExecuteScript(string script);
-        object GetBrowser();
-        object GetMainFrame();
-        object GetFrame(string frameName);
+        object? GetBrowser();
+        object? GetMainFrame();
+        object? GetFrame(string frameName);
         List<long> GetFrameIdentifiers { get; }
         List<string> GetFrameNames { get; }
     }

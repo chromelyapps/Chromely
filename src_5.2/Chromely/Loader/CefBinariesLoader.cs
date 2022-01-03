@@ -37,7 +37,7 @@ namespace Chromely.Loader
             {
                 var platform = CefRuntime.Platform;
                 var version = CefRuntime.ChromeVersion;
-                Logger.Instance.Log.LogInformation($"Running {platform} chromium {version}");
+                Logger.Instance.Log.LogInformation("Running {platform} chromium {version}", platform, version);
 
                 try
                 {
@@ -73,7 +73,7 @@ namespace Chromely.Loader
                 Environment.Exit(0);
             }
 
-            return null;
+            return new List<string>();
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace Chromely.Loader
         /// </param>
         public static void DeleteTempFiles(List<string> tempFiles)
         {
-            if (tempFiles == null || !tempFiles.Any())
+            if (tempFiles is null || !tempFiles.Any())
             {
                 return;
             }
@@ -124,9 +124,9 @@ namespace Chromely.Loader
                 cefBinariesDownloader.Download(config);
 
                 stopwatch.Stop();
-                var competedTempFile = ShowDownloadCompletedPage($"Time elapsed: {stopwatch.Elapsed}.");
+                string? competedTempFile = ShowDownloadCompletedPage($"Time elapsed: {stopwatch.Elapsed}.");
 
-                if (competedTempFile != null)
+                if (competedTempFile is not null)
                 {
                     tempFiles.Add(competedTempFile);
                 }
@@ -300,7 +300,7 @@ namespace Chromely.Loader
                 Console.WriteLine(message);
             }
 
-            return null;
+            return string.Empty;
         }
     }
 }

@@ -18,7 +18,7 @@ public interface IChromelyRouteProvider
     /// Register all action routes.
     /// </summary>
     /// <param name="controllers">List of <see cref="ChromelyController"/> instance.</param>
-    void RegisterAllRoutes(List<ChromelyController> controllers);
+    void RegisterAllRoutes(List<ChromelyController>? controllers);
     /// <summary>
     /// Register a single action route.
     /// </summary>
@@ -29,13 +29,13 @@ public interface IChromelyRouteProvider
     /// Register multiple action routes.
     /// </summary>
     /// <param name="routeMap">The route map.</param>
-    void RegisterRoutes(IDictionary<string, ControllerRoute> routeMap);
+    void RegisterRoutes(IDictionary<string, ControllerRoute>? routeMap);
     /// <summary>
     /// Gets a single action route based on route url.
     /// </summary>
     /// <param name="routeUrl">The route url.</param>
     /// <returns>The <see cref="ControllerRoute"/> object.</returns>
-    ControllerRoute GetRoute(string routeUrl);
+    ControllerRoute? GetRoute(string routeUrl);
     /// <summary>
     /// Checks if a route exists using the route url.
     /// </summary>

@@ -1,10 +1,6 @@
 ﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
-using System.Collections.Generic;
-using System.Dynamic;
-using System.Linq;
-
 namespace Chromely.Core.Infrastructure
 {
     public class ChromelyDynamic : DynamicObject
@@ -24,11 +20,11 @@ namespace Chromely.Core.Infrastructure
         {
             get
             {
-                return Dictionary == null || !Dictionary.Any();
+                return Dictionary is null || !Dictionary.Any();
             }
         }
 
-        public override bool TryGetMember(GetMemberBinder binder, out object result)
+        public override bool TryGetMember(GetMemberBinder binder, out object? result)
         {
             if (Dictionary.ContainsKey(binder.Name))
             {
@@ -42,9 +38,11 @@ namespace Chromely.Core.Infrastructure
             }
         }
 
-        public override bool TrySetMember(SetMemberBinder binder, object value)
+        public override bool TrySetMember(SetMemberBinder binder, object? value)
         {
+#pragma warning disable CS8601 // Possible null reference assignment.
             Dictionary[binder.Name] = value;
+#pragma warning restore CS8601 // Possible null reference assignment.
             return true;
         }
     }

@@ -15,7 +15,7 @@ namespace Chromely
 {
     public partial class WindowController
     {
-        private CefSettings _settings;
+        private CefSettings _settings = new();
 
         /// <summary>
         /// Runs the application.
@@ -93,14 +93,14 @@ namespace Chromely
             }
             
             // Set DevTools url
-            string devtoolsUrl = _config.DevToolsUrl;
+            string? devtoolsUrl = _config.DevToolsUrl;
             if (string.IsNullOrWhiteSpace(devtoolsUrl))
             {
                 _config.DevToolsUrl = $"http://127.0.0.1:{_settings.RemoteDebuggingPort}";
             }
             else
             {
-                Uri uri = new Uri(devtoolsUrl);
+                Uri uri = new(devtoolsUrl);
                 if (uri.Port <= 80)
                 {
                     _config.DevToolsUrl = $"{devtoolsUrl}:{_settings.RemoteDebuggingPort}";
@@ -121,7 +121,7 @@ namespace Chromely
                 if (exitCode >= 0)
                 {
                     // The sub-process has completed so return here.
-                    Logger.Instance.Log.LogInformation($"Sub process executes successfully with code: {exitCode}");
+                    Logger.Instance.Log.LogInformation("Sub process executes successfully with code: {exitCode}", exitCode);
                     return exitCode;
                 }
             }

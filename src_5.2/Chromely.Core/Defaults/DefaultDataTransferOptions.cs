@@ -12,10 +12,12 @@ public partial class DataTransferOptions : IChromelyDataTransferOptions
     /// Initializes a new instance of <see cref="DataTransferOptions"/>.
     /// </summary>
     /// <param name="serializerOptions">The serializer type of <see cref="JsonSerializerOptions"/>. </param>
-    public DataTransferOptions(JsonSerializerOptions serializerOptions = null)
+    public DataTransferOptions(JsonSerializerOptions? serializerOptions = null)
     {
         Encoding = Encoding.UTF8;
-        SerializerOptions = serializerOptions.ToSerializerOptions();
+        SerializerOptions = (serializerOptions is not null) 
+                            ? serializerOptions.ToSerializerOptions()
+                            : new JsonSerializerOptions();
     }
 
     /// <inheritdoc />

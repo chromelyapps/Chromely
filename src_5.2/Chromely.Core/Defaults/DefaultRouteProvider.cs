@@ -32,14 +32,20 @@ public class DefaultRouteProvider : IChromelyRouteProvider
     {
         get
         {
-            return RouteMap?.Keys?.ToList();
+            var tempData = RouteMap?.Keys;
+            if (tempData is not null)
+            {
+                return tempData.ToList();
+            }
+
+            return new List<string>();
         }
     }
 
     /// <inheritdoc />
-    public virtual void RegisterAllRoutes(List<ChromelyController> controllers)
+    public virtual void RegisterAllRoutes(List<ChromelyController>? controllers)
     {
-        if (controllers == null || !controllers.Any())
+        if (controllers is null || !controllers.Any())
         {
             return;
         }
@@ -50,7 +56,7 @@ public class DefaultRouteProvider : IChromelyRouteProvider
             foreach (var controller in controllers)
             {
                 var controllerRoutesFactory = new ControllerRoutesFactory();
-                controllerRoutesFactory.CreateAndRegisterRoutes(this, controller, _routeParameterBinder, _dataTransferOptions);
+                ControllerRoutesFactory.CreateAndRegisterRoutes(this, controller, _routeParameterBinder, _dataTransferOptions);
             }
 
         }
@@ -67,9 +73,9 @@ public class DefaultRouteProvider : IChromelyRouteProvider
     }
 
     /// <inheritdoc />
-    public virtual void RegisterRoutes(IDictionary<string, ControllerRoute> routeMap)
+    public virtual void RegisterRoutes(IDictionary<string, ControllerRoute>? routeMap)
     {
-        if (routeMap != null && routeMap.Any())
+        if (routeMap is not null && routeMap.Any())
         {
             foreach (var item in routeMap)
             {
@@ -79,12 +85,12 @@ public class DefaultRouteProvider : IChromelyRouteProvider
     }
 
     /// <inheritdoc />
-    public virtual ControllerRoute GetRoute(string routeUrl)
+    public virtual ControllerRoute? GetRoute(string routeUrl)
     {
         var key = Network.RouteKeys.CreateActionKey(routeUrl);
         if (string.IsNullOrWhiteSpace(key))
         {
-            return null;
+            return default;
         }
 
         if (RouteMap.ContainsKey(key))
@@ -92,7 +98,7 @@ public class DefaultRouteProvider : IChromelyRouteProvider
             return RouteMap[key];
         }
 
-        return null;
+        return default;
     }
 
     /// <inheritdoc />
@@ -119,7 +125,7 @@ public class DefaultRouteProvider : IChromelyRouteProvider
         try
         {
             var route = GetRoute(routeUrl);
-            return route == null ? false : route.IsAsync;
+            return route is not null && route.IsAsync;
         }
         catch { }
 

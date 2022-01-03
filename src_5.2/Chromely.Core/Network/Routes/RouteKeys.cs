@@ -12,12 +12,12 @@ public static class RouteKeys
         return CreateMD5Hash(keyString);
     }
 
-    public static string CreateActionKey(string controllerPath, string actionUrl)
+    public static string CreateActionKey(string? controllerPath, string? actionUrl)
     {
         var absolutePath = PathAndQuery.CreateUri(actionUrl)?.AbsolutePath;
         controllerPath = controllerPath?.Trim().TrimStart('/');
         absolutePath = absolutePath?.Trim().TrimStart('/');
-        var routeKey = string.Empty;
+        string? routeKey;
         if (string.IsNullOrWhiteSpace(controllerPath))
         {
             routeKey = $"routepath_{absolutePath}".Replace("/", "_").Replace("\\", "_");
@@ -44,7 +44,7 @@ public static class RouteKeys
         byte[] inputBytes = Encoding.ASCII.GetBytes(input);
         byte[] hashBytes = md5.ComputeHash(inputBytes);
 
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new();
         for (int i = 0; i < hashBytes.Length; i++)
         {
             sb.Append(hashBytes[i].ToString("X2"));

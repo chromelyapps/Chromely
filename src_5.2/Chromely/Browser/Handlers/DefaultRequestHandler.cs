@@ -16,12 +16,12 @@ namespace Chromely.Browser
         protected readonly IChromelyConfiguration _config;
         protected readonly IChromelyRequestHandler _requestHandler;
         protected readonly IChromelyRouteProvider _routeProvider;
-        protected readonly CefResourceRequestHandler _resourceRequestHandler;
+        protected readonly CefResourceRequestHandler? _resourceRequestHandler;
 
         /// <summary>
         /// The m_browser.
         /// </summary>
-        protected ChromiumBrowser _browser;
+        protected ChromiumBrowser? _browser;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultRequestHandler"/> class.
@@ -30,7 +30,7 @@ namespace Chromely.Browser
                                      IChromelyRequestHandler requestHandler,
                                      IChromelyRouteProvider routeProvider,
                                      IChromelyWindow window, 
-                                     CefResourceRequestHandler resourceRequestHandler = null)
+                                     CefResourceRequestHandler? resourceRequestHandler = null)
         {
             _config = config;
             _requestHandler = requestHandler;
@@ -39,7 +39,7 @@ namespace Chromely.Browser
             _resourceRequestHandler = resourceRequestHandler;
         }
 
-        public ChromiumBrowser Browser
+        public ChromiumBrowser? Browser
         {
             get { return _browser; }
             set { _browser = value; }
@@ -47,7 +47,9 @@ namespace Chromely.Browser
 
         protected override CefResourceRequestHandler GetResourceRequestHandler(CefBrowser browser, CefFrame frame, CefRequest request, bool isNavigation, bool isDownload, string requestInitiator, ref bool disableDefaultHandling)
         {
+#pragma warning disable CS8603 // Possible null reference return.
             return _resourceRequestHandler;
+#pragma warning restore CS8603 // Possible null reference return.
         }
 
         /// <summary>
@@ -73,17 +75,20 @@ namespace Chromely.Browser
         /// </returns>
         protected override bool OnBeforeBrowse(CefBrowser browser, CefFrame frame, CefRequest request, bool userGesture, bool isRedirect)
         {
-            var isUrlExternal = _config?.UrlSchemes?.IsUrlRegisteredExternalBrowserScheme(request.Url);
-            if (isUrlExternal.HasValue && isUrlExternal.Value)
+            if (_config is not null)
             {
-                BrowserLauncher.Open(_config.Platform, request.Url);
-                return true;
+                var isUrlExternal = _config.UrlSchemes?.IsUrlRegisteredExternalBrowserScheme(request.Url);
+                if (isUrlExternal.HasValue && isUrlExternal.Value)
+                {
+                    BrowserLauncher.Open(_config.Platform, request.Url);
+                    return true;
+                }
             }
 
             // Sample: http://chromely.com/democontroller/showdevtools 
             // Expected to execute controller route action without return value
             var route = _routeProvider.GetRoute(request.Url);
-            if (route != null && !route.HasReturnValue)
+            if (route is not null && !route.HasReturnValue)
             {
                 _requestHandler.Execute(request.Url);
                 return true;
@@ -103,7 +108,10 @@ namespace Chromely.Browser
         /// </param>
         protected override void OnPluginCrashed(CefBrowser browser, string pluginPath)
         {
-            _browser.InvokeAsyncIfPossible(() => _browser.OnPluginCrashed(new PluginCrashedEventArgs(pluginPath)));
+            if (_browser is not null)
+            {
+                _browser.InvokeAsyncIfPossible(() => _browser.OnPluginCrashed(new PluginCrashedEventArgs(pluginPath)));
+            }
         }
 
         /// <summary>
@@ -117,7 +125,10 @@ namespace Chromely.Browser
         /// </param>
         protected override void OnRenderProcessTerminated(CefBrowser browser, CefTerminationStatus status)
         {
-            _browser.InvokeAsyncIfPossible(() => _browser.OnRenderProcessTerminated(new RenderProcessTerminatedEventArgs(status)));
+            if (_browser is not null)
+            {
+                _browser.InvokeAsyncIfPossible(() => _browser.OnRenderProcessTerminated(new RenderProcessTerminatedEventArgs(status)));
+            }
         }
     }
 }

@@ -17,7 +17,7 @@ namespace Chromely.Browser
         /// <summary>
         /// The CefGlueBrowser object.
         /// </summary>
-        protected ChromiumBrowser _browser;
+        protected ChromiumBrowser? _browser;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultLoadHandler"/> class.
@@ -28,7 +28,7 @@ namespace Chromely.Browser
             _browser = window as ChromiumBrowser;
         }
 
-        public ChromiumBrowser Browser
+        public ChromiumBrowser? Browser
         {
             get { return _browser; }
             set { _browser = value; }
@@ -48,7 +48,10 @@ namespace Chromely.Browser
         /// </param>
         protected override void OnLoadEnd(CefBrowser browser, CefFrame frame, int httpStatusCode)
         {
-            _browser.InvokeAsyncIfPossible(() => _browser.OnFrameLoadEnd(new FrameLoadEndEventArgs(frame, httpStatusCode)));
+            if (_browser is not null)
+            {
+                _browser.InvokeAsyncIfPossible(() => _browser.OnFrameLoadEnd(new FrameLoadEndEventArgs(frame, httpStatusCode)));
+            }
         }
 
         /// <summary>
@@ -71,7 +74,10 @@ namespace Chromely.Browser
         /// </param>
         protected override void OnLoadError(CefBrowser browser, CefFrame frame, CefErrorCode errorCode, string errorText, string failedUrl)
         {
-            _browser.InvokeAsyncIfPossible(() => _browser.OnLoadError(new LoadErrorEventArgs(frame, errorCode, errorText, failedUrl)));
+            if (_browser is not null)
+            {
+                _browser.InvokeAsyncIfPossible(() => _browser.OnLoadError(new LoadErrorEventArgs(frame, errorCode, errorText, failedUrl)));
+            }
         }
 
         /// <summary>
@@ -88,7 +94,10 @@ namespace Chromely.Browser
         /// </param>
         protected override void OnLoadStart(CefBrowser browser, CefFrame frame, CefTransitionType transitionType)
         {
-            _browser.InvokeAsyncIfPossible(() => _browser.OnFrameLoadStart(new FrameLoadStartEventArgs(frame)));
+            if (_browser is not null)
+            {
+                _browser.InvokeAsyncIfPossible(() => _browser.OnFrameLoadStart(new FrameLoadStartEventArgs(frame)));
+            }
         }
 
         /// <summary>
@@ -108,7 +117,10 @@ namespace Chromely.Browser
         /// </param>
         protected override void OnLoadingStateChange(CefBrowser browser, bool isLoading, bool canGoBack, bool canGoForward)
         {
-            _browser.InvokeAsyncIfPossible(() => _browser.OnLoadingStateChange(new LoadingStateChangedEventArgs(isLoading, canGoBack, canGoForward)));
+            if (_browser is not null)
+            {
+                _browser.InvokeAsyncIfPossible(() => _browser.OnLoadingStateChange(new LoadingStateChangedEventArgs(isLoading, canGoBack, canGoForward)));
+            }
         }
     }
 }

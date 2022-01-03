@@ -1,25 +1,15 @@
 ﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
+#nullable disable
+
 namespace Chromely.Core.Network;
 
 public class ControllerRoutesFactory
 {
-    /// <summary>
-    /// Creates an instance of a controller of given ControllerBase type.
-    /// Ctor dependency injection is done using the global IoC container.
-    /// </summary>
-    /// <param name="type">Controller type to be created.</param>
-    /// <returns>Instance reference or null if failed.</returns>
-    public ChromelyController CreateControllerInstance(Type type)
+    public static void CreateAndRegisterRoutes(IChromelyRouteProvider routeProvider, ChromelyController controller, IChromelyModelBinder routeParameterBinder, IChromelyDataTransferOptions dataTransferOptions)
     {
-        var instance = CreateType(type);
-        return instance as ChromelyController;
-    }
-
-    public void CreateAndRegisterRoutes(IChromelyRouteProvider routeProvider, ChromelyController controller, IChromelyModelBinder routeParameterBinder, IChromelyDataTransferOptions dataTransferOptions)
-    {
-        if (routeProvider == null || controller == null)
+        if (routeProvider is null || controller is null)
         {
             return;
         }
@@ -31,10 +21,10 @@ public class ControllerRoutesFactory
         foreach (var methodInfo in methodInfos)
         {
             var attribute = methodInfo.GetCustomAttribute<ChromelyRouteAttribute>();
-            var key = RouteKeys.CreateActionKey(controller.RoutePath, attribute.Path);
+            var key = RouteKeys.CreateActionKey(controller.RoutePath, attribute?.Path ?? string.Empty);
             if (!routeProvider.RouteExists(key))
             {
-                routeProvider.RegisterRoute(key, CreateDelegate(controller, methodInfo, routeParameterBinder, dataTransferOptions));
+                routeProvider.RegisterRoute(key, ControllerRoutesFactory.CreateDelegate(controller, methodInfo, routeParameterBinder, dataTransferOptions));
             }
         }
     }
@@ -76,7 +66,7 @@ public class ControllerRoutesFactory
     }
 
     private static readonly Type VoidType = typeof(void);
-    private ControllerRoute CreateDelegate(object instance, MethodInfo method, IChromelyModelBinder routeParameterBinder, IChromelyDataTransferOptions dataTransferOptions)
+    private static ControllerRoute CreateDelegate(object instance, MethodInfo method, IChromelyModelBinder routeParameterBinder, IChromelyDataTransferOptions dataTransferOptions)
     {
         var args = method
             .GetParameters();

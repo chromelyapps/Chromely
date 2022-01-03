@@ -16,14 +16,15 @@ namespace Chromely.Core.Logging
         }
 
         /// <summary>Initializes a new instance of the <see cref="LogEntry" /> class.</summary>
-        public LogEntry(LogLevel level, Exception error)
+        public LogEntry(LogLevel level, Exception? error)
         {
             LogLevel = level;
+            Entry = string.Empty;
             Error = error;
         }
 
         /// <summary>Initializes a new instance of the <see cref="LogEntry" /> class.</summary>
-        public LogEntry(LogLevel level, string entry, Exception error)
+        public LogEntry(LogLevel level, string entry, Exception? error)
         {
             LogLevel = level;
             Entry = entry;
@@ -46,7 +47,7 @@ namespace Chromely.Core.Logging
         /// Gets or sets the error.
         /// </summary>
         // ReSharper disable once MemberCanBePrivate.Local
-        public Exception Error { get; set; }
+        public Exception? Error { get; set; }
 
         /// <summary>
         /// The to string.
@@ -61,39 +62,20 @@ namespace Chromely.Core.Logging
                 formattedMessage = DefaultMessage;
             }
 
-            if (Error != null)
+            if (Error is not null)
             {
                 formattedMessage = $"{formattedMessage}\t{Error.Message}\t{Error.StackTrace}";
             }
 
-            string levelText;
-            switch (LogLevel)
+            string levelText = LogLevel switch
             {
-                case LogLevel.Trace:
-                    levelText = "[TRACE]";
-                    break;
-
-                case LogLevel.Information:
-                    levelText = "[INFO]";
-                    break;
-
-                case LogLevel.Debug:
-                    levelText = "[DEBUG]";
-                    break;
-
-                case LogLevel.Warning:
-                    levelText = "[WARNING]";
-                    break;
-
-                case LogLevel.Error:
-                    levelText = "[ERROR]";
-                    break;
-
-                default:
-                    levelText = "[UNKNOWN LEVEL]";
-                    break;
-            }
-
+                LogLevel.Trace => "[TRACE]",
+                LogLevel.Information => "[INFO]",
+                LogLevel.Debug => "[DEBUG]",
+                LogLevel.Warning => "[WARNING]",
+                LogLevel.Error => "[ERROR]",
+                _ => "[UNKNOWN LEVEL]",
+            };
             string datetimeFormat = "yyyy-MM-dd HH:mm:ss.fff";
             return $"{DateTime.Now.ToString(datetimeFormat)} {levelText} {formattedMessage}";
         }

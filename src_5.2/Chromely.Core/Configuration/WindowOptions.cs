@@ -44,7 +44,7 @@ namespace Chromely.Core.Configuration
         public Size MaximumSize { get; set; }
 
         /// <summary>Gets or sets the custom style.</summary>
-        public WindowCustomStyle CustomStyle { get; set; }
+        public WindowCustomStyle? CustomStyle { get; set; }
 
         /// <summary>Gets or sets the position of the window.</summary>
         public WindowPosition Position { get; set; }

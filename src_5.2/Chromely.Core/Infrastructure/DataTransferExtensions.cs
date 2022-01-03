@@ -9,7 +9,18 @@ public static class DataTransferExtensions
     {
         try
         {
-            return JsonDocument.Parse(value.ToString()) != null;
+            if (value is null)
+            {
+                return false;
+            }
+
+            var tempData = value.ToString();
+            if (tempData is null)
+            {
+                return false;
+            }
+
+            return  JsonDocument.Parse(tempData) is not null;
         }
         catch { }
 
@@ -52,14 +63,16 @@ public static class DataTransferExtensions
 
     public static Type ArrayElementType(this Type type)
     {
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
         Type subType = type.GetElementType();
-        if (subType != null)
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
+        if (subType is not null)
         {
             return subType;
         }
 
         subType = type.GenericTypeArguments[0];
-        if (subType != null)
+        if (subType is not null)
         {
             return subType;
         }
@@ -69,14 +82,16 @@ public static class DataTransferExtensions
 
     public static Type DictionaryElementKeyType(this Type type)
     {
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
         Type subType = type.GetElementType();
-        if (subType != null)
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
+        if (subType is not null)
         {
             return subType;
         }
 
         subType = type.GenericTypeArguments[0];
-        if (subType != null)
+        if (subType is not null)
         {
             return subType;
         }
@@ -86,14 +101,16 @@ public static class DataTransferExtensions
 
     public static Type DictionaryElementValueType(this Type type)
     {
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
         Type subType = type.GetElementType();
-        if (subType != null)
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
+        if (subType is not null)
         {
             return subType;
         }
 
         subType = type.GenericTypeArguments[1];
-        if (subType != null)
+        if (subType is not null)
         {
             return subType;
         }
@@ -101,15 +118,15 @@ public static class DataTransferExtensions
         return typeof(Object);
     }
 
-    public static IList CreateGenericList(this Type subType)
+    public static IList? CreateGenericList(this Type subType)
     {
         var listType = typeof(List<>);
         var constructedListType = listType.MakeGenericType(subType);
         var instance = Activator.CreateInstance(constructedListType);
-        return (IList)instance;
+        return instance as IList;
     }
 
-    public static object ChangeObjectType(this object value, Type type)
+    public static object? ChangeObjectType(this object value, Type type)
     {
         try
         {
@@ -117,20 +134,24 @@ public static class DataTransferExtensions
                                               type.Name.Equals("Nullable`1") || type == typeof(Nullable<>) || type == typeof(Nullable));
             if (isNullable)
             {
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
                 type = Nullable.GetUnderlyingType(type);
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
             }
 
-            if (value == null)
+            if (value is null)
             {
                 if (isNullable)
                 {
-                    return null;
+                    return default;
                 }
 
-                return type.DefaultValue();
+                return type?.DefaultValue();
             }
 
+#pragma warning disable CS8604 // Possible null reference argument.
             return Convert.ChangeType(value, type);
+#pragma warning restore CS8604 // Possible null reference argument.
         }
         catch (Exception exception)
         {
@@ -140,38 +161,42 @@ public static class DataTransferExtensions
         return value;
     }
 
-    public static object DefaultValue(this Type type)
+    public static object? DefaultValue(this Type type)
     {
         if (type.IsValueType)
         {
             return Activator.CreateInstance(type);
         }
 
-        return null;
+        return default;
     }
 
     public static JsonSerializerOptions ToSerializerOptions(this object serializerOption)
     {
         var options = serializerOption as JsonSerializerOptions;
-        if (options != null)
+        if (options is not null)
         {
             return options;
         }
 
-        options = new JsonSerializerOptions();
-        options.ReadCommentHandling = JsonCommentHandling.Skip;
-        options.AllowTrailingCommas = true;
-        options.PropertyNameCaseInsensitive = true;
+        options = new JsonSerializerOptions
+        {
+            ReadCommentHandling = JsonCommentHandling.Skip,
+            AllowTrailingCommas = true,
+            PropertyNameCaseInsensitive = true
+        };
         return options;
     }
 
     public static JsonDocumentOptions DocumentOptions(this object serializerOption)
     {
         var options = serializerOption.ToSerializerOptions();
-        var jsonDocumentOptions = new JsonDocumentOptions();
-        jsonDocumentOptions.CommentHandling = options.ReadCommentHandling;
-        jsonDocumentOptions.AllowTrailingCommas = options.AllowTrailingCommas;
-        jsonDocumentOptions.MaxDepth = options.MaxDepth;
+        var jsonDocumentOptions = new JsonDocumentOptions
+        {
+            CommentHandling = options.ReadCommentHandling,
+            AllowTrailingCommas = options.AllowTrailingCommas,
+            MaxDepth = options.MaxDepth
+        };
 
         return jsonDocumentOptions;
     }

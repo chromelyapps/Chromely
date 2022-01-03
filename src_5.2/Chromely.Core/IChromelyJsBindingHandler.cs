@@ -9,8 +9,8 @@ namespace Chromely.Core
 
         string ObjectName { get; set; }
 
-        object BoundObject { get; set; }
+        object? BoundObject { get; set; }
 
-        object BindingOptions { get; set; }
+        object? BindingOptions { get; set; }
     }
 }

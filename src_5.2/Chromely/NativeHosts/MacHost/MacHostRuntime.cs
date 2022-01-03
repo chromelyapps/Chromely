@@ -16,7 +16,7 @@ namespace Chromely.NativeHosts
     public static class MacHostRuntime
     {
         // Required Only for MacOS.
-        private static string MacOSNativeDllFile = "libchromely.dylib";
+        private static readonly string MacOSNativeDllFile = "libchromely.dylib";
 
         public static void LoadNativeHostFile(IChromelyConfiguration config)
         {
@@ -33,15 +33,11 @@ namespace Chromely.NativeHosts
             Task.Run(() =>
             {
                 string resourcePath = $"Chromely.NativeHosts.MacHost.{MacOSNativeDllFile}";
-                using (var resource = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourcePath))
+                using var resource = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourcePath);
+                if (resource is not null)
                 {
-                    if (resource != null)
-                    {
-                        using (var file = new FileStream(fullPathNativeDll, FileMode.Create, FileAccess.Write))
-                        {
-                            resource.CopyTo(file);
-                        }
-                    }
+                    using var file = new FileStream(fullPathNativeDll, FileMode.Create, FileAccess.Write);
+                    resource.CopyTo(file);
                 }
             });
         }
@@ -59,7 +55,7 @@ namespace Chromely.NativeHosts
             {
                 if (DateTime.Now > timeout)
                 {
-                    Logger.Instance.Log.LogError($"File {fullPathNativeDll} does not exist.");
+                    Logger.Instance.Log.LogError("File {fullPathNativeDll} does not exist.", fullPathNativeDll);
                     return;
                 }
 

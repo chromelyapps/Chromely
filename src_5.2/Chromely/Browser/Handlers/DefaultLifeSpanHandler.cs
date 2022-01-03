@@ -16,7 +16,7 @@ namespace Chromely.Browser
         protected readonly IChromelyConfiguration _config;
         protected readonly IChromelyRequestHandler _requestHandler;
         protected readonly IChromelyRouteProvider _routeProvider;
-        protected ChromiumBrowser _browser;
+        protected ChromiumBrowser? _browser;
 
         public DefaultLifeSpanHandler(IChromelyConfiguration config, 
                                       IChromelyRequestHandler requestHandler, 
@@ -29,7 +29,7 @@ namespace Chromely.Browser
             _browser = window as ChromiumBrowser;
         }
 
-        public ChromiumBrowser Browser
+        public ChromiumBrowser? Browser
         {
             get { return _browser; }
             set { _browser = value; }
@@ -38,7 +38,11 @@ namespace Chromely.Browser
         protected override void OnAfterCreated(CefBrowser browser)
         {
             base.OnAfterCreated(browser);
-            _browser.InvokeAsyncIfPossible(() => _browser.OnBrowserAfterCreated(browser));
+
+            if (_browser is not null)
+            {
+                _browser.InvokeAsyncIfPossible(() => _browser.OnBrowserAfterCreated(browser));
+            }
         }
 
         protected override bool DoClose(CefBrowser browser)
@@ -48,24 +52,33 @@ namespace Chromely.Browser
 
         protected override void OnBeforeClose(CefBrowser browser)
         {
-            _browser.InvokeAsyncIfPossible(() => _browser.OnBeforeClose());
+            if (_browser is not null)
+            {
+                _browser.InvokeAsyncIfPossible(() => _browser.OnBeforeClose());
+            }
         }
 
         protected override bool OnBeforePopup(CefBrowser browser, CefFrame frame, string targetUrl, string targetFrameName, CefWindowOpenDisposition targetDisposition, bool userGesture, CefPopupFeatures popupFeatures, CefWindowInfo windowInfo, ref CefClient client, CefBrowserSettings settings, ref CefDictionaryValue extraInfo, ref bool noJavascriptAccess)
         {
-            _browser.InvokeAsyncIfPossible(() => _browser.OnBeforePopup(new BeforePopupEventArgs(frame, targetUrl, targetFrameName)));
-
-            var isUrlExternal = _config?.UrlSchemes?.IsUrlRegisteredExternalBrowserScheme(targetUrl);
-            if (isUrlExternal.HasValue && isUrlExternal.Value)
+            if (_browser is not null)
             {
-                BrowserLauncher.Open(_config.Platform, targetUrl);
-                return true;
+                _browser.InvokeAsyncIfPossible(() => _browser.OnBeforePopup(new BeforePopupEventArgs(frame, targetUrl, targetFrameName)));
+            }
+
+            if (_config is not null)
+            {
+                var isUrlExternal = _config.UrlSchemes?.IsUrlRegisteredExternalBrowserScheme(targetUrl);
+                if (isUrlExternal.HasValue && isUrlExternal.Value)
+                {
+                    BrowserLauncher.Open(_config.Platform, targetUrl);
+                    return true;
+                }
             }
 
             // Sample: http://chromely.com/democontroller/showdevtools 
             // Expected to execute controller route action without return value
             var route = _routeProvider.GetRoute(targetUrl);
-            if (route != null && !route.HasReturnValue)
+            if (route is not null && !route.HasReturnValue)
             {
                 _requestHandler.Execute(targetUrl);
                 return true;

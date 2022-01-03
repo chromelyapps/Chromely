@@ -110,9 +110,6 @@
         <member name="P:Chromely.Core.Configuration.DefaultConfiguration.CommandLineOptions">
             <summary>Gets or sets the command line options.</summary>
         </member>
-        <member name="P:Chromely.Core.Configuration.DefaultConfiguration.ControllerAssemblies">
-            <summary>Gets or sets the controller assemblies.</summary>
-        </member>
         <member name="P:Chromely.Core.Configuration.DefaultConfiguration.CustomSettings">
             <summary>Gets or sets the custom settings.</summary>
         </member>
@@ -585,42 +582,6 @@
             <summary>
             Gets or sets the data.
             </summary>
-        </member>
-        <member name="T:Chromely.Core.Network.ControllerAssemblyInfo">
-            <summary>
-            The controller assembly info.
-            </summary>
-        </member>
-        <member name="M:Chromely.Core.Network.ControllerAssemblyInfo.#ctor(System.Reflection.Assembly)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Chromely.Core.Network.ControllerAssemblyInfo"/> class.
-            </summary>
-            <param name="assembly">
-            The assembly.
-            </param>
-        </member>
-        <member name="P:Chromely.Core.Network.ControllerAssemblyInfo.Assembly">
-            <summary>
-            Gets or sets the assembly.
-            </summary>
-        </member>
-        <member name="P:Chromely.Core.Network.ControllerAssemblyInfo.IsScanned">
-            <summary>
-            Gets or sets a value indicating whether is scanned.
-            </summary>
-        </member>
-        <member name="P:Chromely.Core.Network.ControllerAssemblyInfo.Key">
-            <summary>
-            Gets the key.
-            </summary>
-        </member>
-        <member name="M:Chromely.Core.Network.ControllerRoutesFactory.CreateControllerInstance(System.Type)">
-            <summary>
-            Creates an instance of a controller of given ControllerBase type.
-            Ctor dependency injection is done using the global IoC container.
-            </summary>
-            <param name="type">Controller type to be created.</param>
-            <returns>Instance reference or null if failed.</returns>
         </member>
         <member name="T:Chromely.Core.Network.IChromelyDataTransferOptions">
             <summary>

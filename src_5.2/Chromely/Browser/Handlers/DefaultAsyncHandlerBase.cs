@@ -1,13 +1,12 @@
 ﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
+#nullable disable
+#pragma warning disable CA1835
+
 using Chromely.Core.Logging;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Buffers;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
 using Xilium.CefGlue;
 
 namespace Chromely.Browser
@@ -99,7 +98,7 @@ namespace Chromely.Browser
         protected abstract long GetDataSize();
 
         /// <inheritdoc/>
-        [Obsolete]
+        [Obsolete("ProcessRequest is obsolete.")]
         protected override bool ProcessRequest(CefRequest request, CefCallback callback)
         {
             if (!this.PrepareRequest(request))
@@ -142,13 +141,13 @@ namespace Chromely.Browser
         }
 
         /// <inheritdoc/>
-        [Obsolete]
+        [Obsolete("ReadResponse is obsolete.")]
         protected override bool ReadResponse(Stream response, int bytesToRead, out int bytesRead, CefCallback callback)
         {
             // if no data stream was specified, then nothing to read
             // and we should stop reading.
             // return false to indicate this.
-            if (_dataStream == null)
+            if (_dataStream is null)
             {
                 bytesRead = 0;
                 callback.Continue();
@@ -175,7 +174,7 @@ namespace Chromely.Browser
             {
                 try
                 {
-                    if (_rentedBuffer == null)
+                    if (_rentedBuffer is null)
                     {
                         _rentedBuffer = ArrayPool<byte>.Shared.Rent(_bufferSize);
                     }
@@ -275,7 +274,7 @@ namespace Chromely.Browser
 
         private void FreeBuffer()
         {
-            if (_rentedBuffer != null)
+            if (_rentedBuffer is not null)
             {
                 ArrayPool<byte>.Shared.Return(_rentedBuffer);
                 _rentedBuffer = null;

@@ -1,4 +1,11 @@
-﻿using System;
+﻿#nullable disable
+
+#pragma warning disable IDE0057
+#pragma warning disable IDE0079
+#pragma warning disable IDE1005
+#pragma warning disable IDE0016
+
+using System;
 using System.IO;
 using System.Text;
 
@@ -104,10 +111,8 @@ namespace ICSharpCode.SharpZipLib.Tar
                 throw new ArgumentNullException(nameof(inputStream));
             }
 
-            var tarStream = inputStream as TarInputStream;
-
             TarArchive result;
-            if (tarStream != null)
+            if (inputStream is TarInputStream tarStream)
             {
                 result = new TarArchive(tarStream);
             }
@@ -151,10 +156,8 @@ namespace ICSharpCode.SharpZipLib.Tar
                 throw new ArgumentNullException(nameof(outputStream));
             }
 
-            var tarStream = outputStream as TarOutputStream;
-
             TarArchive result;
-            if (tarStream != null)
+            if (outputStream is TarOutputStream tarStream)
             {
                 result = new TarArchive(tarStream);
             }
@@ -758,23 +761,21 @@ namespace ICSharpCode.SharpZipLib.Tar
 
                     using (StreamReader inStream = File.OpenText(entryFilename))
                     {
-                        using (Stream outStream = File.Create(tempFileName))
+                        using Stream outStream = File.Create(tempFileName);
+
+                        while (true)
                         {
-
-                            while (true)
+                            string line = inStream.ReadLine();
+                            if (line == null)
                             {
-                                string line = inStream.ReadLine();
-                                if (line == null)
-                                {
-                                    break;
-                                }
-                                byte[] data = Encoding.ASCII.GetBytes(line);
-                                outStream.Write(data, 0, data.Length);
-                                outStream.WriteByte((byte)'\n');
+                                break;
                             }
-
-                            outStream.Flush();
+                            byte[] data = Encoding.ASCII.GetBytes(line);
+                            outStream.Write(data, 0, data.Length);
+                            outStream.WriteByte((byte)'\n');
                         }
+
+                        outStream.Flush();
                     }
 
                     entry.Size = new FileInfo(tempFileName).Length;
@@ -947,9 +948,8 @@ namespace ICSharpCode.SharpZipLib.Tar
         string pathPrefix;
 
         bool applyUserInfoOverrides;
-
-        TarInputStream tarIn;
-        TarOutputStream tarOut;
+        readonly TarInputStream tarIn;
+        readonly TarOutputStream tarOut;
         bool isDisposed;
         #endregion
     }

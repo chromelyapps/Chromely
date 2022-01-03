@@ -1,7 +1,8 @@
 ﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
-using System;
+#pragma warning disable CA1816
+
 using System.Reflection;
 using Xilium.CefGlue;
 
@@ -56,7 +57,7 @@ namespace Chromely.Browser
                 // We don't want to change Xilium.CefGlue.CefBrowser
                 // we check the internal _self property to see
                 // if it is already destroyed
-                if (Browser != null
+                if (Browser is not null
                     && typeof(CefBrowser).GetField("_self", BindingFlags.NonPublic | BindingFlags.Instance)?.GetValue(Browser) is Pointer self
                     && Pointer.Unbox(self) != null)
                 {

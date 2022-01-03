@@ -15,7 +15,6 @@ public class WindowSample : Window
         ConsoleMessage += DemoWindow_ConsoleMessage;
         AddressChanged += DemoWindow_AddressChanged;
         #endregion Events
-
     }
 
     #region Events

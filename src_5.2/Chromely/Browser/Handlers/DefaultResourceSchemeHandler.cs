@@ -1,9 +1,6 @@
 ﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
-using System;
-using System.IO;
-using System.Threading.Tasks;
 using Chromely.Core;
 using Chromely.Core.Configuration;
 using Chromely.Core.Infrastructure;
@@ -17,7 +14,7 @@ namespace Chromely.Browser
         protected readonly IChromelyConfiguration _config;
         protected readonly IChromelyErrorHandler _chromelyErrorHandler;
         protected IChromelyResource _chromelyResource;
-        protected FileInfo _fileInfo;
+        protected FileInfo? _fileInfo;
 
         public DefaultResourceSchemeHandler(IChromelyConfiguration config, IChromelyErrorHandler chromelyErrorHandler)
         {
@@ -89,7 +86,7 @@ namespace Chromely.Browser
                             _chromelyResource = _chromelyErrorHandler.HandleError(_fileInfo, exception);
                         }
 
-                        if (_chromelyResource.Content == null)
+                        if (_chromelyResource.Content is null)
                         {
                             callback.Cancel();
                         }
@@ -107,14 +104,20 @@ namespace Chromely.Browser
 
         protected virtual void SetResponseInfoOnSuccess()
         {
+            Stream = Stream.Null;
+
             //Reset the stream position to 0 so the stream can be copied into the underlying unmanaged buffer
-            _chromelyResource.Content.Position = 0;
-            //Populate the response values - No longer need to implement GetResponseHeaders (unless you need to perform a redirect)
-            ResponseLength = _chromelyResource.Content.Length;
+            if (_chromelyResource.Content is not null)
+            {
+                _chromelyResource.Content.Position = 0;
+                //Populate the response values - No longer need to implement GetResponseHeaders (unless you need to perform a redirect)
+                ResponseLength = _chromelyResource.Content.Length;
+                Stream = _chromelyResource.Content;
+            }
+
             MimeType = _chromelyResource.MimeType;
             StatusCode = (int)_chromelyResource.StatusCode;
             StatusText = _chromelyResource.StatusText;
-            Stream = _chromelyResource.Content;
         }
     }
 }
