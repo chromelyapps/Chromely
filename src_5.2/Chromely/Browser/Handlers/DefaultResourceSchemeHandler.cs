@@ -39,10 +39,8 @@ namespace Chromely.Browser
         public override CefReturnValue ProcessRequestAsync(CefRequest request, CefCallback callback)
         {
             var uri = new Uri(request.Url);
-            var fileName = uri.AbsolutePath;
-
             var scheme = _config.UrlSchemes.GetScheme(request.Url);
-            var isFolderResourceScheme = scheme.IsUrlSchemeFolderResource() && !string.IsNullOrWhiteSpace(scheme.Folder);
+            var isFolderResourceScheme = scheme is not null && scheme.IsUrlSchemeFolderResource();
 
             var u = new Uri(request.Url);
             var file = isFolderResourceScheme

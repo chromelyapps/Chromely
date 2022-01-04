@@ -6,6 +6,7 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using Chromely.Core;
+using Chromely.Core.Configuration;
 using Chromely.Core.Infrastructure;
 using Chromely.Core.Logging;
 using Chromely.Core.Network;
@@ -16,6 +17,7 @@ namespace Chromely.Browser
 {
     public class DefaultResourceSchemeHandler : CefResourceHandler
     {
+        protected readonly IChromelyConfiguration _config;
         protected IChromelyResource _chromelyResource;
         protected IChromelyErrorHandler _chromelyErrorHandler;
 
@@ -23,8 +25,9 @@ namespace Chromely.Browser
         protected bool _completed;
         protected int _totalBytesRead;
 
-        public DefaultResourceSchemeHandler(IChromelyErrorHandler chromelyErrorHandler)
+        public DefaultResourceSchemeHandler(IChromelyConfiguration config, IChromelyErrorHandler chromelyErrorHandler)
         {
+            _config = config;
             _chromelyResource = new ChromelyResource();
             _chromelyErrorHandler = chromelyErrorHandler;
             _fileInfo = null;
@@ -33,8 +36,14 @@ namespace Chromely.Browser
         [Obsolete]
         protected override bool ProcessRequest(CefRequest request, CefCallback callback)
         {
+            var uri = new Uri(request.Url);
+            var scheme = _config.UrlSchemes.GetScheme(request.Url);
+            var isFolderResourceScheme = scheme != null && scheme.IsUrlSchemeFolderResource();
+
             var u = new Uri(request.Url);
-            var file = u.Authority + u.AbsolutePath;
+            var file = isFolderResourceScheme
+                        ? scheme.GetResourceFolderFile(u.AbsolutePath)
+                        : u.Authority + u.AbsolutePath;
 
             _totalBytesRead = 0;
             _chromelyResource.Content = null;

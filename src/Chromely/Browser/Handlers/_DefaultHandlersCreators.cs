@@ -47,7 +47,7 @@ namespace Chromely.Browser
      */
     internal sealed class ChromelyResourceSchemeHandlerFactory : DefaultResourceSchemeHandlerFactory, IDefaultResourceCustomHandler
     {
-        public ChromelyResourceSchemeHandlerFactory(IChromelyErrorHandler chromelyErrorHandler) : base(chromelyErrorHandler)
+        public ChromelyResourceSchemeHandlerFactory(IChromelyConfiguration config, IChromelyErrorHandler chromelyErrorHandler) : base(config, chromelyErrorHandler)
         {
         }
     }

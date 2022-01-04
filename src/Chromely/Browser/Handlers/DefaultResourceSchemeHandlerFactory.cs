@@ -2,6 +2,7 @@
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
 using Chromely.Core;
+using Chromely.Core.Configuration;
 using Xilium.CefGlue;
 
 namespace Chromely.Browser
@@ -11,10 +12,12 @@ namespace Chromely.Browser
     /// </summary>
     public class DefaultResourceSchemeHandlerFactory : CefSchemeHandlerFactory
     {
+        protected readonly IChromelyConfiguration _config;
         protected readonly IChromelyErrorHandler _chromelyErrorHandler;
 
-        public DefaultResourceSchemeHandlerFactory(IChromelyErrorHandler chromelyErrorHandler)
+        public DefaultResourceSchemeHandlerFactory(IChromelyConfiguration config, IChromelyErrorHandler chromelyErrorHandler)
         {
+            _config = config;
             _chromelyErrorHandler = chromelyErrorHandler;
         }
 
@@ -38,7 +41,7 @@ namespace Chromely.Browser
         /// </returns>
         protected override CefResourceHandler Create(CefBrowser browser, CefFrame frame, string schemeName, CefRequest request)
         {
-            return new DefaultResourceSchemeHandler(_chromelyErrorHandler);
+            return new DefaultResourceSchemeHandler(_config, _chromelyErrorHandler);
         }
     }
 }

@@ -15,10 +15,30 @@ namespace Chromely.Core.Network
             Name = Guid.NewGuid().ToString();
             Scheme = scheme;
             Host = host;
+            Folder = null;
             BaseUrl = null;
             UrlSchemeType = type;
             BaseUrlStrict = false;
             AssemblyOptions = null;
+
+            if (!string.IsNullOrEmpty(BaseUrl))
+            {
+                var uri = new Uri(BaseUrl);
+                Scheme = uri.Scheme;
+                Host = uri.Host;
+            }
+        }
+
+        public UrlScheme(string name, string scheme, string host, string folder, string baseUrl, UrlSchemeType type, bool baseUrlStrict = false, AssemblyOptions assemblyOptions = null)
+        {
+            Name = name;
+            Scheme = scheme;
+            Host = host;
+            Folder = folder;
+            BaseUrl = baseUrl;
+            UrlSchemeType = type;
+            BaseUrlStrict = baseUrlStrict;
+            AssemblyOptions = assemblyOptions;
 
             if (!string.IsNullOrEmpty(BaseUrl))
             {
@@ -33,6 +53,7 @@ namespace Chromely.Core.Network
             Name = name;
             Scheme = scheme;
             Host = host;
+            Folder = null;
             BaseUrl = baseUrl;
             UrlSchemeType = type;
             BaseUrlStrict = baseUrlStrict;
@@ -51,6 +72,7 @@ namespace Chromely.Core.Network
             Name = Guid.NewGuid().ToString();
             Scheme = scheme;
             Host = host;
+            Folder = null;
             BaseUrl = baseUrl;
             UrlSchemeType = type;
             BaseUrlStrict = baseUrlStrict;
@@ -68,8 +90,10 @@ namespace Chromely.Core.Network
         public string BaseUrl { get; set; }
         public string Scheme { get; set; }
         public string Host { get; set; }
+        public string Folder { get; set; }
         public UrlSchemeType UrlSchemeType { get; set; }
         public AssemblyOptions AssemblyOptions { get; set; }
+        public bool IsFolderResource => !string.IsNullOrWhiteSpace(Folder);
 
         /// <summary>
         /// Gets or sets a value indicating whether url must be relative to base.
