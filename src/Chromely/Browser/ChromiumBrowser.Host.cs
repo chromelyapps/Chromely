@@ -395,14 +395,6 @@ namespace Chromely.Browser
         }
 
         /// <summary>
-        /// Send a focus event to the browser.
-        /// </summary>
-        public void SendFocusEvent(bool setFocus)
-        {
-            BrowserHost?.SendFocusEvent(setFocus);
-        }
-
-        /// <summary>
         /// Send a capture lost event to the browser.
         /// </summary>
         public void SendCaptureLostEvent()

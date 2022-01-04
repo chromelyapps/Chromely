@@ -112,7 +112,6 @@
         }
 
         #region cef_version
-
         public static string CefVersion => libcef.CEF_VERSION;
 
         public static string ChromeVersion
@@ -921,57 +920,6 @@
             }
         }
 
-        /// <summary>
-        /// Register the Widevine CDM plugin.
-        ///
-        /// The client application is responsible for downloading an appropriate
-        /// platform-specific CDM binary distribution from Google, extracting the
-        /// contents, and building the required directory structure on the local machine.
-        /// The CefBrowserHost::StartDownload method and CefZipArchive class can be used
-        /// to implement this functionality in CEF. Contact Google via
-        /// https://www.widevine.com/contact.html for details on CDM download.
-        ///
-        /// |path| is a directory that must contain the following files:
-        ///   1. manifest.json file from the CDM binary distribution (see below).
-        ///   2. widevinecdm file from the CDM binary distribution (e.g.
-        ///      widevinecdm.dll on on Windows, libwidevinecdm.dylib on OS X,
-        ///      libwidevinecdm.so on Linux).
-        ///
-        /// If any of these files are missing or if the manifest file has incorrect
-        /// contents the registration will fail and |callback| will receive a |result|
-        /// value of CEF_CDM_REGISTRATION_ERROR_INCORRECT_CONTENTS.
-        ///
-        /// The manifest.json file must contain the following keys:
-        ///   A. "os": Supported OS (e.g. "mac", "win" or "linux").
-        ///   B. "arch": Supported architecture (e.g. "ia32" or "x64").
-        ///   C. "x-cdm-module-versions": Module API version (e.g. "4").
-        ///   D. "x-cdm-interface-versions": Interface API version (e.g. "8").
-        ///   E. "x-cdm-host-versions": Host API version (e.g. "8").
-        ///   F. "version": CDM version (e.g. "1.4.8.903").
-        ///   G. "x-cdm-codecs": List of supported codecs (e.g. "vp8,vp9.0,avc1").
-        ///
-        /// A through E are used to verify compatibility with the current Chromium
-        /// version. If the CDM is not compatible the registration will fail and
-        /// |callback| will receive a |result| value of
-        /// CEF_CDM_REGISTRATION_ERROR_INCOMPATIBLE.
-        ///
-        /// |callback| will be executed asynchronously once registration is complete.
-        ///
-        /// On Linux this function must be called before CefInitialize() and the
-        /// registration cannot be changed during runtime. If registration is not
-        /// supported at the time that CefRegisterWidevineCdm() is called then |callback|
-        /// will receive a |result| value of CEF_CDM_REGISTRATION_ERROR_NOT_SUPPORTED.
-        /// </summary>
-        public static void CefRegisterWidevineCdm(string path, CefRegisterCdmCallback callback = null)
-        {
-            fixed (char* path_str = path)
-            {
-                var n_path = new cef_string_t(path_str, path.Length);
-                libcef.register_widevine_cdm(&n_path,
-                    callback != null ? callback.ToNative() : null);
-            }
-        }
-
         #endregion
 
         #region cef_path_util
@@ -1172,6 +1120,15 @@
                 libcef.load_crlsets_file(&n_path);
             }
         }
+
+        #endregion
+
+        #region i18n
+
+        /// <summary>
+        /// Returns true if the application text direction is right-to-left.
+        /// </summary>
+        public static bool IsRtl() => libcef.is_rtl() != 0;
 
         #endregion
 

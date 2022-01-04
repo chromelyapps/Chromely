@@ -176,14 +176,6 @@ namespace Chromely.Browser
 
                         break;
 
-                    case CefSettingKeys.IGNORECERTIFICATEERRORS:
-                        if (setting.Value.TryParseBoolean(out boolResult))
-                        {
-                            cefSettings.IgnoreCertificateErrors = boolResult;
-                        }
-
-                        break;
-
                     case CefSettingKeys.ACCEPTLANGUAGELIST:
                         cefSettings.AcceptLanguageList = setting.Value;
                         break;

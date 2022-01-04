@@ -55,28 +55,18 @@
             set { ThrowIfDisposed(); cef_string_t.Copy(value, &_self->window_name); }
         }
 
-        public override int X
+        public override CefRectangle Bounds
         {
-            get { ThrowIfDisposed(); return _self->x; }
-            set { ThrowIfDisposed(); _self->x = value; }
-        }
-
-        public override int Y
-        {
-            get { ThrowIfDisposed(); return _self->y; }
-            set { ThrowIfDisposed(); _self->y = value; }
-        }
-
-        public override int Width
-        {
-            get { ThrowIfDisposed(); return _self->width; }
-            set { ThrowIfDisposed(); _self->width = value; }
-        }
-
-        public override int Height
-        {
-            get { ThrowIfDisposed(); return _self->height; }
-            set { ThrowIfDisposed(); _self->height = value; }
+            get
+            {
+                ThrowIfDisposed();
+                return new CefRectangle(_self->bounds);
+            }
+            set
+            {
+                ThrowIfDisposed();
+                _self->bounds = value.AsNative();
+            }
         }
 
         public override WindowStyle Style

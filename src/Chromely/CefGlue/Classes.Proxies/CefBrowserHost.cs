@@ -7,22 +7,21 @@
     using Xilium.CefGlue.Interop;
 
     /// <summary>
-    /// Class used to represent the browser process aspects of a browser window. The
-    /// methods of this class can only be called in the browser process. They may be
-    /// called on any thread in that process unless otherwise indicated in the
-    /// comments.
+    /// Class used to represent the browser process aspects of a browser. The methods
+    /// of this class can only be called in the browser process. They may be called
+    /// on any thread in that process unless otherwise indicated in the comments.
     /// </summary>
     public sealed unsafe partial class CefBrowserHost
     {
         /// <summary>
-        /// Create a new browser window using the window parameters specified by
-        /// |windowInfo|. All values will be copied internally and the actual window
-        /// will be created on the UI thread. If |request_context| is empty the
-        /// global request context will be used. This method can be called on any
-        /// browser process thread and will not block. The optional |extra_info|
-        /// parameter provides an opportunity to specify extra information specific
-        /// to the created browser that will be passed to
-        /// CefRenderProcessHandler::OnBrowserCreated() in the render process.
+        /// Create a new browser using the window parameters specified by |windowInfo|.
+        /// All values will be copied internally and the actual window (if any) will be
+        /// created on the UI thread. If |request_context| is empty the global request
+        /// context will be used. This method can be called on any browser process
+        /// thread and will not block. The optional |extra_info| parameter provides an
+        /// opportunity to specify extra information specific to the created browser
+        /// that will be passed to CefRenderProcessHandler::OnBrowserCreated() in the
+        /// render process.
         /// </summary>
         public static void CreateBrowser(CefWindowInfo windowInfo, CefClient client, CefBrowserSettings settings, string url, CefDictionaryValue extraInfo = null, CefRequestContext requestContext = null)
         {
@@ -49,13 +48,12 @@
 
 
         /// <summary>
-        /// Create a new browser window using the window parameters specified by
-        /// |windowInfo|. If |request_context| is empty the global request context
-        /// will be used. This method can only be called on the browser process UI
-        /// thread. The optional |extra_info| parameter provides an opportunity to
-        /// specify extra information specific to the created browser that will be
-        /// passed to CefRenderProcessHandler::OnBrowserCreated() in the render
-        /// process.
+        /// Create a new browser using the window parameters specified by |windowInfo|.
+        /// If |request_context| is empty the global request context will be used. This
+        /// method can only be called on the browser process UI thread. The optional
+        /// |extra_info| parameter provides an opportunity to specify extra information
+        /// specific to the created browser that will be passed to
+        /// CefRenderProcessHandler::OnBrowserCreated() in the render process.
         /// </summary>
         public static CefBrowser CreateBrowserSync(CefWindowInfo windowInfo, CefClient client, CefBrowserSettings settings, string url, CefDictionaryValue extraInfo = null, CefRequestContext requestContext = null)
         {
@@ -106,9 +104,9 @@
 
         /// <summary>
         /// Helper for closing a browser. Call this method from the top-level window
-        /// close handler. Internally this calls CloseBrowser(false) if the close has
-        /// not yet been initiated. This method returns false while the close is
-        /// pending and true after the close has completed. See CloseBrowser() and
+        /// close handler (if any). Internally this calls CloseBrowser(false) if the
+        /// close has not yet been initiated. This method returns false while the close
+        /// is pending and true after the close has completed. See CloseBrowser() and
         /// CefLifeSpanHandler::DoClose() documentation for additional usage
         /// information. This method must be called on the browser process UI thread.
         /// </summary>
@@ -126,9 +124,10 @@
         }
 
         /// <summary>
-        /// Retrieve the window handle for this browser. If this browser is wrapped in
-        /// a CefBrowserView this method should be called on the browser process UI
-        /// thread and it will return the handle for the top-level native window.
+        /// Retrieve the window handle (if any) for this browser. If this browser is
+        /// wrapped in a CefBrowserView this method should be called on the browser
+        /// process UI thread and it will return the handle for the top-level native
+        /// window.
         /// </summary>
         public IntPtr GetWindowHandle()
         {
@@ -136,10 +135,10 @@
         }
 
         /// <summary>
-        /// Retrieve the window handle of the browser that opened this browser. Will
-        /// return NULL for non-popup windows or if this browser is wrapped in a
-        /// CefBrowserView. This method can be used in combination with custom handling
-        /// of modal windows.
+        /// Retrieve the window handle (if any) of the browser that opened this
+        /// browser. Will return NULL for non-popup browsers or if this browser is
+        /// wrapped in a CefBrowserView. This method can be used in combination with
+        /// custom handling of modal windows.
         /// </summary>
         public IntPtr GetOpenerWindowHandle()
         {
@@ -591,14 +590,6 @@
             cef_touch_event_t n_event;
             @event.ToNative(out n_event);
             cef_browser_host_t.send_touch_event(_self, &n_event);
-        }
-
-        /// <summary>
-        /// Send a focus event to the browser.
-        /// </summary>
-        public void SendFocusEvent(bool setFocus)
-        {
-            cef_browser_host_t.send_focus_event(_self, setFocus ? 1 : 0);
         }
 
         /// <summary>

@@ -36,14 +36,14 @@
         protected abstract CefCookieAccessFilter GetCookieAccessFilter(CefBrowser browser, CefFrame frame, CefRequest request);
 
 
-        private CefReturnValue on_before_resource_load(cef_resource_request_handler_t* self, cef_browser_t* browser, cef_frame_t* frame, cef_request_t* request, cef_request_callback_t* callback)
+        private CefReturnValue on_before_resource_load(cef_resource_request_handler_t* self, cef_browser_t* browser, cef_frame_t* frame, cef_request_t* request, cef_callback_t* callback)
         {
             CheckSelf(self);
 
             var m_browser = CefBrowser.FromNativeOrNull(browser);
             var m_frame = CefFrame.FromNativeOrNull(frame);
             var m_request = CefRequest.FromNative(request);
-            var m_callback = CefRequestCallback.FromNative(callback);
+            var m_callback = CefCallback.FromNative(callback);
 
             var result = OnBeforeResourceLoad(m_browser, m_frame, m_request, m_callback);
 
@@ -64,11 +64,11 @@
         /// requests originating from service workers or CefURLRequest. To redirect or
         /// change the resource load optionally modify |request|. Modification of the
         /// request URL will be treated as a redirect. Return RV_CONTINUE to continue
-        /// the request immediately. Return RV_CONTINUE_ASYNC and call
-        /// CefRequestCallback:: Continue() at a later time to continue or cancel the
-        /// request asynchronously. Return RV_CANCEL to cancel the request immediately.
+        /// the request immediately. Return RV_CONTINUE_ASYNC and call CefCallback
+        /// methods at a later time to continue or cancel the request asynchronously.
+        /// Return RV_CANCEL to cancel the request immediately.
         /// </summary>
-        protected virtual CefReturnValue OnBeforeResourceLoad(CefBrowser browser, CefFrame frame, CefRequest request, CefRequestCallback callback)
+        protected virtual CefReturnValue OnBeforeResourceLoad(CefBrowser browser, CefFrame frame, CefRequest request, CefCallback callback)
         {
             return CefReturnValue.Continue;
         }

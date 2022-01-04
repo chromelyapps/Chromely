@@ -80,7 +80,6 @@ namespace Chromely.Core.Infrastructure
         public const string PACKLOADINGDISABLED = nameof(PACKLOADINGDISABLED);
         public const string REMOTEDEBUGGINGPORT = nameof(REMOTEDEBUGGINGPORT);
         public const string UNCAUGHTEXCEPTIONSTACKSIZE = nameof(UNCAUGHTEXCEPTIONSTACKSIZE);
-        public const string IGNORECERTIFICATEERRORS = nameof(IGNORECERTIFICATEERRORS);
         public const string ENABLENETSECURITYEXPIRATION = nameof(ENABLENETSECURITYEXPIRATION);
         public const string ACCEPTLANGUAGELIST = nameof(ACCEPTLANGUAGELIST);
         public const string FOCUSEDNODECHANGEDENABLED = nameof(FOCUSEDNODECHANGEDENABLED);

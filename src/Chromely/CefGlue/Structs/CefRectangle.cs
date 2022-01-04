@@ -20,6 +20,14 @@
             _height = height;
         }
 
+        internal CefRectangle(cef_rect_t rect)
+        {
+            _x = rect.x;
+            _y = rect.y;
+            _width = rect.width;
+            _height = rect.height;
+        }
+
         public int X
         {
             get { return _x; }
@@ -43,5 +51,8 @@
             get { return _height; }
             set { _height = value; }
         }
+
+        internal cef_rect_t AsNative()
+            => new cef_rect_t(_x, _y, _width, _height);
     }
 }

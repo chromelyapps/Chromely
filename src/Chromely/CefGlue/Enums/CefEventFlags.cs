@@ -34,5 +34,7 @@ namespace Xilium.CefGlue
         IsLeft            = 1 << 10,
         IsRight           = 1 << 11,
         AltGrDown         = 1 << 12,
+
+        IsRepeat          = 1 << 13,
     }
 }

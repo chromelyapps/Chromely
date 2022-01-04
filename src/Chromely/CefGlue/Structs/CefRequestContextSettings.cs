@@ -42,16 +42,6 @@
         public bool PersistUserPreferences { get; set; }
 
         /// <summary>
-        /// Set to true (1) to ignore errors related to invalid SSL certificates.
-        /// Enabling this setting can lead to potential security vulnerabilities like
-        /// "man in the middle" attacks. Applications that load content from the
-        /// internet should not enable this setting. Can be set globally using the
-        /// CefSettings.ignore_certificate_errors value. This value will be ignored if
-        /// |cache_path| matches the CefSettings.cache_path value.
-        /// </summary>
-        public bool IgnoreCertificateErrors { get; set; }
-
-        /// <summary>
         /// Comma delimited ordered list of language codes without any whitespace that
         /// will be used in the "Accept-Language" HTTP header. Can be set globally
         /// using the CefSettings.accept_language_list value or overridden on a per-
@@ -80,7 +70,6 @@
             cef_string_t.Copy(CachePath, &ptr->cache_path);
             ptr->persist_session_cookies = PersistSessionCookies ? 1 : 0;
             ptr->persist_user_preferences = PersistUserPreferences ? 1 : 0;
-            ptr->ignore_certificate_errors = IgnoreCertificateErrors ? 1 : 0;
             cef_string_t.Copy(AcceptLanguageList, &ptr->accept_language_list);
             cef_string_t.Copy(CookieableSchemesList, &ptr->cookieable_schemes_list);
             ptr->cookieable_schemes_exclude_defaults = CookieableSchemesExcludeDefaults ? 1 : 0;

@@ -1,5 +1,5 @@
 ﻿//
-// This file manually written from cef/include/internal/cef_types.h.
+// This file manually written from cef/include/internal/cef_types_geometry.h.
 //
 namespace Xilium.CefGlue.Interop
 {

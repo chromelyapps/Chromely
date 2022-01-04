@@ -13,7 +13,6 @@ namespace Xilium.CefGlue.Interop
         public cef_string_t cache_path;
         public int persist_session_cookies;
         public int persist_user_preferences;
-        public int ignore_certificate_errors;
         public cef_string_t accept_language_list;
         public cef_string_t cookieable_schemes_list;
         public int cookieable_schemes_exclude_defaults;

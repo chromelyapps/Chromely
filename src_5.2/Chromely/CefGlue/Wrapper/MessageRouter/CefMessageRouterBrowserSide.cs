@@ -339,7 +339,6 @@ namespace Xilium.CefGlue.Wrapper
                 var args = message.Arguments;
                 Debug.Assert(args.Count == 6);
 
-                var frameId = Helpers.Int64Set(args.GetInt(0), args.GetInt(1));
                 var contextId = args.GetInt(2);
                 var requestId = args.GetInt(3);
                 var request = args.GetString(4);
@@ -388,7 +387,6 @@ namespace Xilium.CefGlue.Wrapper
                     var info = new QueryInfo
                     {
                         Browser = browser,
-                        FrameId = frameId,
                         ContextId = contextId,
                         RequestId = requestId,
                         Persistent = persistent,

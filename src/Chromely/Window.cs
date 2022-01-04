@@ -60,6 +60,11 @@ namespace Chromely
         {
             if (Handle != IntPtr.Zero)
             {
+                if (_config.WindowOptions.WindowFrameless)
+                {
+                    _config.WindowOptions.WindowState = WindowState.Minimize;
+                }
+
                 ShowWindow(Handle, SW.SHOWMINIMIZED);
             }
         }
@@ -67,6 +72,11 @@ namespace Chromely
         {
             if (Handle != IntPtr.Zero)
             {
+                if (_config.WindowOptions.WindowFrameless)
+                {
+                    _config.WindowOptions.WindowState = WindowState.Maximize;
+                }
+
                 ShowWindow(Handle, SW.SHOWMAXIMIZED);
             }
         }
@@ -74,6 +84,11 @@ namespace Chromely
         {
             if (Handle != IntPtr.Zero)
             {
+                if (_config.WindowOptions.WindowFrameless)
+                {
+                    _config.WindowOptions.WindowState = WindowState.Normal;
+                }
+
                 ShowWindow(Handle, SW.RESTORE);
             }
         }

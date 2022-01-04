@@ -192,26 +192,6 @@
         }
 
         /// <summary>
-        /// Controls whether file URLs will have access to all URLs. Also configurable
-        /// using the "allow-universal-access-from-files" command-line switch.
-        /// </summary>
-        public CefState UniversalAccessFromFileUrls
-        {
-            get { return _self->universal_access_from_file_urls; }
-            set { _self->universal_access_from_file_urls = value; }
-        }
-
-        /// <summary>
-        /// Controls whether file URLs will have access to other file URLs. Also
-        /// configurable using the "allow-access-from-files" command-line switch.
-        /// </summary>
-        public CefState FileAccessFromFileUrls
-        {
-            get { return _self->file_access_from_file_urls; }
-            set { _self->file_access_from_file_urls = value; }
-        }
-
-        /// <summary>
         /// Controls whether image URLs will be loaded from the network. A cached image
         /// will still be rendered if requested. Also configurable using the
         /// "disable-image-loading" command-line switch.
@@ -271,16 +251,6 @@
         {
             get { return _self->databases; }
             set { _self->databases = value; }
-        }
-
-        /// <summary>
-        /// Controls whether the application cache can be used. Also configurable using
-        /// the "disable-application-cache" command-line switch.
-        /// </summary>
-        public CefState ApplicationCache
-        {
-            get { return _self->application_cache; }
-            set { _self->application_cache = value; }
         }
 
         /// <summary>

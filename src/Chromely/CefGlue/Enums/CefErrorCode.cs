@@ -630,6 +630,11 @@ namespace Xilium.CefGlue
         /// </summary>
         SSL_KEY_USAGE_INCOMPATIBLE = -181,
 
+        /// <summary>
+        /// The ECHConfigList fetched over DNS cannot be parsed.
+        /// </summary>
+        INVALID_ECH_CONFIG_LIST = -182,
+
         // Certificate error codes
         //
         // The values of certificate error codes must be consecutive.
@@ -1448,6 +1453,13 @@ namespace Xilium.CefGlue
         /// Failed to resolve the hostname of a DNS-over-HTTPS server.
         /// </summary>
         DNS_SECURE_RESOLVER_HOSTNAME_RESOLUTION_FAILED = -808,
+
+        /// <summary>
+        /// DNS identified the request as disallowed for insecure connection (http/ws).
+        /// Error should be handled as if an HTTP redirect was received to redirect to
+        /// https or wss.
+        /// </summary>
+        DNS_NAME_HTTPS_ONLY = -809,
 
         // CefGlue backward compatiblity.
         // Generally we prefer .NET naming rules, but will care about later.

@@ -7,13 +7,19 @@
     using Xilium.CefGlue.Interop;
 
     /// <summary>
-    /// Class used to represent a browser window. When used in the browser process
-    /// the methods of this class may be called on any thread unless otherwise
-    /// indicated in the comments. When used in the render process the methods of
-    /// this class may only be called on the main thread.
+    /// Class used to represent a browser. When used in the browser process the
+    /// methods of this class may be called on any thread unless otherwise indicated
+    /// in the comments. When used in the render process the methods of this class
+    /// may only be called on the main thread.
     /// </summary>
     public sealed unsafe partial class CefBrowser
     {
+        /// <summary>
+        /// True if this object is currently valid. This will return false after
+        /// CefLifeSpanHandler::OnBeforeClose is called.
+        /// </summary>
+        public bool IsValid => cef_browser_t.is_valid(_self) != 0;
+
         /// <summary>
         /// Returns the browser host object. This method can only be called in the
         /// browser process.
@@ -109,7 +115,7 @@
         }
 
         /// <summary>
-        /// Returns true if the window is a popup window.
+        /// Returns true if the browser is a popup.
         /// </summary>
         public bool IsPopup
         {
@@ -125,7 +131,13 @@
         }
 
         /// <summary>
-        /// Returns the main (top-level) frame for the browser window.
+        /// Returns the main (top-level) frame for the browser. In the browser process
+        /// this will return a valid object until after
+        /// CefLifeSpanHandler::OnBeforeClose is called. In the renderer process this
+        /// will return NULL if the main frame is hosted in a different renderer
+        /// process (e.g. for cross-origin sub-frames). The main frame object will
+        /// change during cross-origin navigation or re-navigation after renderer
+        /// process termination (due to crashes, etc).
         /// </summary>
         public CefFrame GetMainFrame()
         {

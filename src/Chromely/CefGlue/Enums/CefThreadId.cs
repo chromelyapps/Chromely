@@ -28,7 +28,6 @@ namespace Xilium.CefGlue
         /// CefShutdown() are guaranteed to run.
         /// </summary>
         FileBackground,
-        File = FileBackground,
 
         /// <summary>
         /// Used for blocking tasks (e.g. file system access) that affect UI or

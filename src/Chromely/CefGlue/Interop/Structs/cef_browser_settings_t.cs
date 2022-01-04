@@ -32,15 +32,12 @@ namespace Xilium.CefGlue.Interop
         public CefState javascript_access_clipboard;
         public CefState javascript_dom_paste;
         public CefState plugins;
-        public CefState universal_access_from_file_urls;
-        public CefState file_access_from_file_urls;
         public CefState image_loading;
         public CefState image_shrink_standalone_to_fit;
         public CefState text_area_resize;
         public CefState tab_to_links;
         public CefState local_storage;
         public CefState databases;
-        public CefState application_cache;
         public CefState webgl;
 
         public uint background_color;

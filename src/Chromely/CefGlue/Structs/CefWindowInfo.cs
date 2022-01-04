@@ -108,10 +108,7 @@
 
         // Common properties for windows & macosx
         public abstract string Name { get; set; }
-        public abstract int X { get; set; }
-        public abstract int Y { get; set; }
-        public abstract int Width { get; set; }
-        public abstract int Height { get; set; }
+        public abstract CefRectangle Bounds { get; set; }
 
         // Windows-specific
         public abstract WindowStyle Style { get; set; }
@@ -148,7 +145,7 @@
         /// </summary>
         public abstract bool ExternalBeginFrameEnabled { get; set; }
 
-        public void SetAsChild(IntPtr parentHandle, CefRectangle rect)
+        public void SetAsChild(IntPtr parentHandle, CefRectangle bounds)
         {
             ThrowIfDisposed();
 
@@ -160,10 +157,7 @@
 
             ParentHandle = parentHandle;
 
-            X = rect.X;
-            Y = rect.Y;
-            Width = rect.Width;
-            Height = rect.Height;
+            Bounds = bounds;
         }
 
         public void SetAsPopup(IntPtr parentHandle, string name)
@@ -177,11 +171,12 @@
 
             ParentHandle = parentHandle;
 
-            // CW_USEDEFAULT
-            X = int.MinValue;
-            Y = int.MinValue;
-            Width = int.MinValue;
-            Height = int.MinValue;
+            Bounds = new CefRectangle(
+                int.MinValue, // CW_USEDEFAULT,
+                int.MinValue,
+                int.MinValue,
+                int.MinValue
+                );
 
             Name = name;
         }

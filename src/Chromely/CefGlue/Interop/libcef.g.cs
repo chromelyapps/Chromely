@@ -81,6 +81,10 @@ namespace Xilium.CefGlue.Interop
         [DllImport(libcef.DllName, EntryPoint = "cef_load_crlsets_file", CallingConvention = libcef.CEF_CALL)]
         public static extern void load_crlsets_file(cef_string_t* path);
         
+        // CefIsRTL
+        [DllImport(libcef.DllName, EntryPoint = "cef_is_rtl", CallingConvention = libcef.CEF_CALL)]
+        public static extern int is_rtl();
+        
         // CefAddCrossOriginWhitelistEntry
         [DllImport(libcef.DllName, EntryPoint = "cef_add_cross_origin_whitelist_entry", CallingConvention = libcef.CEF_CALL)]
         public static extern int add_cross_origin_whitelist_entry(cef_string_t* source_origin, cef_string_t* target_protocol, cef_string_t* target_domain, int allow_target_subdomains);
@@ -212,10 +216,6 @@ namespace Xilium.CefGlue.Interop
         // CefIsWebPluginUnstable
         [DllImport(libcef.DllName, EntryPoint = "cef_is_web_plugin_unstable", CallingConvention = libcef.CEF_CALL)]
         public static extern void is_web_plugin_unstable(cef_string_t* path, cef_web_plugin_unstable_callback_t* callback);
-        
-        // CefRegisterWidevineCdm
-        [DllImport(libcef.DllName, EntryPoint = "cef_register_widevine_cdm", CallingConvention = libcef.CEF_CALL)]
-        public static extern void register_widevine_cdm(cef_string_t* path, cef_register_cdm_callback_t* callback);
         
     }
 }

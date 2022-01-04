@@ -72,7 +72,7 @@ namespace Chromely.Browser
 
         protected override bool OnProcessMessageReceived(CefBrowser browser, CefFrame frame, CefProcessId sourceProcess, CefProcessMessage message)
         {
-            var handled = MessageRouter.OnProcessMessageReceived(browser, frame, sourceProcess, message);
+            var handled = MessageRouter.OnProcessMessageReceived(browser, sourceProcess, message);
             if (handled)
             {
                 return true;
