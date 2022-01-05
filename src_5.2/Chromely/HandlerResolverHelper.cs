@@ -1,106 +1,99 @@
 ﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
-using Chromely.Browser;
-using Chromely.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+namespace Chromely;
 
-namespace Chromely
+public static class HandlerResolverHelper
 {
-    public static class HandlerResolverHelper
+    public static object? GetCustomOrDefaultHandler(this ChromelyHandlersResolver resolver, Type type)
     {
-        public static object? GetCustomOrDefaultHandler(this ChromelyHandlersResolver resolver, Type type)
+        return resolver.GetFirstCustomOrDefaultHandler(type, typeof(IDefaultCustomHandler));
+    }
+
+    public static object? GetFirstCustomOrDefaultHandler(this ChromelyHandlersResolver resolver, Type type, Type defaultType)
+    {
+        var handlers = resolver?.Invoke(type)?.ToList();
+        if (handlers is not null && handlers.Any())
         {
-            return resolver.GetFirstCustomOrDefaultHandler(type, typeof(IDefaultCustomHandler));
-        }
-
-        public static object? GetFirstCustomOrDefaultHandler(this ChromelyHandlersResolver resolver, Type type, Type defaultType)
-        {
-            var handlers = resolver?.Invoke(type)?.ToList();
-            if (handlers is not null && handlers.Any())
-            {
-                if (handlers.Count == 1)
-                    return handlers[0];
-
-                var customHandler = GetFirstCustomHandler(handlers);
-                if (customHandler is not null)
-                {
-                    return customHandler;
-                }
-
-                var defaultHandler = GetDefaultHandler(handlers, defaultType); 
-                if (defaultHandler is not null)
-                {
-                    return defaultHandler;
-                }
-
+            if (handlers.Count == 1)
                 return handlers[0];
+
+            var customHandler = GetFirstCustomHandler(handlers);
+            if (customHandler is not null)
+            {
+                return customHandler;
             }
 
-            return default;
+            var defaultHandler = GetDefaultHandler(handlers, defaultType);
+            if (defaultHandler is not null)
+            {
+                return defaultHandler;
+            }
+
+            return handlers[0];
         }
 
-        public static object? GetDefaultHandler(this ChromelyHandlersResolver resolver, Type type, Type defaultType)
+        return default;
+    }
+
+    public static object? GetDefaultHandler(this ChromelyHandlersResolver resolver, Type type, Type defaultType)
+    {
+        var handlers = resolver?.Invoke(type)?.ToList();
+        if (handlers is not null && handlers.Any())
         {
-            var handlers = resolver?.Invoke(type)?.ToList();
-            if (handlers is not null && handlers.Any())
-            {
-                if (handlers.Count == 1)
-                    return handlers[0];
-
-                var defaultHandler = GetDefaultHandler(handlers, defaultType);
-                if (defaultHandler is not null)
-                {
-                    return defaultHandler;
-                }
-
+            if (handlers.Count == 1)
                 return handlers[0];
-            }
 
-            return default;
-        }
-
-        private static object? GetDefaultHandler(List<object> handlers, Type type)
-        {
-            if (handlers is not null && handlers.Any())
+            var defaultHandler = GetDefaultHandler(handlers, defaultType);
+            if (defaultHandler is not null)
             {
-                foreach (var handler in handlers)
-                {
-                    if ((type == typeof(IDefaultCustomHandler)) && ((handler as IDefaultCustomHandler) is not null)) return handler;
-                    if ((type == typeof(IDefaultResourceCustomHandler)) && ((handler as IDefaultResourceCustomHandler) is not null)) return handler;
-                    if ((type == typeof(IDefaultAssemblyResourceCustomHandler)) && ((handler as IDefaultAssemblyResourceCustomHandler) is not null)) return handler;
-                    if ((type == typeof(IDefaultRequestCustomHandler)) && ((handler as IDefaultRequestCustomHandler) is not null))return handler;
-                    if ((type == typeof(IDefaultExernalRequestCustomHandler)) && ((handler as IDefaultExernalRequestCustomHandler) is not null)) return handler;
-                    if ((type == typeof(IDefaultOwinCustomHandler)) && ((handler as IDefaultOwinCustomHandler) is not null)) return handler;
-                }
+                return defaultHandler;
             }
 
-            return default;
+            return handlers[0];
         }
 
-        private static object? GetFirstCustomHandler(List<object> handlers)
+        return default;
+    }
+
+    private static object? GetDefaultHandler(List<object> handlers, Type type)
+    {
+        if (handlers is not null && handlers.Any())
         {
-            if (handlers is not null && handlers.Any())
+            foreach (var handler in handlers)
             {
-                foreach (var handler in handlers)
-                {
-                    if (((handler as IDefaultCustomHandler) is not null)  ||
-                        ((handler as IDefaultResourceCustomHandler) is not null) ||
-                        ((handler as IDefaultAssemblyResourceCustomHandler) is not null) ||
-                        ((handler as IDefaultRequestCustomHandler) is not null) ||
-                        ((handler as IDefaultExernalRequestCustomHandler) is not null) ||
-                        ((handler as IDefaultOwinCustomHandler) is not null))
-                    {
-                        continue; 
-                    }
-
-                    return handler;
-                }
+                if ((type == typeof(IDefaultCustomHandler)) && ((handler as IDefaultCustomHandler) is not null)) return handler;
+                if ((type == typeof(IDefaultResourceCustomHandler)) && ((handler as IDefaultResourceCustomHandler) is not null)) return handler;
+                if ((type == typeof(IDefaultAssemblyResourceCustomHandler)) && ((handler as IDefaultAssemblyResourceCustomHandler) is not null)) return handler;
+                if ((type == typeof(IDefaultRequestCustomHandler)) && ((handler as IDefaultRequestCustomHandler) is not null)) return handler;
+                if ((type == typeof(IDefaultExernalRequestCustomHandler)) && ((handler as IDefaultExernalRequestCustomHandler) is not null)) return handler;
+                if ((type == typeof(IDefaultOwinCustomHandler)) && ((handler as IDefaultOwinCustomHandler) is not null)) return handler;
             }
-
-            return default;
         }
+
+        return default;
+    }
+
+    private static object? GetFirstCustomHandler(List<object> handlers)
+    {
+        if (handlers is not null && handlers.Any())
+        {
+            foreach (var handler in handlers)
+            {
+                if (((handler as IDefaultCustomHandler) is not null) ||
+                    ((handler as IDefaultResourceCustomHandler) is not null) ||
+                    ((handler as IDefaultAssemblyResourceCustomHandler) is not null) ||
+                    ((handler as IDefaultRequestCustomHandler) is not null) ||
+                    ((handler as IDefaultExernalRequestCustomHandler) is not null) ||
+                    ((handler as IDefaultOwinCustomHandler) is not null))
+                {
+                    continue;
+                }
+
+                return handler;
+            }
+        }
+
+        return default;
     }
 }

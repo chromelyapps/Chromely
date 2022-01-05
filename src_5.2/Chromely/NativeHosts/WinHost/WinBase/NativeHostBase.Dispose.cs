@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Chromely.NativeHost
+namespace Chromely.NativeHosts
 {
     abstract partial class NativeHostBase
     {

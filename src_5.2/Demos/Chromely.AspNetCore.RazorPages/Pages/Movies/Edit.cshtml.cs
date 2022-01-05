@@ -11,7 +11,7 @@ public class EditModel : PageModel
     }
 
     [BindProperty]
-    public Movie Movie { get; set; }
+    public Movie? Movie { get; set; }
 
     public async Task<IActionResult> OnGetAsync(int? id)
     {
@@ -27,6 +27,7 @@ public class EditModel : PageModel
         {
             return NotFound();
         }
+
         return Page();
     }
 
@@ -38,29 +39,32 @@ public class EditModel : PageModel
             return Page();
         }
 
-        using var context = _contextFactory.CreateDbContext();
-        context.Attach(Movie).State = EntityState.Modified;
+        if (Movie is not null)
+        {
+            using var context = _contextFactory.CreateDbContext();
+            context.Attach(Movie).State = EntityState.Modified;
 
-        try
-        {
-            await context.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            if (!MovieExists(context, Movie.Id))
+            try
             {
-                return NotFound();
+                await context.SaveChangesAsync();
             }
-            else
+            catch (DbUpdateConcurrencyException)
             {
-                throw;
+                if (!MovieExists(context, Movie.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
             }
         }
 
         return RedirectToPage("./Index");
     }
 
-    private bool MovieExists(MovieContext context, int id)
+    private static bool MovieExists(MovieContext context, int id)
     {
         return context.Movie.Any(e => e.Id == id);
     }

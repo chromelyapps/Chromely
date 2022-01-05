@@ -1,221 +1,213 @@
 ﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
-using Chromely.Core;
-using Chromely.Core.Configuration;
-using Chromely.Core.Network;
-using System.Collections.Generic;
-using System.Linq;
-using Xilium.CefGlue;
+namespace Chromely.Browser;
 
-namespace Chromely.Browser
+public class CefBrowserApp : CefApp
 {
-    public class CefBrowserApp : CefApp
-    {
-        private readonly CefRenderProcessHandler _renderProcessHandler;
-        private readonly CefBrowserProcessHandler _browserProcessHandler;
-        private readonly IChromelyConfiguration _config;
-        private readonly IChromelyRequestSchemeProvider _requestSchemeProvider;
-        private readonly ChromelyHandlersResolver _handlersResolver;
+    private readonly CefRenderProcessHandler _renderProcessHandler;
+    private readonly CefBrowserProcessHandler _browserProcessHandler;
+    private readonly IChromelyConfiguration _config;
+    private readonly IChromelyRequestSchemeProvider _requestSchemeProvider;
+    private readonly ChromelyHandlersResolver _handlersResolver;
 
-        public CefBrowserApp(IChromelyConfiguration config, IChromelyRequestSchemeProvider requestSchemeProvider, ChromelyHandlersResolver handlersResolver)
+    public CefBrowserApp(IChromelyConfiguration config, IChromelyRequestSchemeProvider requestSchemeProvider, ChromelyHandlersResolver handlersResolver)
+    {
+        _config = config;
+        _requestSchemeProvider = requestSchemeProvider;
+        _handlersResolver = handlersResolver;
+        _renderProcessHandler = RenderProcessHandler;
+        _browserProcessHandler = BrowserProcessHandler;
+    }
+
+    /// <summary>
+    /// The on register custom schemes.
+    /// </summary>
+    /// <param name="registrar">
+    /// The registrar.
+    /// </param>
+    protected override void OnRegisterCustomSchemes(CefSchemeRegistrar registrar)
+    {
+        var schemes = _requestSchemeProvider?.GetAllSchemes();
+        var schemeExes = new List<UrlSchemeEx>();
+        if (schemes is not null && schemes.Any())
         {
-            _config = config;
-            _requestSchemeProvider = requestSchemeProvider;
-            _handlersResolver = handlersResolver;
-            _renderProcessHandler = RenderProcessHandler;
-            _browserProcessHandler = BrowserProcessHandler;
+            foreach (var item in schemes)
+            {
+                schemeExes.Add(new UrlSchemeEx(item));
+            }
         }
 
-        /// <summary>
-        /// The on register custom schemes.
-        /// </summary>
-        /// <param name="registrar">
-        /// The registrar.
-        /// </param>
-        protected override void OnRegisterCustomSchemes(CefSchemeRegistrar registrar)
+        var schemeHandlerList = _handlersResolver?.Invoke(typeof(IChromelySchemeHandler));
+        if (schemeHandlerList is not null && schemeHandlerList.Any())
         {
-            var schemes = _requestSchemeProvider?.GetAllSchemes();
-            var schemeExes = new List<UrlSchemeEx>();
-            if (schemes is not null && schemes.Any())
+            foreach (var handler in schemeHandlerList)
             {
-                foreach (var item in schemes)
+                if (handler is IChromelySchemeHandler schemeHandler)
                 {
-                    schemeExes.Add(new UrlSchemeEx(item));
-                }
-            }
-
-            var schemeHandlerList = _handlersResolver?.Invoke(typeof(IChromelySchemeHandler));
-            if (schemeHandlerList is not null && schemeHandlerList.Any())
-            {
-                foreach (var handler in schemeHandlerList)
-                {
-                    if (handler is IChromelySchemeHandler schemeHandler)
+                    if (schemeHandler?.Scheme is not null && schemeHandler.Scheme.ValidSchemeHost)
                     {
-                        if (schemeHandler?.Scheme is not null && schemeHandler.Scheme.ValidSchemeHost)
+                        // add if not already added
+                        var firstOrDefault = schemeExes.FirstOrDefault(x => x.ValidSchemeHost &&
+                                                                      x.Scheme.ToLower().Equals(schemeHandler.Scheme.Scheme.ToLower()) &&
+                                                                      x.Host.ToLower().Equals(schemeHandler.Scheme.Host.ToLower()));
+                        if (firstOrDefault is null)
                         {
-                            // add if not already added
-                            var firstOrDefault = schemeExes.FirstOrDefault(x => x.ValidSchemeHost &&
-                                                                          x.Scheme.ToLower().Equals(schemeHandler.Scheme.Scheme.ToLower()) &&
-                                                                          x.Host.ToLower().Equals(schemeHandler.Scheme.Host.ToLower()));
-                            if (firstOrDefault is null)
-                            {
-                                schemeExes.Add(new UrlSchemeEx(schemeHandler.Scheme, schemeHandler.IsCorsEnabled, schemeHandler.IsSecure));
-                            }
+                            schemeExes.Add(new UrlSchemeEx(schemeHandler.Scheme, schemeHandler.IsCorsEnabled, schemeHandler.IsSecure));
                         }
                     }
                 }
             }
+        }
 
-            var schemeOptions = CefSchemeOptions.Local | CefSchemeOptions.Standard | CefSchemeOptions.CorsEnabled | CefSchemeOptions.Secure | CefSchemeOptions.CorsEnabled | CefSchemeOptions.FetchEnabled;
+        var schemeOptions = CefSchemeOptions.Local | CefSchemeOptions.Standard | CefSchemeOptions.CorsEnabled | CefSchemeOptions.Secure | CefSchemeOptions.CorsEnabled | CefSchemeOptions.FetchEnabled;
 
-            foreach (var scheme in schemeExes)
+        foreach (var scheme in schemeExes)
+        {
+            bool isStandardScheme = UrlScheme.IsStandardScheme(scheme.Scheme);
+            if (!isStandardScheme)
             {
-                bool isStandardScheme = UrlScheme.IsStandardScheme(scheme.Scheme);
-                if (!isStandardScheme)
-                { 
-                    if (!scheme.IsCorsEnabled)
-                    {
-                        schemeOptions &= ~CefSchemeOptions.CorsEnabled;
-                    }
+                if (!scheme.IsCorsEnabled)
+                {
+                    schemeOptions &= ~CefSchemeOptions.CorsEnabled;
+                }
 
-                    if (!scheme.IsSecure)
-                    {
-                        schemeOptions &= ~CefSchemeOptions.Secure;
-                    }
+                if (!scheme.IsSecure)
+                {
+                    schemeOptions &= ~CefSchemeOptions.Secure;
+                }
 
-                    registrar.AddCustomScheme(scheme.Scheme, schemeOptions);
+                registrar.AddCustomScheme(scheme.Scheme, schemeOptions);
+            }
+        }
+    }
+
+    /// <summary>
+    /// The on before command line processing.
+    /// </summary>
+    /// <param name="processType">
+    /// The process type.
+    /// </param>
+    /// <param name="commandLine">
+    /// The command line.
+    /// </param>
+    protected override void OnBeforeCommandLineProcessing(string processType, CefCommandLine commandLine)
+    {
+        // Get all custom command line argument switches
+        if (_config is not null)
+        {
+            if (_config.CommandLineArgs is not null)
+            {
+                foreach (var commandArg in _config.CommandLineArgs)
+                {
+                    commandLine.AppendSwitch(commandArg.Key ?? string.Empty, commandArg.Value);
+                }
+            }
+
+            if (_config.CommandLineOptions is not null)
+            {
+                foreach (var commmandOption in _config.CommandLineOptions)
+                {
+                    commandLine.AppendSwitch(commmandOption ?? string.Empty);
                 }
             }
         }
+    }
 
-        /// <summary>
-        /// The on before command line processing.
-        /// </summary>
-        /// <param name="processType">
-        /// The process type.
-        /// </param>
-        /// <param name="commandLine">
-        /// The command line.
-        /// </param>
-        protected override void OnBeforeCommandLineProcessing(string processType, CefCommandLine commandLine)
+    /// <summary>
+    /// The get render process handler.
+    /// </summary>
+    /// <returns>
+    /// The <see cref="CefRenderProcessHandler"/>.
+    /// </returns>
+    protected override CefRenderProcessHandler GetRenderProcessHandler()
+    {
+        return _renderProcessHandler;
+    }
+
+    /// <summary>
+    /// The get browser process handler.
+    /// </summary>
+    /// <returns>
+    /// The <see cref="CefBrowserProcessHandler"/>.
+    /// </returns>
+    protected override CefBrowserProcessHandler GetBrowserProcessHandler()
+    {
+        return _browserProcessHandler;
+    }
+
+    private CefRenderProcessHandler RenderProcessHandler
+    {
+        get
         {
-            // Get all custom command line argument switches
-            if (_config is not null)
+            var handler = _handlersResolver.GetCustomOrDefaultHandler(typeof(CefRenderProcessHandler));
+            if (handler is CefRenderProcessHandler renderProcessHandler)
             {
-                if (_config.CommandLineArgs is not null)
-                {
-                    foreach (var commandArg in _config.CommandLineArgs)
-                    {
-                        commandLine.AppendSwitch(commandArg.Key ?? string.Empty, commandArg.Value);
-                    }
-                }
-
-                if (_config.CommandLineOptions is not null)
-                {
-                    foreach (var commmandOption in _config.CommandLineOptions)
-                    {
-                        commandLine.AppendSwitch(commmandOption ?? string.Empty);
-                    }
-                }
+                return renderProcessHandler;
             }
-        }
 
-        /// <summary>
-        /// The get render process handler.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="CefRenderProcessHandler"/>.
-        /// </returns>
-        protected override CefRenderProcessHandler GetRenderProcessHandler()
+            return new DefaultRenderProcessHandler(_config);
+        }
+    }
+
+    private CefBrowserProcessHandler BrowserProcessHandler
+    {
+        get
         {
-            return _renderProcessHandler;
-        }
+            var handler = _handlersResolver.GetCustomOrDefaultHandler(typeof(CefBrowserProcessHandler));
+            if (handler is CefBrowserProcessHandler browserProcesHandler)
+            {
+                return browserProcesHandler;
+            }
 
-        /// <summary>
-        /// The get browser process handler.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="CefBrowserProcessHandler"/>.
-        /// </returns>
-        protected override CefBrowserProcessHandler GetBrowserProcessHandler()
+            return new DefaultBrowserProcessHandler(_config);
+        }
+    }
+
+    private class UrlSchemeEx
+    {
+        private readonly UrlScheme _urlScheme;
+
+        public UrlSchemeEx(UrlScheme urlScheme, bool isCorsEnabled = true, bool isSecure = false)
         {
-            return _browserProcessHandler;
+            _urlScheme = urlScheme;
+            IsCorsEnabled = isCorsEnabled;
+            IsSecure = isSecure;
         }
 
-        private CefRenderProcessHandler RenderProcessHandler
+        public string Scheme
         {
             get
             {
-                var handler = _handlersResolver.GetCustomOrDefaultHandler(typeof(CefRenderProcessHandler));
-                if (handler is CefRenderProcessHandler renderProcessHandler)
-                {
-                    return renderProcessHandler;
-                }
+                if (_urlScheme is null)
+                    return string.Empty;
 
-                return new DefaultRenderProcessHandler(_config);
+                return _urlScheme.Scheme;
             }
         }
-
-        private CefBrowserProcessHandler BrowserProcessHandler
+        public string Host
         {
             get
             {
-                var handler = _handlersResolver.GetCustomOrDefaultHandler(typeof(CefBrowserProcessHandler));
-                if (handler is CefBrowserProcessHandler browserProcesHandler)
-                {
-                    return browserProcesHandler;
-                }
+                if (_urlScheme is null)
+                    return string.Empty;
 
-                return new DefaultBrowserProcessHandler(_config);
+                return _urlScheme.Host;
             }
         }
 
-        private class UrlSchemeEx 
+        public bool ValidSchemeHost
         {
-            private readonly UrlScheme _urlScheme;
-
-            public UrlSchemeEx(UrlScheme urlScheme, bool isCorsEnabled = true, bool isSecure = false)
+            get
             {
-                _urlScheme = urlScheme;
-                IsCorsEnabled = isCorsEnabled;
-                IsSecure = isSecure;
+                if (_urlScheme is null)
+                    return false;
+
+                return _urlScheme.ValidSchemeHost;
             }
-
-            public string Scheme
-            {
-                get
-                {
-                    if (_urlScheme is null)
-                        return string.Empty;
-
-                    return _urlScheme.Scheme;
-                }
-            }
-            public string Host 
-            {
-                get
-                {
-                    if (_urlScheme is null)
-                        return string.Empty;
-
-                    return _urlScheme.Host;
-                }
-            }
-
-            public bool ValidSchemeHost
-            {
-                get
-                {
-                    if (_urlScheme is null)
-                        return false;
-
-                    return _urlScheme.ValidSchemeHost;
-                }
-            }
-            
-            public bool IsCorsEnabled { get; }
-            public bool IsSecure { get; }
         }
+
+        public bool IsCorsEnabled { get; }
+        public bool IsSecure { get; }
     }
 }

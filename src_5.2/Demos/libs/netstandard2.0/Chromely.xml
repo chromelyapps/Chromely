@@ -2116,39 +2116,39 @@
             <param name="build"></param>
             <returns></returns>
         </member>
-        <member name="M:Chromely.NativeHost.ChromelyLinuxHost.GetWindowState">
+        <member name="M:Chromely.NativeHosts.ChromelyLinuxHost.GetWindowState">
             <summary> Gets the current window state Maximised / Normal / Minimised etc. </summary>
             <returns> The window state. </returns>
         </member>
-        <member name="M:Chromely.NativeHost.ChromelyLinuxHost.SetWindowState(Chromely.Core.Host.WindowState)">
+        <member name="M:Chromely.NativeHosts.ChromelyLinuxHost.SetWindowState(Chromely.Core.Host.WindowState)">
             <summary> Sets window state. Maximise / Minimize / Restore. </summary>
             <param name="state"> The state to set. </param>
             <returns> True if it succeeds, false if it fails. </returns>
         </member>
-        <member name="F:Chromely.NativeHost.GConnectFlags.GConnectAfter">
+        <member name="F:Chromely.NativeHosts.GConnectFlags.GConnectAfter">
             <summary>
             whether the handler should be called before or after the default handler of the signal.
             </summary>
         </member>
-        <member name="F:Chromely.NativeHost.GConnectFlags.GConnectSwapped">
+        <member name="F:Chromely.NativeHosts.GConnectFlags.GConnectSwapped">
             <summary>
             whether the instance and data should be swapped when calling the handler; see g_signal_connect_swapped() for an example.
             </summary>
         </member>
-        <member name="M:Chromely.NativeHost.ChromelyMacHost.GetWindowState">
+        <member name="M:Chromely.NativeHosts.ChromelyMacHost.GetWindowState">
             <summary> Gets the current window state Maximised / Normal / Minimised etc. </summary>
             <returns> The window state. </returns>
         </member>
-        <member name="M:Chromely.NativeHost.ChromelyMacHost.SetWindowState(Chromely.Core.Host.WindowState)">
+        <member name="M:Chromely.NativeHosts.ChromelyMacHost.SetWindowState(Chromely.Core.Host.WindowState)">
             <summary> Sets window state. Maximise / Minimize / Restore. </summary>
             <param name="state"> The state to set. </param>
             <returns> True if it succeeds, false if it fails. </returns>
         </member>
-        <member name="M:Chromely.NativeHost.DefaulKeyboadHookHandler.AllowKeyboardInput(System.Boolean,System.Boolean,Chromely.Interop.User32.Keys)">
+        <member name="M:Chromely.NativeHosts.DefaulKeyboadHookHandler.AllowKeyboardInput(System.Boolean,System.Boolean,Chromely.Interop.User32.Keys)">
             <summary>Determines whether the specified keyboard input should be allowed to be processed by the system.</summary>
             <remarks>Helps block unwanted keys and key combinations that could exit the app, make system changes, etc.</remarks>
         </member>
-        <member name="M:Chromely.NativeHost.DefaultWindowMessageInterceptor.Setup(Chromely.Core.Host.IChromelyNativeHost,System.IntPtr)">
+        <member name="M:Chromely.NativeHosts.DefaultWindowMessageInterceptor.Setup(Chromely.Core.Host.IChromelyNativeHost,System.IntPtr)">
             <summary>
             Asynchronously wait for the Chromium widget window to be created for the given ChromiumWebBrowser,
             and when created hook into its Windows message loop.
@@ -2156,7 +2156,7 @@
             <param name="nativeHost">The native window.</param>
             <param name="browserHandle">The browser window to intercept Windows messages for.</param>
         </member>
-        <member name="M:Chromely.NativeHost.NativeHostBase.SetWindowState(Chromely.Core.Host.WindowState)">
+        <member name="M:Chromely.NativeHosts.NativeHostBase.SetWindowState(Chromely.Core.Host.WindowState)">
             <summary> Sets window state. Maximise / Minimize / Restore. </summary>
             <param name="state"> The state to set. </param>
             <returns> True if it succeeds, false if it fails. </returns>
@@ -10523,7 +10523,7 @@
         </member>
         <member name="P:Xilium.CefGlue.CefV8Value.IsObject">
             <summary>
-            True if the value type is not null.
+            True if the value type is object.
             </summary>
         </member>
         <member name="P:Xilium.CefGlue.CefV8Value.IsArray">
@@ -12391,6 +12391,11 @@
             <summary>
             The server's certificate has a keyUsage extension incompatible with the
             negotiated TLS key exchange method.
+            </summary>
+        </member>
+        <member name="F:Xilium.CefGlue.CefErrorCode.INVALID_ECH_CONFIG_LIST">
+            <summary>
+            The ECHConfigList fetched over DNS cannot be parsed.
             </summary>
         </member>
         <member name="F:Xilium.CefGlue.CefErrorCode.CERT_COMMON_NAME_INVALID">
@@ -15632,7 +15637,7 @@
             and/or |context|. Either or both values may be empty.
             </summary>
         </member>
-        <member name="M:Xilium.CefGlue.Wrapper.CefMessageRouterRendererSide.OnContextCreated(Xilium.CefGlue.CefBrowser,Xilium.CefGlue.CefFrame,Xilium.CefGlue.CefV8Context)">
+        <member name="M:Xilium.CefGlue.Wrapper.CefMessageRouterRendererSide.OnContextCreated(Xilium.CefGlue.CefV8Context)">
             <summary>
             Call from CefRenderProcessHandler::OnContextCreated. Registers the
             JavaScripts functions with the new context.
@@ -15645,7 +15650,7 @@
             Handler::OnQueryCanceled will be called in the browser process.
             </summary>
         </member>
-        <member name="M:Xilium.CefGlue.Wrapper.CefMessageRouterRendererSide.OnProcessMessageReceived(Xilium.CefGlue.CefBrowser,Xilium.CefGlue.CefFrame,Xilium.CefGlue.CefProcessId,Xilium.CefGlue.CefProcessMessage)">
+        <member name="M:Xilium.CefGlue.Wrapper.CefMessageRouterRendererSide.OnProcessMessageReceived(Xilium.CefGlue.CefBrowser,Xilium.CefGlue.CefProcessId,Xilium.CefGlue.CefProcessMessage)">
             <summary>
             Call from CefRenderProcessHandler::OnProcessMessageReceived. Returns true
             if the message is handled by this router or false otherwise.

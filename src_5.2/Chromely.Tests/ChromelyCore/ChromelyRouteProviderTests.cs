@@ -13,7 +13,7 @@ public class ChromelyRouteProviderTests
     {
         _serviceProvider = serviceProvider;
         _routeProvider = routeProvider;
-        _controllers = serviceProvider.GetServices<ChromelyController>().ToList();
+        _controllers = _serviceProvider.GetServices<ChromelyController>().ToList();
         routeProvider.RegisterAllRoutes(_controllers);
     }
 

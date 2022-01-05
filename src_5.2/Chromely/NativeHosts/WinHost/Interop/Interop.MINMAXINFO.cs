@@ -2,22 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System.Drawing;
+namespace Chromely;
 
-namespace Chromely
+public static partial class Interop
 {
-    public static partial class Interop
+    public static partial class User32
     {
-        public static partial class User32
+        public struct MINMAXINFO
         {
-            public struct MINMAXINFO
-            {
-                public Point ptReserved;
-                public Point ptMaxSize;
-                public Point ptMaxPosition;
-                public Point ptMinTrackSize;
-                public Point ptMaxTrackSize;
-            }
+            public Point ptReserved;
+            public Point ptMaxSize;
+            public Point ptMaxPosition;
+            public Point ptMinTrackSize;
+            public Point ptMaxTrackSize;
         }
     }
 }

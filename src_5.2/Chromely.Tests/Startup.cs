@@ -5,7 +5,7 @@ namespace Chromely.Tests;
 
 internal class Startup
 {
-    public void ConfigureServices(IServiceCollection services)
+    public static void ConfigureServices(IServiceCollection services)
     {
         services.AddTransient<IChromelyDataTransferOptions, DataTransferOptions>();
         services.AddTransient<IChromelyModelBinder, DefaultModelBinder>();

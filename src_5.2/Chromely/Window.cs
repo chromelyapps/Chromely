@@ -1,104 +1,96 @@
 ﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
-using Chromely.Browser;
-using Chromely.Core;
-using Chromely.Core.Configuration;
-using Chromely.Core.Host;
-using System;
-using static Chromely.Interop.User32;
+namespace Chromely;
 
-namespace Chromely
+public partial class Window : ChromiumBrowser, IChromelyWindow
 {
-    public partial class Window : ChromiumBrowser, IChromelyWindow
+    public Window(IChromelyNativeHost nativeHost,
+                  IChromelyConfiguration config,
+                  ChromelyHandlersResolver handlersResolver)
+        : base(nativeHost, config, handlersResolver)
     {
-        public Window(IChromelyNativeHost nativeHost,
-                      IChromelyConfiguration config,
-                      ChromelyHandlersResolver handlersResolver)
-            : base(nativeHost, config, handlersResolver)
-        {
-            Created += OnBrowserCreated;
-        }
+        Created += OnBrowserCreated;
+    }
 
-        public IntPtr Handle 
+    public IntPtr Handle
+    {
+        get
         {
-            get
+            if (NativeHost is not null)
             {
-                if (NativeHost is not null)
-                {
-                    return NativeHost.Handle;
-                }
-
-                return IntPtr.Zero;
+                return NativeHost.Handle;
             }
-        }
 
-        public virtual void Init(object settings)
-        {
+            return IntPtr.Zero;
         }
-        public virtual void Create(IntPtr hostHandle, IntPtr winXID)
-        {
-            CreateBrowser(hostHandle, winXID);
-        }
+    }
 
-        public virtual void SetTitle(string title)
-        {
-            NativeHost?.SetWindowTitle(title);
-        }
+    public virtual void Init(object settings)
+    {
+    }
+    public virtual void Create(IntPtr hostHandle, IntPtr winXID)
+    {
+        CreateBrowser(hostHandle, winXID);
+    }
 
-        public virtual void NotifyOnMove()
-        {
-            NotifyMoveOrResize();
-        }
+    public virtual void SetTitle(string title)
+    {
+        NativeHost?.SetWindowTitle(title);
+    }
 
-        public virtual void Resize(int width, int height)
-        {
-            ResizeBrowser(width,  height);
-        }
+    public virtual void NotifyOnMove()
+    {
+        NotifyMoveOrResize();
+    }
 
-        public virtual void Minimize()
+    public virtual void Resize(int width, int height)
+    {
+        ResizeBrowser(width, height);
+    }
+
+    public virtual void Minimize()
+    {
+        if (Handle != IntPtr.Zero)
         {
-            if (Handle != IntPtr.Zero)
+            if (_config.WindowOptions.WindowFrameless)
             {
-                if (_config.WindowOptions.WindowFrameless)
-                {
-                    _config.WindowOptions.WindowState = WindowState.Minimize;
-                }
+                _config.WindowOptions.WindowState = WindowState.Minimize;
+            }
 
-                ShowWindow(Handle, SW.SHOWMINIMIZED);
-            }
+            ShowWindow(Handle, SW.SHOWMINIMIZED);
         }
-        public virtual void Maximize()
+    }
+    public virtual void Maximize()
+    {
+        if (Handle != IntPtr.Zero)
         {
-            if (Handle != IntPtr.Zero)
+            if (_config.WindowOptions.WindowFrameless)
             {
-                if (_config.WindowOptions.WindowFrameless)
-                {
-                    _config.WindowOptions.WindowState = WindowState.Maximize;
-                }
-               
-                ShowWindow(Handle, SW.SHOWMAXIMIZED);
+                _config.WindowOptions.WindowState = WindowState.Maximize;
             }
-        }
-        public virtual void Restore()
-        {
-            if (Handle != IntPtr.Zero)
-            {
-                if (_config.WindowOptions.WindowFrameless)
-                {
-                    _config.WindowOptions.WindowState = WindowState.Normal;
-                }
-                
-                ShowWindow(Handle, SW.RESTORE);
-            }
-        }
 
-        public virtual void Close()
+            ShowWindow(Handle, SW.SHOWMAXIMIZED);
+        }
+    }
+    public virtual void Restore()
+    {
+        if (Handle != IntPtr.Zero)
         {
-            if (Handle != IntPtr.Zero)
+            if (_config.WindowOptions.WindowFrameless)
             {
-                SendMessageW(Handle, WM.CLOSE);
+                _config.WindowOptions.WindowState = WindowState.Normal;
             }
+
+            ShowWindow(Handle, SW.RESTORE);
+        }
+    }
+
+    public virtual void Close()
+    {
+        if (Handle != IntPtr.Zero)
+        {
+            SendMessageW(Handle, WM.CLOSE);
         }
     }
 }

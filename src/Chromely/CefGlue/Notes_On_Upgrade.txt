@@ -1,7 +1,4 @@
-Do not remove/overrwrite:
-	Folder: Wrapper (https://github.com/chromelyapps/Chromely/tree/master/src/Chromely/CefGlue/Wrapper/MessageRouter)
-
-Copy replace/overrwrite folder (except .. note above): https://gitlab.com/xiliumhq/chromiumembedded/cefglue/-/tree/master/CefGlue
+Copy replace/overrwrite folder: https://gitlab.com/xiliumhq/chromiumembedded/cefglue/-/tree/master/CefGlue
 with https://github.com/chromelyapps/Chromely/tree/master/src/Chromely/CefGlue.
 
 Delete:

@@ -2,18 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System;
-using System.Runtime.InteropServices;
-using static Chromely.Interop;
+namespace Chromely;
 
-namespace Chromely
+public partial class Interop
 {
-    internal partial class Interops
+    internal partial class Kernel32
     {
-        internal partial class Kernel32
-        {
-            [DllImport(Libraries.Kernel32, CharSet = CharSet.Unicode, SetLastError = true, ExactSpelling = true)]
-            public static extern IntPtr GetModuleHandleW(string moduleName);
-        }
+        [DllImport(Libraries.Kernel32, CharSet = CharSet.Unicode, SetLastError = true, ExactSpelling = true)]
+        internal static extern IntPtr GetModuleHandleW(string moduleName);
     }
 }

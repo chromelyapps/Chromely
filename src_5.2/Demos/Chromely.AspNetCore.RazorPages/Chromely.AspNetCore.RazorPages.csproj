@@ -12,15 +12,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Reference Include="Chromely">
-			<HintPath>..\libs\net6.0\Chromely.dll</HintPath>
-		</Reference>
-		<Reference Include="Chromely.Core">
-			<HintPath>..\libs\net6.0\Chromely.Core.dll</HintPath>
-		</Reference>
-		<Reference Include="Chromely.Owin">
-			<HintPath>..\libs\net6.0\Chromely.Owin.dll</HintPath>
-		</Reference>
 		<ProjectReference Include="..\Chromely.Shared\Chromely.Shared.csproj" />
 	</ItemGroup>
 
@@ -28,6 +19,18 @@
 		<Content Include="assets\**">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Reference Include="Chromely">
+	    <HintPath>..\libs\net6.0\Chromely.dll</HintPath>
+	  </Reference>
+	  <Reference Include="Chromely.Core">
+	    <HintPath>..\libs\net6.0\Chromely.Core.dll</HintPath>
+	  </Reference>
+	  <Reference Include="Chromely.Owin">
+	    <HintPath>..\libs\net6.0\Chromely.Owin.dll</HintPath>
+	  </Reference>
 	</ItemGroup>
 
 	<ItemGroup>

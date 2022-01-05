@@ -1,49 +1,46 @@
 ﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
-using System.Reflection;
+namespace Chromely.Core.Network;
 
-namespace Chromely.Core.Network
+public class AssemblyOptions
 {
-    public class AssemblyOptions
+    public Assembly? TargetAssembly { get; set; }
+    public string? DefaultNamespace { get; set; }
+    public string? RootFolder { get; set; }
+
+    public AssemblyOptions(string targetAssemblyName, string? defaultNamespace = null, string? rootFolder = null)
     {
-        public Assembly? TargetAssembly { get; set; }
-        public string? DefaultNamespace { get; set; }
-        public string? RootFolder { get; set; }
+        TargetAssembly = AssemblyOptions.LoadAssembly(targetAssemblyName);
+        DefaultNamespace = defaultNamespace;
+        RootFolder = rootFolder;
 
-        public AssemblyOptions(string targetAssemblyName, string? defaultNamespace = null, string? rootFolder = null)
+        if (TargetAssembly is not null && string.IsNullOrWhiteSpace(DefaultNamespace))
         {
-            TargetAssembly = AssemblyOptions.LoadAssembly(targetAssemblyName);
-            DefaultNamespace = defaultNamespace;
-            RootFolder = rootFolder;
-
-            if (TargetAssembly is not null && string.IsNullOrWhiteSpace(DefaultNamespace))
-            {
-                DefaultNamespace = TargetAssembly.GetName().Name;
-            }
+            DefaultNamespace = TargetAssembly.GetName().Name;
         }
+    }
 
-        public AssemblyOptions(Assembly target, string? defaultNamespace = null, string? rootFolder = null)
+    public AssemblyOptions(Assembly target, string? defaultNamespace = null, string? rootFolder = null)
+    {
+        TargetAssembly = target;
+        DefaultNamespace = defaultNamespace;
+        RootFolder = rootFolder;
+
+        if (TargetAssembly is not null && string.IsNullOrWhiteSpace(DefaultNamespace))
         {
-            TargetAssembly = target;
-            DefaultNamespace = defaultNamespace;
-            RootFolder = rootFolder;
-
-            if (TargetAssembly is not null && string.IsNullOrWhiteSpace(DefaultNamespace))
-            {
-                DefaultNamespace = TargetAssembly.GetName().Name;
-            }
+            DefaultNamespace = TargetAssembly.GetName().Name;
         }
+    }
 
-        private static Assembly? LoadAssembly(string targetAssemblyName)
+    private static Assembly? LoadAssembly(string targetAssemblyName)
+    {
+        try
         {
-            try
-            {
-                return Assembly.LoadFrom(targetAssemblyName);
-            }
-            catch {}
-
-            return default;
+            return Assembly.LoadFrom(targetAssemblyName);
         }
+        catch { }
+
+        return default;
     }
 }

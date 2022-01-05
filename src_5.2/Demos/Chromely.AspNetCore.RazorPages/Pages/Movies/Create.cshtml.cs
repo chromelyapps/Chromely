@@ -25,9 +25,12 @@ public class CreateModel : PageModel
             return Page();
         }
 
-        using var context = _contextFactory.CreateDbContext();
-        context.Movie.Add(Movie);
-        await context.SaveChangesAsync();
+        if (Movie is not null)
+        {
+            using var context = _contextFactory.CreateDbContext();
+            context.Movie.Add(Movie);
+            await context.SaveChangesAsync();
+        }
 
         return RedirectToPage("./Index");
     }

@@ -18,6 +18,10 @@
 	</ItemGroup>
 	
 	<ItemGroup>
+	  <ProjectReference Include="..\Chromely.Shared\Chromely.Shared.csproj" />
+	</ItemGroup>
+	
+	<ItemGroup>
 	  <Reference Include="Chromely">
 	    <HintPath>..\libs\net6.0\Chromely.dll</HintPath>
 	  </Reference>
@@ -27,7 +31,6 @@
 	  <Reference Include="Chromely.Owin">
 	    <HintPath>..\libs\net6.0\Chromely.Owin.dll</HintPath>
 	  </Reference>
-	  <ProjectReference Include="..\Chromely.Shared\Chromely.Shared.csproj" />
 	</ItemGroup>
 	
 	<ItemGroup>	

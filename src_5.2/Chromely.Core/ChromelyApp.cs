@@ -1,246 +1,231 @@
 ﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using Chromely.Core.Configuration;
-using Chromely.Core.Defaults;
-using Chromely.Core.Infrastructure;
-using Chromely.Core.Logging;
-using Chromely.Core.Network;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Logging;
+namespace Chromely.Core;
 
-namespace Chromely.Core
+public abstract class ChromelyApp
 {
-    public abstract class ChromelyApp
+    protected bool _servicesConfigured;
+    protected bool _coreServicesConfigured;
+    protected bool _servicesInitialized;
+    protected bool _resolversConfigured;
+    protected bool _defaultHandlersConfigured;
+
+    public virtual void ConfigureServices(IServiceCollection services)
     {
-        protected bool _servicesConfigured;
-        protected bool _coreServicesConfigured;
-        protected bool _servicesInitialized;
-        protected bool _resolversConfigured;
-        protected bool _defaultHandlersConfigured;
+        _servicesConfigured = true;
+    }
 
-        public virtual void ConfigureServices(IServiceCollection services)
+    public virtual void ConfigureCoreServices(IServiceCollection services)
+    {
+        if (!_servicesConfigured)
         {
-            _servicesConfigured = true;
+            throw new Exception("Custom services must be configured before core default services are set.");
         }
 
-        public virtual void ConfigureCoreServices(IServiceCollection services)
+        // Add core services if not already added.
+        // Expected core services are -
+        // IChromelyAppSettings, IChromelyConfiguration, IChromelyLogger, IChromelyRouteProvider, IChromelyErrorHandler
+        // DefaultAppSettings  DefaultConfiguration, SimpleLogger, DefaultRouteProvider, DefaultErrorHandler
+        // Logger is added in Initialize method
+
+        services.TryAddSingleton<IChromelyConfiguration>(DefaultConfiguration.CreateForRuntimePlatform());
+        services.TryAddSingleton<IChromelyAppSettings, DefaultAppSettings>();
+        services.TryAddSingleton<IChromelyAppSettings, DefaultAppSettings>();
+        services.TryAddSingleton<IChromelyErrorHandler, DefaultErrorHandler>();
+
+        _coreServicesConfigured = true;
+    }
+
+    public virtual void ConfigureServiceResolvers(IServiceCollection services)
+    {
+        /*  Collection service resolvers for types: 
+            IChromelyJsBindingHandler
+            IChromelyCustomHandler
+            IChromelyResourceHandlerFactory
+            IChromelySchemeHandlerFactory
+         */
+        services.AddTransient<ChromelyHandlersResolver>(serviceProvider => (serviceType) =>
         {
-            if (!_servicesConfigured)
-            {
-                throw new Exception("Custom services must be configured before core default services are set.");
-            }
+            return serviceProvider.GetServices(serviceType);
+        });
 
-            // Add core services if not already added.
-            // Expected core services are -
-            // IChromelyAppSettings, IChromelyConfiguration, IChromelyLogger, IChromelyRouteProvider, IChromelyErrorHandler
-            // DefaultAppSettings  DefaultConfiguration, SimpleLogger, DefaultRouteProvider, DefaultErrorHandler
-            // Logger is added in Initialize method
+        _resolversConfigured = true;
+    }
 
-            services.TryAddSingleton<IChromelyConfiguration>(DefaultConfiguration.CreateForRuntimePlatform());
-            services.TryAddSingleton<IChromelyAppSettings, DefaultAppSettings>();
-            services.TryAddSingleton<IChromelyAppSettings, DefaultAppSettings>();
-            services.TryAddSingleton<IChromelyErrorHandler, DefaultErrorHandler>();
+    public virtual void ConfigureDefaultHandlers(IServiceCollection services)
+    {
+        _defaultHandlersConfigured = true;
+    }
 
-            _coreServicesConfigured = true;
+    public virtual void Initialize(IServiceProvider serviceProvider)
+    {
+        if (!_servicesConfigured || !_coreServicesConfigured || !_resolversConfigured || !_defaultHandlersConfigured)
+        {
+            throw new Exception("Services must be configured before application is initialized.");
         }
 
-        public virtual void ConfigureServiceResolvers(IServiceCollection services)
-        {
-            /*  Collection service resolvers for types: 
-                IChromelyJsBindingHandler
-                IChromelyCustomHandler
-                IChromelyResourceHandlerFactory
-                IChromelySchemeHandlerFactory
-             */
-            services.AddTransient<ChromelyHandlersResolver>(serviceProvider => (serviceType) =>
-            {
-                return serviceProvider.GetServices(serviceType);
-            });
+        #region Configuration
 
-            _resolversConfigured = true;
+        var config = serviceProvider.GetService<IChromelyConfiguration>();
+        if (config is null)
+        {
+            config = DefaultConfiguration.CreateForRuntimePlatform();
         }
 
-        public virtual void ConfigureDefaultHandlers(IServiceCollection services)
+        ChromelyApp.InitConfiguration(config);
+
+        #endregion Configuration
+
+        #region Application/User Settings
+
+        var appSettings = serviceProvider.GetService<IChromelyAppSettings>();
+        if (appSettings is null)
         {
-            _defaultHandlersConfigured = true;
+            appSettings = new DefaultAppSettings();
         }
 
-        public virtual void Initialize(IServiceProvider serviceProvider)
+        var currentAppSettings = new CurrentAppSettings
         {
-            if (!_servicesConfigured || !_coreServicesConfigured || !_resolversConfigured || !_defaultHandlersConfigured)
-            {
-                throw new Exception("Services must be configured before application is initialized.");
-            }
+            Properties = appSettings
+        };
 
-            #region Configuration
+        ChromelyAppUser.App = currentAppSettings;
+        ChromelyAppUser.App.Properties.Read(config);
 
-            var config = serviceProvider.GetService<IChromelyConfiguration>();
-            if (config is null)
-            {
-                config = DefaultConfiguration.CreateForRuntimePlatform();
-            }
+        #endregion
 
-            ChromelyApp.InitConfiguration(config);
+        #region Logger
 
-            #endregion Configuration
-
-            #region Application/User Settings
-
-            var appSettings = serviceProvider.GetService<IChromelyAppSettings>();
-            if (appSettings is null)
-            {
-                appSettings = new DefaultAppSettings();
-            }
-
-            var currentAppSettings = new CurrentAppSettings
-            {
-                Properties = appSettings
-            };
-
-            ChromelyAppUser.App = currentAppSettings;
-            ChromelyAppUser.App.Properties.Read(config);
-
-            #endregion
-
-            #region Logger
-
-            var logger = GetCurrentLogger(serviceProvider);
-            if (logger is null)
-            {
-                logger = new SimpleLogger();
-            }
-
-            var defaultLogger = new DefaultLogger
-            {
-                Log = logger
-            };
-            Logger.Instance = defaultLogger;
-
-            #endregion
-
-            EnsureExpectedWorkingDirectory();
-
-            _servicesInitialized = true;
+        var logger = GetCurrentLogger(serviceProvider);
+        if (logger is null)
+        {
+            logger = new SimpleLogger();
         }
 
-        public virtual void RegisterChromelyControllerRoutes(IServiceProvider serviceProvider)
+        var defaultLogger = new DefaultLogger
         {
-            if (!_servicesInitialized)
-            {
-                throw new Exception("Services must be initialized before controller assemblies are scanned.");
-            }
+            Log = logger
+        };
+        Logger.Instance = defaultLogger;
 
-            var routeProvider = serviceProvider.GetService<IChromelyRouteProvider>();
-            if (routeProvider is not null)
-            {
-                var controllers = serviceProvider.GetServices<ChromelyController>();
-                routeProvider.RegisterAllRoutes(controllers?.ToList());
-            }
+        #endregion
+
+        EnsureExpectedWorkingDirectory();
+
+        _servicesInitialized = true;
+    }
+
+    public virtual void RegisterChromelyControllerRoutes(IServiceProvider serviceProvider)
+    {
+        if (!_servicesInitialized)
+        {
+            throw new Exception("Services must be initialized before controller assemblies are scanned.");
         }
 
-        public virtual void RegisterChromelyControllerAssembly(IServiceCollection services, string assemblyFullPath)
+        var routeProvider = serviceProvider.GetService<IChromelyRouteProvider>();
+        if (routeProvider is not null)
         {
-            if (string.IsNullOrWhiteSpace(assemblyFullPath))
-            {
-                return;
-            }
+            var controllers = serviceProvider.GetServices<ChromelyController>();
+            routeProvider.RegisterAllRoutes(controllers?.ToList());
+        }
+    }
 
-            try
-            {
-                if (File.Exists(assemblyFullPath))
-                {
-                    var assembly = Assembly.LoadFrom(assemblyFullPath);
-                    RegisterChromelyControllerAssembly(services, assembly);
-                }
-            }
-            catch (Exception exception)
-            {
-                Logger.Instance.Log.LogError(exception, "ChromelyApp:RegisterControllerAssembly");
-            }
-
+    public virtual void RegisterChromelyControllerAssembly(IServiceCollection services, string assemblyFullPath)
+    {
+        if (string.IsNullOrWhiteSpace(assemblyFullPath))
+        {
+            return;
         }
 
-        public virtual void RegisterChromelyControllerAssembly(IServiceCollection services, Assembly assembly)
+        try
         {
-            if (assembly is null)
+            if (File.Exists(assemblyFullPath))
             {
-                return;
-            }
-
-            try
-            {
-                services.RegisterChromelyControllerAssembly(assembly, ServiceLifetime.Singleton);
-            }
-            catch (Exception exception)
-            {
-                Logger.Instance.Log.LogError(exception, "ChromelyApp:RegisterControllerAssembly");
-            }
-
-        }
-
-        protected virtual ILogger? GetCurrentLogger(IServiceProvider serviceProvider)
-        {
-            var logger = serviceProvider.GetService<ILogger>();
-            if (logger is not null)
-            {
-                return logger;
-            }
-
-            var appName = Assembly.GetEntryAssembly()?.GetName().Name;
-            var loggerFactory = serviceProvider.GetService<ILoggerFactory>();
-            if (loggerFactory is not null)
-            {
-                return loggerFactory.CreateLogger(appName);
-            }
-
-            var loggerProvider = serviceProvider.GetService<ILoggerProvider>();
-            if (loggerProvider is not null)
-            {
-                return loggerProvider.CreateLogger(appName);
-            }
-
-            return default;
-        }
-
-        /// <summary>
-        /// Using local resource handling requires files to be relative to the 
-        /// Expected working directory
-        /// For example, if the app is launched via the taskbar the working directory gets changed to
-        /// C:\Windows\system32
-        /// This needs to be changed to the right one.
-        /// </summary>
-        protected static void EnsureExpectedWorkingDirectory()
-        {
-            try
-            {
-                var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
-                Directory.SetCurrentDirectory(appDirectory);
-            }
-            catch (Exception exception)
-            {
-                Logger.Instance.Log.LogError(exception, "ChromelyApp:EnsureExpectedWorkingDirectory");
+                var assembly = Assembly.LoadFrom(assemblyFullPath);
+                RegisterChromelyControllerAssembly(services, assembly);
             }
         }
-
-        protected static void InitConfiguration(IChromelyConfiguration config)
+        catch (Exception exception)
         {
-            if (config is null)
-            {
-                throw new Exception("Configuration cannot be null.");
-            }
-
-            if (config.UrlSchemes is null) config.UrlSchemes = new List<UrlScheme>();
-            if (config.CommandLineArgs is null) config.CommandLineArgs = new Dictionary<string, string>();
-            if (config.CommandLineOptions is null) config.CommandLineOptions = new List<string>();
-            if (config.CustomSettings is null) config.CustomSettings = new Dictionary<string, string>();
-            if (config.WindowOptions is null) config.WindowOptions = new Configuration.WindowOptions();
+            Logger.Instance.Log.LogError(exception, "ChromelyApp:RegisterControllerAssembly");
         }
+
+    }
+
+    public virtual void RegisterChromelyControllerAssembly(IServiceCollection services, Assembly assembly)
+    {
+        if (assembly is null)
+        {
+            return;
+        }
+
+        try
+        {
+            services.RegisterChromelyControllerAssembly(assembly, ServiceLifetime.Singleton);
+        }
+        catch (Exception exception)
+        {
+            Logger.Instance.Log.LogError(exception, "ChromelyApp:RegisterControllerAssembly");
+        }
+
+    }
+
+    protected virtual ILogger? GetCurrentLogger(IServiceProvider serviceProvider)
+    {
+        var logger = serviceProvider.GetService<ILogger>();
+        if (logger is not null)
+        {
+            return logger;
+        }
+
+        var appName = Assembly.GetEntryAssembly()?.GetName().Name;
+        var loggerFactory = serviceProvider.GetService<ILoggerFactory>();
+        if (loggerFactory is not null)
+        {
+            return loggerFactory.CreateLogger(appName);
+        }
+
+        var loggerProvider = serviceProvider.GetService<ILoggerProvider>();
+        if (loggerProvider is not null)
+        {
+            return loggerProvider.CreateLogger(appName);
+        }
+
+        return default;
+    }
+
+    /// <summary>
+    /// Using local resource handling requires files to be relative to the 
+    /// Expected working directory
+    /// For example, if the app is launched via the taskbar the working directory gets changed to
+    /// C:\Windows\system32
+    /// This needs to be changed to the right one.
+    /// </summary>
+    protected static void EnsureExpectedWorkingDirectory()
+    {
+        try
+        {
+            var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            Directory.SetCurrentDirectory(appDirectory);
+        }
+        catch (Exception exception)
+        {
+            Logger.Instance.Log.LogError(exception, "ChromelyApp:EnsureExpectedWorkingDirectory");
+        }
+    }
+
+    protected static void InitConfiguration(IChromelyConfiguration config)
+    {
+        if (config is null)
+        {
+            throw new Exception("Configuration cannot be null.");
+        }
+
+        if (config.UrlSchemes is null) config.UrlSchemes = new List<UrlScheme>();
+        if (config.CommandLineArgs is null) config.CommandLineArgs = new Dictionary<string, string>();
+        if (config.CommandLineOptions is null) config.CommandLineOptions = new List<string>();
+        if (config.CustomSettings is null) config.CustomSettings = new Dictionary<string, string>();
+        if (config.WindowOptions is null) config.WindowOptions = new Configuration.WindowOptions();
     }
 }

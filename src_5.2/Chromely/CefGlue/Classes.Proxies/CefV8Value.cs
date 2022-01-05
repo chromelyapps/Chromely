@@ -250,7 +250,7 @@
         }
 
         /// <summary>
-        /// True if the value type is not null.
+        /// True if the value type is object.
         /// </summary>
         public bool IsObject
         {
@@ -536,7 +536,8 @@
         /// </summary>
         public string[] GetKeys()
         {
-            if (TryGetKeys(out string[] keys)) return keys;
+            string[] keys;
+            if (TryGetKeys(out keys)) return keys;
             else throw new InvalidOperationException();
         }
 

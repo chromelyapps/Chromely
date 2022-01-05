@@ -2,67 +2,63 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System;
-using System.Runtime.InteropServices;
+namespace Chromely;
 
-namespace Chromely
+public static partial class Interop
 {
-    public static partial class Interop
+    public static partial class User32
     {
-        public static partial class User32
+        [DllImport(Libraries.User32, ExactSpelling = true)]
+        internal static extern IntPtr SendMessageW(
+            IntPtr hWnd,
+            WM Msg,
+            IntPtr wParam = default,
+            IntPtr lParam = default);
+
+        public static IntPtr SendMessageW(
+            HandleRef hWnd,
+            WM Msg,
+            IntPtr wParam = default,
+            IntPtr lParam = default)
         {
-            [DllImport(Libraries.User32, ExactSpelling = true)]
-            public static extern IntPtr SendMessageW(
-                IntPtr hWnd,
-                WM Msg,
-                IntPtr wParam = default,
-                IntPtr lParam = default);
+            IntPtr result = SendMessageW(hWnd.Handle, Msg, wParam, lParam);
+            GC.KeepAlive(hWnd.Wrapper);
+            return result;
+        }
 
-            public static IntPtr SendMessageW(
-                HandleRef hWnd,
-                WM Msg,
-                IntPtr wParam = default,
-                IntPtr lParam = default)
+        public unsafe static IntPtr SendMessageW(
+            IntPtr hWnd,
+            WM Msg,
+            IntPtr wParam,
+            string lParam)
+        {
+            fixed (char* c = lParam)
             {
-                IntPtr result = SendMessageW(hWnd.Handle, Msg, wParam, lParam);
-                GC.KeepAlive(hWnd.Wrapper);
-                return result;
+                return SendMessageW(hWnd, Msg, wParam, (IntPtr)(void*)c);
             }
+        }
 
-            public unsafe static IntPtr SendMessageW(
-                IntPtr hWnd,
-                WM Msg,
-                IntPtr wParam,
-                string lParam)
+        public unsafe static IntPtr SendMessageW(
+            HandleRef hWnd,
+            WM Msg,
+            IntPtr wParam,
+            string lParam)
+        {
+            fixed (char* c = lParam)
             {
-                fixed (char* c = lParam)
-                {
-                    return SendMessageW(hWnd, Msg, wParam, (IntPtr)(void*)c);
-                }
+                return SendMessageW(hWnd, Msg, wParam, (IntPtr)(void*)c);
             }
+        }
 
-            public unsafe static IntPtr SendMessageW(
-                HandleRef hWnd,
-                WM Msg,
-                IntPtr wParam,
-                string lParam)
+        public unsafe static IntPtr SendMessageW<T>(
+            IntPtr hWnd,
+            WM Msg,
+            IntPtr wParam,
+            ref T lParam) where T : unmanaged
+        {
+            fixed (void* l = &lParam)
             {
-                fixed (char* c = lParam)
-                {
-                    return SendMessageW(hWnd, Msg, wParam, (IntPtr)(void*)c);
-                }
-            }
-
-            public unsafe static IntPtr SendMessageW<T>(
-                IntPtr hWnd,
-                WM Msg,
-                IntPtr wParam,
-                ref T lParam) where T : unmanaged
-            {
-                fixed (void* l = &lParam)
-                {
-                    return SendMessageW(hWnd, Msg, wParam, (IntPtr)l);
-                }
+                return SendMessageW(hWnd, Msg, wParam, (IntPtr)l);
             }
         }
     }

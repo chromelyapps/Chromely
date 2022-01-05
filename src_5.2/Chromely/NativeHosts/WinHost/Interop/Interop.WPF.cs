@@ -2,24 +2,21 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System;
+namespace Chromely;
 
-namespace Chromely
+public static partial class Interop
 {
-    public static partial class Interop
+    public static partial class User32
     {
-        public static partial class User32
+        /// <summary>
+        ///  Window placement flags for <see cref="WINDOWPLACEMENT"/>.
+        /// </summary>
+        [Flags]
+        public enum WPF : uint
         {
-            /// <summary>
-            ///  Window placement flags for <see cref="WINDOWPLACEMENT"/>.
-            /// </summary>
-            [Flags]
-            public enum WPF : uint
-            {
-                SETMINPOSITION = 0x0001,
-                RESTORETOMAXIMIZED = 0x0002,
-                ASYNCWINDOWPLACEMENT = 0x0004,
-            }
+            SETMINPOSITION = 0x0001,
+            RESTORETOMAXIMIZED = 0x0002,
+            ASYNCWINDOWPLACEMENT = 0x0004,
         }
     }
 }

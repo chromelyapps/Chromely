@@ -630,6 +630,11 @@ namespace Xilium.CefGlue
         /// </summary>
         SSL_KEY_USAGE_INCOMPATIBLE = -181,
 
+        /// <summary>
+        /// The ECHConfigList fetched over DNS cannot be parsed.
+        /// </summary>
+        INVALID_ECH_CONFIG_LIST = -182,
+
         // Certificate error codes
         //
         // The values of certificate error codes must be consecutive.

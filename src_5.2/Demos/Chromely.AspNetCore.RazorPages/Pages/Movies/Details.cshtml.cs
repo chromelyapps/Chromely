@@ -10,7 +10,7 @@ public class DetailsModel : PageModel
         Movie = new();
     }
 
-    public Movie Movie { get; set; }
+    public Movie? Movie { get; set; }
 
     #region snippet1
     public async Task<IActionResult> OnGetAsync(int? id)

@@ -1,6 +1,5 @@
-﻿#nullable disable
+﻿#pragma warning disable CA1822
 #pragma warning disable IDE0060
-#pragma warning disable CA1822
 
 namespace Xilium.CefGlue.Wrapper
 {
@@ -231,6 +230,8 @@ namespace Xilium.CefGlue.Wrapper
             {
                 return _browserRequestInfoMap.Count();
             }
+
+          //  return 0;
         }
 
         #region The below methods should be called from other CEF handlers. They must be called exactly as documented for the router to function correctly.
@@ -239,7 +240,7 @@ namespace Xilium.CefGlue.Wrapper
         /// Call from CefRenderProcessHandler::OnContextCreated. Registers the
         /// JavaScripts functions with the new context.
         /// </summary>
-        public void OnContextCreated(CefBrowser browser, CefFrame frame, CefV8Context context)
+        public void OnContextCreated(CefV8Context context)
         {
             Helpers.RequireRendererThread();
 
@@ -285,7 +286,7 @@ namespace Xilium.CefGlue.Wrapper
         /// Call from CefRenderProcessHandler::OnProcessMessageReceived. Returns true
         /// if the message is handled by this router or false otherwise.
         /// </summary>
-        public bool OnProcessMessageReceived(CefBrowser browser, CefFrame frame, CefProcessId sourceProcess, CefProcessMessage message)
+        public bool OnProcessMessageReceived(CefBrowser browser, CefProcessId sourceProcess, CefProcessMessage message)
         {
             Helpers.RequireRendererThread();
 
@@ -385,8 +386,9 @@ namespace Xilium.CefGlue.Wrapper
             args.SetString(4, request);
             args.SetBool(5, persistent);
 
-            CefFrame frame = browser.GetFrame(frameId);
-            frame?.SendProcessMessage(CefProcessId.Browser, message);
+            var frame = browser.GetFrame(frameId);
+            if (frame.IsValid)
+                browser.GetFrame(frameId).SendProcessMessage(CefProcessId.Browser, message);
 
             args.Dispose();
             message.Dispose();
@@ -441,8 +443,10 @@ namespace Xilium.CefGlue.Wrapper
                 args.SetInt(0, contextId);
                 args.SetInt(1, requestId);
 
-                CefFrame frame = browser.GetFrame(frameId);
-                frame?.SendProcessMessage(CefProcessId.Browser, message);
+                var frame = browser.GetFrame(frameId);
+                if (frame.IsValid)
+                    frame.SendProcessMessage(CefProcessId.Browser, message);
+
                 return true;
             }
 

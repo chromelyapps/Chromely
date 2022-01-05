@@ -1,4 +1,4 @@
-﻿#nullable disable
+﻿#pragma warning disable CS8714
 
 namespace Xilium.CefGlue.Wrapper
 {
@@ -74,7 +74,10 @@ namespace Xilium.CefGlue.Wrapper
 
         public void FindAll(int browserId, Visitor visitor)
         {
-            if (!_map.TryGetValue(browserId, out Dictionary<TKey, TValue> v)) return;
+            if (!_map.TryGetValue(browserId, out Dictionary<TKey, TValue> v))
+            {
+                return;
+            }
 
             bool hasRemoveKey = false;
             TKey removeKey = default;

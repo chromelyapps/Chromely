@@ -9,7 +9,7 @@ global using Chromely.Core.Host;
 global using Chromely.Core.Logging;
 global using Chromely.Shared.ChromelyControllers;
 global using Chromely.Shared.Data;
-global using Chromely.NativeHost;
+global using Chromely.NativeHosts;
 global using Chromely.Owin;
 global using Chromely.Shared.Models;
 

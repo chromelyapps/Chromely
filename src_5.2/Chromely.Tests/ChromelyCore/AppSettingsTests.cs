@@ -11,10 +11,12 @@ public class AppSettingsTests
         ChromelyAppUser.App.Properties.Settings.Item1 = "Market 01";
         ChromelyAppUser.App.Properties.Settings.Item2 = "Year 2020";
 
-        var list = new List<string>();
-        list.Add("item0001");
-        list.Add("item0002");
-        list.Add("item0003");
+        var list = new List<string>
+        {
+            "item0001",
+            "item0002",
+            "item0003"
+        };
         ChromelyAppUser.App.Properties.Settings.TestItems = list;
 
         var config = new DefaultConfiguration();
@@ -49,11 +51,11 @@ public class AppSettingsTests
         DeleteConfigFile(config);
     }
 
-    private void DeleteConfigFile(IChromelyConfiguration config)
+    private static void DeleteConfigFile(IChromelyConfiguration config)
     {
         try
         {
-            var appSettingsFile = AppSettingInfo.GetSettingsFilePath(config.Platform, config.AppName);
+            var appSettingsFile = AppSettingInfo.GetSettingsFilePath(config.Platform, config.AppName ?? "chromely");
             if (!string.IsNullOrWhiteSpace(appSettingsFile))
             {
                 if (File.Exists(appSettingsFile))

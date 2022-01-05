@@ -1,20 +1,14 @@
 ﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
-using System;
-using System.IO;
-using System.Net;
-using Chromely.Core.Network;
+namespace Chromely.Core;
 
-namespace Chromely.Core
+public interface IChromelyErrorHandler
 {
-    public interface IChromelyErrorHandler
-    {
-        IChromelyResponse HandleRouteNotFound(string requestId, string routePath);
-        IChromelyResource HandleError(FileInfo? fileInfo, Exception? exception = null);
-        IChromelyResource HandleError(Stream? stream, Exception? exception = null);
-        IChromelyResponse HandleError(IChromelyRequest request, Exception? exception = null);
-        IChromelyResponse HandleError(IChromelyRequest request, IChromelyResponse response, Exception? exception = null);
-        Task<IChromelyResource> HandleErrorAsync(string requestUrl, IChromelyResource response, Exception? exception = null);
-    }
+    IChromelyResponse HandleRouteNotFound(string requestId, string routePath);
+    IChromelyResource HandleError(FileInfo? fileInfo, Exception? exception = null);
+    IChromelyResource HandleError(Stream? stream, Exception? exception = null);
+    IChromelyResponse HandleError(IChromelyRequest request, Exception? exception = null);
+    IChromelyResponse HandleError(IChromelyRequest request, IChromelyResponse response, Exception? exception = null);
+    Task<IChromelyResource> HandleErrorAsync(string requestUrl, IChromelyResource response, Exception? exception = null);
 }

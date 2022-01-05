@@ -7,6 +7,6 @@ public static class LoggerExtensions
 {
     public static void LogError(this ILogger logger, Exception exception)
     {
-        logger.LogError(exception, exception?.Message);
+        logger.LogError(exception, "{exception?.Message}", exception?.Message);
     }
 }

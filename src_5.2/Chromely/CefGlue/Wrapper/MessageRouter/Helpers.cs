@@ -18,7 +18,7 @@
 
         internal sealed class ActionTask : CefTask
         {
-            public Action? _action;
+            public Action _action;
 
             public ActionTask(Action action)
             {
@@ -27,10 +27,8 @@
 
             protected override void Execute()
             {
-                if (_action is not null)
-                {
-                    _action();
-                }
+                _action();
+                _action = null;
             }
         }
 

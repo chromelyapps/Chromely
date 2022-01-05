@@ -1,4 +1,7 @@
-﻿public class OwinWindowSample : Window
+﻿#pragma warning disable CS8622
+#pragma warning disable CA1050
+
+public class OwinWindowSample : Window
 {
     public OwinWindowSample(IChromelyNativeHost nativeHost,
                   IChromelyConfiguration config,

@@ -1,12 +1,8 @@
 ﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
-using Chromely.Core.Configuration;
-
-namespace Chromely
+namespace Chromely;
+public interface ICefBinariesDownloader
 {
-    public interface ICefBinariesDownloader
-    {
-        void Download(IChromelyConfiguration config);
-    }
+    void Download(IChromelyConfiguration config);
 }

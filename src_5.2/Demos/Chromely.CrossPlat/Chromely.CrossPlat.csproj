@@ -26,22 +26,22 @@
 		<PackageReference Include="Serilog.Extensions.Logging.File" Version="2.0.0" />
 		<PackageReference Include="System.Text.Json" Version="4.7.2" />
 	</ItemGroup>
-
-	<ItemGroup>
-		<Reference Include="Chromely">
-			<HintPath>..\libs\net6.0\Chromely.dll</HintPath>
-		</Reference>
-		<Reference Include="Chromely.Core">
-			<HintPath>..\libs\net6.0\Chromely.Core.dll</HintPath>
-		</Reference>
-	</ItemGroup>
 	
 	<ItemGroup>
 		<Content Include="app\**">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 	</ItemGroup>
-
+	
+	<ItemGroup>
+	  <Reference Include="Chromely">
+	    <HintPath>..\libs\net6.0\Chromely.dll</HintPath>
+	  </Reference>
+	  <Reference Include="Chromely.Core">
+	    <HintPath>..\libs\net6.0\Chromely.Core.dll</HintPath>
+	  </Reference>
+	</ItemGroup>
+	
 	<ItemGroup>
 		<None Update="chromely.ico">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
