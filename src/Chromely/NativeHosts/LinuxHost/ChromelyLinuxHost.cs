@@ -16,6 +16,8 @@ namespace Chromely.NativeHost
 {
     public partial class ChromelyLinuxHost : IChromelyNativeHost
     {
+        protected readonly IChromelyConfiguration _config;
+
         // X-Window error codes
         // https://tronche.com/gui/x/xlib/event-handling/protocol-errors/default-handlers.html
 
@@ -45,8 +47,12 @@ namespace Chromely.NativeHost
         private XHandleXError _onHandleErrorDelegate;
         private XHandleXIOError _onHandleIOErrorDelegate;
 
-        public ChromelyLinuxHost()
+        public ChromelyLinuxHost(IChromelyConfiguration config)
         {
+            _config = config;
+            _options = _config?.WindowOptions ?? new WindowOptions();
+            _debugging = _config == null ? false :_config.DebuggingMode;
+
             gdk_set_allowed_backends("x11");
 
             _isInitialized = false;
@@ -66,11 +72,8 @@ namespace Chromely.NativeHost
 
         public virtual IntPtr Handle => _handle;
 
-        public virtual void CreateWindow(IWindowOptions config, bool debugging)
+        public virtual void CreateWindow()
         {
-            _options = config;
-            _debugging = debugging;
-
             Init(0, null);
 
             var wndType = _options.WindowFrameless

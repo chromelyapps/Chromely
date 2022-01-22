@@ -30,6 +30,7 @@ namespace Chromely.NativeHost
             public IntPtr createCallback;
             public IntPtr movingCallback;
             public IntPtr resizeCallback;
+            public IntPtr closeBrowserCallback;
             public IntPtr exitCallback;
         }
 

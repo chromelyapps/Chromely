@@ -38,8 +38,12 @@ namespace Chromely.NativeHost
         protected static RECT DefaultBounds => new RECT(CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT);
         public static NativeHostBase NativeInstance;
         protected static bool WindowInterceptorInitialized = false;
-        protected IWindowMessageInterceptor _messageInterceptor;
-        protected IWindowOptions _options;
+
+        protected readonly IChromelyConfiguration _config;
+        protected readonly IWindowMessageInterceptor _messageInterceptor;
+        protected readonly IKeyboadHookHandler _keyboadHandler;
+        protected readonly IWindowOptions _options;
+
         protected IntPtr _handle;
         protected bool _windowFrameless;
         protected bool _isInitialized;
@@ -47,15 +51,17 @@ namespace Chromely.NativeHost
         protected WNDPROC _wndProc;
         protected KeyboardLLHook _keyboardHook;
         protected WindowStylePlacement _windoStylePlacement;
-        protected IKeyboadHookHandler _keyboadHandler;
 
         public event EventHandler<CreatedEventArgs> HostCreated;
         public event EventHandler<MovingEventArgs> HostMoving;
         public event EventHandler<SizeChangedEventArgs> HostSizeChanged;
         public event EventHandler<CloseEventArgs> HostClose;
 
-        public NativeHostBase(IWindowMessageInterceptor messageInterceptor, IKeyboadHookHandler keyboadHandler)
+        public NativeHostBase(IChromelyConfiguration config, IWindowMessageInterceptor messageInterceptor, IKeyboadHookHandler keyboadHandler)
         {
+            _config = config;
+            _options = _config?.WindowOptions ?? new WindowOptions();
+
             _isInitialized = false;
             _handle = IntPtr.Zero;
             _messageInterceptor = messageInterceptor;
@@ -64,10 +70,9 @@ namespace Chromely.NativeHost
 
         public IntPtr Handle => _handle;
 
-        public unsafe virtual void CreateWindow(IWindowOptions options, bool debugging)
+        public unsafe virtual void CreateWindow()
         {
             _keyboadHandler?.SetNativeHost(this);
-           _options = options;
             _windowFrameless = _options.WindowFrameless;
 
             _wndProc = WndProc;

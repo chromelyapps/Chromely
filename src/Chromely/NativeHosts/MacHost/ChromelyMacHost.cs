@@ -16,6 +16,8 @@ namespace Chromely.NativeHost
 {
     public partial class ChromelyMacHost : IChromelyNativeHost
     {
+        protected readonly IChromelyConfiguration _config;
+
         public event EventHandler<CreatedEventArgs> HostCreated;
         public event EventHandler<MovingEventArgs> HostMoving;
         public event EventHandler<SizeChangedEventArgs> HostSizeChanged;
@@ -27,6 +29,7 @@ namespace Chromely.NativeHost
         private delegate void CreateCallbackEvent(IntPtr window, IntPtr view);
         private delegate void MovingCallbackEvent();
         private delegate void ResizeCallbackEvent(int width, int height);
+        private delegate int CloseBrowserEvent();
         private delegate void QuitCallbackEvent();
 
         private ChromelyParam _configParam;
@@ -38,8 +41,11 @@ namespace Chromely.NativeHost
         private IntPtr _viewHandle;
         private bool _isInitialized;
 
-        public ChromelyMacHost()
+        public ChromelyMacHost(IChromelyConfiguration config)
         {
+            _config = config;
+            _options = _config?.WindowOptions ?? new WindowOptions();
+
             _appHandle = IntPtr.Zero;
             _poolHandle = IntPtr.Zero;
             _windowHandle = IntPtr.Zero;
@@ -48,15 +54,15 @@ namespace Chromely.NativeHost
         }
         public virtual IntPtr Handle => _windowHandle;
 
-        public virtual void CreateWindow(IWindowOptions options, bool debugging)
+        public virtual void CreateWindow()
         {
-            _options = options;
             _configParam = InitParam(RunCallback,
                                                     ShutdownCallback,
                                                     InitCallback,
                                                     CreateCallback,
                                                     MovingCallback,
                                                     ResizeCallback,
+                                                    CloseBrowser,
                                                     QuitCallback);
 
 
@@ -139,12 +145,21 @@ namespace Chromely.NativeHost
 
         protected virtual void RunCallback()
         {
-            CefRuntime.RunMessageLoop();
+            try
+            {
+                CefRuntime.RunMessageLoop();
+                CefRuntime.Shutdown();
+            }
+            catch (Exception exception)
+            {
+                Logger.Instance.Log.LogError("Error in ChromelyMacHost::RunCallback");
+                Logger.Instance.Log.LogError(exception, exception.Message);
+            }
         }
 
         protected virtual void ShutdownCallback()
         {
-            CefRuntime.Shutdown();
+            CefRuntime.QuitMessageLoop();
         }
 
         protected virtual void InitCallback(IntPtr app, IntPtr pool)
@@ -179,11 +194,34 @@ namespace Chromely.NativeHost
             }
         }
 
+        protected virtual int CloseBrowser()
+        {
+            try
+            {
+                var browser = _config?.JavaScriptExecutor?.GetBrowser() as CefBrowser;
+                if (browser != null)
+                {
+                    var host = browser.GetHost();
+                    if (host != null && !host.TryCloseBrowser())
+                    {
+                        return 1;
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                Logger.Instance.Log.LogError("Error in ChromelyMacHost::CloseBrowser");
+                Logger.Instance.Log.LogError(exception, exception.Message);
+            }
+
+            return 0;
+        }
+
         protected virtual void QuitCallback()
         {
             try
             {
-                CefRuntime.Shutdown();
+                CefRuntime.QuitMessageLoop();
                 HostClose?.Invoke(this, new CloseEventArgs());
                 Environment.Exit(0);
             }
@@ -200,6 +238,7 @@ namespace Chromely.NativeHost
                                                     CreateCallbackEvent createCallback,
                                                     MovingCallbackEvent movingCallback,
                                                     ResizeCallbackEvent resizeCallback,
+                                                    CloseBrowserEvent closeBrowserCallback,
                                                     QuitCallbackEvent quitCallback)
         {
 
@@ -210,6 +249,7 @@ namespace Chromely.NativeHost
             configParam.createCallback = Marshal.GetFunctionPointerForDelegate(createCallback);
             configParam.movingCallback = Marshal.GetFunctionPointerForDelegate(movingCallback);
             configParam.resizeCallback = Marshal.GetFunctionPointerForDelegate(resizeCallback);
+            configParam.closeBrowserCallback = Marshal.GetFunctionPointerForDelegate(closeBrowserCallback);
             configParam.exitCallback = Marshal.GetFunctionPointerForDelegate(quitCallback);
 
             return configParam;

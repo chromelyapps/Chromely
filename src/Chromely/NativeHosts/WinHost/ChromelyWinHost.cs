@@ -1,6 +1,7 @@
 ﻿// Copyright © 2017-2020 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
+using Chromely.Core.Configuration;
 using Chromely.Core.Host;
 using System;
 using System.Linq;
@@ -11,8 +12,8 @@ namespace Chromely.NativeHost
 {
     public class ChromelyWinHost : NativeHostBase
     {
-        public ChromelyWinHost(IWindowMessageInterceptor messageInterceptor, IKeyboadHookHandler keyboadHandler) 
-            : base(messageInterceptor, keyboadHandler)
+        public ChromelyWinHost(IChromelyConfiguration config, IWindowMessageInterceptor messageInterceptor, IKeyboadHookHandler keyboadHandler) 
+            : base(config, messageInterceptor, keyboadHandler)
         {
         }
 
