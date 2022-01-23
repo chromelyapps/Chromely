@@ -3,17 +3,29 @@
 
 namespace Chromely.Core.Defaults;
 
+/// <summary>
+/// The default implementation of <see cref="IChromelyAppSettings"/>.
+/// </summary>
 public class DefaultAppSettings : IChromelyAppSettings
 {
     private ChromelyDynamic? _chromelyDynamic;
+
+    /// <inheritdoc/>
     public string AppName { get; set; }
+
+    /// <inheritdoc/>
     public string? DataPath { get; set; }
 
+    /// <summary>
+    /// Initializes a new instance of <see cref="DefaultAppSettings"/>.
+    /// </summary>
+    /// <param name="appName">The application name.</param>
     public DefaultAppSettings(string appName = "chromely")
     {
         AppName = appName;
     }
 
+    /// <inheritdoc/>
     public dynamic Settings
     {
         get
@@ -27,6 +39,7 @@ public class DefaultAppSettings : IChromelyAppSettings
         }
     }
 
+    /// <inheritdoc/>
     public virtual void Read(IChromelyConfiguration config)
     {
         try
@@ -65,6 +78,7 @@ public class DefaultAppSettings : IChromelyAppSettings
         }
     }
 
+    /// <inheritdoc/>
     public virtual void Save(IChromelyConfiguration config)
     {
         try

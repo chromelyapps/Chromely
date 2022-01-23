@@ -11,7 +11,7 @@ public partial class DataTransferOptions : IChromelyDataTransferOptions
     /// <summary>
     /// Initializes a new instance of <see cref="DataTransferOptions"/>.
     /// </summary>
-    /// <param name="serializerOptions">The serializer type of <see cref="JsonSerializerOptions"/>. </param>
+    /// <param name="serializerOptions">The serializer type of <see cref="JsonSerializerOptions"/>.</param>
     public DataTransferOptions(JsonSerializerOptions? serializerOptions = null)
     {
         Encoding = Encoding.UTF8;
@@ -22,10 +22,13 @@ public partial class DataTransferOptions : IChromelyDataTransferOptions
 
     /// <inheritdoc />
     public int MaxBufferSize { get; }
+
     /// <inheritdoc />
     public Encoding Encoding { get; }
+
     /// <inheritdoc />
     public object SerializerOptions { get; }
+
     /// <inheritdoc />
     protected virtual JsonSerializerOptions Options
     {

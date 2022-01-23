@@ -12,6 +12,7 @@ public interface IChromelyDataTransferOptions
     /// Gets encoding for data transfer.
     /// </summary>
     Encoding Encoding { get; }
+
     /// <summary>
     /// Gets the serialization options object.
     /// </summary>
@@ -23,12 +24,14 @@ public interface IChromelyDataTransferOptions
     /// <param name="request">The request <see cref="object"/> to convert.</param>
     /// <returns>Converted json request.</returns>
     string? ConvertRequestToJson(object request);
+
     /// <summary>
     /// Converts response to json.
     /// </summary>
     /// <param name="response">The response <see cref="object"/> to convert.</param>
     /// <returns>Converted json response.</returns>
     string? ConvertResponseToJson(object? response);
+
     /// <summary>
     /// Converts json to dictionary.
     /// </summary>
@@ -36,6 +39,7 @@ public interface IChromelyDataTransferOptions
     /// <param name="typeToConvert">The <see cref="Type"/> type to convert.</param>
     /// <returns>A dictionary object.</returns>
     object? ConvertJsonToDictionary(string json, Type typeToConvert);
+
     /// <summary>
     /// Convert json to object.
     /// </summary>
@@ -43,6 +47,7 @@ public interface IChromelyDataTransferOptions
     /// <param name="typeToConvert">The <see cref="Type"/> type to convert.</param>
     /// <returns>An object.</returns>
     object? ConvertJsonToObject(string json, Type typeToConvert);
+
     /// <summary>
     /// Convert object to json.
     /// </summary>

@@ -3,7 +3,9 @@
 
 namespace Chromely.Core.Configuration;
 
-/// <summary> Options associated with the Frameless mode. </summary>
+/// <summary> 
+/// Options associated with the Frameless mode. 
+/// </summary>
 public class FramelessOption
 {
     private static readonly int DRAGZONE_HEIGHT = 32;
@@ -11,21 +13,9 @@ public class FramelessOption
     private static readonly int DRAGZONE_LEFT_OFFSET = 0;
     private static readonly int DRAGZONE_RIGHT_OFFSET = 140;
 
-    public bool UseWebkitAppRegions { get; set; }
-
-    /// <summary> Callback function to determine if the point is within the draggable area. </summary>
-    /// <value> True if the click point is within the draggable area. </value>
-    public Func<IChromelyNativeHost, Point, bool> IsDraggable { get; set; }
-
-    /// <summary> Callback function on double click events from the drag region. </summary>
-    /// <value> The double click callback. </value>
-    public Action<IChromelyNativeHost> DblClick { get; set; }
-
-    /// <summary> List of draggable areas. </summary>
-    /// <value> The drag zones. </value>
-    public List<DragZoneConfiguration> DragZones { get; set; }
-
-    /// <summary> Default constructor. </summary>
+    /// <summary> 
+    /// Initializes a new instance of <see cref="FramelessOption"/>. 
+    /// </summary>
     public FramelessOption()
     {
         UseWebkitAppRegions = false;
@@ -38,7 +28,36 @@ public class FramelessOption
     }
 
     /// <summary>
-    ///     Default callback function to determine if we're located within the drag region.
+    /// Gets or sets a value indicating whether Webkit region should be used to determine drag zone.
+    /// </summary>
+    public bool UseWebkitAppRegions { get; set; }
+
+    /// <summary> 
+    /// Callback function to determine if the point is within the draggable area. 
+    /// </summary>
+    /// <value> 
+    /// True if the click point is within the draggable area. 
+    /// </value>
+    public Func<IChromelyNativeHost, Point, bool> IsDraggable { get; set; }
+
+    /// <summary> 
+    /// Callback function on double click events from the drag region. 
+    /// </summary>
+    /// <value> 
+    /// The double click callback. 
+    /// </value>
+    public Action<IChromelyNativeHost> DblClick { get; set; }
+
+    /// <summary> 
+    /// List of draggable areas. 
+    /// </summary>
+    /// <value> 
+    /// The drag zones. 
+    /// </value>
+    public List<DragZoneConfiguration> DragZones { get; set; }
+
+    /// <summary>
+    ///  Default callback function to determine if we're located within the drag region.
     /// </summary>
     /// <param name="nativeHost"> The Chromely native host interface. </param>
     /// <param name="point">      The click point. </param>
@@ -57,7 +76,9 @@ public class FramelessOption
         return in_zone;
     }
 
-    /// <summary> Doubleclick callback function. </summary>
+    /// <summary> 
+    /// Doubleclicking drag zone callback function. 
+    /// </summary>
     /// <param name="nativeHost"> The Chromely native host interface. </param>
     public static void DblClickCallbackFunc(IChromelyNativeHost nativeHost)
     {

@@ -3,6 +3,9 @@
 
 namespace Chromely.Core.Host;
 
+/// <summary>
+/// Application host moving event argument class.
+/// </summary>
 public class MovingEventArgs : EventArgs
 {
 }

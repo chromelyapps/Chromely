@@ -3,58 +3,12 @@
 
 namespace Chromely.Core.Configuration;
 
+/// <inheritdoc/>
 public class WindowOptions : IWindowOptions
 {
-    /// <summary>Gets or sets the title of the window. If you leave them blank than the AppName will be used</summary>
-    public string Title { get; set; }
-
-    /// <summary>Gets or sets the relative path to icon that will be displayed on the window.</summary>
-    public string RelativePathToIconFile { get; set; }
-
-    /// <summary>Gets or sets a value indicating whether resizing should be disabled.</summary>
-    public bool DisableResizing { get; set; }
-
-    /// <summary>Gets or sets a value indicating whether the minimize and maximize controls should be disabled.</summary>
-    public bool DisableMinMaximizeControls { get; set; }
-
-    /// <summary>Gets or sets a value indicating whether kiosk mode is enabled or not.</summary>
-    public bool KioskMode { get; set; }
-
-    /// <summary>Gets or sets a value indicating whether the window should be centered when starting up for the first time.</summary>
-    public bool StartCentered { get; set; }
-
-    /// <summary>Gets or sets a value indicating whether fullscreen is enabled or not.</summary>
-    public bool Fullscreen { get; set; }
-
-    //TODO write summary for WindowFrameless prop
-    public bool WindowFrameless { get; set; }
-
-    /// <summary>Gets or sets a value indicating whether a custom style will be used.</summary>
-    public bool UseCustomStyle { get; set; }
-
-    /// <summary>Gets or sets a value indicating whether CEF message loop only will be used. 
-    /// Only valid for Windows only. Will be ignored for Linux and MacOS. 
+    /// <summary>
+    /// Initializes a new instance of <see cref="WindowOptions"/>.
     /// </summary>
-    public bool UseOnlyCefMessageLoop { get; set; }
-
-    public Size MinimumSize { get; set; }
-    public Size MaximumSize { get; set; }
-
-    /// <summary>Gets or sets the custom style.</summary>
-    public WindowCustomStyle? CustomStyle { get; set; }
-
-    /// <summary>Gets or sets the position of the window.</summary>
-    public WindowPosition Position { get; set; }
-
-    /// <summary>Gets or sets the size of the window.</summary>
-    public WindowSize Size { get; set; }
-
-    /// <summary>Gets or sets the WindowState of the window.</summary>
-    public WindowState WindowState { get; set; }
-
-    /// <summary>Gets or sets the FramelessOption of the borderless window.</summary>
-    public FramelessOption FramelessOption { get; set; }
-
     public WindowOptions()
     {
         UseOnlyCefMessageLoop = false;
@@ -71,4 +25,56 @@ public class WindowOptions : IWindowOptions
         Position = new WindowPosition(0, 0);
         FramelessOption = new FramelessOption();
     }
+
+    /// <inheritdoc/>
+    public string Title { get; set; }
+
+    /// <inheritdoc/>
+    public string RelativePathToIconFile { get; set; }
+
+    /// <inheritdoc/>
+    public bool DisableResizing { get; set; }
+
+    /// <inheritdoc/>
+    public bool DisableMinMaximizeControls { get; set; }
+
+    /// <inheritdoc/>
+    public bool KioskMode { get; set; }
+
+    /// <inheritdoc/>
+    public bool StartCentered { get; set; }
+
+    /// <inheritdoc/>
+    public bool Fullscreen { get; set; }
+
+    /// <inheritdoc/>
+    public bool WindowFrameless { get; set; }
+
+    /// <inheritdoc/>
+    public bool UseCustomStyle { get; set; }
+
+    /// <inheritdoc/>
+    public bool UseOnlyCefMessageLoop { get; set; }
+
+    /// <inheritdoc/>
+    public Size MinimumSize { get; set; }
+
+    /// <inheritdoc/>
+    public Size MaximumSize { get; set; }
+
+    /// <inheritdoc/>
+    public WindowCustomStyle? CustomStyle { get; set; }
+
+    /// <inheritdoc/>
+    public WindowPosition Position { get; set; }
+
+    /// <inheritdoc/>
+    public WindowSize Size { get; set; }
+
+    /// <inheritdoc/>
+    public WindowState WindowState { get; set; }
+
+    /// <inheritdoc/>
+    public FramelessOption FramelessOption { get; set; }
+
 }

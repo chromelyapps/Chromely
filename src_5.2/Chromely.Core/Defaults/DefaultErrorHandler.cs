@@ -3,8 +3,12 @@
 
 namespace Chromely.Core.Defaults;
 
+/// <summary>
+/// The default implementation of <see cref="IChromelyErrorHandler"/>.
+/// </summary>
 public class DefaultErrorHandler : IChromelyErrorHandler
 {
+    /// <inheritdoc/>
     public virtual IChromelyResponse HandleRouteNotFound(string requestId, string routePath)
     {
         return new ChromelyResponse
@@ -16,6 +20,7 @@ public class DefaultErrorHandler : IChromelyErrorHandler
         };
     }
 
+    /// <inheritdoc/>
     public virtual IChromelyResource HandleError(FileInfo? fileInfo, Exception? exception = null)
     {
         var info = DefaultErrorHandler.GetFileInfo(fileInfo);
@@ -27,6 +32,7 @@ public class DefaultErrorHandler : IChromelyErrorHandler
         return resource;
     }
 
+    /// <inheritdoc/>
     public IChromelyResource HandleError(Stream? stream, Exception? exception = null)
     {
         var info = DefaultErrorHandler.GetFileInfo(stream);
@@ -36,6 +42,7 @@ public class DefaultErrorHandler : IChromelyErrorHandler
         return DefaultErrorHandler.HandleResourceError(fileExists, fileSize, exception);
     }
 
+    /// <inheritdoc/>
     public virtual IChromelyResponse HandleError(IChromelyRequest request, Exception? exception = null)
     {
         if (exception is not null)
@@ -57,6 +64,7 @@ public class DefaultErrorHandler : IChromelyErrorHandler
         return localResponse;
     }
 
+    /// <inheritdoc/>
     public virtual IChromelyResponse HandleError(IChromelyRequest request, IChromelyResponse response, Exception? exception = null)
     {
         if (exception is not null)
@@ -78,6 +86,7 @@ public class DefaultErrorHandler : IChromelyErrorHandler
         return localResponse;
     }
 
+    /// <inheritdoc/>
     public virtual Task<IChromelyResource> HandleErrorAsync(string requestUrl, IChromelyResource response, Exception? exception = null)
     {
         return Task.FromResult<IChromelyResource>(response);

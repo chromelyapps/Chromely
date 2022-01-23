@@ -5,6 +5,7 @@ namespace Chromely.Core.Defaults;
 
 public partial class DataTransferOptions
 {
+    /// <inheritdoc />
     public virtual object? ConvertJsonToObject(string json, Type typeToConvert)
     {
         try

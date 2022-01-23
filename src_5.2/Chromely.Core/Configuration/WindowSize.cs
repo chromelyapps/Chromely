@@ -3,11 +3,26 @@
 
 namespace Chromely.Core.Configuration;
 
+/// <summary>
+/// Application window size - width, height.
+/// </summary>
 public struct WindowSize
 {
+    /// <summary>
+    /// Gets the application window width.
+    /// </summary>
     public int Width { get; }
+
+    /// <summary>
+    /// Gets the X application window height.
+    /// </summary>
     public int Height { get; }
 
+    /// <summary>
+    /// Initializes a new instance of <see cref="WindowSize"/>.
+    /// </summary>
+    /// <param name="width">The application window width.</param>
+    /// <param name="height">The application window height.</param>
     public WindowSize(int width, int height)
     {
         this.Width = width;

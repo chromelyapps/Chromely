@@ -3,15 +3,29 @@
 
 namespace Chromely.Core.Host;
 
+/// <summary>
+/// Application host size changed event argument class.
+/// </summary>
 public class SizeChangedEventArgs : EventArgs
 {
+    /// <summary>
+    /// Initializes a new instance of <see cref="SizeChangedEventArgs"/>.
+    /// </summary>
+    /// <param name="width">Host window width.</param>
+    /// <param name="height">Host window height.</param>
     public SizeChangedEventArgs(int width, int height)
     {
         Width = width;
         Height = height;
     }
 
-    public IntPtr GdkHandle { get; }
+    /// <summary>
+    /// Gets the host window width.
+    /// </summary>
     public int Width { get; }
+
+    /// <summary>
+    /// Gets the host window height.
+    /// </summary>
     public int Height { get; }
 }

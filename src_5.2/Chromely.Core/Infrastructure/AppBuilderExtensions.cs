@@ -5,6 +5,15 @@ namespace Chromely.Core.Infrastructure;
 
 public static class AppBuilderExtensions
 {
+    /// <summary>
+    /// Ensure that the reference type is derived from base type.
+    /// </summary>
+    /// <remarks>
+    /// Is it fails and exception is thrown.
+    /// </remarks>
+    /// <typeparam name="T">Type parameter of <see cref="Type" />.</typeparam>
+    /// <param name="derivedType">The derived type to check.</param>
+    /// <exception cref="Exception"></exception>
     public static void EnsureIsDerivedFromType<T>(this Type derivedType)
     {
         var baseType = typeof(T);

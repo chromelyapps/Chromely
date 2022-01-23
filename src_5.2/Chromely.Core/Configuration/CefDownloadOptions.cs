@@ -3,27 +3,38 @@
 
 namespace Chromely.Core.Configuration;
 
+/// <summary>
+/// <see cref="CefDownloadOptions"/> allows setting download options.
+/// </summary>
 public class CefDownloadOptions : ICefDownloadOptions
 {
     /// <summary>
-    /// Gets or sets a value indicating whether Cef binaries should automatically be downloaded when missing.
+    /// Initializes a new instance of <see cref="CefDownloadOptions"/>.
     /// </summary>
-    public bool AutoDownloadWhenMissing { get; set; }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether  Cef binaries should be downloaded silently.
-    /// </summary>
-    public bool DownloadSilently { get; set; }
-
     public CefDownloadOptions()
     {
         AutoDownloadWhenMissing = true;
         DownloadSilently = false;
     }
 
+    /// <summary>
+    /// Initializes a new instance of <see cref="CefDownloadOptions"/>.
+    /// </summary>
+    /// <param name="autoDownload">Flag to set if auto download is allowed.</param>
+    /// <param name="silentDownload">Flag to set to download silently.</param>
     public CefDownloadOptions(bool autoDownload, bool silentDownload)
     {
         AutoDownloadWhenMissing = autoDownload;
         DownloadSilently = silentDownload;
     }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether CEF binaries should automatically be downloaded when missing.
+    /// </summary>
+    public bool AutoDownloadWhenMissing { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether CEF binaries should be downloaded silently.
+    /// </summary>
+    public bool DownloadSilently { get; set; }
 }

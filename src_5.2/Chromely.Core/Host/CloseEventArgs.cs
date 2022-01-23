@@ -3,6 +3,9 @@
 
 namespace Chromely.Core.Host;
 
+/// <summary>
+/// Application host closing event argument class.
+/// </summary>
 public class CloseEventArgs : EventArgs
 {
 }

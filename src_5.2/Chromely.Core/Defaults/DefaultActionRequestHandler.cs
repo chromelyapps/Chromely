@@ -3,12 +3,21 @@
 
 namespace Chromely.Core.Defaults;
 
+/// <summary>
+/// The default implementation of <see cref="IChromelyRequestHandler"/>.
+/// </summary>
 public class DefaultActionRequestHandler : IChromelyRequestHandler
 {
     protected readonly IChromelyRouteProvider _routeProvider;
     protected readonly IChromelyInfo _chromelyInfo;
     protected readonly IChromelyErrorHandler _chromelyErrorHandler;
 
+    /// <summary>
+    /// Initializes a new instance of <see cref="DefaultActionRequestHandler"/>.
+    /// </summary>
+    /// <param name="routeProvider">The router provider - instance of <see cref="IChromelyRouteProvider"/>.</param>
+    /// <param name="chromelyInfo">The chromely info - instance of <see cref="IChromelyInfo"/>.</param>
+    /// <param name="chromelyErrorHandler">Main Chromely error handler - instance of <see cref="IChromelyErrorHandler"/>.</param>
     public DefaultActionRequestHandler(IChromelyRouteProvider routeProvider, IChromelyInfo chromelyInfo, IChromelyErrorHandler chromelyErrorHandler)
     {
         _routeProvider = routeProvider;
@@ -16,6 +25,7 @@ public class DefaultActionRequestHandler : IChromelyRequestHandler
         _chromelyErrorHandler = chromelyErrorHandler;
     }
 
+    /// <inheritdoc/>
     public void Execute(string url)
     {
         var routePath = url.GetPathFromUrl();
@@ -24,6 +34,7 @@ public class DefaultActionRequestHandler : IChromelyRequestHandler
         ExecuteRoute(string.Empty, routePath, parameters, null, string.Empty);
     }
 
+    /// <inheritdoc/>
     public IChromelyResponse Execute(string requestId, string routePath, IDictionary<string, object>? parameters, object? postData, string? requestData)
     {
         if (string.IsNullOrWhiteSpace(routePath))
@@ -45,6 +56,7 @@ public class DefaultActionRequestHandler : IChromelyRequestHandler
         return ExecuteRoute(requestId, routePath, parameters, postData, requestData);
     }
 
+    /// <inheritdoc/>
     public async Task<IChromelyResponse> ExecuteAsync(string requestId, string routePath, IDictionary<string, object>? parameters, object? postData, string? requestData)
     {
         if (string.IsNullOrWhiteSpace(routePath))

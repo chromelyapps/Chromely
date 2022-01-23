@@ -3,6 +3,9 @@
 
 namespace Chromely.Core.Host;
 
+/// <summary>
+/// Application host created event argument class.
+/// </summary>
 public class CreatedEventArgs : EventArgs
 {
     public CreatedEventArgs(IntPtr window, IntPtr winXID)

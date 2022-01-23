@@ -5,6 +5,7 @@ namespace Chromely.Core.Defaults;
 
 public partial class DataTransferOptions
 {
+    /// <inheritdoc />
     public virtual object? ConvertJsonToDictionary(string json, Type typeToConvert)
     {
         if (!typeToConvert.IsDictionaryType())

@@ -5,6 +5,7 @@ namespace Chromely.Core.Defaults;
 
 public partial class DataTransferOptions
 {
+    /// <inheritdoc />
     public virtual string? ConvertRequestToJson(object request)
     {
         if (request.IsValidJson())
