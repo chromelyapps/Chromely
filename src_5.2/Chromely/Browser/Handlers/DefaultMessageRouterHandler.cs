@@ -107,12 +107,10 @@ public class DefaultMessageRouterHandler : CefMessageRouterBrowserSide.Handler, 
         public request()
         {
             id = Guid.NewGuid().ToString();
-            method = "GET";
             url = string.Empty;
         }
 
         public string id { get; set; }
-        public string method { get; set; }
         public string url { get; set; }
         public IDictionary<string, object>? parameters { get; set; }
         public object? postData { get; set; }

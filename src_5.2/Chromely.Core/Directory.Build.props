@@ -5,6 +5,7 @@
 		<FileVersion>5.2.0.0</FileVersion>
 		<Version>5.2.0.0-pre01</Version>
 		<Product>Chromely.Core</Product>
+		<Owners>Chromely Projects</Owners>
 		<Authors>Chromely Projects</Authors>
 		<Company>Chromely Projects</Company>
 		<PackageTags>CEF Chromium HTML5 Desktop Chromely CefGlue CefSharp .NET 6</PackageTags>

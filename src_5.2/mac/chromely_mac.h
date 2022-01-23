@@ -20,6 +20,7 @@ typedef void (*OnInitCallback)(void *app, void *pool);
 typedef void (*OnCreateCallback)(void *window, void *view);
 typedef void (*OnMovingCallback)();
 typedef void (*OnResizeCallback)(int width, int height);
+typedef int  (*OnCloseBrowserCallback)();
 typedef void (*OnExitCallback)();
 
 typedef struct APPDATA APPDATA;
@@ -48,6 +49,7 @@ struct CHROMELYPARAM {
     OnCreateCallback createCallback;
     OnMovingCallback movingCallback;
     OnResizeCallback resizeCallback;
+    OnCloseBrowserCallback closeBrowserCallback;
     OnExitCallback exitCallback;
 };
 

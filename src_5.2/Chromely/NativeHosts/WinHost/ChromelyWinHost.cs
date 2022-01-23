@@ -7,8 +7,8 @@ namespace Chromely.NativeHosts;
 
 public class ChromelyWinHost : NativeHostBase
 {
-    public ChromelyWinHost(IWindowMessageInterceptor messageInterceptor, IKeyboadHookHandler keyboadHandler)
-        : base(messageInterceptor, keyboadHandler)
+    public ChromelyWinHost(IChromelyConfiguration config, IWindowMessageInterceptor messageInterceptor, IKeyboadHookHandler keyboadHandler)
+        : base(config, messageInterceptor, keyboadHandler)
     {
     }
 

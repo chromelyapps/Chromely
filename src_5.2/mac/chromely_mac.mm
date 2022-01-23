@@ -135,7 +135,10 @@ namespace {
 // to be removed from the screen.
 - (BOOL)windowShouldClose:(NSWindow*)window {
   if (!force_close_) {
-        /// CHROMELYPARAM- function pointer?
+       int isClosing = chromelyParam_.closeBrowserCallback();
+       if (isClosing == 1) {
+         return NO;
+       }
     }
 
   // Don't want any more delegate callbacks after we destroy ourselves.
