@@ -3,8 +3,18 @@
 
 namespace Chromely.Core.Infrastructure;
 
+/// <summary>
+/// Utility class for application settings.
+/// </summary>
 public static class AppSettingInfo
 {
+    /// <summary>
+    /// Gets the application setting file path.
+    /// </summary>
+    /// <param name="platform">The OS platform type.</param>
+    /// <param name="appName">The application name.</param>
+    /// <param name="onSave">The flag to indicate saving of application settings.</param>
+    /// <returns>The application setting file path.</returns>
     public static string? GetSettingsFilePath(ChromelyPlatform platform, string appName = "chromely", bool onSave = false)
     {
         try

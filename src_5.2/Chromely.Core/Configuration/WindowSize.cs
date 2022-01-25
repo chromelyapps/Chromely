@@ -14,7 +14,7 @@ public struct WindowSize
     public int Width { get; }
 
     /// <summary>
-    /// Gets the X application window height.
+    /// Gets the application window height.
     /// </summary>
     public int Height { get; }
 

@@ -3,25 +3,18 @@
 
 namespace Chromely.Core.Network;
 
+/// <summary>
+/// Chromely base controller class.
+/// </summary>
 public abstract class ChromelyController
 {
     private string? _routePath;
     private string? _name;
     private string? _description;
 
-    public string? RoutePath
-    {
-        get
-        {
-            if (string.IsNullOrWhiteSpace(_routePath))
-            {
-                SetAttributeInfo();
-            }
-
-            return _routePath;
-        }
-    }
-
+    /// <summary>
+    /// Gets the controller identifier name
+    /// </summary>
     public string? Name
     {
         get
@@ -35,6 +28,25 @@ public abstract class ChromelyController
         }
     }
 
+    /// <summary>
+    /// Gets the controller route path.
+    /// </summary>
+    public string? RoutePath
+    {
+        get
+        {
+            if (string.IsNullOrWhiteSpace(_routePath))
+            {
+                SetAttributeInfo();
+            }
+
+            return _routePath;
+        }
+    }
+
+    /// <summary>
+    /// Gets the controller description.
+    /// </summary>
     public string? Description
     {
         get

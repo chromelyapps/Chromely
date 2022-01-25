@@ -45,7 +45,7 @@ public class CefBrowserApp : CefApp
             {
                 if (handler is IChromelySchemeHandler schemeHandler)
                 {
-                    if (schemeHandler?.Scheme is not null && schemeHandler.Scheme.ValidSchemeHost)
+                    if (schemeHandler?.Scheme is not null && schemeHandler.Scheme.IsValidSchemeAndHost)
                     {
                         // add if not already added
                         var firstOrDefault = schemeExes.FirstOrDefault(x => x.ValidSchemeHost &&
@@ -203,7 +203,7 @@ public class CefBrowserApp : CefApp
                 if (_urlScheme is null)
                     return false;
 
-                return _urlScheme.ValidSchemeHost;
+                return _urlScheme.IsValidSchemeAndHost;
             }
         }
 

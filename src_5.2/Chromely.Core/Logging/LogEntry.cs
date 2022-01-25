@@ -5,14 +5,18 @@ namespace Chromely.Core.Logging;
 
 internal class LogEntry
 {
-    /// <summary>Initializes a new instance of the <see cref="LogEntry" /> class.</summary>
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LogEntry" /> class.
+    /// </summary>
     public LogEntry(LogLevel level, string entry)
     {
         LogLevel = level;
         Entry = entry;
     }
 
-    /// <summary>Initializes a new instance of the <see cref="LogEntry" /> class.</summary>
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LogEntry" /> class.
+    /// </summary>
     public LogEntry(LogLevel level, Exception? error)
     {
         LogLevel = level;
@@ -20,7 +24,9 @@ internal class LogEntry
         Error = error;
     }
 
-    /// <summary>Initializes a new instance of the <see cref="LogEntry" /> class.</summary>
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LogEntry" /> class.
+    /// </summary>
     public LogEntry(LogLevel level, string entry, Exception? error)
     {
         LogLevel = level;
@@ -31,19 +37,16 @@ internal class LogEntry
     /// <summary>
     /// Gets the log level.
     /// </summary>
-    // ReSharper disable once MemberCanBePrivate.Local
     public LogLevel LogLevel { get; }
 
     /// <summary>
     /// Gets the entry.
     /// </summary>
-    // ReSharper disable once MemberCanBePrivate.Local
     public string Entry { get; }
 
     /// <summary>
     /// Gets or sets the error.
     /// </summary>
-    // ReSharper disable once MemberCanBePrivate.Local
     public Exception? Error { get; set; }
 
     /// <summary>

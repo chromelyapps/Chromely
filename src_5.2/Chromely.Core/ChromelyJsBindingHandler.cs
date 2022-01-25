@@ -3,6 +3,7 @@
 
 namespace Chromely.Core;
 
+/// <inheritdoc/>
 public class ChromelyJsBindingHandler : IChromelyJsBindingHandler
 {
     /// <summary>
@@ -14,6 +15,10 @@ public class ChromelyJsBindingHandler : IChromelyJsBindingHandler
         ObjectName = Guid.NewGuid().ToString();
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ChromelyJsBindingHandler"/> class.
+    /// </summary>
+    /// <param name="objectName">The binding object name.</param>
     public ChromelyJsBindingHandler(string objectName)
     {
         Key = objectName;
@@ -22,6 +27,12 @@ public class ChromelyJsBindingHandler : IChromelyJsBindingHandler
         BindingOptions = null;
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ChromelyJsBindingHandler"/> class.
+    /// </summary>
+    /// <param name="objectName">The binding object name.</param>
+    /// <param name="boundObject">The binding object.</param>
+    /// <param name="bindingOptions">The binding object options.</param>
     public ChromelyJsBindingHandler(string objectName, object boundObject, object bindingOptions)
     {
         Key = objectName;
@@ -30,8 +41,15 @@ public class ChromelyJsBindingHandler : IChromelyJsBindingHandler
         BindingOptions = bindingOptions;
     }
 
+    /// <inheritdoc/>
     public string Key { get; }
+
+    /// <inheritdoc/>
     public string ObjectName { get; set; }
+
+    /// <inheritdoc/>
     public object? BoundObject { get; set; }
+
+    /// <inheritdoc/>
     public object? BindingOptions { get; set; }
 }

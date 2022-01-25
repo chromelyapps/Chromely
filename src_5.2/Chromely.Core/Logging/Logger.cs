@@ -3,16 +3,23 @@
 
 namespace Chromely.Core.Logging;
 
+/// <summary>
+/// Ambient context class to manage instance of <see cref="ILogger"/>.
+/// </summary>
 public abstract class Logger
 {
     private static Logger? instance;
+
+    /// <summary>
+    /// The <see cref="ILogger"/> instance.
+    /// </summary>
     public static Logger Instance
     {
         get
         {
             if (instance is null)
             {
-                //Ambient Context can't return null, so we assign Local Default
+                // Ambient Context can't return null, so we assign Local Default
                 instance = new DefaultLogger();
             }
 
@@ -24,6 +31,10 @@ public abstract class Logger
         }
     }
 #nullable disable
+
+    /// <summary>
+    /// Gets or sets the application logger.
+    /// </summary>
     public virtual ILogger Log { get; set; }
 #nullable restore
 }

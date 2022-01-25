@@ -64,7 +64,7 @@ public interface IChromelyConfiguration
     Dictionary<string, object>? ExtensionData { get; set; }
 
     /// <summary>
-    /// Gets or sets the java script executor.
+    /// Gets or sets the JavaScript scripts executor.
     /// </summary>
     IChromelyJavaScriptExecutor? JavaScriptExecutor { get; set; }
 

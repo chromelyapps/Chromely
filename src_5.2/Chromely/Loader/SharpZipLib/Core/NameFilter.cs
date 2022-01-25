@@ -47,7 +47,7 @@ namespace ICSharpCode.SharpZipLib.Core
         /// Test a string to see if it is a valid regular expression.
         /// </summary>
         /// <param name="expression">The expression to test.</param>
-        /// <returns>True if expression is a valid <see cref="System.Text.RegularExpressions.Regex"/> false otherwise.</returns>
+        /// <returns>true if expression is a valid <see cref="System.Text.RegularExpressions.Regex"/> false otherwise.</returns>
         public static bool IsValidExpression(string expression)
         {
             bool result = true;
@@ -66,7 +66,7 @@ namespace ICSharpCode.SharpZipLib.Core
         /// Test an expression to see if it is valid as a filter.
         /// </summary>
         /// <param name="toTest">The filter expression to test.</param>
-        /// <returns>True if the expression is valid, false otherwise.</returns>
+        /// <returns>true if the expression is valid, false otherwise.</returns>
         public static bool IsValidFilterExpression(string toTest)
         {
             bool result = true;
@@ -176,7 +176,7 @@ namespace ICSharpCode.SharpZipLib.Core
         /// Test a value to see if it is included by the filter.
         /// </summary>
         /// <param name="name">The value to test.</param>
-        /// <returns>True if the value is included, false otherwise.</returns>
+        /// <returns>true if the value is included, false otherwise.</returns>
         public bool IsIncluded(string name)
         {
             bool result = false;
@@ -202,7 +202,7 @@ namespace ICSharpCode.SharpZipLib.Core
         /// Test a value to see if it is excluded by the filter.
         /// </summary>
         /// <param name="name">The value to test.</param>
-        /// <returns>True if the value is excluded, false otherwise.</returns>
+        /// <returns>true if the value is excluded, false otherwise.</returns>
         public bool IsExcluded(string name)
         {
             bool result = false;
@@ -222,7 +222,7 @@ namespace ICSharpCode.SharpZipLib.Core
         /// Test a value to see if it matches the filter.
         /// </summary>
         /// <param name="name">The value to test.</param>
-        /// <returns>True if the value matches, false otherwise.</returns>
+        /// <returns>true if the value matches, false otherwise.</returns>
         public bool IsMatch(string name)
         {
             return (IsIncluded(name) && !IsExcluded(name));

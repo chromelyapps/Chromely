@@ -40,12 +40,12 @@ public interface IChromelyRouteProvider
     /// Checks if a route exists using the route url.
     /// </summary>
     /// <param name="routeUrl">The route url.</param>
-    /// <returns>True or false.</returns>
+    /// <returns>true or false.</returns>
     bool RouteExists(string routeUrl);
     /// <summary>
     /// Checks if the associated controller action is asynchronous.
     /// </summary>
     /// <param name="routeUrl">The route url.</param>
-    /// <returns>True or false.</returns>
+    /// <returns>true or false.</returns>
     bool IsRouteAsync(string routeUrl);
 }

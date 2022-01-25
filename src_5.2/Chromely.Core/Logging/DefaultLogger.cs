@@ -3,10 +3,16 @@
 
 namespace Chromely.Core.Logging;
 
+/// <summary>
+/// Wrapper class to assign <see cref="SimpleLogger"/> or a custom implementation of <see cref="ILogger"/>.
+/// </summary>
 public class DefaultLogger : Logger
 {
     private ILogger? _ChromelyLogger;
 
+    /// <summary>
+    /// Gets or sets logger.
+    /// </summary>
     public override ILogger Log
     {
         get

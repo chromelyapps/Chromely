@@ -69,7 +69,7 @@ public interface IWindowOptions
     /// Gets or sets the minimum size of the application window.
     /// </summary>
     /// <remarks>
-    /// If the value is not set, it will be ignored. Window will be size set by the "Size" propery.
+    /// If the value is not set, it will be ignored. Window will be size set by the "Size" property.
     /// </remarks>
     Size MinimumSize { get; set; }
 
@@ -77,7 +77,7 @@ public interface IWindowOptions
     /// Gets or sets the maximum size of the application window.
     /// </summary>
     /// <remarks>
-    /// If the value is not set, it will be ignored. Window will be size set by the "Size" propery.
+    /// If the value is not set, it will be ignored. Window will be size set by the "Size" property.
     /// </remarks>
     Size MaximumSize { get; set; }
 

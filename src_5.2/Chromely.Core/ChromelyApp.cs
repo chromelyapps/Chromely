@@ -3,6 +3,9 @@
 
 namespace Chromely.Core;
 
+/// <summary>
+/// Basic Chromely application class.
+/// </summary>
 public abstract class ChromelyApp
 {
     protected bool _servicesConfigured;
@@ -11,11 +14,23 @@ public abstract class ChromelyApp
     protected bool _resolversConfigured;
     protected bool _defaultHandlersConfigured;
 
+    /// <summary>
+    /// The primary way to add services. All default handlers should be overriden here using custom handlers.
+    /// </summary>
+    /// <param name="services">The <see cref="IServiceCollection" /> to add services to.</param>
     public virtual void ConfigureServices(IServiceCollection services)
     {
         _servicesConfigured = true;
     }
 
+    /// <summary>
+    /// For adding specific core services to the application dependency injection container.
+    /// </summary>
+    /// <remarks>
+    /// Note: services are added here if they were not previously added in ConfigureServices.
+    /// This is why it uses for instance "TryAddSingleton".
+    /// </remarks>
+    /// <param name="services">The <see cref="IServiceCollection" /> to add services to.</param>
     public virtual void ConfigureCoreServices(IServiceCollection services)
     {
         if (!_servicesConfigured)
@@ -37,7 +52,11 @@ public abstract class ChromelyApp
         _coreServicesConfigured = true;
     }
 
-    public virtual void ConfigureServiceResolvers(IServiceCollection services)
+    /// <summary>
+    /// Runtime services resolver for handlers that have multiple services.
+    /// </summary>
+    /// <param name="services">The <see cref="IServiceCollection" /> to add services to.</param>
+    public virtual void ConfigureServicesResolver(IServiceCollection services)
     {
         /*  Collection service resolvers for types: 
             IChromelyJsBindingHandler
@@ -53,11 +72,26 @@ public abstract class ChromelyApp
         _resolversConfigured = true;
     }
 
+    /// <summary>
+    /// Configure default handlers.
+    /// </summary>
+    /// <param name="services">The <see cref="IServiceCollection" /> to add services to.</param>
     public virtual void ConfigureDefaultHandlers(IServiceCollection services)
     {
         _defaultHandlersConfigured = true;
     }
 
+    /// <summary>
+    /// Creates/initializes common infrastructure objects [Configuration, Logging, AppSetting] that are not previously added to <see cref="IServiceCollection" />.
+    /// <remarks>
+    /// Note: the objects [Configuration, Logging, AppSetting] will only be created/initialized if not added in:
+    ///   - ConfigureCoreServices
+    ///   - CoreServices
+    ///   - ConfigureServices
+    /// </remarks>
+    /// </summary>
+    /// <param name="serviceProvider">The <see cref="IServiceProvider"/> for application services.</param>
+    /// <exception cref="Exception"></exception>
     public virtual void Initialize(IServiceProvider serviceProvider)
     {
         if (!_servicesConfigured || !_coreServicesConfigured || !_resolversConfigured || !_defaultHandlersConfigured)
@@ -116,6 +150,11 @@ public abstract class ChromelyApp
         _servicesInitialized = true;
     }
 
+    /// <summary>
+    /// To register all controller route actions of <see cref="ChromelyController"/> previously registered in RegisterChromelyControllerAssembly.
+    /// </summary>
+    /// <param name="serviceProvider">The <see cref="IServiceProvider"/> for application services.</param>
+    /// <exception cref="Exception"></exception>
     public virtual void RegisterChromelyControllerRoutes(IServiceProvider serviceProvider)
     {
         if (!_servicesInitialized)
@@ -131,6 +170,11 @@ public abstract class ChromelyApp
         }
     }
 
+    /// <summary>
+    /// To register custom <see cref="ChromelyController"/> instance using the assembly fullpath.
+    /// </summary>
+    /// <param name="services">The <see cref="IServiceCollection" /> to add services to.</param>
+    /// <param name="assemblyFullPath"></param>
     public virtual void RegisterChromelyControllerAssembly(IServiceCollection services, string assemblyFullPath)
     {
         if (string.IsNullOrWhiteSpace(assemblyFullPath))
@@ -153,6 +197,11 @@ public abstract class ChromelyApp
 
     }
 
+    /// <summary>
+    /// To register custom <see cref="ChromelyController"/> instance using the assembly binary.
+    /// </summary>
+    /// <param name="services">The <see cref="IServiceCollection" /> to add services to.</param>
+    /// <param name="assembly">Controller asssembly(dll).</param>
     public virtual void RegisterChromelyControllerAssembly(IServiceCollection services, Assembly assembly)
     {
         if (assembly is null)
@@ -171,6 +220,11 @@ public abstract class ChromelyApp
 
     }
 
+    /// <summary>
+    /// Get current registered logger.
+    /// </summary>
+    /// <param name="serviceProvider"></param>
+    /// <returns>instance of <see cref="ILogger"/></returns>
     protected virtual ILogger? GetCurrentLogger(IServiceProvider serviceProvider)
     {
         var logger = serviceProvider.GetService<ILogger>();
@@ -215,6 +269,11 @@ public abstract class ChromelyApp
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="config"></param>
+    /// <exception cref="Exception"></exception>
     protected static void InitConfiguration(IChromelyConfiguration config)
     {
         if (config is null)

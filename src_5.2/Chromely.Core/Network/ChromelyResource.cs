@@ -3,8 +3,14 @@
 
 namespace Chromely.Core.Network;
 
+/// <summary>
+/// Default implementation of <see cref="ChromelyResource"/>.
+/// </summary>
 public class ChromelyResource : IChromelyResource
 {
+    /// <summary>
+    /// Initializes a new instance of <see cref="ChromelyResource"/>.
+    /// </summary>
     public ChromelyResource()
     {
         StatusCode = ResourceConstants.StatusOK;
@@ -13,9 +19,18 @@ public class ChromelyResource : IChromelyResource
         Headers = new Dictionary<string, string[]>();
     }
 
+    /// <inheritdoc/>
     public MemoryStream? Content { get; set; }
+
+    /// <inheritdoc/>
     public string MimeType { get; set; }
+
+    /// <inheritdoc/>
     public HttpStatusCode StatusCode { get; set; }
+
+    /// <inheritdoc/>
     public string StatusText { get; set; }
+
+    /// <inheritdoc/>
     public IDictionary<string, string[]> Headers { get; set; }
 }

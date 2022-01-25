@@ -3,33 +3,54 @@
 
 namespace Chromely.Core;
 
+/// <inheritdoc/>
 public sealed class AppBuilder : AppBuilderBase
 {
     private ChromelyServiceProviderFactory? _serviceProviderFactory;
 
+    /// <inheritdoc/>
     private AppBuilder(string[] args)
         : base(args)
     {
     }
 
+    /// <summary>
+    /// Creates the application builder instance.
+    /// </summary>
+    /// <param name="args">Command line arguments.</param>
+    /// <returns>the instance of <see cref="AppBuilderBase"/>.</returns>
     public static AppBuilderBase Create(string[] args)
     {
         var appBuilder = new AppBuilder(args);
         return appBuilder;
     }
 
+    /// <summary>
+    /// Allows the developer to use an external <see cref="IServiceCollection"/>.
+    /// </summary>
+    /// <remarks>
+    /// Usually custom <see cref="IServiceCollection"/> is not needed but one can be provided.
+    /// </remarks>
+    /// <param name="serviceCollection">The <see cref="IServiceCollection" /> to add services to.</param>
+    /// <returns>the instance of <see cref="AppBuilderBase"/>.</returns>
     public AppBuilderBase UseServices(IServiceCollection serviceCollection)
     {
         _serviceCollection = serviceCollection;
         return this;
     }
 
+    /// <summary>
+    /// Allows the developer to use an external <see cref="IServiceProvider"/> creator.
+    /// </summary>
+    /// <param name="serviceProviderFactory">A custom The <see cref="ChromelyServiceProviderFactory" /> instance.</param>
+    /// <returns>Instance of the <see cref="AppBuilder"/>.</returns>
     public AppBuilderBase UseServiceProviderFactory(ChromelyServiceProviderFactory serviceProviderFactory)
     {
         _serviceProviderFactory = serviceProviderFactory;
         return this;
     }
 
+    /// <inheritdoc/>
     public override AppBuilderBase Build()
     {
         if (_stepCompleted != 1)
@@ -53,7 +74,7 @@ public sealed class AppBuilder : AppBuilderBase
         RegisterUseComponents(_serviceCollection);
 
         _chromelyApp.ConfigureCoreServices(_serviceCollection);
-        _chromelyApp.ConfigureServiceResolvers(_serviceCollection);
+        _chromelyApp.ConfigureServicesResolver(_serviceCollection);
         _chromelyApp.ConfigureDefaultHandlers(_serviceCollection);
 
         _serviceProvider = _serviceProviderFactory is not null
@@ -67,6 +88,7 @@ public sealed class AppBuilder : AppBuilderBase
         return this;
     }
 
+    /// <inheritdoc/>
     public override void Run()
     {
         if (_stepCompleted != 2)

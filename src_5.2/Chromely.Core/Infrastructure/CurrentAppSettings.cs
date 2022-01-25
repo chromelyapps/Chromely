@@ -3,10 +3,16 @@
 
 namespace Chromely.Core.Infrastructure;
 
+/// <summary>
+/// Wrapper class to assign <see cref="DefaultAppSettings"/> or a custom implementation of <see cref="IChromelyAppSettings"/>.
+/// </summary>
 public class CurrentAppSettings : ChromelyAppUser
 {
     private IChromelyAppSettings? appSettings;
 
+    /// <summary>
+    /// Gets or sets the dynamic object as a set of "Properties".
+    /// </summary>
     public override IChromelyAppSettings Properties
     {
         get

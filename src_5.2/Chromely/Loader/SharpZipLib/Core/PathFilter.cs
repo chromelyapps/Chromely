@@ -28,7 +28,7 @@ namespace ICSharpCode.SharpZipLib.Core
         /// Test a name to see if it matches the filter.
         /// </summary>
         /// <param name="name">The name to test.</param>
-        /// <returns>True if the name matches, false otherwise.</returns>
+        /// <returns>true if the name matches, false otherwise.</returns>
         /// <remarks><see cref="Path.GetFullPath(string)"/> is used to get the full path before matching.</remarks>
         public virtual bool IsMatch(string name)
         {
@@ -110,7 +110,7 @@ namespace ICSharpCode.SharpZipLib.Core
         /// Test a filename to see if it matches the filter.
         /// </summary>
         /// <param name="name">The filename to test.</param>
-        /// <returns>True if the filter matches, false otherwise.</returns>
+        /// <returns>true if the filter matches, false otherwise.</returns>
         /// <exception cref="System.IO.FileNotFoundException">The <see paramref="fileName"/> doesnt exist</exception>
         public override bool IsMatch(string name)
         {
@@ -247,7 +247,7 @@ namespace ICSharpCode.SharpZipLib.Core
         /// Test a filename to see if it matches the filter.
         /// </summary>
         /// <param name="name">The filename to test.</param>
-        /// <returns>True if the filter matches, false otherwise.</returns>
+        /// <returns>true if the filter matches, false otherwise.</returns>
         public override bool IsMatch(string name)
         {
             bool result = base.IsMatch(name);

@@ -3,6 +3,9 @@
 
 namespace Chromely.Core;
 
+/// <summary>
+/// Represents message router handler.
+/// </summary>
 public interface IChromelyMessageRouter
 {
 }

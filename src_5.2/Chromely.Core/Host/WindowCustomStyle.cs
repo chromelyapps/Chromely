@@ -32,7 +32,7 @@ public class WindowCustomStyle
     /// <summary>
     /// Checks if the styles set are valid.
     /// </summary>
-    /// <returns>True if valid, othewise false.</returns>
+    /// <returns>true if valid, othewise false.</returns>
     public bool IsValid()
     {
         return ((WindowStyles != 0) && (WindowExStyles != 0));

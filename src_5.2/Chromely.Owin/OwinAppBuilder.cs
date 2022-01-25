@@ -6,6 +6,9 @@ namespace Chromely.Owin;
 // Shorthand for Owin pipeline func
 using AppFunc = Func<IDictionary<string, object>, Task>;
 
+/// <summary>
+/// Base OWIN application builder class.
+/// </summary>
 public sealed class OwinAppBuilder : AppBuilderBase
 {
     private static IWebHost? _owinHost;
@@ -31,10 +34,7 @@ public sealed class OwinAppBuilder : AppBuilderBase
         return appBuilder;
     }
 
-    /// <summary>
-    /// Builds and create the services.
-    /// </summary>
-    /// <returns>Instance of the <see cref="OwinAppBuilder"/>.</returns>
+    /// <inheritdoc/>
     public override AppBuilderBase Build()
     {
         if (_stepCompleted != 1)
@@ -68,9 +68,7 @@ public sealed class OwinAppBuilder : AppBuilderBase
         return this;
     }
 
-    /// <summary>
-    /// Runs the application after build.
-    /// </summary>
+    /// <inheritdoc/>
     public override void Run()
     {
         if (_stepCompleted != 2)
@@ -165,7 +163,7 @@ public sealed class OwinAppBuilder : AppBuilderBase
             RegisterUseComponents(services);
 
             _chromelyApp?.ConfigureCoreServices(services);
-            _chromelyApp?.ConfigureServiceResolvers(services);
+            _chromelyApp?.ConfigureServicesResolver(services);
             _chromelyApp?.ConfigureDefaultHandlers(services);
         })
         .Configure(app =>
@@ -210,7 +208,7 @@ public sealed class OwinAppBuilder : AppBuilderBase
         RegisterUseComponents(_serviceCollection);
 
         _chromelyApp?.ConfigureCoreServices(_serviceCollection);
-        _chromelyApp?.ConfigureServiceResolvers(_serviceCollection);
+        _chromelyApp?.ConfigureServicesResolver(_serviceCollection);
         _chromelyApp?.ConfigureDefaultHandlers(_serviceCollection);
 
         _serviceProvider = _serviceCollection.BuildServiceProvider();

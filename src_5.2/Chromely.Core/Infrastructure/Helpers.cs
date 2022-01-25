@@ -7,6 +7,11 @@ namespace Chromely.Core.Infrastructure;
 
 public static class Helpers
 {
+    public static bool IsNullOrEmpty(this IEnumerable<object> list)
+    {
+        return list is null || !list.Any();
+    }
+
     /// <summary>
     /// The object to dictionary.
     /// </summary>
@@ -465,4 +470,57 @@ public static class Helpers
 
         return false;
     }
+
+    #region Value converters
+    public static bool TryParseBoolean(this object value, out bool result)
+    {
+        result = false;
+
+        try
+        {
+            switch (value)
+            {
+                case null:
+                    return false;
+                case bool boolValue:
+                    result = boolValue;
+                    return true;
+            }
+
+            return bool.TryParse(value.ToString(), out result);
+        }
+        catch (Exception exception)
+        {
+            Logger.Instance.Log.LogError(exception);
+        }
+
+        return false;
+    }
+
+    public static bool TryParseInteger(this object value, out int result)
+    {
+        result = 0;
+
+        try
+        {
+            switch (value)
+            {
+                case null:
+                    return false;
+                case int intValue:
+                    result = intValue;
+                    return true;
+            }
+
+            return int.TryParse(value.ToString(), out result);
+        }
+        catch (Exception exception)
+        {
+            Logger.Instance.Log.LogError(exception);
+        }
+
+        return false;
+    }
+
+    #endregion Value converters
 }

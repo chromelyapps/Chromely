@@ -3,8 +3,10 @@
 
 namespace Chromely;
 
+/// <inheritdoc/>
 public class ChromelyInfo : IChromelyInfo
 {
+    /// <inheritdoc/>
     public IChromelyResponse GetInfo(string requestId)
     {
         var response = new ChromelyResponse(requestId);
@@ -29,6 +31,7 @@ public class ChromelyInfo : IChromelyInfo
         return response;
     }
 
+    /// <inheritdoc/>
     public IDictionary<string, string> GetInfo()
     {
         return new Dictionary<string, string>

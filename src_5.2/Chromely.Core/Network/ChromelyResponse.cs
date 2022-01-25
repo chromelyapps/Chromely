@@ -4,7 +4,7 @@
 namespace Chromely.Core.Network;
 
 /// <summary>
-/// The Chromely response.
+/// Default implementation of <see cref="IChromelyResponse"/>.
 /// </summary>
 public class ChromelyResponse : IChromelyResponse
 {
@@ -56,8 +56,10 @@ public class ChromelyResponse : IChromelyResponse
     /// </summary>
     public object? Data { get; set; }
 
+    /// <inheritdoc/>
     public bool HasRouteResponse { get; set; }
 
+    /// <inheritdoc/>
     public bool HasError
     {
         get
@@ -66,5 +68,6 @@ public class ChromelyResponse : IChromelyResponse
         }
     }
 
+    /// <inheritdoc/>
     public string Error { get; set; }
 }

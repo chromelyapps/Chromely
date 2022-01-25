@@ -9,7 +9,7 @@ public static class AppBuilderExtensions
     /// Ensure that the reference type is derived from base type.
     /// </summary>
     /// <remarks>
-    /// Is it fails and exception is thrown.
+    /// If it fails an exception is thrown.
     /// </remarks>
     /// <typeparam name="T">Type parameter of <see cref="Type" />.</typeparam>
     /// <param name="derivedType">The derived type to check.</param>

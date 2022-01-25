@@ -3,16 +3,23 @@
 
 namespace Chromely.Core.Infrastructure;
 
+/// <summary>
+/// Ambient context class to manage instance of <see cref="IChromelyAppSettings"/>.
+/// </summary>
 public abstract class ChromelyAppUser
 {
     private static ChromelyAppUser? instance;
+
+    /// <summary>
+    /// The <see cref="IChromelyAppSettings"/> instance.
+    /// </summary>
     public static ChromelyAppUser App
     {
         get
         {
             if (instance is null)
             {
-                //Ambient Context can't return null, so we assign Local Default
+                // Ambient Context can't return null, so we assign Local Default
                 instance = new CurrentAppSettings();
             }
 
@@ -24,5 +31,8 @@ public abstract class ChromelyAppUser
         }
     }
 
+    /// <summary>
+    /// Gets or sets the application settings.
+    /// </summary>
     public virtual IChromelyAppSettings Properties { get; set; } = new DefaultAppSettings();
 }

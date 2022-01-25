@@ -75,6 +75,10 @@ public class SimpleLogger : ILogger
         return null;
     }
 
+    /// <summary>
+    /// Log entry.
+    /// </summary>
+    /// <param name="entry">The entry data.</param>
     private void Log(LogEntry entry)
     {
         lock (_lockObj)

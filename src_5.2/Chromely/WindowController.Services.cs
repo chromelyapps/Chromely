@@ -62,7 +62,7 @@ public partial class WindowController
             {
                 if (schemeHandlerObj is not IChromelySchemeHandler schemehandler ||
                     schemehandler.Scheme is null ||
-                    !schemehandler.Scheme.ValidSchemeHost)
+                    !schemehandler.Scheme.IsValidSchemeAndHost)
                     continue;
 
                 _requestSchemeProvider.Add(schemehandler.Scheme);
@@ -100,7 +100,7 @@ public partial class WindowController
             {
                 if (schemeHandlerObj is not IChromelySchemeHandler schemehandler ||
                     schemehandler.Scheme is null ||
-                    !schemehandler.Scheme.ValidSchemeHost)
+                    !schemehandler.Scheme.IsValidSchemeAndHost)
                     continue;
 
                 _requestSchemeProvider.Add(schemehandler.Scheme);

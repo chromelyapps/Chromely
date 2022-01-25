@@ -3,11 +3,13 @@
 
 namespace Chromely;
 
+/// <inheritdoc/>
 public partial class WindowController : ChromelyWindowController
 {
     protected readonly IChromelyRequestSchemeProvider _requestSchemeProvider;
     protected ICefBinariesDownloader _binariesDownloader = new DefaultCefBinariesDownloader();
 
+    /// <inheritdoc/>
     public WindowController(IChromelyWindow window,
                             IChromelyNativeHost nativeHost,
                             IChromelyConfiguration config,

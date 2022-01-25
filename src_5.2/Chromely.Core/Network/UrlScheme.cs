@@ -4,10 +4,20 @@
 namespace Chromely.Core.Network;
 
 /// <summary>
-/// The url scheme.
+/// The Chromely url scheme.
 /// </summary>
+/// <remarks>
+/// The UrlScheme allows developers to configure how a scheme is handled. 
+/// This is dictated mostly be url scheme type as defined in <see cref="Network.UrlSchemeType"/>.
+/// </remarks>
 public class UrlScheme
 {
+    /// <summary>
+    /// Initializes a new instance of <see cref="UrlScheme"/>.
+    /// </summary>
+    /// <param name="scheme">The scheme name.</param>
+    /// <param name="host">The scheme host.</param>
+    /// <param name="type">Instance of <see cref="Network.UrlSchemeType"/>.</param>
     public UrlScheme(string scheme, string host, UrlSchemeType type)
     {
         Name = Guid.NewGuid().ToString();
@@ -27,6 +37,17 @@ public class UrlScheme
         }
     }
 
+    /// <summary>
+    /// Initializes a new instance of <see cref="UrlScheme"/>.
+    /// </summary>
+    /// <param name="name">The scheme identifier name.</param>
+    /// <param name="scheme">The scheme name.</param>
+    /// <param name="host">The scheme host.</param>
+    /// <param name="folder">The resource folder.</param>
+    /// <param name="baseUrl">The base url.</param>
+    /// <param name="type">Instance of <see cref="Network.UrlSchemeType"/>.</param>
+    /// <param name="baseUrlStrict"></param>
+    /// <param name="assemblyOptions">Instance of <see cref="Network.AssemblyOptions"/>.</param>
     public UrlScheme(string name, string scheme, string host, string folder, string baseUrl, UrlSchemeType type, bool baseUrlStrict = false, AssemblyOptions? assemblyOptions = null)
     {
         Name = name;
@@ -46,6 +67,16 @@ public class UrlScheme
         }
     }
 
+    /// <summary>
+    /// Initializes a new instance of <see cref="UrlScheme"/>.
+    /// </summary>
+    /// <param name="name">The scheme identifier name.</param>
+    /// <param name="scheme">The scheme name.</param>
+    /// <param name="host">The scheme host.</param>
+    /// <param name="baseUrl">The base url.</param>
+    /// <param name="type">Instance of <see cref="Network.UrlSchemeType"/>.</param>
+    /// <param name="baseUrlStrict"></param>
+    /// <param name="assemblyOptions">Instance of <see cref="Network.AssemblyOptions"/>.</param>
     public UrlScheme(string name, string scheme, string host, string baseUrl, UrlSchemeType type, bool baseUrlStrict = false, AssemblyOptions? assemblyOptions = null)
     {
         Name = name;
@@ -65,6 +96,15 @@ public class UrlScheme
         }
     }
 
+    /// <summary>
+    /// Initializes a new instance of <see cref="UrlScheme"/>.
+    /// </summary>
+    /// <param name="scheme">The scheme name.</param>
+    /// <param name="host">The scheme host.</param>
+    /// <param name="baseUrl">The base url.</param>
+    /// <param name="type">Instance of <see cref="Network.UrlSchemeType"/>.</param>
+    /// <param name="baseUrlStrict"></param>
+    /// <param name="assemblyOptions">Instance of <see cref="Network.AssemblyOptions"/>.</param>
     public UrlScheme(string scheme, string host, string baseUrl, UrlSchemeType type, bool baseUrlStrict = false, AssemblyOptions? assemblyOptions = null)
     {
         Name = Guid.NewGuid().ToString();
@@ -84,12 +124,39 @@ public class UrlScheme
         }
     }
 
+    /// <summary>
+    /// Gets or sets the scheme identifier name.
+    /// </summary>
     public string Name { get; set; }
+
+    /// <summary>
+    /// Gets or sets the base url.
+    /// </summary>
     public string? BaseUrl { get; set; }
+
+    /// <summary>
+    /// Gets or sets the scheme name.
+    /// </summary>
     public string Scheme { get; set; }
+
+    /// <summary>
+    /// Gets or sets the scheme host.
+    /// </summary>
     public string Host { get; set; }
+
+    /// <summary>
+    /// Gets or sets a resource folder.
+    /// </summary>
     public string? Folder { get; set; }
+
+    /// <summary>
+    /// Gets or sets <see cref="Network.UrlSchemeType"/>.
+    /// </summary>
     public UrlSchemeType UrlSchemeType { get; set; }
+
+    /// <summary>
+    /// Gets or sets <see cref="Network.AssemblyOptions"/>.
+    /// </summary>
     public AssemblyOptions? AssemblyOptions { get; set; }
 
     /// <summary>
@@ -100,7 +167,11 @@ public class UrlScheme
     /// http://a.com/me/they is not  valid
     /// </summary>
     public bool BaseUrlStrict { get; set; }
-    public bool ValidSchemeHost
+
+    /// <summary>
+    /// Gets a value indicating whether scheme name and host name are valid.
+    /// </summary>
+    public bool IsValidSchemeAndHost
     {
         get
         {
@@ -108,6 +179,11 @@ public class UrlScheme
         }
     }
 
+    /// <summary>
+    /// Check if the reference scheme name is a standard scheme.
+    /// </summary>
+    /// <param name="scheme">Scheme name to check.</param>
+    /// <returns>true if standard scheme, otherwise false.</returns>
     public static bool IsStandardScheme(string scheme)
     {
         if (string.IsNullOrEmpty(scheme))
@@ -122,6 +198,11 @@ public class UrlScheme
         };
     }
 
+    /// <summary>
+    /// Check if the reference Url is of same scheme.
+    /// </summary>
+    /// <param name="url">Url to check.</param>
+    /// <returns>true if same scheme, otherwise false.</returns>
     public bool IsUrlOfSameScheme(string url)
     {
         if (string.IsNullOrEmpty(Scheme) ||

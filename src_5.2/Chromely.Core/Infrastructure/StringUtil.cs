@@ -6,14 +6,14 @@ namespace Chromely.Core.Infrastructure;
 #nullable enable
 public static class StringUtil
 {
-    public static bool IsNullOrEmpty([NotNullWhen(false)] this string? data)
+    /// <summary>
+    /// Indicates whether the specified string is null or an empty string ("").
+    /// </summary>
+    /// <param name="value">The string to test.</param>
+    /// <returns>true if the value parameter is null or an empty string (""); otherwise, false.</returns>
+    public static bool IsNullOrEmpty([NotNullWhen(false)] this string? value)
     {
-        return string.IsNullOrEmpty(data);
-    }
-
-    public static bool IsNullOrWhiteSpace([NotNullWhen(false)] this string? data)
-    {
-        return string.IsNullOrWhiteSpace(data);
+        return string.IsNullOrEmpty(value);
     }
 }
 #nullable restore

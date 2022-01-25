@@ -3,8 +3,16 @@
 
 namespace Chromely.Core.Infrastructure;
 
+/// <summary>
+/// Utility class for external browser launcher.
+/// </summary>
 public static class BrowserLauncher
 {
+    /// <summary>
+    /// Launches an external browser using the url.
+    /// </summary>
+    /// <param name="platform">The OS platform type.</param>
+    /// <param name="url">The web page address to launch.</param>
     public static void Open(ChromelyPlatform platform, string url)
     {
         try

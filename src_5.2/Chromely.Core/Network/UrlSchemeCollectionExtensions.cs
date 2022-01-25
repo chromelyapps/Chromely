@@ -10,6 +10,12 @@ public static class UrlSchemeCollectionExtensions
     private const char FORWARDSLASH = '/';
     private const char BACKWARDSLASH = '\\';
 
+    /// <summary>
+    /// Check if url scheme is registered and of type <see cref="UrlSchemeType.ExternalBrowser"/>.
+    /// </summary>
+    /// <param name="urlSchemes">The collection of type <see cref="UrlScheme"/> to extend.</param>
+    /// <param name="url">The url to check.</param>
+    /// <returns>true if external browser scheme, otherwise false.</returns>
     public static bool IsUrlRegisteredExternalBrowserScheme(this List<UrlScheme> urlSchemes, string url)
     {
         if (urlSchemes is null ||
@@ -20,26 +26,27 @@ public static class UrlSchemeCollectionExtensions
         return urlSchemes.Any((x => x.IsUrlOfSameScheme(url) && (x.UrlSchemeType == UrlSchemeType.ExternalBrowser)));
     }
 
-    public static bool IsUrlRegisteredLocalRequestScheme(this List<UrlScheme> urlSchemes, string url)
+    /// <summary>
+    /// Check if the url scheme is of type <see cref="UrlSchemeType.FolderResource"/>.
+    /// </summary>
+    /// <param name="urlScheme">The class of type <see cref="UrlScheme"/> to extend.</param>
+    /// <returns>true if scheme is a folder resource scheme, otherwise false.</returns>
+    public static bool IsUrlSchemeFolderResource(this UrlScheme urlScheme)
     {
-        if (urlSchemes is null ||
-             !urlSchemes.Any() ||
-             string.IsNullOrWhiteSpace(url))
+        if (urlScheme is null)
+        {
             return false;
+        }
 
-        return urlSchemes.Any((x => x.IsUrlOfSameScheme(url) && (x.UrlSchemeType == UrlSchemeType.LocalRequest)));
+        return urlScheme.UrlSchemeType == UrlSchemeType.FolderResource;
     }
 
-    public static bool IsUrlRegisteredExternalRequestScheme(this List<UrlScheme> urlSchemes, string url)
-    {
-        if (urlSchemes is null ||
-             !urlSchemes.Any() ||
-             string.IsNullOrWhiteSpace(url))
-            return false;
-
-        return urlSchemes.Any((x => x.IsUrlOfSameScheme(url) && (x.UrlSchemeType == UrlSchemeType.LocalRequest)));
-    }
-
+    /// <summary>
+    /// Gets all instances of <see cref="UrlScheme"/> registered by specified type of <see cref="UrlSchemeType"/>.
+    /// </summary>
+    /// <param name="urlSchemes">The collection of type <see cref="UrlScheme"/> to extend.</param>
+    /// <param name="type">Instance of <see cref="Network.UrlSchemeType"/>.</param>
+    /// <returns>collection of <see cref="UrlScheme"/> instances.</returns>
     public static IEnumerable<UrlScheme> GetSchemesByType(this List<UrlScheme> urlSchemes, UrlSchemeType type)
     {
         if (urlSchemes is null || !urlSchemes.Any())
@@ -48,16 +55,12 @@ public static class UrlSchemeCollectionExtensions
         return urlSchemes.Where((x => (x.UrlSchemeType == type))).ToList();
     }
 
-    public static IEnumerable<UrlScheme> GetSchemesByType(this List<UrlScheme> urlSchemes, string url, UrlSchemeType type)
-    {
-        if (urlSchemes is null ||
-             urlSchemes.Count == 0 ||
-             string.IsNullOrWhiteSpace(url))
-            return null;
-
-        return urlSchemes.Where((x => x.IsUrlOfSameScheme(url) && (x.UrlSchemeType == type))).ToList();
-    }
-
+    /// <summary>
+    /// Get scheme based on specified url.
+    /// </summary>
+    /// <param name="urlSchemes">The collection of type <see cref="UrlScheme"/> to extend.</param>
+    /// <param name="url">The specified url.</param>
+    /// <returns>instance of <see cref="UrlScheme"/>.</returns>
     public static UrlScheme GetScheme(this List<UrlScheme> urlSchemes, string url)
     {
         if (urlSchemes is null ||
@@ -90,6 +93,13 @@ public static class UrlSchemeCollectionExtensions
         return null;
     }
 
+    /// <summary>
+    /// Get scheme based on specified url and <see cref="UrlSchemeType"/>.
+    /// </summary>
+    /// <param name="urlSchemes">The collection of type <see cref="UrlScheme"/> to extend.</param>
+    /// <param name="url">The specified url.</param>
+    /// <param name="type">The specified type of <see cref="UrlSchemeType"/>.</param>
+    /// <returns></returns>
     public static UrlScheme GetScheme(this List<UrlScheme> urlSchemes, string url, UrlSchemeType type)
     {
         if (urlSchemes is null ||
@@ -124,16 +134,17 @@ public static class UrlSchemeCollectionExtensions
         return null;
     }
 
-    public static bool IsUrlSchemeFolderResource(this UrlScheme urlScheme)
-    {
-        if (urlScheme is null)
-        {
-            return false;
-        }
 
-        return urlScheme.UrlSchemeType == UrlSchemeType.FolderResource;
-    }
-
+    /// <summary>
+    /// Gets the resource folder path for scheme of type <see cref="UrlSchemeType.FolderResource"/>.
+    /// </summary>
+    /// <remarks>
+    /// This ensures that the folder path is formatted based on the OS platform.
+    /// The <see cref="Path.DirectorySeparatorChar"/> ensures that the correct folder path separator is used.
+    /// </remarks>
+    /// <param name="urlScheme">The class of type <see cref="UrlScheme"/> to extend.</param>
+    /// <param name="routePath">The controller route path.</param>
+    /// <returns>the formatted resource folder path.</returns>
     public static string GetResourceFolderFile(this UrlScheme urlScheme, string routePath)
     {
         if (urlScheme is null ||
