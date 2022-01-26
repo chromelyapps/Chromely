@@ -16,6 +16,10 @@ namespace Chromely.NativeHosts
 
         private bool _disposed = false;
 
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        /// <param name="disposing">Flag indicating if managed resources should be disposed too. Yes, if true.</param>
         protected virtual void Dispose(bool disposing)
         {
             if (_disposed)
@@ -33,6 +37,7 @@ namespace Chromely.NativeHosts
             _disposed = true;
         }
 
+        /// <inheritdoc/>
         public void Dispose()
         {
             Dispose(true);

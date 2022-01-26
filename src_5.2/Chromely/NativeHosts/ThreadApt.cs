@@ -3,9 +3,17 @@
 
 namespace Chromely.NativeHosts;
 
-// https://github.com/dotnet/winforms/issues/5071
+/// <summary>
+/// Sets application thread apartment.
+/// </summary>
+/// <remarks>
+/// https://github.com/dotnet/winforms/issues/5071
+/// </remarks>
 public static class ThreadApt
 {
+    /// <summary>
+    /// Set application to Single Thread Apartment (STA).
+    /// </summary>
     public static void STA()
     {
         // Set STAThread 

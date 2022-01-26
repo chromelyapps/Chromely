@@ -5,11 +5,30 @@ namespace Chromely;
 
 public static class HandlerResolverHelper
 {
+    /// <summary>
+    /// Gets CEF handler based on the type.
+    /// </summary>
+    /// <remarks>
+    /// If a custom handler is registered, the handler is returned, otherwise the default handler is returned.
+    /// </remarks>
+    /// <param name="resolver">Instance of <see cref="ChromelyHandlersResolver"/>.</param>
+    /// <param name="type">The handler type.</param>
+    /// <returns>instance of handler object.</returns>
     public static object? GetCustomOrDefaultHandler(this ChromelyHandlersResolver resolver, Type type)
     {
         return resolver.GetFirstCustomOrDefaultHandler(type, typeof(IDefaultCustomHandler));
     }
 
+    /// <summary>
+    /// Gets CEF handler based on the type and the default type.
+    /// </summary>
+    /// <remarks>
+    /// If multiple handlers are registered, the first custom handler is returned, otherwise the first default handler is returned.
+    /// </remarks>
+    /// <param name="resolver">Instance of <see cref="ChromelyHandlersResolver"/>.</param>
+    /// <param name="type">The handler type.</param>
+    /// <param name="defaultType">The default handler type.</param>
+    /// <returns>instance of handler object.</returns>
     public static object? GetFirstCustomOrDefaultHandler(this ChromelyHandlersResolver resolver, Type type, Type defaultType)
     {
         var handlers = resolver?.Invoke(type)?.ToList();
@@ -36,6 +55,16 @@ public static class HandlerResolverHelper
         return default;
     }
 
+    /// <summary>
+    /// Gets default CEF handler based on the type and the default type.
+    /// </summary>
+    /// <remarks>
+    /// If multiple default handlers are registered, first default handler is returned.
+    /// </remarks>
+    /// <param name="resolver">Instance of <see cref="ChromelyHandlersResolver"/>.</param>
+    /// <param name="type">The handler type.</param>
+    /// <param name="defaultType">The default handler type.</param>
+    /// <returns>instance of handler object.</returns>
     public static object? GetDefaultHandler(this ChromelyHandlersResolver resolver, Type type, Type defaultType)
     {
         var handlers = resolver?.Invoke(type)?.ToList();

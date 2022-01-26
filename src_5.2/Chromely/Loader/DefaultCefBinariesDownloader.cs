@@ -3,8 +3,10 @@
 
 namespace Chromely.Loader;
 
+/// <inheritdoc/>
 public class DefaultCefBinariesDownloader : ICefBinariesDownloader
 {
+    /// <inheritdoc/>
     public void Download(IChromelyConfiguration config)
     {
         CefLoader.Download(config.Platform);

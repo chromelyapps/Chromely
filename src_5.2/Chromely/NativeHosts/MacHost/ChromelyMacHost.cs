@@ -7,6 +7,9 @@
 
 namespace Chromely.NativeHosts;
 
+/// <summary>
+/// Represents Mac OS native host.
+/// </summary>
 public partial class ChromelyMacHost : IChromelyNativeHost
 {
     protected readonly IChromelyConfiguration _config;
@@ -34,6 +37,10 @@ public partial class ChromelyMacHost : IChromelyNativeHost
     private IntPtr _viewHandle;
     private bool _isInitialized;
 
+    /// <summary>
+    /// Initializes a new instance of <see cref="ChromelyMacHost"/>.
+    /// </summary>
+    /// <param name="config">Instance of <see cref="IChromelyConfiguration"/>.</param>
     public ChromelyMacHost(IChromelyConfiguration config)
     {
         _config = config;
@@ -44,8 +51,11 @@ public partial class ChromelyMacHost : IChromelyNativeHost
         _viewHandle = IntPtr.Zero;
         _isInitialized = false;
     }
+
+    /// <inheritdoc/>
     public virtual IntPtr Handle => _windowHandle;
 
+    /// <inheritdoc/>
     public virtual void CreateWindow()
     {
         _configParam = InitParam(RunCallback,
@@ -75,26 +85,32 @@ public partial class ChromelyMacHost : IChromelyNativeHost
         createwindow(ref _configParam);
     }
 
+    /// <inheritdoc/>
     public virtual IntPtr GetNativeHandle()
     {
         return _viewHandle;
     }
 
+    /// <inheritdoc/>
     public virtual void Run()
     {
     }
 
+    /// <inheritdoc/>
     public virtual Size GetWindowClientSize()
     {
         return new Size();
     }
 
+    /// <inheritdoc/>
     public virtual float GetWindowDpiScale()
     {
         return 1.0f;
     }
 
-    /// <summary> Gets the current window state Maximised / Normal / Minimised etc. </summary>
+    /// <summary> 
+    /// Gets the current window state Maximised / Normal / Minimised etc. 
+    /// </summary>
     /// <returns> The window state. </returns>
     public virtual WindowState GetWindowState()
     {
@@ -102,7 +118,9 @@ public partial class ChromelyMacHost : IChromelyNativeHost
         return WindowState.Normal;
     }
 
-    /// <summary> Sets window state. Maximise / Minimize / Restore. </summary>
+    /// <summary> 
+    /// Sets window state. Maximise / Minimize / Restore. 
+    /// </summary>
     /// <param name="state"> The state to set. </param>
     /// <returns> True if it succeeds, false if it fails. </returns>
     public virtual bool SetWindowState(WindowState state)
@@ -111,30 +129,39 @@ public partial class ChromelyMacHost : IChromelyNativeHost
         return false;
     }
 
+    /// <inheritdoc/>
     public virtual void SetupMessageInterceptor(IntPtr browserWindowHandle)
     {
     }
 
+    /// <inheritdoc/>
     public virtual void ResizeBrowser(IntPtr browserWindow, int width, int height)
     {
     }
 
+    /// <inheritdoc/>
     public virtual void Exit()
     {
     }
 
+    /// <inheritdoc/>
     public virtual void SetWindowTitle(string title)
     {
         Logger.Instance.Log.LogInformation("ChromelyMacHost::SetWindowTitle is not implemented yet!");
     }
 
 
+    /// <inheritdoc/>
     public virtual void ToggleFullscreen(IntPtr hWnd)
     {
     }
 
     #region Create & Manage Window
 
+
+    /// <summary>
+    /// Interop - run callback (required by libchromely.dylib).
+    /// </summary>
     protected virtual void RunCallback()
     {
         try
@@ -149,17 +176,30 @@ public partial class ChromelyMacHost : IChromelyNativeHost
         }
     }
 
+    /// <summary>
+    /// Interop - shut down callback (required by libchromely.dylib).
+    /// </summary>
     protected virtual void ShutdownCallback()
     {
         CefRuntime.QuitMessageLoop();
     }
 
+    /// <summary>
+    /// Interop - init callback (required by libchromely.dylib).
+    /// </summary>
+    /// <param name="app">The application window handle.</param>
+    /// <param name="pool">Cocoa pool handle.</param>
     protected virtual void InitCallback(IntPtr app, IntPtr pool)
     {
         _appHandle = app;
         _poolHandle = pool;
     }
 
+    /// <summary>
+    ///  Interop - create callback (required by libchromely.dylib).
+    /// </summary>
+    /// <param name="window">Cocoa NSWindow handle.</param>
+    /// <param name="view">Cocoa NSView handle.</param>
     protected virtual void CreateCallback(IntPtr window, IntPtr view)
     {
         _titleHandle.Free();
@@ -170,6 +210,9 @@ public partial class ChromelyMacHost : IChromelyNativeHost
         _isInitialized = true;
     }
 
+    /// <summary>
+    /// Interop - moving callback (required by libchromely.dylib).
+    /// </summary>
     protected virtual void MovingCallback()
     {
         if (_viewHandle != IntPtr.Zero && _isInitialized)
@@ -178,6 +221,11 @@ public partial class ChromelyMacHost : IChromelyNativeHost
         }
     }
 
+    /// <summary>
+    /// Interop - resize callback (required by libchromely.dylib).
+    /// </summary>
+    /// <param name="width">New width.</param>
+    /// <param name="height">New height.</param>
     protected virtual void ResizeCallback(int width, int height)
     {
         if (_viewHandle != IntPtr.Zero && _isInitialized)
@@ -186,6 +234,10 @@ public partial class ChromelyMacHost : IChromelyNativeHost
         }
     }
 
+    /// <summary>
+    /// Interop - close browser (required by libchromely.dylib).
+    /// </summary>
+    /// <returns>1 if closing browser fails, otherwise 0.</returns>
     protected virtual int CloseBrowser()
     {
         try
@@ -209,6 +261,9 @@ public partial class ChromelyMacHost : IChromelyNativeHost
         return 0;
     }
 
+    /// <summary>
+    /// Interop - quit Cocoa app callback (required by libchromely.dylib).
+    /// </summary>
     protected virtual void QuitCallback()
     {
         try

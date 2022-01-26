@@ -3,21 +3,30 @@
 
 namespace Chromely.NativeHosts;
 
+/// <summary>
+/// Default implementation of keyboard handler of type <see cref="IKeyboadHookHandler"/>.
+/// </summary>
 public class DefaulKeyboadHookHandler : IKeyboadHookHandler
 {
     protected IChromelyNativeHost? _nativeHost;
     protected IWindowOptions _options;
 
+    /// <summary>
+    /// Initializes a new instance of <see cref="DefaulKeyboadHookHandler"/>.
+    /// </summary>
+    /// <param name="config">Instance of <see cref="IChromelyConfiguration"/>.</param>
     public DefaulKeyboadHookHandler(IChromelyConfiguration config)
     {
         _options = config?.WindowOptions ?? new WindowOptions();
     }
 
+    /// <inheritdoc/>
     public void SetNativeHost(IChromelyNativeHost nativeHost)
     {
         _nativeHost = nativeHost;
     }
 
+    /// <inheritdoc/>
     public bool HandleKey(IntPtr hWnd, object param)
     {
         if (param is not KeyboardParam keyboardParam)
@@ -54,8 +63,16 @@ public class DefaulKeyboadHookHandler : IKeyboadHookHandler
         return false;
     }
 
-    /// <summary>Determines whether the specified keyboard input should be allowed to be processed by the system.</summary>
-    /// <remarks>Helps block unwanted keys and key combinations that could exit the app, make system changes, etc.</remarks>
+    /// <summary>
+    /// Determines whether the specified keyboard input should be allowed to be processed by the OS.
+    /// </summary>
+    /// <remarks>
+    /// Helps block unwanted keys and key combinations that could exit the app, make system changes, etc.
+    /// </remarks>
+    /// <param name="alt">ALT key.</param>
+    /// <param name="control">CTRL key.</param>
+    /// <param name="key">Key as represented by <see cref="Keys"/>.</param>
+    /// <returns>true if keyboard input can be processed, otherwise false.</returns>
     protected virtual bool AllowKeyboardInput(bool alt, bool control, Keys key)
     {
         if (_options.KioskMode)
@@ -68,6 +85,16 @@ public class DefaulKeyboadHookHandler : IKeyboadHookHandler
 
     #region
 
+    /// <summary>
+    /// Determines whether the specified keyboard input should be allowed to be processed by the OS in Kiosk mode.
+    /// </summary>
+    /// <remarks>
+    /// Helps block unwanted keys and key combinations that could exit the app, make system changes, etc.
+    /// </remarks>
+    /// <param name="alt">ALT key.</param>
+    /// <param name="control">CTRL key.</param>
+    /// <param name="key">Key as represented by <see cref="Keys"/>.</param>
+    /// <returns>true if keyboard input can be processed, otherwise false.</returns>
     protected virtual bool AllowKeyboardInputForKioskMode(bool alt, bool control, Keys key)
     {
         if (!_options.KioskMode)
@@ -111,7 +138,8 @@ public class DefaulKeyboadHookHandler : IKeyboadHookHandler
     #endregion
 }
 
-public class KeyboardParam
+#region Keyboard param
+internal class KeyboardParam
 {
     public KeyboardParam(bool isKeyUp, bool alt, bool control, Keys key)
     {
@@ -125,3 +153,5 @@ public class KeyboardParam
     public bool Control { get; set; }
     public Keys Key { get; set; }
 }
+
+#endregion

@@ -43,12 +43,12 @@ public static class Utils
     }
 }
 
-public class WindowStylePlacement
+public class Win32WindowStyles
 {
     public static WS NormalStyles = WS.OVERLAPPEDWINDOW | WS.CLIPCHILDREN | WS.CLIPSIBLINGS;
     public static WS_EX NormalExStyles = WS_EX.APPWINDOW | WS_EX.WINDOWEDGE;
 
-    public WindowStylePlacement(IWindowOptions options)
+    public Win32WindowStyles(IWindowOptions options)
     {
         RECT = new Rectangle(options.Position.X, options.Position.Y, options.Size.Width, options.Size.Height);
         WindowPlacement = new WINDOWPLACEMENT();

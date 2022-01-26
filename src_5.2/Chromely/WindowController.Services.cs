@@ -5,6 +5,9 @@ namespace Chromely;
 
 public partial class WindowController
 {
+    /// <summary>
+    /// This is used to register all default scheme handlers.
+    /// </summary>
     protected virtual void RegisterDefaultSchemeHandlers()
     {
         if (!CefRuntime.CurrentlyOn(CefThreadId.UI))
@@ -46,6 +49,9 @@ public partial class WindowController
         }
     }
 
+    /// <summary>
+    /// This is used to register custom scheme handlers. Handlers must implement <see cref="IChromelySchemeHandler"/>.
+    /// </summary>
     protected virtual void RegisterCustomSchemeHandlers()
     {
         if (!CefRuntime.CurrentlyOn(CefThreadId.UI))

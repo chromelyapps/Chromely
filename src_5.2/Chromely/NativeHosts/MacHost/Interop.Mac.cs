@@ -3,12 +3,12 @@
 
 namespace Chromely.NativeHosts;
 
-public class InteropMac
+internal class InteropMac
 {
     internal const string ChromelyMacLib = "libchromely.dylib";
 
     [StructLayout(LayoutKind.Sequential)]
-    public struct ChromelyParam
+    internal struct ChromelyParam
     {
         public int x;
         public int y;
@@ -32,11 +32,11 @@ public class InteropMac
     }
 
     [DllImport(ChromelyMacLib, CallingConvention = CallingConvention.Cdecl)]
-    public static extern void createwindow(ref ChromelyParam chromelyParam);
+    internal static extern void createwindow(ref ChromelyParam chromelyParam);
 
     [DllImport(ChromelyMacLib, CallingConvention = CallingConvention.Cdecl)]
-    public static extern void run(IntPtr application);
+    internal static extern void run(IntPtr application);
 
     [DllImport(ChromelyMacLib, CallingConvention = CallingConvention.Cdecl)]
-    public static extern void quit(IntPtr application, IntPtr pool);
+    internal static extern void quit(IntPtr application, IntPtr pool);
 }

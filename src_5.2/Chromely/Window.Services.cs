@@ -5,11 +5,17 @@ namespace Chromely;
 
 public partial class Window
 {
+    /// <summary>
+    /// Register non scheme related handlers like the message route handlers.
+    /// </summary>
     public void RegisterHandlers()
     {
         MessageRouterHandlers();
     }
 
+    /// <summary>
+    /// Create and add message router handlers.
+    /// </summary>
     protected virtual void MessageRouterHandlers()
     {
         if (!CefRuntime.CurrentlyOn(CefThreadId.UI))
@@ -36,19 +42,6 @@ public partial class Window
     }
 
     internal void OnBrowserCreated(object sender, EventArgs e)
-    {
-        if (Browser is not null)
-        {
-            _browserWindowHandle = Browser.GetHost().GetWindowHandle();
-            if (_browserWindowHandle != IntPtr.Zero)
-            {
-                var size = NativeHost.GetWindowClientSize();
-                ResizeBrowser(size.Width, size.Height);
-            }
-        }
-    }
-
-    internal void ResizeBrowser()
     {
         if (Browser is not null)
         {

@@ -60,7 +60,19 @@ public enum GConnectFlags
     GConnectSwapped
 }
 
-public partial class InteropLinux
+[StructLayout(LayoutKind.Sequential)]
+public struct XErrorEvent
+{
+    public int type;
+    public IntPtr display;
+    public int resourceid;
+    public int serial;
+    public byte error_code;
+    public byte request_code;
+    public byte minor_code;
+}
+
+internal partial class InteropLinux
 {
     [DllImport(Library.GdkLib, CallingConvention = CallingConvention.Cdecl)]
     internal static extern void gdk_set_allowed_backends(string backend);

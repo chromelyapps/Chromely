@@ -3,8 +3,10 @@
 
 namespace Chromely;
 
+/// <inheritdoc/>
 public abstract class ChromelyAppBase : ChromelyApp
 {
+    /// <inheritdoc/>
     public override void ConfigureCoreServices(IServiceCollection services)
     {
         base.ConfigureCoreServices(services);
@@ -47,6 +49,7 @@ public abstract class ChromelyAppBase : ChromelyApp
         }
     }
 
+    /// <inheritdoc/>
     public override void ConfigureDefaultHandlers(IServiceCollection services)
     {
         base.ConfigureDefaultHandlers(services);

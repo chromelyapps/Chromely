@@ -5,6 +5,10 @@ namespace Chromely.NativeHosts;
 
 public abstract partial class NativeHostBase
 {
+    /// <summary>
+    /// Togge fullscreen - either way Restore to Fullscreen; Fullscreen to Restore. 
+    /// </summary>
+    /// <param name="hWnd">The window handle.</param>
     public virtual void ToggleFullscreen(IntPtr hWnd)
     {
         bool isWindowed = IsWindowed(hWnd);
@@ -25,12 +29,12 @@ public abstract partial class NativeHostBase
                         break;
                 }
 
-                _windoStylePlacement.WindowPlacement = wpPrev;
-                _windoStylePlacement.State = _options.WindowState;
+                _windowStyles.WindowPlacement = wpPrev;
+                _windowStyles.State = _options.WindowState;
             }
 
-            var styles = _windoStylePlacement.FullscreenStyles;
-            var exStyles = _windoStylePlacement.FullscreenExStyles;
+            var styles = _windowStyles.FullscreenStyles;
+            var exStyles = _windowStyles.FullscreenExStyles;
             SetWindowLong(hWnd, GWL.STYLE, (IntPtr)styles);
             SetWindowLong(hWnd, GWL.EXSTYLE, (IntPtr)exStyles);
             _options.KioskMode = false;
@@ -41,23 +45,32 @@ public abstract partial class NativeHostBase
         }
         else
         {
-            var styles = _windoStylePlacement.Styles;
-            var exStyles = _windoStylePlacement.ExStyles;
+            var styles = _windowStyles.Styles;
+            var exStyles = _windowStyles.ExStyles;
             SetWindowLong(hWnd, GWL.STYLE, (IntPtr)styles);
             SetWindowLong(hWnd, GWL.EXSTYLE, (IntPtr)exStyles);
             _options.KioskMode = false;
             _options.Fullscreen = false;
-            _options.WindowState = _windoStylePlacement.State == WindowState.Fullscreen || _windoStylePlacement.State == WindowState.Maximize ? WindowState.Maximize : WindowState.Normal;
-            _windoStylePlacement.State = _options.WindowState;
-            var placement = _windoStylePlacement.WindowPlacement;
+            _options.WindowState = _windowStyles.State == WindowState.Fullscreen || _windowStyles.State == WindowState.Maximize ? WindowState.Maximize : WindowState.Normal;
+            _windowStyles.State = _options.WindowState;
+            var placement = _windowStyles.WindowPlacement;
             SetWindowPlacement(hWnd, ref placement);
             ShowWindow(hWnd, _options.WindowState == WindowState.Maximize ? SW.SHOWMAXIMIZED : SW.SHOWNORMAL);
             UpdateWindow(hWnd);
         }
     }
 
-    // https://www.youtube.com/watch?v=0GQSOZe_D4I
-    protected virtual void SetFullscreenScreen(IntPtr hWnd, int style, int styleEx)
+
+    /// <summary>
+    /// Set the window to fullscreen.
+    /// </summary>
+    /// <remarks>
+    /// https://www.youtube.com/watch?v=0GQSOZe_D4I
+    /// </remarks>
+    /// <param name="hWnd">The window handle.</param>
+    /// <param name="style">The Window Style.</param>
+    /// <param name="styleEx">The Extended Window Style.</param>
+    protected virtual void SetWindowToFullscreen(IntPtr hWnd, int style, int styleEx)
     {
         Size fullscreenSize = new Size();
         var windowHDC = GetDC(hWnd);
@@ -71,6 +84,11 @@ public abstract partial class NativeHostBase
         SetWindowPos(hWnd, HWND_TOP, 0, 0, fullscreenSize.Width, fullscreenSize.Height, SWP.NOZORDER | SWP.FRAMECHANGED);
     }
 
+    /// <summary>
+    /// Check if window is not full screen.
+    /// </summary>
+    /// <param name="hWnd">The window handle.</param>
+    /// <returns>true if not full screen, otherwise false.</returns>
     protected virtual bool IsWindowed(IntPtr hWnd)
     {
         return _options.WindowState != WindowState.Fullscreen;

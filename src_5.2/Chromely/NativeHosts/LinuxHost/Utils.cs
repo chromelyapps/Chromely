@@ -3,9 +3,9 @@
 
 namespace Chromely.NativeHosts;
 
-public partial class InteropLinux
+internal partial class InteropLinux
 {
-    public static void SetDefaultWindowVisual(IntPtr widget)
+    internal static void SetDefaultWindowVisual(IntPtr widget)
     {
         // *** https://stackoverrun.com/hi/q/11294280
         try
@@ -63,7 +63,7 @@ public partial class InteropLinux
     #region X11
 
     [StructLayout(LayoutKind.Sequential)]
-    public struct XVisualInfo
+    internal struct XVisualInfo
     {
         public IntPtr visual;
         public IntPtr visualid;
@@ -77,8 +77,8 @@ public partial class InteropLinux
         public int bits_per_rgb;
     }
 
-    public delegate short XHandleXError(IntPtr display, ref XErrorEvent error_event);
-    public delegate short XHandleXIOError(IntPtr display);
+    internal delegate short XHandleXError(IntPtr display, ref XErrorEvent error_event);
+    internal delegate short XHandleXIOError(IntPtr display);
 
     [DllImport(Library.X11Lib)]
     internal static extern int XMoveWindow(IntPtr display, IntPtr w, int x, int y);
@@ -111,21 +111,9 @@ public partial class InteropLinux
     internal static extern short XSetIOErrorHandler(XHandleXIOError err);
 
     [DllImport(Library.X11Lib)]
-    public extern static IntPtr XGetErrorText(IntPtr display, byte code, StringBuilder buffer, int length);
+    internal extern static IntPtr XGetErrorText(IntPtr display, byte code, StringBuilder buffer, int length);
 
-    [StructLayout(LayoutKind.Sequential)]
-    public struct XErrorEvent
-    {
-        public int type;
-        public IntPtr display;
-        public int resourceid;
-        public int serial;
-        public byte error_code;
-        public byte request_code;
-        public byte minor_code;
-    }
-
-    public static string GetRequestType(int requestId)
+    internal static string GetRequestType(int requestId)
     {
         switch (requestId)
         {

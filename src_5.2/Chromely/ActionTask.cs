@@ -8,6 +8,11 @@ namespace Chromely;
 /// </summary>
 internal sealed class ActionTask : CefTask
 {
+    /// <summary>
+    /// Run a function on specified thread.
+    /// </summary>
+    /// <param name="threadId">The thread identifier.</param>
+    /// <param name="action">The method to run.</param>
     internal static void PostTask(CefThreadId threadId, Action action)
     {
         CefRuntime.PostTask(threadId, new ActionTask(action));

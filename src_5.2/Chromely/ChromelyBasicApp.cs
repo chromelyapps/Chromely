@@ -9,11 +9,13 @@ namespace Chromely;
 /// </summary>
 public class ChromelyBasicApp : ChromelyAppBase
 {
+    /// <inheritdoc/>
     public sealed override void ConfigureCoreServices(IServiceCollection services)
     {
         base.ConfigureCoreServices(services);
     }
 
+    /// <inheritdoc/>
     public sealed override void ConfigureDefaultHandlers(IServiceCollection services)
     {
         base.ConfigureDefaultHandlers(services);

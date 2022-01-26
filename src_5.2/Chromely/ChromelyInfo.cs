@@ -13,14 +13,14 @@ public class ChromelyInfo : IChromelyInfo
         var infoItemDic = new Dictionary<string, string>
             {
                 {
-                    "divObjective",
+                    "objective",
                     "To build HTML5 desktop apps using embedded Chromium without WinForm or WPF. Uses Windows, Linux and MacOS native GUI API. It can be extended to use WinForm or WPF. Main form of communication with Chromium rendering process is via CEF Message Router, Ajax HTTP/XHR requests using custom schemes and domains."
                 },
                 {
-                    "divPlatform",
+                    "platform",
                     "Cross-platform - Windows, Linux, MacOS. Built on CefGlue, CefSharp, NET Standard 2.0, .NET 6.0, .NET Framework 4.61 and above."
                 },
-                { "divVersion", CefRuntime.ChromeVersion }
+                { "version", CefRuntime.ChromeVersion }
             };
 
         response.ReadyState = (int)ReadyState.ResponseIsReady;
@@ -37,14 +37,14 @@ public class ChromelyInfo : IChromelyInfo
         return new Dictionary<string, string>
             {
                 {
-                    "divObjective",
+                    "objective",
                     "To build HTML5 desktop apps using embedded Chromium without WinForm or WPF. Uses Windows, Linux and MacOS native GUI API. It can be extended to use WinForm or WPF. Main form of communication with Chromium rendering process is via CEF Message Router, Ajax HTTP/XHR requests using custom schemes and domains."
                 },
                 {
-                    "divPlatform",
+                    "platform",
                     "Cross-platform - Windows, Linux, MacOS. Built on CefGlue, CefSharp, NET Standard 2.0, .NET 6.0, .NET Framework 4.61 and above."
                 },
-                { "divVersion", CefRuntime.ChromeVersion }
+                { "version", CefRuntime.ChromeVersion }
             };
     }
 }

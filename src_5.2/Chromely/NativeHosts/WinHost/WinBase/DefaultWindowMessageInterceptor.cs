@@ -3,6 +3,9 @@
 
 namespace Chromely.NativeHosts;
 
+/// <summary>
+/// Default implementation of <see cref="IWindowMessageInterceptor"/>.
+/// </summary>
 public class DefaultWindowMessageInterceptor : IWindowMessageInterceptor
 {
     protected readonly IChromelyConfiguration _config;
@@ -11,6 +14,10 @@ public class DefaultWindowMessageInterceptor : IWindowMessageInterceptor
     protected DragWindowHandler[]? _dragWindowHandlers;
     protected FramelessOption? _framelessOption;
 
+    /// <summary>
+    /// Initializes a new instance of <see cref="DefaultWindowMessageInterceptor"/>.
+    /// </summary>
+    /// <param name="config">Instance of <see cref="IChromelyConfiguration"/>.</param>
     public DefaultWindowMessageInterceptor(IChromelyConfiguration config)
     {
         _config = config;
@@ -53,6 +60,11 @@ public class DefaultWindowMessageInterceptor : IWindowMessageInterceptor
         catch { }
     }
 
+    /// <summary>
+    /// Gets all host window child handles.
+    /// </summary>
+    /// <param name="handle">The browser window handle.</param>
+    /// <returns>List of pointers to thechild handles.</returns>
     protected virtual List<IntPtr> GetAllChildHandles(IntPtr handle)
     {
         var childHandles = new List<IntPtr>();
@@ -72,6 +84,12 @@ public class DefaultWindowMessageInterceptor : IWindowMessageInterceptor
         return childHandles;
     }
 
+    /// <summary>
+    /// Callback to enumerate all child windows.
+    /// </summary>
+    /// <param name="hWnd">The parent window handle.</param>
+    /// <param name="lParam">The parameter.</param>
+    /// <returns>true if atleast one child window is found, otherwise false.</returns>
     protected virtual bool EnumWindow(IntPtr hWnd, IntPtr lParam)
     {
         GCHandle gcChildhandlesList = GCHandle.FromIntPtr(lParam);
@@ -89,6 +107,9 @@ public class DefaultWindowMessageInterceptor : IWindowMessageInterceptor
         return true;
     }
 
+    /// <summary>
+    /// The drag window handler.
+    /// </summary>
     protected class DragWindowHandler
     {
         private readonly IntPtr _handle;
@@ -100,6 +121,12 @@ public class DefaultWindowMessageInterceptor : IWindowMessageInterceptor
         private bool _hasCapture;
         private POINT _dragPoint;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="DragWindowHandler"/>.
+        /// </summary>
+        /// <param name="handle">The window handle.</param>
+        /// <param name="nativeHost">The Windows native host of type <see cref="IChromelyNativeHost"/>.</param>
+        /// <param name="framelessOption">Frameless options - instance of <see cref="FramelessOption"/>.</param>
         public DragWindowHandler(IntPtr handle, IChromelyNativeHost nativeHost, FramelessOption framelessOption)
         {
             _handle = handle;
@@ -111,6 +138,7 @@ public class DefaultWindowMessageInterceptor : IWindowMessageInterceptor
             SetWindowLongPtr(_handle, (int)GWL.WNDPROC, _wndProcPtr);
         }
 
+        // Child Window Message Processor
         private IntPtr WndProc(IntPtr hWnd, uint message, IntPtr wParam, IntPtr lParam)
         {
             var msg = (WM)message;

@@ -17,7 +17,8 @@ public partial class WindowController
     /// </param>   
     /// <returns>
     ///  0 successfully run application - now terminated
-    ///  1 on internal exception (see log for more information).
+    ///  or relevant error code
+    ///  or 1 on internal exception (see log for more information).
     /// </returns>
     public override int Run(string[] args)
     {
@@ -32,16 +33,26 @@ public partial class WindowController
         }
     }
 
+    /// <inheritdoc/>
     public override void Quit()
     {
         NativeHost_Quit();
     }
 
+    /// <summary>
+    /// Create the CEF browser application.
+    /// </summary>
+    /// <returns>instance of <see cref="CefApp"/>.</returns>
     protected virtual CefApp CreateApp()
     {
         return new CefBrowserApp(_config, _requestSchemeProvider, _handlersResolver);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="args"></param>
+    /// <returns>zero (0) if successful, otherwise relevant error code.</returns>
     protected int RunInternal(string[] args)
     {
         MacHostRuntime.LoadNativeHostFile(_config);

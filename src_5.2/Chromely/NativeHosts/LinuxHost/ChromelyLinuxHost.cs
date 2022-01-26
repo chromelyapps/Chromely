@@ -7,6 +7,9 @@
 
 namespace Chromely.NativeHosts;
 
+/// <summary>
+/// Represents Linux OS native host.
+/// </summary>
 public partial class ChromelyLinuxHost : IChromelyNativeHost
 {
     protected readonly IChromelyConfiguration _config;
@@ -40,6 +43,10 @@ public partial class ChromelyLinuxHost : IChromelyNativeHost
     private readonly XHandleXError _onHandleErrorDelegate;
     private readonly XHandleXIOError _onHandleIOErrorDelegate;
 
+    /// <summary>
+    /// Initializes a new instance of <see cref="ChromelyLinuxHost"/>.
+    /// </summary>
+    /// <param name="config">Instance of <see cref="IChromelyConfiguration"/>.</param>
     public ChromelyLinuxHost(IChromelyConfiguration config)
     {
         _config = config;
@@ -63,8 +70,10 @@ public partial class ChromelyLinuxHost : IChromelyNativeHost
         _onHandleIOErrorDelegate = new XHandleXIOError(HandleIOError);
     }
 
+    /// <inheritdoc/>
     public virtual IntPtr Handle => _handle;
 
+    /// <inheritdoc/>
     public virtual void CreateWindow()
     {
         Init(0, null);
@@ -108,6 +117,7 @@ public partial class ChromelyLinuxHost : IChromelyNativeHost
         ShowWindow();
     }
 
+    /// <inheritdoc/>
     public virtual IntPtr GetNativeHandle()
     {
         try
@@ -127,6 +137,7 @@ public partial class ChromelyLinuxHost : IChromelyNativeHost
         return IntPtr.Zero;
     }
 
+    /// <inheritdoc/>
     public virtual void Run()
     {
         try
@@ -141,17 +152,21 @@ public partial class ChromelyLinuxHost : IChromelyNativeHost
         }
     }
 
+    /// <inheritdoc/>
     public virtual Size GetWindowClientSize()
     {
         return new Size();
     }
 
+    /// <inheritdoc/>
     public virtual float GetWindowDpiScale()
     {
         return 1.0f;
     }
 
-    /// <summary> Gets the current window state Maximised / Normal / Minimised etc. </summary>
+    /// <summary> 
+    /// Gets the current window state Maximised / Normal / Minimised etc. 
+    /// </summary>
     /// <returns> The window state. </returns>
     public virtual WindowState GetWindowState()
     {
@@ -159,7 +174,9 @@ public partial class ChromelyLinuxHost : IChromelyNativeHost
         return WindowState.Normal;
     }
 
-    /// <summary> Sets window state. Maximise / Minimize / Restore. </summary>
+    /// <summary> 
+    /// Sets window state. Maximise / Minimize / Restore. 
+    /// </summary>
     /// <param name="state"> The state to set. </param>
     /// <returns> True if it succeeds, false if it fails. </returns>
     public virtual bool SetWindowState(WindowState state)
@@ -168,10 +185,12 @@ public partial class ChromelyLinuxHost : IChromelyNativeHost
         return false;
     }
 
+    /// <inheritdoc/>
     public virtual void SetupMessageInterceptor(IntPtr browserWindowHandle)
     {
     }
 
+    /// <inheritdoc/>
     public virtual void ResizeBrowser(IntPtr browserWindow, int width, int height)
     {
         try
@@ -189,6 +208,7 @@ public partial class ChromelyLinuxHost : IChromelyNativeHost
         }
     }
 
+    /// <inheritdoc/>
     public virtual void Exit()
     {
         try
@@ -203,6 +223,7 @@ public partial class ChromelyLinuxHost : IChromelyNativeHost
         }
     }
 
+    /// <inheritdoc/>
     public virtual void SetWindowTitle(string title)
     {
         try
@@ -216,10 +237,12 @@ public partial class ChromelyLinuxHost : IChromelyNativeHost
         }
     }
 
+    /// <inheritdoc/>
     public virtual void ToggleFullscreen(IntPtr hWnd)
     {
     }
 
+    /// <inheritdoc/>
     protected virtual void SetWindowMaximize()
     {
         try
@@ -233,6 +256,9 @@ public partial class ChromelyLinuxHost : IChromelyNativeHost
         }
     }
 
+    /// <summary>
+    /// Set window to fullscreen.
+    /// </summary>
     protected virtual void SetFullscreen()
     {
         try
@@ -258,6 +284,11 @@ public partial class ChromelyLinuxHost : IChromelyNativeHost
     protected delegate short HandleErrorCallback(IntPtr display, ref XErrorEvent errorEven);
     protected delegate short HandleIOErrorCallback(IntPtr d);
 
+    /// <summary>
+    /// Init gtk window.
+    /// </summary>
+    /// <param name="argc">Arguments count.</param>
+    /// <param name="argv">The command line arguments.</param>
     protected virtual void Init(int argc, string[] argv)
     {
         try
@@ -272,6 +303,9 @@ public partial class ChromelyLinuxHost : IChromelyNativeHost
         }
     }
 
+    /// <summary>
+    /// Installs X11 window error handlers.
+    /// </summary>
     protected virtual void InstallX11ErrorHandlers()
     {
         try
@@ -289,6 +323,12 @@ public partial class ChromelyLinuxHost : IChromelyNativeHost
         }
     }
 
+    /// <summary>
+    /// Handle X11 error.
+    /// </summary>
+    /// <param name="display">The display handle.</param>
+    /// <param name="errorEvent">Error event - instance of <see cref="XErrorEvent"/>.</param>
+    /// <returns>error code.</returns>
     protected virtual short HandleError(IntPtr display, ref XErrorEvent errorEvent)
     {
         try
@@ -313,11 +353,15 @@ public partial class ChromelyLinuxHost : IChromelyNativeHost
         return 0;
     }
 
+    /// <summary>
+    /// Handle X11 IO error.
+    /// </summary>
     protected virtual short HandleIOError(IntPtr d)
     {
         return 0;
     }
 
+    /// <inheritdoc/>
     protected virtual IntPtr CreateNewWindow(int windowType)
     {
         try
@@ -336,6 +380,11 @@ public partial class ChromelyLinuxHost : IChromelyNativeHost
         return IntPtr.Zero;
     }
 
+    /// <summary>
+    /// Set gtk window default size.
+    /// </summary>
+    /// <param name="width">New window width.</param>
+    /// <param name="height">New window height.</param>
     protected virtual void SetWindowDefaultSize(int width, int height)
     {
         try
@@ -349,6 +398,10 @@ public partial class ChromelyLinuxHost : IChromelyNativeHost
         }
     }
 
+    /// <summary>
+    /// Set gtk window position.
+    /// </summary>
+    /// <param name="windowPosition">New position.</param>
     protected virtual void SetWindowPosistion(int windowPosition)
     {
         try
@@ -363,6 +416,11 @@ public partial class ChromelyLinuxHost : IChromelyNativeHost
         }
     }
 
+    /// <summary>
+    /// Set gtk window Icon.
+    /// </summary>
+    /// <param name="window">The gtk window handle.</param>
+    /// <param name="filename">The icon file fullpath.</param>
     protected virtual void SetAppIcon(IntPtr window, string filename)
     {
         try
@@ -384,6 +442,10 @@ public partial class ChromelyLinuxHost : IChromelyNativeHost
         }
     }
 
+
+    /// <summary>
+    /// Show gtk window.
+    /// </summary>
     protected virtual void ShowWindow()
     {
         try
@@ -396,7 +458,10 @@ public partial class ChromelyLinuxHost : IChromelyNativeHost
             Logger.Instance.Log.LogError(exception);
         }
     }
-
+    /// <summary>
+    /// Get gtk window size.
+    /// </summary>
+    /// <returns>Instance of type <see cref="Size"/>.</returns>
     protected virtual Size GetWindowSize()
     {
         try
@@ -413,6 +478,10 @@ public partial class ChromelyLinuxHost : IChromelyNativeHost
         return new Size();
     }
 
+    /// <summary>
+    /// On gtk window realized method call.
+    /// </summary>
+    /// <param name="window">Window handle.</param>
     protected virtual void OnRealized(IntPtr window)
     {
         try
@@ -434,6 +503,12 @@ public partial class ChromelyLinuxHost : IChromelyNativeHost
         }
     }
 
+    /// <summary>
+    /// On window size changed.
+    /// </summary>
+    /// <param name="window">The window handle.</param>
+    /// <param name="allocation">The allocation.</param>
+    /// <param name="baseline">The baseline.</param>
     protected virtual void OnSizeAllocate(IntPtr window, IntPtr allocation, int baseline)
     {
         if (_handle != IntPtr.Zero && _isInitialized)
@@ -443,6 +518,13 @@ public partial class ChromelyLinuxHost : IChromelyNativeHost
         }
     }
 
+    /// <summary>
+    /// Resize method.
+    /// </summary>
+    /// <param name="window">The handle of window to resize.</param>
+    /// <param name="gtkEvent">Resize event.</param>
+    /// <param name="data">Unused.</param>
+    /// <returns>false.</returns>
     protected virtual bool OnResize(IntPtr window, GtkEvent gtkEvent, IntPtr data)
     {
         if (_handle != IntPtr.Zero && _isInitialized)
@@ -452,6 +534,12 @@ public partial class ChromelyLinuxHost : IChromelyNativeHost
         return false;
     }
 
+    /// <summary>
+    /// On gtk window closing method.
+    /// </summary>
+    /// <param name="window">The window handle.</param>
+    /// <param name="data">Unused.</param>
+    /// <returns>false</returns>
     protected virtual bool OnDestroy(IntPtr window, IntPtr data)
     {
         Xilium.CefGlue.CefRuntime.QuitMessageLoop();
@@ -463,6 +551,11 @@ public partial class ChromelyLinuxHost : IChromelyNativeHost
         return false;
     }
 
+    /// <summary>
+    /// On gtk window created event signal.
+    /// </summary>
+    /// <param name="callback">On window created callback method.</param>
+    /// <param name="destroyData">Notification data on clean up.</param>
     protected virtual void ConnectRealizeSignal(RealizeCallback callback, GClosureNotify destroyData)
     {
         _onRealizedSignal = Marshal.GetFunctionPointerForDelegate(callback);
@@ -475,6 +568,11 @@ public partial class ChromelyLinuxHost : IChromelyNativeHost
             IntPtr.Zero);
     }
 
+    /// <summary>
+    /// On gtk window set size event signal.
+    /// </summary>
+    /// <param name="callback">On size set callback method.</param>
+    /// <param name="destroyData">Notification data on clean up.</param>
     protected virtual void ConnectSizeAllocateSignal(SizeAllocateCallback callback, GClosureNotify destroyData)
     {
         _onSizeAllocateSignal = Marshal.GetFunctionPointerForDelegate(callback);
@@ -487,6 +585,11 @@ public partial class ChromelyLinuxHost : IChromelyNativeHost
             IntPtr.Zero);
     }
 
+    /// <summary>
+    /// On gtk window resize event signal.
+    /// </summary>
+    /// <param name="callback">On resize callback method.</param>
+    /// <param name="destroyData">Notification data on clean up.</param>
     protected virtual void ConnectResizeSignal(ResizeCallback callback, GClosureNotify destroyData)
     {
         _onResizeSignal = Marshal.GetFunctionPointerForDelegate(callback);
@@ -499,6 +602,11 @@ public partial class ChromelyLinuxHost : IChromelyNativeHost
             IntPtr.Zero);
     }
 
+    /// <summary>
+    /// On gtk window close event signal.
+    /// </summary>
+    /// <param name="callback">On exit callback method.</param>
+    /// <param name="destroyData">Notification data on clean up.</param>
     protected virtual void ConnectDestroySignal(DestroyCallback callback, GClosureNotify destroyData)
     {
         _onDestroySignal = Marshal.GetFunctionPointerForDelegate(callback);
@@ -511,6 +619,14 @@ public partial class ChromelyLinuxHost : IChromelyNativeHost
             IntPtr.Zero);
     }
 
+    /// <summary>
+    /// Register handler.
+    /// </summary>
+    /// <param name="signalName">The gtk signal name.</param>
+    /// <param name="handler">The handler to connect to.</param>
+    /// <param name="destroyData">Notification data on clean up.</param>
+    /// <param name="connectFlags">Connection flags.</param>
+    /// <param name="data">Connection data.</param>
     protected virtual void RegisterHandler(string signalName, IntPtr handler, GClosureNotify destroyData, GConnectFlags connectFlags = GConnectFlags.GConnectAfter, IntPtr data = default(IntPtr))
     {
         try
@@ -524,6 +640,10 @@ public partial class ChromelyLinuxHost : IChromelyNativeHost
         }
     }
 
+
+    /// <summary>
+    /// Cleanup function.
+    /// </summary>
     protected virtual void FreeData()
     {
     }

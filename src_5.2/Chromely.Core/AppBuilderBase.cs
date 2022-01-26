@@ -40,7 +40,7 @@ public abstract class AppBuilderBase
     /// </summary>
     /// <remarks>
     /// If an instance of <see cref="IChromelyConfiguration" /> is provided as a parameter, that is what is used.
-    /// If the instance of <see cref="IChromelyConfiguration" /> is not provided as a parameter, the of TServive is used to create one.
+    /// If the instance of <see cref="IChromelyConfiguration" /> is not provided as a parameter, the type of TServive is used to create one.
     /// </remarks>
     /// <typeparam name="TService">A derived type of <see cref="IChromelyConfiguration" /> definition.</typeparam>
     /// <param name="config">Instance of <see cref="IChromelyConfiguration"/>.</param>
@@ -67,7 +67,7 @@ public abstract class AppBuilderBase
     /// </summary>
     /// <remarks>
     /// If an instance of <see cref="IChromelyWindow" /> is provided as a parameter, that is what is used.
-    /// If the instance of <see cref="IChromelyWindow" /> is not provided as a parameter, the of TServive is used to create one.
+    /// If the instance of <see cref="IChromelyWindow" /> is not provided as a parameter, the type of TServive is used to create one.
     /// </remarks>
     /// <typeparam name="TService">Type of <see cref="IChromelyWindow"/>.</typeparam>
     /// <param name="chromelyWindow">The <see cref="IChromelyWindow" /> instance.</param>
@@ -94,7 +94,7 @@ public abstract class AppBuilderBase
     /// </summary>
     /// <remarks>
     /// If an instance of <see cref="IChromelyErrorHandler" /> is provided as a parameter, that is what is used.
-    /// If the instance of <see cref="IChromelyErrorHandler" /> is not provided as a parameter, the of TServive is used to create one.
+    /// If the instance of <see cref="IChromelyErrorHandler" /> is not provided as a parameter, the type of TServive is used to create one.
     /// </remarks>
     /// <typeparam name="TService">Type of <see cref="IChromelyErrorHandler"/>.</typeparam>
     /// <param name="chromelyErrorHandler">The <see cref="IChromelyErrorHandler" /> instance.</param>
@@ -121,7 +121,7 @@ public abstract class AppBuilderBase
     /// </summary>
     /// <remarks>
     /// If an instance of <see cref="ChromelyApp" /> is provided as a parameter, that is what is used.
-    /// If the instance of <see cref="ChromelyApp" /> is not provided as a parameter, the of TApp is used to create one.
+    /// If the instance of <see cref="ChromelyApp" /> is not provided as a parameter, the type of TApp is used to create one.
     /// </remarks>
     /// <typeparam name="TApp">Type of <see cref="IChromelyErrorHandler"/>.</typeparam>
     /// <param name="chromelyApp">The <see cref="ChromelyApp" /> instance.</param>

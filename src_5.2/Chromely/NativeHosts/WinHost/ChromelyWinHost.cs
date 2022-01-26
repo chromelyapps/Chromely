@@ -14,19 +14,19 @@ public class ChromelyWinHost : NativeHostBase
 
     private bool _maximized;
 
-    protected override WindowStylePlacement GetWindowStylePlacement(WindowState state)
+    protected override Win32WindowStyles GetWindowStyles(WindowState state)
     {
-        WindowStylePlacement windowStylePlacement = base.GetWindowStylePlacement(state);
+        Win32WindowStyles windowStyles = base.GetWindowStyles(state);
         if (!_windowFrameless)
         {
-            return windowStylePlacement;
+            return windowStyles;
         }
 
-        windowStylePlacement.Styles = WS.POPUPWINDOW | WS.CLIPCHILDREN | WS.CLIPSIBLINGS
+        windowStyles.Styles = WS.POPUPWINDOW | WS.CLIPCHILDREN | WS.CLIPSIBLINGS
             | WS.SIZEBOX | WS.MINIMIZEBOX | WS.MAXIMIZEBOX;
 
 
-        return windowStylePlacement;
+        return windowStyles;
     }
 
     protected override IntPtr WndProc(IntPtr hWnd, uint message, IntPtr wParam, IntPtr lParam)
@@ -59,7 +59,7 @@ public class ChromelyWinHost : NativeHostBase
                     var captionHeight = GetSystemMetrics(SystemMetric.SM_CYCAPTION);
                     var menuHeight = GetSystemMetrics(SystemMetric.SM_CYMENU);
                     var padderBorder = GetSystemMetrics(SystemMetric.SM_CXPADDEDBORDER);
-                    // NB: 'menuHeight' substraction probably may broke it if window will have a Title in a caption.
+                    // NB: 'menuHeight' substraction probably may brake it if window will have a Title in a caption.
                     var topFrameHeight = captionHeight - menuHeight + padderBorder;
 
                     var result = DefWindowProcW(hWnd, msg, wParam, lParam);

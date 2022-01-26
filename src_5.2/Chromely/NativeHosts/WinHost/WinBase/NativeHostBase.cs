@@ -9,15 +9,18 @@
 
 namespace Chromely.NativeHosts;
 
+/// <summary>
+/// Represents Windows OS native host.
+/// </summary>
 public abstract partial class NativeHostBase : IChromelyNativeHost
 {
     private const int PROCESS_IDLE_ID = 0;
 
     [DllImport(Libraries.Kernel32)]
-    public static extern IntPtr GetConsoleWindow();
+    private static extern IntPtr GetConsoleWindow();
 
     [DllImport(Libraries.User32, SetLastError = true, CharSet = CharSet.Unicode, ExactSpelling = true)]
-    public unsafe static extern IntPtr LoadIconW(
+    private unsafe static extern IntPtr LoadIconW(
      IntPtr hInstance,
      IntPtr lpIconName);
 
@@ -39,7 +42,7 @@ public abstract partial class NativeHostBase : IChromelyNativeHost
     protected IntPtr _consoleParentInstance;
     private WNDPROC _wndProc;
     private KeyboardLLHook _keyboardHook;
-    private WindowStylePlacement _windoStylePlacement;
+    private Win32WindowStyles _windowStyles;
 
     public event EventHandler<CreatedEventArgs> HostCreated;
     public event EventHandler<MovingEventArgs> HostMoving;
@@ -56,8 +59,10 @@ public abstract partial class NativeHostBase : IChromelyNativeHost
         _keyboadHandler = keyboadHandler;
     }
 
+    /// <inheritdoc/>
     public IntPtr Handle => _handle;
 
+    /// <inheritdoc/>
     public unsafe virtual void CreateWindow()
     {
         _keyboadHandler?.SetNativeHost(this);
@@ -66,7 +71,7 @@ public abstract partial class NativeHostBase : IChromelyNativeHost
         _wndProc = WndProc;
         _consoleParentInstance = GetConsoleWindow();
         _options.WindowState = (_options.Fullscreen || _options.KioskMode) ? WindowState.Fullscreen : _options.WindowState;
-        _windoStylePlacement = new WindowStylePlacement(_options);
+        _windowStyles = new Win32WindowStyles(_options);
 
         User32.WNDCLASS wcex = new();
         wcex.style = User32.CS.HREDRAW | User32.CS.VREDRAW;
@@ -90,17 +95,17 @@ public abstract partial class NativeHostBase : IChromelyNativeHost
             return;
         }
 
-        var stylePlacement = GetWindowStylePlacement(_options.WindowState);
+        var windowStyles = GetWindowStyles(_options.WindowState);
 
         var hWnd = User32.CreateWindowExW(
-                        stylePlacement.ExStyles,
+                        windowStyles.ExStyles,
                         Chromely_WINDOW_CLASS,
                         _options.Title,
-                        stylePlacement.Styles,
-                        stylePlacement.RECT.left,
-                        stylePlacement.RECT.top,
-                        stylePlacement.RECT.Width,
-                        stylePlacement.RECT.Height,
+                        windowStyles.Styles,
+                        windowStyles.RECT.left,
+                        windowStyles.RECT.top,
+                        windowStyles.RECT.Width,
+                        windowStyles.RECT.Height,
                         IntPtr.Zero,
                         IntPtr.Zero,
                         _consoleParentInstance,
@@ -112,18 +117,20 @@ public abstract partial class NativeHostBase : IChromelyNativeHost
             return;
         }
 
-        PlaceWindow(hWnd, stylePlacement);
+        PlaceWindow(hWnd, windowStyles);
         InstallHooks(hWnd);
-        ShowWindow(hWnd, stylePlacement.ShowCommand);
+        ShowWindow(hWnd, windowStyles.ShowCommand);
         UpdateWindow(hWnd);
         RegisterHotKeys(hWnd);
     }
 
+    /// <inheritdoc/>
     public virtual IntPtr GetNativeHandle()
     {
         return IntPtr.Zero;
     }
 
+    /// <inheritdoc/>
     public virtual void Run()
     {
         try
@@ -145,11 +152,13 @@ public abstract partial class NativeHostBase : IChromelyNativeHost
         }
     }
 
+    /// <inheritdoc/>
     public virtual Size GetWindowClientSize()
     {
         return GetClientSize();
     }
 
+    /// <inheritdoc/>
     public virtual float GetWindowDpiScale()
     {
         const int StandardDpi = 96;
@@ -167,6 +176,7 @@ public abstract partial class NativeHostBase : IChromelyNativeHost
         return scale;
     }
 
+    /// <inheritdoc/>
     public virtual void SetupMessageInterceptor(IntPtr browserWindowHandle)
     {
         if (!WindowInterceptorInitialized && _windowFrameless)
@@ -176,11 +186,13 @@ public abstract partial class NativeHostBase : IChromelyNativeHost
         }
     }
 
+    /// <inheritdoc/>
     public virtual void ResizeBrowser(IntPtr browserHandle, int width, int height)
     {
         SetWindowPos(browserHandle, IntPtr.Zero, 0, 0, width, height, SWP.NOZORDER);
     }
 
+    /// <inheritdoc/>
     public virtual WindowState GetWindowState()
     {
         var placement = new WINDOWPLACEMENT();
@@ -236,6 +248,7 @@ public abstract partial class NativeHostBase : IChromelyNativeHost
         return result == BOOL.TRUE;
     }
 
+    /// <inheritdoc/>
     public virtual void Exit()
     {
         if (_handle != IntPtr.Zero)
@@ -260,6 +273,7 @@ public abstract partial class NativeHostBase : IChromelyNativeHost
         }
     }
 
+    /// <inheritdoc/>
     public virtual void SetWindowTitle(string title)
     {
         if (Handle != IntPtr.Zero)
@@ -269,6 +283,11 @@ public abstract partial class NativeHostBase : IChromelyNativeHost
     }
 
     #region Create Window Protected
+
+    /// <summary>
+    /// Get window bounds.
+    /// </summary>
+    /// <returns>instance of <see cref="Rectangle"/>.</returns>
     protected virtual Rectangle GetWindowBounds()
     {
         var bounds = new Rectangle(_options.Position.X, _options.Position.Y, _options.Size.Width, _options.Size.Height);
@@ -294,6 +313,11 @@ public abstract partial class NativeHostBase : IChromelyNativeHost
 
         return rect;
     }
+
+    /// <summary>
+    /// Get window client size.
+    /// </summary>
+    /// <returns>instance of <see cref="Size"/>.</returns>
     protected virtual Size GetClientSize()
     {
         var size = new Size();
@@ -308,19 +332,32 @@ public abstract partial class NativeHostBase : IChromelyNativeHost
         return size;
     }
 
+    /// <summary>
+    /// Method to run before Win32 window is created.
+    /// </summary>
+    /// <param name="hWnd">The window handle.</param>
     protected virtual void PreCreated(IntPtr hWnd)
     {
     }
 
+    /// <summary>
+    /// Method to run when Win32 window is created.
+    /// </summary>
+    /// <param name="hWnd">The window handle.</param>
     protected virtual void OnCreated(IntPtr hWnd)
     {
     }
 
-    protected virtual void PlaceWindow(IntPtr hWnd, WindowStylePlacement stylePlacement)
+    /// <summary>
+    /// Window placement function.
+    /// </summary>
+    /// <param name="hWnd">The window handle.</param>
+    /// <param name="stylePlacement">Placement style - instance of <see cref="Win32WindowStyles"/>.</param>
+    protected virtual void PlaceWindow(IntPtr hWnd, Win32WindowStyles stylePlacement)
     {
         if (_options.Fullscreen || _options.KioskMode)
         {
-            SetFullscreenScreen(hWnd, (int)stylePlacement.Styles, (int)stylePlacement.ExStyles);
+            SetWindowToFullscreen(hWnd, (int)stylePlacement.Styles, (int)stylePlacement.ExStyles);
         }
         else
         {
@@ -334,10 +371,15 @@ public abstract partial class NativeHostBase : IChromelyNativeHost
         var placement = GetWindowPlacement(hWnd, out WINDOWPLACEMENT wpPrev);
         if (placement == BOOL.TRUE)
         {
-            _windoStylePlacement.WindowPlacement = wpPrev;
+            _windowStyles.WindowPlacement = wpPrev;
         }
     }
 
+    /// <summary>
+    /// On window size changed method.
+    /// </summary>
+    /// <param name="width">The new window width.</param>
+    /// <param name="height">he new window height.</param>
     protected virtual void OnSizeChanged(int width, int height)
     {
         var handler = HostSizeChanged;
@@ -348,6 +390,10 @@ public abstract partial class NativeHostBase : IChromelyNativeHost
 
     #region Create Window Private
 
+    /// <summary>
+    /// Gets window icon handle.
+    /// </summary>
+    /// <returns>The pointer to the icon - instance of <see cref="IntPtr"/></returns>
     protected virtual IntPtr GetIconHandle()
     {
         var hIcon = IconHandler.LoadIconFromFile(_options.RelativePathToIconFile);
@@ -374,16 +420,21 @@ public abstract partial class NativeHostBase : IChromelyNativeHost
         return hIcon ?? LoadIconW(IntPtr.Zero, (IntPtr)IDI_APPLICATION);
     }
 
-    protected virtual WindowStylePlacement GetWindowStylePlacement(WindowState state)
+    /// <summary>
+    /// Get window styles.
+    /// </summary>
+    /// <param name="state">The window state - type of <see cref="WindowState"/>.</param>
+    /// <returns>instance of <see cref="Win32WindowStyles"/>.</returns>
+    protected virtual Win32WindowStyles GetWindowStyles(WindowState state)
     {
-        WindowStylePlacement windowStyle = new(_options);
+        Win32WindowStyles windowStyle = new(_options);
         if (_options.UseCustomStyle && _options is not null && _options.CustomStyle.IsValid())
         {
             return GetWindowStyles(_options.CustomStyle, state);
         }
 
-        var styles = WindowStylePlacement.NormalStyles;
-        var exStyles = WindowStylePlacement.NormalExStyles;
+        var styles = Win32WindowStyles.NormalStyles;
+        var exStyles = Win32WindowStyles.NormalExStyles;
 
         if (_options.DisableResizing)
         {
@@ -437,9 +488,15 @@ public abstract partial class NativeHostBase : IChromelyNativeHost
         return windowStyle;
     }
 
-    protected WindowStylePlacement GetWindowStyles(WindowCustomStyle customCreationStyle, WindowState state)
+    /// <summary>
+    /// Get window styles.
+    /// </summary>
+    /// <param name="customCreationStyle">Custom window styles.</param>
+    /// <param name="state">The window state - type of <see cref="WindowState"/>.</param>
+    /// <returns>instance of <see cref="Win32WindowStyles"/>.</returns>
+    protected Win32WindowStyles GetWindowStyles(WindowCustomStyle customCreationStyle, WindowState state)
     {
-        WindowStylePlacement windowStyle = new(_options);
+        Win32WindowStyles windowStyle = new(_options);
         var styles = (WS)customCreationStyle.WindowStyles;
         var exStyles = (WS_EX)customCreationStyle.WindowExStyles;
 
@@ -482,6 +539,7 @@ public abstract partial class NativeHostBase : IChromelyNativeHost
     #endregion Create Window Private
 
     #region WndProc
+
 
     protected virtual IntPtr WndProc(IntPtr hWnd, uint message, IntPtr wParam, IntPtr lParam)
     {
