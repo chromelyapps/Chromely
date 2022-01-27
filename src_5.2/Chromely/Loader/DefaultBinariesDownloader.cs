@@ -4,7 +4,7 @@
 namespace Chromely.Loader;
 
 /// <inheritdoc/>
-public class DefaultCefBinariesDownloader : ICefBinariesDownloader
+public class DefaultBinariesDownloader : IBinariesDownloader
 {
     /// <inheritdoc/>
     public void Download(IChromelyConfiguration config)

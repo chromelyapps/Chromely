@@ -49,6 +49,12 @@ public abstract partial class NativeHostBase : IChromelyNativeHost
     public event EventHandler<SizeChangedEventArgs> HostSizeChanged;
     public event EventHandler<CloseEventArgs> HostClose;
 
+    /// <summary>
+    /// Initializes a new instance of <see cref="NativeHostBase"/>.
+    /// </summary>
+    /// <param name="config">Instance of <see cref="IChromelyConfiguration"/>.</param>
+    /// <param name="messageInterceptor">Instance of <see cref="IWindowMessageInterceptor"/>.</param>
+    /// <param name="keyboadHandler">Instance of <see cref="IKeyboadHookHandler"/>.</param>
     public NativeHostBase(IChromelyConfiguration config, IWindowMessageInterceptor messageInterceptor, IKeyboadHookHandler keyboadHandler)
     {
         _config = config;
@@ -541,6 +547,15 @@ public abstract partial class NativeHostBase : IChromelyNativeHost
     #region WndProc
 
 
+
+    /// <summary>
+    /// Processes messages for the native host.
+    /// </summary>
+    /// <param name="hWnd">The window handle receiving the message</param>
+    /// <param name="message">Identifier of the message.</param>
+    /// <param name="wParam">Additional info associated with the message.</param>
+    /// <param name="lParam">Additional info associated with the message.</param>
+    /// <returns>IntPtr.Zero is message is handled, otherwise other values.</returns>
     protected virtual IntPtr WndProc(IntPtr hWnd, uint message, IntPtr wParam, IntPtr lParam)
     {
         WM wmMsg = (WM)message;

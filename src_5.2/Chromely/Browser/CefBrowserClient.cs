@@ -8,7 +8,7 @@ namespace Chromely.Browser;
 /// <summary>
 /// The CEF brwoser client.
 /// </summary>
-public partial class CefBrowserClient : CefClient
+internal partial class CefBrowserClient : CefClient
 {
     private readonly CefMessageRouterBrowserSide _browserMessageRouter;
 

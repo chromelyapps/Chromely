@@ -21,6 +21,9 @@ public abstract partial class ChromiumBrowser
     /// <summary>
     /// Initializes a new instance of the <see cref="ChromiumBrowser"/> class.
     /// </summary>
+    /// <param name="nativeHost"></param>
+    /// <param name="config"></param>
+    /// <param name="handlersResolver"></param>
     public ChromiumBrowser(IChromelyNativeHost nativeHost, IChromelyConfiguration config, ChromelyHandlersResolver handlersResolver)
     {
         Browser = null;
@@ -29,6 +32,9 @@ public abstract partial class ChromiumBrowser
         _handlersResolver = handlersResolver;
     }
 
+    /// <summary>
+    /// Gets the native host - instance of <see cref="IChromelyNativeHost"/>.
+    /// </summary>
     public IChromelyNativeHost NativeHost { get; private set; }
 
     #region Events Handling Properties
@@ -135,6 +141,9 @@ public abstract partial class ChromiumBrowser
     /// </summary>
     public CefBrowser Browser { get; private set; }
 
+    /// <summary>
+    /// Gets the browser host - instance of <see cref="CefBrowserHost"/>.
+    /// </summary>
     public CefBrowserHost BrowserHost
     {
         get
@@ -148,14 +157,18 @@ public abstract partial class ChromiumBrowser
         }
     }
 
-    internal void NotifyMoveOrResize()
-    {
-        NotifyMoveOrResizeStarted();
-    }
-
+    /// <summary>
+    /// Create the CEF client - instance of <see cref="CefClient"/>.
+    /// </summary>
+    /// <returns>instance of <see cref="CefClient"/>.</returns>
     protected virtual CefClient CreateClient()
     {
         return new CefBrowserClient(_browserMessageRouter, _handlersResolver);
+    }
+
+    internal void NotifyMoveOrResize()
+    {
+        NotifyMoveOrResizeStarted();
     }
 
     internal void CreateBrowser(IntPtr hostHandle, IntPtr winXID)

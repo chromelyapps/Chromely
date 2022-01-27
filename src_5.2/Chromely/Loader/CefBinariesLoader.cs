@@ -17,7 +17,7 @@ public static class CefBinariesLoader
     /// <param name="cefBinariesDownloader">The cef binaries downloader.</param>
     /// <param name="config">The chromely configuration.</param>
     /// <returns>The list of temporary files generated</returns>
-    public static List<string> Load(ICefBinariesDownloader cefBinariesDownloader, IChromelyConfiguration config)
+    public static List<string> Load(IBinariesDownloader cefBinariesDownloader, IChromelyConfiguration config)
     {
         try
         {
@@ -95,7 +95,7 @@ public static class CefBinariesLoader
     /// <returns>
     /// The list of temporary files generated
     /// </returns>
-    private static List<string> DownloadAndNotifyUser(ICefBinariesDownloader cefBinariesDownloader, IChromelyConfiguration config)
+    private static List<string> DownloadAndNotifyUser(IBinariesDownloader cefBinariesDownloader, IChromelyConfiguration config)
     {
         var tempFiles = new List<string>();
 

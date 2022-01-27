@@ -114,7 +114,7 @@ public partial class WindowController
         var mainArgs = new CefMainArgs(argv);
         CefApp app = CreateApp();
 
-        if (ClientAppUtils.ExecuteProcess(_config.Platform, argv))
+        if (ClientAppUtils.IsProcessExecutionAllowed(_config.Platform, argv))
         {
             // CEF applications have multiple sub-processes (render, plugin, GPU, etc)
             // that share the same executable. This function checks the command-line and,

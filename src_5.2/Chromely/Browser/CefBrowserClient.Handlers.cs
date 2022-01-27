@@ -3,7 +3,7 @@
 
 namespace Chromely.Browser;
 
-public partial class CefBrowserClient
+internal partial class CefBrowserClient
 {
     private void SetHandlers(ChromelyHandlersResolver handlersResolver)
     {

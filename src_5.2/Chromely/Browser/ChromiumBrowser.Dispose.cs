@@ -37,12 +37,16 @@ public abstract partial class ChromiumBrowser
         _disposed = true;
     }
 
+    /// <inheritdoc/>
     public void Dispose()
     {
         Dispose(true);
         GC.SuppressFinalize(this);
     }
 
+    /// <summary>
+    /// Free unmanged resources.
+    /// </summary>
     protected void FreeUnmanagedResources()
     {
         unsafe

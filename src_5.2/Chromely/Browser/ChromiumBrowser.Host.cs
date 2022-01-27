@@ -7,36 +7,75 @@ namespace Chromely.Browser;
 
 public abstract partial class ChromiumBrowser
 {
+    /// <summary>
+    /// Request that the browser close. The JavaScript 'onbeforeunload' event will
+    /// be fired. If |force_close| is false the event handler, if any, will be
+    /// allowed to prompt the user and the user can optionally cancel the close.
+    /// If |force_close| is true the prompt will not be displayed and the close
+    /// will proceed. Results in a call to CefLifeSpanHandler::DoClose() if the
+    /// event handler allows the close or if |force_close| is true. See
+    /// CefLifeSpanHandler::DoClose() documentation for additional usage
+    /// information.
+    /// </summary>
     public void CloseBrowser(bool forceClose = false)
     {
         BrowserHost?.CloseBrowser(forceClose);
     }
 
+    /// <summary>
+    /// Helper for closing a browser. Call this method from the top-level window
+    /// close handler (if any). Internally this calls CloseBrowser(false) if the
+    /// close has not yet been initiated. This method returns false while the close
+    /// is pending and true after the close has completed. See CloseBrowser() and
+    /// CefLifeSpanHandler::DoClose() documentation for additional usage
+    /// information. This method must be called on the browser process UI thread.
+    /// </summary>
     public bool TryCloseBrowser()
     {
         return BrowserHost is not null && BrowserHost.TryCloseBrowser();
     }
 
+    /// <summary>
+    /// Set whether the browser is focused.
+    /// </summary>
     public void SetFocus(bool focus)
     {
         BrowserHost?.SetFocus(focus);
     }
 
+    /// <summary>
+    /// Retrieve the window handle (if any) for this browser. If this browser is
+    /// wrapped in a CefBrowserView this method should be called on the browser
+    /// process UI thread and it will return the handle for the top-level native
+    /// window.
+    /// </summary>
     public IntPtr GetWindowHandle()
     {
         return BrowserHost is null ? IntPtr.Zero : BrowserHost.GetWindowHandle();
     }
 
+    /// <summary>
+    /// Retrieve the window handle (if any) of the browser that opened this
+    /// browser. Will return NULL for non-popup browsers or if this browser is
+    /// wrapped in a CefBrowserView. This method can be used in combination with
+    /// custom handling of modal windows.
+    /// </summary>
     public IntPtr GetOpenerWindowHandle()
     {
         return BrowserHost is null ? IntPtr.Zero : BrowserHost.GetOpenerWindowHandle();
     }
 
+    /// <summary>
+    /// Returns true if this browser is wrapped in a CefBrowserView.
+    /// </summary>
     public bool HasView
     {
         get { return BrowserHost is not null && BrowserHost.HasView; }
     }
 
+    /// <summary>
+    /// Returns the client for this browser.
+    /// </summary>
     public CefClient GetClient()
     {
         return BrowserHost?.GetClient();

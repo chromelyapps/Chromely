@@ -6,7 +6,7 @@ namespace Chromely;
 /// <summary>
 /// Represents CEF binaries downloader.
 /// </summary>
-public interface ICefBinariesDownloader
+public interface IBinariesDownloader
 {
     /// <summary>
     /// Primary entry function for downloading CEF binaries.

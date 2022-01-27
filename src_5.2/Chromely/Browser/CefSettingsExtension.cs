@@ -3,8 +3,13 @@
 
 namespace Chromely.Browser;
 
-public static class CefSettingsExtension
+internal static class CefSettingsExtension
 {
+    /// <summary>
+    /// Extension method to apply custom settings from <see cref="IChromelyConfiguration.CustomSettings"/>.
+    /// </summary>
+    /// <param name="cefSettings"><see cref="CefSettings"/> class to extend.</param>
+    /// <param name="customSettings">The custom settings type of <see cref="IChromelyConfiguration.CustomSettings"/>.</param>
     public static void Update(this CefSettings cefSettings, IDictionary<string, string>? customSettings)
     {
         if (cefSettings is null || customSettings is null || !customSettings.Any())

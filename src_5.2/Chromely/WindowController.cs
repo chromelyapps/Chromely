@@ -7,7 +7,7 @@ namespace Chromely;
 public partial class WindowController : ChromelyWindowController
 {
     protected readonly IChromelyRequestSchemeProvider _requestSchemeProvider;
-    protected ICefBinariesDownloader _binariesDownloader = new DefaultCefBinariesDownloader();
+    protected IBinariesDownloader _binariesDownloader = new DefaultBinariesDownloader();
 
     /// <inheritdoc/>
     public WindowController(IChromelyWindow window,
@@ -28,8 +28,8 @@ public partial class WindowController : ChromelyWindowController
         _requestSchemeProvider = requestSchemeProvider;
 
         // Set CefBinariesDownloader
-        var objList = _handlersResolver?.Invoke(typeof(ICefBinariesDownloader));
-        var tempLoader = objList?.FirstOrDefault() as ICefBinariesDownloader;
+        var objList = _handlersResolver?.Invoke(typeof(IBinariesDownloader));
+        var tempLoader = objList?.FirstOrDefault() as IBinariesDownloader;
         if (tempLoader is not null)
         {
             _binariesDownloader = tempLoader;

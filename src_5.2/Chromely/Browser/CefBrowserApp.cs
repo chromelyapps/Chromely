@@ -3,7 +3,7 @@
 
 namespace Chromely.Browser;
 
-public class CefBrowserApp : CefApp
+internal class CefBrowserApp : CefApp
 {
     private readonly CefRenderProcessHandler _renderProcessHandler;
     private readonly CefBrowserProcessHandler _browserProcessHandler;
@@ -11,6 +11,12 @@ public class CefBrowserApp : CefApp
     private readonly IChromelyRequestSchemeProvider _requestSchemeProvider;
     private readonly ChromelyHandlersResolver _handlersResolver;
 
+    /// <summary>
+    /// Initializes a new instance of <see cref="CefBrowserApp"/>.
+    /// </summary>
+    /// <param name="config">Instance of <see cref="IChromelyConfiguration"/>.</param>
+    /// <param name="requestSchemeProvider">Instance of <see cref="IChromelyRequestSchemeProvider"/>.</param>
+    /// <param name="handlersResolver">Instance of <see cref="ChromelyHandlersResolver"/>.</param>
     public CefBrowserApp(IChromelyConfiguration config, IChromelyRequestSchemeProvider requestSchemeProvider, ChromelyHandlersResolver handlersResolver)
     {
         _config = config;

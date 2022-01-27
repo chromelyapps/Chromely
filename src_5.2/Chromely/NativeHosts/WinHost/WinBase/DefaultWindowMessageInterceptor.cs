@@ -138,7 +138,14 @@ public class DefaultWindowMessageInterceptor : IWindowMessageInterceptor
             SetWindowLongPtr(_handle, (int)GWL.WNDPROC, _wndProcPtr);
         }
 
-        // Child Window Message Processor
+        /// <summary>
+        /// Processes messages for the subclasssed child window.
+        /// </summary>
+        /// <param name="hWnd">The window handle receiving the message</param>
+        /// <param name="message">Identifier of the message.</param>
+        /// <param name="wParam">Additional info associated with the message.</param>
+        /// <param name="lParam">Additional info associated with the message.</param>
+        /// <returns>IntPtr.Zero is message is handled, otherwise other values.</returns>
         private IntPtr WndProc(IntPtr hWnd, uint message, IntPtr wParam, IntPtr lParam)
         {
             var msg = (WM)message;

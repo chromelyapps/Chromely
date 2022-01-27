@@ -5,8 +5,15 @@
 
 namespace Chromely.NativeHosts;
 
+/// <inheritdoc/>
 public class ChromelyWinHost : NativeHostBase
 {
+    /// <summary>
+    /// Initializes a new instance of <see cref="ChromelyWinHost"/>.
+    /// </summary>
+    /// <param name="config">Instance of <see cref="IChromelyConfiguration"/>.</param>
+    /// <param name="messageInterceptor">Instance of <see cref="IWindowMessageInterceptor"/>.</param>
+    /// <param name="keyboadHandler">Instance of <see cref="IKeyboadHookHandler"/>.</param>
     public ChromelyWinHost(IChromelyConfiguration config, IWindowMessageInterceptor messageInterceptor, IKeyboadHookHandler keyboadHandler)
         : base(config, messageInterceptor, keyboadHandler)
     {
@@ -14,6 +21,7 @@ public class ChromelyWinHost : NativeHostBase
 
     private bool _maximized;
 
+    /// <inheritdoc/>
     protected override Win32WindowStyles GetWindowStyles(WindowState state)
     {
         Win32WindowStyles windowStyles = base.GetWindowStyles(state);
@@ -29,6 +37,7 @@ public class ChromelyWinHost : NativeHostBase
         return windowStyles;
     }
 
+    /// <inheritdoc/>
     protected override IntPtr WndProc(IntPtr hWnd, uint message, IntPtr wParam, IntPtr lParam)
     {
         WM msg = (WM)message;
