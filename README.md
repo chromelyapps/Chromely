@@ -43,6 +43,7 @@ Cross-platform -**Windows**, **Linux**, **MacOS**. Built on CEF, CefGlue, NET St
 
 [![Chromely.Core](http://img.shields.io/nuget/vpre/Chromely.Core.svg?style=flat&label=Chromely.Core)](https://www.nuget.org/packages/Chromely.Core)
 [![Chromely](http://img.shields.io/nuget/vpre/Chromely.svg?style=flat&label=Chromely)](https://www.nuget.org/packages/Chromely)
+[![Chromely.Owin](http://img.shields.io/nuget/vpre/Chromely.Owin.svg?style=flat&label=Chromely.Owin)](https://www.nuget.org/packages/Chromely.Owin)
 
 [![Chromely + Angular](https://img.shields.io/badge/Chromely%20Apps-Built%20with%20Angular%202%2B-green.svg)](https://github.com/chromelyapps/demo-projects/tree/master/angular-react-vue/ChromelyAngular)
 <br>[![Chromely + React](https://img.shields.io/badge/Chromely%20Apps-Built%20with%20React-green.svg)](https://github.com/chromelyapps/demo-projects/tree/master/angular-react-vue/ChromelyReact)
