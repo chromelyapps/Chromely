@@ -8,6 +8,9 @@ namespace Chromely.Browser;
 /// <summary>
 /// Default CEF message router handler.
 /// </summary>
+/// <remarks>
+/// Implements - https://bitbucket.org/chromiumembedded/cef/wiki/GeneralUsage.md#markdown-header-generic-message-router
+/// </remarks>
 public class DefaultMessageRouterHandler : CefMessageRouterBrowserSide.Handler, IChromelyMessageRouter
 {
     protected readonly IChromelyRouteProvider _routeProvider;
@@ -15,6 +18,13 @@ public class DefaultMessageRouterHandler : CefMessageRouterBrowserSide.Handler, 
     protected readonly IChromelyDataTransferOptions _dataTransferOptions;
     protected readonly IChromelyErrorHandler _chromelyErrorHandler;
 
+    /// <summary>
+    /// Initializes a new instance of <see cref="DefaultMessageRouterHandler"/>.
+    /// </summary>
+    /// <param name="routeProvider">Instance of <see cref="IChromelyRouteProvider"/>.</param>
+    /// <param name="requestHandler">Instance of <see cref="IChromelyRequestHandler"/>.</param>
+    /// <param name="dataTransferOptions">Instance of <see cref="IChromelyDataTransferOptions"/>.</param>
+    /// <param name="chromelyErrorHandler">Instance of <see cref="IChromelyErrorHandler"/>.</param>
     public DefaultMessageRouterHandler(IChromelyRouteProvider routeProvider, IChromelyRequestHandler requestHandler, IChromelyDataTransferOptions dataTransferOptions, IChromelyErrorHandler chromelyErrorHandler)
     {
         _routeProvider = routeProvider;
@@ -23,6 +33,7 @@ public class DefaultMessageRouterHandler : CefMessageRouterBrowserSide.Handler, 
         _chromelyErrorHandler = chromelyErrorHandler;
     }
 
+    /// <inheritdoc/>
     public override bool OnQuery(CefBrowser browser, CefFrame frame, long queryId, string request, bool persistent, CefMessageRouterBrowserSide.Callback callback)
     {
         request? requestData = null;
@@ -86,18 +97,7 @@ public class DefaultMessageRouterHandler : CefMessageRouterBrowserSide.Handler, 
         return false;
     }
 
-    /// <summary>
-    /// The on query canceled.
-    /// </summary>
-    /// <param name="browser">
-    /// The browser.
-    /// </param>
-    /// <param name="frame">
-    /// The frame.
-    /// </param>
-    /// <param name="queryId">
-    /// The query id.
-    /// </param>
+    /// <inheritdoc/>
     public override void OnQueryCanceled(CefBrowser browser, CefFrame frame, long queryId)
     {
     }

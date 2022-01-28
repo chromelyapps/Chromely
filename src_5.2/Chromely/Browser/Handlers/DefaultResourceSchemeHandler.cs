@@ -3,6 +3,10 @@
 
 namespace Chromely.Browser;
 
+/// <summary>
+/// Default implementation of <see cref="ResourceHandler"/>. 
+/// At a minimum developer only need to override ProcessRequestAsync.
+/// </summary>
 public class DefaultResourceSchemeHandler : ResourceHandler
 {
     protected readonly IChromelyConfiguration _config;
@@ -10,6 +14,11 @@ public class DefaultResourceSchemeHandler : ResourceHandler
     protected IChromelyResource _chromelyResource;
     protected FileInfo? _fileInfo;
 
+    /// <summary>
+    /// Initializes a new instance of <see cref="DefaultResourceSchemeHandler"/>.
+    /// </summary>
+    /// <param name="config">Instance of <see cref="IChromelyConfiguration"/>.</param>
+    /// <param name="chromelyErrorHandler">Instance of <see cref="IChromelyErrorHandler"/>.</param>
     public DefaultResourceSchemeHandler(IChromelyConfiguration config, IChromelyErrorHandler chromelyErrorHandler)
     {
         _config = config;

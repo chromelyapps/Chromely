@@ -3,6 +3,13 @@
 
 namespace Chromely.Browser;
 
+/// <summary>
+/// Default CEF http scheme handler.
+/// </summary>
+/// <remarks>
+/// Requests like those initiated by HTTP clients like jQuery, XMLHttpRequest, 
+/// axios - https://github.com/axios/axios and alternatives will be processed here.
+/// </remarks>
 public class DefaultRequestSchemeHandler : ResourceHandler
 {
     protected readonly IChromelyRouteProvider _routeProvider;
@@ -15,6 +22,14 @@ public class DefaultRequestSchemeHandler : ResourceHandler
     protected Stream _stream;
     protected string _mimeType;
 
+    /// <summary>
+    /// Initializes a new instance of <see cref="DefaultRequestSchemeHandler"/>.
+    /// </summary>
+    /// <param name="routeProvider">Instance of <see cref="IChromelyRouteProvider"/>.</param>
+    /// <param name="requestSchemeProvider">Instance of <see cref="IChromelyRequestSchemeProvider"/>.</param>
+    /// <param name="requestHandler">Instance of <see cref="IChromelyRequestHandler"/>.</param>
+    /// <param name="dataTransferOptions">Instance of <see cref="IChromelyDataTransferOptions"/>.</param>
+    /// <param name="chromelyErrorHandler">Instance of <see cref="IChromelyErrorHandler"/>.</param>
     public DefaultRequestSchemeHandler(IChromelyRouteProvider routeProvider,
                                        IChromelyRequestSchemeProvider requestSchemeProvider,
                                        IChromelyRequestHandler requestHandler,
@@ -31,18 +46,7 @@ public class DefaultRequestSchemeHandler : ResourceHandler
         _stream = Stream.Null;
     }
 
-    /// <summary>
-    /// The process request async.
-    /// </summary>
-    /// <param name="request">
-    /// The request.
-    /// </param>
-    /// <param name="callback">
-    /// The callback.
-    /// </param>
-    /// <returns>
-    /// The <see cref="bool"/>.
-    /// </returns>
+    /// <inheritdoc/>
     public override CefReturnValue ProcessRequestAsync(CefRequest request, CefCallback callback)
     {
         var scheme = _requestSchemeProvider?.GetScheme(request.Url);

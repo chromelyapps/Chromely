@@ -3,16 +3,24 @@
 
 namespace Chromely.Browser;
 
+/// <summary>
+/// Default implementation of <see cref="DefaultDragHandler"/>.
+/// </summary>
 public class DefaultDragHandler : CefDragHandler
 {
     protected static readonly object objLock = new object();
     protected readonly IChromelyConfiguration _config;
 
+    /// <summary>
+    /// Initializes a new instance of <see cref="DefaultDragHandler"/>.
+    /// </summary>
+    /// <param name="config">Instance of <see cref="IChromelyConfiguration"/>.</param>
     public DefaultDragHandler(IChromelyConfiguration config)
     {
         _config = config;
     }
 
+    /// <inheritdoc/>
     protected override bool OnDragEnter(CefBrowser browser, CefDragData dragData, CefDragOperationsMask mask)
     {
         return false;
@@ -52,6 +60,7 @@ public class DefaultDragHandler : CefDragHandler
         </body>
         </html>
      */
+    /// <inheritdoc/>
     protected override void OnDraggableRegionsChanged(CefBrowser browser, CefFrame frame, CefDraggableRegion[] regions)
     {
         var framelessOption = _config?.WindowOptions?.FramelessOption;

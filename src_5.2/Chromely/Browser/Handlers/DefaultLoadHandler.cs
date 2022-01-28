@@ -4,7 +4,7 @@
 namespace Chromely.Browser;
 
 /// <summary>
-/// The CefGlue load handler.
+/// Default implementation of <see cref="CefLoadHandler"/>.
 /// </summary>
 public class DefaultLoadHandler : CefLoadHandler
 {
@@ -18,30 +18,24 @@ public class DefaultLoadHandler : CefLoadHandler
     /// <summary>
     /// Initializes a new instance of the <see cref="DefaultLoadHandler"/> class.
     /// </summary>
+    /// <param name="config">Instance of <see cref="IChromelyConfiguration"/>.</param>
+    /// <param name="window">Instance of <see cref="IChromelyWindow"/>.</param>
     public DefaultLoadHandler(IChromelyConfiguration config, IChromelyWindow window)
     {
         _config = config;
         _browser = window as ChromiumBrowser;
     }
 
+    /// <summary>
+    /// Gets or sets the browser.
+    /// </summary>
     public ChromiumBrowser? Browser
     {
         get { return _browser; }
         set { _browser = value; }
     }
 
-    /// <summary>
-    /// The on load end.
-    /// </summary>
-    /// <param name="browser">
-    /// The browser.
-    /// </param>
-    /// <param name="frame">
-    /// The frame.
-    /// </param>
-    /// <param name="httpStatusCode">
-    /// The http status code.
-    /// </param>
+    /// <inheritdoc/>
     protected override void OnLoadEnd(CefBrowser browser, CefFrame frame, int httpStatusCode)
     {
         if (_browser is not null)
@@ -50,24 +44,7 @@ public class DefaultLoadHandler : CefLoadHandler
         }
     }
 
-    /// <summary>
-    /// The on load error.
-    /// </summary>
-    /// <param name="browser">
-    /// The browser.
-    /// </param>
-    /// <param name="frame">
-    /// The frame.
-    /// </param>
-    /// <param name="errorCode">
-    /// The error code.
-    /// </param>
-    /// <param name="errorText">
-    /// The error text.
-    /// </param>
-    /// <param name="failedUrl">
-    /// The failed url.
-    /// </param>
+    /// <inheritdoc/>
     protected override void OnLoadError(CefBrowser browser, CefFrame frame, CefErrorCode errorCode, string errorText, string failedUrl)
     {
         if (_browser is not null)
@@ -76,18 +53,7 @@ public class DefaultLoadHandler : CefLoadHandler
         }
     }
 
-    /// <summary>
-    /// The on load start.
-    /// </summary>
-    /// <param name="browser">
-    /// The browser.
-    /// </param>
-    /// <param name="frame">
-    /// The frame.
-    /// </param>
-    /// <param name="transitionType">
-    /// The transition type.
-    /// </param>
+    /// <inheritdoc/>
     protected override void OnLoadStart(CefBrowser browser, CefFrame frame, CefTransitionType transitionType)
     {
         if (_browser is not null)
@@ -96,21 +62,7 @@ public class DefaultLoadHandler : CefLoadHandler
         }
     }
 
-    /// <summary>
-    /// The on loading state change.
-    /// </summary>
-    /// <param name="browser">
-    /// The browser.
-    /// </param>
-    /// <param name="isLoading">
-    /// The is loading.
-    /// </param>
-    /// <param name="canGoBack">
-    /// The can go back.
-    /// </param>
-    /// <param name="canGoForward">
-    /// The can go forward.
-    /// </param>
+    /// <inheritdoc/>
     protected override void OnLoadingStateChange(CefBrowser browser, bool isLoading, bool canGoBack, bool canGoForward)
     {
         if (_browser is not null)

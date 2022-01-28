@@ -3,15 +3,20 @@
 
 namespace Chromely.Browser;
 
+/// <inheritdoc/>
 public class DefaultRequestSchemeProvider : IChromelyRequestSchemeProvider
 {
     protected IDictionary<string, UrlScheme> _schemeMap;
 
+    /// <summary>
+    /// Initializes a new instance of <see cref="DefaultRequestSchemeProvider"/>.
+    /// </summary>
     public DefaultRequestSchemeProvider()
     {
         _schemeMap = new Dictionary<string, UrlScheme>();
     }
 
+    /// <inheritdoc/>
     public void Add(UrlScheme urlScheme)
     {
         string key = Key(urlScheme);
@@ -21,6 +26,7 @@ public class DefaultRequestSchemeProvider : IChromelyRequestSchemeProvider
         }
     }
 
+    /// <inheritdoc/>
     public UrlScheme? GetScheme(string url)
     {
         string key = Key(url);
@@ -32,12 +38,14 @@ public class DefaultRequestSchemeProvider : IChromelyRequestSchemeProvider
         return default;
     }
 
+    /// <inheritdoc/>
     public List<UrlScheme> GetAllSchemes()
     {
         var list = _schemeMap?.Values?.ToList();
         return list ?? new List<UrlScheme>();
     }
 
+    /// <inheritdoc/>
     public bool IsSchemeRegistered(string url)
     {
         string key = Key(url);

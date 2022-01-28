@@ -4,14 +4,23 @@
 
 namespace Chromely.Browser;
 
+/// <summary>
+/// A wrapper for <see cref="CefSafeBuffer"/>.
+/// </summary>
 public class CefSafeBuffer : SafeBuffer
 {
-    public CefSafeBuffer(IntPtr data, ulong noOfBytes) : base(false)
+    /// <summary>
+    /// Initializes a new instance of <see cref="CefSafeBuffer"/>.
+    /// </summary>
+    /// <param name="dataHandle">The data handle.</param>
+    /// <param name="noOfBytes">Number of bytes in data.</param>
+    public CefSafeBuffer(IntPtr dataHandle, ulong noOfBytes) : base(false)
     {
-        SetHandle(data);
+        SetHandle(dataHandle);
         Initialize(noOfBytes);
     }
 
+    /// <inheritdoc/>
     protected override bool ReleaseHandle()
     {
         return true;

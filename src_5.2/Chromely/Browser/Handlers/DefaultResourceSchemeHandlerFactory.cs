@@ -11,30 +11,18 @@ public class DefaultResourceSchemeHandlerFactory : CefSchemeHandlerFactory
     protected readonly IChromelyConfiguration _config;
     protected readonly IChromelyErrorHandler _chromelyErrorHandler;
 
+    /// <summary>
+    /// Initializes a new instance of <see cref="DefaultResourceSchemeHandlerFactory"/>.
+    /// </summary>
+    /// <param name="config">Instance of <see cref="IChromelyConfiguration"/>.</param>
+    /// <param name="chromelyErrorHandler">Instance of <see cref="IChromelyErrorHandler"/>.</param>
     public DefaultResourceSchemeHandlerFactory(IChromelyConfiguration config, IChromelyErrorHandler chromelyErrorHandler)
     {
         _config = config;
         _chromelyErrorHandler = chromelyErrorHandler;
     }
 
-    /// <summary>
-    /// The create.
-    /// </summary>
-    /// <param name="browser">
-    /// The browser.
-    /// </param>
-    /// <param name="frame">
-    /// The frame.
-    /// </param>
-    /// <param name="schemeName">
-    /// The scheme name.
-    /// </param>
-    /// <param name="request">
-    /// The request.
-    /// </param>
-    /// <returns>
-    /// The <see cref="CefResourceHandler"/>.
-    /// </returns>
+    /// <inheritdoc/>
     protected override CefResourceHandler Create(CefBrowser browser, CefFrame frame, string schemeName, CefRequest request)
     {
         return new DefaultResourceSchemeHandler(_config, _chromelyErrorHandler);

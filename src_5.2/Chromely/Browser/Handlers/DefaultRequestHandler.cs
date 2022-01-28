@@ -4,7 +4,7 @@
 namespace Chromely.Browser;
 
 /// <summary>
-/// Default CEF request handler.
+/// Default implementation of <see cref="CefRequestHandler"/>.
 /// </summary>
 public class DefaultRequestHandler : CefRequestHandler
 {
@@ -18,9 +18,15 @@ public class DefaultRequestHandler : CefRequestHandler
     /// </summary>
     protected ChromiumBrowser? _browser;
 
+
     /// <summary>
     /// Initializes a new instance of the <see cref="DefaultRequestHandler"/> class.
     /// </summary>
+    /// <param name="config">Instance of <see cref="IChromelyConfiguration"/>.</param>
+    /// <param name="requestHandler">Instance of <see cref="IChromelyRequestHandler"/>.</param>
+    /// <param name="routeProvider">Instance of <see cref="IChromelyRouteProvider"/>.</param>
+    /// <param name="window">Instance of <see cref="IChromelyWindow"/>.</param>
+    /// <param name="resourceRequestHandler">Instance of <see cref="CefResourceRequestHandler"/>.</param>>
     public DefaultRequestHandler(IChromelyConfiguration config,
                                  IChromelyRequestHandler requestHandler,
                                  IChromelyRouteProvider routeProvider,
@@ -34,12 +40,16 @@ public class DefaultRequestHandler : CefRequestHandler
         _resourceRequestHandler = resourceRequestHandler;
     }
 
+    /// <summary>
+    /// Gets or sets the browser.
+    /// </summary>
     public ChromiumBrowser? Browser
     {
         get { return _browser; }
         set { _browser = value; }
     }
 
+    /// <inheritdoc/>
     protected override CefResourceRequestHandler GetResourceRequestHandler(CefBrowser browser, CefFrame frame, CefRequest request, bool isNavigation, bool isDownload, string requestInitiator, ref bool disableDefaultHandling)
     {
 #pragma warning disable CS8603 // Possible null reference return.
@@ -47,27 +57,7 @@ public class DefaultRequestHandler : CefRequestHandler
 #pragma warning restore CS8603 // Possible null reference return.
     }
 
-    /// <summary>
-    /// The on before browse.
-    /// </summary>
-    /// <param name="browser">
-    /// The browser.
-    /// </param>
-    /// <param name="frame">
-    /// The frame.
-    /// </param>
-    /// <param name="request">
-    /// The request.
-    /// </param>
-    /// <param name="userGesture">
-    /// The user gesture.
-    /// </param>
-    /// <param name="isRedirect">
-    /// The is redirect.
-    /// </param>
-    /// <returns>
-    /// The <see cref="bool"/>.
-    /// </returns>
+    /// <inheritdoc/>
     protected override bool OnBeforeBrowse(CefBrowser browser, CefFrame frame, CefRequest request, bool userGesture, bool isRedirect)
     {
         if (_config is not null)
@@ -92,15 +82,7 @@ public class DefaultRequestHandler : CefRequestHandler
         return false;
     }
 
-    /// <summary>
-    /// The on plugin crashed.
-    /// </summary>
-    /// <param name="browser">
-    /// The browser.
-    /// </param>
-    /// <param name="pluginPath">
-    /// The plugin path.
-    /// </param>
+    /// <inheritdoc/>
     protected override void OnPluginCrashed(CefBrowser browser, string pluginPath)
     {
         if (_browser is not null)
@@ -109,15 +91,7 @@ public class DefaultRequestHandler : CefRequestHandler
         }
     }
 
-    /// <summary>
-    /// The on render process terminated.
-    /// </summary>
-    /// <param name="browser">
-    /// The browser.
-    /// </param>
-    /// <param name="status">
-    /// The status.
-    /// </param>
+    /// <inheritdoc/>
     protected override void OnRenderProcessTerminated(CefBrowser browser, CefTerminationStatus status)
     {
         if (_browser is not null)

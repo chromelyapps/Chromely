@@ -4,7 +4,7 @@
 namespace Chromely.Browser;
 
 /// <summary>
-/// Default CEF lifespanhandler.
+/// Default implementation of <see cref="CefLifeSpanHandler"/>.
 /// </summary>
 public class DefaultLifeSpanHandler : CefLifeSpanHandler
 {
@@ -13,6 +13,13 @@ public class DefaultLifeSpanHandler : CefLifeSpanHandler
     protected readonly IChromelyRouteProvider _routeProvider;
     protected ChromiumBrowser? _browser;
 
+    /// <summary>
+    /// Initializes a new instance of <see cref="DefaultLifeSpanHandler"/>.
+    /// </summary>
+    /// <param name="config">Instance of <see cref="IChromelyConfiguration"/>.</param>
+    /// <param name="requestHandler">Instance of <see cref="IChromelyRequestHandler"/>.</param>
+    /// <param name="routeProvider">Instance of <see cref="IChromelyRouteProvider"/>.</param>
+    /// <param name="window">Instance of <see cref="IChromelyWindow"/>.</param>
     public DefaultLifeSpanHandler(IChromelyConfiguration config,
                                   IChromelyRequestHandler requestHandler,
                                   IChromelyRouteProvider routeProvider,
@@ -24,12 +31,16 @@ public class DefaultLifeSpanHandler : CefLifeSpanHandler
         _browser = window as ChromiumBrowser;
     }
 
+    /// <summary>
+    /// Gets or sets the browser.
+    /// </summary>
     public ChromiumBrowser? Browser
     {
         get { return _browser; }
         set { _browser = value; }
     }
 
+    /// <inheritdoc/>
     protected override void OnAfterCreated(CefBrowser browser)
     {
         base.OnAfterCreated(browser);
@@ -40,11 +51,13 @@ public class DefaultLifeSpanHandler : CefLifeSpanHandler
         }
     }
 
+    /// <inheritdoc/>
     protected override bool DoClose(CefBrowser browser)
     {
         return false;
     }
 
+    /// <inheritdoc/>
     protected override void OnBeforeClose(CefBrowser browser)
     {
         if (_browser is not null)
@@ -53,6 +66,7 @@ public class DefaultLifeSpanHandler : CefLifeSpanHandler
         }
     }
 
+    /// <inheritdoc/>
     protected override bool OnBeforePopup(CefBrowser browser, CefFrame frame, string targetUrl, string targetFrameName, CefWindowOpenDisposition targetDisposition, bool userGesture, CefPopupFeatures popupFeatures, CefWindowInfo windowInfo, ref CefClient client, CefBrowserSettings settings, ref CefDictionaryValue extraInfo, ref bool noJavascriptAccess)
     {
         if (_browser is not null)

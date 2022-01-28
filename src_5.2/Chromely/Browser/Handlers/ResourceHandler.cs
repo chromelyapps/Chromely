@@ -149,9 +149,7 @@ public class ResourceHandler : CefResourceHandler
         return encoding.GetBytes(text);
     }
 
-    /// <summary>
-    /// Dispose of resources here
-    /// </summary>
+    /// <inheritdoc/>
     public virtual void Dispose()
     {
         if (AutoDisposeStream && Stream is not null)
@@ -163,6 +161,7 @@ public class ResourceHandler : CefResourceHandler
         tempBuffer = Array.Empty<byte>();
     }
 
+    /// <inheritdoc/>
     protected override bool Open(CefRequest request, out bool handleRequest, CefCallback callback)
     {
         var processRequest = ProcessRequestAsync(request, callback);
@@ -187,6 +186,7 @@ public class ResourceHandler : CefResourceHandler
         return false;
     }
 
+    /// <inheritdoc/>
     protected override void GetResponseHeaders(CefResponse response, out long responseLength, out string redirectUrl)
     {
         redirectUrl = string.Empty;
@@ -220,6 +220,7 @@ public class ResourceHandler : CefResourceHandler
         };
     }
 
+    /// <inheritdoc/>
     protected override bool Skip(long bytesToSkip, out long bytesSkipped, CefResourceSkipCallback callback)
     {
         //No Stream or Stream cannot seek then we indicate failure
@@ -239,6 +240,7 @@ public class ResourceHandler : CefResourceHandler
         return true;
     }
 
+    /// <inheritdoc/>
     protected override bool Read(IntPtr dataOut, int bytesToRead, out int bytesRead, CefResourceReadCallback callback)
     {
         bytesRead = 0;
@@ -278,6 +280,7 @@ public class ResourceHandler : CefResourceHandler
         return bytesRead > 0;
     }
 
+    /// <inheritdoc/>
     protected override void Cancel()
     {
         // Prior to Prior to https://bitbucket.org/chromiumembedded/cef/commits/90301bdb7fd0b32137c221f38e8785b3a8ad8aa4

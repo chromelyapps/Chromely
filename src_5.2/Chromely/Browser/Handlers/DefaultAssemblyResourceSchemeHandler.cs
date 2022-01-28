@@ -3,18 +3,25 @@
 
 namespace Chromely.Browser;
 
+/// <summary>
+/// Default implementation of <see cref="CefResourceHandler"/> for assembly resource handling.
+/// </summary>
 public class DefaultAssemblyResourceSchemeHandler : CefResourceHandler
 {
     protected readonly IChromelyConfiguration _config;
-    protected IChromelyResource _chromelyResource;
     protected readonly IChromelyErrorHandler _chromelyErrorHandler;
-    protected Regex _regex = new("[/]");
 
+    protected IChromelyResource _chromelyResource;
     protected FileInfo? _fileInfo;
     protected bool _completed;
     protected int _totalBytesRead;
+    protected Regex _regex = new("[/]");
 
-
+    /// <summary>
+    /// Initializes a new instance of <see cref="DefaultAssemblyResourceSchemeHandler"/>.
+    /// </summary>
+    /// <param name="config">Instance of <see cref="IChromelyConfiguration"/>.</param>
+    /// <param name="chromelyErrorHandler"><Instance of <see cref="IChromelyErrorHandler"/>.</param>
     public DefaultAssemblyResourceSchemeHandler(IChromelyConfiguration config, IChromelyErrorHandler chromelyErrorHandler)
     {
         _config = config;
@@ -23,6 +30,7 @@ public class DefaultAssemblyResourceSchemeHandler : CefResourceHandler
         _fileInfo = null;
     }
 
+    /// <inheritdoc/>
     [Obsolete("ProcessRequest is obsolete.")]
     protected override bool ProcessRequest(CefRequest request, CefCallback callback)
     {
@@ -52,6 +60,7 @@ public class DefaultAssemblyResourceSchemeHandler : CefResourceHandler
         return false;
     }
 
+    /// <inheritdoc/>
     protected override void GetResponseHeaders(CefResponse response, out long responseLength, out string redirectUrl)
     {
         // unknown content-length
@@ -79,6 +88,7 @@ public class DefaultAssemblyResourceSchemeHandler : CefResourceHandler
     }
 
     [Obsolete("ReadResponse is obsolete.")]
+    /// <inheritdoc/>
     protected override bool ReadResponse(Stream response, int bytesToRead, out int bytesRead, CefCallback callback)
     {
         int currBytesRead = 0;
@@ -122,22 +132,26 @@ public class DefaultAssemblyResourceSchemeHandler : CefResourceHandler
         return true;
     }
 
+    /// <inheritdoc/>
     protected override void Cancel()
     {
     }
 
+    /// <inheritdoc/>
     protected override bool Open(CefRequest request, out bool handleRequest, CefCallback callback)
     {
         handleRequest = false;
         return false;
     }
 
+    /// <inheritdoc/>
     protected override bool Skip(long bytesToSkip, out long bytesSkipped, CefResourceSkipCallback callback)
     {
         bytesSkipped = 0;
         return true;
     }
 
+    /// <inheritdoc/>
     protected override bool Read(IntPtr dataOut, int bytesToRead, out int bytesRead, CefResourceReadCallback callback)
     {
         bytesRead = -1;

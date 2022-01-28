@@ -4,23 +4,22 @@
 namespace Chromely.Browser;
 
 /// <summary>
-/// Default CEF browser process handler.
+/// Default implementation of <see cref="CefBrowserProcessHandler"/>.
 /// </summary>
 public class DefaultBrowserProcessHandler : CefBrowserProcessHandler
 {
     protected readonly IChromelyConfiguration _config;
 
+    /// <summary>
+    /// Initializes a new instance of <see cref="DefaultBrowserProcessHandler"/>.
+    /// </summary>
+    /// <param name="config">Instance of <see cref="IChromelyConfiguration"/>.</param>
     public DefaultBrowserProcessHandler(IChromelyConfiguration config)
     {
         _config = config;
     }
 
-    /// <summary>
-    /// The on before child process launch.
-    /// </summary>
-    /// <param name="browser_cmd">
-    /// The command line.
-    /// </param>
+    /// <inheritdoc/>
     protected override void OnBeforeChildProcessLaunch(CefCommandLine browser_cmd)
     {
         // Disable security features

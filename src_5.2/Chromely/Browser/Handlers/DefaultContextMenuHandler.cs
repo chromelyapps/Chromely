@@ -3,19 +3,28 @@
 
 namespace Chromely.Browser;
 
+/// <summary>
+/// Default implementation of <see cref="CefContextMenuHandler"/>.
+/// </summary>
 public class DefaultContextMenuHandler : CefContextMenuHandler
 {
     protected readonly IChromelyConfiguration _config;
-    protected const int ShowDevTools = 26501;
-    protected const int CloseDevTools = 26502;
     protected readonly bool debugging;
 
+    protected const int ShowDevTools = 26501;
+    protected const int CloseDevTools = 26502;
+
+    /// <summary>
+    /// Initializes a new instance of <see cref="DefaultContextMenuHandler"/>.
+    /// </summary>
+    /// <param name="config">Instance of <see cref="IChromelyConfiguration"/>.</param>
     public DefaultContextMenuHandler(IChromelyConfiguration config)
     {
         _config = config;
         debugging = _config.DebuggingMode;
     }
 
+    /// <inheritdoc/>
     protected override void OnBeforeContextMenu(CefBrowser browser, CefFrame frame, CefContextMenuParams state, CefMenuModel model)
     {
         // To disable the menu then call clear
@@ -36,11 +45,13 @@ public class DefaultContextMenuHandler : CefContextMenuHandler
         }
     }
 
+    /// <inheritdoc/>
     protected override bool RunContextMenu(CefBrowser browser, CefFrame frame, CefContextMenuParams parameters, CefMenuModel model, CefRunContextMenuCallback callback)
     {
         return false;
     }
 
+    /// <inheritdoc/>
     protected override bool OnContextMenuCommand(CefBrowser browser, CefFrame frame, CefContextMenuParams state, int commandId, CefEventFlags eventFlags)
     {
         if (_config.Platform == ChromelyPlatform.Windows)
@@ -65,6 +76,7 @@ public class DefaultContextMenuHandler : CefContextMenuHandler
         return false;
     }
 
+    /// <inheritdoc/>
     protected override void OnContextMenuDismissed(CefBrowser browser, CefFrame frame)
     {
     }

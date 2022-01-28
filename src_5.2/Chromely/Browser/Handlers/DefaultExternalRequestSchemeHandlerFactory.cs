@@ -3,9 +3,9 @@
 
 namespace Chromely.Browser;
 
-    /// <summary>
-    /// Handler factory object. Uses Shared HttpClient for all handlers
-    /// </summary>
+/// <summary>
+/// Handler factory object. Uses Shared HttpClient for all handlers
+/// </summary>
 public class DefaultExternalRequestSchemeHandlerFactory : CefSchemeHandlerFactory
 {
     static readonly HttpClient _sharedClient = new HttpClient(

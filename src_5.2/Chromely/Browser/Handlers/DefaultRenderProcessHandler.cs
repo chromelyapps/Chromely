@@ -13,6 +13,7 @@ public class DefaultRenderProcessHandler : CefRenderProcessHandler
     /// <summary>
     /// Initializes a new instance of the <see cref="DefaultRenderProcessHandler"/> class.
     /// </summary>
+    /// <param name="config">Instance of <see cref="IChromelyConfiguration"/>.</param>
     public DefaultRenderProcessHandler(IChromelyConfiguration config)
     {
         _config = config;
@@ -24,18 +25,7 @@ public class DefaultRenderProcessHandler : CefRenderProcessHandler
     /// </summary>
     public CefMessageRouterRendererSide MessageRouter { get; }
 
-    /// <summary>
-    /// The on context created.
-    /// </summary>
-    /// <param name="browser">
-    /// The browser.
-    /// </param>
-    /// <param name="frame">
-    /// The frame.
-    /// </param>
-    /// <param name="context">
-    /// The context.
-    /// </param>
+    /// <inheritdoc/>
     protected override void OnContextCreated(CefBrowser browser, CefFrame frame, CefV8Context context)
     {
         MessageRouter.OnContextCreated(context);
@@ -45,18 +35,7 @@ public class DefaultRenderProcessHandler : CefRenderProcessHandler
         context.Dispose();
     }
 
-    /// <summary>
-    /// The on context released.
-    /// </summary>
-    /// <param name="browser">
-    /// The browser.
-    /// </param>
-    /// <param name="frame">
-    /// The frame.
-    /// </param>
-    /// <param name="context">
-    /// The context.
-    /// </param>
+    /// <inheritdoc/>
     protected override void OnContextReleased(CefBrowser browser, CefFrame frame, CefV8Context context)
     {
         // MessageRouter.OnContextReleased releases captured CefV8Context (if have).
@@ -66,6 +45,7 @@ public class DefaultRenderProcessHandler : CefRenderProcessHandler
         context.Dispose();
     }
 
+    /// <inheritdoc/>
     protected override bool OnProcessMessageReceived(CefBrowser browser, CefFrame frame, CefProcessId sourceProcess, CefProcessMessage message)
     {
         var handled = MessageRouter.OnProcessMessageReceived(browser, sourceProcess, message);

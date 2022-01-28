@@ -3,8 +3,12 @@
 
 namespace Chromely.Browser;
 
+/// <summary>
+/// Default implementation of <see cref="CefDownloadHandler"/>.
+/// </summary>
 public class DefaultDownloadHandler : CefDownloadHandler
 {
+    /// <inheritdoc/>
     protected override void OnBeforeDownload(CefBrowser browser, CefDownloadItem downloadItem, string suggestedName, CefBeforeDownloadCallback callback)
     {
         if (callback is not null)

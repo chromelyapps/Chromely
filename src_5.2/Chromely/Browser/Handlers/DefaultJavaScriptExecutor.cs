@@ -3,6 +3,9 @@
 
 namespace Chromely.Browser;
 
+/// <summary>
+/// Implements <see cref="IChromelyJavaScriptExecutor"/>
+/// </summary>
 public class DefaultJavaScriptExecutor : IChromelyJavaScriptExecutor
 {
     /// <summary>
@@ -11,13 +14,15 @@ public class DefaultJavaScriptExecutor : IChromelyJavaScriptExecutor
     private readonly CefBrowser? _browser;
 
     /// <summary>
-    /// Gets the browser.
+    /// Initializes a new instance of <see cref="DefaultJavaScriptExecutor"/>.
     /// </summary>
+    /// <param name="browser">Instance of <see cref="CefBrowser"/>.</param>
     public DefaultJavaScriptExecutor(CefBrowser browser)
     {
         _browser = browser;
     }
 
+    /// <inheritdoc/>
     public object ExecuteScript(string frameName, string script)
     {
         var frame = _browser?.GetFrame(frameName);
@@ -32,6 +37,7 @@ public class DefaultJavaScriptExecutor : IChromelyJavaScriptExecutor
         return string.Empty;
     }
 
+    /// <inheritdoc/>
     public object ExecuteScript(string script)
     {
         var frame = _browser?.GetMainFrame();
@@ -46,21 +52,25 @@ public class DefaultJavaScriptExecutor : IChromelyJavaScriptExecutor
         return string.Empty;
     }
 
+    /// <inheritdoc/>
     public object? GetBrowser()
     {
         return _browser;
     }
 
+    /// <inheritdoc/>
     public object? GetMainFrame()
     {
         return _browser?.GetMainFrame();
     }
 
+    /// <inheritdoc/>
     public object? GetFrame(string name)
     {
         return _browser?.GetFrame(name);
     }
 
+    /// <inheritdoc/>
     public List<long> GetFrameIdentifiers
     {
         get
@@ -70,6 +80,7 @@ public class DefaultJavaScriptExecutor : IChromelyJavaScriptExecutor
         }
     }
 
+    /// <inheritdoc/>
     public List<string> GetFrameNames
     {
         get
