@@ -64,12 +64,12 @@ namespace Chromely.Integration.TestApp
 
             try
             {
-                var builder = AppBuilder.Create();
+                var builder = AppBuilder.Create(args);
                 builder = builder.UseConfig<DefaultConfiguration>(config);
                 builder = builder.UseWindow<TestWindow>();
                 builder = builder.UseApp<ChromelyBasicApp>();
                 builder = builder.Build();
-                builder.Run(args);
+                builder.Run();
             }
             catch (Exception ex)
             {

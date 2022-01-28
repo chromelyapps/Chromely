@@ -1,32 +1,40 @@
-﻿// Copyright © 2017-2020 Chromely Projects. All rights reserved.
+﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
-using Microsoft.Extensions.Logging;
+namespace Chromely.Core.Logging;
 
-namespace Chromely.Core.Logging
+/// <summary>
+/// Ambient context class to manage instance of <see cref="ILogger"/>.
+/// </summary>
+public abstract class Logger
 {
-    public abstract class Logger
+    private static Logger? instance;
+
+    /// <summary>
+    /// The <see cref="ILogger"/> instance.
+    /// </summary>
+    public static Logger Instance
     {
-        private static Logger instance;
-        public static Logger Instance
+        get
         {
-            get
+            if (instance is null)
             {
-                if (instance == null)
-                {
-                    //Ambient Context can't return null, so we assign Local Default
-                    instance = new DefaultLogger();
-                }
+                // Ambient Context can't return null, so we assign Local Default
+                instance = new DefaultLogger();
+            }
 
-                return instance;
-            }
-            set
-            {
-                instance = (value == null) ? new DefaultLogger() : value;
-            }
+            return instance;
         }
-
-        public virtual ILogger Log { get; set; }
+        set
+        {
+            instance = (value is null) ? new DefaultLogger() : value;
+        }
     }
-}
+#nullable disable
 
+    /// <summary>
+    /// Gets or sets the application logger.
+    /// </summary>
+    public virtual ILogger Log { get; set; }
+#nullable restore
+}

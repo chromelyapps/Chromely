@@ -50,15 +50,13 @@ Chromely default message route handling only implements cefQuery. To implement c
 The default handler expects the request to be in the following format:
 ````javascript
 var request = {
-      "method": method,
       "url": url
       "parameters": parameters,
       "postData": postData,
  };
 
 Where:
-   method: Restful methods "GET" or "POST". Only "Get" and "POST" are allowed.
-   url: route path - "controller/action".
+   url: route path - "controller/routepath".
    parameters: Dictionary of parameters, where keys are in string, and values can be any primitive object.
    postData: Posted/input data object.
 ```` 
@@ -76,8 +74,7 @@ function messageRouterResult(response) {
 
  function messageRouterRun() {
             var request = {
-                "method": "GET",
-                "url": "/democontroller/movies",
+                "url": "/democontroller/movies/get",
                 "parameters": null,
                 "postData": null,
             };
@@ -97,18 +94,18 @@ Where:
 #### C# Controller/Action
 A sample Controller
 ````charp
-    public class DemoController : ChromelyController
+    public class MovieController : ChromelyController
     {
-        public DemoController()
+        public MovieController()
         {
-            RegisterRequest("/democontroller/movies", GetMovies);
         }
 		
-        private IChromelyResponse GetMovies(IChromelyRequest request)
+        [ChromelyRoute(Path = "/democontroller/movies/get")]
+        public List<MovieInfo> GetMovies()
         {
-		    return new ChromelyResponse();
+		    return new List<MovieInfo>();
         }
 	}
  
- Note that the route path: /democontroller/movies matches url in the UI.
+ Note that the route path: "/democontroller/movies/get" matches url in the UI.
 ````

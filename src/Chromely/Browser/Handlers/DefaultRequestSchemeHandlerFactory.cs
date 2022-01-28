@@ -1,39 +1,43 @@
-﻿// Copyright © 2017-2020 Chromely Projects. All rights reserved.
+﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
-using Chromely.Core;
-using Chromely.Core.Network;
-using Xilium.CefGlue;
+namespace Chromely.Browser;
 
-namespace Chromely.Browser
+/// <summary>
+/// Default CEF http scheme handler factory.
+/// </summary>
+public class DefaultRequestSchemeHandlerFactory : CefSchemeHandlerFactory
 {
+    protected readonly IChromelyRouteProvider _routeProvider;
+    protected readonly IChromelyRequestSchemeProvider _requestSchemeProvider;
+    protected readonly IChromelyRequestHandler _requestHandler;
+    protected readonly IChromelyDataTransferOptions _dataTransferOptions;
+    protected readonly IChromelyErrorHandler _chromelyErrorHandler;
+
     /// <summary>
-    /// Default CEF http scheme handler factory.
+    /// Initializes a new instance of <see cref="DefaultRequestSchemeHandlerFactory"/>.
     /// </summary>
-    public class DefaultRequestSchemeHandlerFactory : CefSchemeHandlerFactory
+    /// <param name="routeProvider">Instance of <see cref="IChromelyRouteProvider"/>.</param>
+    /// <param name="requestSchemeProvider">Instance of <see cref="IChromelyRequestSchemeProvider"/>.</param>
+    /// <param name="requestHandler">Instance of <see cref="IChromelyRequestHandler"/>.</param>
+    /// <param name="dataTransferOptions">Instance of <see cref="IChromelyDataTransferOptions"/>.</param>
+    /// <param name="chromelyErrorHandler">Instance of <see cref="IChromelyErrorHandler"/>.</param>
+    public DefaultRequestSchemeHandlerFactory(IChromelyRouteProvider routeProvider,
+                                              IChromelyRequestSchemeProvider requestSchemeProvider,
+                                              IChromelyRequestHandler requestHandler,
+                                              IChromelyDataTransferOptions dataTransferOptions,
+                                              IChromelyErrorHandler chromelyErrorHandler)
     {
-        protected readonly IChromelyRouteProvider _routeProvider;
-        protected readonly IChromelyRequestSchemeProvider _requestSchemeProvider;
-        protected readonly IChromelyRequestTaskRunner _requestTaskRunner;
-        protected readonly IChromelySerializerUtil _serializerUtil;
-        protected readonly IChromelyErrorHandler _chromelyErrorHandler;
+        _routeProvider = routeProvider;
+        _requestSchemeProvider = requestSchemeProvider;
+        _requestHandler = requestHandler;
+        _dataTransferOptions = dataTransferOptions;
+        _chromelyErrorHandler = chromelyErrorHandler;
+    }
 
-        public DefaultRequestSchemeHandlerFactory(IChromelyRouteProvider routeProvider,
-                                                  IChromelyRequestSchemeProvider requestSchemeProvider,
-                                                  IChromelyRequestTaskRunner requestTaskRunner,
-                                                  IChromelySerializerUtil serializerUtil,
-                                                  IChromelyErrorHandler chromelyErrorHandler)
-        {
-            _routeProvider = routeProvider;
-            _requestSchemeProvider = requestSchemeProvider;
-            _requestTaskRunner = requestTaskRunner;
-            _serializerUtil = serializerUtil;
-            _chromelyErrorHandler = chromelyErrorHandler;
-        }
-
-        protected override CefResourceHandler Create(CefBrowser browser, CefFrame frame, string schemeName, CefRequest request)
-        {
-            return new DefaultRequestSchemeHandler(_routeProvider, _requestSchemeProvider, _requestTaskRunner, _serializerUtil, _chromelyErrorHandler);
-        }
+    /// <inheritdoc/>
+    protected override CefResourceHandler Create(CefBrowser browser, CefFrame frame, string schemeName, CefRequest request)
+    {
+        return new DefaultRequestSchemeHandler(_routeProvider, _requestSchemeProvider, _requestHandler, _dataTransferOptions, _chromelyErrorHandler);
     }
 }

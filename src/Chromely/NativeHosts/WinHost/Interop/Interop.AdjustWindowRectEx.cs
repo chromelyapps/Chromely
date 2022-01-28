@@ -2,16 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System.Runtime.InteropServices;
+namespace Chromely;
 
-namespace Chromely
+public static partial class Interop
 {
-    public static partial class Interop
+    public static partial class User32
     {
-        public static partial class User32
-        {
-            [DllImport(Libraries.User32, ExactSpelling = true)]
-            public static extern BOOL AdjustWindowRectEx(ref RECT lpRect, int dwStyle, BOOL bMenu, int dwExStyle);
-        }
+        [DllImport(Libraries.User32, ExactSpelling = true)]
+        internal static extern BOOL AdjustWindowRectEx(ref RECT lpRect, int dwStyle, BOOL bMenu, int dwExStyle);
     }
 }

@@ -1,258 +1,130 @@
-﻿// Copyright © 2017-2020 Chromely Projects. All rights reserved.
+﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
-using Chromely.Core.Configuration;
-using Chromely.Core.Host;
-using Chromely.Core.Logging;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Reflection;
+namespace Chromely.Core;
 
-namespace Chromely.Core
+/// <inheritdoc/>
+public sealed class AppBuilder : AppBuilderBase
 {
-    public sealed class AppBuilder
+    private ChromelyServiceProviderFactory? _serviceProviderFactory;
+
+    /// <inheritdoc/>
+    private AppBuilder(string[] args)
+        : base(args)
     {
-        private IServiceCollection _serviceCollection;
-        private IServiceProvider _serviceProvider;
-        private ChromelyServiceProviderFactory _serviceProviderFactory;
-        private ChromelyApp _chromelyApp;
-        private IChromelyConfiguration _config;
-        private IChromelyWindow _chromelyWindow;
-        private IChromelyErrorHandler _chromelyErrorHandler;
-        private Type _chromelyUseConfigType;
-        private Type _chromelyUseWindowType;
-        private Type _chromelyUseErrorHandlerType;
-        private int _stepCompleted;
+    }
 
-        private AppBuilder()
+    /// <summary>
+    /// Creates the application builder instance.
+    /// </summary>
+    /// <param name="args">Command line arguments.</param>
+    /// <returns>the instance of <see cref="AppBuilderBase"/>.</returns>
+    public static AppBuilderBase Create(string[] args)
+    {
+        var appBuilder = new AppBuilder(args);
+        return appBuilder;
+    }
+
+    /// <summary>
+    /// Allows the developer to use an external <see cref="IServiceCollection"/>.
+    /// </summary>
+    /// <remarks>
+    /// Usually custom <see cref="IServiceCollection"/> is not needed but one can be provided.
+    /// </remarks>
+    /// <param name="serviceCollection">The <see cref="IServiceCollection" /> to add services to.</param>
+    /// <returns>the instance of <see cref="AppBuilderBase"/>.</returns>
+    public AppBuilderBase UseServices(IServiceCollection serviceCollection)
+    {
+        _serviceCollection = serviceCollection;
+        return this;
+    }
+
+    /// <summary>
+    /// Allows the developer to use an external <see cref="IServiceProvider"/> creator.
+    /// </summary>
+    /// <param name="serviceProviderFactory">A custom The <see cref="ChromelyServiceProviderFactory" /> instance.</param>
+    /// <returns>Instance of the <see cref="AppBuilder"/>.</returns>
+    public AppBuilderBase UseServiceProviderFactory(ChromelyServiceProviderFactory serviceProviderFactory)
+    {
+        _serviceProviderFactory = serviceProviderFactory;
+        return this;
+    }
+
+    /// <inheritdoc/>
+    public override AppBuilderBase Build()
+    {
+        if (_stepCompleted != 1)
         {
-            _config = null;
-            _chromelyUseConfigType = null;
-            _chromelyUseWindowType = null;
-            _chromelyUseErrorHandlerType = null;
-            _stepCompleted = -1;
+            throw new Exception("Invalid order: Step 1: UseApp must be completed before Step 2: Build.");
         }
 
-        public static AppBuilder Create()
+        if (_chromelyApp is null)
         {
-            var appBuilder = new AppBuilder();
-            return appBuilder;
+            throw new Exception($"ChromelyApp {nameof(_chromelyApp)} cannot be null.");
         }
 
-        public AppBuilder UseServices(IServiceCollection serviceCollection)
+        if (_serviceCollection is null)
         {
-            _serviceCollection = serviceCollection;
-            return this;
+            _serviceCollection = new ServiceCollection();
         }
 
-        public AppBuilder UseServiceProviderFactory(ChromelyServiceProviderFactory serviceProviderFactory)
+        _chromelyApp.ConfigureServices(_serviceCollection);
+
+        // This must be done before registering core services
+        RegisterUseComponents(_serviceCollection);
+
+        _chromelyApp.ConfigureCoreServices(_serviceCollection);
+        _chromelyApp.ConfigureServicesResolver(_serviceCollection);
+        _chromelyApp.ConfigureDefaultHandlers(_serviceCollection);
+
+        _serviceProvider = _serviceProviderFactory is not null
+            ? _serviceProviderFactory.BuildServiceProvider(_serviceCollection)
+            : _serviceCollection.BuildServiceProvider();
+
+        _chromelyApp.Initialize(_serviceProvider);
+        _chromelyApp.RegisterChromelyControllerRoutes(_serviceProvider);
+
+        _stepCompleted = 2;
+        return this;
+    }
+
+    /// <inheritdoc/>
+    public override void Run()
+    {
+        if (_stepCompleted != 2)
         {
-            _serviceProviderFactory = serviceProviderFactory;
-            return this;
+            throw new Exception("Invalid order: Step 2: Build must be completed before Step 3: Run.");
         }
 
-        public AppBuilder UseConfig<TService>(IChromelyConfiguration config = null) where TService : IChromelyConfiguration
+        if (_serviceProvider is null)
         {
-            if (config != null)
-            {
-                _config = config;
-            }
-            else
-            {
-                _chromelyUseConfigType = null;
-                EnsureIsDerivedType(typeof(IChromelyConfiguration), typeof(TService));
-                _chromelyUseConfigType = typeof(TService);
-            }
-
-            return this;
+            throw new Exception("ServiceProvider is not initialized.");
         }
 
-        public AppBuilder UseWindow<TService>(IChromelyWindow chromelyWindow = null) where TService : IChromelyWindow
+        try
         {
-            if (chromelyWindow != null)
-            {
-                _chromelyWindow = chromelyWindow;
-            }
-            else
-            {
-                _chromelyUseWindowType = null;
-                EnsureIsDerivedType(typeof(IChromelyWindow), typeof(TService));
-                _chromelyUseWindowType = typeof(TService);
-            }
-
-            return this;
-        }
-
-        public AppBuilder UseErrorHandler<TService>(IChromelyErrorHandler chromelyErrorHandler = null) where TService : IChromelyErrorHandler
-        {
-            if (chromelyErrorHandler != null)
-            {
-                _chromelyErrorHandler = chromelyErrorHandler;
-            }
-            else
-            {
-                _chromelyUseErrorHandlerType = null;
-                EnsureIsDerivedType(typeof(IChromelyErrorHandler), typeof(TService));
-                _chromelyUseErrorHandlerType = typeof(TService);
-            }
-
-            return this;
-        }
-
-        public AppBuilder UseApp<TApp>(ChromelyApp chromelyApp = null) where TApp : ChromelyApp
-        {
-            _chromelyApp = chromelyApp;
-            if (_chromelyApp == null)
-            {
-                EnsureIsDerivedType(typeof(ChromelyApp), typeof(TApp));
-                _chromelyApp = (TApp)Activator.CreateInstance(typeof(TApp));
-            }
-
-            _stepCompleted = 1;
-            return this;
-        }
-
-        public AppBuilder Build()
-        {
-            if (_stepCompleted != 1)
-            {
-                throw new Exception("Invalid order: Step 1: UseApp must be completed before Step 2: Build.");
-            }
-
-            if (_chromelyApp == null)
-            {
-                throw new Exception($"ChromelyApp {nameof(_chromelyApp)} cannot be null.");
-            }
-
-            if (_serviceCollection == null)
-            {
-                _serviceCollection = new ServiceCollection();
-            }
-
-            _chromelyApp.ConfigureServices(_serviceCollection);
-
-            // This must be done before registering core services
-            RegisterUseComponents(_serviceCollection);
-
-            _chromelyApp.ConfigureCoreServices(_serviceCollection);
-            _chromelyApp.ConfigureServiceResolvers(_serviceCollection);
-            _chromelyApp.ConfigureDefaultHandlers(_serviceCollection);
-
-            if (_serviceProviderFactory != null)
-            {
-                _serviceProvider = _serviceProviderFactory.BuildServiceProvider(_serviceCollection);
-            }
-            else
-            {
-                _serviceProvider = _serviceCollection.BuildServiceProvider();
-            }
-
-            _chromelyApp.Initialize(_serviceProvider);
-            _chromelyApp.RegisterControllerRoutes(_serviceProvider);
-
-            _stepCompleted = 2;
-            return this;
-        }
-
-        public void Run(string[] args)
-        {
-            if (_stepCompleted != 2)
-            {
-                throw new Exception("Invalid order: Step 2: Build must be completed before Step 3: Run.");
-            }
-
-            if (_serviceProvider == null)
-            {
-                throw new Exception("ServiceProvider is not initialized.");
-            }
-
+            var appName = Assembly.GetEntryAssembly()?.GetName().Name;
+            var windowController = _serviceProvider.GetService<ChromelyWindowController>();
             try
             {
-                var appName = Assembly.GetEntryAssembly()?.GetName().Name;
-                var windowController = _serviceProvider.GetService<ChromelyWindowController>();
-                try
-                {
-                    Logger.Instance.Log.LogInformation($"Running application:{appName}.");
-                    windowController.Run(args);
-                }
-                catch (Exception exception)
-                {
-                    Logger.Instance.Log.LogError(exception, $"Error running application:{appName}.");
-                }
-                finally
-                {
-                    windowController.Dispose();
-                    (_serviceProvider as ServiceProvider)?.Dispose();
-                }
-
+                Logger.Instance.Log.LogInformation("Running application:{appName}.", appName);
+                windowController.Run(_args);
             }
             catch (Exception exception)
             {
-                var appName = Assembly.GetEntryAssembly()?.GetName().Name;
-                Logger.Instance.Log.LogError(exception, $"Error running application:{appName}.");
+                Logger.Instance.Log.LogError(exception, "Error running application:{appName}.", appName);
             }
+            finally
+            {
+                windowController.Dispose();
+                (_serviceProvider as ServiceProvider)?.Dispose();
+            }
+
         }
-
-        private void EnsureIsDerivedType(Type baseType, Type derivedType)
+        catch (Exception exception)
         {
-            if (baseType == derivedType)
-            {
-                throw new Exception($"Cannot specify the base type {baseType.Name} itself as generic type parameter.");
-            }
-
-            if (!baseType.IsAssignableFrom(derivedType))
-            {
-                throw new Exception($"Type {derivedType.Name} must implement {baseType.Name}.");
-            }
-
-            if (derivedType.IsAbstract || derivedType.IsInterface)
-            {
-                throw new Exception($"Type {derivedType.Name} cannot be an interface or abstract class.");
-            }
-        }
-
-        private void RegisterUseComponents(IServiceCollection services)
-        {
-            #region IChromelyConfiguration
-
-            if (_config != null)
-            {
-                services.TryAddSingleton<IChromelyConfiguration>(_config);
-            }
-            else if (_chromelyUseConfigType != null)
-            {
-                services.TryAddSingleton(typeof(IChromelyConfiguration), _chromelyUseConfigType);
-            }
-
-            #endregion IChromelyConfiguration
-
-            #region IChromelyWindow
-
-            if (_chromelyWindow != null)
-            {
-                services.TryAddSingleton<IChromelyWindow>(_chromelyWindow);
-            }
-            else if (_chromelyUseWindowType != null)
-            {
-                services.TryAddSingleton(typeof(IChromelyWindow), _chromelyUseWindowType);
-            }
-
-            #endregion IChromelyWindow
-
-            #region IChromelyErrorHandler
-
-            if (_chromelyErrorHandler != null)
-            {
-                services.TryAddSingleton<IChromelyErrorHandler>(_chromelyErrorHandler);
-            }
-            else if (_chromelyUseErrorHandlerType != null)
-            {
-                services.TryAddSingleton(typeof(IChromelyErrorHandler), _chromelyUseErrorHandlerType);
-            }
-
-            #endregion IChromelyErrorHandler
+            var appName = Assembly.GetEntryAssembly()?.GetName().Name;
+            Logger.Instance.Log.LogError(exception, "Error running application:{appName}.", appName);
         }
     }
 }

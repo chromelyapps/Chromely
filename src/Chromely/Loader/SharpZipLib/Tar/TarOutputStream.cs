@@ -1,4 +1,7 @@
-﻿using System;
+﻿#nullable disable
+#pragma warning disable IDE0016
+
+using System;
 using System.IO;
 
 namespace ICSharpCode.SharpZipLib.Tar
@@ -241,9 +244,11 @@ namespace ICSharpCode.SharpZipLib.Tar
 
             if (entry.TarHeader.Name.Length > TarHeader.NAMELEN)
             {
-                var longHeader = new TarHeader();
-                longHeader.TypeFlag = TarHeader.LF_GNU_LONGNAME;
-                longHeader.Name = longHeader.Name + "././@LongLink";
+                var longHeader = new TarHeader
+                {
+                    TypeFlag = TarHeader.LF_GNU_LONGNAME
+                };
+                longHeader.Name += "././@LongLink";
                 longHeader.Mode = 420;//644 by default
                 longHeader.UserId = entry.UserId;
                 longHeader.GroupId = entry.GroupId;

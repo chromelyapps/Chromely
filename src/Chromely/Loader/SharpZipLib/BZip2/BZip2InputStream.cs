@@ -1,4 +1,10 @@
-﻿using System;
+﻿#nullable disable
+#pragma warning disable IDE0044
+#pragma warning disable IDE0016
+#pragma warning disable IDE0054
+#pragma warning disable IDE0059
+
+using System;
 using System.IO;
 using ICSharpCode.SharpZipLib.Checksum;
 

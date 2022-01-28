@@ -28,7 +28,7 @@ Registration of a custom resource handler requires 2 steps:
 
 You can register a url scheme either in config file or via C# code.
 
-Sample 1 - usual file resources
+Sample 1 - using local file resources
 ````csharp
     public class DefaultConfiguration : IChromelyConfiguration
     {
@@ -36,14 +36,29 @@ Sample 1 - usual file resources
         {
             UrlSchemes.AddRange(new List<UrlScheme>()
             {
-                new UrlScheme("custom-01", "local", string.Empty, string.Empty, UrlSchemeType.Resource, false),
+                new UrlScheme("custom-01", "local", string.Empty, string.Empty, UrlSchemeType.LocalResource, false),
             });
           
         }
     }
 ````
 
-Sample 2 - embedded file resources.
+Sample 2 - using host to folder mapping ("http://img" to "E:\img" map)
+````csharp
+    public class DefaultConfiguration : IChromelyConfiguration
+    {
+        public DefaultConfiguration()
+        {
+            UrlSchemes.AddRange(new List<UrlScheme>()
+            {
+                new UrlScheme("custom-02", "http", "img", "E:\img", string.Empty, UrlSchemeType.FolderResource, false),
+            });
+          
+        }
+    }
+````
+
+Sample 3 - embedded file resources.
 ````csharp
     public class DefaultConfiguration : IChromelyConfiguration
     {
@@ -72,60 +87,55 @@ Registering a custom scheme requires creating both a custom scheme handler and c
 Custom scheme handler factory:
 
 ````csharp
-    class Program
+var config = DefaultConfiguration.CreateForRuntimePlatform();
+
+// Scheme: myscheme, Host: custom [Pre-registered]
+config.StartUrl = "myscheme://custom/index.html";
+
+ThreadApt.STA();
+
+AppBuilder
+    .Create(args)
+    .UseConfig<DefaultConfiguration>(config)
+    .UseApp<DemoApp>()
+    .Build()
+    .Run();
+
+public class DemoApp : ChromelyBasicApp
+{
+    public override void ConfigureServices(ServiceCollection services)
     {
-        [STAThread]
-        static void Main(string[] args)
-        {
-            var config = DefaultConfiguration.CreateForRuntimePlatform();
+        base.ConfigureServices(services);
+        services.AddSingleton(typeof(IChromelySchemeHandler), typeof(CustomResourceSchemeHandler));
+    }
+}
 
-            // Scheme: myscheme, Host: custom [Pre-registered]
-            config.StartUrl = "myscheme://custom/index.html";
-
-            AppBuilder
-            .Create()
-            .UseConfig<DefaultConfiguration>(config)
-            .UseApp<DemoApp>()
-            .Build()
-            .Run(args);
-        }
+public class CustomResourceSchemeHandler : IChromelySchemeHandler
+{
+    public CustomResourceSchemeHandler()
+    {
+        Name = "MyCustomResourceSchemeHamdler";
+        // Scheme: myscheme
+        // Host: custom - mapped to folder name containing resource files
+        Scheme = new UrlScheme("mycustomresourcescheme", "myscheme", "custom", string.Empty, UrlSchemeType.Resource, false);
+        HandlerFactory = new CustomResourceSchemeHandlerFactory();
+        IsCorsEnabled = true;
+        IsSecure = false;
     }
 
-    public class DemoApp : ChromelyBasicApp
-    {
-        public override void ConfigureServices(ServiceCollection services)
-        {
-            base.ConfigureServices(services);
-            services.AddSingleton(typeof(IChromelySchemeHandler), typeof(CustomResourceSchemeHandler));
-        }
-    }
+    public string Name { get; set; }
+    public UrlScheme Scheme { get; set; }
+    
+    // Needed for CefSharp
+    public object Handler { get; set; }
+    public object HandlerFactory { get; set; }
+    public bool IsCorsEnabled { get; set; }
+    public bool IsSecure { get; set; }
+}
 
-    public class CustomResourceSchemeHandler : IChromelySchemeHandler
-    {
-        public CustomResourceSchemeHandler()
-        {
-            Name = "MyCustomResourceSchemeHamdler";
-            // Scheme: myscheme
-            // Host: custom - mapped to folder name containing resource files
-            Scheme = new UrlScheme("mycustomresourcescheme", "myscheme", "custom", string.Empty, UrlSchemeType.Resource, false);
-            HandlerFactory = new CustomResourceSchemeHandlerFactory();
-            IsCorsEnabled = true;
-            IsSecure = false;
-        }
-
-        public string Name { get; set; }
-        public UrlScheme Scheme { get; set; }
-        
-        // Needed for CefSharp
-        public object Handler { get; set; }
-        public object HandlerFactory { get; set; }
-        public bool IsCorsEnabled { get; set; }
-        public bool IsSecure { get; set; }
-    }
-
-    public class CustomResourceSchemeHandlerFactory : DefaultResourceSchemeHandlerFactory
-    {
-    }
+public class CustomResourceSchemeHandlerFactory : DefaultResourceSchemeHandlerFactory
+{
+}
 ````
 
 Please see [Howto: Custom Resource Scheme Handler](https://github.com/chromelyapps/Chromely/issues/246) for more.

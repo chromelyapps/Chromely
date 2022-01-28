@@ -1,98 +1,80 @@
-﻿// Copyright © 2017-2020 Chromely Projects. All rights reserved.
+﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
-using Chromely.Core.Logging;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Threading.Tasks;
+namespace Chromely.Core.Network;
 
-namespace Chromely.Core.Network
+/// <summary>
+/// Chromely base controller class.
+/// </summary>
+public abstract class ChromelyController
 {
-    public abstract class ChromelyController
+    private string? _routePath;
+    private string? _name;
+    private string? _description;
+
+    /// <summary>
+    /// Gets the controller identifier name
+    /// </summary>
+    public string? Name
     {
-        protected ChromelyController()
+        get
         {
-            ActionRouteDictionary = new Dictionary<string, RequestActionRoute>();
-            CommandRouteDictionary = new Dictionary<string, CommandActionRoute>();
-        }
-
-        private string _name;
-        private string _description;
-
-        public string Name
-        {
-            get
+            if (string.IsNullOrWhiteSpace(_name))
             {
-                if (string.IsNullOrWhiteSpace(_name))
-                {
-                    SetAttributeInfo();
-                }
-
-                return _name;
-            }
-        }
-
-        public string Description
-        {
-            get
-            {
-                if (string.IsNullOrWhiteSpace(_description))
-                {
-                    SetAttributeInfo();
-                }
-
-                return _description;
-            }
-        }
-
-        public Dictionary<string, RequestActionRoute> ActionRouteDictionary { get; }
-        public Dictionary<string, CommandActionRoute> CommandRouteDictionary { get; }
-
-        protected void RegisterRequest(string path, Func<IChromelyRequest, IChromelyResponse> action, string description = null)
-        {
-            AddRoute(path, new RequestActionRoute(path, action, description));
-        }
-
-        protected void RegisterRequestAsync(string path, Func<IChromelyRequest, Task<IChromelyResponse>> action, string description = null)
-        {
-            AddRoute(path, new RequestActionRoute(path, action, description));
-        }
-
-        protected void RegisterCommand(string path, Action<IDictionary<string, string>> action, string description = null)
-        {
-            if (string.IsNullOrWhiteSpace(path) || action == null)
-            {
-                return;
+                SetAttributeInfo();
             }
 
-            var commandKey = RouteKey.CreateCommandKey(path);
-            var command = new CommandActionRoute(path, action, description);
-            CommandRouteDictionary[commandKey] = command;
+            return _name;
         }
+    }
 
-        private void AddRoute(string path, RequestActionRoute route)
+    /// <summary>
+    /// Gets the controller route path.
+    /// </summary>
+    public string? RoutePath
+    {
+        get
         {
-            var actionKey = RouteKey.CreateRequestKey(path);
-            ActionRouteDictionary[actionKey] = route;
+            if (string.IsNullOrWhiteSpace(_routePath))
+            {
+                SetAttributeInfo();
+            }
+
+            return _routePath;
         }
+    }
 
-        private void SetAttributeInfo()
+    /// <summary>
+    /// Gets the controller description.
+    /// </summary>
+    public string? Description
+    {
+        get
         {
-            try
+            if (string.IsNullOrWhiteSpace(_description))
             {
-                var attribute = GetType().GetCustomAttribute<ControllerPropertyAttribute>(true);
-                if (attribute != null)
-                {
-                    _name = attribute.Name;
-                    _description = attribute.Description;
-                }
+                SetAttributeInfo();
             }
-            catch (Exception exception)
+
+            return _description;
+        }
+    }
+
+    private void SetAttributeInfo()
+    {
+        try
+        {
+            var attribute = GetType().GetCustomAttribute<ChromelyControllerAttribute>(true);
+            if (attribute is not null)
             {
-                Logger.Instance.Log.LogError(exception, "ChromelyController:SetAttributeInfo");
+                _routePath = attribute.RoutePath;
+                _name = attribute.Name;
+                _description = attribute.Description;
             }
+        }
+        catch (Exception exception)
+        {
+            Logger.Instance.Log.LogError(exception);
         }
     }
 }

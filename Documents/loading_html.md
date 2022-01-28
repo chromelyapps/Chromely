@@ -13,14 +13,7 @@ This will launch actual website URL. This may not necessarily be commonly used a
 
 If the URL is pre-regisered as an external url scheme type, the URL will be opened by the OS default browser. Please see more info at [Registering Url Schemes](https://github.com/chromelyapps/Chromely/blob/master/Documents/registering_url_schemes.md).
 
-To load start url and its assets, you can do it either in config file or configuration object:
-
-````javascript
-  "startUrl": {
-    "url": "https://google.com",
-    "loadType": "absolute"
-  }
-````
+To load/start url and its assets, you can do it in configuration object:
 
 ````csharp
     public class DefaultConfiguration : IChromelyConfiguration

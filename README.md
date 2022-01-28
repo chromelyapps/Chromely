@@ -54,18 +54,13 @@ For more info see - [Getting Started](https://github.com/chromelyapps/Chromely/b
 A basic Chromely project requires:
 
 ````csharp
-class Program
-{
-   [STAThread]
-   static void Main(string[] args)
-   {
-       AppBuilder
-       .Create()
-       .UseApp<ChromelyBasicApp>()
-       .Build()
-       .Run(args);
-    }
-}
+ThreadApt.STA();
+
+AppBuilder
+    .Create(args)
+    .UseApp<ChromelyBasicApp>()
+    .Build()
+    .Run();
 ````
 
 ### Chromely Demos 
@@ -75,6 +70,7 @@ Get started with our [demos](https://github.com/chromelyapps/demo-projects).
 ### References
 * CEF - https://bitbucket.org/chromiumembedded/cef
 * Xilium.CefGlue - https://gitlab.com/xiliumhq/chromiumembedded/cefglue
+* Chromium.AspNetCore.Bridge - https://github.com/amaitland/Chromium.AspNetCore.Bridge
 
 Contributing
 ---
@@ -84,11 +80,3 @@ License
 ---
 Chromely is MIT licensed. For dependency licenses [please see](https://github.com/chromelyapps/Chromely/blob/master/LICENSE.md).
 
-Credits
----
-Thanks to [JetBrains](https://www.jetbrains.com) for the OSS license of Resharper Ultimate.
-
-Improved and optimized using:
-
-<a href="https://www.jetbrains.com/resharper/
-"><img src="https://blog.jetbrains.com/wp-content/uploads/2014/04/logo_resharper.gif" alt="Resharper logo" width="100" /></a>

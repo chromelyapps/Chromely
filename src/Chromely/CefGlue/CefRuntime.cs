@@ -112,6 +112,7 @@
         }
 
         #region cef_version
+
         public static string CefVersion => libcef.CEF_VERSION;
 
         public static string ChromeVersion

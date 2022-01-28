@@ -1,149 +1,153 @@
-﻿// Copyright © 2017-2020 Chromely Projects. All rights reserved.
+﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
-using Microsoft.Extensions.Logging;
-using System;
-using System.IO;
-using System.Reflection;
-using System.Text;
+namespace Chromely.Core.Logging;
 
-namespace Chromely.Core.Logging
+public class SimpleLogger : ILogger
 {
-    public class SimpleLogger : ILogger
+    private readonly string _location;
+    private readonly string _filename = "chromely.log";
+    private readonly string _backupFilename = "chromely";
+    private readonly int _maxSizeInKiloBytes;
+    private readonly bool _logToConsole;
+
+    private readonly object _lockObj = new();
+
+    /// <summary>Initializes a new instance of the <see cref="SimpleLogger" /> class.</summary>
+    /// <param name="fullFilePath">The full file path.</param>
+    /// <param name="logToConsole">if set to <c>true</c> log to console.</param>
+    /// <param name="maxFileSizeBeforeLogRotation">The maximum file size before log rotation in MB.</param>
+    public SimpleLogger(string? fullFilePath = null, bool logToConsole = false, int maxFileSizeBeforeLogRotation = 10)
     {
-        private readonly string _location;
-        private readonly string _filename;
-        private readonly string _backupFilename;
-        private readonly int _maxSizeInKiloBytes;
+        var exeLocation = AppDomain.CurrentDomain.BaseDirectory;
+        var appName = Assembly.GetEntryAssembly()?.GetName().Name;
+        appName = string.IsNullOrWhiteSpace(appName) ? Guid.NewGuid().ToString() : appName;
+        _backupFilename = appName ?? _backupFilename;
+        var fileName = $"{appName}.log";
+        _location = Path.Combine(exeLocation, "Logs");
 
-        private readonly object _lockObj = new object();
-
-        /// <summary>Initializes a new instance of the <see cref="SimpleLogger" /> class.</summary>
-        /// <param name="fullFilePath">The full file path.</param>
-        /// <param name="logToConsole">if set to <c>true</c> log to console.</param>
-        /// <param name="maxFileSizeBeforeLogRotation">The maximum file size before log rotation in MB.</param>
-        public SimpleLogger(string fullFilePath = null, bool logToConsole = true, int maxFileSizeBeforeLogRotation = 10)
+        if (string.IsNullOrEmpty(fullFilePath))
         {
-            if (string.IsNullOrEmpty(fullFilePath))
-            {
-                var exeLocation = AppDomain.CurrentDomain.BaseDirectory;
-                var appName = Assembly.GetEntryAssembly()?.GetName().Name;
-                appName = string.IsNullOrWhiteSpace(appName) ? Guid.NewGuid().ToString() : appName;
-                _backupFilename = appName;
-                var fileName = $"{appName}.log";
-                _location = Path.Combine(exeLocation, "Logs");
-                fullFilePath = Path.Combine(_location, fileName);
-            }
-            else
-            {
-                _backupFilename = Path.GetFileNameWithoutExtension(fullFilePath);
-                _location = Path.GetDirectoryName(fullFilePath);
-            }
-
-            _filename = fullFilePath;
-
-            // 10 MB Max size before creating backup - not set
-            maxFileSizeBeforeLogRotation = (maxFileSizeBeforeLogRotation < -0) ? 10 : maxFileSizeBeforeLogRotation;
-            _maxSizeInKiloBytes = 1000 * maxFileSizeBeforeLogRotation; 
+            fullFilePath = Path.Combine(_location, fileName);
+        }
+        else
+        {
+            _backupFilename = Path.GetFileNameWithoutExtension(fullFilePath);
+            _location = Path.GetDirectoryName(fullFilePath) ?? _location;
         }
 
-        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
+        _filename = fullFilePath ?? _filename;
+        _logToConsole = logToConsole;
+
+        // 10 MB Max size before creating backup - not set
+        maxFileSizeBeforeLogRotation = (maxFileSizeBeforeLogRotation < -0) ? 10 : maxFileSizeBeforeLogRotation;
+        _maxSizeInKiloBytes = 1000 * maxFileSizeBeforeLogRotation;
+    }
+
+    public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
+    {
+        if (!IsEnabled(logLevel))
         {
-            if (!IsEnabled(logLevel))
-            {
-                return;
-            }
-
-            var builder = new StringBuilder();
-            if (formatter != null)
-            {
-                builder.Append(formatter(state, exception));
-            }
-
-            if (exception != null)
-            {
-                builder.Append(" ");
-                builder.Append(exception.ToString());
-            }
-
-            Log(new LogEntry(logLevel, builder.ToString()));
+            return;
         }
 
-        public bool IsEnabled(LogLevel logLevel)
+        var builder = new StringBuilder();
+        if (formatter is not null)
         {
-            return true;
+            builder.Append(formatter(state, exception));
         }
 
-        public IDisposable BeginScope<TState>(TState state)
+        if (exception is not null)
         {
-            return null;
+            builder.Append($" {exception.Message}");
         }
 
-        private void Log(LogEntry entry)
-        {
-            lock (_lockObj)
-            {
-                try
-                {
-                    if (entry != null)
-                    {
-                        WriteToFile(entry.ToString());
-                    }
-                }
-                catch (Exception)
-                {
-                    // ignored
-                }
-            }
-        }
+        Log(new LogEntry(logLevel, builder.ToString()));
+    }
 
-        private void WriteToFile(string text)
-        {
-            if (string.IsNullOrEmpty(text))
-            {
-                return;
-            }
+    public bool IsEnabled(LogLevel logLevel)
+    {
+        return true;
+    }
 
-            var directoryName = Path.GetDirectoryName(_filename);
-            if (!string.IsNullOrWhiteSpace(directoryName))
-            {
-                Directory.CreateDirectory(directoryName);
-            }
+    public IDisposable BeginScope<TState>(TState state)
+    {
+        return null;
+    }
 
-            var fileInfo = new FileInfo(_filename);
-            if (fileInfo.Exists && ((fileInfo.Length / 1024) >= _maxSizeInKiloBytes))
-            {
-                CreateCopyOfCurrentLogFile(_filename);
-            }
-
-            var writer = new StreamWriter(_filename, true, Encoding.UTF8) { AutoFlush = true };
-            writer.WriteLine(text);
-            writer.Close();
-            writer.Dispose();
-        }
-
-        private void CreateCopyOfCurrentLogFile(string filePath)
+    /// <summary>
+    /// Log entry.
+    /// </summary>
+    /// <param name="entry">The entry data.</param>
+    private void Log(LogEntry entry)
+    {
+        lock (_lockObj)
         {
             try
             {
-                for (var i = 1; i < 999; i++)
+                if (entry is not null)
                 {
-                    var backupPath = Path.Combine(_location, "backup");
-                    if (!Directory.Exists(backupPath))
-                    {
-                        Directory.CreateDirectory(backupPath);
-                    }
+                    WriteToFile(entry.ToString());
 
-                    var backupFile = $"{_backupFilename}_{DateTime.Now.ToString("yyyyMMdd")}_{i}.backup";
-                    var possibleFilePath = Path.Combine(backupPath, backupFile);
-                    if (!File.Exists(possibleFilePath))
+                    if (_logToConsole)
                     {
-                        File.Move(filePath, possibleFilePath);
-                        break;
+                        Console.WriteLine(entry);
                     }
                 }
             }
-            catch {}
+            catch (Exception)
+            {
+                // ignored
+            }
         }
+    }
+
+    private void WriteToFile(string text)
+    {
+        if (string.IsNullOrEmpty(text))
+        {
+            return;
+        }
+
+        var directoryName = Path.GetDirectoryName(_filename);
+        if (!string.IsNullOrWhiteSpace(directoryName))
+        {
+            Directory.CreateDirectory(directoryName);
+        }
+
+        var fileInfo = new FileInfo(_filename);
+        if (fileInfo.Exists && ((fileInfo.Length / 1024) >= _maxSizeInKiloBytes))
+        {
+            CreateCopyOfCurrentLogFile(_filename);
+        }
+
+        var writer = new StreamWriter(_filename, true, Encoding.UTF8) { AutoFlush = true };
+        writer.WriteLine(text);
+        writer.Close();
+        writer.Dispose();
+    }
+
+    private void CreateCopyOfCurrentLogFile(string filePath)
+    {
+        try
+        {
+            for (var i = 1; i < 999; i++)
+            {
+                var backupPath = Path.Combine(_location, "backup");
+                if (!Directory.Exists(backupPath))
+                {
+                    Directory.CreateDirectory(backupPath);
+                }
+
+                string? backupFile = $"{_backupFilename}_{DateTime.Now:yyyyMMdd}_{i}.backup";
+                var possibleFilePath = Path.Combine(backupPath, backupFile);
+                if (!File.Exists(possibleFilePath))
+                {
+                    File.Move(filePath, possibleFilePath);
+                    break;
+                }
+            }
+        }
+        catch { }
     }
 }

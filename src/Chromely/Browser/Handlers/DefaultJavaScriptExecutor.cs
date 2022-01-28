@@ -1,74 +1,92 @@
-﻿// Copyright © 2017-2020 Chromely Projects. All rights reserved.
+﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
-using System.Collections.Generic;
-using System.Linq;
-using Chromely.Core;
-using Chromely.Core.Logging;
-using Microsoft.Extensions.Logging;
-using Xilium.CefGlue;
+namespace Chromely.Browser;
 
-namespace Chromely.Browser
+/// <summary>
+/// Implements <see cref="IChromelyJavaScriptExecutor"/>
+/// </summary>
+public class DefaultJavaScriptExecutor : IChromelyJavaScriptExecutor
 {
-    public class DefaultJavaScriptExecutor : IChromelyJavaScriptExecutor
+    /// <summary>
+    /// The browser.
+    /// </summary>
+    private readonly CefBrowser? _browser;
+
+    /// <summary>
+    /// Initializes a new instance of <see cref="DefaultJavaScriptExecutor"/>.
+    /// </summary>
+    /// <param name="browser">Instance of <see cref="CefBrowser"/>.</param>
+    public DefaultJavaScriptExecutor(CefBrowser browser)
     {
-        /// <summary>
-        /// The browser.
-        /// </summary>
-        private readonly CefBrowser _browser;
+        _browser = browser;
+    }
 
-        /// <summary>
-        /// Gets the browser.
-        /// </summary>
-        public DefaultJavaScriptExecutor(CefBrowser browser)
+    /// <inheritdoc/>
+    public object ExecuteScript(string frameName, string script)
+    {
+        var frame = _browser?.GetFrame(frameName);
+        if (frame is null)
         {
-            _browser = browser;
+            Logger.Instance.Log.LogWarning("Frame {frameName} does not exist.", frameName);
+            return string.Empty;
         }
 
-        public object ExecuteScript(string frameName, string script)
+        frame.ExecuteJavaScript(script, string.Empty, 0);
+
+        return string.Empty;
+    }
+
+    /// <inheritdoc/>
+    public object ExecuteScript(string script)
+    {
+        var frame = _browser?.GetMainFrame();
+        if (frame is null)
         {
-            var frame = _browser?.GetFrame(frameName);
-            if (frame == null)
-            {
-                Logger.Instance.Log.LogWarning($"Frame {frameName} does not exist.");
-                return null;
-            }
-
-            frame.ExecuteJavaScript(script, null, 0);
-
-            return null;
+            Logger.Instance.Log.LogWarning("Cannot accces main frame.");
+            return string.Empty;
         }
 
-        public object ExecuteScript(string script)
+        frame.ExecuteJavaScript(script, string.Empty, 0);
+
+        return string.Empty;
+    }
+
+    /// <inheritdoc/>
+    public object? GetBrowser()
+    {
+        return _browser;
+    }
+
+    /// <inheritdoc/>
+    public object? GetMainFrame()
+    {
+        return _browser?.GetMainFrame();
+    }
+
+    /// <inheritdoc/>
+    public object? GetFrame(string name)
+    {
+        return _browser?.GetFrame(name);
+    }
+
+    /// <inheritdoc/>
+    public List<long> GetFrameIdentifiers
+    {
+        get
         {
-            var frame = _browser?.GetMainFrame();
-            if (frame == null)
-            {
-                Logger.Instance.Log.LogWarning("Cannot accces main frame.");
-                return null;
-            }
-
-            frame.ExecuteJavaScript(script, null, 0);
-            return null;
+            var list = _browser?.GetFrameIdentifiers()?.ToList();
+            return list ?? new List<long>();
         }
+    }
 
-        public object GetBrowser()
+    /// <inheritdoc/>
+    public List<string> GetFrameNames
+    {
+        get
         {
-            return _browser;
+            var list = _browser?.GetFrameNames()?.ToList();
+            return list ?? new List<string>();
         }
-
-        public object GetMainFrame()
-        {
-            return _browser?.GetMainFrame();
-        }
-
-        public object GetFrame(string name)
-        {
-            return _browser?.GetFrame(name);
-        }
-
-        public List<long> GetFrameIdentifiers => _browser?.GetFrameIdentifiers()?.ToList();
-
-        public List<string> GetFrameNames => _browser?.GetFrameNames()?.ToList();
     }
 }

@@ -2,19 +2,18 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-namespace Chromely
+namespace Chromely;
+
+public static partial class Interop
 {
-    public static partial class Interop
+    public static partial class UxTheme
     {
-        public static partial class UxTheme
+        public struct MARGINS
         {
-            public struct MARGINS
-            {
-                public int cxLeftWidth;
-                public int cxRightWidth;
-                public int cyTopHeight;
-                public int cyBottomHeight;
-            }
+            public int cxLeftWidth;
+            public int cxRightWidth;
+            public int cyTopHeight;
+            public int cyBottomHeight;
         }
     }
 }

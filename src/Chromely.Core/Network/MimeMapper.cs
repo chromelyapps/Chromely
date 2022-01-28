@@ -1,30 +1,24 @@
-﻿// Copyright © 2017-2020 Chromely Projects. All rights reserved.
+﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+namespace Chromely.Core.Network;
 
-namespace Chromely.Core.Network
-{
     /// <summary>
     /// The mime mapper.
     /// </summary>
-    public static class MimeMapper
-    {
-        /// <summary>
-        /// The MimeDictionary.
-        /// </summary>
-        private static readonly Dictionary<string, string> MimeDictionary;
+public static class MimeMapper
+{
+    /// <summary>
+    /// The MimeDictionary.
+    /// </summary>
+    private static readonly Dictionary<string, string> MimeDictionary;
 
-        /// <summary>
-        /// Initializes static members of the <see cref="MimeMapper"/> class.
-        /// </summary>
-        [SuppressMessage("StyleCop.CSharp.SpacingRules", "SA1013:ClosingCurlyBracketsMustBeSpacedCorrectly", Justification = "Reviewed. Suppression is OK here.")]
-        [SuppressMessage("StyleCop.CSharp.SpacingRules", "SA1012:OpeningCurlyBracketsMustBeSpacedCorrectly", Justification = "Reviewed. Suppression is OK here.")]
-        static MimeMapper()
-        {
-            MimeDictionary = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase)
+    /// <summary>
+    /// Initializes static members of the <see cref="MimeMapper"/> class.
+    /// </summary>
+    static MimeMapper()
+    {
+        MimeDictionary = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase)
                                  {
                                      {
                                          ".323",
@@ -2277,33 +2271,32 @@ namespace Chromely.Core.Network
 
                                      // Combination of values from Windows 7 Registry and  C:\Windows\System32\inetsrv\config\applicationHost.config
                                  };
-        }
+    }
 
-        /// <summary>
-        /// The get mime type.
-        /// </summary>
-        /// <param name="extension">
-        /// The extension.
-        /// </param>
-        /// <returns>
-        /// The <see cref="string"/>.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// Argument exception.
-        /// </exception>
-        public static string GetMimeType(string extension)
+    /// <summary>
+    /// The get mime type.
+    /// </summary>
+    /// <param name="extension">
+    /// The extension.
+    /// </param>
+    /// <returns>
+    /// The <see cref="string"/>.
+    /// </returns>
+    /// <exception cref="ArgumentNullException">
+    /// Argument exception.
+    /// </exception>
+    public static string GetMimeType(string extension)
+    {
+        if (extension is null)
         {
-            if (extension == null)
-            {
-                throw new ArgumentNullException("extension");
-            }
-
-            if (!extension.StartsWith("."))
-            {
-                extension = "." + extension;
-            }
-
-            return MimeDictionary.TryGetValue(extension, out var mime) ? mime : "application/octet-stream";
+            throw new ArgumentNullException(nameof(extension));
         }
+
+        if (!extension.StartsWith("."))
+        {
+            extension = "." + extension;
+        }
+
+        return MimeDictionary.TryGetValue(extension, out var mime) ? mime : "application/octet-stream";
     }
 }

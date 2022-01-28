@@ -1,85 +1,96 @@
-﻿// Copyright © 2017-2020 Chromely Projects. All rights reserved.
+﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
-using Chromely.Core.Host;
-using System;
-using System.Drawing;
-using static Chromely.Interop;
-using static Chromely.Interop.User32;
+namespace Chromely.NativeHosts;
 
-namespace Chromely.NativeHost
+public abstract partial class NativeHostBase
 {
-    abstract partial class NativeHostBase
+    /// <summary>
+    /// Togge fullscreen - either way Restore to Fullscreen; Fullscreen to Restore. 
+    /// </summary>
+    /// <param name="hWnd">The window handle.</param>
+    public virtual void ToggleFullscreen(IntPtr hWnd)
     {
-        public virtual void ToggleFullscreen(IntPtr hWnd)
+        bool isWindowed = IsWindowed(hWnd);
+        if (isWindowed)
         {
-            bool isWindowed = IsWindowed(hWnd);
-            if (isWindowed)
+            WINDOWPLACEMENT wpPrev;
+            var placement = GetWindowPlacement(hWnd, out wpPrev);
+            if (placement == BOOL.TRUE)
             {
-                WINDOWPLACEMENT wpPrev;
-                var placement = GetWindowPlacement(hWnd, out wpPrev);
-                if (placement == BOOL.TRUE)
+                switch (wpPrev.showCmd)
                 {
-                    switch (wpPrev.showCmd)
-                    {
-                        case SW.RESTORE:
-                        case SW.NORMAL:
-                            _options.WindowState = WindowState.Normal;
-                            break;
-                        case SW.SHOWMAXIMIZED:
-                            _options.WindowState = WindowState.Maximize;
-                            break;
-                    }
-
-                    _windoStylePlacement.WindowPlacement = wpPrev;
-                    _windoStylePlacement.State = _options.WindowState;
+                    case SW.RESTORE:
+                    case SW.NORMAL:
+                        _options.WindowState = WindowState.Normal;
+                        break;
+                    case SW.SHOWMAXIMIZED:
+                        _options.WindowState = WindowState.Maximize;
+                        break;
                 }
 
-                var styles = _windoStylePlacement.FullscreenStyles;
-                var exStyles = _windoStylePlacement.FullscreenExStyles;
-                SetWindowLong(hWnd, GWL.STYLE, (IntPtr)styles);
-                SetWindowLong(hWnd, GWL.EXSTYLE, (IntPtr)exStyles);
-                _options.KioskMode = false;
-                _options.Fullscreen = true;
-                _options.WindowState = WindowState.Fullscreen;
-                ShowWindow(hWnd, SW.SHOWMAXIMIZED);
-                UpdateWindow(hWnd);
+                _windowStyles.WindowPlacement = wpPrev;
+                _windowStyles.State = _options.WindowState;
             }
-            else
-            {
-                var styles = _windoStylePlacement.Styles;
-                var exStyles = _windoStylePlacement.ExStyles;
-                SetWindowLong(hWnd, GWL.STYLE, (IntPtr)styles);
-                SetWindowLong(hWnd, GWL.EXSTYLE, (IntPtr)exStyles);
-                _options.KioskMode = false;
-                _options.Fullscreen = false;
-                _options.WindowState = _windoStylePlacement.State == WindowState.Fullscreen || _windoStylePlacement.State == WindowState.Maximize ? WindowState.Maximize : WindowState.Normal;
-                _windoStylePlacement.State = _options.WindowState;
-                 var placement = _windoStylePlacement.WindowPlacement;
-                 SetWindowPlacement(hWnd, ref placement);
-                ShowWindow(hWnd, _options.WindowState == WindowState.Maximize ? SW.SHOWMAXIMIZED : SW.SHOWNORMAL);
-                UpdateWindow(hWnd);
-            }
-        }
 
-        // https://www.youtube.com/watch?v=0GQSOZe_D4I
-        protected virtual void SetFullscreenScreen(IntPtr hWnd, int style, int styleEx)
+            var styles = _windowStyles.FullscreenStyles;
+            var exStyles = _windowStyles.FullscreenExStyles;
+            SetWindowLong(hWnd, GWL.STYLE, (IntPtr)styles);
+            SetWindowLong(hWnd, GWL.EXSTYLE, (IntPtr)exStyles);
+            _options.KioskMode = false;
+            _options.Fullscreen = true;
+            _options.WindowState = WindowState.Fullscreen;
+            ShowWindow(hWnd, SW.SHOWMAXIMIZED);
+            UpdateWindow(hWnd);
+        }
+        else
         {
-            Size fullscreenSize = new Size();
-            var windowHDC = GetDC(hWnd);
-            fullscreenSize.Width = Gdi32.GetDeviceCaps(windowHDC, Gdi32.DeviceCapability.HORZRES);
-            fullscreenSize.Height = Gdi32.GetDeviceCaps(windowHDC, Gdi32.DeviceCapability.VERTRES);
-            ReleaseDC(hWnd, windowHDC);
-
-            SetWindowLong(hWnd, GWL.STYLE, (IntPtr)style);
-            SetWindowLong(hWnd, GWL.EXSTYLE, (IntPtr)styleEx);
-
-            SetWindowPos(hWnd, HWND_TOP, 0, 0, fullscreenSize.Width, fullscreenSize.Height, SWP.NOZORDER | SWP.FRAMECHANGED);
+            var styles = _windowStyles.Styles;
+            var exStyles = _windowStyles.ExStyles;
+            SetWindowLong(hWnd, GWL.STYLE, (IntPtr)styles);
+            SetWindowLong(hWnd, GWL.EXSTYLE, (IntPtr)exStyles);
+            _options.KioskMode = false;
+            _options.Fullscreen = false;
+            _options.WindowState = _windowStyles.State == WindowState.Fullscreen || _windowStyles.State == WindowState.Maximize ? WindowState.Maximize : WindowState.Normal;
+            _windowStyles.State = _options.WindowState;
+            var placement = _windowStyles.WindowPlacement;
+            SetWindowPlacement(hWnd, ref placement);
+            ShowWindow(hWnd, _options.WindowState == WindowState.Maximize ? SW.SHOWMAXIMIZED : SW.SHOWNORMAL);
+            UpdateWindow(hWnd);
         }
+    }
 
-        protected virtual bool IsWindowed(IntPtr hWnd)
-        {
-            return _options.WindowState != WindowState.Fullscreen;
-        }
+
+    /// <summary>
+    /// Set the window to fullscreen.
+    /// </summary>
+    /// <remarks>
+    /// https://www.youtube.com/watch?v=0GQSOZe_D4I
+    /// </remarks>
+    /// <param name="hWnd">The window handle.</param>
+    /// <param name="style">The Window Style.</param>
+    /// <param name="styleEx">The Extended Window Style.</param>
+    protected virtual void SetWindowToFullscreen(IntPtr hWnd, int style, int styleEx)
+    {
+        Size fullscreenSize = new Size();
+        var windowHDC = GetDC(hWnd);
+        fullscreenSize.Width = Gdi32.GetDeviceCaps(windowHDC, Gdi32.DeviceCapability.HORZRES);
+        fullscreenSize.Height = Gdi32.GetDeviceCaps(windowHDC, Gdi32.DeviceCapability.VERTRES);
+        ReleaseDC(hWnd, windowHDC);
+
+        SetWindowLong(hWnd, GWL.STYLE, (IntPtr)style);
+        SetWindowLong(hWnd, GWL.EXSTYLE, (IntPtr)styleEx);
+
+        SetWindowPos(hWnd, HWND_TOP, 0, 0, fullscreenSize.Width, fullscreenSize.Height, SWP.NOZORDER | SWP.FRAMECHANGED);
+    }
+
+    /// <summary>
+    /// Check if window is not full screen.
+    /// </summary>
+    /// <param name="hWnd">The window handle.</param>
+    /// <returns>true if not full screen, otherwise false.</returns>
+    protected virtual bool IsWindowed(IntPtr hWnd)
+    {
+        return _options.WindowState != WindowState.Fullscreen;
     }
 }

@@ -1,196 +1,134 @@
-﻿// Copyright © 2017-2020 Chromely Projects. All rights reserved.
+﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
-using Chromely.Core.Logging;
-using Chromely.Core.Network;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+namespace Chromely.Core.Defaults;
 
-namespace Chromely.Core.Defaults
+/// <summary>
+/// The default implementation of <see cref="IChromelyRouteProvider"/>.
+/// </summary>
+public class DefaultRouteProvider : IChromelyRouteProvider
 {
-    public class DefaultRouteProvider : IChromelyRouteProvider
+    protected readonly IChromelyModelBinder _routeParameterBinder;
+    protected readonly IChromelyDataTransferOptions _dataTransferOptions;
+
+    /// <summary>
+    /// Initializes a new instance of <see cref="IChromelyRouteProvider"/>.
+    /// </summary>
+    /// <param name="routeParameterBinder">The <see cref="IChromelyModelBinder"/> instance.</param>
+    /// <param name="dataTransferOptions">The <see cref="IChromelyDataTransferOptions"/> instance.</param>
+    public DefaultRouteProvider(IChromelyModelBinder routeParameterBinder, IChromelyDataTransferOptions dataTransferOptions)
     {
-        public DefaultRouteProvider()
-        {
-            ActionRouteDictionary = new Dictionary<string, RequestActionRoute>();
-            CommandRouteDictionary = new Dictionary<string, CommandActionRoute>();
-        }
+        _routeParameterBinder = routeParameterBinder;
+        _dataTransferOptions = dataTransferOptions;
 
-        public Dictionary<string, RequestActionRoute> ActionRouteDictionary { get; private set; }
-        public Dictionary<string, CommandActionRoute> CommandRouteDictionary { get; private set; }
+        RouteMap = new Dictionary<string, ControllerRoute>();
+    }
 
-        public virtual void RegisterAllRoutes(List<ChromelyController> controllers)
+    /// <inheritdoc />
+    public IDictionary<string, ControllerRoute> RouteMap { get; }
+
+    /// <inheritdoc />
+    public IList<string> RouteKeys
+    {
+        get
         {
-            if (controllers == null || !controllers.Any())
+            var tempData = RouteMap?.Keys;
+            if (tempData is not null)
             {
-                return;
+                return tempData.ToList();
             }
 
-            try
+            return new List<string>();
+        }
+    }
+
+    /// <inheritdoc />
+    public virtual void RegisterAllRoutes(List<ChromelyController>? controllers)
+    {
+        if (controllers is null || !controllers.Any())
+        {
+            return;
+        }
+
+        try
+        {
+
+            foreach (var controller in controllers)
             {
-                var routeDictionary = new Dictionary<string, RequestActionRoute>();
-                var commandDictionary = new Dictionary<string, CommandActionRoute>();
-
-                foreach (var controller in controllers)
-                {
-                    var controllerFactory = new ChromelyControllerFactory();
-                    var currentRouteDictionary = controller.ActionRouteDictionary;
-                    var currentCommandDictionary = controller.CommandRouteDictionary;
-
-                    // Merge with return route dictionary
-                    if ((currentRouteDictionary != null) && currentRouteDictionary.Any())
-                    {
-                        foreach (var item in currentRouteDictionary)
-                        {
-                            if (!routeDictionary.ContainsKey(item.Key))
-                            {
-                                routeDictionary.Add(item.Key, item.Value);
-                            }
-                        }
-                    }
-
-                    // Merge with return command dictionary
-                    if ((currentCommandDictionary != null) && currentCommandDictionary.Any())
-                    {
-                        foreach (var item in currentCommandDictionary)
-                        {
-                            if (!commandDictionary.ContainsKey(item.Key))
-                            {
-                                commandDictionary.Add(item.Key, item.Value);
-                            }
-                        }
-                    }
-
-                    // Add Http Attributes
-                    var httpAttributeRoutes = controllerFactory.GetActionAttributeRoutes(controller);
-                    if ((httpAttributeRoutes != null) && httpAttributeRoutes.Any())
-                    {
-                        foreach (var item in httpAttributeRoutes)
-                        {
-                            if (!routeDictionary.ContainsKey(item.Key))
-                            {
-                                routeDictionary.Add(item.Key, item.Value);
-                            }
-                        }
-                    }
-
-                    // Add Custom Attributes
-                    var customAttributeRoutes = controllerFactory.GetCommandAttributeRoutes(controller);
-                    if ((customAttributeRoutes != null) && customAttributeRoutes.Any())
-                    {
-                        foreach (var item in customAttributeRoutes)
-                        {
-                            if (!commandDictionary.ContainsKey(item.Key))
-                            {
-                                commandDictionary.Add(item.Key, item.Value);
-                            }
-                        }
-                    }
-                }
-
-                RegisterActionRoutes(routeDictionary);
-                RegisterCommandRoutes(commandDictionary);
+                var controllerRoutesFactory = new ControllerRoutesFactory();
+                ControllerRoutesFactory.CreateAndRegisterRoutes(this, controller, _routeParameterBinder, _dataTransferOptions);
             }
-            catch (Exception exception)
+
+        }
+        catch (Exception exception)
+        {
+            Logger.Instance.Log.LogError(exception);
+        }
+    }
+
+    /// <inheritdoc />
+    public virtual void RegisterRoute(string key, ControllerRoute route)
+    {
+        RouteMap.Add(key, route);
+    }
+
+    /// <inheritdoc />
+    public virtual void RegisterRoutes(IDictionary<string, ControllerRoute>? routeMap)
+    {
+        if (routeMap is not null && routeMap.Any())
+        {
+            foreach (var item in routeMap)
             {
-                Logger.Instance.Log.LogError(exception, "RouteScanner:Scan");
+                RegisterRoute(item.Key, item.Value);
             }
         }
-        public virtual void RegisterActionRoute(string key, RequestActionRoute route)
+    }
+
+    /// <inheritdoc />
+    public virtual ControllerRoute? GetRoute(string routeUrl)
+    {
+        var key = Network.RouteKeys.CreateActionKey(routeUrl);
+        if (string.IsNullOrWhiteSpace(key))
         {
-            EnsureContainersAreInitialized();
-            ActionRouteDictionary.Add(key, route);
+            return default;
         }
 
-        public virtual void RegisterCommandRoute(string key, CommandActionRoute command)
+        if (RouteMap.ContainsKey(key))
         {
-            EnsureContainersAreInitialized();
-            CommandRouteDictionary.Add(key, command);
+            return RouteMap[key];
         }
 
-        public virtual void RegisterActionRoutes(Dictionary<string, RequestActionRoute> newRouteDictionary)
-        {
-            if (newRouteDictionary != null && newRouteDictionary.Any())
-            {
-                EnsureContainersAreInitialized();
-                foreach (var item in newRouteDictionary)
-                {
-                    ActionRouteDictionary.Add(item.Key, item.Value);
-                }
-            }
-        }
+        return default;
+    }
 
-        public virtual void RegisterCommandRoutes(Dictionary<string, CommandActionRoute> newCommandDictionary)
+    /// <inheritdoc />
+    public virtual bool RouteExists(string routeUrl)
+    {
+        var keys = RouteKeys;
+        if (!keys.IsNullOrEmpty())
         {
-            if (newCommandDictionary != null && newCommandDictionary.Any())
-            {
-                EnsureContainersAreInitialized();
-                foreach (var item in newCommandDictionary)
-                {
-                    CommandRouteDictionary.Add(item.Key, item.Value);
-                }
-            }
-        }
-
-        public virtual RequestActionRoute GetActionRoute(string routeUrl)
-        {
-            var key = RouteKey.CreateRequestKey(routeUrl);
+            var key = Network.RouteKeys.CreateActionKey(routeUrl);
             if (string.IsNullOrWhiteSpace(key))
             {
-                return null;
+                return false;
             }
 
-            EnsureContainersAreInitialized();
-            if (ActionRouteDictionary.ContainsKey(key))
-            {
-                return ActionRouteDictionary[key];
-            }
-
-            return null;
+            return keys.Contains(key);
         }
 
-        public virtual CommandActionRoute GetCommandRoute(string commandUrl)
+        return false;
+    }
+
+    /// <inheritdoc />
+    public virtual bool IsRouteAsync(string routeUrl)
+    {
+        try
         {
-            var key = RouteKey.CreateCommandKey(commandUrl);
-            if (string.IsNullOrWhiteSpace(key))
-            {
-                return null;
-            }
-
-            EnsureContainersAreInitialized();
-            if (CommandRouteDictionary.ContainsKey(key))
-            {
-                return CommandRouteDictionary[key];
-            }
-
-            return null;
+            var route = GetRoute(routeUrl);
+            return route is not null && route.IsAsync;
         }
+        catch { }
 
-        public virtual bool IsActionRouteAsync(string routeUrl)
-        {
-            try
-            {
-                var route = GetActionRoute(routeUrl);
-                return route == null ? false : route.IsAsync;
-            }
-            catch {}
-
-            return false;
-        }
-
-        private void EnsureContainersAreInitialized()
-        {
-            if (ActionRouteDictionary == null)
-            {
-                ActionRouteDictionary = new Dictionary<string, RequestActionRoute>();
-            }
-
-            if (CommandRouteDictionary == null)
-            {
-                CommandRouteDictionary = new Dictionary<string, CommandActionRoute>();
-            }
-        }
+        return false;
     }
 }

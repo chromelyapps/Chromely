@@ -1,0 +1,95 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30223.230
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chromely.Core", "Chromely.Core\Chromely.Core.csproj", "{96C6AA2F-DE3C-4DA9-875D-A7A104D6BD42}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chromely", "Chromely\Chromely.csproj", "{4B3F8D93-0076-4117-A807-14CC7459E658}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chromely.Tests", "Chromely.Tests\Chromely.Tests.csproj", "{DC4C08F0-A20C-40DA-9B29-E0F65BF8338E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chromely.Integration.TestApp", "Chromely.Integration.TestApp\Chromely.Integration.TestApp.csproj", "{BB5B56BF-FFDC-4A0C-A7A4-91F737509D4F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		DebugLinux|Any CPU = DebugLinux|Any CPU
+		DebugLinux|x64 = DebugLinux|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		ReleaseLinux|Any CPU = ReleaseLinux|Any CPU
+		ReleaseLinux|x64 = ReleaseLinux|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{96C6AA2F-DE3C-4DA9-875D-A7A104D6BD42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96C6AA2F-DE3C-4DA9-875D-A7A104D6BD42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96C6AA2F-DE3C-4DA9-875D-A7A104D6BD42}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{96C6AA2F-DE3C-4DA9-875D-A7A104D6BD42}.Debug|x64.Build.0 = Debug|Any CPU
+		{96C6AA2F-DE3C-4DA9-875D-A7A104D6BD42}.DebugLinux|Any CPU.ActiveCfg = DebugLinux|Any CPU
+		{96C6AA2F-DE3C-4DA9-875D-A7A104D6BD42}.DebugLinux|Any CPU.Build.0 = DebugLinux|Any CPU
+		{96C6AA2F-DE3C-4DA9-875D-A7A104D6BD42}.DebugLinux|x64.ActiveCfg = DebugLinux|Any CPU
+		{96C6AA2F-DE3C-4DA9-875D-A7A104D6BD42}.DebugLinux|x64.Build.0 = DebugLinux|Any CPU
+		{96C6AA2F-DE3C-4DA9-875D-A7A104D6BD42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96C6AA2F-DE3C-4DA9-875D-A7A104D6BD42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96C6AA2F-DE3C-4DA9-875D-A7A104D6BD42}.Release|x64.ActiveCfg = Release|Any CPU
+		{96C6AA2F-DE3C-4DA9-875D-A7A104D6BD42}.Release|x64.Build.0 = Release|Any CPU
+		{96C6AA2F-DE3C-4DA9-875D-A7A104D6BD42}.ReleaseLinux|Any CPU.ActiveCfg = ReleaseLinux|Any CPU
+		{96C6AA2F-DE3C-4DA9-875D-A7A104D6BD42}.ReleaseLinux|Any CPU.Build.0 = ReleaseLinux|Any CPU
+		{96C6AA2F-DE3C-4DA9-875D-A7A104D6BD42}.ReleaseLinux|x64.ActiveCfg = ReleaseLinux|Any CPU
+		{96C6AA2F-DE3C-4DA9-875D-A7A104D6BD42}.ReleaseLinux|x64.Build.0 = ReleaseLinux|Any CPU
+		{4B3F8D93-0076-4117-A807-14CC7459E658}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B3F8D93-0076-4117-A807-14CC7459E658}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B3F8D93-0076-4117-A807-14CC7459E658}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{4B3F8D93-0076-4117-A807-14CC7459E658}.Debug|x64.Build.0 = Debug|Any CPU
+		{4B3F8D93-0076-4117-A807-14CC7459E658}.DebugLinux|Any CPU.ActiveCfg = DebugLinux|Any CPU
+		{4B3F8D93-0076-4117-A807-14CC7459E658}.DebugLinux|Any CPU.Build.0 = DebugLinux|Any CPU
+		{4B3F8D93-0076-4117-A807-14CC7459E658}.DebugLinux|x64.ActiveCfg = DebugLinux|Any CPU
+		{4B3F8D93-0076-4117-A807-14CC7459E658}.DebugLinux|x64.Build.0 = DebugLinux|Any CPU
+		{4B3F8D93-0076-4117-A807-14CC7459E658}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B3F8D93-0076-4117-A807-14CC7459E658}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B3F8D93-0076-4117-A807-14CC7459E658}.Release|x64.ActiveCfg = Release|Any CPU
+		{4B3F8D93-0076-4117-A807-14CC7459E658}.Release|x64.Build.0 = Release|Any CPU
+		{4B3F8D93-0076-4117-A807-14CC7459E658}.ReleaseLinux|Any CPU.ActiveCfg = ReleaseLinux|Any CPU
+		{4B3F8D93-0076-4117-A807-14CC7459E658}.ReleaseLinux|Any CPU.Build.0 = ReleaseLinux|Any CPU
+		{4B3F8D93-0076-4117-A807-14CC7459E658}.ReleaseLinux|x64.ActiveCfg = ReleaseLinux|Any CPU
+		{4B3F8D93-0076-4117-A807-14CC7459E658}.ReleaseLinux|x64.Build.0 = ReleaseLinux|Any CPU
+		{DC4C08F0-A20C-40DA-9B29-E0F65BF8338E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC4C08F0-A20C-40DA-9B29-E0F65BF8338E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC4C08F0-A20C-40DA-9B29-E0F65BF8338E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{DC4C08F0-A20C-40DA-9B29-E0F65BF8338E}.Debug|x64.Build.0 = Debug|Any CPU
+		{DC4C08F0-A20C-40DA-9B29-E0F65BF8338E}.DebugLinux|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC4C08F0-A20C-40DA-9B29-E0F65BF8338E}.DebugLinux|Any CPU.Build.0 = Debug|Any CPU
+		{DC4C08F0-A20C-40DA-9B29-E0F65BF8338E}.DebugLinux|x64.ActiveCfg = Debug|Any CPU
+		{DC4C08F0-A20C-40DA-9B29-E0F65BF8338E}.DebugLinux|x64.Build.0 = Debug|Any CPU
+		{DC4C08F0-A20C-40DA-9B29-E0F65BF8338E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC4C08F0-A20C-40DA-9B29-E0F65BF8338E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC4C08F0-A20C-40DA-9B29-E0F65BF8338E}.Release|x64.ActiveCfg = Release|Any CPU
+		{DC4C08F0-A20C-40DA-9B29-E0F65BF8338E}.Release|x64.Build.0 = Release|Any CPU
+		{DC4C08F0-A20C-40DA-9B29-E0F65BF8338E}.ReleaseLinux|Any CPU.ActiveCfg = Release|Any CPU
+		{DC4C08F0-A20C-40DA-9B29-E0F65BF8338E}.ReleaseLinux|Any CPU.Build.0 = Release|Any CPU
+		{DC4C08F0-A20C-40DA-9B29-E0F65BF8338E}.ReleaseLinux|x64.ActiveCfg = Release|Any CPU
+		{DC4C08F0-A20C-40DA-9B29-E0F65BF8338E}.ReleaseLinux|x64.Build.0 = Release|Any CPU
+		{BB5B56BF-FFDC-4A0C-A7A4-91F737509D4F}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{BB5B56BF-FFDC-4A0C-A7A4-91F737509D4F}.Debug|Any CPU.Build.0 = Debug|x64
+		{BB5B56BF-FFDC-4A0C-A7A4-91F737509D4F}.Debug|x64.ActiveCfg = Debug|x64
+		{BB5B56BF-FFDC-4A0C-A7A4-91F737509D4F}.Debug|x64.Build.0 = Debug|x64
+		{BB5B56BF-FFDC-4A0C-A7A4-91F737509D4F}.DebugLinux|Any CPU.ActiveCfg = DebugLinux|x64
+		{BB5B56BF-FFDC-4A0C-A7A4-91F737509D4F}.DebugLinux|x64.ActiveCfg = DebugLinux|x64
+		{BB5B56BF-FFDC-4A0C-A7A4-91F737509D4F}.DebugLinux|x64.Build.0 = DebugLinux|x64
+		{BB5B56BF-FFDC-4A0C-A7A4-91F737509D4F}.Release|Any CPU.ActiveCfg = Release|x64
+		{BB5B56BF-FFDC-4A0C-A7A4-91F737509D4F}.Release|Any CPU.Build.0 = Release|x64
+		{BB5B56BF-FFDC-4A0C-A7A4-91F737509D4F}.Release|x64.ActiveCfg = Release|x64
+		{BB5B56BF-FFDC-4A0C-A7A4-91F737509D4F}.Release|x64.Build.0 = Release|x64
+		{BB5B56BF-FFDC-4A0C-A7A4-91F737509D4F}.ReleaseLinux|Any CPU.ActiveCfg = ReleaseLinux|x64
+		{BB5B56BF-FFDC-4A0C-A7A4-91F737509D4F}.ReleaseLinux|x64.ActiveCfg = ReleaseLinux|x64
+		{BB5B56BF-FFDC-4A0C-A7A4-91F737509D4F}.ReleaseLinux|x64.Build.0 = ReleaseLinux|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {42317907-2809-41B0-B497-DCE2818A74AE}
+	EndGlobalSection
+EndGlobal

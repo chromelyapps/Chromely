@@ -2,48 +2,48 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System;
-using System.Runtime.InteropServices;
+#nullable disable
+#pragma warning disable CS0618
+#pragma warning disable CA1401
 
-namespace Chromely
+namespace Chromely;
+
+public static partial class Interop
 {
-    public static partial class Interop
+    public static partial class User32
     {
-        public static partial class User32
-        {
-            [DllImport(Libraries.User32, CharSet = CharSet.Unicode, SetLastError = true)]
-            public unsafe static extern IntPtr CreateWindowExW(
-                WS_EX dwExStyle,
-                char* lpClassName,
-                string lpWindowName,
-                WS dwStyle,
-                int X,
-                int Y,
-                int nWidth,
-                int nHeight,
-                IntPtr hWndParent,
-                IntPtr hMenu,
-                IntPtr hInst,
-                [MarshalAs(UnmanagedType.AsAny)] object lpParam);
+        [DllImport(Libraries.User32, CharSet = CharSet.Unicode, SetLastError = true)]
+        internal unsafe static extern IntPtr CreateWindowExW(
+            WS_EX dwExStyle,
+            char* lpClassName,
+            string lpWindowName,
+            WS dwStyle,
+            int X,
+            int Y,
+            int nWidth,
+            int nHeight,
+            IntPtr hWndParent,
+            IntPtr hMenu,
+            IntPtr hInst,
+            [MarshalAs(UnmanagedType.AsAny)] object lpParam);
 
-            public unsafe static IntPtr CreateWindowExW(
-                WS_EX dwExStyle,
-                string lpClassName,
-                string lpWindowName,
-                WS dwStyle,
-                int X,
-                int Y,
-                int nWidth,
-                int nHeight,
-                IntPtr hWndParent,
-                IntPtr hMenu,
-                IntPtr hInst,
-                object lpParam)
+        public unsafe static IntPtr CreateWindowExW(
+            WS_EX dwExStyle,
+            string lpClassName,
+            string lpWindowName,
+            WS dwStyle,
+            int X,
+            int Y,
+            int nWidth,
+            int nHeight,
+            IntPtr hWndParent,
+            IntPtr hMenu,
+            IntPtr hInst,
+            object lpParam)
+        {
+            fixed (char* c = lpClassName)
             {
-                fixed (char* c = lpClassName)
-                {
-                    return CreateWindowExW(dwExStyle, c, lpWindowName, dwStyle, X, Y, nWidth, nHeight, hWndParent, hMenu, hInst, lpParam);
-                }
+                return CreateWindowExW(dwExStyle, c, lpWindowName, dwStyle, X, Y, nWidth, nHeight, hWndParent, hMenu, hInst, lpParam);
             }
         }
     }

@@ -2,17 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System;
-using System.Runtime.InteropServices;
+namespace Chromely;
 
-namespace Chromely
+public static partial class Interop
 {
-    public static partial class Interop
+    public static partial class Gdi32
     {
-        public static partial class Gdi32
-        {
-            [DllImport(Libraries.Gdi32, ExactSpelling = true)]
-            internal static extern BOOL DeleteObject(IntPtr hObject);
-        }
+        [DllImport(Libraries.Gdi32, ExactSpelling = true)]
+        internal static extern BOOL DeleteObject(IntPtr hObject);
     }
 }

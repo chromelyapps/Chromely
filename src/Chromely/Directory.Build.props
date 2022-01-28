@@ -1,0 +1,33 @@
+﻿<Project>
+
+	<PropertyGroup>
+		<ProductVersion>5.2.96.0-pre01</ProductVersion>
+		<AssemblyVersion>5.2.96.0</AssemblyVersion>
+		<FileVersion>5.2.96.0</FileVersion>
+		<Version>5.2.96.0-pre01</Version>
+		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<Product>Chromely</Product>
+		<Owners>Chromely Projects</Owners>
+		<Authors>Chromely Projects</Authors>
+		<Company>Chromely Projects</Company>
+		<Copyright>Copyright © 2017 Chromely Projects</Copyright>
+		<PackageProjectUrl>https://github.com/chromelyapps/Chromely</PackageProjectUrl>
+		<PackageIcon>chromely.png</PackageIcon>
+		<PackageTags>CEF Chromium HTML5 Desktop Chromely CefGlue .NET 6</PackageTags>
+		<Description>Primary Chromely implementation library - this is in .NET 6 and cross-platform - can be used in Windows, Linux, MacOS. Chromely version naming is based Chromely and Chromium versions implemented- major.minor.chromuim version.patch e.g 1.0.70.0.</Description>
+		<PackageReleaseNotes>
+			- Upgraded to .NET 6.
+			- Upgraded to CefGlue/Chromium v96.
+			- CEF binaries link - https://cef-builds.spotifycdn.com/cef_binary_96.0.18%2Bgfe551e4%2Bchromium-96.0.4664.110_windows64_minimal.tar.bz2
+									(where platform = "windows64", "windows32", "linux64", "mmacosx64", "linuxarm64")
+		</PackageReleaseNotes>
+		<RepositoryType>Github Repository</RepositoryType>
+		<RepositoryUrl>https://github.com/chromelyapps/Chromely</RepositoryUrl>
+		<Configurations>Debug;Release;ReleaseLinux;DebugLinux</Configurations>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<LangVersion>latest</LangVersion>
+	</PropertyGroup>
+	
+</Project>

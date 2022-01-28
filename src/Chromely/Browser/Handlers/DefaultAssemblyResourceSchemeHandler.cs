@@ -1,271 +1,271 @@
-﻿// Copyright © 2017-2020 Chromely Projects. All rights reserved.
+﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
-using System;
-using System.IO;
-using System.Net;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Chromely.Core;
-using Chromely.Core.Configuration;
-using Chromely.Core.Infrastructure;
-using Chromely.Core.Logging;
-using Chromely.Core.Network;
-using Microsoft.Extensions.Logging;
-using Xilium.CefGlue;
+namespace Chromely.Browser;
 
-namespace Chromely.Browser
+/// <summary>
+/// Default implementation of <see cref="CefResourceHandler"/> for assembly resource handling.
+/// </summary>
+public class DefaultAssemblyResourceSchemeHandler : CefResourceHandler
 {
-    public class DefaultAssemblyResourceSchemeHandler : CefResourceHandler
+    protected readonly IChromelyConfiguration _config;
+    protected readonly IChromelyErrorHandler _chromelyErrorHandler;
+
+    protected IChromelyResource _chromelyResource;
+    protected FileInfo? _fileInfo;
+    protected bool _completed;
+    protected int _totalBytesRead;
+    protected Regex _regex = new("[/]");
+
+    /// <summary>
+    /// Initializes a new instance of <see cref="DefaultAssemblyResourceSchemeHandler"/>.
+    /// </summary>
+    /// <param name="config">Instance of <see cref="IChromelyConfiguration"/>.</param>
+    /// <param name="chromelyErrorHandler"><Instance of <see cref="IChromelyErrorHandler"/>.</param>
+    public DefaultAssemblyResourceSchemeHandler(IChromelyConfiguration config, IChromelyErrorHandler chromelyErrorHandler)
     {
-        protected readonly IChromelyConfiguration _config;
-        protected IChromelyResource _chromelyResource;
-        protected readonly IChromelyErrorHandler _chromelyErrorHandler;
-        protected Regex _regex = new Regex("[/]");
+        _config = config;
+        _chromelyResource = new ChromelyResource();
+        _chromelyErrorHandler = chromelyErrorHandler;
+        _fileInfo = null;
+    }
 
-        protected FileInfo _fileInfo;
-        protected bool _completed;
-        protected int _totalBytesRead;
-
-
-        public DefaultAssemblyResourceSchemeHandler(IChromelyConfiguration config, IChromelyErrorHandler chromelyErrorHandler)
+    /// <inheritdoc/>
+    [Obsolete("ProcessRequest is obsolete.")]
+    protected override bool ProcessRequest(CefRequest request, CefCallback callback)
+    {
+        var u = new Uri(request.Url);
+        var fileAbsolutePath = u.AbsolutePath;
+        var file = u.Authority + fileAbsolutePath;
+        if (string.IsNullOrEmpty(Path.GetFileName(file)))
         {
-            _config = config;
-            _chromelyResource = new ChromelyResource();
-            _chromelyErrorHandler = chromelyErrorHandler;
-            _fileInfo = null;
+            file = Path.Combine(file, "index.html");
         }
 
-        [Obsolete]
-        protected override bool ProcessRequest(CefRequest request, CefCallback callback)
+        _totalBytesRead = 0;
+        _chromelyResource.Content = null;
+        _completed = false;
+
+        if (ProcessAssmblyEmbeddedFile(request.Url, file, fileAbsolutePath, callback))
         {
-            var u = new Uri(request.Url);
-            var fileAbsolutePath = u.AbsolutePath;
-            var file = u.Authority + fileAbsolutePath;
-            if (string.IsNullOrEmpty(Path.GetFileName(file)))
-            {
-                file = Path.Combine(file, "index.html");
-            }
-
-            _totalBytesRead = 0;
-            _chromelyResource.Content = null;
-            _completed = false;
-
-            if (ProcessAssmblyEmbeddedFile(request.Url, file, fileAbsolutePath, callback))
-            {
-                return true;
-            }
-
-            if (ProcessLocalFile(file, callback))
-            {
-                return true;
-            }
-
-            callback.Dispose();
-            return false;
+            return true;
         }
 
-        protected override void GetResponseHeaders(CefResponse response, out long responseLength, out string redirectUrl)
+        if (ProcessLocalFile(file, callback))
         {
-            // unknown content-length
-            // no-redirect
-            responseLength = -1;
-            redirectUrl = null;
-
-            try
-            {
-                var headers = response.GetHeaderMap();
-                headers.Add("Access-Control-Allow-Origin", "*");
-                response.SetHeaderMap(headers);
-
-                response.Status = (int)_chromelyResource.StatusCode;
-                response.MimeType = _chromelyResource.MimeType;
-                response.StatusText = _chromelyResource.StatusText;
-            }
-            catch (Exception exception)
-            {
-                _chromelyResource = _chromelyErrorHandler.HandleError(_fileInfo, exception);
-                response.Status = (int)_chromelyResource.StatusCode;
-                response.MimeType = _chromelyResource.MimeType;
-                response.StatusText = _chromelyResource.StatusText;
-            }
+            return true;
         }
 
-        [Obsolete]
-        protected override bool ReadResponse(Stream response, int bytesToRead, out int bytesRead, CefCallback callback)
-        {
-            int currBytesRead = 0;
+        callback.Dispose();
+        return false;
+    }
 
-            try
+    /// <inheritdoc/>
+    protected override void GetResponseHeaders(CefResponse response, out long responseLength, out string redirectUrl)
+    {
+        // unknown content-length
+        // no-redirect
+        responseLength = -1;
+        redirectUrl = string.Empty;
+
+        try
+        {
+            var headers = response.GetHeaderMap();
+            headers.Add("Access-Control-Allow-Origin", "*");
+            response.SetHeaderMap(headers);
+
+            response.Status = (int)_chromelyResource.StatusCode;
+            response.MimeType = _chromelyResource.MimeType;
+            response.StatusText = _chromelyResource.StatusText;
+        }
+        catch (Exception exception)
+        {
+            _chromelyResource = _chromelyErrorHandler.HandleError(_fileInfo, exception);
+            response.Status = (int)_chromelyResource.StatusCode;
+            response.MimeType = _chromelyResource.MimeType;
+            response.StatusText = _chromelyResource.StatusText;
+        }
+    }
+
+    [Obsolete("ReadResponse is obsolete.")]
+    /// <inheritdoc/>
+    protected override bool ReadResponse(Stream response, int bytesToRead, out int bytesRead, CefCallback callback)
+    {
+        int currBytesRead = 0;
+
+        try
+        {
+            if (_completed)
             {
-                if (_completed)
+                bytesRead = 0;
+                _totalBytesRead = 0;
+                _chromelyResource.Content = null;
+                return false;
+            }
+            else
+            {
+                if (_chromelyResource.Content is not null)
                 {
-                    bytesRead = 0;
-                    _totalBytesRead = 0;
-                    _chromelyResource.Content = null;
-                    return false;
-                }
-                else
-                {
-                    if (_chromelyResource.Content != null)
-                    {
-                        var fileBytes = _chromelyResource.Content.ToArray();
-                        currBytesRead = Math.Min(fileBytes.Length - _totalBytesRead, bytesToRead);
-                        response.Write(fileBytes, _totalBytesRead, currBytesRead);
-                        _totalBytesRead += currBytesRead;
+                    var fileBytes = _chromelyResource.Content.ToArray();
+                    currBytesRead = Math.Min(fileBytes.Length - _totalBytesRead, bytesToRead);
+                    response.Write(fileBytes, _totalBytesRead, currBytesRead);
+                    _totalBytesRead += currBytesRead;
 
-                        if (_totalBytesRead >= fileBytes.Length)
-                        {
-                            _completed = true;
-                        }
-                    }
-                    else
+                    if (_totalBytesRead >= fileBytes.Length)
                     {
-                        bytesRead = 0;
                         _completed = true;
                     }
                 }
+                else
+                {
+                    bytesRead = 0;
+                    _completed = true;
+                }
             }
-            catch (Exception exception)
-            {
-                Logger.Instance.Log.LogError(exception, exception.Message);
-            }
+        }
+        catch (Exception exception)
+        {
+            Logger.Instance.Log.LogError(exception);
+        }
 
-            bytesRead = currBytesRead;
+        bytesRead = currBytesRead;
+        return true;
+    }
+
+    /// <inheritdoc/>
+    protected override void Cancel()
+    {
+    }
+
+    /// <inheritdoc/>
+    protected override bool Open(CefRequest request, out bool handleRequest, CefCallback callback)
+    {
+        handleRequest = false;
+        return false;
+    }
+
+    /// <inheritdoc/>
+    protected override bool Skip(long bytesToSkip, out long bytesSkipped, CefResourceSkipCallback callback)
+    {
+        bytesSkipped = 0;
+        return true;
+    }
+
+    /// <inheritdoc/>
+    protected override bool Read(IntPtr dataOut, int bytesToRead, out int bytesRead, CefResourceReadCallback callback)
+    {
+        bytesRead = -1;
+        return false;
+    }
+
+    private bool ProcessLocalFile(string file, CefCallback callback)
+    {
+        _fileInfo = new FileInfo(file);
+
+        // Check if file exists 
+        if (!_fileInfo.Exists)
+        {
+            _chromelyResource = _chromelyErrorHandler.HandleError(_fileInfo);
+            callback.Continue();
+        }
+        // Check if file exists but empty
+        else if (_fileInfo.Length == 0)
+        {
+            _chromelyResource = _chromelyErrorHandler.HandleError(_fileInfo);
+            callback.Continue();
+        }
+        else
+        {
+            Task.Run(() =>
+            {
+                using (callback)
+                {
+                    try
+                    {
+                        var fileBytes = File.ReadAllBytes(file);
+                        _chromelyResource.Content = new MemoryStream(fileBytes);
+
+                        string extension = Path.GetExtension(file);
+                        _chromelyResource.MimeType = MimeMapper.GetMimeType(extension);
+                        _chromelyResource.StatusCode = ResourceConstants.StatusOK;
+                        _chromelyResource.StatusText = ResourceConstants.StatusOKText;
+                    }
+                    catch (Exception exception)
+                    {
+                        _chromelyResource = _chromelyErrorHandler.HandleError(_fileInfo, exception);
+                    }
+                    finally
+                    {
+                        callback.Continue();
+                    }
+                }
+            });
+
             return true;
         }
 
-        protected override void Cancel()
-        {
-        }
+        return false;
+    }
 
-        protected override bool Open(CefRequest request, out bool handleRequest, CefCallback callback)
+    private bool ProcessAssmblyEmbeddedFile(string url, string file, string fileAbsolutePath, CefCallback callback)
+    {
+        var urlScheme = _config?.UrlSchemes?.GetScheme(url, UrlSchemeType.AssemblyResource);
+        AssemblyOptions? option = urlScheme?.AssemblyOptions;
+        if (option is null || option.TargetAssembly is null)
         {
-            handleRequest = false;
             return false;
         }
 
-        protected override bool Skip(long bytesToSkip, out long bytesSkipped, CefResourceSkipCallback callback)
+        var manifestName = string.Join(".", option.DefaultNamespace, option.RootFolder, _regex.Replace(fileAbsolutePath, ".")).Replace("..", ".").Replace("..", ".");
+        Stream? stream = option.TargetAssembly.GetManifestResourceStream(manifestName);
+
+        // Check if file exists 
+        if (stream is null)
         {
-            bytesSkipped = 0;
+            _chromelyResource = _chromelyErrorHandler.HandleError(stream);
+            callback.Continue();
+        }
+        // Check if file exists but empty
+        else if (stream.Length == 0)
+        {
+            _chromelyResource = _chromelyErrorHandler.HandleError(stream);
+            stream.Dispose();
+
+            callback.Continue();
+        }
+        else
+        {
+            Task.Run(() =>
+            {
+                using (callback)
+                {
+                    try
+                    {
+                        var fileBytes = new byte[stream.Length];
+                        stream.Read(fileBytes, 0, (int)stream.Length);
+                        stream.Flush();
+                        stream.Dispose();
+
+                        _chromelyResource.Content = new MemoryStream(fileBytes);
+                        string extension = Path.GetExtension(file);
+                        _chromelyResource.MimeType = MimeMapper.GetMimeType(extension);
+                        _chromelyResource.StatusCode = ResourceConstants.StatusOK;
+                        _chromelyResource.StatusText = ResourceConstants.StatusOKText;
+                    }
+                    catch (Exception exception)
+                    {
+                        _chromelyResource = _chromelyErrorHandler.HandleError(_fileInfo, exception);
+                    }
+                    finally
+                    {
+                        callback.Continue();
+                    }
+                }
+            });
+
             return true;
         }
 
-        protected override bool Read(IntPtr dataOut, int bytesToRead, out int bytesRead, CefResourceReadCallback callback)
-        {
-            bytesRead = -1;
-            return false;
-        }
-
-        private bool ProcessLocalFile(string file, CefCallback callback)
-        {
-            _fileInfo = new FileInfo(file);
-
-            // Check if file exists 
-            if (!_fileInfo.Exists)
-            {
-                _chromelyResource = _chromelyErrorHandler.HandleError(_fileInfo);
-                callback.Continue();
-            }
-            // Check if file exists but empty
-            else if (_fileInfo.Length == 0)
-            {
-                _chromelyResource = _chromelyErrorHandler.HandleError(_fileInfo);
-                callback.Continue();
-            }
-            else 
-            {
-                Task.Run(() =>
-                {
-                    using (callback)
-                    {
-                        try
-                        {
-                            var fileBytes = File.ReadAllBytes(file);
-                            _chromelyResource.Content = new MemoryStream(fileBytes);
-
-                            string extension = Path.GetExtension(file);
-                            _chromelyResource.MimeType = MimeMapper.GetMimeType(extension);
-                            _chromelyResource.StatusCode = ResourceConstants.StatusOK;
-                            _chromelyResource.StatusText = ResourceConstants.StatusOKText;
-                        }
-                        catch (Exception exception)
-                        {
-                            _chromelyResource = _chromelyErrorHandler.HandleError(_fileInfo, exception);
-                        }
-                        finally
-                        {
-                            callback.Continue();
-                        }
-                    }
-                });
-
-                return true;
-            }
-
-            return false;
-        }
-
-        private bool ProcessAssmblyEmbeddedFile(string url, string file, string fileAbsolutePath, CefCallback callback)
-        {
-            var urlScheme = _config?.UrlSchemes?.GetScheme(url, UrlSchemeType.AssemblyResource);
-            var option = urlScheme.AssemblyOptions;
-            if (option == null || option.TargetAssembly == null)
-            {
-                return false;
-            }
-
-            var manifestName = string.Join(".", option.DefaultNamespace, option.RootFolder, _regex.Replace(fileAbsolutePath, ".")).Replace("..", ".").Replace("..", ".");
-            var stream = option.TargetAssembly.GetManifestResourceStream(manifestName);
-
-            // Check if file exists 
-            if (stream == null)
-            {
-                _chromelyResource = _chromelyErrorHandler.HandleError(stream);
-                callback.Continue();
-            }
-            // Check if file exists but empty
-            else if (stream.Length == 0)
-            {
-                _chromelyResource = _chromelyErrorHandler.HandleError(stream);
-                stream.Dispose();
-
-                callback.Continue();
-            }
-            else 
-            {
-                Task.Run(() =>
-                {
-                    using (callback)
-                    {
-                        try
-                        {
-                            var fileBytes = new byte[stream.Length];
-                            stream.Read(fileBytes, 0, (int)stream.Length);
-                            stream.Flush();
-                            stream.Dispose();
-
-                            _chromelyResource.Content = new MemoryStream(fileBytes);
-                            string extension = Path.GetExtension(file);
-                            _chromelyResource.MimeType = MimeMapper.GetMimeType(extension);
-                            _chromelyResource.StatusCode = ResourceConstants.StatusOK;
-                            _chromelyResource.StatusText = ResourceConstants.StatusOKText;
-                        }
-                        catch (Exception exception)
-                        {
-                            _chromelyResource = _chromelyErrorHandler.HandleError(_fileInfo, exception);
-                        }
-                        finally
-                        {
-                            callback.Continue();
-                        }
-                    }
-                });
-
-                return true;
-            }
-
-            return false;
-        }
+        return false;
     }
 }

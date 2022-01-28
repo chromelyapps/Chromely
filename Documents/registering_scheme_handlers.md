@@ -46,66 +46,61 @@ Registering a custom scheme requires creating both a custom scheme handler and c
 Custom scheme handler factory:
 
 ````csharp
-    class Program
+ThreadApt.STA();
+
+AppBuilder
+    .Create(args)
+    .UseApp<DemoApp>()
+    .Build()
+    .Run();
+
+public class DemoApp : ChromelyBasicApp
+{
+    public override void ConfigureServices(ServiceCollection services)
     {
-        [STAThread]
-        static void Main(string[] args)
-        {
-            AppBuilder
-            .Create()
-            .UseApp<DemoApp>()
-            .Build()
-            .Run(args);
-        }
+        base.ConfigureServices(services);
+        services.AddSingleton(typeof(CustomRequestSchemeHandlerFactory), typeof(CustomRequestSchemeHandlerFactory));
+        services.AddSingleton(typeof(IChromelySchemeHandler), typeof(CustomSchemeHandler));
+
+        RegisterControllerAssembly(services, typeof(DemoApp).Assembly);
+    }
+}
+
+public class CustomSchemeHandler : IChromelySchemeHandler
+{
+    public CustomSchemeHandler(CustomRequestSchemeHandlerFactory schemeHandlerFactory)
+    {
+        Name = "MyCustomRequestSchemeHamdler";
+        // Scheme: myscheme
+        // Host: custom - mapped to folder name containing resource files
+        //http://custom.com/customcontroller/hello";
+        Scheme = new UrlScheme("mycustomrequestcheme", "http", "custom.com", string.Empty, UrlSchemeType.LocalRquest);
+        HandlerFactory = schemeHandlerFactory;
+        IsCorsEnabled = true;
+        IsSecure = false;
     }
 
-    public class DemoApp : ChromelyBasicApp
+    public string Name { get; set; }
+    public UrlScheme Scheme { get; set; }
+
+    // Needed for CefSharp
+    public object Handler { get; set; }
+    public object HandlerFactory { get; set; }
+    public bool IsCorsEnabled { get; set; }
+    public bool IsSecure { get; set; }
+}
+
+public class CustomRequestSchemeHandler : DefaultRequestSchemeHandler
+{
+}
+
+public class CustomRequestSchemeHandlerFactory : DefaultRequestSchemeHandlerFactory
+{
+    protected override CefResourceHandler Create(CefBrowser browser, CefFrame frame, string schemeName, CefRequest request)
     {
-        public override void ConfigureServices(ServiceCollection services)
-        {
-            base.ConfigureServices(services);
-            services.AddSingleton(typeof(CustomRequestSchemeHandlerFactory), typeof(CustomRequestSchemeHandlerFactory));
-            services.AddSingleton(typeof(IChromelySchemeHandler), typeof(CustomSchemeHandler));
-
-            RegisterControllerAssembly(services, typeof(DemoApp).Assembly);
-        }
+        return new CustomRequestSchemeHandler();
     }
-
-    public class CustomSchemeHandler : IChromelySchemeHandler
-    {
-        public CustomSchemeHandler(CustomRequestSchemeHandlerFactory schemeHandlerFactory)
-        {
-            Name = "MyCustomRequestSchemeHamdler";
-            // Scheme: myscheme
-            // Host: custom - mapped to folder name containing resource files
-            //http://custom.com/customcontroller/hello";
-            Scheme = new UrlScheme("mycustomrequestcheme", "http", "custom.com", string.Empty, UrlSchemeType.LocalRquest);
-            HandlerFactory = schemeHandlerFactory;
-            IsCorsEnabled = true;
-            IsSecure = false;
-        }
-
-        public string Name { get; set; }
-        public UrlScheme Scheme { get; set; }
-
-        // Needed for CefSharp
-        public object Handler { get; set; }
-        public object HandlerFactory { get; set; }
-        public bool IsCorsEnabled { get; set; }
-        public bool IsSecure { get; set; }
-    }
-
-    public class CustomRequestSchemeHandler : DefaultRequestSchemeHandler
-    {
-    }
-    
-    public class CustomRequestSchemeHandlerFactory : DefaultRequestSchemeHandlerFactory
-    {
-        protected override CefResourceHandler Create(CefBrowser browser, CefFrame frame, string schemeName, CefRequest request)
-        {
-            return new CustomRequestSchemeHandler();
-        }
-    }
+}
 ````
 
 Please see [Howto: Custom Request Scheme Handler](https://github.com/chromelyapps/Chromely/issues/247) for more.

@@ -1,43 +1,38 @@
-﻿// Copyright © 2017-2020 Chromely Projects. All rights reserved.
+﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
-using Chromely.Core.Configuration;
-using Chromely.Core.Host;
-using System;
-using System.Runtime.InteropServices;
-using static Chromely.Interop.User32;
+#pragma warning disable CS8602
 
-namespace Chromely.NativeHost
+namespace Chromely.NativeHosts;
+
+public class KeyboardLLHook : WindowsHookBase
 {
-    public class KeyboardLLHook : WindowsHookBase
+	protected IntPtr _handler;
+	protected IWindowOptions _options;
+	protected IKeyboadHookHandler _keyboadHandler;
+
+	public KeyboardLLHook(IntPtr handler, IWindowOptions options, IKeyboadHookHandler keyboadHandler) : base(WH.KEYBOARD_LL)
 	{
-        protected IntPtr _handler;
-        protected IWindowOptions _options;
-        protected IKeyboadHookHandler _keyboadHandler;
+		_handler = handler;
+		_options = options;
+		_keyboadHandler = keyboadHandler;
+		HookEventHandler = OnKeyboardEvent;
+	}
 
-        public KeyboardLLHook(IntPtr handler, IWindowOptions options, IKeyboadHookHandler keyboadHandler) : base(WH.KEYBOARD_LL)
+	protected virtual bool OnKeyboardEvent(HookEventArgs args)
+	{
+		if (args is null)
 		{
-            _handler = handler;
-            _options = options;
-            _keyboadHandler = keyboadHandler;
-            HookEventHandler = OnKeyboardEvent;
+			return false;
 		}
 
-		protected virtual bool OnKeyboardEvent(HookEventArgs args)
-		{
-			if (args == null)
-			{
-				return false;
-			}
+		WM wParam = (WM)args.wParam.ToInt32();
+		var hookInfo = Marshal.PtrToStructure<KBDLLHOOKSTRUCT>(args.lParam);
+		var key = (Keys)hookInfo.vkCode;
 
-            WM wParam = (WM)args.wParam.ToInt32();
-            var hookInfo = Marshal.PtrToStructure<KBDLLHOOKSTRUCT>(args.lParam);
-			var key = (Keys)hookInfo.vkCode;
+		bool alt = IsKeyPressed(Keys.Menu);
+		bool control = IsKeyPressed(Keys.ControlKey);
 
-			bool alt = IsKeyPressed(Keys.Menu);
-			bool control = IsKeyPressed(Keys.ControlKey);
-
-            return _keyboadHandler.HandleKey(_handler, new KeyboardParam(wParam == WM.KEYUP,  alt, control, key));
-		}
-    }
+		return _keyboadHandler.HandleKey(_handler, new KeyboardParam(wParam == WM.KEYUP, alt, control, key));
+	}
 }

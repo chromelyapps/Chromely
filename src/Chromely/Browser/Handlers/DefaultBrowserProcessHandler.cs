@@ -1,44 +1,38 @@
-﻿// Copyright © 2017-2020 Chromely Projects. All rights reserved.
+﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
-using System;
-using Chromely.Core.Configuration;
-using Xilium.CefGlue;
+namespace Chromely.Browser;
 
-namespace Chromely.Browser
+/// <summary>
+/// Default implementation of <see cref="CefBrowserProcessHandler"/>.
+/// </summary>
+public class DefaultBrowserProcessHandler : CefBrowserProcessHandler
 {
+    protected readonly IChromelyConfiguration _config;
+
     /// <summary>
-    /// Default CEF browser process handler.
+    /// Initializes a new instance of <see cref="DefaultBrowserProcessHandler"/>.
     /// </summary>
-    public class DefaultBrowserProcessHandler : CefBrowserProcessHandler
+    /// <param name="config">Instance of <see cref="IChromelyConfiguration"/>.</param>
+    public DefaultBrowserProcessHandler(IChromelyConfiguration config)
     {
-        protected readonly IChromelyConfiguration _config;
+        _config = config;
+    }
 
-        public DefaultBrowserProcessHandler(IChromelyConfiguration config)
+    /// <inheritdoc/>
+    protected override void OnBeforeChildProcessLaunch(CefCommandLine browser_cmd)
+    {
+        // Disable security features
+        browser_cmd.AppendSwitch("default-encoding", "utf-8");
+        browser_cmd.AppendSwitch("allow-file-access-from-files");
+        browser_cmd.AppendSwitch("allow-universal-access-from-files");
+        browser_cmd.AppendSwitch("disable-web-security");
+        browser_cmd.AppendSwitch("ignore-certificate-errors");
+
+        if (_config.DebuggingMode)
         {
-            _config = config;
-        }
-
-        /// <summary>
-        /// The on before child process launch.
-        /// </summary>
-        /// <param name="browser_cmd">
-        /// The command line.
-        /// </param>
-        protected override void OnBeforeChildProcessLaunch(CefCommandLine browser_cmd)
-        {
-            // Disable security features
-            browser_cmd.AppendSwitch("default-encoding", "utf-8");
-            browser_cmd.AppendSwitch("allow-file-access-from-files");
-            browser_cmd.AppendSwitch("allow-universal-access-from-files");
-            browser_cmd.AppendSwitch("disable-web-security");
-            browser_cmd.AppendSwitch("ignore-certificate-errors");
-
-            if (_config.DebuggingMode)
-            {
-                Console.WriteLine("On CefGlue child process launch arguments:");
-                Console.WriteLine(browser_cmd.ToString());
-            }
+            Console.WriteLine("On CefGlue child process launch arguments:");
+            Console.WriteLine(browser_cmd.ToString());
         }
     }
 }

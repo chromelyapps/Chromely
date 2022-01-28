@@ -1,4 +1,7 @@
-﻿namespace Xilium.CefGlue.Wrapper
+﻿#pragma warning disable CA1822
+#pragma warning disable IDE0060
+
+namespace Xilium.CefGlue.Wrapper
 {
     using System;
     using System.Collections.Generic;
@@ -149,19 +152,19 @@
         private readonly string _queryMessageName;
         private readonly string _cancelMessageName;
 
-        private readonly CefMessageRouter.IdGeneratorInt32 _contextIdGenerator = new CefMessageRouter.IdGeneratorInt32();
-        private readonly CefMessageRouter.IdGeneratorInt32 _requestIdGenerator = new CefMessageRouter.IdGeneratorInt32();
+        private readonly CefMessageRouter.IdGeneratorInt32 _contextIdGenerator = new();
+        private readonly CefMessageRouter.IdGeneratorInt32 _requestIdGenerator = new();
 
         // Map of (request ID, context ID) to RequestInfo for pending queries. An
         // entry is added when a request is initiated via the bound function and
         // removed when either the request completes, is canceled via the bound
         // function, or the associated context is released.
-        private readonly BrowserRequestInfoMap _browserRequestInfoMap = new BrowserRequestInfoMap();
+        private readonly BrowserRequestInfoMap _browserRequestInfoMap = new();
 
         // Map of context ID to CefV8Context for existing contexts. An entry is added
         // when a bound function is executed for the first time in the context and
         // removed when the context is released.
-        private readonly Dictionary<int, CefV8Context> _contextMap = new Dictionary<int, CefV8Context>();
+        private readonly Dictionary<int, CefV8Context> _contextMap = new();
 
         /// <summary>
         /// Create a new router with the specified configuration.
@@ -200,11 +203,11 @@
                     return 0;  // Nothing associated with the specified context.
 
                 int count = 0;
-                BrowserRequestInfoMap.Visitor visitor = (int browserId, KeyValuePair<int, int> infoId, RequestInfo info, ref bool remove) =>
+                bool visitor(int browserId, KeyValuePair<int, int> infoId, RequestInfo info, ref bool remove)
                 {
                     if (infoId.Key == contextId) count++;
                     return true;
-                };
+                }
 
                 if (browser != null)
                 {
@@ -228,7 +231,7 @@
                 return _browserRequestInfoMap.Count();
             }
 
-            return 0;
+          //  return 0;
         }
 
         #region The below methods should be called from other CEF handlers. They must be called exactly as documented for the router to function correctly.
@@ -237,7 +240,7 @@
         /// Call from CefRenderProcessHandler::OnContextCreated. Registers the
         /// JavaScripts functions with the new context.
         /// </summary>
-        public void OnContextCreated(CefBrowser browser, CefFrame frame, CefV8Context context)
+        public void OnContextCreated(CefV8Context context)
         {
             Helpers.RequireRendererThread();
 
@@ -246,23 +249,19 @@
             // can't rely on GC for this purpose).
 
             // Register function handlers with the 'window' object.
-            using (var window = context.GetGlobal())
+            using var window = context.GetGlobal();
+            var handler = new V8HandlerImpl(this, _config);
+            CefV8PropertyAttribute attributes = CefV8PropertyAttribute.ReadOnly | CefV8PropertyAttribute.DontEnum | CefV8PropertyAttribute.DontDelete;
+
+            // Add the query function.
+            using (var queryFunc = CefV8Value.CreateFunction(_config.JSQueryFunction, handler))
             {
-                var handler = new V8HandlerImpl(this, _config);
-                CefV8PropertyAttribute attributes = CefV8PropertyAttribute.ReadOnly | CefV8PropertyAttribute.DontEnum | CefV8PropertyAttribute.DontDelete;
-
-                // Add the query function.
-                using (var queryFunc = CefV8Value.CreateFunction(_config.JSQueryFunction, handler))
-                {
-                    window.SetValue(_config.JSQueryFunction, queryFunc, attributes);
-                }
-
-                // Add the cancel function.
-                using (var cancelFunc = CefV8Value.CreateFunction(_config.JSCancelFunction, handler))
-                {
-                    window.SetValue(_config.JSCancelFunction, cancelFunc, attributes);
-                }
+                window.SetValue(_config.JSQueryFunction, queryFunc, attributes);
             }
+
+            // Add the cancel function.
+            using var cancelFunc = CefV8Value.CreateFunction(_config.JSCancelFunction, handler);
+            window.SetValue(_config.JSCancelFunction, cancelFunc, attributes);
         }
 
         /// <summary>
@@ -352,11 +351,11 @@
         private RequestInfo GetRequestInfo(int browserId, int requestId, int contextId, bool alwaysRemove, ref bool removed)
         {
             var removedTemp = false;
-            BrowserRequestInfoMap.Visitor visitor = (int vBrowserId, KeyValuePair<int, int> vInfoId, RequestInfo vInfo, ref bool vRemove) =>
+            bool visitor(int vBrowserId, KeyValuePair<int, int> vInfoId, RequestInfo vInfo, ref bool vRemove)
             {
                 vRemove = removedTemp = (alwaysRemove || !vInfo.Persistent);
                 return true;
-            };
+            }
 
             var info = _browserRequestInfoMap.Find(browserId, new KeyValuePair<int, int>(requestId, contextId), visitor);
             if (info != null) removed = removedTemp;
@@ -422,7 +421,7 @@
             else
             {
                 // Cancel all requests with the specified context ID.
-                BrowserRequestInfoMap.Visitor visitor = (int vBrowserId, KeyValuePair<int, int> vInfoId, RequestInfo vInfo, ref bool vRemove) =>
+                bool visitor(int vBrowserId, KeyValuePair<int, int> vInfoId, RequestInfo vInfo, ref bool vRemove)
                 {
                     if (vInfoId.Key == contextId)
                     {
@@ -431,7 +430,7 @@
                         cancelCount++;
                     }
                     return true;
-                };
+                }
 
                 _browserRequestInfoMap.FindAll(browserId, visitor);
             }
@@ -543,8 +542,7 @@
         {
             Helpers.RequireRendererThread();
 
-            CefV8Context context;
-            if (_contextMap.TryGetValue(contextId, out context)) return context;
+            if (_contextMap.TryGetValue(contextId, out CefV8Context context)) return context;
             else return null;
         }
 

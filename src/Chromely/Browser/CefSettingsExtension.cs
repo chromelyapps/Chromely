@@ -1,200 +1,197 @@
-﻿// Copyright © 2017-2020 Chromely Projects. All rights reserved.
+﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
-using Chromely.Core.Infrastructure;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Xilium.CefGlue;
+namespace Chromely.Browser;
 
-namespace Chromely.Browser
+internal static class CefSettingsExtension
 {
-    public static class CefSettingsExtension
+    /// <summary>
+    /// Extension method to apply custom settings from <see cref="IChromelyConfiguration.CustomSettings"/>.
+    /// </summary>
+    /// <param name="cefSettings"><see cref="CefSettings"/> class to extend.</param>
+    /// <param name="customSettings">The custom settings type of <see cref="IChromelyConfiguration.CustomSettings"/>.</param>
+    public static void Update(this CefSettings cefSettings, IDictionary<string, string>? customSettings)
     {
-        public static void Update(this CefSettings cefSettings, IDictionary<string, string> customSettings)
+        if (cefSettings is null || customSettings is null || !customSettings.Any())
         {
-            if (cefSettings == null || customSettings == null || !customSettings.Any())
+            return;
+        }
+
+        foreach (var setting in customSettings)
+        {
+            bool boolResult;
+            int intResult;
+
+            if (string.IsNullOrWhiteSpace(setting.Value))
             {
-                return;
+                continue;
             }
 
-            foreach (var setting in customSettings)
+            switch (setting.Key.ToUpper())
             {
-                bool boolResult;
-                int intResult;
+                case CefSettingKeys.NOSANDBOX:
+                    if (setting.Value.TryParseBoolean(out boolResult))
+                    {
+                        cefSettings.NoSandbox = boolResult;
+                    }
 
-                if (string.IsNullOrWhiteSpace(setting.Value))
-                {
-                    continue;
-                }
+                    break;
 
-                switch (setting.Key.ToUpper())
-                {
-                    case CefSettingKeys.NOSANDBOX:
-                        if (setting.Value.TryParseBoolean(out boolResult))
-                        {
-                            cefSettings.NoSandbox = boolResult;
-                        }
+                case CefSettingKeys.BROWSERSUBPROCESSPATH:
+                    cefSettings.BrowserSubprocessPath = setting.Value;
+                    break;
 
-                        break;
+                case CefSettingKeys.MULTITHREADEDMESSAGELOOP:
+                    if (setting.Value.TryParseBoolean(out boolResult))
+                    {
+                        cefSettings.MultiThreadedMessageLoop = boolResult;
+                    }
 
-                    case CefSettingKeys.BROWSERSUBPROCESSPATH:
-                        cefSettings.BrowserSubprocessPath = setting.Value;
-                        break;
+                    break;
 
-                    case CefSettingKeys.MULTITHREADEDMESSAGELOOP:
-                        if (setting.Value.TryParseBoolean(out boolResult))
-                        {
-                            cefSettings.MultiThreadedMessageLoop = boolResult;
-                        }
+                case CefSettingKeys.EXTERNALMESSAGEPUMP:
+                    if (setting.Value.TryParseBoolean(out boolResult))
+                    {
+                        cefSettings.ExternalMessagePump = boolResult;
+                    }
 
-                        break;
+                    break;
 
-                    case CefSettingKeys.EXTERNALMESSAGEPUMP:
-                        if (setting.Value.TryParseBoolean(out boolResult))
-                        {
-                            cefSettings.ExternalMessagePump = boolResult;
-                        }
+                case CefSettingKeys.WINDOWLESSRENDERINGENABLED:
+                    if (setting.Value.TryParseBoolean(out boolResult))
+                    {
+                        cefSettings.WindowlessRenderingEnabled = boolResult;
+                    }
 
-                        break;
+                    break;
 
-                    case CefSettingKeys.WINDOWLESSRENDERINGENABLED:
-                        if (setting.Value.TryParseBoolean(out boolResult))
-                        {
-                            cefSettings.WindowlessRenderingEnabled = boolResult;
-                        }
+                case CefSettingKeys.COMMANDLINEARGSDISABLED:
+                    if (setting.Value.TryParseBoolean(out boolResult))
+                    {
+                        cefSettings.CommandLineArgsDisabled = boolResult;
+                    }
 
-                        break;
+                    break;
 
-                    case CefSettingKeys.COMMANDLINEARGSDISABLED:
-                        if (setting.Value.TryParseBoolean(out boolResult))
-                        {
-                            cefSettings.CommandLineArgsDisabled = boolResult;
-                        }
+                case CefSettingKeys.CACHEPATH:
+                    cefSettings.CachePath = setting.Value;
+                    break;
 
-                        break;
+                case CefSettingKeys.USERDATAPATH:
+                    cefSettings.UserDataPath = setting.Value;
+                    break;
 
-                    case CefSettingKeys.CACHEPATH:
-                        cefSettings.CachePath = setting.Value;
-                        break;
+                case CefSettingKeys.PERSISTSESSIONCOOKIES:
+                    if (setting.Value.TryParseBoolean(out boolResult))
+                    {
+                        cefSettings.PersistSessionCookies = boolResult;
+                    }
 
-                    case CefSettingKeys.USERDATAPATH:
-                        cefSettings.UserDataPath = setting.Value;
-                        break;
+                    break;
 
-                    case CefSettingKeys.PERSISTSESSIONCOOKIES:
-                        if (setting.Value.TryParseBoolean(out boolResult))
-                        {
-                            cefSettings.PersistSessionCookies = boolResult;
-                        }
+                case CefSettingKeys.PERSISTUSERPREFERENCES:
+                    if (setting.Value.TryParseBoolean(out boolResult))
+                    {
+                        cefSettings.PersistUserPreferences = boolResult;
+                    }
 
-                        break;
+                    break;
 
-                    case CefSettingKeys.PERSISTUSERPREFERENCES:
-                        if (setting.Value.TryParseBoolean(out boolResult))
-                        {
-                            cefSettings.PersistUserPreferences = boolResult;
-                        }
+                case CefSettingKeys.USERAGENT:
+                    cefSettings.UserAgent = setting.Value;
+                    break;
 
-                        break;
+                case CefSettingKeys.LOCALE:
+                    cefSettings.Locale = setting.Value;
+                    break;
 
-                    case CefSettingKeys.USERAGENT:
-                        cefSettings.UserAgent = setting.Value;
-                        break;
+                case CefSettingKeys.CEFLOGFILE:
+                case CefSettingKeys.LOGFILE:
+                    cefSettings.LogFile = setting.Value;
+                    break;
 
-                    case CefSettingKeys.LOCALE:
-                        cefSettings.Locale = setting.Value;
-                        break;
+                case CefSettingKeys.LOGSEVERITY:
+                    switch (setting.Value.ToUpper())
+                    {
+                        case LogSeverityOption.DEFAULT:
+                            cefSettings.LogSeverity = CefLogSeverity.Default;
+                            break;
+                        case LogSeverityOption.VERBOSE:
+                            cefSettings.LogSeverity = CefLogSeverity.Verbose;
+                            break;
+                        case LogSeverityOption.INFO:
+                            cefSettings.LogSeverity = CefLogSeverity.Info;
+                            break;
+                        case LogSeverityOption.ERROR:
+                            cefSettings.LogSeverity = CefLogSeverity.Warning;
+                            break;
+                        case LogSeverityOption.EXTERNAL:
+                            cefSettings.LogSeverity = CefLogSeverity.Error;
+                            break;
+                        case LogSeverityOption.FATAL:
+                            cefSettings.LogSeverity = CefLogSeverity.Fatal;
+                            break;
+                        case LogSeverityOption.DISABLE:
+                            cefSettings.LogSeverity = CefLogSeverity.Disable;
+                            break;
+                    }
 
-                    case CefSettingKeys.CEFLOGFILE:
-                    case CefSettingKeys.LOGFILE:
-                        cefSettings.LogFile = setting.Value;
-                        break;
+                    break;
 
-                    case CefSettingKeys.LOGSEVERITY:
-                        switch (setting.Value.ToUpper())
-                        {
-                            case LogSeverityOption.DEFAULT:
-                                cefSettings.LogSeverity = CefLogSeverity.Default;
-                                break;
-                            case LogSeverityOption.VERBOSE:
-                                cefSettings.LogSeverity = CefLogSeverity.Verbose;
-                                break;
-                            case LogSeverityOption.INFO:
-                                cefSettings.LogSeverity = CefLogSeverity.Info;
-                                break;
-                            case LogSeverityOption.ERROR:
-                                cefSettings.LogSeverity = CefLogSeverity.Warning;
-                                break;
-                            case LogSeverityOption.EXTERNAL:
-                                cefSettings.LogSeverity = CefLogSeverity.Error;
-                                break;
-                            case LogSeverityOption.FATAL:
-                                cefSettings.LogSeverity = CefLogSeverity.Fatal;
-                                break;
-                            case LogSeverityOption.DISABLE:
-                                cefSettings.LogSeverity = CefLogSeverity.Disable;
-                                break;
-                        }
+                case CefSettingKeys.JAVASCRIPTFLAGS:
+                    cefSettings.JavaScriptFlags = setting.Value;
+                    break;
 
-                        break;
+                case CefSettingKeys.RESOURCESDIRPATH:
+                    cefSettings.ResourcesDirPath = setting.Value;
+                    break;
 
-                    case CefSettingKeys.JAVASCRIPTFLAGS:
-                        cefSettings.JavaScriptFlags = setting.Value;
-                        break;
+                case CefSettingKeys.LOCALESDIRPATH:
+                    cefSettings.LocalesDirPath = setting.Value;
+                    break;
 
-                    case CefSettingKeys.RESOURCESDIRPATH:
-                        cefSettings.ResourcesDirPath = setting.Value;
-                        break;
+                case CefSettingKeys.PACKLOADINGDISABLED:
+                    if (setting.Value.TryParseBoolean(out boolResult))
+                    {
+                        cefSettings.PackLoadingDisabled = boolResult;
+                    }
 
-                    case CefSettingKeys.LOCALESDIRPATH:
-                        cefSettings.LocalesDirPath = setting.Value;
-                        break;
+                    break;
 
-                    case CefSettingKeys.PACKLOADINGDISABLED:
-                        if (setting.Value.TryParseBoolean(out boolResult))
-                        {
-                            cefSettings.PackLoadingDisabled = boolResult;
-                        }
+                case CefSettingKeys.REMOTEDEBUGGINGPORT:
+                    if (setting.Value.TryParseInteger(out intResult))
+                    {
+                        cefSettings.RemoteDebuggingPort = intResult;
+                    }
 
-                        break;
+                    break;
 
-                    case CefSettingKeys.REMOTEDEBUGGINGPORT:
-                        if (setting.Value.TryParseInteger(out intResult))
-                        {
-                            cefSettings.RemoteDebuggingPort = intResult;
-                        }
+                case CefSettingKeys.UNCAUGHTEXCEPTIONSTACKSIZE:
+                    if (setting.Value.TryParseInteger(out intResult))
+                    {
+                        cefSettings.UncaughtExceptionStackSize = intResult;
+                    }
 
-                        break;
+                    break;
 
-                    case CefSettingKeys.UNCAUGHTEXCEPTIONSTACKSIZE:
-                        if (setting.Value.TryParseInteger(out intResult))
-                        {
-                            cefSettings.UncaughtExceptionStackSize = intResult;
-                        }
+                case CefSettingKeys.ACCEPTLANGUAGELIST:
+                    cefSettings.AcceptLanguageList = setting.Value;
+                    break;
 
-                        break;
+                // Not supported by CefGlue
+                case CefSettingKeys.FOCUSEDNODECHANGEDENABLED:
+                    break;
 
-                    case CefSettingKeys.ACCEPTLANGUAGELIST:
-                        cefSettings.AcceptLanguageList = setting.Value;
-                        break;
-
-                    // Not supported by CefGlue
-                    case CefSettingKeys.FOCUSEDNODECHANGEDENABLED:
-                        break;
-
-                    // MacOS Only
-                    case CefSettingKeys.FRAMEWORKDIRPATH:
-                        cefSettings.FrameworkDirPath = setting.Value;
-                        break;
-                    // MacOS Only
-                    case CefSettingKeys.MAINBUNDLEPATH:
-                        cefSettings.MainBundlePath = setting.Value;
-                        break;
-                    default:
-                        break;
-                }
+                // MacOS Only
+                case CefSettingKeys.FRAMEWORKDIRPATH:
+                    cefSettings.FrameworkDirPath = setting.Value;
+                    break;
+                // MacOS Only
+                case CefSettingKeys.MAINBUNDLEPATH:
+                    cefSettings.MainBundlePath = setting.Value;
+                    break;
+                default:
+                    break;
             }
         }
     }

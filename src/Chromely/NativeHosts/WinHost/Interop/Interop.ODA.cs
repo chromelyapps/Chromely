@@ -2,22 +2,18 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System;
-using System.Runtime.InteropServices;
+namespace Chromely;
 
-namespace Chromely
+public static partial class Interop
 {
-    public static partial class Interop
+    public static partial class User32
     {
-        public static partial class User32
+        [Flags]
+        public enum ODA : uint
         {
-            [Flags]
-            public enum ODA : uint
-            {
-                DRAWENTIRE = 0x1,
-                SELECT = 0x2,
-                FOCUS = 0x4,
-            }
+            DRAWENTIRE = 0x1,
+            SELECT = 0x2,
+            FOCUS = 0x4,
         }
     }
 }

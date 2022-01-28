@@ -1,4 +1,6 @@
-﻿namespace Xilium.CefGlue.Wrapper
+﻿#pragma warning disable IDE0060
+
+namespace Xilium.CefGlue.Wrapper
 {
     using System;
     using System.Collections.Generic;
@@ -154,15 +156,14 @@
 
         #endregion
 
-        private readonly CefMessageRouterConfig _config;
         private readonly string _queryMessageName;
         private readonly string _cancelMessageName;
 
-        private readonly List<Handler> _handlerSet = new List<Handler>(4); // TODO: use a HashSet, for .NET 3.5+
+        private readonly List<Handler> _handlerSet = new(4); // TODO: use a HashSet, for .NET 3.5+
 
-        private readonly BrowserInfoMap _browserQueryInfoMap = new BrowserInfoMap();
+        private readonly BrowserInfoMap _browserQueryInfoMap = new();
 
-        private readonly CefMessageRouter.IdGeneratorInt64 _queryIdGenerator = new CefMessageRouter.IdGeneratorInt64();
+        private readonly CefMessageRouter.IdGeneratorInt64 _queryIdGenerator = new();
 
         /// <summary>
         /// Create a new router with the specified configuration.
@@ -171,19 +172,9 @@
         {
             if (!config.Validate()) throw new ArgumentException("Invalid configuration.");
 
-            _config = config;
             _queryMessageName = config.JSQueryFunction + CefMessageRouter.MessageSuffix;
             _cancelMessageName = config.JSCancelFunction + CefMessageRouter.MessageSuffix;
         }
-
-        ~CefMessageRouterBrowserSide()
-        {
-            // There should be no pending queries when the router is deleted.
-            Debug.Assert(_browserQueryInfoMap.IsEmpty);
-        }
-
-        // TODO: Dispose method ?
-
 
         /// <summary>
         /// Create a new router with the specified configuration.
@@ -202,7 +193,7 @@
         /// </summary>
         public bool AddHandler(Handler handler, bool first = false)
         {
-            if (handler == null) throw new ArgumentNullException("handler");
+            if (handler == null) throw new ArgumentNullException(nameof(handler));
 
             Helpers.RequireUIThread();
 
@@ -223,7 +214,7 @@
         /// </summary>
         public bool RemoveHandler(Handler handler)
         {
-            if (handler == null) throw new ArgumentNullException("handler");
+            if (handler == null) throw new ArgumentNullException(nameof(handler));
 
             Helpers.RequireUIThread();
 
@@ -262,11 +253,11 @@
             if (handler != null)
             {
                 int count = 0;
-                BrowserInfoMap.Visitor visitor = (int browserId, long key, QueryInfo value, ref bool remove) =>
+                bool visitor(int browserId, long key, QueryInfo value, ref bool remove)
                 {
                     if (value.Handler == handler) count++;
                     return true;
-                };
+                }
 
                 if (browser != null)
                 {
@@ -468,11 +459,11 @@
         private QueryInfo GetQueryInfo(int browserId, long queryId, bool alwaysRemove, ref bool removed)
         {
             bool removedTemp = false;
-            BrowserInfoMap.Visitor visitor = (int browserId_, long key, QueryInfo value, ref bool remove) =>
+            bool visitor(int browserId_, long key, QueryInfo value, ref bool remove)
             {
                 remove = removedTemp = alwaysRemove || !value.Persistent;
                 return true;
-            };
+            }
             var info = _browserQueryInfoMap.Find(browserId, queryId, visitor);
             if (info != null) removed = removedTemp;
             return info;
@@ -589,7 +580,7 @@
 
             if (_browserQueryInfoMap.IsEmpty) return;
 
-            BrowserInfoMap.Visitor visitor = (int browserId, long queryId, QueryInfo info, ref bool remove) =>
+            bool visitor(int browserId, long queryId, QueryInfo info, ref bool remove)
             {
                 if (handler == null || info.Handler == handler)
                 {
@@ -598,7 +589,7 @@
                     info.Dispose();
                 }
                 return true;
-            };
+            }
 
             if (browser != null)
             {
@@ -616,7 +607,7 @@
         // kReservedId all requests associated with |context_id| will be canceled.
         private void CancelPendingRequest(int browserId, int contextId, int requestId)
         {
-            BrowserInfoMap.Visitor visitor = (int vBrowserId, long queryId, QueryInfo info, ref bool remove) =>
+            bool visitor(int vBrowserId, long queryId, QueryInfo info, ref bool remove)
             {
                 if (info.ContextId == contextId
                     && (requestId == CefMessageRouter.ReservedId || info.RequestId == requestId))
@@ -629,7 +620,7 @@
                     return requestId == CefMessageRouter.ReservedId;
                 }
                 return true;
-            };
+            }
 
             _browserQueryInfoMap.FindAll(browserId, visitor);
         }

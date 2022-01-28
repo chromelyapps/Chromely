@@ -1,4 +1,7 @@
-﻿using System;
+﻿#nullable disable
+#pragma warning disable IDE0016
+
+using System;
 using System.IO;
 
 namespace ICSharpCode.SharpZipLib.Tar
@@ -150,9 +153,11 @@ namespace ICSharpCode.SharpZipLib.Tar
                 throw new ArgumentOutOfRangeException(nameof(blockFactor), "Factor cannot be negative");
             }
 
-            var tarBuffer = new TarBuffer();
-            tarBuffer.inputStream = inputStream;
-            tarBuffer.outputStream = null;
+            var tarBuffer = new TarBuffer
+            {
+                inputStream = inputStream,
+                outputStream = null
+            };
             tarBuffer.Initialize(blockFactor);
 
             return tarBuffer;
@@ -191,9 +196,11 @@ namespace ICSharpCode.SharpZipLib.Tar
                 throw new ArgumentOutOfRangeException(nameof(blockFactor), "Factor cannot be negative");
             }
 
-            var tarBuffer = new TarBuffer();
-            tarBuffer.inputStream = null;
-            tarBuffer.outputStream = outputStream;
+            var tarBuffer = new TarBuffer
+            {
+                inputStream = null,
+                outputStream = outputStream
+            };
             tarBuffer.Initialize(blockFactor);
 
             return tarBuffer;

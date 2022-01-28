@@ -116,40 +116,30 @@ The default implementation of [IChromelyConfiguration](https://github.com/chrome
 
 
 ````csharp
-class Program
-{
-   [STAThread]
-   static void Main(string[] args)
-   {
-      var config = DefaultConfiguration.CreateForRuntimePlatform();
+var config = DefaultConfiguration.CreateForRuntimePlatform();
 
-      AppBuilder
-      .Create()
-      .UseConfig<DefaultConfiguration>()
-      .UseApp<CustomChromelyApp>(config)
-      .Build()
-      .Run(args);
-   }
-}
+ThreadApt.STA();
+
+AppBuilder
+    .Create(args)
+    .UseConfig<DefaultConfiguration>()
+    .UseApp<CustomChromelyApp>(config)
+    .Build()
+    .Run();
 
 ````
 
 Or:
 
 ````csharp
-class Program
-{
-   [STAThread]
-   static void Main(string[] args)
-   {
-      AppBuilder
-      .Create()
-      .UseConfig<CustomConfiguraton>()  
-      .UseApp<CustomChromelyApp>(new CustomChromelyApp())
-      .Build()
-      .Run(args);
-   }
-}
+ThreadApt.STA();
+
+AppBuilder
+    .Create(args)
+    .UseConfig<CustomConfiguraton>()  
+    .UseApp<CustomChromelyApp>(new CustomChromelyApp())
+    .Build()
+    .Run();
 
 public class Customfiguraton: ICCustomConfiguraton
 {
@@ -159,19 +149,15 @@ public class Customfiguraton: ICCustomConfiguraton
 Or:
 
 ````csharp
-class Program
-{
-   [STAThread]
-   static void Main(string[] args)
-   {
-      AppBuilder
-      .Create()
-      .UseConfig<CustomConfiguraton>(new Customfiguraton())
-      .UseApp<CustomChromelyApp>(new CustomChromelyApp())
-      .Build()
-      .Run(args);
-   }
-}
+ThreadApt.STA();
+
+AppBuilder
+    .Create(args)
+    .UseConfig<CustomConfiguraton>(new Customfiguraton())
+    .UseApp<CustomChromelyApp>(new CustomChromelyApp())
+    .Build()
+    .Run();
+
 
 public class Customfiguraton: ICCustomConfiguraton
 {

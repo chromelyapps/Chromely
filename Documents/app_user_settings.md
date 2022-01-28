@@ -37,18 +37,11 @@ The default implementation of [IChromelyAppSettings](https://github.com/chromely
 To set a custom AppSettings:
 
 ````csharp
-class Program
-{
-   [STAThread]
-   static void Main(string[] args)
-   {
-      AppBuilder
-      .Create()
-      .UseApp<CustomChromelyApp>()
-      .Build()
-      .Run(args);
-   }
-}
+AppBuilder
+    .Create(args)
+    .UseApp<CustomChromelyApp>()
+    .Build()
+    .Run();
 
 public class CustomAppSettings : IChromelyAppSettings
 {

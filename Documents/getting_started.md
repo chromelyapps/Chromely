@@ -3,25 +3,20 @@
 
 When creating a new project, you want to create a .NET Core 3/.NET 5 Console Project (for all platforms - Windows, Linux, MacOS) or a .NET Framework Console Project for Windows. 
 
-Visual Studio 2019, JetBrains Rider or Visual Studio Code is preferred but any Editor can be used.
+Visual Studio 2022/2019, JetBrains Rider or Visual Studio Code is preferred but any Editor can be used.
 
 Chromely ONLY supports x64 application. Developers can try x86 too but will not be supported.
 
 A simple Chromely project requires:
 
 ````csharp
-class Program
-{
-   [STAThread]
-   static void Main(string[] args)
-   {
-       AppBuilder
-       .Create()
-       .UseApp<DemoChromelyApp>()
-       .Build()
-       .Run(args);
-    }
-}
+ThreadApt.STA();
+
+AppBuilder
+   .Create(args)
+   .UseApp<ChromelyBasicApp>()
+   .Build()
+   .Run();
 ````
 
 Chromely is configurable and extensible. 
@@ -31,37 +26,30 @@ To run a Chromely app, 3 primary objects can be configured. Other services/objec
 Full application builder options:
 
 ````csharp
-class Program
-{
-   [STAThread]
-   static void Main(string[] args)
-   {
-      AppBuilder
-      .Create()
-      .UseConfig<CustomConfiguraton>()
-      .UseWindow<CustomWindow>()
-      .UseApp<CustomChromelyApp>()
-      .Build()
-      .Run(args);
-   }
-}
+ThreadApt.STA();
+
+AppBuilder
+   .Create(args)
+   .UseConfig<CustomConfiguraton>()
+   .UseWindow<CustomWindow>()
+   .UseApp<CustomChromelyApp>()
+   .Build()
+   .Run();
+
 ````
 
 ````csharp
-class Program
-{
-   [STAThread]
-   static void Main(string[] args)
-   {
-      AppBuilder
-      .Create()
-      .UseConfig<CustomConfiguraton>(new CustomConfiguraton())
-      .UseWindow<CustomWindow>(new CustomWindow())
-      .UseApp<CustomChromelyApp>(new CustomChromelyApp())
-      .Build()
-      .Run(args);
-   }
-}
+
+ThreadApt.STA();
+
+AppBuilder
+   .Create(args)
+   .UseConfig<CustomConfiguraton>(new CustomConfiguraton())
+   .UseWindow<CustomWindow>(new CustomWindow())
+   .UseApp<CustomChromelyApp>(new CustomChromelyApp())
+   .Build()
+   .Run();
+
 ````
 
 #### Custom Application Class - required

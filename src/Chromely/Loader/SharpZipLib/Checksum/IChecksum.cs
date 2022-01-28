@@ -1,4 +1,6 @@
-﻿namespace ICSharpCode.SharpZipLib.Checksum
+﻿#nullable disable
+
+namespace ICSharpCode.SharpZipLib.Checksum
 {
     /// <summary>
     /// Interface to compute a data checksum used by checked input/output streams.

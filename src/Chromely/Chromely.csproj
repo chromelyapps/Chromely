@@ -1,54 +1,40 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+	<TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
+	<ImplicitUsings>enable</ImplicitUsings>
+	<Nullable>enable</Nullable>
     <Platforms>AnyCPU</Platforms>
-    <ProductVersion>5.1.96.1</ProductVersion>
-    <AssemblyVersion>5.1.96.1</AssemblyVersion>
-    <FileVersion>5.1.96.1</FileVersion>
-    <Version>5.1.96.1</Version>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Product>Chromely</Product>
-    <Authors>Chromely Projects</Authors>
-    <Company>Chromely Projects</Company>
-    <Copyright>Copyright © 2017-2020 Chromely Projects</Copyright>
-    <PackageProjectUrl>https://github.com/chromelyapps/Chromely</PackageProjectUrl>
-    <PackageIcon>chromely.png</PackageIcon>
-    <PackageTags>CEF Chromium HTML5 Desktop Chromely CefGlue NetStandard .NET Core 3 .NET 5</PackageTags>
-    <Description>Primary Chromely implementation library - this is in NetStandard as it can be used in both .NET (Windows), .NET Core and .NET 5 (Windows, Linux, MacOS). Chromely version naming is based Chromely and Chromium versions implemented- major.minor.chromuim version.patch e.g 1.0.70.0.</Description>
-    <PackageReleaseNotes>
-		- Upgraded to CefGlue/Chromium v96.
-		- Fix for - https://github.com/chromelyapps/demo-projects/issues/56
-		- CEF binaries link - https://cef-builds.spotifycdn.com/cef_binary_96.0.18%2Bgfe551e4%2Bchromium-96.0.4664.110_{platform}_minimal.tar.bz2
-		                                        (where platform = "windows64", "windows32", "linux64", "mmacosx64", "linuxarm64")
-	</PackageReleaseNotes>
-    <RepositoryType>Github Repository</RepositoryType>
-    <RepositoryUrl>https://github.com/chromelyapps/Chromely</RepositoryUrl>
-    <Configurations>Debug;Release;ReleaseLinux;DebugLinux</Configurations>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\$(TargetFramework)\Chromely.xml</DocumentationFile>
+    <NoWarn>1701;1702; NU5125;7035;CS8600;CS8601;CS8602;CS8603;CS8604;CS8618;CS8622;CS8625;IDE0079</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <DocumentationFile>bin\Debug\$(TargetFramework)\Chromely.xml</DocumentationFile>
     <NoWarn>1701;1702; NU5125;7035</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DocumentationFile>bin\Release\$(TargetFramework)\Chromely.xml</DocumentationFile>
+    <NoWarn>1701;1702; NU5125;7035;CS8600;CS8601;CS8602;CS8603;CS8604;CS8618;CS8622;CS8625;IDE0079</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <DocumentationFile>bin\Release\$(TargetFramework)\Chromely.xml</DocumentationFile>
     <NoWarn>1701;1702; NU5125;7035</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'ReleaseLinux' ">
     <Optimize>true</Optimize>
-    <NoWarn>1701;1702; NU5125;7035</NoWarn>
+    <NoWarn>1701;1702; NU5125;7035;CS8600;CS8601;CS8602;CS8603;CS8604;CS8618;CS8622;CS8625;IDE0079</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'DebugLinux' ">
     <Optimize>true</Optimize>
-    <NoWarn>1701;1702; NU5125;7035</NoWarn>
+    <NoWarn>1701;1702; NU5125;7035;CS8600;CS8601;CS8602;CS8603;CS8604;CS8618;CS8622;CS8625;IDE0079</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

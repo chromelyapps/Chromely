@@ -1,47 +1,30 @@
-﻿// Copyright © 2017-2020 Chromely Projects. All rights reserved.
+﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
-using Chromely.Core;
-using Chromely.Core.Configuration;
-using Xilium.CefGlue;
+namespace Chromely.Browser;
 
-namespace Chromely.Browser
+/// <summary>
+/// The CefGlue resource scheme handler factory.
+/// </summary>
+public class DefaultResourceSchemeHandlerFactory : CefSchemeHandlerFactory
 {
+    protected readonly IChromelyConfiguration _config;
+    protected readonly IChromelyErrorHandler _chromelyErrorHandler;
+
     /// <summary>
-    /// The CefGlue resource scheme handler factory.
+    /// Initializes a new instance of <see cref="DefaultResourceSchemeHandlerFactory"/>.
     /// </summary>
-    public class DefaultResourceSchemeHandlerFactory : CefSchemeHandlerFactory
+    /// <param name="config">Instance of <see cref="IChromelyConfiguration"/>.</param>
+    /// <param name="chromelyErrorHandler">Instance of <see cref="IChromelyErrorHandler"/>.</param>
+    public DefaultResourceSchemeHandlerFactory(IChromelyConfiguration config, IChromelyErrorHandler chromelyErrorHandler)
     {
-        protected readonly IChromelyConfiguration _config;
-        protected readonly IChromelyErrorHandler _chromelyErrorHandler;
+        _config = config;
+        _chromelyErrorHandler = chromelyErrorHandler;
+    }
 
-        public DefaultResourceSchemeHandlerFactory(IChromelyConfiguration config, IChromelyErrorHandler chromelyErrorHandler)
-        {
-            _config = config;
-            _chromelyErrorHandler = chromelyErrorHandler;
-        }
-
-        /// <summary>
-        /// The create.
-        /// </summary>
-        /// <param name="browser">
-        /// The browser.
-        /// </param>
-        /// <param name="frame">
-        /// The frame.
-        /// </param>
-        /// <param name="schemeName">
-        /// The scheme name.
-        /// </param>
-        /// <param name="request">
-        /// The request.
-        /// </param>
-        /// <returns>
-        /// The <see cref="CefResourceHandler"/>.
-        /// </returns>
-        protected override CefResourceHandler Create(CefBrowser browser, CefFrame frame, string schemeName, CefRequest request)
-        {
-            return new DefaultResourceSchemeHandler(_config, _chromelyErrorHandler);
-        }
+    /// <inheritdoc/>
+    protected override CefResourceHandler Create(CefBrowser browser, CefFrame frame, string schemeName, CefRequest request)
+    {
+        return new DefaultResourceSchemeHandler(_config, _chromelyErrorHandler);
     }
 }

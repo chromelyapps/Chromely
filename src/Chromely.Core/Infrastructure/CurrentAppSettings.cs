@@ -1,30 +1,32 @@
-﻿// Copyright © 2017-2020 Chromely Projects. All rights reserved.
+﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
-using Chromely.Core.Defaults;
+namespace Chromely.Core.Infrastructure;
 
-namespace Chromely.Core.Infrastructure
+/// <summary>
+/// Wrapper class to assign <see cref="DefaultAppSettings"/> or a custom implementation of <see cref="IChromelyAppSettings"/>.
+/// </summary>
+public class CurrentAppSettings : ChromelyAppUser
 {
-    public class CurrentAppSettings : ChromelyAppUser
+    private IChromelyAppSettings? appSettings;
+
+    /// <summary>
+    /// Gets or sets the dynamic object as a set of "Properties".
+    /// </summary>
+    public override IChromelyAppSettings Properties
     {
-        private IChromelyAppSettings appSettings;
-
-        public override IChromelyAppSettings Properties
+        get
         {
-            get
+            if (appSettings is null)
             {
-                if (appSettings == null)
-                {
-                    appSettings = new DefaultAppSettings();
-                }
+                appSettings = new DefaultAppSettings();
+            }
 
-                return appSettings;
-            }
-            set
-            {
-                appSettings = value;
-            }
+            return appSettings;
         }
-
+        set
+        {
+            appSettings = value;
+        }
     }
 }
