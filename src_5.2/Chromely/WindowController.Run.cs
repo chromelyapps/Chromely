@@ -59,7 +59,7 @@ public partial class WindowController
 
         _config.ChromelyVersion = CefRuntime.ChromeVersion;
 
-        var tempFiles = CefBinariesLoader.Load(_binariesDownloader, _config);
+        CefBinariesLoader.Load(_binariesDownloader, _config);
 
         CefRuntime.EnableHighDpiSupport();
 
@@ -134,7 +134,7 @@ public partial class WindowController
         RegisterDefaultSchemeHandlers();
         RegisterCustomSchemeHandlers();
 
-        CefBinariesLoader.DeleteTempFiles(tempFiles);
+        CefBinariesLoader.Cleanup(_binariesDownloader);
 
         _window.Init(_settings);
 

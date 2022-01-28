@@ -6,8 +6,13 @@ namespace Chromely;
 /// <summary>
 /// Represents CEF binaries downloader.
 /// </summary>
-public interface IBinariesDownloader
+public interface ICefDownloader
 {
+    /// <summary>
+    /// Gets the CEF download notification - instance of <see cref="ICefDownloadNotification"/>.
+    /// </summary>
+    ICefDownloadNotification Notification { get; }
+
     /// <summary>
     /// Primary entry function for downloading CEF binaries.
     /// </summary>

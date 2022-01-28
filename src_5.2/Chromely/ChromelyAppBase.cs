@@ -18,7 +18,7 @@ public abstract class ChromelyAppBase : ChromelyApp
         services.TryAddSingleton<IChromelyDataTransferOptions, DataTransferOptions>();
         services.TryAddSingleton<IChromelyModelBinder, DefaultModelBinder>();
         services.TryAddSingleton<IChromelyRequestHandler, DefaultActionRequestHandler>();
-        services.TryAddSingleton<IBinariesDownloader, DefaultBinariesDownloader>();
+        services.TryAddSingleton<ICefDownloader, DefaultCefDownloader>();
 
         services.TryAddSingleton<IChromelyWindow, Window>();
         services.TryAddSingleton<ChromelyWindowController, WindowController>();

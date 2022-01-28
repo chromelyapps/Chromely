@@ -17,4 +17,9 @@ public interface ICefDownloadOptions
     /// Gets or sets a value indicating whether CEF binaries should be downloaded silently.
     /// </summary>
     bool DownloadSilently { get; set; }
+
+    /// <summary>
+    /// Gets or sets the binaries download notification type.
+    /// </summary>
+    CefDownloadNotificationType NotificationType { get; set; }
 }

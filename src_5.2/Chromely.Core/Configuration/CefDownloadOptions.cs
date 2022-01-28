@@ -15,6 +15,7 @@ public class CefDownloadOptions : ICefDownloadOptions
     {
         AutoDownloadWhenMissing = true;
         DownloadSilently = false;
+        NotificationType = CefDownloadNotificationType.Console;
     }
 
     /// <summary>
@@ -22,10 +23,14 @@ public class CefDownloadOptions : ICefDownloadOptions
     /// </summary>
     /// <param name="autoDownload">Flag to set if auto download is allowed.</param>
     /// <param name="silentDownload">Flag to set to download silently.</param>
-    public CefDownloadOptions(bool autoDownload, bool silentDownload)
+    /// <param name="notificationType">Instance of <see cref="CefDownloadNotificationType"/>.</param>
+    public CefDownloadOptions(bool autoDownload, 
+                             bool silentDownload, 
+                             CefDownloadNotificationType notificationType = CefDownloadNotificationType.Console)
     {
         AutoDownloadWhenMissing = autoDownload;
         DownloadSilently = silentDownload;
+        NotificationType = notificationType;
     }
 
     /// <summary>
@@ -37,4 +42,9 @@ public class CefDownloadOptions : ICefDownloadOptions
     /// Gets or sets a value indicating whether CEF binaries should be downloaded silently.
     /// </summary>
     public bool DownloadSilently { get; set; }
+
+    /// <summary>
+    /// Gets or sets the binaries download notification type.
+    /// </summary>
+    public CefDownloadNotificationType NotificationType { get; set; }
 }
