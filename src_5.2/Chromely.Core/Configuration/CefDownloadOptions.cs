@@ -15,7 +15,7 @@ public class CefDownloadOptions : ICefDownloadOptions
     {
         AutoDownloadWhenMissing = true;
         DownloadSilently = false;
-        NotificationType = CefDownloadNotificationType.Console;
+        NotificationType = CefDownloadNotificationType.Logger;
     }
 
     /// <summary>
@@ -26,7 +26,7 @@ public class CefDownloadOptions : ICefDownloadOptions
     /// <param name="notificationType">Instance of <see cref="CefDownloadNotificationType"/>.</param>
     public CefDownloadOptions(bool autoDownload, 
                              bool silentDownload, 
-                             CefDownloadNotificationType notificationType = CefDownloadNotificationType.Console)
+                             CefDownloadNotificationType notificationType = CefDownloadNotificationType.Logger)
     {
         AutoDownloadWhenMissing = autoDownload;
         DownloadSilently = silentDownload;

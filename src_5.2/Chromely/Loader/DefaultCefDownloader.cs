@@ -28,6 +28,10 @@ public class DefaultCefDownloader : ICefDownloader
             {
                 switch (_config.CefDownloadOptions.NotificationType)
                 {
+                    case CefDownloadNotificationType.Logger:
+                        _notification = new LoggerCefDownloadNotification();
+                        break;
+
                     case CefDownloadNotificationType.Console:
                         _notification = new ConsoleCefDownloadNotification();
                         break;
@@ -37,7 +41,7 @@ public class DefaultCefDownloader : ICefDownloader
                         break;
 
                     default:
-                        _notification = new ConsoleCefDownloadNotification();
+                        _notification = new LoggerCefDownloadNotification();
                         break;
                 }
             }

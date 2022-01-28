@@ -1,8 +1,11 @@
 ﻿// Copyright © 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
-namespace Chromely.Core.Configuration;
+namespace Chromely;
 
+/// <summary>
+/// Sets of notication callback methods in CEF binaries download cycle.
+/// </summary>
 public interface ICefDownloadNotification
 {
     /// <summary>

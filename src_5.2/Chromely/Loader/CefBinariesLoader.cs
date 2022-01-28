@@ -55,7 +55,8 @@ public static class CefBinariesLoader
     }
 
     /// <summary>
-    /// The delete temp files.
+    /// Clean up methods - example html notification generates temporary files. 
+    /// The files should be deleted here.
     /// </summary>
     /// <param name="cefBinariesDownloader">The cef binaries downloader.</param>
     public static void Cleanup(ICefDownloader cefBinariesDownloader)
