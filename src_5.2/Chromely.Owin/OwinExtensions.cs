@@ -5,11 +5,21 @@ namespace Chromely.Owin;
 
 public static class OwinExtensions
 {
-    public static bool IsOwinApp(this ChromelyApp startup)
+    /// <summary>
+    /// Checks if the application is of OWIN type.
+    /// </summary>
+    /// <param name="app"></param>
+    /// <returns>true if of OWIN type, otherwise false.</returns>
+    public static bool IsOwinApp(this ChromelyApp app)
     {
-        return typeof(IOwinAppStartup).IsAssignableFrom(startup.GetType());
+        return typeof(IOwinAppStartup).IsAssignableFrom(app.GetType());
     }
 
+    /// <summary>
+    /// Checks of error code is a client error code (4xx).
+    /// </summary>
+    /// <param name="statusCode">The status code - type of <see cref="HttpStatusCode"/>.</param>
+    /// <returns>true if error code is client error code, otherwise false.</returns>
     public static bool IsClientErrorCode(this HttpStatusCode statusCode)
     {
         // 4xx client errors
@@ -17,12 +27,22 @@ public static class OwinExtensions
                (int)statusCode <= ResponseConstants.MaxClientErrorStatusCode;
     }
 
+    /// <summary>
+    /// Checks of server code is a client error code (4xx).
+    /// </summary>
+    /// <param name="statusCode">The status code - type of <see cref="HttpStatusCode"/>.</param>
+    /// <returns>true if error code is client server code, otherwise false.</returns>
     public static bool IsServerErrorCode(this HttpStatusCode statusCode)
     {
         // 5xx server errors
         return (int)statusCode >= ResponseConstants.MinServerErrorStatusCode;
     }
 
+    /// <summary>
+    /// Gets the mime type from dictionary of headers.
+    /// </summary>
+    /// <param name="headers">The headers.</param>
+    /// <returns>the mime type.</returns>
     public static string GetMimeType(this IDictionary<string, string[]> headers)
     {
        if (headers is null || !headers.Any())
@@ -39,6 +59,11 @@ public static class OwinExtensions
         return ResourceHandler.DefaultMimeType;
     }
 
+    /// <summary>
+    /// Parse routes and add to the pipeline - instance of <see cref="IOwinPipeline"/>.
+    /// </summary>
+    /// <param name="owinPipeline">Instance of <see cref="IOwinPipeline"/>.</param>
+    /// <param name="provider">The <see cref="IServiceProvider"/> for application services.</param>
     public static void ParseRoutes(this IOwinPipeline owinPipeline, IServiceProvider provider)
     {
         try
@@ -89,6 +114,12 @@ public static class OwinExtensions
         }
     }
 
+    /// <summary>
+    /// Checks if the specified url is an OWIN action route.
+    /// </summary>
+    /// <param name="owinPipeline"></param>
+    /// <param name="url"></param>
+    /// <returns>true if an OWIN action route, otherwise false.</returns>
     public static bool IsUrlActionRoute(this IOwinPipeline owinPipeline, string url)
     {
         try
@@ -107,6 +138,12 @@ public static class OwinExtensions
         return false;
     }
 
+    /// <summary>
+    /// Checks if the specified url is an OWIN error handling route.
+    /// </summary>
+    /// <param name="owinPipeline"></param>
+    /// <param name="url"></param>
+    /// <returns>true if an OWIN error handling route, otherwise false.</returns>
     public static bool IsUrlErrorHandlingPath(this IOwinPipeline owinPipeline, string url)
     {
         try

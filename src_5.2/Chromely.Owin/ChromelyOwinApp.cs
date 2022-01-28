@@ -51,10 +51,13 @@ public abstract class ChromelyOwinApp : ChromelyAppBase, IOwinAppStartup
 
     /// <inheritdoc />
     public abstract void Configure(IConfigurationBuilder configBuilder);
+
     /// <inheritdoc />
     public abstract void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory);
+
     /// <inheritdoc />
     public abstract void Configure(IWebHostBuilder builder);
+
     /// <inheritdoc />
     public abstract void Configure(IWebHost host);
 }

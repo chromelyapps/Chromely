@@ -19,6 +19,7 @@ public class ChromelyOwinErrorHandler : DefaultErrorHandler
         _owinPipeline = owinPipeline;
     }
 
+    /// <inheritdoc/>
     public async override Task<IChromelyResource> HandleErrorAsync(string requestUrl, IChromelyResource response, Exception? exception)
     {
         if (exception is not null)

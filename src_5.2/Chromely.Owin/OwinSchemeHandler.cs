@@ -23,13 +23,7 @@ public class OwinSchemeHandler : ResourceHandler
         _errorHandler = errorHandler;
     }
 
-    /// <summary>
-    /// Read the request, then process it through the OWIN pipeline
-    /// then populate the response properties.
-    /// </summary>
-    /// <param name="request">request</param>
-    /// <param name="callback">callback</param>
-    /// <returns>always returns true as we'll handle all requests this handler is registered for.</returns>
+    /// <inheritdoc/>
     public override CefReturnValue ProcessRequestAsync(CefRequest request, CefCallback callback)
     {
         var requestBody = Stream.Null;

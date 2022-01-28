@@ -41,7 +41,7 @@ public abstract class ChromelyApp
         // Add core services if not already added.
         // Expected core services are -
         // IChromelyAppSettings, IChromelyConfiguration, IChromelyLogger, IChromelyRouteProvider, IChromelyErrorHandler
-        // DefaultAppSettings  DefaultConfiguration, SimpleLogger, DefaultRouteProvider, DefaultErrorHandler
+        // DefaultAppSettings  DefaultConfiguration, SimpleLogger, DefaultRouteProvider, DefaultErrorHandler, DefaultCefDownloader
         // Logger is added in Initialize method
 
         services.TryAddSingleton<IChromelyConfiguration>(DefaultConfiguration.CreateForRuntimePlatform());
@@ -58,12 +58,6 @@ public abstract class ChromelyApp
     /// <param name="services">The <see cref="IServiceCollection" /> to add services to.</param>
     public virtual void ConfigureServicesResolver(IServiceCollection services)
     {
-        /*  Collection service resolvers for types: 
-            IChromelyJsBindingHandler
-            IChromelyCustomHandler
-            IChromelyResourceHandlerFactory
-            IChromelySchemeHandlerFactory
-         */
         services.AddTransient<ChromelyHandlersResolver>(serviceProvider => (serviceType) =>
         {
             return serviceProvider.GetServices(serviceType);

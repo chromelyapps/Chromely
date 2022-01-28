@@ -12,10 +12,12 @@ public interface IOwinAppStartup
     /// Gets or sets the environent.
     /// </summary>
     string? Environment { get; set; }
+
     /// <summary>
     /// Gets or sets the error handling path.
     /// </summary>
     string? ErrorHandlingPath { get; set; }
+
     /// <summary>
     /// Gets or sets Owin/Asp.NET Core configuration.
     /// </summary>
@@ -26,11 +28,13 @@ public interface IOwinAppStartup
     /// </summary>
     /// <param name="configBuilder">The <see cref="IConfigurationBuilder"/> instance.</param>
     void Configure(IConfigurationBuilder configBuilder);
+
     /// <summary>
     /// The primary way to add services. All default handlers should be overriden here using custom handlers.
     /// </summary>
     /// <param name="services">The <see cref="IServiceCollection" /> to add services to.</param>
     void ConfigureServices(IServiceCollection services);
+
     /// <summary>
     /// Configure other primary Owin services.
     /// </summary>
@@ -38,11 +42,13 @@ public interface IOwinAppStartup
     /// <param name="env">The <see cref="IWebHostEnvironment"/> instance.</param>
     /// <param name="loggerFactory">The <see cref="ILoggerFactory"/> instance.</param>
     void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory);
+
     /// <summary>
     /// Configure other primary Owin services using the host builder.
     /// </summary>
     /// <param name="builder">The <see cref="IWebHostBuilder"/> instance.</param>
     void Configure(IWebHostBuilder builder);
+
     /// <summary>
     /// Configure other primary Owin services using the host.
     /// </summary>
