@@ -1,8 +1,6 @@
 <p align="center"><img src="https://github.com/chromelyapps/Chromely/blob/master/nugets/chromely.ico?raw=true" /></p>
 <h1 align="center">Chromely</h1>
 
-**Please read! -[Upgrade to v5.2 - .NET 6, AspNetCore Owin, MVC-styled controller actions](https://github.com/chromelyapps/Chromely/issues/355)**
-
 <br />
 
 ![#c5f015](https://via.placeholder.com/15/c5f015/000000?text=+) For developers who are interested in [WebView2](https://docs.microsoft.com/en-us/microsoft-edge/webview2/) there is [EdgeSharp](https://github.com/edgesharp/EdgeSharp), an offshoot of Chromely.
