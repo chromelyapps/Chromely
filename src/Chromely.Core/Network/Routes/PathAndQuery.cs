@@ -37,7 +37,7 @@ public class PathAndQuery
 
         try
         {
-            if (!requestUrl.Trim().StartsWith("/"))
+            if (!requestUrl.Trim().StartsWith("/", StringComparison.Ordinal))
             {
                 requestUrl = $"/{requestUrl.Trim()}";
             }

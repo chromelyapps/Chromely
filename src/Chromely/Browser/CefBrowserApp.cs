@@ -55,8 +55,8 @@ internal class CefBrowserApp : CefApp
                     {
                         // add if not already added
                         var firstOrDefault = schemeExes.FirstOrDefault(x => x.ValidSchemeHost &&
-                                                                      x.Scheme.ToLower().Equals(schemeHandler.Scheme.Scheme.ToLower()) &&
-                                                                      x.Host.ToLower().Equals(schemeHandler.Scheme.Host.ToLower()));
+                                                                      x.Scheme.Equals(schemeHandler.Scheme.Scheme, StringComparison.OrdinalIgnoreCase) &&
+                                                                      x.Host.Equals(schemeHandler.Scheme.Host, StringComparison.OrdinalIgnoreCase));
                         if (firstOrDefault is null)
                         {
                             schemeExes.Add(new UrlSchemeEx(schemeHandler.Scheme, schemeHandler.IsCorsEnabled, schemeHandler.IsSecure));

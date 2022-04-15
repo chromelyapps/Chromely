@@ -409,7 +409,7 @@ public abstract partial class NativeHostBase : IChromelyNativeHost
             {
                 var assembly = Assembly.GetEntryAssembly();
                 var iconAsResource = assembly?.GetManifestResourceNames()
-                    .FirstOrDefault(res => res.EndsWith(_options.RelativePathToIconFile));
+                    .FirstOrDefault(res => res.EndsWith(_options.RelativePathToIconFile, StringComparison.Ordinal));
                 if (iconAsResource is not null)
                 {
                     using var resStream = assembly.GetManifestResourceStream(iconAsResource);

@@ -462,8 +462,8 @@ public static class Helpers
     public static bool IsValidJson(this string strInput)
     {
         strInput = strInput.Trim();
-        if ((strInput.StartsWith("{") && strInput.EndsWith("}")) || //For object
-            (strInput.StartsWith("[") && strInput.EndsWith("]"))) //For array
+        if ((strInput.StartsWith("{", StringComparison.Ordinal) && strInput.EndsWith("}", StringComparison.Ordinal)) || //For object
+            (strInput.StartsWith("[", StringComparison.Ordinal) && strInput.EndsWith("]", StringComparison.Ordinal))) //For array
         {
             return true;
         }

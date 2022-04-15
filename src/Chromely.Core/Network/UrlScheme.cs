@@ -7,7 +7,7 @@ namespace Chromely.Core.Network;
 /// The Chromely url scheme.
 /// </summary>
 /// <remarks>
-/// The UrlScheme allows developers to configure how a scheme is handled. 
+/// The UrlScheme allows developers to configure how a scheme is handled.
 /// This is dictated mostly be url scheme type as defined in <see cref="Network.UrlSchemeType"/>.
 /// </remarks>
 public class UrlScheme
@@ -162,7 +162,7 @@ public class UrlScheme
     /// <summary>
     /// Gets or sets a value indicating whether url must be relative to base.
     /// Only valid for external url.
-    /// If base is http://a.com/me/you then 
+    /// If base is http://a.com/me/you then
     /// http://a.com/me/you/they is valid but
     /// http://a.com/me/they is not  valid
     /// </summary>
@@ -191,7 +191,7 @@ public class UrlScheme
             return false;
         }
 
-        return scheme.ToLower() switch
+        return scheme.ToLowerInvariant() switch
         {
             "http" or "https" or "file" or "ftp" or "about" or "data" => true,
             _ => false,
@@ -220,8 +220,8 @@ public class UrlScheme
             return false;
         }
 
-        if (Scheme.ToLower().Equals(uri.Scheme) &&
-            Host.ToLower().Equals(uri.Host))
+        if (Scheme.Equals(uri.Scheme, StringComparison.OrdinalIgnoreCase) &&
+            Host.Equals(uri.Host, StringComparison.OrdinalIgnoreCase))
         {
             return IsValidUrl(url);
         }

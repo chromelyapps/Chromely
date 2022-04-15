@@ -1,4 +1,4 @@
-// Copyright © 2017 Chromely Projects. All rights reserved.
+// Copyright Â© 2017 Chromely Projects. All rights reserved.
 // Use of this source code is governed by MIT license that can be found in the LICENSE file.
 
 namespace Chromely.Core.Infrastructure;
@@ -59,7 +59,7 @@ public static class ChromelyRuntime
         try
         {
             var osName = Environment.OSVersion.VersionString;
-            if (osName.ToLower().Contains("darwin")) return true;
+            if (osName.ToLowerInvariant().Contains("darwin")) return true;
             if (File.Exists(@"/System/Library/CoreServices/SystemVersion.plist")) return true;
         }
         catch { }
