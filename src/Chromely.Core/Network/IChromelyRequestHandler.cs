@@ -26,7 +26,8 @@ public interface IChromelyRequestHandler
     /// <param name="postData">Post data object.</param>
     /// <param name="requestData">The json data of the entire request object.</param>
     /// <returns>Instance of <see cref="IChromelyResponse"/>.</returns>
-    IChromelyResponse Execute(string requestId, string routeUrl, IDictionary<string, object>? parameters, object? postData, string? requestData);
+    IChromelyResponse Execute(string requestId, string routeUrl, IDictionary<string, object>? parameters,
+        object? postData, string? requestData);
 
     /// <summary>
     /// Execute asynchronously requests that have responses.

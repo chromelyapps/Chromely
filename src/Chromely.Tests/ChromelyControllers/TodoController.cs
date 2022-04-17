@@ -66,6 +66,7 @@ public class TodoController : ChromelyController
     [ChromelyRoute(Path = "/todo/async/getall")]
     public async Task<IEnumerable<TodoItem>> GetTodoItemsAsync()
     {
+        await Task.Delay(1000);
         using var context = _contextFactory.CreateDbContext();
         return await context.TodoItems.ToListAsync();
     }
@@ -73,6 +74,7 @@ public class TodoController : ChromelyController
     [ChromelyRoute(Path = "/todo/async/get")]
     public async Task<TodoItem> GetTodoItemAsync(long id)
     {
+        await Task.Delay(1000);
         using var context = _contextFactory.CreateDbContext();
 #pragma warning disable CS8603 // Possible null reference return.
         return await context.TodoItems.FindAsync(id);
@@ -82,6 +84,7 @@ public class TodoController : ChromelyController
     [ChromelyRoute(Path = "/todo/async/create")]
     public async Task<int> CreateTodoItemAsync(TodoItem todoItem)
     {
+        await Task.Delay(1000);
         using var context = _contextFactory.CreateDbContext();
         context.TodoItems.Add(todoItem);
         return await context.SaveChangesAsync();
@@ -90,6 +93,7 @@ public class TodoController : ChromelyController
     [ChromelyRoute(Path = "/todo/async/update")]
     public async Task<int> UpdateTodoItemAsync(long id, TodoItem todoItem)
     {
+        await Task.Delay(1000);
         if (id != todoItem.Id)
         {
             return 0;
@@ -118,6 +122,7 @@ public class TodoController : ChromelyController
     [ChromelyRoute(Path = "/todo/async/delete")]
     public async Task<int> DeleteTodoItemAsync(long id)
     {
+        await Task.Delay(1000);
         using var context = _contextFactory.CreateDbContext();
         var todoItem = await context.TodoItems.FindAsync(id);
         if (todoItem is null)

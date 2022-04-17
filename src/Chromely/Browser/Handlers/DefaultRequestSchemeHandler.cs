@@ -152,7 +152,7 @@ public class DefaultRequestSchemeHandler : ResourceHandler
                             {
                                 var content = Encoding.UTF8.GetBytes(jsonData);
                                 _stream = new MemoryStream();
-                                _stream.Write(content, 0, content.Length);
+                                await _stream.WriteAsync(content, 0, content.Length);
                             }
                         }
                     }
