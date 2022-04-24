@@ -42,7 +42,7 @@ public class DefaultActionRequestHandler : IChromelyRequestHandler
             return _chromelyErrorHandler.HandleRouteNotFound(requestId, routePath);
         }
 
-        if (routePath.ToLower().Equals("/info"))
+        if (routePath.Equals("/info", StringComparison.OrdinalIgnoreCase))
         {
             return _chromelyInfo.GetInfo(requestId);
         }
@@ -64,7 +64,7 @@ public class DefaultActionRequestHandler : IChromelyRequestHandler
             return _chromelyErrorHandler.HandleRouteNotFound(requestId, routePath);
         }
 
-        if (routePath.ToLower().Equals("/info"))
+        if (routePath.Equals("/info", StringComparison.OrdinalIgnoreCase))
         {
             return _chromelyInfo.GetInfo(requestId);
         }

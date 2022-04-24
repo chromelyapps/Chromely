@@ -32,7 +32,7 @@ public class DefaultExternalRequestSchemeHandler : DefaultAsyncHandlerBase
     /// </summary>
     protected virtual HttpMethod GetHttpMethod(string methodName)
     {
-        return methodName.ToUpper() switch
+        return methodName.ToUpperInvariant() switch
         {
             "GET" => HttpMethod.Get,
             "PUT" => HttpMethod.Put,

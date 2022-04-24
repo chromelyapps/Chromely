@@ -2292,7 +2292,7 @@ public static class MimeMapper
             throw new ArgumentNullException(nameof(extension));
         }
 
-        if (!extension.StartsWith("."))
+        if (!extension.StartsWith(".", StringComparison.Ordinal))
         {
             extension = "." + extension;
         }

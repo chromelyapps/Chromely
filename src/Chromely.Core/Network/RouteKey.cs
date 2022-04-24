@@ -9,13 +9,13 @@ public static class RouteKey
     {
         url = url?.Trim().TrimStart('/');
         var routeKey = $"action_{url}".Replace("/", "_").Replace("\\", "_");
-        return routeKey.ToLower();
+        return routeKey.ToLowerInvariant();
     }
 
     public static string CreateCommandKey(string? url)
     {
         url = url?.Trim().TrimStart('/');
         var routeKey = $"commmand_{url}".Replace("/", "_").Replace("\\", "_");
-        return routeKey.ToLower();
+        return routeKey.ToLowerInvariant();
     }
 }

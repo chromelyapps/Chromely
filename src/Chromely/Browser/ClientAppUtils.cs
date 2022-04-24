@@ -13,13 +13,13 @@ public enum ProcessType
 }
 
 /// <summary>
-/// Utility class to determine browser and child processes. 
+/// Utility class to determine browser and child processes.
 /// </summary>
 /// <remarks>
-/// CEF3 runs using multiple processes. The main process which handles window creation, 
-/// painting and network access is called the “browser” process. 
-/// This is generally the same process as the host application 
-/// and the majority of the application logic will run in the browser process. 
+/// CEF3 runs using multiple processes. The main process which handles window creation,
+/// painting and network access is called the “browser” process.
+/// This is generally the same process as the host application
+/// and the majority of the application logic will run in the browser process.
 ///
 /// Reference - https://bitbucket.org/chromiumembedded/cef/wiki/GeneralUsage
 /// </remarks>
@@ -85,7 +85,7 @@ public static class ClientAppUtils
     /// <returns>true if it has argument, otherwise false.</returns>
     private static bool HasArgument(IEnumerable<string> args, string argType)
     {
-        return args.Any(a => a.StartsWith(argType));
+        return args.Any(a => a.StartsWith(argType, StringComparison.Ordinal));
     }
 
     /// <summary>
@@ -98,7 +98,7 @@ public static class ClientAppUtils
     {
         if (args is not null)
         {
-            var arg = args.FirstOrDefault(a => a.StartsWith(argumentName));
+            var arg = args.FirstOrDefault(a => a.StartsWith(argumentName, StringComparison.Ordinal));
             if (arg is not null)
             {
                 return arg.Split('=').Last();

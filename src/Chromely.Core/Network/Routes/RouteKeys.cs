@@ -8,7 +8,7 @@ public static class RouteKeys
     public static string CreateSchemeKey(string scheme, string host, string folder)
     {
         folder = string.IsNullOrWhiteSpace(folder) ? "none" : folder;
-        var keyString = $"{scheme}_{host}_{folder}".ToLower();
+        var keyString = $"{scheme}_{host}_{folder}".ToLowerInvariant();
         return CreateMD5Hash(keyString);
     }
 
@@ -50,6 +50,6 @@ public static class RouteKeys
             sb.Append(hashBytes[i].ToString("X2"));
         }
 
-        return sb.ToString().ToLower();
+        return sb.ToString().ToLowerInvariant();
     }
 }

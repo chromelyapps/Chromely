@@ -27,7 +27,7 @@ internal static class CefSettingsExtension
                 continue;
             }
 
-            switch (setting.Key.ToUpper())
+            switch (setting.Key.ToUpperInvariant())
             {
                 case CefSettingKeys.NOSANDBOX:
                     if (setting.Value.TryParseBoolean(out boolResult))
@@ -111,7 +111,7 @@ internal static class CefSettingsExtension
                     break;
 
                 case CefSettingKeys.LOGSEVERITY:
-                    switch (setting.Value.ToUpper())
+                    switch (setting.Value.ToUpperInvariant())
                     {
                         case LogSeverityOption.DEFAULT:
                             cefSettings.LogSeverity = CefLogSeverity.Default;

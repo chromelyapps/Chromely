@@ -15,7 +15,7 @@ namespace Chromely.Loader;
 /// Note:
 /// Keep this class in a separate nuget package
 /// due to additional reference to ICSharpCode.SharpZipLib.
-/// Not everyone will be glad about this. 
+/// Not everyone will be glad about this.
 /// </summary>
 public class CefLoader
 {
@@ -123,7 +123,7 @@ public class CefLoader
     }
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     /// <param name="platform"></param>
     /// <param name="processArchitecture"></param>
@@ -134,7 +134,7 @@ public class CefLoader
         var arch = processArchitecture.ToString()
             .Replace("X64", "64")
             .Replace("X86", "32");
-        var platformIdentifier = (platform + arch).ToLower();
+        var platformIdentifier = (platform + arch).ToLowerInvariant();
         var indexUrl = CefBuildsDownloadIndex(platformIdentifier);
 
         // cef_binary_3.3626.1895.g7001d56_windows64_client.tar.bz2
@@ -163,7 +163,7 @@ public class CefLoader
                 return found.Groups[1].Value;
             }
 
-            #region https://github.com/chromelyapps/Chromely/issues/257 
+            #region https://github.com/chromelyapps/Chromely/issues/257
 
             // Hack until fixed.
             if (!string.IsNullOrEmpty(binaryNamePattern1))
@@ -249,7 +249,7 @@ public class CefLoader
 
             Logger.Instance.Log.LogInformation("CefLoader: Parallel download {_archiveName}, {_downloadLength / (1024 * 1024)}MB", _archiveName, _downloadLength);
 
-            // Calculate ranges  
+            // Calculate ranges
             var readRanges = new List<Range>();
             for (var chunk = 0; chunk < _numberOfParallelDownloads - 1; chunk++)
             {
