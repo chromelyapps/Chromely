@@ -32,6 +32,7 @@ public class ControllerRoute
     public bool HasReturnValue { get; set; }
 
     #region Invokes
+
     public IChromelyResponse Invoke(IChromelyRequest request)
     {
         if (Delegate is null)
@@ -51,14 +52,18 @@ public class ControllerRoute
 
     public async Task<IChromelyResponse> InvokeAsync(IChromelyRequest request)
     {
-        var response = await InvokeLocal();
-        return response;
-
-        Task<IChromelyResponse> InvokeLocal()
+        if (Delegate is null)
         {
-            var responseLocal = Invoke(request);
-            return Task.FromResult<IChromelyResponse>(responseLocal);
+            return new ChromelyResponse()
+            {
+                HasRouteResponse = HasReturnValue
+            };
         }
+
+        SetRouteArguments(request);
+        _routeArguments ??= Array.Empty<object>();
+        var content = await InvokeAsync(_routeArguments.Length, _routeArguments);
+        return CreateResponse(content);
     }
 
     #endregion
@@ -294,7 +299,7 @@ public class ControllerRoute
 
     #region Local Invokes 
 
-    private object? Invoke(int argumentCount, params object[] args)
+    private object Invoke(int argumentCount, params object[] args)
     {
         if (HasReturnValue)
         {
@@ -318,8 +323,7 @@ public class ControllerRoute
                 case 15: return Delegate((dynamic)args[0], (dynamic)args[1], (dynamic)args[2], (dynamic)args[3], (dynamic)args[4], (dynamic)args[5], (dynamic)args[6], (dynamic)args[7], (dynamic)args[8], (dynamic)args[9], (dynamic)args[10], (dynamic)args[11], (dynamic)args[12], (dynamic)args[13], (dynamic)args[14]);
                 default:
                     {
-                        var del = Delegate as Delegate;
-                        if (del is not null)
+                        if (Delegate is Delegate del)
                         {
                             return del.DynamicInvoke(args);
                         }
@@ -350,8 +354,75 @@ public class ControllerRoute
                 case 15: Delegate((dynamic)args[0], (dynamic)args[1], (dynamic)args[2], (dynamic)args[3], (dynamic)args[4], (dynamic)args[5], (dynamic)args[6], (dynamic)args[7], (dynamic)args[8], (dynamic)args[9], (dynamic)args[10], (dynamic)args[11], (dynamic)args[12], (dynamic)args[13], (dynamic)args[14]); break;
                 default:
                     {
-                        var del = Delegate as Delegate;
-                        if (del is not null)
+                        if (Delegate is Delegate del)
+                        {
+                            return del.DynamicInvoke(args);
+                        }
+
+                        break;
+                    }
+            }
+        }
+
+        return null;
+    }
+
+    private async Task<object?> InvokeAsync(int argumentCount, params object[] args)
+    {
+        if (HasReturnValue)
+        {
+            switch (argumentCount)
+            {
+                case 0: return await Delegate();
+                case 1: return await Delegate((dynamic)args[0]);
+                case 2: return await Delegate((dynamic)args[0], (dynamic)args[1]);
+                case 3: return await Delegate((dynamic)args[0], (dynamic)args[1], (dynamic)args[2]);
+                case 4: return await Delegate((dynamic)args[0], (dynamic)args[1], (dynamic)args[2], (dynamic)args[3]);
+                case 5: return await Delegate((dynamic)args[0], (dynamic)args[1], (dynamic)args[2], (dynamic)args[3], (dynamic)args[4]);
+                case 6: return await Delegate((dynamic)args[0], (dynamic)args[1], (dynamic)args[2], (dynamic)args[3], (dynamic)args[4], (dynamic)args[5]);
+                case 7: return await Delegate((dynamic)args[0], (dynamic)args[1], (dynamic)args[2], (dynamic)args[3], (dynamic)args[4], (dynamic)args[5], (dynamic)args[6]);
+                case 8: return await Delegate((dynamic)args[0], (dynamic)args[1], (dynamic)args[2], (dynamic)args[3], (dynamic)args[4], (dynamic)args[5], (dynamic)args[6], (dynamic)args[7]);
+                case 9: return await Delegate((dynamic)args[0], (dynamic)args[1], (dynamic)args[2], (dynamic)args[3], (dynamic)args[4], (dynamic)args[5], (dynamic)args[6], (dynamic)args[7], (dynamic)args[8]);
+                case 10: return await Delegate((dynamic)args[0], (dynamic)args[1], (dynamic)args[2], (dynamic)args[3], (dynamic)args[4], (dynamic)args[5], (dynamic)args[6], (dynamic)args[7], (dynamic)args[8], (dynamic)args[9]);
+                case 11: return await Delegate((dynamic)args[0], (dynamic)args[1], (dynamic)args[2], (dynamic)args[3], (dynamic)args[4], (dynamic)args[5], (dynamic)args[6], (dynamic)args[7], (dynamic)args[8], (dynamic)args[9], (dynamic)args[10]);
+                case 12: return await Delegate((dynamic)args[0], (dynamic)args[1], (dynamic)args[2], (dynamic)args[3], (dynamic)args[4], (dynamic)args[5], (dynamic)args[6], (dynamic)args[7], (dynamic)args[8], (dynamic)args[9], (dynamic)args[10], (dynamic)args[11]);
+                case 13: return await Delegate((dynamic)args[0], (dynamic)args[1], (dynamic)args[2], (dynamic)args[3], (dynamic)args[4], (dynamic)args[5], (dynamic)args[6], (dynamic)args[7], (dynamic)args[8], (dynamic)args[9], (dynamic)args[10], (dynamic)args[11], (dynamic)args[12]);
+                case 14: return await Delegate((dynamic)args[0], (dynamic)args[1], (dynamic)args[2], (dynamic)args[3], (dynamic)args[4], (dynamic)args[5], (dynamic)args[6], (dynamic)args[7], (dynamic)args[8], (dynamic)args[9], (dynamic)args[10], (dynamic)args[11], (dynamic)args[12], (dynamic)args[13]);
+                case 15: return await Delegate((dynamic)args[0], (dynamic)args[1], (dynamic)args[2], (dynamic)args[3], (dynamic)args[4], (dynamic)args[5], (dynamic)args[6], (dynamic)args[7], (dynamic)args[8], (dynamic)args[9], (dynamic)args[10], (dynamic)args[11], (dynamic)args[12], (dynamic)args[13], (dynamic)args[14]);
+                default:
+                    {
+                        if (Delegate is Delegate del)
+                        {
+                            return del.DynamicInvoke(args);
+                        }
+
+                        return null;
+                    }
+            }
+        }
+        else
+        {
+            switch (argumentCount)
+            {
+                case 0: await Delegate(); break;
+                case 1: await Delegate((dynamic)args[0]); break;
+                case 2: await Delegate((dynamic)args[0], (dynamic)args[1]); break;
+                case 3: await Delegate((dynamic)args[0], (dynamic)args[1], (dynamic)args[2]); break;
+                case 4: await Delegate((dynamic)args[0], (dynamic)args[1], (dynamic)args[2], (dynamic)args[3]); break;
+                case 5: await Delegate((dynamic)args[0], (dynamic)args[1], (dynamic)args[2], (dynamic)args[3], (dynamic)args[4]); break;
+                case 6: await Delegate((dynamic)args[0], (dynamic)args[1], (dynamic)args[2], (dynamic)args[3], (dynamic)args[4], (dynamic)args[5]); break;
+                case 7: await Delegate((dynamic)args[0], (dynamic)args[1], (dynamic)args[2], (dynamic)args[3], (dynamic)args[4], (dynamic)args[5], (dynamic)args[6]); break;
+                case 8: await Delegate((dynamic)args[0], (dynamic)args[1], (dynamic)args[2], (dynamic)args[3], (dynamic)args[4], (dynamic)args[5], (dynamic)args[6], (dynamic)args[7]); break;
+                case 9: await Delegate((dynamic)args[0], (dynamic)args[1], (dynamic)args[2], (dynamic)args[3], (dynamic)args[4], (dynamic)args[5], (dynamic)args[6], (dynamic)args[7], (dynamic)args[8]); break;
+                case 10: await Delegate((dynamic)args[0], (dynamic)args[1], (dynamic)args[2], (dynamic)args[3], (dynamic)args[4], (dynamic)args[5], (dynamic)args[6], (dynamic)args[7], (dynamic)args[8], (dynamic)args[9]); break;
+                case 11: await Delegate((dynamic)args[0], (dynamic)args[1], (dynamic)args[2], (dynamic)args[3], (dynamic)args[4], (dynamic)args[5], (dynamic)args[6], (dynamic)args[7], (dynamic)args[8], (dynamic)args[9], (dynamic)args[10]); break;
+                case 12: await Delegate((dynamic)args[0], (dynamic)args[1], (dynamic)args[2], (dynamic)args[3], (dynamic)args[4], (dynamic)args[5], (dynamic)args[6], (dynamic)args[7], (dynamic)args[8], (dynamic)args[9], (dynamic)args[10], (dynamic)args[11]); break;
+                case 13: await Delegate((dynamic)args[0], (dynamic)args[1], (dynamic)args[2], (dynamic)args[3], (dynamic)args[4], (dynamic)args[5], (dynamic)args[6], (dynamic)args[7], (dynamic)args[8], (dynamic)args[9], (dynamic)args[10], (dynamic)args[11], (dynamic)args[12]); break;
+                case 14: await Delegate((dynamic)args[0], (dynamic)args[1], (dynamic)args[2], (dynamic)args[3], (dynamic)args[4], (dynamic)args[5], (dynamic)args[6], (dynamic)args[7], (dynamic)args[8], (dynamic)args[9], (dynamic)args[10], (dynamic)args[11], (dynamic)args[12], (dynamic)args[13]); break;
+                case 15: await Delegate((dynamic)args[0], (dynamic)args[1], (dynamic)args[2], (dynamic)args[3], (dynamic)args[4], (dynamic)args[5], (dynamic)args[6], (dynamic)args[7], (dynamic)args[8], (dynamic)args[9], (dynamic)args[10], (dynamic)args[11], (dynamic)args[12], (dynamic)args[13], (dynamic)args[14]); break;
+                default:
+                    {
+                        if (Delegate is Delegate del)
                         {
                             return del.DynamicInvoke(args);
                         }

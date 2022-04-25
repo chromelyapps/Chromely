@@ -64,7 +64,7 @@ public class ChromelyControllerTests
         {
             PostData = JsonSerializer.Serialize(postData)
         };
-        var createResponse = route?.Invoke(createRequest) as IChromelyResponse;
+        var createResponse = route?.Invoke(createRequest);
         var createData = createResponse is not null && createResponse.Data is int ? (int)createResponse.Data : -1; 
 
         Assert.NotNull(createResponse);
@@ -161,7 +161,7 @@ public class ChromelyControllerTests
             {
                 PostData = JsonSerializer.Serialize(postData)
             };
-            var createResponse = await route.InvokeAsync(createRequest) as IChromelyResponse;
+            var createResponse = await route.InvokeAsync(createRequest);
             var createData = createResponse is not null && createResponse.Data is int ? (int)createResponse.Data : -1;
 
             Assert.NotNull(createResponse);
@@ -202,7 +202,7 @@ public class ChromelyControllerTests
                 RouteUrl = $"{TodoController.GetRoutePaths[TodoControllerRouteKeys.GetItemAsync]}?id={todoItem.Id}"
             };
             getRequest.Parameters = getRequest.RouteUrl.GetParameters();
-            var getResponse = await route.InvokeAsync(getRequest) as IChromelyResponse;
+            var getResponse = await route.InvokeAsync(getRequest);
             var getData = getResponse.Data as TodoItem;
 
             Assert.NotNull(getResponse);
@@ -260,13 +260,13 @@ public class ChromelyControllerTests
         Assert.NotNull(route);
 
         var request1 = new ChromelyRequest();
-        var response1 = route?.Invoke(request1) as IChromelyResponse;
+        var response1 = route?.Invoke(request1);
         var data1 = response1?.Data as List<TodoItem>;
 
         Assert.NotNull(response1);
         Assert.NotNull(data1);
 
-        var startCount = data1 is not null ? data1.Count : -1;
+        var startCount = data1?.Count ?? -1;
 
         // Add an item 
         var todoItem = TodoItem.FakeTodoItem;
@@ -312,7 +312,7 @@ public class ChromelyControllerTests
         if (route is not null)
         {
             var request = new ChromelyRequest();
-            var response = await route.InvokeAsync(request) as IChromelyResponse;
+            var response = await route.InvokeAsync(request);
             var data = response.Data as List<TodoItem>;
 
             Assert.NotNull(response);
@@ -335,8 +335,8 @@ public class ChromelyControllerTests
             {
                 PostData = JsonSerializer.Serialize(postData)
             };
-            var response = await route.InvokeAsync(request) as IChromelyResponse;
-            var data = response is not null && response.Data is not null ? (int)response.Data : -1;
+            var response = await route.InvokeAsync(request);
+            var data = response?.Data != null ? (int)response.Data : -1;
 
             Assert.NotNull(response);
             Assert.True(data > 0);

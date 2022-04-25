@@ -108,14 +108,8 @@ public class DefaultActionRequestHandler : IChromelyRequestHandler
         IChromelyResponse response;
         var request = new ChromelyRequest(requestId, routeUrl, parameters, postData, requestData);
 
-        if (route.IsAsync)
-        {
-            response = await route.InvokeAsync(request);
-        }
-        else
-        {
-            response = route.Invoke(request);
-        }
+
+        response = await route.InvokeAsync(request);
 
         response.ReadyState = (int)ReadyState.ResponseIsReady;
         response.Status = (response.Status == 0) ? (int)HttpStatusCode.OK : response.Status;
