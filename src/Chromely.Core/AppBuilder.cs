@@ -105,6 +105,11 @@ public sealed class AppBuilder : AppBuilderBase
         {
             var appName = Assembly.GetEntryAssembly()?.GetName().Name;
             var windowController = _serviceProvider.GetService<ChromelyWindowController>();
+            if (windowController is null)
+            {
+                throw new Exception("ChromelyWindowController is not registered.");
+            }
+
             try
             {
                 Logger.Instance.Log.LogInformation("Running application:{appName}.", appName);

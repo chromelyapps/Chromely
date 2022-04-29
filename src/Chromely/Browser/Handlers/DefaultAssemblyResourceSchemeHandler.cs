@@ -21,7 +21,7 @@ public class DefaultAssemblyResourceSchemeHandler : CefResourceHandler
     /// Initializes a new instance of <see cref="DefaultAssemblyResourceSchemeHandler"/>.
     /// </summary>
     /// <param name="config">Instance of <see cref="IChromelyConfiguration"/>.</param>
-    /// <param name="chromelyErrorHandler"><Instance of <see cref="IChromelyErrorHandler"/>.</param>
+    /// <param name="chromelyErrorHandler">Instance of <see cref="IChromelyErrorHandler"/>.</param>
     public DefaultAssemblyResourceSchemeHandler(IChromelyConfiguration config, IChromelyErrorHandler chromelyErrorHandler)
     {
         _config = config;
@@ -87,8 +87,8 @@ public class DefaultAssemblyResourceSchemeHandler : CefResourceHandler
         }
     }
 
-    [Obsolete("ReadResponse is obsolete.")]
     /// <inheritdoc/>
+    [Obsolete("ReadResponse is obsolete.")]
     protected override bool ReadResponse(Stream response, int bytesToRead, out int bytesRead, CefCallback callback)
     {
         int currBytesRead = 0;
@@ -162,7 +162,7 @@ public class DefaultAssemblyResourceSchemeHandler : CefResourceHandler
     {
         _fileInfo = new FileInfo(file);
 
-        // Check if file exists 
+        // Check if file exists
         if (!_fileInfo.Exists)
         {
             _chromelyResource = _chromelyErrorHandler.HandleError(_fileInfo);
@@ -219,7 +219,7 @@ public class DefaultAssemblyResourceSchemeHandler : CefResourceHandler
         var manifestName = string.Join(".", option.DefaultNamespace, option.RootFolder, _regex.Replace(fileAbsolutePath, ".")).Replace("..", ".").Replace("..", ".");
         Stream? stream = option.TargetAssembly.GetManifestResourceStream(manifestName);
 
-        // Check if file exists 
+        // Check if file exists
         if (stream is null)
         {
             _chromelyResource = _chromelyErrorHandler.HandleError(stream);

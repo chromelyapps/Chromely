@@ -85,7 +85,7 @@ public static class HandlerResolverHelper
         return default;
     }
 
-    private static object? GetDefaultHandler(List<object> handlers, Type type)
+    private static object? GetDefaultHandler(List<object?> handlers, Type type)
     {
         if (handlers is not null && handlers.Any())
         {
@@ -103,7 +103,7 @@ public static class HandlerResolverHelper
         return default;
     }
 
-    private static object? GetFirstCustomHandler(List<object> handlers)
+    private static object? GetFirstCustomHandler(List<object?> handlers)
     {
         if (handlers is not null && handlers.Any())
         {

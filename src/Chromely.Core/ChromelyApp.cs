@@ -227,7 +227,7 @@ public abstract class ChromelyApp
             return logger;
         }
 
-        var appName = Assembly.GetEntryAssembly()?.GetName().Name;
+        var appName = Assembly.GetEntryAssembly()?.GetName().Name!;
         var loggerFactory = serviceProvider.GetService<ILoggerFactory>();
         if (loggerFactory is not null)
         {
@@ -244,7 +244,7 @@ public abstract class ChromelyApp
     }
 
     /// <summary>
-    /// Using local resource handling requires files to be relative to the 
+    /// Using local resource handling requires files to be relative to the
     /// Expected working directory
     /// For example, if the app is launched via the taskbar the working directory gets changed to
     /// C:\Windows\system32
@@ -264,7 +264,7 @@ public abstract class ChromelyApp
     }
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     /// <param name="config"></param>
     /// <exception cref="Exception"></exception>
