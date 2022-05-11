@@ -276,6 +276,12 @@
         }
 
         /// <summary>
+        /// Clear list of filenames.
+        /// </summary>
+        public void ClearFilenames()
+            => cef_drag_data_t.clear_filenames(_self);
+
+        /// <summary>
         /// Get the image representation of drag data. May return NULL if no image
         /// representation is available.
         /// </summary>

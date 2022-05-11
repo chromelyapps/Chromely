@@ -7,7 +7,8 @@ namespace Xilium.CefGlue
     using System;
 
     /// <summary>
-    /// Supported context menu media types.
+    /// Supported context menu media types. These constants match their equivalents
+    /// in Chromium's ContextMenuDataMediaType and should not be renumbered.
     /// </summary>
     public enum CefContextMenuMediaType
     {
@@ -30,6 +31,11 @@ namespace Xilium.CefGlue
         /// An audio node is selected.
         /// </summary>
         Audio,
+
+        /// <summary>
+        /// An canvas node is selected.
+        /// </summary>
+        Canvas,
 
         /// <summary>
         /// A file node is selected.

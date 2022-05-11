@@ -24,6 +24,21 @@
         }
 
 
+        private cef_command_handler_t* get_command_handler(cef_client_t* self)
+        {
+            CheckSelf(self);
+
+            var result = GetCommandHandler();
+            return result != null ? result.ToNative() : null;
+        }
+
+        /// <summary>
+        /// Return the handler for commands. If no handler is provided the default
+        /// implementation will be used.
+        /// </summary>
+        protected virtual CefCommandHandler? GetCommandHandler() => null;
+
+
         private cef_context_menu_handler_t* get_context_menu_handler(cef_client_t* self)
         {
             CheckSelf(self);

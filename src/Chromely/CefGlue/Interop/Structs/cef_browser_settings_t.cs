@@ -31,7 +31,6 @@ namespace Xilium.CefGlue.Interop
         public CefState javascript_close_windows;
         public CefState javascript_access_clipboard;
         public CefState javascript_dom_paste;
-        public CefState plugins;
         public CefState image_loading;
         public CefState image_shrink_standalone_to_fit;
         public CefState text_area_resize;
@@ -41,8 +40,8 @@ namespace Xilium.CefGlue.Interop
         public CefState webgl;
 
         public uint background_color;
-
         public cef_string_t accept_language_list;
+        public CefState chrome_status_bubble;
 
         #region Alloc & Free
         private static int _sizeof;

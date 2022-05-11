@@ -35,6 +35,7 @@ namespace Xilium.CefGlue.Interop
         internal IntPtr _set_fragment_base_url;
         internal IntPtr _reset_file_contents;
         internal IntPtr _add_file;
+        internal IntPtr _clear_filenames;
         internal IntPtr _get_image;
         internal IntPtr _get_image_hotspot;
         internal IntPtr _has_image;
@@ -198,6 +199,12 @@ namespace Xilium.CefGlue.Interop
         [SuppressUnmanagedCodeSecurity]
         #endif
         private delegate void add_file_delegate(cef_drag_data_t* self, cef_string_t* path, cef_string_t* display_name);
+        
+        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
+        #if !DEBUG
+        [SuppressUnmanagedCodeSecurity]
+        #endif
+        private delegate void clear_filenames_delegate(cef_drag_data_t* self);
         
         [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
         #if !DEBUG
@@ -659,53 +666,70 @@ namespace Xilium.CefGlue.Interop
             d(self, path, display_name);
         }
         
-        // GetImage
+        // ClearFilenames
         private static IntPtr _p1a;
-        private static get_image_delegate _d1a;
+        private static clear_filenames_delegate _d1a;
+        
+        public static void clear_filenames(cef_drag_data_t* self)
+        {
+            clear_filenames_delegate d;
+            var p = self->_clear_filenames;
+            if (p == _p1a) { d = _d1a; }
+            else
+            {
+                d = (clear_filenames_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(clear_filenames_delegate));
+                if (_p1a == IntPtr.Zero) { _d1a = d; _p1a = p; }
+            }
+            d(self);
+        }
+        
+        // GetImage
+        private static IntPtr _p1b;
+        private static get_image_delegate _d1b;
         
         public static cef_image_t* get_image(cef_drag_data_t* self)
         {
             get_image_delegate d;
             var p = self->_get_image;
-            if (p == _p1a) { d = _d1a; }
-            else
-            {
-                d = (get_image_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_image_delegate));
-                if (_p1a == IntPtr.Zero) { _d1a = d; _p1a = p; }
-            }
-            return d(self);
-        }
-        
-        // GetImageHotspot
-        private static IntPtr _p1b;
-        private static get_image_hotspot_delegate _d1b;
-        
-        public static cef_point_t get_image_hotspot(cef_drag_data_t* self)
-        {
-            get_image_hotspot_delegate d;
-            var p = self->_get_image_hotspot;
             if (p == _p1b) { d = _d1b; }
             else
             {
-                d = (get_image_hotspot_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_image_hotspot_delegate));
+                d = (get_image_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_image_delegate));
                 if (_p1b == IntPtr.Zero) { _d1b = d; _p1b = p; }
             }
             return d(self);
         }
         
-        // HasImage
+        // GetImageHotspot
         private static IntPtr _p1c;
-        private static has_image_delegate _d1c;
+        private static get_image_hotspot_delegate _d1c;
+        
+        public static cef_point_t get_image_hotspot(cef_drag_data_t* self)
+        {
+            get_image_hotspot_delegate d;
+            var p = self->_get_image_hotspot;
+            if (p == _p1c) { d = _d1c; }
+            else
+            {
+                d = (get_image_hotspot_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_image_hotspot_delegate));
+                if (_p1c == IntPtr.Zero) { _d1c = d; _p1c = p; }
+            }
+            return d(self);
+        }
+        
+        // HasImage
+        private static IntPtr _p1d;
+        private static has_image_delegate _d1d;
         
         public static int has_image(cef_drag_data_t* self)
         {
             has_image_delegate d;
             var p = self->_has_image;
-            if (p == _p1c) { d = _d1c; }
+            if (p == _p1d) { d = _d1d; }
             else
             {
                 d = (has_image_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(has_image_delegate));
-                if (_p1c == IntPtr.Zero) { _d1c = d; _p1c = p; }
+                if (_p1d == IntPtr.Zero) { _d1d = d; _p1d = p; }
             }
             return d(self);
         }

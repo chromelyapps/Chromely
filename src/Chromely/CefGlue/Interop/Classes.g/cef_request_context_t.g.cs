@@ -21,7 +21,6 @@ namespace Xilium.CefGlue.Interop
         internal IntPtr _get_cookie_manager;
         internal IntPtr _register_scheme_handler_factory;
         internal IntPtr _clear_scheme_handler_factories;
-        internal IntPtr _purge_plugin_list_cache;
         internal IntPtr _has_preference;
         internal IntPtr _get_preference;
         internal IntPtr _get_all_preferences;
@@ -121,12 +120,6 @@ namespace Xilium.CefGlue.Interop
         [SuppressUnmanagedCodeSecurity]
         #endif
         private delegate int clear_scheme_handler_factories_delegate(cef_request_context_t* self);
-        
-        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
-        #if !DEBUG
-        [SuppressUnmanagedCodeSecurity]
-        #endif
-        private delegate void purge_plugin_list_cache_delegate(cef_request_context_t* self, int reload_pages);
         
         [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
         #if !DEBUG
@@ -422,274 +415,257 @@ namespace Xilium.CefGlue.Interop
             return d(self);
         }
         
-        // PurgePluginListCache
-        private static IntPtr _pc;
-        private static purge_plugin_list_cache_delegate _dc;
-        
-        public static void purge_plugin_list_cache(cef_request_context_t* self, int reload_pages)
-        {
-            purge_plugin_list_cache_delegate d;
-            var p = self->_purge_plugin_list_cache;
-            if (p == _pc) { d = _dc; }
-            else
-            {
-                d = (purge_plugin_list_cache_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(purge_plugin_list_cache_delegate));
-                if (_pc == IntPtr.Zero) { _dc = d; _pc = p; }
-            }
-            d(self, reload_pages);
-        }
-        
         // HasPreference
-        private static IntPtr _pd;
-        private static has_preference_delegate _dd;
+        private static IntPtr _pc;
+        private static has_preference_delegate _dc;
         
         public static int has_preference(cef_request_context_t* self, cef_string_t* name)
         {
             has_preference_delegate d;
             var p = self->_has_preference;
-            if (p == _pd) { d = _dd; }
+            if (p == _pc) { d = _dc; }
             else
             {
                 d = (has_preference_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(has_preference_delegate));
-                if (_pd == IntPtr.Zero) { _dd = d; _pd = p; }
+                if (_pc == IntPtr.Zero) { _dc = d; _pc = p; }
             }
             return d(self, name);
         }
         
         // GetPreference
-        private static IntPtr _pe;
-        private static get_preference_delegate _de;
+        private static IntPtr _pd;
+        private static get_preference_delegate _dd;
         
         public static cef_value_t* get_preference(cef_request_context_t* self, cef_string_t* name)
         {
             get_preference_delegate d;
             var p = self->_get_preference;
-            if (p == _pe) { d = _de; }
+            if (p == _pd) { d = _dd; }
             else
             {
                 d = (get_preference_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_preference_delegate));
-                if (_pe == IntPtr.Zero) { _de = d; _pe = p; }
+                if (_pd == IntPtr.Zero) { _dd = d; _pd = p; }
             }
             return d(self, name);
         }
         
         // GetAllPreferences
-        private static IntPtr _pf;
-        private static get_all_preferences_delegate _df;
+        private static IntPtr _pe;
+        private static get_all_preferences_delegate _de;
         
         public static cef_dictionary_value_t* get_all_preferences(cef_request_context_t* self, int include_defaults)
         {
             get_all_preferences_delegate d;
             var p = self->_get_all_preferences;
-            if (p == _pf) { d = _df; }
+            if (p == _pe) { d = _de; }
             else
             {
                 d = (get_all_preferences_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_all_preferences_delegate));
-                if (_pf == IntPtr.Zero) { _df = d; _pf = p; }
+                if (_pe == IntPtr.Zero) { _de = d; _pe = p; }
             }
             return d(self, include_defaults);
         }
         
         // CanSetPreference
-        private static IntPtr _p10;
-        private static can_set_preference_delegate _d10;
+        private static IntPtr _pf;
+        private static can_set_preference_delegate _df;
         
         public static int can_set_preference(cef_request_context_t* self, cef_string_t* name)
         {
             can_set_preference_delegate d;
             var p = self->_can_set_preference;
-            if (p == _p10) { d = _d10; }
+            if (p == _pf) { d = _df; }
             else
             {
                 d = (can_set_preference_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(can_set_preference_delegate));
-                if (_p10 == IntPtr.Zero) { _d10 = d; _p10 = p; }
+                if (_pf == IntPtr.Zero) { _df = d; _pf = p; }
             }
             return d(self, name);
         }
         
         // SetPreference
-        private static IntPtr _p11;
-        private static set_preference_delegate _d11;
+        private static IntPtr _p10;
+        private static set_preference_delegate _d10;
         
         public static int set_preference(cef_request_context_t* self, cef_string_t* name, cef_value_t* value, cef_string_t* error)
         {
             set_preference_delegate d;
             var p = self->_set_preference;
-            if (p == _p11) { d = _d11; }
+            if (p == _p10) { d = _d10; }
             else
             {
                 d = (set_preference_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(set_preference_delegate));
-                if (_p11 == IntPtr.Zero) { _d11 = d; _p11 = p; }
+                if (_p10 == IntPtr.Zero) { _d10 = d; _p10 = p; }
             }
             return d(self, name, value, error);
         }
         
         // ClearCertificateExceptions
-        private static IntPtr _p12;
-        private static clear_certificate_exceptions_delegate _d12;
+        private static IntPtr _p11;
+        private static clear_certificate_exceptions_delegate _d11;
         
         public static void clear_certificate_exceptions(cef_request_context_t* self, cef_completion_callback_t* callback)
         {
             clear_certificate_exceptions_delegate d;
             var p = self->_clear_certificate_exceptions;
-            if (p == _p12) { d = _d12; }
+            if (p == _p11) { d = _d11; }
             else
             {
                 d = (clear_certificate_exceptions_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(clear_certificate_exceptions_delegate));
-                if (_p12 == IntPtr.Zero) { _d12 = d; _p12 = p; }
+                if (_p11 == IntPtr.Zero) { _d11 = d; _p11 = p; }
             }
             d(self, callback);
         }
         
         // ClearHttpAuthCredentials
-        private static IntPtr _p13;
-        private static clear_http_auth_credentials_delegate _d13;
+        private static IntPtr _p12;
+        private static clear_http_auth_credentials_delegate _d12;
         
         public static void clear_http_auth_credentials(cef_request_context_t* self, cef_completion_callback_t* callback)
         {
             clear_http_auth_credentials_delegate d;
             var p = self->_clear_http_auth_credentials;
-            if (p == _p13) { d = _d13; }
+            if (p == _p12) { d = _d12; }
             else
             {
                 d = (clear_http_auth_credentials_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(clear_http_auth_credentials_delegate));
-                if (_p13 == IntPtr.Zero) { _d13 = d; _p13 = p; }
+                if (_p12 == IntPtr.Zero) { _d12 = d; _p12 = p; }
             }
             d(self, callback);
         }
         
         // CloseAllConnections
-        private static IntPtr _p14;
-        private static close_all_connections_delegate _d14;
+        private static IntPtr _p13;
+        private static close_all_connections_delegate _d13;
         
         public static void close_all_connections(cef_request_context_t* self, cef_completion_callback_t* callback)
         {
             close_all_connections_delegate d;
             var p = self->_close_all_connections;
-            if (p == _p14) { d = _d14; }
+            if (p == _p13) { d = _d13; }
             else
             {
                 d = (close_all_connections_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(close_all_connections_delegate));
-                if (_p14 == IntPtr.Zero) { _d14 = d; _p14 = p; }
+                if (_p13 == IntPtr.Zero) { _d13 = d; _p13 = p; }
             }
             d(self, callback);
         }
         
         // ResolveHost
-        private static IntPtr _p15;
-        private static resolve_host_delegate _d15;
+        private static IntPtr _p14;
+        private static resolve_host_delegate _d14;
         
         public static void resolve_host(cef_request_context_t* self, cef_string_t* origin, cef_resolve_callback_t* callback)
         {
             resolve_host_delegate d;
             var p = self->_resolve_host;
-            if (p == _p15) { d = _d15; }
+            if (p == _p14) { d = _d14; }
             else
             {
                 d = (resolve_host_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(resolve_host_delegate));
-                if (_p15 == IntPtr.Zero) { _d15 = d; _p15 = p; }
+                if (_p14 == IntPtr.Zero) { _d14 = d; _p14 = p; }
             }
             d(self, origin, callback);
         }
         
         // LoadExtension
-        private static IntPtr _p16;
-        private static load_extension_delegate _d16;
+        private static IntPtr _p15;
+        private static load_extension_delegate _d15;
         
         public static void load_extension(cef_request_context_t* self, cef_string_t* root_directory, cef_dictionary_value_t* manifest, cef_extension_handler_t* handler)
         {
             load_extension_delegate d;
             var p = self->_load_extension;
-            if (p == _p16) { d = _d16; }
+            if (p == _p15) { d = _d15; }
             else
             {
                 d = (load_extension_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(load_extension_delegate));
-                if (_p16 == IntPtr.Zero) { _d16 = d; _p16 = p; }
+                if (_p15 == IntPtr.Zero) { _d15 = d; _p15 = p; }
             }
             d(self, root_directory, manifest, handler);
         }
         
         // DidLoadExtension
-        private static IntPtr _p17;
-        private static did_load_extension_delegate _d17;
+        private static IntPtr _p16;
+        private static did_load_extension_delegate _d16;
         
         public static int did_load_extension(cef_request_context_t* self, cef_string_t* extension_id)
         {
             did_load_extension_delegate d;
             var p = self->_did_load_extension;
-            if (p == _p17) { d = _d17; }
+            if (p == _p16) { d = _d16; }
             else
             {
                 d = (did_load_extension_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(did_load_extension_delegate));
-                if (_p17 == IntPtr.Zero) { _d17 = d; _p17 = p; }
+                if (_p16 == IntPtr.Zero) { _d16 = d; _p16 = p; }
             }
             return d(self, extension_id);
         }
         
         // HasExtension
-        private static IntPtr _p18;
-        private static has_extension_delegate _d18;
+        private static IntPtr _p17;
+        private static has_extension_delegate _d17;
         
         public static int has_extension(cef_request_context_t* self, cef_string_t* extension_id)
         {
             has_extension_delegate d;
             var p = self->_has_extension;
-            if (p == _p18) { d = _d18; }
+            if (p == _p17) { d = _d17; }
             else
             {
                 d = (has_extension_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(has_extension_delegate));
-                if (_p18 == IntPtr.Zero) { _d18 = d; _p18 = p; }
+                if (_p17 == IntPtr.Zero) { _d17 = d; _p17 = p; }
             }
             return d(self, extension_id);
         }
         
         // GetExtensions
-        private static IntPtr _p19;
-        private static get_extensions_delegate _d19;
+        private static IntPtr _p18;
+        private static get_extensions_delegate _d18;
         
         public static int get_extensions(cef_request_context_t* self, cef_string_list* extension_ids)
         {
             get_extensions_delegate d;
             var p = self->_get_extensions;
-            if (p == _p19) { d = _d19; }
+            if (p == _p18) { d = _d18; }
             else
             {
                 d = (get_extensions_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_extensions_delegate));
-                if (_p19 == IntPtr.Zero) { _d19 = d; _p19 = p; }
+                if (_p18 == IntPtr.Zero) { _d18 = d; _p18 = p; }
             }
             return d(self, extension_ids);
         }
         
         // GetExtension
-        private static IntPtr _p1a;
-        private static get_extension_delegate _d1a;
+        private static IntPtr _p19;
+        private static get_extension_delegate _d19;
         
         public static cef_extension_t* get_extension(cef_request_context_t* self, cef_string_t* extension_id)
         {
             get_extension_delegate d;
             var p = self->_get_extension;
-            if (p == _p1a) { d = _d1a; }
+            if (p == _p19) { d = _d19; }
             else
             {
                 d = (get_extension_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_extension_delegate));
-                if (_p1a == IntPtr.Zero) { _d1a = d; _p1a = p; }
+                if (_p19 == IntPtr.Zero) { _d19 = d; _p19 = p; }
             }
             return d(self, extension_id);
         }
         
         // GetMediaRouter
-        private static IntPtr _p1b;
-        private static get_media_router_delegate _d1b;
+        private static IntPtr _p1a;
+        private static get_media_router_delegate _d1a;
         
         public static cef_media_router_t* get_media_router(cef_request_context_t* self, cef_completion_callback_t* callback)
         {
             get_media_router_delegate d;
             var p = self->_get_media_router;
-            if (p == _p1b) { d = _d1b; }
+            if (p == _p1a) { d = _d1a; }
             else
             {
                 d = (get_media_router_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(get_media_router_delegate));
-                if (_p1b == IntPtr.Zero) { _d1b = d; _p1b = p; }
+                if (_p1a == IntPtr.Zero) { _d1a = d; _p1a = p; }
             }
             return d(self, callback);
         }

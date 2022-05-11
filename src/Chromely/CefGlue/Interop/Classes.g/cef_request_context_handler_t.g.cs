@@ -14,7 +14,6 @@ namespace Xilium.CefGlue.Interop
     {
         internal cef_base_ref_counted_t _base;
         internal IntPtr _on_request_context_initialized;
-        internal IntPtr _on_before_plugin_load;
         internal IntPtr _get_resource_request_handler;
         
         [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
@@ -46,12 +45,6 @@ namespace Xilium.CefGlue.Interop
         [SuppressUnmanagedCodeSecurity]
         #endif
         internal delegate void on_request_context_initialized_delegate(cef_request_context_handler_t* self, cef_request_context_t* request_context);
-        
-        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
-        #if !DEBUG
-        [SuppressUnmanagedCodeSecurity]
-        #endif
-        internal delegate int on_before_plugin_load_delegate(cef_request_context_handler_t* self, cef_string_t* mime_type, cef_string_t* plugin_url, int is_main_frame, cef_string_t* top_origin_url, cef_web_plugin_info_t* plugin_info, CefPluginPolicy* plugin_policy);
         
         [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
         #if !DEBUG

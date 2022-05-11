@@ -113,8 +113,6 @@
 
         #region cef_version
 
-        public static string CefVersion => libcef.CEF_VERSION;
-
         public static string ChromeVersion
         {
             get
@@ -844,80 +842,6 @@
                 var n_javascriptCode = new cef_string_t(javascriptCode_str, javascriptCode.Length);
 
                 return libcef.register_extension(&n_extensionName, &n_javascriptCode, handler != null ? handler.ToNative() : null) != 0;
-            }
-        }
-
-        #endregion
-
-        #region cef_web_plugin
-
-        // TODO: move web plugins methods to CefRuntime.WebPlugin.Xxx
-
-        /// <summary>
-        /// Visit web plugin information. Can be called on any thread in the browser
-        /// process.
-        /// </summary>
-        public static void VisitWebPluginInfo(CefWebPluginInfoVisitor visitor)
-        {
-            if (visitor == null) throw new ArgumentNullException("visitor");
-
-            libcef.visit_web_plugin_info(visitor.ToNative());
-        }
-
-        /// <summary>
-        /// Cause the plugin list to refresh the next time it is accessed regardless
-        /// of whether it has already been loaded. Can be called on any thread in the
-        /// browser process.
-        /// </summary>
-        public static void RefreshWebPlugins()
-        {
-            libcef.refresh_web_plugins();
-        }
-
-        /// <summary>
-        /// Unregister an internal plugin. This may be undone the next time
-        /// CefRefreshWebPlugins() is called. Can be called on any thread in the browser
-        /// process.
-        /// </summary>
-        public static void UnregisterInternalWebPlugin(string path)
-        {
-            if (string.IsNullOrEmpty(path)) throw new ArgumentNullException("path");
-
-            fixed (char* path_str = path)
-            {
-                var n_path = new cef_string_t(path_str, path.Length);
-                libcef.unregister_internal_web_plugin(&n_path);
-            }
-        }
-
-        /// <summary>
-        /// Register a plugin crash. Can be called on any thread in the browser process
-        /// but will be executed on the IO thread.
-        /// </summary>
-        public static void RegisterWebPluginCrash(string path)
-        {
-            if (string.IsNullOrEmpty(path)) throw new ArgumentNullException("path");
-
-            fixed (char* path_str = path)
-            {
-                var n_path = new cef_string_t(path_str, path.Length);
-                libcef.register_web_plugin_crash(&n_path);
-            }
-        }
-
-        /// <summary>
-        /// Query if a plugin is unstable. Can be called on any thread in the browser
-        /// process.
-        /// </summary>
-        public static void IsWebPluginUnstable(string path, CefWebPluginUnstableCallback callback)
-        {
-            if (string.IsNullOrEmpty(path)) throw new ArgumentNullException("path");
-            if (callback == null) throw new ArgumentNullException("callback");
-
-            fixed (char* path_str = path)
-            {
-                var n_path = new cef_string_t(path_str, path.Length);
-                libcef.is_web_plugin_unstable(&n_path, callback.ToNative());
             }
         }
 

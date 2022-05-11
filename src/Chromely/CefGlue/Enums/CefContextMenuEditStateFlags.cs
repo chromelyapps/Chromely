@@ -7,7 +7,9 @@ namespace Xilium.CefGlue
     using System;
 
     /// <summary>
-    /// Supported context menu edit state bit flags.
+    /// Supported context menu edit state bit flags. These constants match their
+    /// equivalents in Chromium's ContextMenuDataEditFlags and should not be
+    /// renumbered.
     /// </summary>
     [Flags]
     public enum CefContextMenuEditStateFlags
@@ -21,5 +23,6 @@ namespace Xilium.CefGlue
         CanDelete = 1 << 5,
         CanSelectAll = 1 << 6,
         CanTranslate = 1 << 7,
+        CanEditRichly = 1 << 8,
     }
 }

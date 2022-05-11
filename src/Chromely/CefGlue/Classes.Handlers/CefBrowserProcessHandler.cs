@@ -40,9 +40,9 @@
         /// <summary>
         /// Called before a child process is launched. Will be called on the browser
         /// process UI thread when launching a render process and on the browser
-        /// process IO thread when launching a GPU or plugin process. Provides an
-        /// opportunity to modify the child process command line. Do not keep a
-        /// reference to |command_line| outside of this method.
+        /// process IO thread when launching a GPU process. Provides an opportunity to
+        /// modify the child process command line. Do not keep a reference to
+        /// |command_line| outside of this method.
         /// </summary>
         protected virtual void OnBeforeChildProcessLaunch(CefCommandLine commandLine)
         {

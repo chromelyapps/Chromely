@@ -174,21 +174,18 @@ public abstract partial class ChromiumBrowser
     {
         BrowserHost?.PrintToPdf(path, settings, callback);
     }
-
     /// <summary>
-    /// Search for |searchText|. |identifier| must be a unique ID and these IDs
-    /// must strictly increase so that newer requests always have greater IDs than
-    /// older requests. If |identifier| is zero or less than the previous ID value
-    /// then it will be automatically assigned a new valid ID. |forward| indicates
-    /// whether to search forward or backward within the page. |matchCase|
-    /// indicates whether the search should be case-sensitive. |findNext| indicates
-    /// whether this is the first request or a follow-up. The CefFindHandler
-    /// instance, if any, returned via CefClient::GetFindHandler will be called to
-    /// report find results.
+    /// Search for |searchText|. |forward| indicates whether to search forward or
+    /// backward within the page. |matchCase| indicates whether the search should
+    /// be case-sensitive. |findNext| indicates whether this is the first request
+    /// or a follow-up. The search will be restarted if |searchText| or |matchCase|
+    /// change. The search will be stopped if |searchText| is empty. The
+    /// CefFindHandler instance, if any, returned via CefClient::GetFindHandler
+    /// will be called to report find results.
     /// </summary>
-    public void Find(int identifier, string searchText, bool forward, bool matchCase, bool findNext)
+    public void Find(string searchText, bool forward, bool matchCase, bool findNext)
     {
-        BrowserHost?.Find(identifier, searchText, forward, matchCase, findNext);
+        BrowserHost?.Find(searchText, forward, matchCase, findNext);
     }
 
     /// <summary>
