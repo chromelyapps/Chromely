@@ -45,7 +45,6 @@ namespace Xilium.CefGlue.Interop
         public cef_string_t accept_language_list;
         public cef_string_t cookieable_schemes_list;
         public int cookieable_schemes_exclude_defaults;
-        public cef_string_t application_client_id_for_file_scanning;
 
         #region Alloc & Free
         private static int _sizeof;

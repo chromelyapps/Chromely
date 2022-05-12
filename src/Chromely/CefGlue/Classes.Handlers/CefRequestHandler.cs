@@ -252,25 +252,6 @@
         }
 
 
-        private void on_plugin_crashed(cef_request_handler_t* self, cef_browser_t* browser, cef_string_t* plugin_path)
-        {
-            CheckSelf(self);
-
-            var m_browser = CefBrowser.FromNative(browser);
-            var m_plugin_path = cef_string_t.ToString(plugin_path);
-
-            OnPluginCrashed(m_browser, m_plugin_path);
-        }
-
-        /// <summary>
-        /// Called on the browser process UI thread when a plugin has crashed.
-        /// |plugin_path| is the path of the plugin that crashed.
-        /// </summary>
-        protected virtual void OnPluginCrashed(CefBrowser browser, string pluginPath)
-        {
-        }
-
-
         private void on_render_view_ready(cef_request_handler_t* self, cef_browser_t* browser)
         {
             CheckSelf(self);

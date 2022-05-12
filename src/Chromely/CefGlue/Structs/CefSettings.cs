@@ -61,7 +61,7 @@
 
         /// <summary>
         /// Set to <c>true</c> to have the browser process message loop run in a separate
-        /// thread. If <c>false</c> than the CefDoMessageLoopWork() function must be
+        /// thread. If <c>false</c> then the CefDoMessageLoopWork() function must be
         /// called from your application message loop. This option is only supported on
         /// Windows and Linux.
         /// </summary>
@@ -233,10 +233,11 @@
 
         /// <summary>
         /// Set to a value between 1024 and 65535 to enable remote debugging on the
-        /// specified port. For example, if 8080 is specified the remote debugging URL
-        /// will be http://localhost:8080. CEF can be remotely debugged from any CEF or
-        /// Chrome browser window. Also configurable using the "remote-debugging-port"
-        /// command-line switch.
+        /// specified port. Also configurable using the "remote-debugging-port"
+        /// command-line switch. Remote debugging can be accessed by loading the
+        /// chrome://inspect page in Google Chrome. Port numbers 9222 and 9229 are
+        /// discoverable by default. Other port numbers may need to be configured via
+        /// "Discover network targets" on the Devices tab.
         /// </summary>
         public int RemoteDebuggingPort { get; set; }
 
@@ -286,14 +287,6 @@
 
         public bool CookieableSchemesExcludeDefaults { get; set; }
 
-        /// <summary>
-        /// GUID string used for identifying the application. This is passed to the
-        /// system AV function for scanning downloaded files. By default, the GUID
-        /// will be an empty string and the file will be treated as an untrusted
-        /// file when the GUID is empty.
-        /// </summary>
-        public string ApplicationClientIdForFileScanning { get; set; }
-
         internal cef_settings_t* ToNative()
         {
             var ptr = cef_settings_t.Alloc();
@@ -326,7 +319,6 @@
             cef_string_t.Copy(AcceptLanguageList, &ptr->accept_language_list);
             cef_string_t.Copy(CookieableSchemesList, &ptr->cookieable_schemes_list);
             ptr->cookieable_schemes_exclude_defaults = CookieableSchemesExcludeDefaults ? 1 : 0;
-            cef_string_t.Copy(ApplicationClientIdForFileScanning, &ptr->application_client_id_for_file_scanning);
             return ptr;
         }
 
@@ -347,7 +339,6 @@
             libcef.string_clear(&ptr->locales_dir_path);
             libcef.string_clear(&ptr->accept_language_list);
             libcef.string_clear(&ptr->cookieable_schemes_list);
-            libcef.string_clear(&ptr->application_client_id_for_file_scanning);
         }
 
         internal static void Free(cef_settings_t* ptr)

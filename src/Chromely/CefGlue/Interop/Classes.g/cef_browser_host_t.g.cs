@@ -205,7 +205,7 @@ namespace Xilium.CefGlue.Interop
         #if !DEBUG
         [SuppressUnmanagedCodeSecurity]
         #endif
-        private delegate void find_delegate(cef_browser_host_t* self, int identifier, cef_string_t* searchText, int forward, int matchCase, int findNext);
+        private delegate void find_delegate(cef_browser_host_t* self, cef_string_t* searchText, int forward, int matchCase, int findNext);
         
         [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
         #if !DEBUG
@@ -803,7 +803,7 @@ namespace Xilium.CefGlue.Interop
         private static IntPtr _p14;
         private static find_delegate _d14;
         
-        public static void find(cef_browser_host_t* self, int identifier, cef_string_t* searchText, int forward, int matchCase, int findNext)
+        public static void find(cef_browser_host_t* self, cef_string_t* searchText, int forward, int matchCase, int findNext)
         {
             find_delegate d;
             var p = self->_find;
@@ -813,7 +813,7 @@ namespace Xilium.CefGlue.Interop
                 d = (find_delegate)Marshal.GetDelegateForFunctionPointer(p, typeof(find_delegate));
                 if (_p14 == IntPtr.Zero) { _d14 = d; _p14 = p; }
             }
-            d(self, identifier, searchText, forward, matchCase, findNext);
+            d(self, searchText, forward, matchCase, findNext);
         }
         
         // StopFinding

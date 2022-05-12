@@ -83,15 +83,6 @@ public class DefaultRequestHandler : CefRequestHandler
     }
 
     /// <inheritdoc/>
-    protected override void OnPluginCrashed(CefBrowser browser, string pluginPath)
-    {
-        if (_browser is not null)
-        {
-            _browser.InvokeAsyncIfPossible(() => _browser.OnPluginCrashed(new PluginCrashedEventArgs(pluginPath)));
-        }
-    }
-
-    /// <inheritdoc/>
     protected override void OnRenderProcessTerminated(CefBrowser browser, CefTerminationStatus status)
     {
         if (_browser is not null)

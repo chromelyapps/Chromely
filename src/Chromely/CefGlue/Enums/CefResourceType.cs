@@ -5,7 +5,8 @@
 namespace Xilium.CefGlue
 {
     /// <summary>
-    /// Resource type for a request.
+    /// Resource type for a request. These constants match their equivalents in
+    /// Chromium's ResourceType and should not be renumbered.
     /// </summary>
     public enum CefResourceType
     {

@@ -13,6 +13,7 @@ namespace Xilium.CefGlue.Interop
     internal unsafe struct cef_download_handler_t
     {
         internal cef_base_ref_counted_t _base;
+        internal IntPtr _can_download;
         internal IntPtr _on_before_download;
         internal IntPtr _on_download_updated;
         
@@ -39,6 +40,12 @@ namespace Xilium.CefGlue.Interop
         [SuppressUnmanagedCodeSecurity]
         #endif
         internal delegate int has_at_least_one_ref_delegate(cef_download_handler_t* self);
+        
+        [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
+        #if !DEBUG
+        [SuppressUnmanagedCodeSecurity]
+        #endif
+        internal delegate int can_download_delegate(cef_download_handler_t* self, cef_browser_t* browser, cef_string_t* url, cef_string_t* request_method);
         
         [UnmanagedFunctionPointer(libcef.CEF_CALLBACK)]
         #if !DEBUG

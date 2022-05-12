@@ -41,8 +41,7 @@ namespace Xilium.CefGlue
         NoSpellingSuggestions = 205,
         AddToDictionary = 206,
 
-        // Custom menu items originating from the renderer process. For example,
-        // plugin placeholder menu items.
+        // Custom menu items originating from the renderer process.
         CustomFirst = 220,
         CustomLast = 250,
 
