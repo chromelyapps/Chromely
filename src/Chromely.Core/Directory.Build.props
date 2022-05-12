@@ -1,9 +1,9 @@
 ﻿<Project>
 	<PropertyGroup>
-		<ProductVersion>5.2.0.0</ProductVersion>
-		<AssemblyVersion>5.2.0.0</AssemblyVersion>
-		<FileVersion>5.2.0.0</FileVersion>
-		<Version>5.2.0.0</Version>
+		<ProductVersion>5.2.1.0</ProductVersion>
+		<AssemblyVersion>5.2.1.0</AssemblyVersion>
+		<FileVersion>5.2.1.0</FileVersion>
+		<Version>5.2.1.0</Version>
 		<Product>Chromely.Core</Product>
 		<Owners>Chromely Projects</Owners>
 		<Authors>Chromely Projects</Authors>
@@ -16,8 +16,9 @@
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
 		<PackageReleaseNotes>
-			- Upgraded to .NET 6.
-			- Upgraded to CefGlue/Chromium v95.
+			- Fixed - https://github.com/chromelyapps/Chromely/issues/365
+			- Fixed - https://github.com/chromelyapps/Chromely/issues/368
+			- Upgraded to CefGlue/Chromium v101.
 		</PackageReleaseNotes>
 		<RepositoryUrl>https://github.com/chromelyapps/Chromely</RepositoryUrl>
 		<RepositoryType>Github Repository</RepositoryType>

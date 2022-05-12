@@ -39,6 +39,7 @@ public class ControllerRoute
         {
             return new ChromelyResponse()
             {
+                RequestId = request?.Id == null ? string.Empty : request.Id,
                 HasRouteResponse = HasReturnValue
             };
         }
@@ -56,6 +57,7 @@ public class ControllerRoute
         {
             return new ChromelyResponse()
             {
+                RequestId = request?.Id == null ? string.Empty : request.Id,
                 HasRouteResponse = HasReturnValue
             };
         }
@@ -125,6 +127,15 @@ public class ControllerRoute
             {
                 Data = HasReturnValue ? content : null
             };
+        }
+
+        // Set request id if available in request and not yet set in response
+        var chromelyRequest = content as IChromelyRequest;
+        if (chromelyRequest is not null && 
+            !string.IsNullOrEmpty(chromelyRequest.Id) && 
+            string.IsNullOrEmpty(chromelyResponse.RequestId))
+        {
+            chromelyResponse.RequestId = chromelyRequest.Id;
         }
 
         return chromelyResponse;

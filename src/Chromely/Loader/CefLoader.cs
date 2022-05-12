@@ -168,17 +168,17 @@ public class CefLoader
             // Hack until fixed.
             if (!string.IsNullOrEmpty(binaryNamePattern1))
             {
-                if (binaryNamePattern1.Contains("96.0.4664.110"))
+                if (binaryNamePattern1.Contains("101.0.4951.54"))
                 {
-                    return $"cef_binary_96.0.18%2Bgfe551e4%2Bchromium-96.0.4664.110_{platformIdentifier}_minimal.tar.bz2";
+                    return $"cef_binary_101.0.15%2Bgca159c5%2Bchromium-101.0.4951.54_{platformIdentifier}_minimal.tar.bz2";
                 }
             }
 
             if (!string.IsNullOrEmpty(binaryNamePattern2))
             {
-                if (binaryNamePattern2.Contains("96.0.4664.110"))
+                if (binaryNamePattern2.Contains("101.0.4951.54"))
                 {
-                    return $"cef_binary_96.0.18%2Bgfe551e4%2Bchromium-96.0.4664.110_{platformIdentifier}_minimal.tar.bz2";
+                    return $"cef_binary_101.0.15%2Bgca159c5%2Bchromium-101.0.4951.54_{platformIdentifier}_minimal.tar.bz2";
                 }
             }
 
