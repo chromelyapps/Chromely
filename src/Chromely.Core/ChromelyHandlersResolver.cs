@@ -3,5 +3,5 @@
 
 namespace Chromely.Core;
 
-public delegate IEnumerable<object> ChromelyHandlersResolver(Type serviceType);
+public delegate IEnumerable<object?> ChromelyHandlersResolver(Type serviceType);
 

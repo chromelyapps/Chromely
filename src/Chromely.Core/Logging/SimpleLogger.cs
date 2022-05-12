@@ -44,7 +44,7 @@ public class SimpleLogger : ILogger
         _maxSizeInKiloBytes = 1000 * maxFileSizeBeforeLogRotation;
     }
 
-    public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
+    public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
     {
         if (!IsEnabled(logLevel))
         {
