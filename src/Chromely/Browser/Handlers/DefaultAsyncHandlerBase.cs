@@ -263,7 +263,7 @@ public abstract class DefaultAsyncHandlerBase : CefResourceHandler, IDisposable
     /// <inheritdoc/>
     protected override void Cancel()
     {
-        _cancellationTokenSource.Cancel();
+        _cancellationTokenSource?.Cancel();
     }
 
     private void FreeBuffer()
