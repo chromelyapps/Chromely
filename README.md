@@ -1,3 +1,11 @@
+# ** Announcement ** - Chromely is no longer being maintained! 
+
+For those who would like to continue working on the project via forks or alternative approaches, please send mattkol the appropriate links and they will be added here.
+
+Thanks to all the contributors over the years for making the platform a great learning place.
+
+Thank you all.
+------------------------------------------------------------------------------------------------------------------------------------------
 <p align="center"><img src="https://github.com/chromelyapps/Chromely/blob/master/nugets/chromely.ico?raw=true" /></p>
 <h1 align="center">Chromely</h1>
 
